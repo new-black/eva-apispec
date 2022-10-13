@@ -1,0 +1,93 @@
+{
+  "typename": "GetPotentialBundleProductsForOrder",
+  "assembly": "EVA.Core",
+  "description": "This service returns the bundles for which you currently have at least one product in the provided order.\nThis can then be used to suggest bundles to the end-user that they\u0027re missing out on.\n\nThe IncludedFields field controls which product content you get back for each bundle product. By default, only the product\u0027s display value is returned.\n\nSpecifying the ProductIDs field means that only suggestions for the given products are returned.\nIf the Order does not contain the provided ProductIDs, nothing will be returned.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.ProductBundles.GetPotentialBundleProductsForOrderResponse"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.ProductBundles.GetPotentialBundleProductsForOrderResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "IncludedFields": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "ProductPropertyType",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ProductIDs": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Product",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

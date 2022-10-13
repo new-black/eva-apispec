@@ -1,0 +1,113 @@
+{
+  "typename": "UploadAndProcessStockExcelFile",
+  "assembly": "EVA.Core",
+  "description": "Upload stock Excel (delta)file. The service processes the data async. This service is intended for small files (up to 5MB). Please view the documentation for processing larger files.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithEmptyResponse"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The \u0060BackendSystemID\u0060 that belongs to the \u0060ProductBackendID\u0060s",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Data": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "EmailAddress": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "An email address to mail the processing result to. When left empty, the logged in user context will be used",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IsFullStockMutationFile": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "If set to false (default), only the stock for the products that are present in the file will be updated (delta).\n\nIf set to true, all the products will be updated - products not present in the file will be updated to quantity 0.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "StockLabelID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "StockLabel",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "StockMutationReasonID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "StockMutationReasons",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

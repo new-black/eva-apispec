@@ -1,0 +1,87 @@
+{
+  "typename": "SetAppSetting",
+  "assembly": "EVA.Core.Management",
+  "description": "Set the value for an AppSetting\n\n- OrganizationUnitID defaults to the root OrganizationUnit\n- Name is required\n\nValues for a specific App wil only be returned in the ApplicationConfiguration if the requesting UserAgent matches {App}/*",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithEmptyResponse"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "App": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "stringLengthConstraint": {
+        "min": 0,
+        "max": 255
+      },
+      "allowedValues": []
+    },
+    "Name": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "stringLengthConstraint": {
+        "min": 1,
+        "max": 255
+      },
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "OrganizationUnitSetID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Setting are not stored on sets, the set is evaluated when this service is called, and the setting is applied to all OrganizationUnits in the set.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Value": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

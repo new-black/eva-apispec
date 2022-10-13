@@ -1,0 +1,79 @@
+{
+  "typename": "SupplierUpdatePurchaseOrder",
+  "assembly": "EVA.Core",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithEmptyResponse",
+    "EVA.Core.PurchaseOrders.SupplierUpdatePurchaseOrder\u002BSupplierUpdatePurchaseOrderLine"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Identifier of the order from the 3rd party",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Identifier of the 3rd party system that created the order",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.PurchaseOrders.SupplierUpdatePurchaseOrder\u002BSupplierUpdatePurchaseOrderLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "description": "Contents of the purchase order.\nNote: Only one key property can be used to identify the product. When different properties are used, the request will be invalid.\nThis will become redundant when ProductID is the only property left.",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "ShipToOrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "OrganizationUnit that will be receiving the purchase order shipment(s).",
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

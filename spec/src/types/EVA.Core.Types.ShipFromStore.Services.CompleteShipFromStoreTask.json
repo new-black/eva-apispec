@@ -1,0 +1,127 @@
+{
+  "typename": "CompleteShipFromStoreTask",
+  "assembly": "EVA.Core",
+  "description": "Completes the ShipFromOrder task, indicating that the shipment of the order has taken place.\n\nThe order will be shipped and the shop stock will be moved to Transit.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Types.ShipFromStore.Services.CompleteShipFromStoreTaskResponse",
+    "EVA.Core.Types.ShipFromStore.Services.CompleteShipFromStoreTask\u002BPickedOrderLine",
+    "EVA.Core.Types.ShipFromStore.Services.CompleteShipFromStoreTask\u002BShipment"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Types.ShipFromStore.Services.CompleteShipFromStoreTaskResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "PickedOrderLines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Types.ShipFromStore.Services.CompleteShipFromStoreTask\u002BPickedOrderLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Optional for subtype Pick",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Shipments": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Types.ShipFromStore.Services.CompleteShipFromStoreTask\u002BShipment",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Optional for subtype Ship",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ShouldBePrinting": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If you want to override printing behavior - will default to the \u0060ShouldBePrinting\u0060 value from \u0060StartShipFromStoreTask\u0060",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "StationID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Required for subtypes Pick and Ship",
+      "skippable": false,
+      "datamodel": {
+        "name": "Station",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "UnpickedLinesReasonID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The reason why not all lines might be picked",
+      "skippable": false,
+      "datamodel": {
+        "name": "UserTaskNotCompletedReason",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "UserTaskID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "UserTask",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

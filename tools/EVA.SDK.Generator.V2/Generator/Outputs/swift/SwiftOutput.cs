@@ -15,7 +15,7 @@ public class SwiftOutput : IOutput
 
   public void FixOptions(GenerateOptions options)
   {
-   options.EnsureRemove("options");
+    options.EnsureRemove("options");
   }
 
   public async Task Write(ApiDefinitionModel input, string outputDirectory)
@@ -87,6 +87,12 @@ public class SwiftOutput : IOutput
       WriteComment(type.Description, output);
     }
 
+    var service = input.Services.FirstOrDefault(s => s.RequestTypeID == id);
+    if (service is { Deprecated: { } deprecationInfo })
+    {
+      output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(deprecationInfo.Comment)}\")");
+    }
+
     if (type.EnumIsFlag.HasValue)
     {
       if (type.EnumIsFlag.Value)
@@ -97,6 +103,7 @@ public class SwiftOutput : IOutput
       {
         WriteNonFlagsEnum(type, typename, output);
       }
+
       return;
     }
 
@@ -145,7 +152,11 @@ public class SwiftOutput : IOutput
       {
         var propType = GetTypeName(prop.Type, input, id);
         if (prop.Type.Name == id) propType = $"IndirectOptional<{propType}>";
-        if(prop.Description != null) WriteComment(prop.Description, output);
+        if (prop.Description != null) WriteComment(prop.Description, output);
+        if (prop.Deprecated != null)
+        {
+          output.WriteLine($"@available(*, deprecated, \"{EscapeString(prop.Deprecated.Comment)}\")");
+        }
 
         var safePropertyName = new[] { "Type" }.Contains(propName) ? $"`{propName}`" : propName;
         output.WriteLine($"public var {safePropertyName} : {propType}");
@@ -164,10 +175,7 @@ public class SwiftOutput : IOutput
     {
       output.WriteLine();
 
-      output.WriteIndentend(o =>
-      {
-        WriteType(nestedType, nestedID, nestedType.TypeName, input, o);
-      });
+      output.WriteIndentend(o => { WriteType(nestedType, nestedID, nestedType.TypeName, input, o); });
     }
 
     output.WriteLine("}");
@@ -197,18 +205,22 @@ public class SwiftOutput : IOutput
       o.WriteLine("public let rawValue: Int");
       o.WriteLine();
       o.WriteLine("public init(rawValue: Int) {");
-      o.WriteIndentend(o =>
-      {
-        o.WriteLine("self.rawValue = rawValue");
-      });
+      o.WriteIndentend(o => { o.WriteLine("self.rawValue = rawValue"); });
       o.WriteLine("}");
       o.WriteLine();
 
-      foreach (var (name, value) in type.EnumValues.OrderBy(v => v.Value.Value))
+      var enumValuesWithTotal = type.EnumValues
+        .Select(kv => (kv.Key, Value: kv.Value.Value + kv.Value.Extends.Select(e => type.EnumValues[e].Value).Sum()))
+        .OrderBy(v => v.Value);
+
+      foreach (var (name, value) in enumValuesWithTotal)
       {
-        o.WriteLine($"public static let {name} = {typename}(rawValue: {value.Value + value.Extends.Select(e => type.EnumValues[e].Value).Sum()})");
+        if (value == 0) continue;
+        o.WriteLine($"public static let {name} = {typename}(rawValue: {value})");
       }
     });
+
+    output.WriteLine("}");
   }
 
   private string GetTypeName(TypeReference typeReference, ApiDefinitionModel input, string? typeContext)
@@ -229,8 +241,7 @@ public class SwiftOutput : IOutput
 
     if (typeReference.Name.StartsWith("EVA.") && typeReference.Arguments is { Length: > 0 })
     {
-      var idx = typeReference.Name.IndexOf('`');
-      return $"{typeReference.Name[..idx]}<{string.Join(", ", typeReference.Arguments.Select(a => GetTypeName(a, input, typeContext)))}>{n}";
+      return $"{GetTypeName(typeReference.Name, input)}<{string.Join(", ", typeReference.Arguments.Select(a => GetTypeName(a, input, typeContext)))}>{n}";
     }
 
     if (typeReference.Name.StartsWith("EVA."))
@@ -254,7 +265,6 @@ public class SwiftOutput : IOutput
   {
     var reference = input.Types[id];
     var assembly = reference.Assembly;
-    if (assembly == "EVA.API") assembly = "EVA.Core";
     assembly = assembly.Replace(".Services", string.Empty);
 
     var typeName = reference.TypeName;
@@ -298,5 +308,10 @@ public class SwiftOutput : IOutput
     {
       output.WriteLine($"// {line}");
     }
+  }
+
+  private string EscapeString(string comment)
+  {
+    return comment.Replace("\"", "\\\"");
   }
 }

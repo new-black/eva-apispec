@@ -50,13 +50,12 @@ inheritance: Will flatten all type hierarchies to the concrete types.
 generics: Will flatten all generic types to concrete implementations.
 unused-type-params: Will remove type parameters that are never used.
 empty-types: Will remove types without any properties.
-unused-types: Will remove types that are never referenced.
 nested-types: Will bring nested types to to root level.
 options: Will remove type information where its a ""anyOf"" construction and instead only output whatever is shared among them.
 deprecated-properties: Will remove all deprecated properties immediately and not wait till the deprecation hits.
 deprecated-services: Will remove all deprecated services immediately and not wait till the deprecation hits.
 "
-  ) { AllowMultipleArgumentsPerToken = true }.FromAmong("inheritance", "generics", "unused-type-params", "empty-types", "unused-types", "nested-types", "options", "deprecated-properties",
+  ) { AllowMultipleArgumentsPerToken = true }.FromAmong("inheritance", "generics", "unused-type-params", "empty-types", "nested-types", "options", "deprecated-properties",
     "deprecated-properties", "deprecated-services");
 
 

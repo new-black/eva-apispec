@@ -1,0 +1,83 @@
+{
+  "typename": "GetProductAvailability",
+  "assembly": "EVA.Core",
+  "description": "This service returns information about product availability.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Stock.GetProductAvailabilityResponse",
+    "EVA.Core.Stock.GetProductAvailabilityOptions",
+    "EVA.Core.Stock.GetProductAvailability\u002BProduct"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Stock.GetProductAvailabilityResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "Options": {
+      "type": {
+        "ref": "EVA.Core.Stock.GetProductAvailabilityOptions",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Contains options that let you influence the availability calculation.",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "By default the availability is calculated from the perspective of your current OrganizationUnit, which determines which warehouse(s) stock is sourced\nfrom, among other things. You can override the default with an OrganizationUnitID of your choosing and calculate availability from that\nOrganizationUnit\u0027s perspective.",
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Products": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Stock.GetProductAvailability\u002BProduct",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    }
+  }
+}

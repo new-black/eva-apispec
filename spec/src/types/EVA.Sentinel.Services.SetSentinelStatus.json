@@ -1,0 +1,60 @@
+{
+  "typename": "SetSentinelStatus",
+  "assembly": "EVA.Sentinel",
+  "description": "This service overrides the operational flags for a sentinel device.\n\nThis should never be used in production environments. This is used to mimick offline scenario\u0027s in sentinel deployments in the cloud.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithEmptyResponse"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "DisableCheckTask": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Disable the automatic task that checks for Internet/EVACloud. This should be set to true if these properties need to be managed by hand.",
+      "skippable": true,
+      "allowedValues": []
+    },
+    "EVACloudAvailable": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Flag this environment as if the cloud deployment of EVA is not availabled. Will disable a lot of functionality.",
+      "skippable": true,
+      "allowedValues": []
+    },
+    "InternetAvailable": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Flag this environment as if it has no working internet connection. Will disable a lot of functionality.",
+      "skippable": true,
+      "allowedValues": []
+    },
+    "RunningAsSentinel": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Flag this environment as if it\u0027s running on a sentinel device. Will disable a lot of functionality.",
+      "skippable": true,
+      "allowedValues": []
+    }
+  }
+}

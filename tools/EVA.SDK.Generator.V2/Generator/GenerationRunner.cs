@@ -91,14 +91,14 @@ public static class GenerationRunner
 
   private static IEnumerable<ITransform> FindTransforms(GenerateOptions options)
   {
-    var remove = options.Remove.Distinct().ToList() ?? new List<string>();
+    var remove = options.Remove.Distinct().ToList();
 
     if (remove.Remove("options")) yield return new RemoveOptions();
     if (remove.Remove("deprecated-services")) yield return new RemoveDeprecatedServices();
     if (remove.Remove("deprecated-properties")) yield return new RemoveDeprecatedProperties();
 
     yield return new FixDependencies();
-    if (remove.Remove("unused-types")) yield return new RemoveUnusedTypes();
+    yield return new RemoveUnusedTypes();
 
     if (remove.Remove("inheritance")) yield return new RemoveInheritance();
     if (remove.Remove("generics")) yield return new FlattenGenerics();
@@ -107,6 +107,6 @@ public static class GenerationRunner
     if (remove.Remove("nested-types")) yield return new RemoveNestedTypes();
 
     yield return new FixDependencies();
-    if (remove.Remove("unused-types")) yield return new RemoveUnusedTypes();
+    yield return new RemoveUnusedTypes();
   }
 }

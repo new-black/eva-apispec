@@ -1,0 +1,140 @@
+{
+  "typename": "ListAvailableUserTasks",
+  "assembly": "EVA.Core",
+  "description": "List the available UserTasks for the current user.\n\nThe response has a \u0060Aggregations\u0060 property. This property contains the available filters for this set of UserTasks.\nTo apply such a filter it should added in the \u0060Filters\u0060 property on the RequestMessage.\n\nExample response:\n\u0060\u0060\u0060\n{\n...\n,\n  \u0022Aggregations\u0022: {\n      \u0022ZonedCycleCountPreCount\u0022: {\n        \u0022CycleCountZoneID\u0022: [\n          {\n            \u0022Name\u0022: \u0022Shelves\u0022,\n            \u0022Value\u0022: 10,\n            \u0022Count\u0022: 1\n          },\n          {\n            \u0022Name\u0022: \u0022Stockroom\u0022,\n            \u0022Value\u0022: 12,\n            \u0022Count\u0022: 6\n          },\n          {\n            \u0022Name\u0022: \u0022Store\u0022,\n            \u0022Value\u0022: 13,\n            \u0022Count\u0022: 4\n          }\n        ]\n      }\n    }\n  }\n}\n\u0060\u0060\u0060\n\nTo apply a matching filter:\n\u0060\u0060\u0060\n{\n  \u0022Filters\u0022: {\n    \u0022ZonedCycleCountPreCount\u0022: {\n      \u0022CycleCountZoneID\u0022: [10]\n    }\n  }\n}\n\u0060\u0060\u0060",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Services.ListAvailableUserTasksResponse"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.ListAvailableUserTasksResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "Filters": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "map",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "array",
+                "args": [
+                  {
+                    "ref": "any",
+                    "args": [],
+                    "nullable": true
+                  }
+                ],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Filter for a specific UserTaskType.Name using a property name and a list of values.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IsStarted": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Return only Started/Open UserTasks",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Labels": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Return only UserTasks with one of the specified labels",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "UserID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Return only UserTasks attached to this UserID",
+      "skippable": false,
+      "datamodel": {
+        "name": "User",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "UserTaskSubTypes": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Return only UserTasks with one of the specified subtypes",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "UserTaskTypes": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Return only UserTasks of one of the specified types",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "typename": "AddPurchaseOrderLines",
+  "assembly": "EVA.Core",
+  "description": "Add lines to an existing purchase order\n\nIt is required to supply an OrderID and at leas one line with a ProductID and a Quantity. All other line properties are optional.\nIt\u0027s not allowed to create multiple lines with the same product on the same stocklabel.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.PurchaseOrders.AddPurchaseOrderLinesResponse",
+    "EVA.Core.PurchaseOrders.AddPurchaseOrderLines\u002BLine"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.PurchaseOrders.AddPurchaseOrderLinesResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.PurchaseOrders.AddPurchaseOrderLines\u002BLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

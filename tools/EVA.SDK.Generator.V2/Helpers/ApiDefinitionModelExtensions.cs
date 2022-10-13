@@ -29,7 +29,9 @@ public static class ApiDefinitionModelExtensions
   /// <returns></returns>
   public static IEnumerable<string> EnumerateAllAssemblies(this ApiDefinitionModel model)
   {
-    return model.Services.Select(s => s.Assembly).Concat(model.Types.Values.Select(t => t.Assembly)).Distinct().OrderBy(x => x).ToList();
+    var serviceAssemblies = model.Services.Select(s => s.Assembly);
+    var typeAssemblies = model.Types.Values.Select(t => t.Assembly);
+    return serviceAssemblies.Concat(typeAssemblies).Distinct().OrderBy(x => x).ToList();
   }
 
   public static IEnumerable<TypeReference> EnumerateAllTypeReferences(this TypeSpecification type)

@@ -1,0 +1,67 @@
+{
+  "typename": "CreatePrintPriceLabelTask",
+  "assembly": "EVA.Core",
+  "description": "Creates a new Print Price Label task with specified products, or append these to existing tasks when applicable.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Types.PrintPriceLabel.Services.CreatePrintPriceLabelTaskResponse",
+    "EVA.Core.Types.PrintPriceLabel.Services.CreatePrintPriceLabelTask\u002BPrintPriceLabelTaskProduct"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Types.PrintPriceLabel.Services.CreatePrintPriceLabelTaskResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "OrganizationUnitID (defaults to current OU)",
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Products": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Types.PrintPriceLabel.Services.CreatePrintPriceLabelTask\u002BPrintPriceLabelTaskProduct",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "description": "List of products to print price labels for",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    }
+  }
+}

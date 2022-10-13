@@ -1,0 +1,65 @@
+{
+  "typename": "GetStockAvailabilityEstimateForOrder",
+  "assembly": "EVA.Core",
+  "description": "Calculates the stock availability for the provided OrderLines that are part of the provided Order.\n\nThe return value of this service is a list that contains, per OrderLine, whether or not it can be fulfilled (\u0060CanBeFulfilled\u0060) on the \u0060RequestedDate\u0060.\n\nWhen an OrderLine doesn\u0027t already have a RequestedDate, a RequestedDate of tomorrow is used.\n\nAdditionally, a list of AlternativeDates is returned per OrderLine with dates on which it is expected that the OrderLine can be fulfilled.\n\nWhen OrderLineIDs is left empty, this service will return an estimate for all unshipped lines of the order.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Stock.GetStockAvailabilityEstimateForOrderResponse",
+    "EVA.Core.Stock.GetStockAvailabilityEstimateForOrder\u002BOrderLine"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Stock.GetStockAvailabilityEstimateForOrderResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "OrderLines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Stock.GetStockAvailabilityEstimateForOrder\u002BOrderLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

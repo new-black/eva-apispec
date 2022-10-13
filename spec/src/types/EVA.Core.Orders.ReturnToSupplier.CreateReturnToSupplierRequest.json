@@ -1,0 +1,159 @@
+{
+  "typename": "CreateReturnToSupplierRequest",
+  "assembly": "EVA.Core",
+  "description": "Create a new ReturnToSupplierRequest\n\nA ReturnToSupplierRequest is used to generate ReturnToSupplier orders for Shops\n\n- Name: For identification of the request (required)\n- OrganizationUnitSetID: The organizationunits (filtered on Type = Shop) that will get a RTS (required)\n- ProductSearchTemplateID: Only products matching this template will be added to the orders, if supplied (optional)\n- RecallPercentage: Percentage of the current stock to recall. Value should be between 0.00 and 1.00. (required)\n- Filters, CountryID, LanguageID: Instead of a productsearchtemplate, products can also be defined by providing a manual filter (all optional)",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Orders.ReturnToSupplier.CreateReturnToSupplierRequestResponse",
+    "EVA.Core.Search.FilterModel"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Orders.ReturnToSupplier.CreateReturnToSupplierRequestResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "CountryID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Country",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Filters": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.Search.FilterModel",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "LanguageID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Language",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Name": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "OrganizationUnitSetID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnitSet",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ProductSearchTemplateID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "ProductSearchTemplate",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "RecallPercentage": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "minValue": {
+        "current": 0.01
+      },
+      "maxValue": {
+        "current": 1
+      },
+      "allowedValues": []
+    },
+    "ReturnReasonID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "ReturnReason of type OrganizationUnit to indicate why these ReturnToSupplier orders are created",
+      "skippable": false,
+      "datamodel": {
+        "name": "ReturnReason",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

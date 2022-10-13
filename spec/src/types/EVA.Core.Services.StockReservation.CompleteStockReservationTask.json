@@ -1,0 +1,63 @@
+{
+  "typename": "CompleteStockReservationTask",
+  "assembly": "EVA.Core",
+  "description": "Complete a StockReservation task that has been started with the StartStockReservation(2) service\n\nThe service should be called with a line for each orderline that should be reserved. It is not required anymore to send a line for each item on a line.\n\nProvide each line with an OrderLineID and a QuantityTo(Cancel/Reserve/Order).",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithEmptyResponse",
+    "EVA.Core.Services.StockReservation.CompleteStockReservationTask\u002BStockReservationTask"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "PrintReceipt": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Should we print a receipt? Default true",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "StationID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Station to print the receipt on",
+      "skippable": false,
+      "datamodel": {
+        "name": "Station",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Task": {
+      "type": {
+        "ref": "EVA.Core.Services.StockReservation.CompleteStockReservationTask\u002BStockReservationTask",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    }
+  }
+}

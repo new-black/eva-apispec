@@ -1,0 +1,102 @@
+{
+  "typename": "CreateCustomer",
+  "assembly": "EVA.Core",
+  "description": "Creates a customer.\n\nThis is allowed when you are an employee, or by anonymous if the CustomerCanRegister (default true) is enabled.\n\nBe sure to handle errors for registering, which could be (amongst others);\n\n  * InvalidEmailAddress\n  * EmailAddressInUse\n  * NicknameInUse\n  * FiscalIDInUse",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Users.CreateCustomerResponse",
+    "EVA.Core.DataModels.UserAccountType",
+    "EVA.Core.Users.CreateCustomer\u002BUserAssociations",
+    "EVA.Core.Users.CreateCustomer\u002BCustomer"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Users.CreateCustomerResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "AccountType": {
+      "type": {
+        "ref": "EVA.Core.DataModels.UserAccountType",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Is this a Standard/Basic/Incognito account?",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Associations": {
+      "type": {
+        "ref": "EVA.Core.Users.CreateCustomer\u002BUserAssociations",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Optional associations to other users, e.g. child, parent, neighbour, friend, colleague, ...",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "AttachToOrder": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Automatically attach the new customer to the order identified by \u0060OrderID\u0060.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "AutoLogin": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Set to \u0060true\u0060 to automatically authenticate as this new user.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Identifier for the order to automatically attach the new customer to (see \u0060AttachToOrder\u0060 parameter).",
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "User": {
+      "type": {
+        "ref": "EVA.Core.Users.CreateCustomer\u002BCustomer",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    }
+  }
+}

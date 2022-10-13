@@ -1,0 +1,125 @@
+{
+  "typename": "CreateTaxRate",
+  "assembly": "EVA.Core",
+  "description": "Creates a tax rate.\n\n* \u0060CountryID\u0060 is a foreign key to the Countries table, which uses the ISO 3166-2 standard as ID\n* \u0060CountrySubdivisionID\u0060 is a foreign key to the CountrySubdivisions table, which uses the ISO 3166-2 standard as ID\n* \u0060TaxCodeID\u0060 is a foreign key to the TaxCodes table, which can be listed using the \u0060ListTaxCodes\u0060 service\n\nPercentages are a human readable formatted result of a fraction - applications use a \u0060Rate\u0060 instead as an actual result of fraction to maintain\nprecision and integrity. If you wish to set a 21% tax percentage, that means a 1.21 tax rate. Setting a rate of 1.00 implies a 0% tax percentage,\nand setting to 2.00 would mean a rediculous 100% tax percentage, doubling prices. You can probably tell that a \u0060Rate\u0060 of 2.00 here is much more\nreadable than a 100% increase, but hey; nobody\u0027s forcing you to stick to percentages. At least - we\u0027re not!\n\nOh, and you can set a tax rate of 0.00, which would mean it will be fully sponsored by the government and will be free to purchase. The services\nblock anything lower than 0.00 and higher than 2.00 for sanity reasons. Will recap when governments gone mad.\n\n:key: The combination of \u0060CountryID\u0060, \u0060CountrySubdivision\u0060 and \u0060TaxCodeID\u0060 is unique and will be enforced by EVA.\n\n:point_right: \u0060StartDate\u0060 and \u0060EndDate\u0060 are optional, and can be used to transition from one rate to a next when it changes. Both these dates\nare inclusive, meaning you\u0027d want to set the \u0060EndDate\u0060 of the expiring tax rate to 2018-12-31 and the \u0060StartDate\u0060 of the new tax rate to\n2019-01-01 (for example).",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Pricing.CreateTaxRateResponse",
+    "EVA.Core.DataModels.TaxRateCategory"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Pricing.CreateTaxRateResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "Category": {
+      "type": {
+        "ref": "EVA.Core.DataModels.TaxRateCategory",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Defines in which category the provided Rate falls for the provided CountryID. For example, a rate of 25% in the country Denmark should have Category = High as 25% is the high VAT rate in Denmark.\n\nIf the TaxCode used for this TaxRate is one of the predefined ones (High, Low, Zero, Exempt, Intermediate) this parameter is ignored but Category must be provided when using a custom TaxCode.\n\nThe Category \u0060Dynamic\u0060 should be used for countries such as the US where the actual tax rate is context dependent and calculated dynamically.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CountryID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Country",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "CountrySubdivisionID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "CountrySubdivision",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "EndDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Rate": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "minValue": {
+        "current": 1
+      },
+      "maxValue": {
+        "current": 2
+      },
+      "allowedValues": []
+    },
+    "StartDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "TaxCodeID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "TaxCode",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

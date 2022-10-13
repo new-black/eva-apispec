@@ -1,0 +1,203 @@
+{
+  "typename": "PushReturnOrder",
+  "assembly": "EVA.Core",
+  "description": "Creates a returnorder with all specified data\n\nIt is required to send the identifier for the ReturnOrder of the external system by providing a BackendSystemID and a BackendID.\n\nA return is based of an OriginalOrder. This order can be identifier by the OriginalBackendID or the OriginalOrderID. One of those is required.\n\nIf the stock is already received, set the \u0060AlreadyReceived\u0060 to true. This will ship the order immediately.\n\nIf the stock is already received and the open amount should be refunded directly, set \u0060AutoRefund\u0060 to true.\n\nThe Lines have to be identified by the original line, this should be done by providing the OriginalBackendID or the OriginalOrderLineID.\nIf those are not available the CustomID of the product can be set, but matching based on that is not advised.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Orders.PushReturnOrderResponse",
+    "EVA.Core.Orders.PushReturnOrder\u002BPushReturnOrderLine",
+    "EVA.Core.Orders.PushReturnOrder\u002BPushReturnCostsLine"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Orders.PushReturnOrderResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "AlreadyReceived": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Ship the order immediately",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "AutoRefund": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Try to refund the order immediately",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "description": "A unique identifier for the order, within the context of given \u0060BackendSystemID\u0060",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "description": "A code, free of choice for the calling 3rd party application creating the order",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "CustomFields": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IsCustomerReturn": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "If this order pending a customer return",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Orders.PushReturnOrder\u002BPushReturnOrderLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "OriginalBackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The unique identifier of the original order, within the context of given \u0060BackendSystemID\u0060",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OriginalOrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Remark": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Remark on the order (optional)",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ReturnCosts": {
+      "type": {
+        "ref": "EVA.Core.Orders.PushReturnOrder\u002BPushReturnCostsLine",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ReturnToOrganizationUnitBackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Identifier for the organizationunit where the stock will be returned",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "StockOrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

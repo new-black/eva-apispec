@@ -1,0 +1,81 @@
+{
+  "typename": "CancelOrder",
+  "assembly": "EVA.Core",
+  "description": "Cancel a complete order or a subset of lines.\n\nThe order can be identified by an OrderID or by BackendID \u002B BackendSystemID, the lines can be identified by an OrderLineID or by BackendID.\n\nThe result will tell you if it was successful.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Orders.CancelOrderResponse",
+    "EVA.Core.Orders.CancelOrder\u002BLineToCancel"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Orders.CancelOrderResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Reference to the order that is being cancelled - required when \u0060OrderID\u0060 is omitted",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Reference to the system from which the order originated - required when \u0060OrderID\u0060 is omitted",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "ID of the order that is being cancelled - required when \u0060BackendID\u0060 and \u0060BackendSystemID\u0060 are omitted",
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "OrderLines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Orders.CancelOrder\u002BLineToCancel",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Lines to cancel - or, if none are specified, all open lines of the order will be cancelled",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

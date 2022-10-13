@@ -1,0 +1,88 @@
+{
+  "typename": "CompleteFullStockCount",
+  "assembly": "EVA.Core",
+  "description": "Completes a full stock count task. User task must be active and assigned to the current user.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithEmptyResponse"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "DismissDeviationsAsStockMutations": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "When set to true, deviations will NOT be processed as stock mutations.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ProductsToRecount": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Products to recount after completion of given full stock count.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "RecountAllDeviations": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Recount all products in the full stock count that have a deviation.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "RecountAllProducts": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Recount all products in the full stock count.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "UserTaskID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "UserTask",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

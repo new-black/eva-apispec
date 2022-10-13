@@ -1,0 +1,93 @@
+{
+  "typename": "ReceivePurchaseOrderShipment",
+  "assembly": "EVA.Core",
+  "description": "Receive (part of) a Shipment for a PurchaseOrder.\n\nA ShipmentID is required.\n\nWhen doing partial receipts it is strongly advised to supply a BackendSystemID and BackendID to make sure Receipts are not created twice.\n\nTo do partial receipts the FinalShipment property should be set to false, otherwise the shipment will be close afterwards and the remaining lines will be booked as missing.\n\nWhen available it is preferred to identify the ShipmentLines with the ShipmentLineID and not with the ProductID.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.PurchaseOrders.ReceivePurchaseOrderShipmentResponse",
+    "EVA.Core.PurchaseOrders.ReceivePurchaseOrderShipment\u002BLine"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.PurchaseOrders.ReceivePurchaseOrderShipmentResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CompleteShipment": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If passed in as true this will close the shipment for further receipts.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.PurchaseOrders.ReceivePurchaseOrderShipment\u002BLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "ShipmentID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Shipment",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

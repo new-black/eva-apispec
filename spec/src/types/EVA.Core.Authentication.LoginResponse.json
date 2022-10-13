@@ -1,0 +1,91 @@
+{
+  "typename": "LoginResponse",
+  "assembly": "EVA.Core",
+  "usage": {
+    "request": false,
+    "response": true
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.ResponseMessage",
+    "EVA.Core.Enumerations.AuthenticationResults",
+    "EVA.Core.Enumerations.AuthenticationFailureReasons",
+    "EVA.Core.Authentication.LoginResponse\u002BOrganizationUnitModel",
+    "EVA.Core.Security.TwoFactor.TwoFactorAuthenticatorData",
+    "EVA.Core.Users.LoggedInUserDto"
+  ],
+  "extends": {
+    "ref": "EVA.Core.ResponseMessage",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "Authentication": {
+      "type": {
+        "ref": "EVA.Core.Enumerations.AuthenticationResults",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "FailureReason": {
+      "type": {
+        "ref": "EVA.Core.Enumerations.AuthenticationFailureReasons",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IsCustomAuthenticateResult": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnits": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Authentication.LoginResponse\u002BOrganizationUnitModel",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "TwoFactorAuthenticators": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Security.TwoFactor.TwoFactorAuthenticatorData",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "The available two-factor authenticators, returned when the Authentication result is NeedsTwoFactorAuthentication, for use in a sequential Login call",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "User": {
+      "type": {
+        "ref": "EVA.Core.Users.LoggedInUserDto",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

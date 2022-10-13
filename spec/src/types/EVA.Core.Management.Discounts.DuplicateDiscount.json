@@ -1,0 +1,66 @@
+{
+  "typename": "DuplicateDiscount",
+  "assembly": "EVA.Core.Management",
+  "description": "Duplicates the requested discount x times with it\u0027s conditions and action.\nA duplicated discount will not be Active and Verified.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Management.Discounts.DuplicateDiscountResponse"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Management.Discounts.DuplicateDiscountResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "DiscountID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The ID of the discount to create a copy of.",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Discount",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "NumberOfDuplicates": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Indicate how many duplicates need to be made. When left empty, only 1 duplicate will be made.",
+      "skippable": false,
+      "minValue": {
+        "current": 1
+      },
+      "maxValue": {
+        "current": 500
+      },
+      "allowedValues": []
+    }
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "typename": "AddProductToOrder",
+  "assembly": "EVA.Core",
+  "description": "Add a Product to an Order\n\nA product can be defined by \u0060ProductID\u0060 or \u0060Barcode\u0060",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Orders.AddProductToOrderResponse",
+    "EVA.Core.Orders.AddProductToOrder\u002BChildOrderLine",
+    "EVA.Core.Enumerations.LineActionTypes"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Orders.AddProductToOrderResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "Barcode": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Children": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Orders.AddProductToOrder\u002BChildOrderLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Description": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Optionally override the default description that is generated for the new OrderLine. If specified, this OrderLine will not be stacked on any existing OrderLines in the Order of the same Product (unless they use the same Description). Instead, a new OrderLine will be created.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ForceCreate": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ForceNewLine": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "This will always create a new line, regardless of whether a line with the same product ID was found in the order.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "GroupID": {
+      "type": {
+        "ref": "guid",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "LineActionType": {
+      "type": {
+        "ref": "EVA.Core.Enumerations.LineActionTypes",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ParentID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Specify this field to add the new line as a child of the specified parent",
+      "skippable": false,
+      "datamodel": {
+        "name": "OrderLine",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ProductID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Product",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "QuantityOrdered": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "maxValue": {
+        "current": 9000
+      },
+      "allowedValues": []
+    },
+    "StockLabelID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "StockLabel",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "UnitPriceInTax": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If the product allows its price to be modified, you can specify the desired price using this field.",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

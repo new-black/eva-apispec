@@ -1,0 +1,197 @@
+{
+  "typename": "CreateCashDeposit",
+  "assembly": "EVA.Core",
+  "description": "Creates a cash deposit for the provided device, currency and payment type.\n\nWhen not explicitly delaying the drop-off, it will be booked to the current active cash journal and financial period.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.CreateResponse"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.CreateResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "BankNotes": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "float128",
+            "args": [],
+            "nullable": false
+          },
+          {
+            "ref": "int32",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": true
+      },
+      "allowedValues": []
+    },
+    "Coins": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "float128",
+            "args": [],
+            "nullable": false
+          },
+          {
+            "ref": "int32",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": true
+      },
+      "allowedValues": []
+    },
+    "CurrencyID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Currency",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "DelayDropOff": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "When set to \u0060true\u0060, the cash deposit remains on this device awaiting manual drop-off; see \u0060DropOffCashDeposit\u0060 service",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "DeviceID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Device",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Number": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Required for monetary deposits",
+      "skippable": false,
+      "stringLengthConstraint": {
+        "min": 0,
+        "max": 50
+      },
+      "allowedValues": []
+    },
+    "PaymentTypeID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "PaymentType",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "SignatureBlobID": {
+      "type": {
+        "ref": "guid",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Optional image of the signature",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "TotalAmount": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "minValue": {
+        "current": 0
+      },
+      "allowedValues": []
+    }
+  }
+}

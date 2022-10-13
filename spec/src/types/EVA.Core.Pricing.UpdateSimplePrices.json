@@ -1,0 +1,86 @@
+{
+  "typename": "UpdateSimplePrices",
+  "assembly": "EVA.Core",
+  "description": "Update the prices in the pricelist specified.\n\nThis service takes a simplified approach of the pricing tools EVA offers, but that limits the options you have available. The PriceList to update may\nonly have a single active PriceListAdjustment, and that has to be of type MANUAL_INPUT.\n\n* The pricelist is identified by the \u0060PriceListID\u0060 or the \u0060BackendSystemID\u0060 and \u0060BackendID\u0060.\n* Products can be identified by their (EVA) \u0060ID\u0060 or their \u0060BackendID\u0060",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithEmptyResponse",
+    "EVA.Core.Pricing.UpdateSimplePrices\u002BPrice"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "PriceListBackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "PriceListBackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "PriceListID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "PriceList",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Prices": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Pricing.UpdateSimplePrices\u002BPrice",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "SkipPriceListRecalculation": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Set this to true when batching multiple price updates or when the change can wait a couple minutes, recalculation will be done within 15min",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

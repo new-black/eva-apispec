@@ -1,0 +1,178 @@
+{
+  "typename": "CompleteOpenCashJournal",
+  "assembly": "EVA.Core",
+  "description": "Completes the opening of a cash journal. After this service has been called, it\u0027s possible to make cash transactions on this device.\n\nThis service expects a list of the coins and notes that were counted.\n\nWhen the opening amount is different from last period\u0027s closing amount, it\u0027s required that a correction is provided for this difference\nin \u0060OpeningDeviationCorrection\u0060. This simply consists of a description and an amount.\n\nFor cash journals that either do not use or ignore cash journals, most properties will automatically be set to the expected amounts. Should you\nwant to enforce validation, regardless, specify the \u0060ForceValidation\u0060 as \u0060true\u0060.\n\nPending cash deposits need to be accounted for as well - supply their \u0060ID\u0060s as \u0060PendingCashDeposits\u0060. Do not add the \u0060Amount\u0060 of cash deposits\nto the \u0060TotalAmount\u0060, as the user cannot usually verify the cash deposit content.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithEmptyResponse",
+    "EVA.Core.Finance.CompleteOpenCashJournal\u002BCashCorrection"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "BankNotes": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "float128",
+            "args": [],
+            "nullable": false
+          },
+          {
+            "ref": "int32",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Coins": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "float128",
+            "args": [],
+            "nullable": false
+          },
+          {
+            "ref": "int32",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CurrencyID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Currency",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "DeviceID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Device",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ForceValidation": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OpeningDeviationCorrection": {
+      "type": {
+        "ref": "EVA.Core.Finance.CompleteOpenCashJournal\u002BCashCorrection",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "PaymentTypeID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "PaymentType",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "PendingCashDeposits": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "TotalAmount": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "minValue": {
+        "current": 0
+      },
+      "allowedValues": []
+    }
+  }
+}

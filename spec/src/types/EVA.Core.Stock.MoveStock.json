@@ -1,0 +1,45 @@
+{
+  "typename": "MoveStock",
+  "assembly": "EVA.Core",
+  "description": "Books a set of Movements.\n\nA Movement should either have a \u0060ProductID\u0060 or \u0060ProductBackendID\u0060 to identify the product, an \u0060OrganizationUnitID\u0060 to identify the stock keeping\norganization, a \u0060SourceStockLabelID\u0060 and \u0060DestinationStockLabelID\u0060 (see \u0060GetEnumValues\u0060 with type \u0060StockLabel\u0060) and (of course) a \u0060Quantity\u0060\nto actually book.\n\nSupply a \u0060BackendSystemID\u0060 on the request and \u0060BackendID\u0060\u0027s on the Movements to make the request idempotent.\n\nOptionally supports a \u0060StockMutationReasonID\u0060 and \u0060Remark\u0060 for each Movement.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithEmptyResponse",
+    "EVA.Core.Stock.MoveStock\u002BMovement"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Movements": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Stock.MoveStock\u002BMovement",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

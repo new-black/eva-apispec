@@ -1,0 +1,144 @@
+{
+  "typename": "CreateProductRelationType",
+  "assembly": "EVA.PIM",
+  "description": "Create a new ProductRelationType.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.CreateResponse",
+    "EVA.Core.DataModels.ProductRelationDirection",
+    "EVA.Core.Search.FilterModel",
+    "EVA.PIM.Services.Products.CreateProductRelationType\u002BRelation",
+    "EVA.Core.DataModels.StockRelationType"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.CreateResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Direction": {
+      "type": {
+        "ref": "EVA.Core.DataModels.ProductRelationDirection",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The direction of the relation. This can either be;\nUnidirectional; one-way relation. For example \u0027parent-child\u0027 or \u0027replaced by\u0027\nBidirectional; two-way relation. For example \u0027maybe your also intrested in\u0027 or \u0027others also bought\u0027\nGroup; collective relation which allows for many products as part of a group. For example \u0027all products that are blue\u0027 or \u0027all products from summer-2022\u0027. This type does not accept a StockRelationType.",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "PrimaryName": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "description": "This is the primary name the relation. For example; if primary name is \u0027Blocks\u0027, the secondary name could be something in the lines of \u0027Blocked by\u0027.",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "ProductSearchFilters": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.Search.FilterModel",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Only available when Direction is set to \u0060Group\u0060.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ProductSearchTemplateID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Only available when Direction is set to \u0060Group\u0060.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Relations": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.PIM.Services.Products.CreateProductRelationType\u002BRelation",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "SecondaryName": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "This is the secondary name the relation. For example; if primary name is \u0027Blocks\u0027, the secondary name could be something in the lines of \u0027Blocked by\u0027.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "StockRelationType": {
+      "type": {
+        "ref": "EVA.Core.DataModels.StockRelationType",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Indicates which stock relation type the relation has. In most cases this will be \u0027None\u0027. The following options are available:\nNone; No stock relation\nReplacing; When the PrimaryProduct is no longer in stock, the system can automaticly use the RelatedProduct as it\u0027s replacement (or vice versa if \u0060Direction\u0060 is set to \u0060Bidirectional\u0060).",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    }
+  }
+}

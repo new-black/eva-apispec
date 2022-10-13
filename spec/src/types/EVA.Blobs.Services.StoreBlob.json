@@ -1,7 +1,6 @@
 {
   "typename": "StoreBlob",
   "assembly": "EVA.Blobs",
-  "namespace": "EVA.Blobs.Services",
   "description": "Creates a new blob and stores \u0060Data\u0060 to it.\n\nThe combination of \u0060Category\u0060 and \u0060OriginalName\u0060 must be unique, as the \u0060GetBlobInfoService\u0060 allows retrieval based on these values. Internally, a fresh and unique \u0060Guid\u0060 is\ngenerated and returned from this request. The response also contains the full \u0060Url\u0060 by which this blob can be accessed (which will contain aforementioned \u0060Guid\u0060).\n\n- [x] The \u0060MimeType\u0060 is required, a few suggestions would be \u0060application/pdf\u0060, \u0060text/csv\u0060 or \u0060application/json\u0060 - but you probably already know this.\n- [x] The \u0060ExpireDate\u0060 is the date at which the given blob should expire. Leave this empty to *suggest* to keep it forever. We will bag it and get rid of it when the time is right. :hocho:\n\nWhen retrieving the blob, it will be returned to you using the \u0060MimeType\u0060 as \u0060ContentType\u0060 header and a proper \u0060Expires\u0060 header.\n\n*NOTE*: leaving \u0060OriginalName\u0060 empty means EVA treats this file as a temporary one and it\u0027ll be removed after a set period. Which can be manipulated through the setting \u0060Blobs:DefaultLifeTime\u0060\nwhich is the default expire time for these kinds of blobs in minutes.",
   "usage": {
     "request": true,
@@ -9,11 +8,11 @@
   },
   "typeArguments": [],
   "typeDependencies": [
-    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.RequestMessage\u00601",
     "EVA.Blobs.Services.StoreBlobResponse"
   ],
   "extends": {
-    "ref": "EVA.API.RequestMessage\u00601",
+    "ref": "EVA.Core.RequestMessage\u00601",
     "args": [
       {
         "ref": "EVA.Blobs.Services.StoreBlobResponse",
@@ -55,20 +54,6 @@
         "nullable": true
       },
       "skippable": false,
-      "allowedValues": []
-    },
-    "LifeTime": {
-      "type": {
-        "ref": "duration",
-        "args": [],
-        "nullable": true
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 557,
-        "active": 561,
-        "comment": "LifeTime is deprecated and will be removed in 2.0.565: Use \u0060ExpireDate\u0060."
-      },
       "allowedValues": []
     },
     "MimeType": {

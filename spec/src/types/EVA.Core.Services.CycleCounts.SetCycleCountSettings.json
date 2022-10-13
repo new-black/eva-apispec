@@ -1,0 +1,97 @@
+{
+  "typename": "SetCycleCountSettings",
+  "assembly": "EVA.Core",
+  "description": "This service is used in combination with the \u0060GetCycleCountSettings\u0060 to manage OrganizationUnit settings for CycleCounts.\nOptionally an OrganizationUnitID can be provided, but by default the settings are updated for the current OrganizationUnit.\n\n- GenerateCycleCountAfterNASC: After a NASC is created, a CycleCount will be generated\n- MaxCycleCountsPerShop: The max number of active cyclecounts per shop\n- MaxCycleCountsPerShopPerDay: The max number of cyclecounts to create per day per shop\n- PastDueProductsOnly: Generate only cyclecounts for products when the interval is expired\n- CycleCountDays: On which days cyclecounts should be generated\n- StockLabels: Which StockLabels should be counted",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithEmptyResponse",
+    "EVA.Core.DaysOfWeek"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "CycleCountDays": {
+      "type": {
+        "ref": "EVA.Core.DaysOfWeek",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "GenerateCycleCountAfterNASC": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "MaxCycleCountsPerShop": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "MaxCycleCountsPerShopPerDay": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "PastDueProductsOnly": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "StockLabels": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

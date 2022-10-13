@@ -1,0 +1,62 @@
+{
+  "typename": "UpdateCustomFieldsForOrganizationUnits",
+  "assembly": "EVA.Core",
+  "description": "Update custom fields for multiple organization units at once.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithEmptyResponse",
+    "EVA.Core.DataModels.CustomFieldKeyValue"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "CustomFields": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.DataModels.CustomFieldKeyValue",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "The values in here will be merged with existing custom field values",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitIDs": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitSetID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "When set, OrganizationUnitIDs will be ignored and instead all organization units for this set will be updated",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

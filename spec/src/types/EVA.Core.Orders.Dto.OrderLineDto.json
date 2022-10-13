@@ -1,7 +1,6 @@
 {
   "typename": "OrderLineDto",
   "assembly": "EVA.Core",
-  "namespace": "EVA.Core.Orders.Dto",
   "usage": {
     "request": true,
     "response": true
@@ -11,7 +10,6 @@
     "EVA.Core.DataModels.OrderLineAvailabilityStatus",
     "EVA.Core.Orders.Dto.OrderLineDto",
     "EVA.Core.DataModels.OrderLineCommitmentStatus",
-    "EVA.Core.DataModels.CustomFieldValue",
     "EVA.Core.CustomFields.CustomFieldResponse",
     "EVA.Core.Orders.Dto.OrderLineDiscount",
     "EVA.Core.Orders.Dto.OrderLineDisplayProperties",
@@ -19,7 +17,7 @@
     "EVA.Core.Enumerations.LineActionTypes",
     "EVA.Core.Products.Dto.ProductDto",
     "EVA.Core.Orders.Dto.RefundCorrectionReasonDto",
-    "EVA.Framework.API.EnumDto",
+    "EVA.Core.API.EnumDto",
     "EVA.Core.Shipping.ShippingMethodDto",
     "EVA.Core.DataModels.OrderLineTypes"
   ],
@@ -55,20 +53,6 @@
         "supportsCustomID": false,
         "isEvaID": false,
         "isExternalID": true
-      },
-      "allowedValues": []
-    },
-    "CanModifyPrice": {
-      "type": {
-        "ref": "bool",
-        "args": [],
-        "nullable": false
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 557,
-        "active": 565,
-        "comment": "CanModifyPrice is deprecated and will be removed in 2.0.573: Check the user type for \u0060IsEmployee\u0060 and product type for \u0060CustomPricing\u0060."
       },
       "allowedValues": []
     },
@@ -152,31 +136,6 @@
       },
       "allowedValues": []
     },
-    "CustomFields": {
-      "type": {
-        "ref": "map",
-        "args": [
-          {
-            "ref": "int64",
-            "args": [],
-            "nullable": false
-          },
-          {
-            "ref": "EVA.Core.DataModels.CustomFieldValue",
-            "args": [],
-            "nullable": true
-          }
-        ],
-        "nullable": true
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 636,
-        "active": 640,
-        "comment": "CustomFields is deprecated and will be removed in 2.0.644: Use CustomFieldsV2."
-      },
-      "allowedValues": []
-    },
     "CustomFieldsV2": {
       "type": {
         "ref": "array",
@@ -246,20 +205,6 @@
       "skippable": false,
       "allowedValues": []
     },
-    "DiscountCouponID": {
-      "type": {
-        "ref": "int64",
-        "args": [],
-        "nullable": true
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 571,
-        "active": 579,
-        "comment": "DiscountCouponID is deprecated and will be removed in 2.0.587: Use \u0060DiscountCouponCode\u0060.."
-      },
-      "allowedValues": []
-    },
     "DiscountID": {
       "type": {
         "ref": "int64",
@@ -273,20 +218,6 @@
         "supportsCustomID": false,
         "isEvaID": true,
         "isExternalID": false
-      },
-      "allowedValues": []
-    },
-    "DiscountPercentage": {
-      "type": {
-        "ref": "int32",
-        "args": [],
-        "nullable": true
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 571,
-        "active": 579,
-        "comment": "DiscountPercentage is deprecated and will be removed in 2.0.587: Deprecated."
       },
       "allowedValues": []
     },
@@ -333,20 +264,6 @@
       "skippable": false,
       "allowedValues": []
     },
-    "ExchangeRate": {
-      "type": {
-        "ref": "float128",
-        "args": [],
-        "nullable": false
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 557,
-        "active": 559,
-        "comment": "ExchangeRate is deprecated and will be removed in 2.0.561: No longer supported, always 1."
-      },
-      "allowedValues": []
-    },
     "ExpectedAvailabilityDate": {
       "type": {
         "ref": "date",
@@ -365,34 +282,6 @@
       "skippable": false,
       "allowedValues": []
     },
-    "ExtendedAmount": {
-      "type": {
-        "ref": "float128",
-        "args": [],
-        "nullable": false
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 557,
-        "active": 561,
-        "comment": "ExtendedAmount is deprecated and will be removed in 2.0.565: No longer supported."
-      },
-      "allowedValues": []
-    },
-    "ExtendedAmountInTax": {
-      "type": {
-        "ref": "float128",
-        "args": [],
-        "nullable": false
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 557,
-        "active": 561,
-        "comment": "ExtendedAmountInTax is deprecated and will be removed in 2.0.565: No longer supported."
-      },
-      "allowedValues": []
-    },
     "ExternalModificationStatus": {
       "type": {
         "ref": "EVA.Core.DataModels.ExternalModificationStatuses",
@@ -400,76 +289,6 @@
         "nullable": true
       },
       "skippable": false,
-      "allowedValues": []
-    },
-    "ForeignTotalAmount": {
-      "type": {
-        "ref": "float128",
-        "args": [],
-        "nullable": false
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 557,
-        "active": 561,
-        "comment": "ForeignTotalAmount is deprecated and will be removed in 2.0.565: Use \u0060TotalAmount\u0060."
-      },
-      "allowedValues": []
-    },
-    "ForeignTotalAmountInTax": {
-      "type": {
-        "ref": "float128",
-        "args": [],
-        "nullable": false
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 557,
-        "active": 561,
-        "comment": "ForeignTotalAmountInTax is deprecated and will be removed in 2.0.565: Use \u0060TotalAmountInTax\u0060."
-      },
-      "allowedValues": []
-    },
-    "ForeignUnitPrice": {
-      "type": {
-        "ref": "float128",
-        "args": [],
-        "nullable": false
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 557,
-        "active": 561,
-        "comment": "ForeignUnitPrice is deprecated and will be removed in 2.0.565: Use \u0060UnitPrice\u0060."
-      },
-      "allowedValues": []
-    },
-    "ForeignUnitPriceInTax": {
-      "type": {
-        "ref": "float128",
-        "args": [],
-        "nullable": false
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 557,
-        "active": 561,
-        "comment": "ForeignUnitPriceInTax is deprecated and will be removed in 2.0.565: Use \u0060UnitPriceInTax\u0060."
-      },
-      "allowedValues": []
-    },
-    "FulfillmentStatus": {
-      "type": {
-        "ref": "EVA.Core.DataModels.OrderLineAvailabilityStatus",
-        "args": [],
-        "nullable": true
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 576,
-        "active": 580,
-        "comment": "FulfillmentStatus is deprecated and will be removed in 2.0.584: Replaced by AvailabilityStatus."
-      },
       "allowedValues": []
     },
     "GroupID": {
@@ -892,7 +711,7 @@
     },
     "ReturnReason": {
       "type": {
-        "ref": "EVA.Framework.API.EnumDto",
+        "ref": "EVA.Core.API.EnumDto",
         "args": [],
         "nullable": true
       },
@@ -976,7 +795,7 @@
     },
     "TaxCode": {
       "type": {
-        "ref": "EVA.Framework.API.EnumDto",
+        "ref": "EVA.Core.API.EnumDto",
         "args": [],
         "nullable": false
       },
@@ -1087,7 +906,7 @@
     },
     "UnitPriceCorrectionReason": {
       "type": {
-        "ref": "EVA.Framework.API.EnumDto",
+        "ref": "EVA.Core.API.EnumDto",
         "args": [],
         "nullable": true
       },
@@ -1101,20 +920,6 @@
         "nullable": false
       },
       "skippable": false,
-      "allowedValues": []
-    },
-    "UnitPriceInTaxTotal": {
-      "type": {
-        "ref": "float128",
-        "args": [],
-        "nullable": false
-      },
-      "skippable": false,
-      "deprecated": {
-        "announced": 557,
-        "active": 561,
-        "comment": "UnitPriceInTaxTotal is deprecated and will be removed in 2.0.565: No longer supported."
-      },
       "allowedValues": []
     },
     "UnitPricePriceListID": {

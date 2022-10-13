@@ -1,0 +1,42 @@
+{
+  "typename": "UpdateShipmentStatus",
+  "assembly": "EVA.Core",
+  "description": "Updates the shipment status, creating ledger entries on shipment level.\n\nWill be processed as a whole; a single failing line in \u0060Lines\u0060 will prevent all other updates in a single call from persisting.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithEmptyResponse",
+    "EVA.Core.Shipments.UpdateShipmentStatusLine"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Shipments.UpdateShipmentStatusLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    }
+  }
+}

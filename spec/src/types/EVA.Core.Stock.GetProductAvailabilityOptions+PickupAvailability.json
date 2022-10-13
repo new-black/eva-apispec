@@ -1,0 +1,121 @@
+{
+  "typename": "PickupAvailability",
+  "assembly": "EVA.Core",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupArea",
+    "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupRadius",
+    "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupAvailability\u002BPickupOrganizationUnitOpeningHoursType",
+    "EVA.Core.OrganizationUnitTypes",
+    "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupTypes"
+  ],
+  "properties": {
+    "AvailabilityDate": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Include the expected date on which the provided products can be picked-up from a shop.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "InArea": {
+      "type": {
+        "ref": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupArea",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Select the organizations that are considered for pickup based on a rectangular area defined by the top-left and bottom-right co-ordinates.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IncludeOrganizationUnitsWithoutStock": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If specified as true then all relevant pick-up OrganizationUnits are returned, whether they have available stock or not.\n\nDefaults to false and only has effect if \u0060IncludePickupOrganizationUnits\u0060 is set to \u0060true\u0060.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IncludePickupOrganizationUnits": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If specified as true the response will contain the pickup organizations. Which organizations are included depends on the rest of the request:\n\n- If a rectangular area is specified through \u0060InArea\u0060 it will contain the organizations within the area.\n- If the radius is specified through \u0060InRadius\u0060 it will contain the organizations within the radius of the given center co-ordinates.\n- If an explicit list of organizations is specified through \u0060OrganizationUnitIDs\u0060 then those are returned.\n\nIn all cases, whether or not all of them are returned or only those that contain stock is determined by \u0060IncludeOrganizationUnitsWithoutStock\u0060. By\ndefault only organizations with stock are returned.\n\nIf the request specifies more than one product, the organization will only be returned if *all* products have stock (unless\n\u0060IncludeOrganizationUnitsWithoutStock\u0060 is \u0060true\u0060).",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "InRadius": {
+      "type": {
+        "ref": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupRadius",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Select the organizations that are considered for pickup based on a circular area defined by the center co-ordinate and a radius (specified in km).",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OpeningHoursType": {
+      "type": {
+        "ref": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupAvailability\u002BPickupOrganizationUnitOpeningHoursType",
+        "args": [],
+        "nullable": true
+      },
+      "description": "When the pickup organizations are returned, this determines what returned opening-hours are returned. See each value of the enum for details.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitIDs": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "description": "This can be optionally used to provide a list of shops for which you would like to check pick-up availability.",
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "OrganizationUnitType": {
+      "type": {
+        "ref": "EVA.Core.OrganizationUnitTypes",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Type": {
+      "type": {
+        "ref": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupTypes",
+        "args": [],
+        "nullable": true
+      },
+      "description": "This field lets you specify whether the pickup availability date you get back (in case you requested it) for each product should be based on your\ncurrent OrganizationUnit, or whether it should be the OrganizationUnit that has the earliest availability for the product. Defaults to FastestShop.",
+      "skippable": false,
+      "allowedValues": []
+    }
+  },
+  "parent": "EVA.Core.Stock.GetProductAvailabilityOptions"
+}

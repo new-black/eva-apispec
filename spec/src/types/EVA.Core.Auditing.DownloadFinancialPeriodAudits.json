@@ -1,0 +1,66 @@
+{
+  "typename": "DownloadFinancialPeriodAudits",
+  "assembly": "EVA.Core",
+  "description": "Downloads all generated audit files from the selected period as a single zip file, with a separate folder for each organization unit.\n\nWhen selecting a container organization unit, all underlying organization units will be included.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithResourceResponse"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithResourceResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "FiscalMonth": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "FiscalYear": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

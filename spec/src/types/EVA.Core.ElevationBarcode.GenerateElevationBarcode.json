@@ -1,0 +1,55 @@
+{
+  "typename": "GenerateElevationBarcode",
+  "assembly": "EVA.Core",
+  "description": "Generates an elevation barcode for user elevation, which can be scanned by a manager with sufficient rights to elevate the user\u0027s rights.\n\nThe returned \u0060Barcode\u0060 you should show for a manager to scan, preferably as QR code through our \u0060/barcode\u0060 endpoint.\n\nThe returned \u0060RequestToken\u0060 is our little secret, which you will use to subscribe to the \u0060/elevationBarcode\u0060 SignalR hub to listen for scan events. Once a successful\nscan event was triggered, this original \u0060RequestToken\u0060 is then \u0027confirmed\u0027 and you can use it directly as elevation header for your original call. Keep it safe!\n\n:bulb: Optionally supply the \u0060OrganizationUnitID\u0060, \u0060Functionality\u0060 and \u0060Scope\u0060 of your original request, so we can check the manager rights directly from the scan\non his/her device. Omitting these here will fall back to the default security enforced from the user attempting to use the (confirmed) elevation token, which just gives\na nasty 403 on the employee\u0027s device.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.ElevationBarcode.GenerateElevationBarcodeResponse",
+    "EVA.Core.Security.FunctionalityScope"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.ElevationBarcode.GenerateElevationBarcodeResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "Functionality": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Scope": {
+      "type": {
+        "ref": "EVA.Core.Security.FunctionalityScope",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

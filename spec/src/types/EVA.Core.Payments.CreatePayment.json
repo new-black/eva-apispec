@@ -1,0 +1,236 @@
+{
+  "typename": "CreatePayment",
+  "assembly": "EVA.Core",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Payments.CreatePaymentResponse",
+    "EVA.Core.Payments.IPaymentMethodRequestProperties",
+    "EVA.Core.Payments.EmptyPaymentRequestProperties",
+    "EVA.Core.Payments.PaymentMethodWithReferenceRequestProperties",
+    "EVA.Core.Payments.Custom.CustomPaymentMethodRequestProperties",
+    "EVA.Core.GiftCards.GiftCardPaymentMethodRequestProperties",
+    "EVA.Payment.Buckaroo.BuckarooPaymentMethodPayData",
+    "EVA.Payment.Saferpay.SaferpayPaymentMethodRequestProperties",
+    "EVA.Payment.Core.UserCard.UserCardPaymentMethodRequestProperties",
+    "EVA.Payment.Core.Rembours.RemboursPaymentMethodRequestProperties",
+    "EVA.Payment.Core.Manual.ManualPaymentMethodRequestProperties",
+    "EVA.Payment.Core.Loyalty.LoyaltyPaymentMethodRequestProperties",
+    "EVA.Payment.Core.GiftCard.API.APIGiftCardPaymentMethodRequestProperties",
+    "EVA.Payment.Core.EVAPay.EVAPayPaymentMethodRequestProperties",
+    "EVA.Payment.Core.Cash.CashPaymentMethodRequestProperties",
+    "EVA.Payment.Mollie.MolliePaymentMethodRequestProperties",
+    "EVA.Payment.Adyen.PosSdk.AdyenPosSdkPaymentMethodRequestProperties",
+    "EVA.Payment.Adyen.Legacy.SDK.AdyenCheckoutSDKPaymentMethodRequestProperties",
+    "EVA.Payment.Adyen.CheckoutAPI.AdyenCheckoutAPIPaymentMethodRequestProperties",
+    "EVA.Payment.Adyen.CheckoutAPI.DropIn.AdyenDropInPaymentMethodRequestProperties",
+    "EVA.Payment.MultiSafepay.MultiSafepayPaymentMethodRequestProperties"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Payments.CreatePaymentResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "Amount": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "minValue": {
+        "current": 0
+      },
+      "maxValue": {
+        "current": 1000000
+      },
+      "allowedValues": []
+    },
+    "AutoShipAfterConfirm": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "When the created payment is confirmed and the order is paid, the order will be shipped automatically when possible.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CurrencyID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If the payment is done in another currency than the Order, this is required",
+      "skippable": false,
+      "datamodel": {
+        "name": "Currency",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "PaymentTypeID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "PaymentType",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Properties": {
+      "type": {
+        "ref": "option",
+        "args": [
+          {
+            "ref": "EVA.Core.Payments.EmptyPaymentRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.Payments.PaymentMethodWithReferenceRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.Payments.Custom.CustomPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.GiftCards.GiftCardPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Buckaroo.BuckarooPaymentMethodPayData",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Saferpay.SaferpayPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Core.UserCard.UserCardPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Core.Rembours.RemboursPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Core.Manual.ManualPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Core.Loyalty.LoyaltyPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Core.GiftCard.API.APIGiftCardPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Core.EVAPay.EVAPayPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Core.Cash.CashPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Mollie.MolliePaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Adyen.PosSdk.AdyenPosSdkPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Adyen.Legacy.SDK.AdyenCheckoutSDKPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Adyen.CheckoutAPI.AdyenCheckoutAPIPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.Adyen.CheckoutAPI.DropIn.AdyenDropInPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Payment.MultiSafepay.MultiSafepayPaymentMethodRequestProperties",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "shared": {
+          "ref": "EVA.Core.Payments.IPaymentMethodRequestProperties",
+          "args": [],
+          "nullable": true
+        },
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

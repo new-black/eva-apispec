@@ -1,0 +1,63 @@
+{
+  "typename": "DownloadDigitalGiftCard",
+  "assembly": "EVA.Core",
+  "description": "Download the GiftCard data for a specific order, based on given \u0060OrderID\u0060 and \u0060GiftCardID\u0060. This order needs to be visible for the current user. Requires\nthe order to be shipped (automatically when it is fully paid).\n\nAdditionally, this service can be called with an \u0060AccessToken\u0060 and \u0060GiftCardID\u0060 combination. In this case, no user validation is done - you know both\nkeys to the GiftCard, so you are allowed to get it\u0027s information.\n\nIf you want, you can specify a \u0060LanguageID\u0060 to use for rendering the report - when omitted, the \u0060LanguageID\u0060 of the current user.\n\nSee \u0060GetDigitalGiftCardsForOrder\u0060 service for more details.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessageWithResourceResponse"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessageWithResourceResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "AccessToken": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "GiftCardID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "LanguageID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

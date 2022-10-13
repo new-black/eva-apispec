@@ -1,0 +1,53 @@
+{
+  "typename": "ListEventLedger",
+  "assembly": "EVA.Core",
+  "description": "This service lets you query the EventLedger for auditing purposes.\n\nThe request provides a PageConfig (of type ScrollablePageConfig) that lets you filter on the given properties in the EventLedger.\nPaging is done by providing the request with the \u0060NextResultToken\u0060 that you got back from the previous request.\nAs this method of paging is forward-only, you can\u0027t go back to a previous page unless you store the token or the results,\nand the total number of results is unknown, only whether or not there are more results (determined by if the NextResultToken is null).\n\nThe response contains the whole EventLedger document.\n\nPossible filters:\n\n- Types: A list of strings that refer to the \u0060Type\u0060 field that is in every document.\n- OrderID: Only return documents that contain a reference to the given OrderID\n- OrganizationUnitID: Only return documents that were created by someone logged into the given OrganizationUnitID. It\u0027s recommended that this filter is always used, due to performance reasons.\n- DeviceID: Filters on documents that have a reference to the given device, usually associated with a payment or a print command.\n- FromDate: Only return documents newer than this date.\n- ToDate: Only return documents older than this date.\n- UserIDs: Only return documents created by these users. The IDs for this can be gotten by first doing a user search.\n- FirstName: Filter on documents created by users whose first name starts with this. Achieves the same as filtering on UserIDs, but with one step less. However, due to privacy reasons, this information isn\u0027t stored for customers.\n- FullName: Filter on documents created by users whose full name starts with this. Achieves the same as filtering on UserIDs, but with one step less. However, due to privacy reasons, this information isn\u0027t stored for customers.\n- EmailAddress: Filter on documents created by users whose email starts with this. Achieves the same as filtering on UserIDs, but with one step less. However, due to privacy reasons, this information isn\u0027t stored for customers.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Auditing.ListEventLedgerResponse",
+    "EVA.Core.ScrollablePageConfig\u00601",
+    "EVA.Core.EventLedger.EventLedgerFilters"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Auditing.ListEventLedgerResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "PageConfig": {
+      "type": {
+        "ref": "EVA.Core.ScrollablePageConfig\u00601",
+        "args": [
+          {
+            "ref": "EVA.Core.EventLedger.EventLedgerFilters",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Query": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}
