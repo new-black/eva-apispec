@@ -1,0 +1,90 @@
+{
+  "typename": "CreateManualInvoice",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Invoices",
+  "description": "Creates an order with a manually issued invoice. This will insert a committed Invoice with a custom sequencing number and additional\n\u0060InvoiceManualData\u0060. It will be fully paid with a custom payment type.\n\nThe specified Order will be paid, placed, shipped and completed, but without any additional side effects like stock ledgers or commitments.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.Invoices.CreateManualInvoiceResponse",
+    "EVA.Core.Services.Invoices.ManualCustomer",
+    "EVA.Core.Services.Invoices.ManualLine"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.Invoices.CreateManualInvoiceResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "Customer": {
+      "type": {
+        "ref": "EVA.Core.Services.Invoices.ManualCustomer",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "InvoiceDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Invoices.ManualLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Number": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Series": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

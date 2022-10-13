@@ -1,0 +1,99 @@
+{
+  "typename": "PrintThermalGiftReceipt",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Orders.Documents",
+  "description": "Print a *gift* receipt; a regular receipt, but without any price- or payment details. This document is intended to accompany the purchase when gifted, so the recipient can return or exchange it without (direct) knowledge of the price.\n    The \u0060Lines\u0060 property is optional, when omitted the entire order (from \u0060OrderID\u0060) will be printed. Also, \u0060Name\u0060 and \u0060Remark\u0060 are optional and intended for the gift recipient, only.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse",
+    "EVA.Core.Services.Orders.Documents.PrintThermalGiftReceiptLine"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Orders.Documents.PrintThermalGiftReceiptLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Name": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Remark": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "StationID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Station",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

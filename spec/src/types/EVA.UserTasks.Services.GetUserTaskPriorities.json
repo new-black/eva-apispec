@@ -1,0 +1,26 @@
+{
+  "typename": "GetUserTaskPriorities",
+  "assembly": "EVA.UserTasks",
+  "namespace": "EVA.UserTasks.Services",
+  "description": "Return all of the configured User Task Priority configurations.\n\nThese are used at real-time on the User Task details whenever fetched, translating the User Task \u0060Priority\u0060 into a \u0060PriorityDescription\u0060. The\n\u0060LanguageID\u0060 and \u0060CountryID\u0060 filters are compared against the user context requesting this information, and the \u0060UserTaskTypeID\u0060, \u0060UserTaskSubTypeID\u0060\nand \u0060Priority\u0060 are taken from the User Task itself. The \u0060Priority\u0060 from the User Task will be compared against the \u0060From\u0060 and \u0060To\u0060 ranges defined,\nwhere the \u0060From\u0060 priority is an *inclusive* lower bound, while \u0060To\u0060 is the *exclusive* upper bound.\n\nThe \u0060Description\u0060 will be used to describe the priority, but when left empty, will fall back to \u0060Name\u0060.\n\nAn example configuration could be as follows;\n\n\u0060\u0060\u0060\nLanguage | From | To | Description\n---------|------|----|------------\n      NL |      |    | Standaard\n      NL |   10 |    | Spoed\n      DE |      | 10 | Unwichtig\n         |      |    | Default\n\u0060\u0060\u0060\n\nA User Task with priority 9 for a Dutch employee would be labelled \u0022Standaard\u0022, while for a German colleague this would be called \u0022Unwichtig\u0022. A\nUser Task of priority 10 would be called \u0022Spoed\u0022 in Dutch, but \u0022Default\u0022 in German.\n\n:sunglasses: For added awesomeness, if you define overlapping priority ranges, we\u0027ll select the most narrow range for you.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.UserTasks.Services.GetUserTaskPrioritiesResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.UserTasks.Services.GetUserTaskPrioritiesResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  }
+}

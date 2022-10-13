@@ -1,0 +1,203 @@
+{
+  "typename": "SupplierCreateOrUpdatePurchaseOrder",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.PurchaseOrders",
+  "description": "Creates a purchase order (or updates it if it already exists).\n\nWhen the order already exists, only the lines can be updated (see \u0060SupplierUpdatePurchaseOrder\u0060) - other properties will be ignored.\n\n:lightbulb: Using \u0060SupplierCreateOrder\u0060 and \u0060SupplierUpdatePurchaseOrder\u0060 is preferred.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.PurchaseOrders.CreatePurchaseOrderResponseWithUpdateIndicator",
+    "EVA.Core.Services.PurchaseOrders.SupplierCreateOrUpdatePurchaseOrder\u002BSupplierCreateOrUpdatePurchaseOrderLine"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.PurchaseOrders.CreatePurchaseOrderResponseWithUpdateIndicator",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Identifer of the order from the 3rd party",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Identifier of the 3rd party system that created the order",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CustomFields": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ExpectedDeliveryDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Date that the supplier expects to deliver the shipment(s) of the purchase order",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.PurchaseOrders.SupplierCreateOrUpdatePurchaseOrder\u002BSupplierCreateOrUpdatePurchaseOrderLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "description": "Contents of the purchase order.",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "Receive": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Receive the order immediately after shipping, works only if \u0060Ship\u0060 is set to true",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Ship": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Ship the order immediately after creation",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ShipFromOrganizationUnitBackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "BackendID of the OrganizationUnit who will be supplying the stock",
+      "skippable": false,
+      "deprecated": {
+        "announced": 655,
+        "active": 671,
+        "comment": "ShipFromOrganizationUnitBackendID is deprecated and will be removed in 2.0.687: Replaced by ShipFromOrganizationUnitID.."
+      },
+      "allowedValues": []
+    },
+    "ShipFromOrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "description": "OrganizationUnit who will be supplying the stock.",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ShipToOrganizationUnitBackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "BackendID of the OrganizationUnit that will be receiving the purchase order shipment(s)",
+      "skippable": false,
+      "deprecated": {
+        "announced": 655,
+        "active": 671,
+        "comment": "ShipToOrganizationUnitBackendID is deprecated and will be removed in 2.0.687: Replaced by ShipToOrganizationUnitID.."
+      },
+      "allowedValues": []
+    },
+    "ShipToOrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "description": "OrganizationUnit that will be receiving the purchase order shipment(s).",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

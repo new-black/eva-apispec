@@ -1,0 +1,86 @@
+{
+  "typename": "OpenCashDrawer",
+  "assembly": "EVA.Payment.Core",
+  "namespace": "EVA.Payment.Core.Cash",
+  "description": "Open a CashDrawer on the given station\n\nWithout a PaymentTransactionID, this service requires additional OpenCashDrawer functionality and you can then specify a ReasonID why you are opening it.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Payment.Core.Cash.OpenCashDrawerResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Payment.Core.Cash.OpenCashDrawerResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "PaymentTransactionID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "PaymentTransaction",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ReasonID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "When the opening of the drawer is non-payment related, it\u0027s possible to specify a predefined ReasonID for opening the drawer.",
+      "skippable": false,
+      "datamodel": {
+        "name": "OpenCashDrawerReason",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Remark": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "StationID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Station",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

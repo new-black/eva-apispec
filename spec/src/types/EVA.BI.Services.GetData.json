@@ -1,0 +1,97 @@
+{
+  "typename": "GetData",
+  "assembly": "EVA.BI",
+  "namespace": "EVA.BI.Services",
+  "description": "Gets BI data based on the given Labels.\n\n* \u0060OrganizationUnitID\u0060 is the organization unit you want data from; this may be a container unit or a shop alike\n* \u0060Labels\u0060 define the data you want to retrieve; use \u0060GetLabels\u0060 to find the available labels in this instance\n* \u0060Timeframe\u0060 defines the range of dates you want to accumulate, where you have three options available;\n  * A \u0060Period\u0060 with a \u0060Year\u0060 and then either a \u0060Month\u0060 or a \u0060Week\u0060 (ISO)\n  * A \u0060Range\u0060 with a \u0060From\u0060 and \u0060To\u0060 date and a \u0060Grain\u0060 to define the amount of detail within this period\n  * A \u0060Date\u0060 for a single date point in time\n\nOptionally, you can supply the following parameters;\n\n* \u0060Series\u0060 is an array where you can specify which \u0060Series\u0060 to retrieve; current values include \u0060Actual\u0060 and \u0060LFL\u0060\n* \u0060GroupBy\u0060 defines the \u0027rotation\u0027 to view the data in; by default you\u0027ll see data per \u0060Label\u0060, but you can rotate for a ranking view using \u0060OrganizationUnit\u0060 or a more detailed view using \u0060Name\u0060\n* \u0060Mock\u0060 allows you to override the base \u0060BI:Mock\u0060 setting to switch between mocked- and live data",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.BI.Services.GetDataResponse",
+    "EVA.BI.GroupBy",
+    "EVA.BI.Series",
+    "EVA.BI.Timeframe"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.BI.Services.GetDataResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "GroupBy": {
+      "type": {
+        "ref": "EVA.BI.GroupBy",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Labels": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Mock": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Series": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.BI.Series",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Timeframe": {
+      "type": {
+        "ref": "EVA.BI.Timeframe",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

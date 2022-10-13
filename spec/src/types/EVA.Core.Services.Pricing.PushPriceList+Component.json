@@ -1,0 +1,129 @@
+{
+  "typename": "Component",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Pricing",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.Services.Pricing.PushPriceList\u002BCopyPricesFromOtherPriceListData",
+    "EVA.Core.Services.Pricing.PushPriceList\u002BMarkupData",
+    "EVA.Core.Services.Pricing.PushPriceList\u002BPriceEntriesData",
+    "EVA.Core.Services.Pricing.PushPriceList\u002BComponentTypes"
+  ],
+  "properties": {
+    "CopyPricesFromOtherPriceListData": {
+      "type": {
+        "ref": "EVA.Core.Services.Pricing.PushPriceList\u002BCopyPricesFromOtherPriceListData",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The data that accompanies a Component with Type = PricesFromOtherPriceList which is a component to copy prices from another pricelist.\n\nIs useful for example for promotion prices, where you first \u0027import\u0027 the prices from the original pricelist, and then apply a negative markup to them to create a promotion discount.\n\nWhich prices you copy can be modified by specifying a ProductSearchTemplateID, only products that are contained in the results of the search will be copied,\nunless ExcludeProductsInFilter is set to true, in which case the reverse is true; all products except the matching ones will have their prices copied.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Delete": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "If specified as true, the component will be deleted.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "EndDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Determines when this component will become inactive. After this date the component will not be included in the calculation of the pricelist.",
+      "skippable": true,
+      "allowedValues": []
+    },
+    "ID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The unique identifier for this component. Required.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "MarkupData": {
+      "type": {
+        "ref": "EVA.Core.Services.Pricing.PushPriceList\u002BMarkupData",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The data that accompanies a Component with Type = Markup which is a component that alters the price value of the previusly applied components,\neither up or down. The markup/markdown can either be an absolute value or a percentage depending on the Type.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Name": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The name of the component. If left empty on creation of the component the ID will be used as the name.",
+      "skippable": true,
+      "allowedValues": []
+    },
+    "PriceEntriesData": {
+      "type": {
+        "ref": "EVA.Core.Services.Pricing.PushPriceList\u002BPriceEntriesData",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The data that accompanies a Component with Type = PriceEntries, so a component that is simply a list of product/price pairs.\nThe simplest and most direct way to give a product a price.\n\nThis data consists of either a list of product/price pairs or a BlobID which is a reference to a previously created blob in EVA that contains data of the following format:\n\n[\n    {\n      \u0022ProductID\u0022: \u0022\u003CProductID\u003E\u0022,\n      \u0022Price\u0022: \u003CPrice\u003E\n    },\n    ...\n]\n\nIf you only supply a handful of prices, the inline data works well, but for large quantities of prices you may want to use the BlobID method.\n\nThis data is ignored for all other Component types.\n\nPriceEntries data is processed asynchronously in the background and will not be immediately visible after the service call returns.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "PricingGroupID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The PricingGroupID that this component is active for. Components with a PricingGroupID are only active for users that are members of that group. If left empty the component will be active for all users.",
+      "skippable": true,
+      "allowedValues": []
+    },
+    "SequenceNumber": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Components are applied in the order of their sequence number, from lowest to highest.",
+      "skippable": true,
+      "allowedValues": []
+    },
+    "StartDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Determines when this component will become active. Until then the component will not be included in the calculation of the pricelist.",
+      "skippable": true,
+      "allowedValues": []
+    },
+    "Type": {
+      "type": {
+        "ref": "EVA.Core.Services.Pricing.PushPriceList\u002BComponentTypes",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Determines the type of the component. Cannot be changed after creation.",
+      "skippable": false,
+      "allowedValues": []
+    }
+  },
+  "parent": "EVA.Core.Services.Pricing.PushPriceList"
+}

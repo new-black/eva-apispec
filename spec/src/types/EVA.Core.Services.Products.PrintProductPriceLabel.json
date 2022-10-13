@@ -1,0 +1,78 @@
+{
+  "typename": "PrintProductPriceLabel",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Products",
+  "description": "This service is used to print labels containing the price details of one product",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.Products.PrintProductPriceLabelResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.Products.PrintProductPriceLabelResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "ID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The ID of the product",
+      "skippable": false,
+      "datamodel": {
+        "name": "Product",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Quantity": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "description": "How many copies of the price label should be printed",
+      "skippable": false,
+      "minValue": {
+        "current": 1
+      },
+      "maxValue": {
+        "current": 999
+      },
+      "allowedValues": []
+    },
+    "StationID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "ID of the printer where the label(s) will be printed",
+      "skippable": false,
+      "datamodel": {
+        "name": "Station",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "typename": "CreateZonedCycleCountsByQuery",
+  "assembly": "EVA.UserTasks",
+  "namespace": "EVA.UserTasks.Services.ZonedCycleCounts",
+  "description": "Asynchronously creates cycle counts for all requested combinations of (type Stock) Products and Organization Units that match specified filters (with origin Manual)",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse",
+    "EVA.Core.Search.FilterModel",
+    "EVA.UserTasks.Services.ZonedCycleCounts.CreateZonedCycleCountsByQuery\u002BOrganizationUnitFilterModel"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "Filters": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.Search.FilterModel",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Filters to apply to product search",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitFilter": {
+      "type": {
+        "ref": "EVA.UserTasks.Services.ZonedCycleCounts.CreateZonedCycleCountsByQuery\u002BOrganizationUnitFilterModel",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 647,
+        "active": 655,
+        "comment": "OrganizationUnitFilter is deprecated and will be removed in 2.0.663: Use \u0060OrganizationUnitSetID\u0060."
+      },
+      "allowedValues": []
+    },
+    "OrganizationUnitIDs": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 557,
+        "active": 561,
+        "comment": "OrganizationUnitIDs is deprecated and will be removed in 2.0.565: Use \u0060OrganizationUnitSetID\u0060."
+      },
+      "allowedValues": []
+    },
+    "OrganizationUnitSetID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnitSet",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Query": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Query for the product search",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

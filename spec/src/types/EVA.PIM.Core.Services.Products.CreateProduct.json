@@ -1,0 +1,185 @@
+{
+  "typename": "CreateProduct",
+  "assembly": "EVA.PIM.Core",
+  "namespace": "EVA.PIM.Core.Services.Products",
+  "description": "Creates a new Product, given at least your \u0060PrimitiveName\u0060 and \u0060ProductType\u0060.\n\n- [x]  Given \u0060PrimitiveName\u0060 is a name for the product to help you recognise it, but is rarely exposed to users or customers. This property does not support localization or translations!\n- [x]  \u0060TaxCodeID\u0060 is an integer value indicating one of the configured TaxCodes.\n- [x]  The \u0060ProductType\u0060 is a flag enumeration value with one or more of the following possible values;\n\n  * \u00600\u0060 None\n  * \u00601\u0060 Stock\n  * \u00602\u0060 Insurance\n  * \u00604\u0060 Marketing\n  * \u00608\u0060 Gift Card\n  * \u006016\u0060 Service\n  * \u006064\u0060 Custom Pricing\n  * \u0060128\u0060 External\n  * \u0060256\u0060 Order Costs\n  * \u0060512\u0060 System Generated\n  * \u00601024\u0060 Product Set\n  * \u00602048\u0060 Bundle Product\n  * \u006016384\u0060 Configurable\n  * \u006032768\u0060 Supplier Product\n  * \u006065536\u0060 Template\n\nOptionally, you can supply some additional information;\n\n- [] \u0060BackendID\u0060 is a number to help you identify this product. **Unique per \u0060OrganizationUnitID\u0060 and \u0060BackendSystemID\u0060.**\n- [] \u0060BackendSystemID\u0060 is a string value to idenfity the source this product originated from - can be anything.\n- [] \u0060OrganizationUnitID\u0060 is the Organization Unit this product is linked to, or \u0060null\u0060 when this is a generic EVA product.\n- [] \u0060CustomID\u0060 is a string value to help you identify this product, without any constraints, but indexed for optimal performance.\n- [] \u0060BrandID\u0060 to link it to any \u0060Brand\u0060 entity.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.PIM.Core.Services.Products.CreateProductResponse",
+    "EVA.Core.DataModels.ProductTypes"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.PIM.Core.Services.Products.CreateProductResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "BrandID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Brand",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "CommodityCode": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CountryOfOriginID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CustomID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "LedgerClassID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "LogicalLevel": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ManufacturerID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "PrimitiveName": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "ProductType": {
+      "type": {
+        "ref": "EVA.Core.DataModels.ProductTypes",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "TaxCodeID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "TaxCode",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

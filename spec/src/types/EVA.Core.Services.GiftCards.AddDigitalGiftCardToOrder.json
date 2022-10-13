@@ -1,0 +1,104 @@
+{
+  "typename": "AddDigitalGiftCardToOrder",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.GiftCards",
+  "description": "A specific implementation for \u0060AddProductToOrder\u0060 for GiftCards. Adds a new order line for a digital GiftCard to specified order, where\n\u0060OrderID\u0060 identifies the order for the customer and \u0060Amount\u0060 is the desired amount to create a GiftCard for.\n\nOptionally supply a \u0060DetailsUrl\u0060 pointing to the website you want the buyer of the GiftCard to land to see/manage the order.\n\nAdditionally, the \u0060DisplayOptions\u0060 property need to be supplied, this contains a bunch of default options to personalize the giftcard.\nIt is also possible to provide some Metadata. We won\u0027t do any processing on DisplayOptions.\n\nExcept: DetailsUrl will be changed to include the \u0060OrderID\u0060 in the URL as well as a \u0060token\u0060 that can be used to access a few services.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse",
+    "EVA.Core.GiftCards.GiftCardData",
+    "EVA.Core.GiftCards.GiftCardMedia"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "Amount": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "Data": {
+      "type": {
+        "ref": "EVA.Core.GiftCards.GiftCardData",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "GiftCardMedia": {
+      "type": {
+        "ref": "EVA.Core.GiftCards.GiftCardMedia",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ProductID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The product ID to add as a giftcard. Will fallback to GiftCards:Digital:ProductID",
+      "skippable": false,
+      "datamodel": {
+        "name": "Product",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "UpdateUrl": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

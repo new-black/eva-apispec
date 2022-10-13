@@ -1,0 +1,86 @@
+{
+  "typename": "GetStockAvailabilityEstimateForOrder",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Stock",
+  "description": "Calculates the stock availability for the provided OrderLines that are part of the provided Order.\n\nThe return value of this service is a list that contains, per OrderLine, whether or not it can be fulfilled (\u0060CanBeFulfilled\u0060) on the \u0060RequestedDate\u0060.\n\nWhen an OrderLine doesn\u0027t already have a RequestedDate, a RequestedDate of tomorrow is used.\n\nAdditionally, a list of AlternativeDates is returned per OrderLine with dates on which it is expected that the OrderLine can be fulfilled.\n\nWhen OrderLineIDs is left empty, this service will return an estimate for all unshipped lines of the order.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.Stock.GetStockAvailabilityEstimateForOrderResponse",
+    "EVA.Core.Services.Stock.GetStockAvailabilityEstimateForOrder\u002BOrderLine"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.Stock.GetStockAvailabilityEstimateForOrderResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "OrderLineIDs": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 557,
+        "active": 561,
+        "comment": "OrderLineIDs is deprecated and will be removed in 2.0.565: Use \u0060OrderLines\u0060."
+      },
+      "allowedValues": []
+    },
+    "OrderLines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Stock.GetStockAvailabilityEstimateForOrder\u002BOrderLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

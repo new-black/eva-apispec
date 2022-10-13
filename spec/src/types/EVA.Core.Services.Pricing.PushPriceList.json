@@ -1,0 +1,162 @@
+{
+  "typename": "PushPriceList",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Pricing",
+  "description": "A service that allows to manage the entirety of a price list.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.Pricing.PushPriceListResponse",
+    "EVA.Core.Services.Pricing.PushPriceList\u002BActiveOrganizationUnit",
+    "EVA.Core.Services.Pricing.PushPriceList\u002BComponent"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.Pricing.PushPriceListResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "ActiveForOrganizationUnits": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Pricing.PushPriceList\u002BActiveOrganizationUnit",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "The organization units that use this pricelist. If left empty will leave the current configuration unchanged. If specified, will replace the current configuration.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Components": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Pricing.PushPriceList\u002BComponent",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "The list of components that make up the pricelist. If left empty this will leave the current configuration unchanged. If specified only the components present will be modified. Components must be explictly deleted.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CurrencyID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The currency for the pricelist. Must be present for the creation of a pricelist but can be left empty in subsequent calls.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The unique identifier for this pricelist.",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "stringLengthConstraint": {
+        "min": 1,
+        "max": 255
+      },
+      "allowedValues": []
+    },
+    "IsActive": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Whether or not the pricelist is active.",
+      "skippable": true,
+      "allowedValues": []
+    },
+    "Name": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The name of the pricelist. Must be present for the creation of a pricelist but can be left empty in subsequent calls.",
+      "skippable": true,
+      "allowedValues": []
+    },
+    "SpecifiedPricesIncludeTax": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If set to true then all prices specified on this price list will be interpreted as already VAT-included. If set to false then all prices will be interpreted as VAT-excluded. If not specified then the default value is true.\n\nSo if a price entry of 90 EUR is added to this pricelist with SpecifiedPricesIncludeTax = true (or not specified) then the price will be interpreted as 90 EUR already including VAT.\nIf SpecifiedPricesIncludeTax = false then the price will be interpreted as 90 EUR excluding VAT so that will be added on top for any orders created with this price.",
+      "skippable": true,
+      "allowedValues": []
+    },
+    "SystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "description": "A string that identifies the system that was used to call this service. In combination with the ID of the pricelist, this is what uniquely identifies the pricelist in EVA.\nThe SystemID must be the same for every call, if it\u0027s different from a previous call then a new pricelist will be created.",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "stringLengthConstraint": {
+        "min": 2,
+        "max": 50
+      },
+      "allowedValues": []
+    },
+    "TimeZone": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The timezone that will be used to interpret activation times for prices.",
+      "skippable": true,
+      "allowedValues": []
+    },
+    "WaitForCompletion": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "If specified as true, the call to PushPriceList will not return until all uploaded prices have been stored and all prices have been recalculated. Normally this process runs in the background.",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

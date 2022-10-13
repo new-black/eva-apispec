@@ -1,0 +1,88 @@
+{
+  "typename": "CreateFullStockCount",
+  "assembly": "EVA.UserTasks",
+  "namespace": "EVA.UserTasks.Services.FullStockCountServices",
+  "description": "Initiate the Full Stock Count process for the current store. **Prevents basic store functionalities once started.**",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.UserTasks.Services.FullStockCountServices.CreateFullStockCountResponse",
+    "EVA.UserTasks.Services.FullStockCountServices.CreateFullStockCount\u002BInitialFullStockCountLabel"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.UserTasks.Services.FullStockCountServices.CreateFullStockCountResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "CreateFullStockCountLabelsForShelves": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "When supplied, it will automatically call \u0060AddLabelToFullStockCount\u0060 for each Shelf defined in your replenishment configuration. Ignored when IsExternal is set to true.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "InitialFullStockCountLabels": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.UserTasks.Services.FullStockCountServices.CreateFullStockCount\u002BInitialFullStockCountLabel",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "When supplied, it will automatically call \u0060AddLabelToFullStockCount\u0060 for each InitialLabel. Ignored when IsExternal or CreateFullStockCountLabelsForShelves is set to true.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IsExternal": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Indicates if the full stock count is done by an external party.\nWhen false, the full stock count will be created and all basic store functionalities will be blocked once started.\n\nWhen true, the full stock count will be created with a snapshot from the current stock. To set the result of the external full stock count, the \u0027UploadExternalFullStockCount\u0027 can be called.\nBasic store functionalities will remaining in working order. Deviations will be calculated based on stock mutations.\nThe UserTask will be started automatically.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "RecountInterval": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": true
+      },
+      "description": "When supplied, it will automatically create a validation recount based on the given recount interval. Ignored when IsExternal is set to true.",
+      "skippable": false,
+      "minValue": {
+        "current": 1
+      },
+      "allowedValues": []
+    },
+    "ReturnCurrentStock": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "When set to true, the service will return the current stock information.",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

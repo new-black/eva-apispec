@@ -1,0 +1,84 @@
+{
+  "typename": "GetAvailableCashAmountForDevice",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Finance",
+  "description": "Retrieves the current available cash amount of given device, to be able to e.g. validate user given amounts in \u0060CreateCashDeposit\u0060 or \u0060CreateCashExpense\u0060 services.\n\nSupply a \u0060CurrencyID\u0060 and \u0060PaymentTypeID\u0060 to indicate the Cash Journal to be used.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.Finance.GetAvailableCashAmountForDeviceResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.Finance.GetAvailableCashAmountForDeviceResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "CurrencyID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Will be required!",
+      "skippable": false,
+      "datamodel": {
+        "name": "Currency",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "DeviceID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Device",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "PaymentTypeID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Will be required!",
+      "skippable": false,
+      "datamodel": {
+        "name": "PaymentType",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

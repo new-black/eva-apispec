@@ -1,0 +1,65 @@
+{
+  "typename": "ProcessPrintTasks",
+  "assembly": "EVA.UserTasks",
+  "namespace": "EVA.UserTasks.Types.Print.Services",
+  "description": "Processes the print tasks for each required ID.\n\nThis service does not throws an expeption in the case of mulptiple user task ids, but the output will be a dictionary containing\nan Error (EVA.Framework.Error) for every print task that encounters an issue. The UserTaskID will be the key in that specific Dictionary.\n\nIn the case of a single user task id, the service will behave exactly as the depracated ProcessPrintTask service did, throwing the encountered exception.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.UserTasks.Types.Print.Services.ProcessPrintTasksResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.UserTasks.Types.Print.Services.ProcessPrintTasksResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "StationID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Station",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "UserTaskIDs": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    }
+  }
+}

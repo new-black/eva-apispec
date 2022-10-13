@@ -1,0 +1,87 @@
+{
+  "typename": "ExemptOrderFromTax",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Orders",
+  "description": "Marks the provided Order or OrderLine as exempt from tax, with specified code and reason.\n\nWhen exempting the Order, this also marks all current OrderLines of the Order that haven\u0027t been invoiced yet as tax-exempt. All future\nOrderLines created on this Order will then also automatically be made tax-exempt.\n\nCalling this service is irreversible; once the Order is marked as tax exempt, it cannot be undone and can only be worked around by creating a new Order.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "OrderLineID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "OrderLine",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "TaxExemptionCode": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "A code identifying the tax exemption.",
+      "skippable": false,
+      "stringLengthConstraint": {
+        "min": 1,
+        "max": 50
+      },
+      "allowedValues": []
+    },
+    "TaxExemptionReason": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "description": "A longer description with the justification for the tax exemption.",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "stringLengthConstraint": {
+        "min": 1,
+        "max": 255
+      },
+      "allowedValues": []
+    }
+  }
+}

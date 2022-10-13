@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <!-- <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>true</SelfContained>
+        <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+        <PublishTrimmed>true</PublishTrimmed>
+        <InvariantGlobalization>true</InvariantGlobalization> -->
+
+        <!-- Other trimmings -->
+        <!-- <DebuggerSupport>false</DebuggerSupport>
+        <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+        <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+        <EventSourceSupport>false</EventSourceSupport>
+        <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+        <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+        <UseSystemResourceKeys>true</UseSystemResourceKeys>
+        <StartupHookSupport>false</StartupHookSupport>
+        <CustomResourceTypesSupport>false</CustomResourceTypesSupport>
+        <EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization>false</EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization>
+        <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+        <EnableCppCLIHostActivation>false</EnableCppCLIHostActivation>
+        <NullabilityInfoContextSupport>false</NullabilityInfoContextSupport> -->
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\EVA.API.Spec\EVA.API.Spec.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.OpenApi" Version="1.4.3" />
+      <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+    </ItemGroup>
+
+    <Target Name="ConfigureTrimming" BeforeTargets="PrepareForILLink">
+    <ItemGroup>
+      <ManagedAssemblyToLink Condition="'%(Filename)' == 'Microsoft.OpenApi'">
+        <TrimmerSingleWarn>False</TrimmerSingleWarn>
+      </ManagedAssemblyToLink>
+    </ItemGroup>
+  </Target>
+
+</Project>

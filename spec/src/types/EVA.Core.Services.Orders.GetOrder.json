@@ -1,0 +1,192 @@
+{
+  "typename": "GetOrder",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Orders",
+  "description": "Get an Order by ID.\n\nThis service is readonly, it will not update the order just by calling it like the \u0060GetShoppingCart\u0060 service does.\n\nTo include the result of \u0060GetRequiredDataForOrder\u0060, the property \u0060AdditionalOrderDataOptions.RequiredFor\u0060 can be set to the desired level of requirements.\nTo include the result of \u0060GetProductRequirementValuesForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludeProductRequirements\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060GetGiftWrappingOptionsForOrder\u0060 and \u0060GetAvailableGiftWrappingLinesForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludeGiftWrapping\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060PrefigureDiscounts\u0060 and \u0060GetPotentialDiscountsForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludePrefigureDiscounts\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060GetPickProductDiscountOptionsForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludePickProductOptions\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060ListAvailableShippingMethods\u0060, the property \u0060AdditionalOrderDataOptions.IncludeAvailableShippingMethods\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060GetAvailablePaymentMethods\u0060, the property \u0060AdditionalOrderDataOptions.IncludeAvailablePaymentMethods\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060GetAvailableRefundPaymentMethodsForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludeAvailableRefundPaymentMethods\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060ValidateOrderShipment\u0060, the property \u0060AdditionalOrderDataOptions.IncludeValidateShipment\u0060 can be set to \u0060true\u0060.\nTo include the available actions for the PaymentTransactions, the property \u0060AdditionalOrderDataOptions.IncludePaymentTransactionActions\u0060 can be set to \u0060true\u0060.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.Orders.GetOrderResponse",
+    "EVA.Core.Orders.AdditionalOrderDataOptions",
+    "EVA.Core.Validation.RequiredFor"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.Orders.GetOrderResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "AdditionalOrderDataOptions": {
+      "type": {
+        "ref": "EVA.Core.Orders.AdditionalOrderDataOptions",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IncludeAllPayments": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IncludeFailedPayments": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 622,
+        "active": 630,
+        "comment": "IncludeFailedPayments is deprecated and will be removed in 2.0.638: Use \u0060IncludeAllPayments\u0060."
+      },
+      "allowedValues": []
+    },
+    "IncludeGiftWrapping": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 622,
+        "active": 626,
+        "comment": "IncludeGiftWrapping is deprecated and will be removed in 2.0.630: Use \u0060AdditionalOrderDataOptions.IncludeGiftWrapping\u0060."
+      },
+      "allowedValues": []
+    },
+    "IncludePendingPayments": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 622,
+        "active": 630,
+        "comment": "IncludePendingPayments is deprecated and will be removed in 2.0.638: Use \u0060IncludeAllPayments\u0060 and check the \u0060Amounts.Open.PendingInTax\u0060."
+      },
+      "allowedValues": []
+    },
+    "IncludePickProductOptions": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 622,
+        "active": 626,
+        "comment": "IncludePickProductOptions is deprecated and will be removed in 2.0.630: Use \u0060AdditionalOrderDataOptions.IncludePickProductOptions\u0060."
+      },
+      "allowedValues": []
+    },
+    "IncludePrefigureDiscounts": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 622,
+        "active": 626,
+        "comment": "IncludePrefigureDiscounts is deprecated and will be removed in 2.0.630: Use \u0060AdditionalOrderDataOptions.IncludePrefigureDiscounts\u0060."
+      },
+      "allowedValues": []
+    },
+    "IncludeProductRequirements": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 622,
+        "active": 626,
+        "comment": "IncludeProductRequirements is deprecated and will be removed in 2.0.630: Use \u0060AdditionalOrderDataOptions.IncludeProductRequirements\u0060."
+      },
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ProductProperties": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "RequiredFor": {
+      "type": {
+        "ref": "EVA.Core.Validation.RequiredFor",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 622,
+        "active": 626,
+        "comment": "RequiredFor is deprecated and will be removed in 2.0.630: Use \u0060AdditionalOrderDataOptions.RequiredFor\u0060."
+      },
+      "allowedValues": []
+    },
+    "ShowOnlyShippableLines": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

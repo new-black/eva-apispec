@@ -1,0 +1,165 @@
+{
+  "typename": "AdjustStock",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Stock",
+  "description": "Book a set of Adjustments to modify stock.\n\nAn Adjustment should either have a \u0060ProductID\u0060 or \u0060ProductBackendID\u0060 to identify the product, an \u0060OrganizationUnitID\u0060 to identify the stock keeping\norganization, a \u0060StockLabelID\u0060 (see \u0060GetEnumValues\u0060 with type \u0060StockLabel\u0060), a \u0060StockMutationReasonID\u0060 (see \u0060GetEnumValues\u0060 with type \u0060StockMutationReasons\u0060)\nand (of course) a \u0060Quantity\u0060 to actually book.\n\nSupply a \u0060BackendSystemID\u0060 on the request and \u0060BackendID\u0060\u0027s on the Adjustments to make the request idempotent (optional). When one adjustment in your\nrequest fails, all of them will fail. Duplicate keys will not be processed again and yield a warning (but thus will not block!).\n\nOptionally supports a \u0060Remark\u0060 for each Adjustment.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse",
+    "EVA.Core.Services.Stock.AdjustStock\u002BAdjustment"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "Adjustments": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Stock.AdjustStock\u002BAdjustment",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Optional, unique identifier for the system that owns the \u0060Adjustment.BackendID\u0060 as key for the mutation",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 557,
+        "active": 561,
+        "comment": "OrganizationUnitID is deprecated and will be removed in 2.0.565: Use \u0060Adjustments\u0060."
+      },
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ProductID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 557,
+        "active": 561,
+        "comment": "ProductID is deprecated and will be removed in 2.0.565: Use \u0060Adjustments\u0060."
+      },
+      "datamodel": {
+        "name": "Product",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Quantity": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 557,
+        "active": 561,
+        "comment": "Quantity is deprecated and will be removed in 2.0.565: Use \u0060Adjustments\u0060."
+      },
+      "allowedValues": []
+    },
+    "Reason": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 557,
+        "active": 561,
+        "comment": "Reason is deprecated and will be removed in 2.0.565: Use \u0060Adjustments\u0060."
+      },
+      "datamodel": {
+        "name": "StockMutationReasons",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Remark": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 557,
+        "active": 561,
+        "comment": "Remark is deprecated and will be removed in 2.0.565: Use \u0060Adjustments\u0060."
+      },
+      "allowedValues": []
+    },
+    "SourceLabel": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 557,
+        "active": 561,
+        "comment": "SourceLabel is deprecated and will be removed in 2.0.565: Use \u0060Adjustments\u0060."
+      },
+      "datamodel": {
+        "name": "StockLabel",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

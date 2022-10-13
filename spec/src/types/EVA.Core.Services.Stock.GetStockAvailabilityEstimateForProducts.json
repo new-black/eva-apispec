@@ -1,0 +1,86 @@
+{
+  "typename": "GetStockAvailabilityEstimateForProducts",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Stock",
+  "description": "Given a set of products this service returns a detailed estimate for each product when it\u0027s expected to be available.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.Stock.GetStockAvailabilityEstimateForProductsResponse",
+    "EVA.Core.Services.Stock.GetStockAvailabilityEstimateForProducts\u002BProduct"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.Stock.GetStockAvailabilityEstimateForProductsResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "IncludeReservedOrders": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "If set true the service will also return reserved OrderLines",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IncludeShopReplenishments": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "If set to true the service will also return purchase OrderLines meant for shops",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Products": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Stock.GetStockAvailabilityEstimateForProducts\u002BProduct",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    }
+  }
+}

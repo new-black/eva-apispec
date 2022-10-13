@@ -1,0 +1,45 @@
+{
+  "typename": "GetTaxExemptionReasons",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Orders.Taxes",
+  "description": "Gets the available reasons for tax exemption.\nThe \u0060Code\u0060 property of each result can then be supplied to \u0060ExemptOrderFromTax\u0060 as the \u0060TaxExemptionCode\u0060.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.Orders.Taxes.GetTaxExemptionReasonsResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.Orders.Taxes.GetTaxExemptionReasonsResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If you have an OrderID available it can be specified to get a more accurate list of tax exemption reasons that is independent of your current OrganizationUnit.\nFor example if you have a US order but you are currently logged into a non-US organization, the result of this service won\u0027t be accurate unless you specify the OrderID.",
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

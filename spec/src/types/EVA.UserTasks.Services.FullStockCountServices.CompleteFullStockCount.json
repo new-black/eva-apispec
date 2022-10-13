@@ -1,0 +1,110 @@
+{
+  "typename": "CompleteFullStockCount",
+  "assembly": "EVA.UserTasks",
+  "namespace": "EVA.UserTasks.Services.FullStockCountServices",
+  "description": "Completes a full stock count task. User task must be active and assigned to the current user.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "CycleCountProductIDs": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Recount products",
+      "skippable": false,
+      "deprecated": {
+        "announced": 565,
+        "active": 569,
+        "comment": "CycleCountProductIDs is deprecated and will be removed in 2.0.573: Deprecated, please use \u0060ProductsToRecount\u0060."
+      },
+      "allowedValues": []
+    },
+    "DismissDeviationsAsStockMutations": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "When set to true, deviations will NOT be processed as stock mutations.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ProductsToRecount": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Products to recount after completion of given full stock count.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "RecountAllDeviations": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Recount all products in the full stock count that have a deviation.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "RecountAllProducts": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Recount all products in the full stock count.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "UserTaskID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "UserTask",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

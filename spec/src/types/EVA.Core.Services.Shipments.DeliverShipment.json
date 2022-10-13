@@ -1,0 +1,58 @@
+{
+  "typename": "DeliverShipment",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Shipments",
+  "description": "Delivers an undelivered SalesOrder shipment. This will give both the shipment and the orderline the status that they have been delivered.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "ShipmentBackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Either this or ShipmentID is required. If ShipmentBackendID is specified, ShipmentBackendSystem is also required.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ShipmentBackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Required if ShipmentBackendID is specified.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ShipmentID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Either this or ShipmentBackendID is required.",
+      "skippable": false,
+      "datamodel": {
+        "name": "Shipment",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

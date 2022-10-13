@@ -1,0 +1,31 @@
+{
+  "typename": "ResetFinancialEvents",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Finance",
+  "description": "This service resets processed financial events back to unprocessed,\nwhich means all associated financial ledgers are deleted.\n\nOnly financial events of periods that have not been fully processed (for example exported to an external ERP system)\ncan be reset.\n\nAs this can be a time consuming service, the request is handled in the background and upon completion a mail\nis sent to the caller of this service with the results.\n\nThe scope of which events to reset can be limited by specifying a \u0060Filter\u0060 in the request. Only the events\nthat match the filter will be reset.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse",
+    "EVA.Core.Finance.ListFinancialEventsFilter"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "Filter": {
+      "type": {
+        "ref": "EVA.Core.Finance.ListFinancialEventsFilter",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "typename": "ReceivePurchaseOrderShipment",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.PurchaseOrders",
+  "description": "Receive (part of) a Shipment for a PurchaseOrder.\n\nA ShipmentID is required.\n\nWhen doing partial receipts it is strongly advised to supply a BackendSystemID and BackendID to make sure Receipts are not created twice.\n\nTo do partial receipts the FinalShipment property should be set to false, otherwise the shipment will be close afterwards and the remaining lines will be booked as missing.\n\nWhen available it is preferred to identify the ShipmentLines with the ShipmentLineID and not with the ProductID.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.PurchaseOrders.ReceivePurchaseOrderShipmentResponse",
+    "EVA.Core.Services.PurchaseOrders.ReceivePurchaseOrderShipment\u002BLine"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.PurchaseOrders.ReceivePurchaseOrderShipmentResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CompleteShipment": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If passed in as true this will close the shipment for further receipts.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "FinalShipment": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 635,
+        "active": 639,
+        "comment": "FinalShipment is deprecated and will be removed in 2.0.643: This is currently intereprted the wrong way around, use CompleteShipment instead for the correct behavior.."
+      },
+      "allowedValues": []
+    },
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.PurchaseOrders.ReceivePurchaseOrderShipment\u002BLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "QuantityReceived": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          },
+          {
+            "ref": "int32",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 572,
+        "active": 588,
+        "comment": "QuantityReceived is deprecated and will be removed in 2.0.604: QuantityReceived dictionary is deprecated. Please use Lines list."
+      },
+      "allowedValues": []
+    },
+    "ShipmentID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Shipment",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

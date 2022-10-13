@@ -1,0 +1,94 @@
+{
+  "typename": "GetStockAvailabilityTimeline",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Stock",
+  "description": "Returns the expected availability timeline for the provided \u0060ProductIDs\u0060, from the perspective of the provided \u0060OrganizationUnitID\u0060 (optional, defaults to the user\u0027s current OrganizationUnitID).\n\nThe timeline is ordered chronologically and includes all events that are relevant to the availability of the requested products, including events that happen on the suppliers of the requested OrganizationUnit (such as PurchaseOrder receipts).\n\nAdditionally, a \u0060FromDate\u0060 (inclusive) and \u0060ToDate\u0060 (exclusive) can be used to filter the response by date and a \u0060Type\u0060 can be provided to only return timeline items of a certain type.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.Stock.GetStockAvailabilityTimelineResponse",
+    "EVA.Core.Services.Stock.AvailabilityTimelineItemTypes"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.Stock.GetStockAvailabilityTimelineResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "FromDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ProductIDs": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Product",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ToDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Type": {
+      "type": {
+        "ref": "EVA.Core.Services.Stock.AvailabilityTimelineItemTypes",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

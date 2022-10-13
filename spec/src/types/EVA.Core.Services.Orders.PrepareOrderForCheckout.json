@@ -1,0 +1,37 @@
+{
+  "typename": "PrepareOrderForCheckout",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Orders",
+  "description": "Prepare the order to go into the checkout\n\nIf the order still has status ShoppingCart, update it to Order and:\n - Validate lineactiontypes (customer are not allowed to use ShipLine p/a)\n - Set the SoldBy on the lines to the current user\n - Set the addresses of the customer on the order, if not already set\n - (Re)calculate the taxes\n - Recalculate the order: discounts, shippingcosts, giftwrappingcosts etc.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

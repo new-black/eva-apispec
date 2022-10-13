@@ -1,0 +1,99 @@
+{
+  "typename": "CreateShipmentReceipt",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.PurchaseOrders",
+  "description": "Creates a shipment receipt with \u0060Lines\u0060 for specified \u0060ShipmentID\u0060.\n\n* \u0060CompletesShipment\u0060 / \u0060Lines.CompletesShipmentLine\u0060 will close the shipment (line) for futher receipts\n* \u0060Lines.QuantityReceived\u0060 is the delta quantity received in this receipt, so not the new total quantity received\n* \u0060StockLabelID\u0060 is the target StockLabel for the received stock - overrides the StockLabel of the purchase order line",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.PurchaseOrders.CreateShipmentReceiptResponse",
+    "EVA.Core.Services.PurchaseOrders.CreateShipmentReceipt\u002BLine"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.PurchaseOrders.CreateShipmentReceiptResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CompletesShipment": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.PurchaseOrders.CreateShipmentReceipt\u002BLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "ShipmentID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Shipment",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

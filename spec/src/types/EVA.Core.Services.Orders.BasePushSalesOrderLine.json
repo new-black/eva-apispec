@@ -1,0 +1,311 @@
+{
+  "typename": "BasePushSalesOrderLine",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Orders",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.DataModels.CustomFieldKeyValue",
+    "EVA.Core.Services.Orders.PushSalesOrderDiscount",
+    "EVA.Core.IO.Input.OrderImportFulfillmentMethod",
+    "EVA.Core.GiftCards.GiftCardData",
+    "EVA.Core.GiftCards.GiftCardMedia",
+    "EVA.Core.Services.Orders.PushSalesOrderProductRequirement",
+    "EVA.Core.Services.Orders.PushSalesOrderLineShipment",
+    "EVA.Core.DataModels.TaxRateCategory"
+  ],
+  "properties": {
+    "Amount": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Price of a single unit, before discounts, based on the SoldFromOrganizationUnit settings this should be in or ex tax. See service documentation.",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "ID of the order line from the 3rd party",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CustomData": {
+      "type": {
+        "ref": "object",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CustomFields": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.DataModels.CustomFieldKeyValue",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Optional additional custom fields",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CustomID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Article number of the product from the 3rd party",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Description": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Discounts": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Orders.PushSalesOrderDiscount",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "FulfillmentMethod": {
+      "type": {
+        "ref": "EVA.Core.IO.Input.OrderImportFulfillmentMethod",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "GiftcardData": {
+      "type": {
+        "ref": "EVA.Core.GiftCards.GiftCardData",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Used for passing in the data for a digital giftcard.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "GiftcardMedia": {
+      "type": {
+        "ref": "EVA.Core.GiftCards.GiftCardMedia",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Used for passing in the media information for a digital giftcard.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IsFinalSale": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Marks the line as a final sale line, making it non returnable.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OriginalAmount": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Original price of a single unit, before discounts, based on the SoldFromOrganizationUnit settings this should be in or ex tax. See service documentation.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "PaymentLineIdentifier": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Used for passing the identifier used to identify this line at the payment provider. This is required for payments that need capture on line level like Klarna.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ProductID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Product",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "ProductRequirements": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Orders.PushSalesOrderProductRequirement",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Product requirements",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Quantity": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "RequestedDeliveryDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "SerialNumber": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Used for passing in the serial number of, for example, a gift card. This is used to support refunding and other operations on the gift card.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Shipments": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Orders.PushSalesOrderLineShipment",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "TaxAmount": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": true
+      },
+      "description": "When known the exact TaxAmount can be specified. Used when tax calculations are done by an external party like Avatax.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "TaxExemptionCode": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "A code identifying the tax exemption.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "TaxExemptionReason": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "A longer description with the justification for the tax exemption.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "TaxRate": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": true
+      },
+      "description": "When no tax rate is provided, the taxrate will be based on what is known in Eva. When no rate can be determined, an error will be thrown.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "TaxRateCategory": {
+      "type": {
+        "ref": "EVA.Core.DataModels.TaxRateCategory",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "UnitPriceInTax": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": true
+      },
+      "description": "In tax price of a single unit, before discounts",
+      "skippable": false,
+      "deprecated": {
+        "announced": 587,
+        "active": 595,
+        "comment": "UnitPriceInTax is deprecated and will be removed in 2.0.603: Replaced with Amount to support ExTax orders."
+      },
+      "allowedValues": []
+    }
+  }
+}

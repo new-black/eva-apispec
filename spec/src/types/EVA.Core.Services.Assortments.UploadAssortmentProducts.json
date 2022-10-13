@@ -1,0 +1,69 @@
+{
+  "typename": "UploadAssortmentProducts",
+  "assembly": "EVA.Core.Services.Management",
+  "namespace": "EVA.Core.Services.Assortments",
+  "description": "Performs a bulk update of an assortment\u0027s products.\nThe data for this service can be gotten by first calling DownloadAssortmentProducts, then make your changes and reupload it using this service.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.Assortments.UploadAssortmentProductsResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.Assortments.UploadAssortmentProductsResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "AssortmentID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Assortment",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Data": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "DeleteMissing": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "When a product is currently part of the assortment but is not present in the Excel that is uploaded, it\u0027s removed from the assortment.",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

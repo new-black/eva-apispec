@@ -1,0 +1,333 @@
+{
+  "typename": "PushSalesOrder",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Orders",
+  "description": "Creates an order with all specified data, places it, and raises all follow-up events.\n\nWhenever the order already exists with the same BackendSystemID/BackendID combination, nothing will be modified.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.Orders.PushSalesOrderResponse",
+    "EVA.Core.Services.Orders.PushSalesOrderBackfillInformation",
+    "EVA.Core.Services.Orders.PushSalesOrderAddress",
+    "EVA.Core.Services.Orders.PushSalesOrderCustomer",
+    "EVA.Core.Services.Orders.PushSalesOrderDiscount",
+    "EVA.Core.IO.Input.OrderImportFulfillmentMethod",
+    "EVA.Core.Services.Orders.PushSalesOrderLine",
+    "EVA.Core.Services.Orders.PushSalesOrderOptions",
+    "EVA.Core.Services.Orders.PushSalesOrderPayment",
+    "EVA.Core.Services.Orders.PushSalesOrderProperties",
+    "EVA.Core.Services.Orders.PushSalesOrderShipment",
+    "EVA.Core.Services.Orders.PushSalesOrderShippingInformation"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.Orders.PushSalesOrderResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "AllowPartialFulfillment": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Allow the order to be fulfilled in multiple shipments",
+      "skippable": false,
+      "deprecated": {
+        "announced": 573,
+        "active": 577,
+        "comment": "AllowPartialFulfillment is deprecated and will be removed in 2.0.581: Moved to Options.AllowPartialFulfillment."
+      },
+      "allowedValues": []
+    },
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "description": "A unique identifier for the order, within the context of given \u0060BackendSystemID\u0060",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "description": "A code, free of choice for the calling 3rd party application creating the order",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "BackfillInformation": {
+      "type": {
+        "ref": "EVA.Core.Services.Orders.PushSalesOrderBackfillInformation",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "BillingAddress": {
+      "type": {
+        "ref": "EVA.Core.Services.Orders.PushSalesOrderAddress",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CurrencyID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "ISO code of the currency of the order",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CustomData": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Customer": {
+      "type": {
+        "ref": "EVA.Core.Services.Orders.PushSalesOrderCustomer",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "CustomFields": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Discounts": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Orders.PushSalesOrderDiscount",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "FulfillmentMethod": {
+      "type": {
+        "ref": "EVA.Core.IO.Input.OrderImportFulfillmentMethod",
+        "args": [],
+        "nullable": true
+      },
+      "description": "How this order is fulfilled, this can be overridden on line level. Default to Delivery or Pickup (when a PickupOrganizationUnit is defined)",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Orders.PushSalesOrderLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "Options": {
+      "type": {
+        "ref": "EVA.Core.Services.Orders.PushSalesOrderOptions",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Payments": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Orders.PushSalesOrderPayment",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "PickupAddress": {
+      "type": {
+        "ref": "EVA.Core.Services.Orders.PushSalesOrderAddress",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "PickupOrganizationUnitBackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Identifier for the shop where the order will be picked up, if any (\u0060OrganizationUnit.BackendID\u0060",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Properties": {
+      "type": {
+        "ref": "EVA.Core.Services.Orders.PushSalesOrderProperties",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Remark": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ReturnToSupplierReason": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The reason for this ReturnToSupplier order, used in combination with Properties.ReturnToSupplier. Required for ReturnToSupplier orders",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Shipments": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Orders.PushSalesOrderShipment",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ShippingAddress": {
+      "type": {
+        "ref": "EVA.Core.Services.Orders.PushSalesOrderAddress",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ShippingInformation": {
+      "type": {
+        "ref": "EVA.Core.Services.Orders.PushSalesOrderShippingInformation",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ShipToOrganizationUnitBackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Identifier for the shop where the order will be shipped to, if any (\u0060OrganizationUnit.BackendID\u0060",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "SoldFromOrganizationUnitBackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Identifier for the (web)shop that made the sale (\u0060OrganizationUnit.BackendID\u0060)",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

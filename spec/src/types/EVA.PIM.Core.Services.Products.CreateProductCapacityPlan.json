@@ -1,0 +1,177 @@
+{
+  "typename": "CreateProductCapacityPlan",
+  "assembly": "EVA.PIM.Core",
+  "namespace": "EVA.PIM.Core.Services.Products",
+  "description": "Create a new product capacity plan, which limits the stock of a product based on the capacity of production.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.PIM.Core.Services.Products.CreateProductCapacityPlanResponse",
+    "EVA.Core.DataModels.ProductCapacityTimeFrame",
+    "EVA.Core.Search.FilterModel"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.PIM.Core.Services.Products.CreateProductCapacityPlanResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "AvailabilityCalculationCutOffInDays": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "minValue": {
+        "current": 1
+      },
+      "maxValue": {
+        "current": 14
+      },
+      "allowedValues": []
+    },
+    "Capacity": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "minValue": {
+        "current": 0
+      },
+      "allowedValues": []
+    },
+    "Description": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Name": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "OverwriteExistingProductCapacityPlans": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ProductCapacityTimeFrame": {
+      "type": {
+        "ref": "EVA.Core.DataModels.ProductCapacityTimeFrame",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "ProductIDs": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ProductSearchFilters": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.Search.FilterModel",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ProductSearchTemplateID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "SupplierOrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

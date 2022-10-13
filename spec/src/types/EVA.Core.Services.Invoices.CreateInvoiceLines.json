@@ -1,0 +1,53 @@
+{
+  "typename": "CreateInvoiceLines",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Invoices",
+  "description": "Creates lines on the given invoice (\u0060InvoiceID\u0060).\n\nIt is required to supply an OrderLine or a ShipmentLine. All other properties are optional and will be copied from the shipment-/order- line.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse",
+    "EVA.Core.Services.Invoices.CreateInvoiceLine"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "InvoiceID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Invoice",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Invoices.CreateInvoiceLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

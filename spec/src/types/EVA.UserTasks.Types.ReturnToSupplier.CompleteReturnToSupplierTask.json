@@ -1,0 +1,52 @@
+{
+  "typename": "CompleteReturnToSupplierTask",
+  "assembly": "EVA.UserTasks",
+  "namespace": "EVA.UserTasks.Types.ReturnToSupplier",
+  "description": "Completes the ReturnToSupplier task.\n\nWhen the setting \u0027AllowConcurrentReturnToSupplierTasks\u0027 is true, the \u0027FinalizeReturnToSupplierOrder\u0027 value is checked to determine what to do;\n - When \u0027FinalizeReturnToSupplierOrder\u0027 is set to true, the cycle will be completed and no new task will be created. The last task that was created will be deactivated.\n - When \u0027FinalizeReturnToSupplierOrder\u0027 is set to false, the current task and shipment will be closed. Other tasks will remain open.\n\nWhen the setting \u0027AllowConcurrentReturnToSupplierTasks\u0027 is false, the service will automatically finalize the cycle.\n\nWhen CompleteReturnToSupplierTask is called and there are no lines on the task shipment, the shipment will be removed.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "FinalizeReturnToSupplierOrder": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "UserTaskID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "UserTask",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

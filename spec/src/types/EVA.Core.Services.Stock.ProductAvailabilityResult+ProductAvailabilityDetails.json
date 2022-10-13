@@ -1,0 +1,186 @@
+{
+  "typename": "ProductAvailabilityDetails",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Stock",
+  "usage": {
+    "request": false,
+    "response": true
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.Services.Stock.ProductAvailabilityResult\u002BProductAvailabilityDetails\u002BExpectedStockItem",
+    "EVA.Core.Services.Stock.ProductAvailabilityResult\u002BProductAvailabilityDetails\u002BOrganizationUnitModel",
+    "EVA.Core.Services.Stock.ProductAvailabilityResult\u002BProductAvailabilityDetails\u002BStockReservation",
+    "EVA.Core.Services.Stock.ProductAvailabilityResult\u002BProductAvailabilityDetails"
+  ],
+  "properties": {
+    "EffectiveQuantityAvailable": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "description": "See EffectiveQuantityOnHand, but here the commitments are subtracted from the on hand stock. So if physicl stock is 100, 80% is allocated to other organizations and there is a commitment of 11 then EffectiveQuantityAvailable will be 9.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "EffectiveQuantityOnHand": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The quantity of the physical stock that is available to the OrganizationUnit for which this OrganizationUnit is a supplier.\n\nThis can differ from the QuantityOnHand when it comes to stock allocation. It\u0027s possible that the supplier reserves stock for certain other OrganizationUnits, meaning\nthat only a portion of the QuantityOnHand is available.\n\nExample: you request stock details for the website, which is supplied by the warehouse organization. There is a stock allocation rule that 80% of the warehouse stock\nis reserved to shops, so not available to the website. In that case, the website organization will have a stock detail with warehouse as a supplier and the stock detail\nfor the warehouse will (for example) have a QuantityOnHand of 100 but only an EffectiveQuantityOnHand of 20.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ExpectedAvailabilityDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The date that this organization is expected to have stock.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ExpectedStock": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Stock.ProductAvailabilityResult\u002BProductAvailabilityDetails\u002BExpectedStockItem",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "The stock that is expected to be received in the future.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ExpectedSupplierAvailabilityDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The earliest date that one of the suppliers of this organization has stock.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrdersWaitingForStockQuantity": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The total quantity of orders that are currently have a fulfillment status of WaitingForStock, meaning that they are waiting until stock becomes available on this OrganizationUnit.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnit": {
+      "type": {
+        "ref": "EVA.Core.Services.Stock.ProductAvailabilityResult\u002BProductAvailabilityDetails\u002BOrganizationUnitModel",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "QuantityCommitted": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The quantity that has been committed to this OrganizationUnit.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "QuantityOnHand": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The amount of stock that the OrganizationUnit physically has.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "QuantityReservedForOtherOrganizationUnits": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The sum of all StockReservations, meaning the quantities that were reserved on this supplier for other organizations.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "StockReservations": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Stock.ProductAvailabilityResult\u002BProductAvailabilityDetails\u002BStockReservation",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "The stock that is reserved for other organizations that is not available to this organization.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "SupplierQuantityAvailable": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The SupplierQuantityOnHand minus the SupplierQuantityCommitted",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "SupplierQuantityCommitted": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The quantity committed on all suppliers of this organization",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "SupplierQuantityOnHand": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The quantity that all suppliers have on hand as far as we know from the perspective of the organization that is supplied by them.\n\nThe actual supplier might have more stock physically on hand, but due to allocation rules this might not be available to this organization.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Suppliers": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Stock.ProductAvailabilityResult\u002BProductAvailabilityDetails",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "The suppliers for this organization.",
+      "skippable": false,
+      "allowedValues": []
+    }
+  },
+  "parent": "EVA.Core.Services.Stock.ProductAvailabilityResult"
+}

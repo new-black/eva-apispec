@@ -1,0 +1,100 @@
+{
+  "typename": "PreviewOrderFulfillment",
+  "assembly": "EVA.Symphony",
+  "namespace": "EVA.Symphony.Services",
+  "description": "Provides the ability to do a what-if to see how the provided OrderID would be fulfilled.\n\nThis will use the existing sheets with the ability to specify additional new sheets (by not specifying an ID)\nor modify an existing sheet (by providing the ID of an existing sheet).",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Symphony.Services.PreviewOrderFulfillmentResponse",
+    "EVA.Symphony.Services.PreviewOrderFulfillment\u002BOrderModel",
+    "EVA.Symphony.Services.PreviewOrderFulfillment\u002BSheetToPreview",
+    "EVA.Symphony.Services.PreviewOrderFulfillment\u002BStockModel"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "CurrentTimeOverride": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Order": {
+      "type": {
+        "ref": "EVA.Symphony.Services.PreviewOrderFulfillment\u002BOrderModel",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Sheets": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Symphony.Services.PreviewOrderFulfillment\u002BSheetToPreview",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "If you specify sheets they will either be used as an additional sheet to consider when calculating order fulfillment, or as a replacement for an existing sheet based on whether the ID of the sheet is provided or not.\n\nSpecifying additional sheets can be used as a \u0027what-if\u0027 tool; what would happen to this order if I change this sheet to do this, etc.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Stock": {
+      "type": {
+        "ref": "EVA.Symphony.Services.PreviewOrderFulfillment\u002BStockModel",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "UseCurrentFulfillments": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "If specified as true the fulfillment preview will base its result on fulfillments that have already been created for the order. For example if the order has already been exported to a certain supplier\nthen the preview service will take that into account and not consider that supplier to be a fulfillment option anymore. If specified as false (the default) the service considers the order to be a clean slate\nfor which all options are still open.",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

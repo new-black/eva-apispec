@@ -1,0 +1,110 @@
+{
+  "typename": "SupplierUpdatePurchaseOrder",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.PurchaseOrders",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse",
+    "EVA.Core.Services.PurchaseOrders.SupplierUpdatePurchaseOrder\u002BSupplierUpdatePurchaseOrderLine"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Identifier of the order from the 3rd party",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Identifier of the 3rd party system that created the order",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ExpectedDeliveryDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Date that the supplier expects to deliver the shipment(s) of the purchase order",
+      "skippable": false,
+      "deprecated": {
+        "announced": 634,
+        "active": 650,
+        "comment": "ExpectedDeliveryDate is deprecated and will be removed in 2.0.666: Replaced by ExpectedDeliveryDate on line level.."
+      },
+      "allowedValues": []
+    },
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.PurchaseOrders.SupplierUpdatePurchaseOrder\u002BSupplierUpdatePurchaseOrderLine",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "description": "Contents of the purchase order.\nNote: Only one key property can be used to identify the product. When different properties are used, the request will be invalid.\nThis will become redundant when ProductID is the only property left.",
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "ShipToOrganizationUnitBackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "BackendID of the OrganizationUnit that will be receiving the purchase order shipment(s)",
+      "skippable": false,
+      "deprecated": {
+        "announced": 655,
+        "active": 671,
+        "comment": "ShipToOrganizationUnitBackendID is deprecated and will be removed in 2.0.687: Replaced by ShipToOrganizationUnitID.."
+      },
+      "allowedValues": []
+    },
+    "ShipToOrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "OrganizationUnit that will be receiving the purchase order shipment(s).",
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

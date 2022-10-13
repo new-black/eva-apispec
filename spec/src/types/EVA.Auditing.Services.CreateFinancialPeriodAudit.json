@@ -1,0 +1,103 @@
+{
+  "typename": "CreateFinancialPeriodAudit",
+  "assembly": "EVA.Auditing",
+  "namespace": "EVA.Auditing.Services",
+  "description": "Creates a new audit collection of all currently open \u0060Financial Period\u0060s for the given \u0060OrganizationUnitID\u0060. The \u0060OrganizationUnitID\u0060 act as root\nselector and will cascade for all \u0027child\u0027 organizations as well.\n\nSupply a \u0060To\u0060 parameter to only collect \u0060Financial Period\u0060s from before that moment for audit.\nSupply the \u0060Type\u0060 to specify which or what kind of output you want to have. If none is passed the first available one is used. See the\n\u0060GetFinancialPeriodAuditOutputTypes\u0060 service to fetch all of the available types.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Auditing.Services.CreateFinancialPeriodAuditResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Auditing.Services.CreateFinancialPeriodAuditResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "From": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Start of the date range to create an audit for",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IsPreview": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Till": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 557,
+        "active": 561,
+        "comment": "Till is deprecated and will be removed in 2.0.565: Use \u0060To\u0060."
+      },
+      "allowedValues": []
+    },
+    "To": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "description": "End of the date range to create an audit for",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Type": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Use \u0060GetFinancialPeriodAuditOutputTypes\u0060 to fetch the available types",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

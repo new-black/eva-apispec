@@ -1,0 +1,56 @@
+{
+  "typename": "CompleteReservationCleanup",
+  "assembly": "EVA.UserTasks",
+  "namespace": "EVA.UserTasks.Services.ReservationCleanup",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse",
+    "EVA.UserTasks.Services.ReservationCleanup.CompleteReservationCleanup\u002BReservationCleanupTask"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "CreateNewTaskForRemainingLines": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Can be set to true so that lines missing from the workset are copied to a new cleanup task, so these can be done at a later point in time. This is\nuseful when the employee is handling a large order and wants to move a single batch first.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "NoConfirmation": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Should be set to true when the user did not confirm the order or user task (by means of a barcode scan or something). When set to true, the user will\nbe required to have (or be elevated for) the functionality \u0060CompleteReservationCleanupWithoutConfirmation\u0060.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Task": {
+      "type": {
+        "ref": "EVA.UserTasks.Services.ReservationCleanup.CompleteReservationCleanup\u002BReservationCleanupTask",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    }
+  }
+}

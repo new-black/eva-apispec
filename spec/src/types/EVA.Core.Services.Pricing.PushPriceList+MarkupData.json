@@ -1,0 +1,63 @@
+{
+  "typename": "MarkupData",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Pricing",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.Pricing.FactorType"
+  ],
+  "properties": {
+    "ExcludeProductsInFilter": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "If true, all products except the matching ones will have their prices copied. If false, only the matching ones will have their prices copied.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "FactorValue": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The value of the markup/markdown. If Type is Amount, this is the amount to add to the price.\nIf Type is Percentage, this is the amount that the Price will be multiplied by.\n\nA 10% markup should be specified as 1.10, a 25% discount should be specified as 0.75.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ProductSearchTemplateID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The ID of the ProductSearchTemplate to use to filter the products to copy. If left empty all products will be copied.",
+      "skippable": false,
+      "datamodel": {
+        "name": "ProductSearchTemplate",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Type": {
+      "type": {
+        "ref": "EVA.Core.Pricing.FactorType",
+        "args": [],
+        "nullable": true
+      },
+      "description": "The type of markup/markdown. Either absolute amount or a percentage. Determines how FactorValue will be interpreted.",
+      "skippable": false,
+      "allowedValues": []
+    }
+  },
+  "parent": "EVA.Core.Services.Pricing.PushPriceList"
+}

@@ -1,0 +1,43 @@
+{
+  "typename": "CreateOrganizationUnitOpeningHours",
+  "assembly": "EVA.Core.Services.Management",
+  "namespace": "EVA.Core.Services.Management.OrganizationUnits",
+  "description": "Create new OpeningHours for OrganizationUnits\n\nMultiple items can be created in a single request. Also multiple OrganizationUnits are allowed.\n\nIt\u0027s not allowed to create multiple items for a single day on the same store. This is checked for Day based openinghours and Date based openinghours.\n\nOpeninghours wit a Date component override the openinghours on Day level. They are called SpecialOpeningHours most of the time.\n\nTo close a store on a regular day, just don\u0027t create an openinghour for that day (or delete it).\nTo close a store on a specific date, create an openinghour with StartTime=null, EndTime=null",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse",
+    "EVA.Core.OrganizationUnits.Dto.OpeningHoursDataDto"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "OpeningHours": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.OrganizationUnits.Dto.OpeningHoursDataDto",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    }
+  }
+}

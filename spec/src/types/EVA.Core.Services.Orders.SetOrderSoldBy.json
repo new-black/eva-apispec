@@ -1,0 +1,72 @@
+{
+  "typename": "SetOrderSoldBy",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Orders",
+  "description": "Sets the SoldBy of the specified Sales Order to the provided UserID. The user must have type Employee. This service can only be called on Orders that have not been invoiced yet.\nAs SoldBy is a line-level property this service will update all lines on the order that have not been invoiced yet.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The Order to set the SoldBy for. Must be an Order of type Sales.",
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "OrderLineID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If specified the SoldBy will only be set for the given OrderLine.\nIf SetOrderSoldBy is again called at a later time for the whole order (so without specifying an OrderLineID) then this value is not preserved.\n\nWhen the SoldBy has been set on an individual OrderLine then that SoldBy is not automatically set on newly created OrderLines.",
+      "skippable": false,
+      "datamodel": {
+        "name": "OrderLine",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "UserID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "description": "The User that will become the SoldBy. Must be of type Employee.",
+      "skippable": false,
+      "datamodel": {
+        "name": "User",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  }
+}

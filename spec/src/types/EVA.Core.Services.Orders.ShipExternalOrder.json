@@ -1,0 +1,97 @@
+{
+  "typename": "ShipExternalOrder",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.Orders",
+  "description": "Ships an order that has been exported to an external system by another proces",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Services.Orders.ShipExternalOrderResponse",
+    "EVA.Core.Services.Orders.ShipExternalOrder\u002BShipment"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.Orders.ShipExternalOrderResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Reference to the order that is being shipped - required when \u0060ID\u0060 is omitted",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "BackendSystemID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "description": "Reference to the system from which the order originated - required when \u0060ID\u0060 is omitted",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "FinalShipment": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "Indicates if this is the last shipment. If this is set to true and there are still lines that are not shipped, the lines will be cancelled",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "ID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "ID of the order that is being shipped - required when \u0060BackendID\u0060 and \u0060BackendSystemID\u0060 are omitted",
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Shipments": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.Orders.ShipExternalOrder\u002BShipment",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": true
+      },
+      "allowedValues": []
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "typename": "DataLakeFinancialPeriodExport",
+  "assembly": "EVA.DataLake",
+  "namespace": "EVA.DataLake.Services",
+  "description": "Manually re-export specific financial periods to the DataLake.\n\nSpecify either a single \u0060FinancialPeriodID\u0060, a list of \u0060FinancialPeriodIDs\u0060, or a datetime range \u0060From\u0060 and \u0060To\u0060 (inclusive).\n\nAs mandatory safety feature, specify the \u0060MaxNumberOfExports\u0060 you\u0027d like to run this for. When the amount of financial periods through above\nselection exceeds this number, this service will export NOTHING and return to you an error with the amount of financial periods it prevented you\nfrom exporting, so you can adjust your selection or expand your max.\n\n:warning: Triggering large amounts of financial period exports may impact system performance!",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessageWithEmptyResponse"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessageWithEmptyResponse",
+    "args": [],
+    "nullable": false
+  },
+  "properties": {
+    "FinancialPeriodID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "FinancialPeriod",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "FinancialPeriodIDs": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "FinancialPeriod",
+        "lenient": false,
+        "supportsCustomID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "From": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "MaxNumberOfExports": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "allowedValues": []
+    },
+    "To": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}

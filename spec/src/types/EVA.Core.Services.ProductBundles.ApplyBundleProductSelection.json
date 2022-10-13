@@ -1,0 +1,112 @@
+{
+  "typename": "ApplyBundleProductSelection",
+  "assembly": "EVA.Core.Services",
+  "namespace": "EVA.Core.Services.ProductBundles",
+  "description": "This service is used to apply a selection of products to the provided \u0060BundleProductOrderLineID\u0060.\nThe \u0060BundleProductOrderLineID\u0060 field refers to the ID of an \u0060OrderLine\u0060 on the provided \u0060Order\u0060 that has a \u0060BundleProduct\u0060 Product on it.\nThe \u0060LineSelection\u0060 field is a list that couples a \u0060SelectedProductID\u0060 to a \u0060ProductBundleLineID\u0060 and is identical to how it\u0027s used in \u0060AddBundleProductToOrder\u0060.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.API.RequestMessage\u00601",
+    "EVA.Core.Orders.SimpleShoppingCartResponse",
+    "EVA.Core.Enumerations.LineActionTypes",
+    "EVA.Core.Services.ProductBundles.BundleProductOrderLineSelection"
+  ],
+  "extends": {
+    "ref": "EVA.API.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Orders.SimpleShoppingCartResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "BundleProductOrderLineID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "OrderLine",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "LineActionType": {
+      "type": {
+        "ref": "EVA.Core.Enumerations.LineActionTypes",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "LineSelection": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.ProductBundles.BundleProductOrderLineSelection",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "required": {
+        "current": true
+      },
+      "requiredAllowEmpty": {
+        "current": false
+      },
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "SessionID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "deprecated": {
+        "announced": 600,
+        "active": 616,
+        "comment": "SessionID is deprecated and will be removed in 2.0.632: All Order identification should be done by using the OrderID.."
+      },
+      "allowedValues": []
+    }
+  }
+}
