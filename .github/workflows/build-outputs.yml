@@ -21,4 +21,4 @@ jobs:
     - name: Generate OpenAPI
       run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite --assembly EVA.Core.Services --remove inheritance unused-types empty-types nested-types
     - name: Commit changes
-      run: 'git add .;git config --global user.email "ruben.oost@newblack.io";git config --global user.name "Ruben Oost";git commit -m "Outputs for: ${{ github.event.head_commit.message }}";git push origin main'
+      run: 'git add .;git config --global user.email "ruben.oost@newblack.io";git config --global user.name "Ruben Oost";git diff-index --quiet HEAD || git commit -m "Outputs for: ${{ github.event.head_commit.message }}";git push origin main'
