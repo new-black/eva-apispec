@@ -9,10 +9,10 @@ public class SpecificVersionInput : BaseGithubInput
     _version = version;
   }
 
-  protected override string GetUrl()
+  protected override string GetUrl(bool quiet)
   {
     var url = string.Format(HttpConstants.SpecificVersionUrl, _version);
-    Console.WriteLine($"Downloading version {_version} from: {url}");
+    if(!quiet) Console.WriteLine($"Downloading version {_version} from: {url}");
     return url;
   }
 }

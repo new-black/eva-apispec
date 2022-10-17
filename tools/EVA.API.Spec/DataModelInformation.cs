@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace EVA.Core.Typings.V2;
+namespace EVA.API.Spec;
 
 public class DataModelInformation
 {

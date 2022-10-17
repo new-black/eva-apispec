@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Text.Json;
-using EVA.Core.Typings.V2;
+using EVA.API.Spec;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Helpers;
 

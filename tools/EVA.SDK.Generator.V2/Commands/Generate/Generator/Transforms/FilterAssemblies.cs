@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.IO.Enumeration;
-using EVA.Core.Typings.V2;
+using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Commands.Generate.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Generator.Transforms;

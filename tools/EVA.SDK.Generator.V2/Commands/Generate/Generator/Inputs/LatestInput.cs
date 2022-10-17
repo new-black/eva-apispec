@@ -2,10 +2,10 @@
 
 public class LatestInput : BaseGithubInput
 {
-  protected override string GetUrl()
+  protected override string GetUrl(bool quiet)
   {
     var url = HttpConstants.LatestSpecUrl;
-    Console.WriteLine($"Downloading latest version from: {HttpConstants.LatestSpecUrl}");
+    if(!quiet) Console.WriteLine($"Downloading latest version from: {HttpConstants.LatestSpecUrl}");
     return url;
   }
 }

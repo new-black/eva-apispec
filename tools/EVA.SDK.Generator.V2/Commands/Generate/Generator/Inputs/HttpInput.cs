@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
-using EVA.Core.Typings.V2;
+using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Commands.Generate.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Generator.Inputs;
@@ -14,9 +14,9 @@ public class HttpInput : IInput
     _url = url;
   }
 
-  public async Task<ApiDefinitionModel> Read()
+  public async Task<ApiDefinitionModel> Read(bool quiet = false)
   {
-    Console.WriteLine("Downloading from: " + _url);
+    if(!quiet) Console.WriteLine("Downloading from: " + _url);
 
     using var http = new HttpClient
     {

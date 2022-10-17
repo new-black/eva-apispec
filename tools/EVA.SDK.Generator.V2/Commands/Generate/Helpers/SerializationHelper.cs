@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using EVA.Core.Typings.V2;
+using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Commands.Generate.Generator.Inputs;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Helpers;

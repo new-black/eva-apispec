@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Text.RegularExpressions;
-using EVA.Core.Typings.V2;
+using EVA.API.Spec;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Extensions;
@@ -200,6 +200,7 @@ public class OpenApiOutput : IOutput
             Summary = service.Name,
             Description = input.Types[service.RequestTypeID].Description ?? $"The {service.Name} service",
             OperationId = service.Name,
+            Tags = new List<OpenApiTag> { new OpenApiTag { Name = TagFromAssembly(service.Assembly), Description = TagFromAssembly(service.Assembly) } },
             Security = new List<OpenApiSecurityRequirement>
             {
               new OpenApiSecurityRequirement
@@ -268,5 +269,10 @@ public class OpenApiOutput : IOutput
   private string FixName(string name)
   {
     return _nameRegex.Replace(name, "_").Trim('_');
+  }
+
+  private string TagFromAssembly(string name)
+  {
+    return name.StartsWith("EVA.") ? name[4..] : name;
   }
 }

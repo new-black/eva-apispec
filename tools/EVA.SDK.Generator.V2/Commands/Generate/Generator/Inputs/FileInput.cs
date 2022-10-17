@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using EVA.Core.Typings.V2;
+using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Commands.Generate.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Generator.Inputs;
@@ -13,11 +13,11 @@ public class FileInput : IInput
     _path = path;
   }
 
-  public async Task<ApiDefinitionModel> Read()
+  public async Task<ApiDefinitionModel> Read(bool quiet = false)
   {
     if (!File.Exists(_path)) throw new Exception($"File {_path} does not exist");
 
-    Console.WriteLine($"Reading from: {_path}");
+    if(!quiet) Console.WriteLine($"Reading from: {_path}");
     await using var file = File.OpenRead(_path);
     return await JsonSerializer.DeserializeAsync(file, NonIndentedSerializationHelper.Default.ApiDefinitionModel);
   }

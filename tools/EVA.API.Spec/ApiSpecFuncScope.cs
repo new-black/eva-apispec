@@ -1,4 +1,4 @@
-﻿namespace EVA.Core.Typings.V2;
+﻿namespace EVA.API.Spec;
 
 [Flags]
 public enum ApiSpecFuncScope
