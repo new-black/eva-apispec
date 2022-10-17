@@ -1,0 +1,140 @@
+{
+  "typename": "GetAvailabilityIndication",
+  "assembly": "EVA.Core",
+  "description": "Returns the pickup and/or delivery availability of the given products",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Stock.GetAvailabilityIndicationResponse",
+    "EVA.Core.Availability.ProductQuantityDto",
+    "EVA.Core.Availability.GetAvailabilityTypes"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Stock.GetAvailabilityIndicationResponse",
+        "args": [],
+        "nullable": true
+      }
+    ],
+    "nullable": false
+  },
+  "properties": {
+    "DetailedShopInformation": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "description": "If true, the OrganizationUnits returned not only have their basic information returned, but also their OpeningHours.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "FastestPickupShopOnly": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If true, limits the pickup availability results to only the OrganizationUnit that has the product available the quickest.\n\nIf multiple OrganizationUnits have the same availability, it\u0027s not defined which OrganizationUnit is returned.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "IncludeAvailabilityTexts": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "nullable": false
+      },
+      "skippable": false,
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If provided this will return the availability indication for the products on the Order.\n\nThis can be used instead of manually providing Products on this request.",
+      "skippable": false,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "OrganizationUnitID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "nullable": true
+      },
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "PickupOrganizationUnitIDs": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "description": "Providing this will limit the pickup availability indication to only these OrganizationUnits.",
+      "skippable": false,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Products": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Availability.ProductQuantityDto",
+            "args": [],
+            "nullable": true
+          }
+        ],
+        "nullable": true
+      },
+      "description": "The products for which to retrieve the availability.\n\nThe QuantityRequested will default to 1 if not provided. If this field is left null then OrderID must have a value and visa versa.",
+      "skippable": false,
+      "allowedValues": []
+    },
+    "Type": {
+      "type": {
+        "ref": "EVA.Core.Availability.GetAvailabilityTypes",
+        "args": [],
+        "nullable": true
+      },
+      "description": "If provided, limits the availability to indication to the provided types.\n\nThe types can be combined to provide both Delivery and Pickup indications, but this is also the default behavior so specifying this is not necessary.\n\nSpecify this only if you only need either Delivery or Pickup indications, this can result in better performance due to a smaller response size.",
+      "skippable": false,
+      "allowedValues": []
+    }
+  }
+}
