@@ -17280,6 +17280,58 @@
         }
       ]
     },
+    "/api/core/GetScriptExtensionPoints": {
+      "summary": "GetScriptExtensionPoints",
+      "description": "The GetScriptExtensionPoints service",
+      "post": {
+        "tags": [
+          "Core"
+        ],
+        "summary": "GetScriptExtensionPoints",
+        "description": "The GetScriptExtensionPoints service",
+        "operationId": "GetScriptExtensionPoints",
+        "requestBody": {
+          "description": "A request to GetScriptExtensionPoints",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EVA.Core.Scripting.GetScriptExtensionPoints"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The response for a call to GetScriptExtensionPoints",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EVA.Core.Scripting.GetScriptExtensionPointsResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "eva-auth": [ ]
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "EVA-User-Agent",
+          "in": "header",
+          "required": true,
+          "style": "simple",
+          "schema": {
+            "type": "string",
+            "default": "eva-sdk-openapi"
+          }
+        }
+      ]
+    },
     "/api/core/CreateRecurringTask": {
       "summary": "CreateRecurringTask",
       "description": "The CreateRecurringTask service",
@@ -46453,11 +46505,11 @@
       },
       "EVA.Core.Addresses.AddressBookDto": {
         "required": [
-          "DefaultBillingAddress",
           "DefaultPickupAddress",
           "ID",
           "Address",
-          "DefaultShippingAddress"
+          "DefaultShippingAddress",
+          "DefaultBillingAddress"
         ],
         "type": "object",
         "properties": {
@@ -46647,8 +46699,8 @@
       },
       "EVA.Core.Addresses.AddressSuggestionDetails": {
         "required": [
-          "UtcOffset",
-          "IsValidCountry"
+          "IsValidCountry",
+          "UtcOffset"
         ],
         "type": "object",
         "properties": {
@@ -46774,8 +46826,8 @@
       },
       "EVA.Core.Addresses.CountrySubdivisionDto": {
         "required": [
-          "ID",
           "Name",
+          "ID",
           "CountryID"
         ],
         "type": "object",
@@ -46794,10 +46846,10 @@
       },
       "EVA.Core.Addresses.CreateAddressBookItem": {
         "required": [
-          "UseAsDefaultPickupAddress",
+          "UseAsDefaultShippingAddress",
           "Address",
           "UseAsDefaultBillingAddress",
-          "UseAsDefaultShippingAddress"
+          "UseAsDefaultPickupAddress"
         ],
         "type": "object",
         "properties": {
@@ -47106,11 +47158,11 @@
       },
       "EVA.Core.Addresses.UpdateAddressBookItem": {
         "required": [
-          "UseAsDefaultPickupAddress",
+          "UseAsDefaultShippingAddress",
           "ID",
           "Address",
           "UseAsDefaultBillingAddress",
-          "UseAsDefaultShippingAddress"
+          "UseAsDefaultPickupAddress"
         ],
         "type": "object",
         "properties": {
@@ -47229,11 +47281,11 @@
       },
       "EVA.Core.Airport.FlightDto": {
         "required": [
-          "ToDate",
-          "DestinationCode",
-          "ID",
           "OrganizationUnitID",
-          "FromDate"
+          "ID",
+          "ToDate",
+          "FromDate",
+          "DestinationCode"
         ],
         "type": "object",
         "properties": {
@@ -47280,10 +47332,10 @@
       },
       "EVA.Core.Airport.GetBoardingPassResponse": {
         "required": [
-          "Status",
-          "JulianDate",
-          "CheckinSequence",
           "NumberOfLegs",
+          "JulianDate",
+          "Status",
+          "CheckinSequence",
           "FlightNumber"
         ],
         "type": "object",
@@ -47429,11 +47481,11 @@
       },
       "EVA.Core.Airport.UpdateFlight": {
         "required": [
-          "ToDate",
-          "DestinationCode",
-          "ID",
           "OrganizationUnitID",
-          "FromDate"
+          "ID",
+          "ToDate",
+          "FromDate",
+          "DestinationCode"
         ],
         "type": "object",
         "properties": {
@@ -47686,9 +47738,9 @@
       },
       "EVA.Core.API.GetAvailableServicesResponse_Service": {
         "required": [
-          "AllowPublic",
           "RequiresElevation",
-          "AvailableOffline"
+          "AvailableOffline",
+          "AllowPublic"
         ],
         "type": "object",
         "properties": {
@@ -47721,8 +47773,8 @@
       },
       "EVA.Core.Applications.ApplicationDto": {
         "required": [
-          "ID",
-          "OrganizationUnitID"
+          "OrganizationUnitID",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -47778,8 +47830,8 @@
       },
       "EVA.Core.Applications.GetCurrentApplicationResponse": {
         "required": [
-          "ID",
-          "OrganizationUnitID"
+          "OrganizationUnitID",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -47875,8 +47927,8 @@
       },
       "EVA.Core.Auditing.DownloadFinancialPeriodAudits": {
         "required": [
-          "FiscalYear",
-          "OrganizationUnitID"
+          "OrganizationUnitID",
+          "FiscalYear"
         ],
         "type": "object",
         "properties": {
@@ -48396,8 +48448,8 @@
       },
       "EVA.Core.Authentication.Login": {
         "required": [
-          "PublicLogin",
           "SelectFirstOrganizationUnit",
+          "PublicLogin",
           "TwoFactorRememberMe"
         ],
         "type": "object",
@@ -48738,10 +48790,10 @@
       },
       "EVA.Core.Availability.PickupAvailabilityIndication": {
         "required": [
-          "PickupIndicationDate",
           "QuantityOnHand",
+          "IsAvailable",
           "QuantityAvailable",
-          "IsAvailable"
+          "PickupIndicationDate"
         ],
         "type": "object",
         "properties": {
@@ -48813,8 +48865,8 @@
       },
       "EVA.Core.Availability.ProductQuantityDto": {
         "required": [
-          "ProductID",
-          "QuantityRequested"
+          "QuantityRequested",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -48865,8 +48917,8 @@
       },
       "EVA.Core.Blobs.AttachBlobToOrder": {
         "required": [
-          "BlobID",
-          "Name"
+          "Name",
+          "BlobID"
         ],
         "type": "object",
         "properties": {
@@ -48901,8 +48953,8 @@
       },
       "EVA.Core.Blobs.FinancialPeriodBlobDto": {
         "required": [
-          "FinancialPeriodID",
-          "BlobID"
+          "BlobID",
+          "FinancialPeriodID"
         ],
         "type": "object",
         "properties": {
@@ -49282,10 +49334,10 @@
       },
       "EVA.Core.CompositeUserTask.Services.StartCompositeUserTaskResponse_CompositeUserTaskSubTask": {
         "required": [
-          "IsCompleted",
+          "Sequence",
           "Type",
           "ID",
-          "Sequence",
+          "IsCompleted",
           "IsActive"
         ],
         "type": "object",
@@ -49432,9 +49484,9 @@
       },
       "EVA.Core.CustomerInteractions.CustomerInteractionWorkSet": {
         "required": [
-          "CustomerID",
+          "TypeID",
           "UserTaskID",
-          "TypeID"
+          "CustomerID"
         ],
         "type": "object",
         "properties": {
@@ -49482,10 +49534,10 @@
       },
       "EVA.Core.CustomFields.CustomFieldResponse": {
         "required": [
-          "IsArray",
-          "IsEditableByUser",
+          "DataTypeID",
           "CustomFieldID",
-          "DataTypeID"
+          "IsEditableByUser",
+          "IsArray"
         ],
         "type": "object",
         "properties": {
@@ -49631,9 +49683,9 @@
       },
       "EVA.Core.DataModels.CustomFieldFilterConditionResult": {
         "required": [
-          "CurrentValuePresent",
           "CustomFieldId",
-          "Matches"
+          "Matches",
+          "CurrentValuePresent"
         ],
         "type": "object",
         "properties": {
@@ -50162,8 +50214,8 @@
       },
       "EVA.Core.DataModels.ZonedCycleCountScheduleProductSearchFilterModel": {
         "required": [
-          "ExactMatch",
-          "Negation"
+          "Negation",
+          "ExactMatch"
         ],
         "type": "object",
         "properties": {
@@ -50208,10 +50260,10 @@
       },
       "EVA.Core.Dates.RegularOpeningHours": {
         "required": [
-          "DayOfWeek",
-          "Closed",
           "ClosingTime",
-          "OpeningTime"
+          "Closed",
+          "OpeningTime",
+          "DayOfWeek"
         ],
         "type": "object",
         "properties": {
@@ -50232,11 +50284,11 @@
       },
       "EVA.Core.Dates.WeekOpeningsDto": {
         "required": [
-          "DayOfWeek",
-          "Closed",
           "ClosingTime",
+          "Closed",
           "Date",
-          "OpeningTime"
+          "OpeningTime",
+          "DayOfWeek"
         ],
         "type": "object",
         "properties": {
@@ -50265,8 +50317,8 @@
       },
       "EVA.Core.Devices.Dto.DeviceDto": {
         "required": [
-          "ID",
-          "TypeID"
+          "TypeID",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -50321,14 +50373,14 @@
       },
       "EVA.Core.Devices.Dto.StationDto": {
         "required": [
-          "HasCustomerFacingDisplay",
-          "ID",
-          "IsPointOfSale",
-          "HasThermalPrinterDevice",
-          "OrganizationUnitID",
           "HasPrinterDevice",
-          "HasPinDevice",
-          "HasCashDrawerDevice"
+          "OrganizationUnitID",
+          "HasCashDrawerDevice",
+          "ID",
+          "HasCustomerFacingDisplay",
+          "HasThermalPrinterDevice",
+          "IsPointOfSale",
+          "HasPinDevice"
         ],
         "type": "object",
         "properties": {
@@ -50440,11 +50492,11 @@
       },
       "EVA.Core.Devices.ListDevicesModel": {
         "required": [
-          "Type",
-          "CashLimit",
-          "ID",
+          "TypeID",
           "Name",
-          "TypeID"
+          "Type",
+          "ID",
+          "CashLimit"
         ],
         "type": "object",
         "properties": {
@@ -50528,8 +50580,8 @@
       },
       "EVA.Core.Devices.ListDevicesModel_PrinterTypeModel": {
         "required": [
-          "ID",
-          "PaperWidth"
+          "PaperWidth",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -50607,8 +50659,8 @@
       },
       "EVA.Core.Discounts.Common.PotentialDiscountDto": {
         "required": [
-          "IsAlreadyApplied",
-          "ID"
+          "ID",
+          "IsAlreadyApplied"
         ],
         "type": "object",
         "properties": {
@@ -50647,14 +50699,14 @@
       },
       "EVA.Core.Discounts.Common.PrefigureDiscountResult": {
         "required": [
-          "CouponPresent",
-          "IsAlreadyApplied",
-          "RequiresCustomerCustomData",
-          "RequiresMinimumAmount",
-          "DiscountID",
-          "RequirementsMet",
           "RequiresCustomer",
-          "RequiresCoupon"
+          "RequiresMinimumAmount",
+          "RequirementsMet",
+          "RequiresCustomerCustomData",
+          "DiscountID",
+          "IsAlreadyApplied",
+          "RequiresCoupon",
+          "CouponPresent"
         ],
         "type": "object",
         "properties": {
@@ -50717,10 +50769,10 @@
       },
       "EVA.Core.Discounts.Common.PrefigureDiscountResult_DataResult": {
         "required": [
-          "RequiresCustomerCustomData",
+          "RequiresCustomer",
           "RequiresMinimumAmount",
           "RequirementsMet",
-          "RequiresCustomer"
+          "RequiresCustomerCustomData"
         ],
         "type": "object",
         "properties": {
@@ -50804,8 +50856,8 @@
       },
       "EVA.Core.Discounts.Common.PrefigureDiscountResult_ProductWithAmount": {
         "required": [
-          "ProductID",
-          "Amount"
+          "Amount",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -50820,8 +50872,8 @@
       },
       "EVA.Core.Discounts.Common.PrefigureDiscountResult_ProductWithQuantity": {
         "required": [
-          "ProductID",
-          "Quantity"
+          "Quantity",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -50959,10 +51011,10 @@
       },
       "EVA.Core.Discounts.GetOrderDiscountInfoResponse_DiscountInfo": {
         "required": [
-          "NeedsReason",
-          "IsDisabled",
+          "TotalDiscountAmount",
           "ID",
-          "TotalDiscountAmount"
+          "NeedsReason",
+          "IsDisabled"
         ],
         "type": "object",
         "properties": {
@@ -51024,8 +51076,8 @@
       },
       "EVA.Core.Discounts.GetOrderDiscountInfoResponse_ManualInfo": {
         "required": [
-          "DiscountOrderLineID",
-          "Amount"
+          "Amount",
+          "DiscountOrderLineID"
         ],
         "type": "object",
         "properties": {
@@ -51069,8 +51121,8 @@
       },
       "EVA.Core.Discounts.GetOrderDiscountInfoResponse_OrderLineDiscountDetail": {
         "required": [
-          "DiscountID",
-          "DiscountAmount"
+          "DiscountAmount",
+          "DiscountID"
         ],
         "type": "object",
         "properties": {
@@ -51332,8 +51384,8 @@
       "EVA.Core.Discounts.ListManualDiscountsResponse_ManualDiscountDto": {
         "required": [
           "Type",
-          "NeedsReason",
-          "ID"
+          "ID",
+          "NeedsReason"
         ],
         "type": "object",
         "properties": {
@@ -51372,11 +51424,11 @@
       },
       "EVA.Core.Discounts.PickProductTierOptions": {
         "required": [
-          "IsCurrentTier",
           "ID",
-          "Prompt",
           "From",
-          "Difference"
+          "Prompt",
+          "Difference",
+          "IsCurrentTier"
         ],
         "type": "object",
         "properties": {
@@ -51516,8 +51568,8 @@
       },
       "EVA.Core.Discounts.V2.ProductSet_Filter": {
         "required": [
-          "ExactMatch",
-          "Exclude"
+          "Exclude",
+          "ExactMatch"
         ],
         "type": "object",
         "properties": {
@@ -51795,10 +51847,10 @@
       },
       "EVA.Core.EventExportConfigurations.CreateEventExportConfiguration": {
         "required": [
+          "Name",
           "Status",
           "Endpoint",
-          "Config",
-          "Name"
+          "Config"
         ],
         "type": "object",
         "properties": {
@@ -51985,8 +52037,8 @@
       },
       "EVA.Core.EventExportConfigurations.RotateEventExportConfigurationKey": {
         "required": [
-          "ID",
-          "KeyID"
+          "KeyID",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -52001,11 +52053,11 @@
       },
       "EVA.Core.EventExportConfigurations.UpdateEventExportConfiguration": {
         "required": [
-          "Status",
+          "Name",
           "ID",
+          "Status",
           "Endpoint",
-          "Config",
-          "Name"
+          "Config"
         ],
         "type": "object",
         "properties": {
@@ -52182,9 +52234,9 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_AuditingDocument": {
         "required": [
-          "Version",
           "CumulativeTotalTaxes",
-          "ChainID"
+          "ChainID",
+          "Version"
         ],
         "type": "object",
         "properties": {
@@ -52230,9 +52282,9 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_CashCorrectionDocument": {
         "required": [
-          "FinancialPeriodID",
           "CreatedByID",
           "ID",
+          "FinancialPeriodID",
           "Amount"
         ],
         "type": "object",
@@ -52334,10 +52386,10 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_CashExpenseDocument": {
         "required": [
-          "TaxRate",
           "ID",
-          "TaxCodeID",
-          "Amount"
+          "TaxRate",
+          "Amount",
+          "TaxCodeID"
         ],
         "type": "object",
         "properties": {
@@ -52393,11 +52445,11 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_CashMovementDocument": {
         "required": [
-          "FinancialPeriodID",
           "ID",
+          "FinancialPeriodID",
+          "Amount",
           "DestinationDeviceID",
-          "SourceDeviceID",
-          "Amount"
+          "SourceDeviceID"
         ],
         "type": "object",
         "properties": {
@@ -52427,8 +52479,8 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_CurrentUserDocument": {
         "required": [
-          "ID",
           "OrganizationUnitID",
+          "ID",
           "ApplicationID"
         ],
         "type": "object",
@@ -52474,8 +52526,8 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_DailyTotalDocument": {
         "required": [
-          "ExpectedTotal",
-          "ExternalTotal"
+          "ExternalTotal",
+          "ExpectedTotal"
         ],
         "type": "object",
         "properties": {
@@ -52699,8 +52751,8 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_MessageTemplateDocument": {
         "required": [
-          "DestinationID",
-          "ID"
+          "ID",
+          "DestinationID"
         ],
         "type": "object",
         "properties": {
@@ -52727,12 +52779,12 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_OrderDocument": {
         "required": [
-          "HasReturns",
-          "IsCompleted",
           "IsInvoiced",
+          "IsShipped",
           "ID",
+          "IsCompleted",
           "IsPaid",
-          "IsShipped"
+          "HasReturns"
         ],
         "type": "object",
         "properties": {
@@ -52780,12 +52832,12 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_OrderLineDocument": {
         "required": [
-          "QuantityShipped",
-          "TotalQuantityToShip",
-          "TaxRate",
           "ID",
-          "UnitPrice",
-          "QuantityInvoiced"
+          "TaxRate",
+          "TotalQuantityToShip",
+          "QuantityInvoiced",
+          "QuantityShipped",
+          "UnitPrice"
         ],
         "type": "object",
         "properties": {
@@ -52837,8 +52889,8 @@
       "EVA.Core.EventLedger.EventLedgerDocument_PaymentTransactionDocument": {
         "required": [
           "ID",
-          "PaidAmount",
-          "Amount"
+          "Amount",
+          "PaidAmount"
         ],
         "type": "object",
         "properties": {
@@ -52922,20 +52974,20 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_TerminalReportDocument": {
         "required": [
-          "CashDrawerOpenings",
-          "ReceiptsPrinted",
-          "Change",
-          "GrandTotal",
-          "GrandTotalCash",
-          "TotalReturnsAmount",
-          "TotalCopyReceiptsAmount",
-          "Date",
+          "GrandTotalNet",
+          "DiscountCount",
           "TotalDiscounts",
           "CopyReceiptsPrinted",
+          "GrandTotal",
+          "GrandTotalCash",
           "GrandTotalReturns",
-          "ReturnCount",
-          "DiscountCount",
-          "GrandTotalNet"
+          "TotalReturnsAmount",
+          "Change",
+          "Date",
+          "CashDrawerOpenings",
+          "ReceiptsPrinted",
+          "TotalCopyReceiptsAmount",
+          "ReturnCount"
         ],
         "type": "object",
         "properties": {
@@ -53035,8 +53087,8 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_TerminalReportDocument_Payment": {
         "required": [
-          "Count",
-          "Amount"
+          "Amount",
+          "Count"
         ],
         "type": "object",
         "properties": {
@@ -53072,9 +53124,9 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_TerminalReportDocument_PaymentPerUser": {
         "required": [
-          "Count",
           "UserID",
-          "Amount"
+          "Amount",
+          "Count"
         ],
         "type": "object",
         "properties": {
@@ -53098,8 +53150,8 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_TerminalReportDocument_ProductGroup": {
         "required": [
-          "Count",
-          "Amount"
+          "Amount",
+          "Count"
         ],
         "type": "object",
         "properties": {
@@ -53117,9 +53169,9 @@
       },
       "EVA.Core.EventLedger.EventLedgerDocument_TerminalReportDocument_Tax": {
         "required": [
-          "Rate",
+          "Amount",
           "Base",
-          "Amount"
+          "Rate"
         ],
         "type": "object",
         "properties": {
@@ -53390,11 +53442,11 @@
       },
       "EVA.Core.Finance.Cash.CashJournalDetailsModel": {
         "required": [
-          "OpeningAmount",
-          "ID",
           "ExpectedClosingAmount",
-          "OpenCashJournalsCount",
-          "OpeningTime"
+          "ID",
+          "OpeningAmount",
+          "OpeningTime",
+          "OpenCashJournalsCount"
         ],
         "type": "object",
         "properties": {
@@ -53558,8 +53610,8 @@
       "EVA.Core.Finance.Cash.CashJournalDetailsModel_CashExpense": {
         "required": [
           "ID",
-          "CreationTime",
-          "Amount"
+          "Amount",
+          "CreationTime"
         ],
         "type": "object",
         "properties": {
@@ -53589,8 +53641,8 @@
       "EVA.Core.Finance.Cash.CashJournalDetailsModel_CashTransactionLedger": {
         "required": [
           "ID",
-          "CreationTime",
-          "Amount"
+          "Amount",
+          "CreationTime"
         ],
         "type": "object",
         "properties": {
@@ -53673,10 +53725,10 @@
       "EVA.Core.Finance.Cash.ListCashDepositsItem": {
         "required": [
           "ID",
-          "DeviceID",
+          "Amount",
           "CreationTime",
           "DeviceName",
-          "Amount"
+          "DeviceID"
         ],
         "type": "object",
         "properties": {
@@ -53747,11 +53799,11 @@
       },
       "EVA.Core.Finance.Cash.ListCashExpensesItem": {
         "required": [
-          "CashJournalID",
           "ID",
+          "CashJournalID",
+          "Amount",
           "CreationTime",
-          "CashTransactionLedgerID",
-          "Amount"
+          "CashTransactionLedgerID"
         ],
         "type": "object",
         "properties": {
@@ -53914,9 +53966,9 @@
         "required": [
           "PaymentTypeID",
           "ID",
+          "Amount",
           "CreationTime",
-          "DeviceTypeID",
-          "Amount"
+          "DeviceTypeID"
         ],
         "type": "object",
         "properties": {
@@ -54120,8 +54172,8 @@
       },
       "EVA.Core.Finance.CashExpenseTypeOrganizationUnitSet": {
         "required": [
-          "ID",
-          "Name"
+          "Name",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -54149,9 +54201,9 @@
       },
       "EVA.Core.Finance.CompleteCloseCashJournal": {
         "required": [
+          "ForceValidation",
           "PaymentTypeID",
           "CurrencyID",
-          "ForceValidation",
           "DeviceID",
           "TotalAmount"
         ],
@@ -54204,8 +54256,8 @@
       },
       "EVA.Core.Finance.CompleteCloseCashJournal_CashCorrection": {
         "required": [
-          "Description",
-          "Amount"
+          "Amount",
+          "Description"
         ],
         "type": "object",
         "properties": {
@@ -54223,9 +54275,9 @@
       },
       "EVA.Core.Finance.CompleteOpenCashJournal": {
         "required": [
+          "ForceValidation",
           "PaymentTypeID",
           "CurrencyID",
-          "ForceValidation",
           "DeviceID",
           "TotalAmount"
         ],
@@ -54272,8 +54324,8 @@
       },
       "EVA.Core.Finance.CompleteOpenCashJournal_CashCorrection": {
         "required": [
-          "Description",
-          "Amount"
+          "Amount",
+          "Description"
         ],
         "type": "object",
         "properties": {
@@ -54291,13 +54343,13 @@
       },
       "EVA.Core.Finance.CreateCashDeposit": {
         "required": [
-          "PaymentTypeID",
-          "DelayDropOff",
-          "CurrencyID",
-          "BankNotes",
-          "DeviceID",
           "Coins",
-          "TotalAmount"
+          "DelayDropOff",
+          "PaymentTypeID",
+          "CurrencyID",
+          "DeviceID",
+          "TotalAmount",
+          "BankNotes"
         ],
         "type": "object",
         "properties": {
@@ -54343,11 +54395,11 @@
       },
       "EVA.Core.Finance.CreateCashExpense": {
         "required": [
-          "TaxCodeID",
-          "Description",
-          "DeviceID",
           "TypeID",
-          "Amount"
+          "Amount",
+          "Description",
+          "TaxCodeID",
+          "DeviceID"
         ],
         "type": "object",
         "properties": {
@@ -54381,8 +54433,8 @@
       },
       "EVA.Core.Finance.CreateCashExpenseType": {
         "required": [
-          "AmountType",
-          "Name"
+          "Name",
+          "AmountType"
         ],
         "type": "object",
         "properties": {
@@ -54490,8 +54542,8 @@
       },
       "EVA.Core.Finance.Dto.FinancialPeriodDto": {
         "required": [
-          "ID",
-          "OrganizationUnitID"
+          "OrganizationUnitID",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -54529,11 +54581,11 @@
       },
       "EVA.Core.Finance.Dto.GeneralLedgerDto": {
         "required": [
-          "ID",
           "OrganizationUnitID",
-          "AccountingID",
+          "ID",
+          "Amount",
           "CreationTime",
-          "Amount"
+          "AccountingID"
         ],
         "type": "object",
         "properties": {
@@ -54588,10 +54640,10 @@
       },
       "EVA.Core.Finance.Dto.TaxAmount": {
         "required": [
-          "Rate",
-          "Total",
+          "Amount",
           "Base",
-          "Amount"
+          "Total",
+          "Rate"
         ],
         "type": "object",
         "properties": {
@@ -54636,12 +54688,12 @@
       },
       "EVA.Core.Finance.FinancialPeriodAuditDto": {
         "required": [
-          "CreatedByID",
-          "ID",
-          "IsPreview",
           "StatusID",
+          "CreatedByID",
           "OrganizationUnitID",
-          "CreationTime"
+          "ID",
+          "CreationTime",
+          "IsPreview"
         ],
         "type": "object",
         "properties": {
@@ -54725,9 +54777,9 @@
       },
       "EVA.Core.Finance.GetAvailableCashAmountForDeviceResponse": {
         "required": [
-          "CurrencyID",
+          "ValidateSafeBalance",
           "Amount",
-          "ValidateSafeBalance"
+          "CurrencyID"
         ],
         "type": "object",
         "properties": {
@@ -54763,10 +54815,10 @@
       },
       "EVA.Core.Finance.GetCashCorrectionResponse": {
         "required": [
-          "FinancialPeriodID",
           "ID",
-          "CreationTime",
-          "Amount"
+          "FinancialPeriodID",
+          "Amount",
+          "CreationTime"
         ],
         "type": "object",
         "properties": {
@@ -54870,8 +54922,8 @@
       },
       "EVA.Core.Finance.GetCashDepositResponse_CashDepositSummary": {
         "required": [
-          "CreationTime",
-          "Amount"
+          "Amount",
+          "CreationTime"
         ],
         "type": "object",
         "properties": {
@@ -54908,11 +54960,11 @@
       },
       "EVA.Core.Finance.GetCashExpenseResponse": {
         "required": [
-          "CashJournalID",
           "ID",
+          "CashJournalID",
+          "Amount",
           "CreationTime",
-          "CashTransactionLedgerID",
-          "Amount"
+          "CashTransactionLedgerID"
         ],
         "type": "object",
         "properties": {
@@ -55033,9 +55085,9 @@
       },
       "EVA.Core.Finance.GetCashExpenseTypeByIDResponse": {
         "required": [
-          "AmountType",
+          "Name",
           "ID",
-          "Name"
+          "AmountType"
         ],
         "type": "object",
         "properties": {
@@ -55107,9 +55159,9 @@
       },
       "EVA.Core.Finance.GetCashExpenseTypesResponse_CashExpenseTypeDto": {
         "required": [
-          "AmountType",
+          "Name",
           "ID",
-          "Name"
+          "AmountType"
         ],
         "type": "object",
         "properties": {
@@ -55208,11 +55260,11 @@
       },
       "EVA.Core.Finance.GetCashMovementResponse": {
         "required": [
-          "FinancialPeriodID",
           "ID",
+          "FinancialPeriodID",
+          "Amount",
           "DestinationDeviceID",
-          "SourceDeviceID",
-          "Amount"
+          "SourceDeviceID"
         ],
         "type": "object",
         "properties": {
@@ -55375,8 +55427,8 @@
       },
       "EVA.Core.Finance.GetCurrentCashJournalsResponse_PreviousCashJournal": {
         "required": [
-          "OpeningAmount",
           "ID",
+          "OpeningAmount",
           "OpeningTime"
         ],
         "type": "object",
@@ -55602,11 +55654,11 @@
       },
       "EVA.Core.Finance.GetFinancialPeriodClosingStockInformationResponse_PendingShipmentLine": {
         "required": [
-          "QuantityShipped",
+          "ShipmentLineID",
           "ProductID",
-          "ShipmentID",
           "QuantityDelivered",
-          "ShipmentLineID"
+          "QuantityShipped",
+          "ShipmentID"
         ],
         "type": "object",
         "properties": {
@@ -55715,10 +55767,10 @@
       },
       "EVA.Core.Finance.GetFinancialPeriodInformationResponse": {
         "required": [
-          "FinancialPeriodID",
           "TotalRevenue",
-          "ShouldHaveBeenClosed",
-          "CreationTime"
+          "FinancialPeriodID",
+          "CreationTime",
+          "ShouldHaveBeenClosed"
         ],
         "type": "object",
         "properties": {
@@ -55771,8 +55823,8 @@
       },
       "EVA.Core.Finance.GetFinancialPeriodInformationResponse_FinancialPeriodOrganizationUnit": {
         "required": [
-          "ID",
-          "Name"
+          "Name",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -55952,11 +56004,11 @@
       },
       "EVA.Core.Finance.ListFinancialEventRow": {
         "required": [
-          "FinancialPeriodID",
-          "ID",
+          "TypeID",
           "StatusID",
           "OrganizationUnitID",
-          "TypeID",
+          "ID",
+          "FinancialPeriodID",
           "Amount"
         ],
         "type": "object",
@@ -56136,8 +56188,8 @@
       },
       "EVA.Core.Finance.ListFinancialPeriodExports2Response_FinancialPeriodExport": {
         "required": [
-          "FinancialPeriodID",
           "ID",
+          "FinancialPeriodID",
           "CreationTime"
         ],
         "type": "object",
@@ -56266,11 +56318,11 @@
       },
       "EVA.Core.Finance.ListGeneralLedgerEntriesResponse_GeneralLedgerEntry": {
         "required": [
-          "FinancialPeriodID",
-          "ID",
           "OrganizationUnitID",
-          "CreationTime",
-          "Amount"
+          "ID",
+          "FinancialPeriodID",
+          "Amount",
+          "CreationTime"
         ],
         "type": "object",
         "properties": {
@@ -56424,11 +56476,11 @@
       },
       "EVA.Core.Finance.ListGeneralLedgersResponse_GeneralLedger": {
         "required": [
-          "FinancialPeriodID",
-          "ID",
           "OrganizationUnitID",
-          "CreationTime",
-          "Amount"
+          "ID",
+          "FinancialPeriodID",
+          "Amount",
+          "CreationTime"
         ],
         "type": "object",
         "properties": {
@@ -56553,12 +56605,12 @@
       },
       "EVA.Core.Finance.Periods.CashCorrectionDto": {
         "required": [
-          "CashJournalID",
           "ID",
-          "DeviceID",
+          "CashJournalID",
+          "Amount",
           "CreationTime",
-          "DeviceTypeID",
-          "Amount"
+          "DeviceID",
+          "DeviceTypeID"
         ],
         "type": "object",
         "properties": {
@@ -56604,8 +56656,8 @@
       },
       "EVA.Core.Finance.Periods.CashDepositDto": {
         "required": [
-          "CashJournalID",
           "ID",
+          "CashJournalID",
           "Total"
         ],
         "type": "object",
@@ -56652,13 +56704,13 @@
       },
       "EVA.Core.Finance.Periods.CashJournalDto": {
         "required": [
-          "CreatedByFullName",
-          "PaymentTypeID",
-          "OpeningAmount",
           "CreatedByID",
+          "PaymentTypeID",
           "ID",
-          "DeviceID",
+          "OpeningAmount",
+          "CreatedByFullName",
           "DeviceName",
+          "DeviceID",
           "OpeningTime"
         ],
         "type": "object",
@@ -56719,11 +56771,11 @@
       },
       "EVA.Core.Finance.Periods.DeviceWithCashJournals": {
         "required": [
-          "CashJournals",
-          "Status",
           "ID",
           "DeviceTypeName",
+          "Status",
           "DeviceName",
+          "CashJournals",
           "DeviceTypeID"
         ],
         "type": "object",
@@ -56760,12 +56812,12 @@
       },
       "EVA.Core.Finance.Periods.ExpenseDto": {
         "required": [
-          "CashJournalID",
-          "TaxRate",
-          "ID",
-          "CreationTime",
           "TypeID",
-          "Amount"
+          "ID",
+          "TaxRate",
+          "CashJournalID",
+          "Amount",
+          "CreationTime"
         ],
         "type": "object",
         "properties": {
@@ -56857,14 +56909,14 @@
       },
       "EVA.Core.Finance.Periods.FinancialPeriodDetailsDto": {
         "required": [
-          "TotalNonSystemPayments",
           "TotalRevenue",
           "TotalAmountOfExpenses",
+          "TotalAmountOfCorrections",
           "AmountOfCashDifference",
           "AmountOfOpeningDifference",
-          "TotalAmountOfCorrections",
           "CashDepositTotal",
           "TotalSystemPayments",
+          "TotalNonSystemPayments",
           "AmountOfRoundingDifference"
         ],
         "type": "object",
@@ -56963,8 +57015,8 @@
       },
       "EVA.Core.Finance.Periods.PaymentTotalPerPaymentTypeDto": {
         "required": [
-          "Total",
-          "IsSystem"
+          "IsSystem",
+          "Total"
         ],
         "type": "object",
         "properties": {
@@ -57249,8 +57301,8 @@
       },
       "EVA.Core.Finance.StartOpenCashJournalResponse_CashJournal": {
         "required": [
-          "OpeningAmount",
           "ID",
+          "OpeningAmount",
           "OpeningTime"
         ],
         "type": "object",
@@ -57317,8 +57369,8 @@
       },
       "EVA.Core.Finance.UpdateCashExpenseType": {
         "required": [
-          "AmountType",
-          "ID"
+          "ID",
+          "AmountType"
         ],
         "type": "object",
         "properties": {
@@ -57478,8 +57530,8 @@
       },
       "EVA.Core.Fulfillment.GetOrderFulfillmentOptionsResponse_AvailableFulfillmentOptionsForOrder_SameDayDeliveryOption": {
         "required": [
-          "Price",
-          "IsAvailable"
+          "IsAvailable",
+          "Price"
         ],
         "type": "object",
         "properties": {
@@ -57595,8 +57647,8 @@
         "required": [
           "ID",
           "CreationTime",
-          "TotalLineCount",
-          "OrderID"
+          "OrderID",
+          "TotalLineCount"
         ],
         "type": "object",
         "properties": {
@@ -57867,8 +57919,8 @@
       },
       "EVA.Core.Fulfillment.ShipOrderFulfillment": {
         "required": [
-          "FinalShipment",
-          "OrderFulfillmentID"
+          "OrderFulfillmentID",
+          "FinalShipment"
         ],
         "type": "object",
         "properties": {
@@ -57972,10 +58024,10 @@
       },
       "EVA.Core.FullStockCountServices.SetExternalFullStockCountResult": {
         "required": [
-          "FullStockCountID",
-          "CountCompletionTime",
           "IsDeltaBatch",
-          "CountResults"
+          "CountCompletionTime",
+          "CountResults",
+          "FullStockCountID"
         ],
         "type": "object",
         "properties": {
@@ -58026,8 +58078,8 @@
       },
       "EVA.Core.FullStockCountServices.UploadExternalFullStockCountResult": {
         "required": [
-          "FullStockCountID",
           "CountCompletionTime",
+          "FullStockCountID",
           "Data"
         ],
         "type": "object",
@@ -58051,9 +58103,9 @@
       },
       "EVA.Core.GiftCards.AddDigitalGiftCardToOrder": {
         "required": [
+          "Amount",
           "Data",
-          "OrderID",
-          "Amount"
+          "OrderID"
         ],
         "type": "object",
         "properties": {
@@ -58324,10 +58376,10 @@
       },
       "EVA.Core.GiftCards.GiftCard": {
         "required": [
-          "IsCleared",
-          "IsEmpty",
+          "Amount",
           "IsAvailable",
-          "Amount"
+          "IsEmpty",
+          "IsCleared"
         ],
         "type": "object",
         "properties": {
@@ -58461,8 +58513,8 @@
       },
       "EVA.Core.GiftCards.GiftCardTheme": {
         "required": [
-          "ImageHeight",
-          "ImageWidth"
+          "ImageWidth",
+          "ImageHeight"
         ],
         "type": "object",
         "properties": {
@@ -58588,10 +58640,10 @@
       },
       "EVA.Core.GiftWrapping.GiftWrappingLineAvailabilityDto": {
         "required": [
-          "QuantityAvailable",
-          "QuantityWrapped",
           "TotalQuantityWrappable",
-          "OrderLineID"
+          "QuantityWrapped",
+          "OrderLineID",
+          "QuantityAvailable"
         ],
         "type": "object",
         "properties": {
@@ -58658,10 +58710,10 @@
       },
       "EVA.Core.Infrastructure.GetDeviceResponse_DeviceDto": {
         "required": [
-          "Type",
-          "ID",
+          "TypeID",
           "Name",
-          "TypeID"
+          "Type",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -58724,8 +58776,8 @@
       },
       "EVA.Core.Infrastructure.GetDeviceResponse_DeviceDto_PrinterTypeModel": {
         "required": [
-          "ID",
-          "PaperWidth"
+          "PaperWidth",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -58964,8 +59016,8 @@
       },
       "EVA.Core.Inquiries.GetInquiryResponse_InquiryData": {
         "required": [
-          "ID",
           "Name",
+          "ID",
           "Items"
         ],
         "type": "object",
@@ -58990,10 +59042,10 @@
       },
       "EVA.Core.Inquiries.GetInquiryResponse_InquiryItemData": {
         "required": [
-          "CustomField",
-          "ID",
-          "Name",
           "Sequence",
+          "Name",
+          "ID",
+          "CustomField",
           "Position"
         ],
         "type": "object",
@@ -59021,8 +59073,8 @@
       },
       "EVA.Core.Inquiries.GetInquiryResponse_InquiryItemData_CustomFieldData": {
         "required": [
-          "ID",
           "Name",
+          "ID",
           "DataType"
         ],
         "type": "object",
@@ -59044,8 +59096,8 @@
       },
       "EVA.Core.Inquiries.SubmitInquiry": {
         "required": [
-          "InquiryID",
-          "Items"
+          "Items",
+          "InquiryID"
         ],
         "type": "object",
         "properties": {
@@ -59213,8 +59265,8 @@
       },
       "EVA.Core.Invoices.CreateInvoice": {
         "required": [
-          "InvoiceDate",
-          "TaxReverseCharge"
+          "TaxReverseCharge",
+          "InvoiceDate"
         ],
         "type": "object",
         "properties": {
@@ -59271,10 +59323,10 @@
       },
       "EVA.Core.Invoices.CreateInvoiceAdditionalAmount": {
         "required": [
-          "OriginalAmount",
           "TypeID",
-          "InvoiceID",
-          "Amount"
+          "Amount",
+          "OriginalAmount",
+          "InvoiceID"
         ],
         "type": "object",
         "properties": {
@@ -59355,9 +59407,9 @@
       },
       "EVA.Core.Invoices.CreateInvoiceDispute": {
         "required": [
+          "Amount",
           "ReasonID",
-          "InvoiceID",
-          "Amount"
+          "InvoiceID"
         ],
         "type": "object",
         "properties": {
@@ -59434,8 +59486,8 @@
       },
       "EVA.Core.Invoices.CreateInvoiceDisputeResolveAction": {
         "required": [
-          "InvoiceDisputeID",
-          "Amount"
+          "Amount",
+          "InvoiceDisputeID"
         ],
         "type": "object",
         "properties": {
@@ -59585,8 +59637,8 @@
       },
       "EVA.Core.Invoices.CreateInvoicesForOrder_OrderLineToInvoice": {
         "required": [
-          "Quantity",
-          "ID"
+          "ID",
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -59619,9 +59671,9 @@
       },
       "EVA.Core.Invoices.CreateInvoicesForOrderResponse_Invoice": {
         "required": [
-          "ID",
+          "TypeID",
           "StatusID",
-          "TypeID"
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -59642,8 +59694,8 @@
       },
       "EVA.Core.Invoices.CreateManualInvoice": {
         "required": [
-          "Number",
           "OrganizationUnitID",
+          "Number",
           "InvoiceDate"
         ],
         "type": "object",
@@ -59693,9 +59745,9 @@
       },
       "EVA.Core.Invoices.CreateOrUpdateInvoiceCompanyMapping": {
         "required": [
+          "VatNumber",
           "CountryID",
-          "CompanyID",
-          "VatNumber"
+          "CompanyID"
         ],
         "type": "object",
         "properties": {
@@ -59878,16 +59930,16 @@
       },
       "EVA.Core.Invoices.GetInvoiceAdditionalAmountsForInvoiceResponse_InvoiceAdditionalAmountDto": {
         "required": [
-          "TaxCodeName",
-          "TaxRate",
-          "ID",
-          "TaxCodeID",
-          "OriginalAmount",
-          "OriginalAmountInTax",
-          "AmountInTax",
           "TypeID",
+          "OriginalAmountInTax",
+          "ID",
           "TypeName",
-          "Amount"
+          "AmountInTax",
+          "TaxRate",
+          "Amount",
+          "TaxCodeName",
+          "TaxCodeID",
+          "OriginalAmount"
         ],
         "type": "object",
         "properties": {
@@ -59938,8 +59990,8 @@
       },
       "EVA.Core.Invoices.GetInvoiceAdditionalAmountTypeByIDResponse": {
         "required": [
-          "ID",
-          "Name"
+          "Name",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -59988,8 +60040,8 @@
       },
       "EVA.Core.Invoices.GetInvoiceAdditionalAmountTypesResponse_InvoiceAdditionalAmountTypeDto": {
         "required": [
-          "ID",
-          "Name"
+          "Name",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -60022,9 +60074,9 @@
       },
       "EVA.Core.Invoices.GetInvoiceDisputeReasonByIDResponse": {
         "required": [
-          "ID",
           "Name",
-          "AutoResolve"
+          "AutoResolve",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -60076,9 +60128,9 @@
       },
       "EVA.Core.Invoices.GetInvoiceDisputeReasonsResponse_InvoiceDisputeReasonDto": {
         "required": [
-          "ID",
           "Name",
-          "AutoResolve"
+          "AutoResolve",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -60114,8 +60166,8 @@
       },
       "EVA.Core.Invoices.GetInvoiceDisputesForInvoiceResponse": {
         "required": [
-          "InvoiceDisputes",
-          "TotalDisputedAmount"
+          "TotalDisputedAmount",
+          "InvoiceDisputes"
         ],
         "type": "object",
         "properties": {
@@ -60140,13 +60192,13 @@
       "EVA.Core.Invoices.GetInvoiceDisputesForInvoiceResponse_InvoiceDisputeDto": {
         "required": [
           "Type",
-          "IsResolved",
-          "ReasonName",
           "ResolveActions",
           "ID",
+          "Amount",
+          "ReasonName",
           "ResolvedAmount",
           "ReasonID",
-          "Amount"
+          "IsResolved"
         ],
         "type": "object",
         "properties": {
@@ -60348,8 +60400,8 @@
       },
       "EVA.Core.Invoices.GetInvoicePaymentsResponse_InvoicePayment": {
         "required": [
-          "PaymentTransactionID",
-          "Amount"
+          "Amount",
+          "PaymentTransactionID"
         ],
         "type": "object",
         "properties": {
@@ -60568,9 +60620,9 @@
       },
       "EVA.Core.Invoices.ListInvoiceLedgerResponse_InvoiceLedgerDto": {
         "required": [
+          "TypeID",
           "CreatedByID",
           "CreationTime",
-          "TypeID",
           "InvoiceID"
         ],
         "type": "object",
@@ -60662,16 +60714,16 @@
       },
       "EVA.Core.Invoices.ListShipmentLinesToInvoiceResponse_Model": {
         "required": [
-          "QuantityShipped",
-          "ProductID",
-          "TotalAmountDelivered",
-          "TaxRate",
           "ID",
-          "QuantityDelivered",
-          "QuantityAvailableForInvoice",
-          "UnitPrice",
+          "TaxRate",
           "QuantityInvoiced",
-          "TotalAmountInvoiced"
+          "ProductID",
+          "QuantityDelivered",
+          "QuantityShipped",
+          "TotalAmountDelivered",
+          "UnitPrice",
+          "TotalAmountInvoiced",
+          "QuantityAvailableForInvoice"
         ],
         "type": "object",
         "properties": {
@@ -60749,12 +60801,12 @@
       },
       "EVA.Core.Invoices.ListShipmentsToInvoiceResponse_Model": {
         "required": [
+          "TotalQuantityInvoiced",
+          "ID",
           "ShipmentDate",
           "TotalAmountReceived",
-          "ID",
-          "TotalQuantityReceived",
-          "TotalQuantityInvoiced",
-          "TotalAmountInvoiced"
+          "TotalAmountInvoiced",
+          "TotalQuantityReceived"
         ],
         "type": "object",
         "properties": {
@@ -60824,8 +60876,8 @@
       "EVA.Core.Invoices.ManualLine": {
         "required": [
           "TotalAmountInTax",
-          "Quantity",
-          "TaxRate"
+          "TaxRate",
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -60865,9 +60917,9 @@
       },
       "EVA.Core.Invoices.UpdateInvoice": {
         "required": [
+          "TaxReverseCharge",
           "ID",
-          "InvoiceDate",
-          "TaxReverseCharge"
+          "InvoiceDate"
         ],
         "type": "object",
         "properties": {
@@ -60921,10 +60973,10 @@
       },
       "EVA.Core.Invoices.UpdateInvoiceAdditionalAmount": {
         "required": [
-          "ID",
-          "OriginalAmount",
           "TypeID",
-          "Amount"
+          "ID",
+          "Amount",
+          "OriginalAmount"
         ],
         "type": "object",
         "properties": {
@@ -60996,8 +61048,8 @@
       },
       "EVA.Core.Invoices.UpdateInvoiceDisputeReason": {
         "required": [
-          "ID",
-          "AutoResolve"
+          "AutoResolve",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -61055,9 +61107,9 @@
       },
       "EVA.Core.Invoices.UpdateInvoiceLine": {
         "required": [
-          "Quantity",
-          "TaxRate",
           "InvoiceLineID",
+          "TaxRate",
+          "Quantity",
           "UnitPrice"
         ],
         "type": "object",
@@ -61143,9 +61195,9 @@
       },
       "EVA.Core.Invoicing.DisputeAmounts": {
         "required": [
-          "Total",
+          "Expected",
           "Original",
-          "Expected"
+          "Total"
         ],
         "type": "object",
         "properties": {
@@ -61163,14 +61215,14 @@
       },
       "EVA.Core.Invoicing.InvoiceAdditionalAmountDto": {
         "required": [
-          "Type",
-          "TaxRate",
-          "ID",
-          "TaxCodeID",
-          "OriginalAmount",
           "OriginalAmountInTax",
+          "Type",
+          "ID",
           "AmountInTax",
-          "Amount"
+          "TaxRate",
+          "Amount",
+          "TaxCodeID",
+          "OriginalAmount"
         ],
         "type": "object",
         "properties": {
@@ -61222,8 +61274,8 @@
       },
       "EVA.Core.Invoicing.InvoiceBookStatusDto": {
         "required": [
-          "IsBooked",
-          "CanBeBooked"
+          "CanBeBooked",
+          "IsBooked"
         ],
         "type": "object",
         "properties": {
@@ -61242,14 +61294,14 @@
       "EVA.Core.Invoicing.InvoiceDetailLineDto": {
         "required": [
           "TotalAmountInTax",
-          "Quantity",
-          "TaxRate",
-          "ID",
           "DiscountAmount",
           "TotalAmountInvoicedInTax",
-          "TotalAmount",
+          "ID",
+          "TaxRate",
+          "Quantity",
           "UnitPrice",
-          "TotalAmountInvoiced"
+          "TotalAmountInvoiced",
+          "TotalAmount"
         ],
         "type": "object",
         "properties": {
@@ -61326,15 +61378,15 @@
       },
       "EVA.Core.Invoicing.InvoiceDetailsDto": {
         "required": [
-          "ID",
           "CreditorOrganizationUnitID",
-          "SubTotalAmount",
-          "CreditorOrganizationUnitCountryID",
+          "TotalQuantity",
           "TaxReverseCharge",
           "TotalLineAmountInvoicedInTax",
-          "TotalAmount",
-          "TotalQuantity",
-          "CreditorOrganizationUnitLanguageID"
+          "ID",
+          "CreditorOrganizationUnitCountryID",
+          "CreditorOrganizationUnitLanguageID",
+          "SubTotalAmount",
+          "TotalAmount"
         ],
         "type": "object",
         "properties": {
@@ -61532,9 +61584,9 @@
       },
       "EVA.Core.Invoicing.InvoiceDetailsShipmentLineDto": {
         "required": [
-          "TotalAmountDelivered",
           "ID",
-          "QuantityDelivered"
+          "QuantityDelivered",
+          "TotalAmountDelivered"
         ],
         "type": "object",
         "properties": {
@@ -61556,13 +61608,13 @@
       "EVA.Core.Invoicing.InvoiceDisputeDto": {
         "required": [
           "Type",
-          "IsResolved",
-          "ReasonName",
           "ResolveActions",
           "ID",
+          "Amount",
+          "ReasonName",
           "ResolvedAmount",
           "ReasonID",
-          "Amount"
+          "IsResolved"
         ],
         "type": "object",
         "properties": {
@@ -61626,9 +61678,9 @@
       },
       "EVA.Core.Invoicing.InvoiceDto": {
         "required": [
-          "ID",
           "CreditorOrganizationUnitID",
           "TaxReverseCharge",
+          "ID",
           "TotalAmount"
         ],
         "type": "object",
@@ -61705,9 +61757,9 @@
       },
       "EVA.Core.Invoicing.InvoiceShipment": {
         "required": [
+          "TotalQuantity",
           "ShipmentID",
-          "TotalAmount",
-          "TotalQuantity"
+          "TotalAmount"
         ],
         "type": "object",
         "properties": {
@@ -61853,10 +61905,10 @@
       },
       "EVA.Core.Invoicing.ListInvoicesDto": {
         "required": [
-          "HasUnresolvedDisputes",
-          "ID",
           "StatusID",
           "OrganizationUnitID",
+          "ID",
+          "HasUnresolvedDisputes",
           "TotalAmount"
         ],
         "type": "object",
@@ -61972,8 +62024,8 @@
       },
       "EVA.Core.Loyalty.LoyaltyBalance": {
         "required": [
-          "CurrencyValue",
-          "Points"
+          "Points",
+          "CurrencyValue"
         ],
         "type": "object",
         "properties": {
@@ -61991,8 +62043,8 @@
       },
       "EVA.Core.MagicLink.SendMagicLink": {
         "required": [
-          "EmailAddress",
-          "RedirectUrl"
+          "RedirectUrl",
+          "EmailAddress"
         ],
         "type": "object",
         "properties": {
@@ -62143,9 +62195,9 @@
       },
       "EVA.Core.nsOpeningHours.AttachOpeningHoursTemplateToOrganizationUnitSets": {
         "required": [
+          "OverrideIfOpeningHoursTypeAlreadyAttached",
           "OrganizationUnitSetIDs",
-          "OpeningHoursTemplateID",
-          "OverrideIfOpeningHoursTypeAlreadyAttached"
+          "OpeningHoursTemplateID"
         ],
         "type": "object",
         "properties": {
@@ -62202,8 +62254,8 @@
       },
       "EVA.Core.nsOpeningHours.CreateOpeningHoursTemplateResponse": {
         "required": [
-          "Successful",
-          "OpeningHoursTemplateID"
+          "OpeningHoursTemplateID",
+          "Successful"
         ],
         "type": "object",
         "properties": {
@@ -62388,8 +62440,8 @@
       },
       "EVA.Core.nsOpeningHours.GetOpeningHoursTemplateResponseByID": {
         "required": [
-          "OpeningHoursTypeID",
-          "IsImported"
+          "IsImported",
+          "OpeningHoursTypeID"
         ],
         "type": "object",
         "properties": {
@@ -62505,9 +62557,9 @@
       },
       "EVA.Core.nsOpeningHours.GetOrganizationUnitOpeningHoursForPeriod": {
         "required": [
-          "To",
           "OrganizationUnitID",
-          "From"
+          "From",
+          "To"
         ],
         "type": "object",
         "properties": {
@@ -62672,8 +62724,8 @@
       },
       "EVA.Core.nsOpeningHours.ListOpeningHoursTemplatesOrganizationUnitSetsResponse_Data": {
         "required": [
-          "OpeningHoursTypeID",
-          "IsImported"
+          "IsImported",
+          "OpeningHoursTypeID"
         ],
         "type": "object",
         "properties": {
@@ -62730,8 +62782,8 @@
       },
       "EVA.Core.nsOpeningHours.ListOpeningHoursTemplatesResponse_Data": {
         "required": [
-          "OpeningHoursTypeID",
-          "IsImported"
+          "IsImported",
+          "OpeningHoursTypeID"
         ],
         "type": "object",
         "properties": {
@@ -62752,8 +62804,8 @@
       },
       "EVA.Core.nsOpeningHours.RemoveOrganizationUnitOpeningHoursException": {
         "required": [
-          "OpeningHoursTypeID",
-          "OrganizationUnitID"
+          "OrganizationUnitID",
+          "OpeningHoursTypeID"
         ],
         "type": "object",
         "properties": {
@@ -62775,8 +62827,8 @@
       },
       "EVA.Core.nsOpeningHours.RemoveSpecialDateFromOpeningHoursTemplate": {
         "required": [
-          "Date",
-          "OpeningHoursTemplateID"
+          "OpeningHoursTemplateID",
+          "Date"
         ],
         "type": "object",
         "properties": {
@@ -62792,9 +62844,9 @@
       },
       "EVA.Core.nsOpeningHours.SetOrganizationUnitOpeningHoursException": {
         "required": [
-          "OpeningHoursTypeID",
+          "OpeningHours",
           "OrganizationUnitID",
-          "OpeningHours"
+          "OpeningHoursTypeID"
         ],
         "type": "object",
         "properties": {
@@ -62819,11 +62871,11 @@
       },
       "EVA.Core.nsOpeningHours.SetSpecialDateOnOpeningHoursTemplate": {
         "required": [
+          "OpeningHoursTemplateID",
+          "IsClosed",
           "Description",
           "Date",
-          "OpeningHoursTemplateID",
-          "StoreDescriptionAsTranslationKey",
-          "IsClosed"
+          "StoreDescriptionAsTranslationKey"
         ],
         "type": "object",
         "properties": {
@@ -62963,8 +63015,8 @@
       },
       "EVA.Core.Orders.AddDiscountToOrderResponse": {
         "required": [
-          "DiscountIsApplied",
           "DiscountID",
+          "DiscountIsApplied",
           "OrderID"
         ],
         "type": "object",
@@ -63070,15 +63122,15 @@
       },
       "EVA.Core.Orders.AdditionalOrderDataOptions": {
         "required": [
-          "IncludeValidateShipment",
-          "IncludePaymentTransactionActions",
-          "IncludeAvailableShippingMethods",
-          "IncludeProductRequirements",
+          "IncludePickProductOptions",
+          "IncludeAvailableRefundPaymentMethods",
           "IncludeAvailablePaymentMethods",
           "IncludeGiftWrapping",
+          "IncludeValidateShipment",
+          "IncludeAvailableShippingMethods",
+          "IncludePaymentTransactionActions",
           "IncludePrefigureDiscounts",
-          "IncludePickProductOptions",
-          "IncludeAvailableRefundPaymentMethods"
+          "IncludeProductRequirements"
         ],
         "type": "object",
         "properties": {
@@ -63272,8 +63324,8 @@
       },
       "EVA.Core.Orders.AddServiceProductToOrder": {
         "required": [
-          "ProductID",
           "ForceCreate",
+          "ProductID",
           "OrderID"
         ],
         "type": "object",
@@ -63505,8 +63557,8 @@
       },
       "EVA.Core.Orders.AvailablePaymentMethod": {
         "required": [
-          "IsCustom",
-          "IsUsable"
+          "IsUsable",
+          "IsCustom"
         ],
         "type": "object",
         "properties": {
@@ -63724,8 +63776,8 @@
       "EVA.Core.Orders.CheckOrderAddressFraudResponse": {
         "required": [
           "HasFraudulentAddress",
-          "HasFraudulentShippingAddress",
-          "HasFraudulentBillingAddress"
+          "HasFraudulentBillingAddress",
+          "HasFraudulentShippingAddress"
         ],
         "type": "object",
         "properties": {
@@ -63773,9 +63825,9 @@
       },
       "EVA.Core.Orders.ChildPushSalesOrderLine": {
         "required": [
-          "Quantity",
+          "Amount",
           "IsFinalSale",
-          "Amount"
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -63882,11 +63934,11 @@
       },
       "EVA.Core.Orders.CommittedOrderLine": {
         "required": [
-          "TotalQuantityToShip",
           "SoldFromOrganizationUnitID",
           "ID",
-          "CreationTime",
+          "TotalQuantityToShip",
           "QuantityCommitted",
+          "CreationTime",
           "OrderID"
         ],
         "type": "object",
@@ -63929,8 +63981,8 @@
       "EVA.Core.Orders.ConfigurableGroup": {
         "required": [
           "TotalAmountInTax",
-          "ProductID",
           "Quantity",
+          "ProductID",
           "TotalAmount"
         ],
         "type": "object",
@@ -63984,8 +64036,8 @@
         "required": [
           "TotalAmountInTax",
           "Quantity",
-          "TotalAmount",
-          "OrderLineID"
+          "OrderLineID",
+          "TotalAmount"
         ],
         "type": "object",
         "properties": {
@@ -64006,8 +64058,8 @@
       },
       "EVA.Core.Orders.CreateInvoicedOrderLineCorrection": {
         "required": [
-          "CorrectionAmount",
           "AutoRefund",
+          "CorrectionAmount",
           "OrderLineID"
         ],
         "type": "object",
@@ -64120,9 +64172,9 @@
       },
       "EVA.Core.Orders.CreateOrderLineUnitPriceCorrection": {
         "required": [
-          "IncludingTax",
+          "OrderLineID",
           "UnitPrice",
-          "OrderLineID"
+          "IncludingTax"
         ],
         "type": "object",
         "properties": {
@@ -64155,9 +64207,9 @@
       },
       "EVA.Core.Orders.CreateOrderLink": {
         "required": [
+          "TypeID",
           "PrimaryOrderID",
-          "RelatedOrderID",
-          "TypeID"
+          "RelatedOrderID"
         ],
         "type": "object",
         "properties": {
@@ -64308,8 +64360,8 @@
       },
       "EVA.Core.Orders.CustomOrderStatusServices.UpdateCustomOrderStatus": {
         "required": [
-          "ID",
-          "Name"
+          "Name",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -64619,8 +64671,8 @@
       },
       "EVA.Core.Orders.Documents.GetAvailableDocumentsForOrderResponse_DocumentOutput": {
         "required": [
-          "Preferred",
-          "Allowed"
+          "Allowed",
+          "Preferred"
         ],
         "type": "object",
         "properties": {
@@ -64815,11 +64867,11 @@
       },
       "EVA.Core.Orders.Documents.ProduceDocuments": {
         "required": [
+          "PrintInvoice",
           "PrintReceipt",
-          "EmailInvoice",
           "PrintPaymentProof",
           "DownloadInvoice",
-          "PrintInvoice",
+          "EmailInvoice",
           "OrderID"
         ],
         "type": "object",
@@ -64871,9 +64923,9 @@
       },
       "EVA.Core.Orders.Documents.ProduceInvoice": {
         "required": [
-          "EmailInvoice",
-          "DownloadInvoice",
           "PrintInvoice",
+          "DownloadInvoice",
+          "EmailInvoice",
           "OrderID"
         ],
         "type": "object",
@@ -64976,8 +65028,8 @@
       },
       "EVA.Core.Orders.Documents.ProduceShipmentDocuments_OrderLineDto": {
         "required": [
-          "QuantityToShip",
-          "ID"
+          "ID",
+          "QuantityToShip"
         ],
         "type": "object",
         "properties": {
@@ -65089,36 +65141,36 @@
       },
       "EVA.Core.Orders.Dto.OrderDto": {
         "required": [
-          "TotalAmountInTax",
-          "SoldFromOrganizationUnitID",
-          "HasReturns",
-          "IsCompleted",
           "IsInvoiced",
-          "IsOffer",
-          "IgnoreGiftWrappingCosts",
-          "PickupOrganizationUnitID",
-          "IsDownPayment",
-          "IsCaptured",
+          "IsShipped",
+          "SoldFromOrganizationUnitID",
+          "TotalAmountInTax",
+          "TotalTaxAmount",
+          "IgnoreDiscounts",
+          "IgnoreShippingCosts",
+          "IsTaxExempt",
           "CreatedByID",
           "ID",
-          "OriginatingOrganizationUnitID",
-          "TotalTaxAmount",
           "IsConfirmed",
+          "OriginatingOrganizationUnitID",
+          "IsCompleted",
           "IsPaid",
-          "TotalItems",
-          "IgnoreDiscounts",
-          "IsTaxExempt",
-          "NeedsExtendedCustomerInformation",
           "CreationTime",
-          "TotalLineCount",
-          "IsShipped",
-          "TotalAmount",
+          "PickupOrganizationUnitID",
+          "NeedsExtendedCustomerInformation",
+          "HasReturns",
+          "IsPlaced",
+          "IgnoreGiftWrappingCosts",
+          "IsDelivered",
+          "TotalAmountInvoiced",
+          "IsDownPayment",
           "HasDelivery",
           "AllowPartialFulfillment",
-          "IsDelivered",
-          "IgnoreShippingCosts",
-          "IsPlaced",
-          "TotalAmountInvoiced"
+          "TotalLineCount",
+          "IsOffer",
+          "TotalAmount",
+          "IsCaptured",
+          "TotalItems"
         ],
         "type": "object",
         "properties": {
@@ -65426,8 +65478,8 @@
       },
       "EVA.Core.Orders.Dto.OrderLineDiscount": {
         "required": [
-          "DiscountID",
-          "DiscountAmount"
+          "DiscountAmount",
+          "DiscountID"
         ],
         "type": "object",
         "properties": {
@@ -65475,43 +65527,43 @@
       },
       "EVA.Core.Orders.Dto.OrderLineDto": {
         "required": [
-          "QuantityShipped",
+          "QuantityCancelled",
+          "IsInvoiced",
+          "IsShipped",
           "TotalAmountInTax",
-          "QuantityBackordered",
+          "TotalTaxAmount",
+          "Type",
+          "NetTotalTaxAmount",
+          "ExportStatusID",
+          "CreatedByID",
+          "DiscountAmount",
+          "QuantityOpen",
+          "ID",
+          "TaxRate",
+          "IsCompleted",
           "TaxCode",
           "TotalQuantityToShip",
-          "IsCompleted",
-          "Type",
-          "NetTotalAmountInTax",
-          "ShowTaxInfo",
-          "IsCancelled",
-          "IsInvoiced",
-          "QuantityReserved",
-          "QuantityCancelled",
-          "TaxRate",
-          "CreatedByID",
-          "ID",
-          "CurrencyID",
-          "UnitPriceInTax",
-          "TotalTaxAmount",
-          "IsDigitalGiftCard",
-          "StockLabel",
-          "QuantityDelivered",
-          "NetTotalTaxAmount",
-          "NetTotalAmount",
-          "ModificationAllowed",
-          "CreationTime",
-          "QuantityOpen",
-          "IsShipped",
-          "ExportStatusID",
-          "DiscountAmount",
-          "TotalAmount",
-          "QuantityReturned",
-          "QuantityOrdered",
           "QuantityCommitted",
+          "QuantityBackordered",
+          "QuantityInvoiced",
+          "QuantityReserved",
+          "IsCancelled",
+          "NetTotalAmount",
+          "CreationTime",
+          "QuantityReturned",
+          "CurrencyID",
+          "NetTotalAmountInTax",
+          "QuantityDelivered",
+          "UnitPriceInTax",
+          "QuantityShipped",
+          "ModificationAllowed",
           "UnitPrice",
+          "QuantityOrdered",
+          "StockLabel",
           "OrderID",
-          "QuantityInvoiced"
+          "ShowTaxInfo",
+          "TotalAmount",
+          "IsDigitalGiftCard"
         ],
         "type": "object",
         "properties": {
@@ -65812,8 +65864,8 @@
       },
       "EVA.Core.Orders.Dto.RefundCorrectionReasonDto": {
         "required": [
-          "ID",
-          "Name"
+          "Name",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -65861,10 +65913,10 @@
       },
       "EVA.Core.Orders.DuplicateOrder": {
         "required": [
+          "IgnoreShippingCosts",
           "IncludeGiftWrapping",
           "IncludeBundles",
-          "OrderID",
-          "IgnoreShippingCosts"
+          "OrderID"
         ],
         "type": "object",
         "properties": {
@@ -65912,8 +65964,8 @@
       },
       "EVA.Core.Orders.ExemptOrderFromTax": {
         "required": [
-          "TaxExemptionReason",
-          "OrderID"
+          "OrderID",
+          "TaxExemptionReason"
         ],
         "type": "object",
         "properties": {
@@ -65936,8 +65988,8 @@
       },
       "EVA.Core.Orders.Export.OrderExportValidationResult": {
         "required": [
-          "Result",
           "Messages",
+          "Result",
           "OrderID"
         ],
         "type": "object",
@@ -66106,8 +66158,8 @@
       },
       "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData_OrderLine": {
         "required": [
-          "Quantity",
           "ID",
+          "Quantity",
           "Score"
         ],
         "type": "object",
@@ -66197,8 +66249,8 @@
       },
       "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData_ScoreExplanation": {
         "required": [
-          "DeltaScore",
           "PreviousScore",
+          "DeltaScore",
           "NewScore"
         ],
         "type": "object",
@@ -66351,8 +66403,8 @@
       },
       "EVA.Core.Orders.GetConfigurableOrderView": {
         "required": [
-          "IncludeAllChildren",
           "GroupByPropertyType",
+          "IncludeAllChildren",
           "LogicalLevel",
           "OrderID"
         ],
@@ -66820,9 +66872,9 @@
       },
       "EVA.Core.Orders.GetOrderEventsForOrderResponse_OrderEventAttempt": {
         "required": [
-          "OrderEventID",
           "Timestamp",
-          "Success"
+          "Success",
+          "OrderEventID"
         ],
         "type": "object",
         "properties": {
@@ -66856,11 +66908,11 @@
       },
       "EVA.Core.Orders.GetOrderExportByIDResponse": {
         "required": [
+          "IsDelivery",
           "ID",
-          "CreationTime",
           "ShipToOrganizationUnitID",
-          "OrderID",
-          "IsDelivery"
+          "CreationTime",
+          "OrderID"
         ],
         "type": "object",
         "properties": {
@@ -66916,12 +66968,12 @@
       },
       "EVA.Core.Orders.GetOrderExportByIDResponse_OrderExportLineDto": {
         "required": [
-          "QuantityBackordered",
           "QuantityCancelled",
           "ID",
+          "QuantityBackordered",
           "CreationTime",
-          "QuantityExported",
-          "OrderLineID"
+          "OrderLineID",
+          "QuantityExported"
         ],
         "type": "object",
         "properties": {
@@ -67179,10 +67231,10 @@
       },
       "EVA.Core.Orders.GetOrderSummaryForShippingResponse_OrderLineSummary": {
         "required": [
-          "QuantityShipped",
-          "TotalQuantityToShip",
+          "QuantityOpen",
           "ID",
-          "QuantityOpen"
+          "TotalQuantityToShip",
+          "QuantityShipped"
         ],
         "type": "object",
         "properties": {
@@ -67260,13 +67312,13 @@
       },
       "EVA.Core.Orders.GetOrderSummaryResponse_OrderLineModel": {
         "required": [
-          "NetTotalAmountInTax",
           "QuantityCancelled",
-          "UnitPriceInTax",
-          "QuantityExported",
           "DiscountAmount",
+          "IsPlaced",
+          "NetTotalAmountInTax",
+          "UnitPriceInTax",
           "QuantityOrdered",
-          "IsPlaced"
+          "QuantityExported"
         ],
         "type": "object",
         "properties": {
@@ -67356,11 +67408,11 @@
       },
       "EVA.Core.Orders.GetPendingShipmentInformationForOrderLinesResponse_LineInfo": {
         "required": [
-          "QuantityShippedWithPending",
-          "QuantityShipped",
+          "QuantityOpen",
           "ID",
           "QuantityOpenWithPending",
-          "QuantityOpen"
+          "QuantityShipped",
+          "QuantityShippedWithPending"
         ],
         "type": "object",
         "properties": {
@@ -67414,43 +67466,43 @@
       },
       "EVA.Core.Orders.GetRelatedOrderLinesResponse_Model": {
         "required": [
-          "QuantityShipped",
+          "QuantityCancelled",
+          "IsInvoiced",
+          "IsShipped",
           "TotalAmountInTax",
-          "QuantityBackordered",
+          "TotalTaxAmount",
+          "Type",
+          "NetTotalTaxAmount",
+          "ExportStatusID",
+          "CreatedByID",
+          "DiscountAmount",
+          "QuantityOpen",
+          "ID",
+          "TaxRate",
+          "IsCompleted",
           "TaxCode",
           "TotalQuantityToShip",
-          "IsCompleted",
-          "Type",
-          "NetTotalAmountInTax",
-          "ShowTaxInfo",
-          "IsCancelled",
-          "IsInvoiced",
-          "QuantityReserved",
-          "QuantityCancelled",
-          "TaxRate",
-          "CreatedByID",
-          "ID",
-          "CurrencyID",
-          "UnitPriceInTax",
-          "TotalTaxAmount",
-          "IsDigitalGiftCard",
-          "StockLabel",
-          "QuantityDelivered",
-          "NetTotalTaxAmount",
-          "NetTotalAmount",
-          "ModificationAllowed",
-          "CreationTime",
-          "QuantityOpen",
-          "IsShipped",
-          "ExportStatusID",
-          "DiscountAmount",
-          "TotalAmount",
-          "QuantityReturned",
-          "QuantityOrdered",
           "QuantityCommitted",
+          "QuantityBackordered",
+          "QuantityInvoiced",
+          "QuantityReserved",
+          "IsCancelled",
+          "NetTotalAmount",
+          "CreationTime",
+          "QuantityReturned",
+          "CurrencyID",
+          "NetTotalAmountInTax",
+          "QuantityDelivered",
+          "UnitPriceInTax",
+          "QuantityShipped",
+          "ModificationAllowed",
           "UnitPrice",
+          "QuantityOrdered",
+          "StockLabel",
           "OrderID",
-          "QuantityInvoiced"
+          "ShowTaxInfo",
+          "TotalAmount",
+          "IsDigitalGiftCard"
         ],
         "type": "object",
         "properties": {
@@ -67783,9 +67835,9 @@
       },
       "EVA.Core.Orders.GetRelatedOrdersResponse_Model": {
         "required": [
-          "RelatedOrderID",
+          "TypeID",
           "CreationTime",
-          "TypeID"
+          "RelatedOrderID"
         ],
         "type": "object",
         "properties": {
@@ -68122,8 +68174,8 @@
       "EVA.Core.Orders.GiftWrapping.SetGiftWrappingOptionsOnOrder": {
         "required": [
           "WrapIndividually",
-          "OrderID",
-          "WrapOrder"
+          "WrapOrder",
+          "OrderID"
         ],
         "type": "object",
         "properties": {
@@ -68432,10 +68484,10 @@
         "required": [
           "CreatedByID",
           "ID",
-          "CreationTime",
-          "TotalAmount",
           "OpenAmount",
-          "PaidAmount"
+          "CreationTime",
+          "PaidAmount",
+          "TotalAmount"
         ],
         "type": "object",
         "properties": {
@@ -68476,8 +68528,8 @@
       },
       "EVA.Core.Orders.ListInvoicesForOrderResponse_Invoice_Payment": {
         "required": [
-          "PaymentTransactionID",
-          "Amount"
+          "Amount",
+          "PaymentTransactionID"
         ],
         "type": "object",
         "properties": {
@@ -68622,12 +68674,12 @@
       },
       "EVA.Core.Orders.ListOrderFulfillmentLineItem": {
         "required": [
-          "Quantity",
-          "ID",
           "OrderFulfillmentID",
+          "ID",
           "CreationTime",
-          "UnitPrice",
+          "Quantity",
           "OrderLineID",
+          "UnitPrice",
           "OrderID"
         ],
         "type": "object",
@@ -68780,11 +68832,11 @@
       },
       "EVA.Core.Orders.ListOrderFulfillmentRejectionsItem": {
         "required": [
-          "FulfillmentMethod",
           "ID",
+          "Reason",
           "CreationTime",
           "OrderID",
-          "Reason"
+          "FulfillmentMethod"
         ],
         "type": "object",
         "properties": {
@@ -68887,10 +68939,10 @@
       },
       "EVA.Core.Orders.ListOrderLedgerForOrderResponse_OrderLedgerDto": {
         "required": [
+          "TypeID",
           "CreatedByID",
           "ID",
           "CreationTime",
-          "TypeID",
           "OrderID"
         ],
         "type": "object",
@@ -68997,9 +69049,9 @@
       },
       "EVA.Core.Orders.ListOrderLinesFilter": {
         "required": [
+          "Shippable",
           "OnlyShippableLines",
-          "Invoiceable",
-          "Shippable"
+          "Invoiceable"
         ],
         "type": "object",
         "properties": {
@@ -69065,44 +69117,44 @@
       },
       "EVA.Core.Orders.ListOrderLinesInvoiceSummaryResponse_Model": {
         "required": [
-          "QuantityShipped",
+          "QuantityCancelled",
+          "IsInvoiced",
+          "IsShipped",
           "TotalAmountInTax",
-          "QuantityBackordered",
+          "TotalTaxAmount",
+          "Type",
+          "NetTotalTaxAmount",
+          "ExportStatusID",
+          "CreatedByID",
+          "DiscountAmount",
+          "QuantityOpen",
+          "ID",
+          "TaxRate",
+          "IsCompleted",
           "TaxCode",
           "TotalQuantityToShip",
-          "IsCompleted",
-          "Type",
-          "NetTotalAmountInTax",
-          "ShowTaxInfo",
-          "IsCancelled",
-          "IsInvoiced",
+          "QuantityCommitted",
+          "QuantityBackordered",
+          "QuantityInvoiced",
           "QuantityReserved",
-          "QuantityCancelled",
-          "TaxRate",
-          "CreatedByID",
-          "ID",
-          "CurrencyID",
-          "UnitPriceInTax",
-          "TotalTaxAmount",
-          "IsDigitalGiftCard",
-          "StockLabel",
-          "QuantityDelivered",
-          "NetTotalTaxAmount",
+          "IsCancelled",
           "NetTotalAmount",
-          "ModificationAllowed",
           "CreationTime",
-          "QuantityOpen",
-          "IsShipped",
-          "ExportStatusID",
-          "DiscountAmount",
-          "TotalAmount",
           "QuantityReturned",
+          "CurrencyID",
+          "NetTotalAmountInTax",
+          "QuantityDelivered",
+          "UnitPriceInTax",
+          "QuantityShipped",
+          "ModificationAllowed",
+          "UnitPrice",
           "QuantityOrdered",
           "QuantityLeftToInvoice",
-          "QuantityCommitted",
-          "UnitPrice",
+          "StockLabel",
           "OrderID",
-          "QuantityInvoiced"
+          "ShowTaxInfo",
+          "TotalAmount",
+          "IsDigitalGiftCard"
         ],
         "type": "object",
         "properties": {
@@ -69415,8 +69467,8 @@
       "EVA.Core.Orders.ListOrdersForCustomerFilter": {
         "required": [
           "ShowOrdersWithoutLines",
-          "ModifiableOrdersOnly",
-          "OpenOrdersOnly"
+          "OpenOrdersOnly",
+          "ModifiableOrdersOnly"
         ],
         "type": "object",
         "properties": {
@@ -69648,8 +69700,8 @@
       },
       "EVA.Core.Orders.ModifyOrderLinePrice": {
         "required": [
-          "UnitPriceInTax",
-          "OrderLineID"
+          "OrderLineID",
+          "UnitPriceInTax"
         ],
         "type": "object",
         "properties": {
@@ -69738,8 +69790,8 @@
       "EVA.Core.Orders.OpenOrderAmount": {
         "required": [
           "InTax",
-          "PendingInTax",
-          "Capturable"
+          "Capturable",
+          "PendingInTax"
         ],
         "type": "object",
         "properties": {
@@ -69797,8 +69849,8 @@
       "EVA.Core.Orders.OrderAmount": {
         "required": [
           "InTax",
-          "Tax",
-          "Amount"
+          "Amount",
+          "Tax"
         ],
         "type": "object",
         "properties": {
@@ -69820,8 +69872,8 @@
       },
       "EVA.Core.Orders.OrderDataForSingleOrderLink": {
         "required": [
-          "OrderLinkID",
-          "ID"
+          "ID",
+          "OrderLinkID"
         ],
         "type": "object",
         "properties": {
@@ -69931,11 +69983,11 @@
       },
       "EVA.Core.Orders.OrderPickProductDiscountOptions_PickProductTierOptions": {
         "required": [
-          "IsCurrentTier",
           "ID",
-          "Prompt",
           "From",
-          "Difference"
+          "Prompt",
+          "Difference",
+          "IsCurrentTier"
         ],
         "type": "object",
         "properties": {
@@ -70010,32 +70062,32 @@
       },
       "EVA.Core.Orders.OrderSearchResultItem": {
         "required": [
-          "IsSuspended",
+          "HasUnresolvedDisputedPayments",
+          "IsInvoiced",
+          "IsShipped",
           "TotalAmountInTax",
-          "TotalQuantityToShip",
+          "IsReserved",
+          "ID",
+          "IsSuspended",
+          "IsConfirmed",
           "CustomStatus",
           "IsCompleted",
-          "IsInvoiced",
-          "HasUnresolvedDisputedPayments",
-          "IsCaptured",
-          "ID",
           "ForeignPaidAmount",
-          "IsConfirmed",
-          "IsPaid",
-          "IsEmpty",
-          "TotalItems",
-          "CreationTime",
-          "IsReserved",
+          "TotalQuantityToShip",
           "OpenAmountInTax",
-          "IsShipped",
-          "TotalAmount",
-          "TotalQuantityShipped",
           "HasDisputedPayments",
-          "LastModificationTime",
-          "IsPlaced",
           "OpenAmount",
+          "IsPaid",
+          "CreationTime",
+          "IsPlaced",
+          "LastModificationTime",
+          "TotalQuantityShipped",
+          "IsEmpty",
           "PaidAmount",
-          "HasCancelledExportedQuantities"
+          "HasCancelledExportedQuantities",
+          "TotalAmount",
+          "IsCaptured",
+          "TotalItems"
         ],
         "type": "object",
         "properties": {
@@ -70382,9 +70434,9 @@
       },
       "EVA.Core.Orders.OrderStatistics_OrderLineStatistics": {
         "required": [
-          "UnitCost",
           "DiscountAmount",
-          "UnitPrice"
+          "UnitPrice",
+          "UnitCost"
         ],
         "type": "object",
         "properties": {
@@ -70569,8 +70621,8 @@
       },
       "EVA.Core.Orders.ProductRequirementModel": {
         "required": [
-          "ProductID",
-          "OrderLineID"
+          "OrderLineID",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -70623,12 +70675,12 @@
       },
       "EVA.Core.Orders.PushReturnOrder": {
         "required": [
+          "Lines",
+          "AlreadyReceived",
+          "AutoRefund",
           "BackendID",
           "IsCustomerReturn",
-          "BackendSystemID",
-          "Lines",
-          "AutoRefund",
-          "AlreadyReceived"
+          "BackendSystemID"
         ],
         "type": "object",
         "properties": {
@@ -70746,8 +70798,8 @@
       },
       "EVA.Core.Orders.PushReturnOrderResponse": {
         "required": [
-          "AlreadyExists",
-          "ID"
+          "ID",
+          "AlreadyExists"
         ],
         "type": "object",
         "properties": {
@@ -70769,9 +70821,9 @@
       },
       "EVA.Core.Orders.PushSalesOrder": {
         "required": [
+          "Lines",
           "BackendID",
-          "BackendSystemID",
-          "Lines"
+          "BackendSystemID"
         ],
         "type": "object",
         "properties": {
@@ -71063,9 +71115,9 @@
       },
       "EVA.Core.Orders.PushSalesOrderLine": {
         "required": [
-          "Quantity",
+          "Amount",
           "IsFinalSale",
-          "Amount"
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -71285,8 +71337,8 @@
       },
       "EVA.Core.Orders.PushSalesOrderResponse": {
         "required": [
-          "AlreadyExists",
-          "ID"
+          "ID",
+          "AlreadyExists"
         ],
         "type": "object",
         "properties": {
@@ -71428,9 +71480,9 @@
       },
       "EVA.Core.Orders.ReturnableStatusForOrderLine": {
         "required": [
+          "OrderLineID",
           "IsReturnable",
-          "ReturnableQuantity",
-          "OrderLineID"
+          "ReturnableQuantity"
         ],
         "type": "object",
         "properties": {
@@ -71489,8 +71541,8 @@
       },
       "EVA.Core.Orders.Returns.GetRefundCorrectionReasonsResponse_RefundCorrectionReasonDto": {
         "required": [
-          "ID",
-          "Name"
+          "Name",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -71819,8 +71871,8 @@
       "EVA.Core.Orders.ReturnToSupplier.ReturnToSupplierRequestModel": {
         "required": [
           "RecallPercentage",
-          "ID",
           "Name",
+          "ID",
           "OrganizationUnitSetID"
         ],
         "type": "object",
@@ -72645,8 +72697,8 @@
       },
       "EVA.Core.Orders.SetSerialNumbers": {
         "required": [
-          "SerialNumbers",
-          "OrderLineID"
+          "OrderLineID",
+          "SerialNumbers"
         ],
         "type": "object",
         "properties": {
@@ -72730,8 +72782,8 @@
       },
       "EVA.Core.Orders.ShipExternalOrder": {
         "required": [
-          "Shipments",
-          "FinalShipment"
+          "FinalShipment",
+          "Shipments"
         ],
         "type": "object",
         "properties": {
@@ -72959,8 +73011,8 @@
       },
       "EVA.Core.Orders.ShipOrderLines_Line": {
         "required": [
-          "Quantity",
-          "ID"
+          "ID",
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -73058,8 +73110,8 @@
         "required": [
           "TotalAmountInTax",
           "Quantity",
-          "TotalAmount",
-          "OrderLineID"
+          "OrderLineID",
+          "TotalAmount"
         ],
         "type": "object",
         "properties": {
@@ -73498,8 +73550,8 @@
       },
       "EVA.Core.Orders.UpdateOrderLinkType": {
         "required": [
-          "ID",
-          "Name"
+          "Name",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -73818,10 +73870,10 @@
       },
       "EVA.Core.OrganizationUnits.BulkUpdateOrganizationUnitSettings": {
         "required": [
-          "RoleSetID",
-          "AssortmentID",
           "UseForAccounting",
-          "EnableEndlessSupplierStock"
+          "EnableEndlessSupplierStock",
+          "RoleSetID",
+          "AssortmentID"
         ],
         "type": "object",
         "properties": {
@@ -73929,11 +73981,11 @@
       },
       "EVA.Core.OrganizationUnits.CreateOrganizationUnitDto": {
         "required": [
-          "CostPriceCurrencyID",
           "UseForAccounting",
-          "CurrencyID",
           "Name",
           "EnableEndlessSupplierStock",
+          "CostPriceCurrencyID",
+          "CurrencyID",
           "ParentID"
         ],
         "type": "object",
@@ -74136,16 +74188,16 @@
       },
       "EVA.Core.OrganizationUnits.Dto.ExtendedOpeningHours": {
         "required": [
-          "Tuesday",
-          "Friday",
-          "Wednesday",
-          "Sunday",
-          "Saturday",
-          "Monday",
-          "Thursday",
-          "SpecialOpeningHours",
           "TypeID",
-          "TypeName"
+          "Friday",
+          "TypeName",
+          "Tuesday",
+          "Saturday",
+          "Thursday",
+          "Monday",
+          "Wednesday",
+          "SpecialOpeningHours",
+          "Sunday"
         ],
         "type": "object",
         "properties": {
@@ -74190,11 +74242,11 @@
       },
       "EVA.Core.OrganizationUnits.Dto.OpeningHoursDto": {
         "required": [
-          "IsSpecial",
-          "ID",
-          "OrganizationUnitID",
           "TypeID",
+          "OrganizationUnitID",
+          "ID",
           "IsClosed",
+          "IsSpecial",
           "IsActive"
         ],
         "type": "object",
@@ -74246,12 +74298,12 @@
       "EVA.Core.OrganizationUnits.Dto.OrganizationUnitDto": {
         "required": [
           "ExtendedOpeningHours",
-          "CostPriceCurrencyID",
-          "ID",
-          "CurrencyID",
+          "OpeningHours",
           "Name",
+          "ID",
           "CountryID",
-          "OpeningHours"
+          "CostPriceCurrencyID",
+          "CurrencyID"
         ],
         "type": "object",
         "properties": {
@@ -74338,8 +74390,8 @@
       },
       "EVA.Core.OrganizationUnits.Dto.SpecialOpeningHours": {
         "required": [
-          "Date",
-          "IsClosed"
+          "IsClosed",
+          "Date"
         ],
         "type": "object",
         "properties": {
@@ -74491,8 +74543,8 @@
       },
       "EVA.Core.OrganizationUnits.GetFlatOrganizationUnitTreeResponse_OrganizationUnitDto": {
         "required": [
-          "ID",
           "Name",
+          "ID",
           "ParentID"
         ],
         "type": "object",
@@ -74679,10 +74731,10 @@
       },
       "EVA.Core.OrganizationUnits.GetOrganizationUnitSettingsResponse": {
         "required": [
-          "RoleSetID",
-          "ID",
+          "TypeID",
           "UseForAccounting",
-          "TypeID"
+          "ID",
+          "RoleSetID"
         ],
         "type": "object",
         "properties": {
@@ -74821,9 +74873,9 @@
       },
       "EVA.Core.OrganizationUnits.GetOrganizationUnitSummaryResponse": {
         "required": [
-          "ID",
           "Longitude",
-          "Latitude"
+          "Latitude",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -74941,9 +74993,9 @@
       },
       "EVA.Core.OrganizationUnits.GetShopsByProximity": {
         "required": [
-          "HasStock",
           "Longitude",
-          "Latitude"
+          "Latitude",
+          "HasStock"
         ],
         "type": "object",
         "properties": {
@@ -74998,10 +75050,10 @@
       },
       "EVA.Core.OrganizationUnits.GetShopsByProximityResponse_ShopInfo": {
         "required": [
-          "Distance",
-          "ID",
           "Longitude",
-          "Latitude"
+          "Distance",
+          "Latitude",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -75053,8 +75105,8 @@
       },
       "EVA.Core.OrganizationUnits.GetWebshopsResponse_WebshopDto": {
         "required": [
-          "ID",
-          "Name"
+          "Name",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -75084,8 +75136,8 @@
       },
       "EVA.Core.OrganizationUnits.ImportOrganizationUnits_ImportOrganizationUnit": {
         "required": [
-          "ID",
           "Name",
+          "ID",
           "IsDeleted",
           "ParentID"
         ],
@@ -75495,10 +75547,10 @@
       },
       "EVA.Core.OrganizationUnits.ListOrganizationUnitSummariesResponse_OrganizationUnit": {
         "required": [
-          "ID",
-          "CurrencyID",
           "Name",
-          "CountryID"
+          "ID",
+          "CountryID",
+          "CurrencyID"
         ],
         "type": "object",
         "properties": {
@@ -75561,9 +75613,9 @@
       },
       "EVA.Core.OrganizationUnits.ListShopsByProximityResponse_ShopInfo": {
         "required": [
-          "ID",
           "Longitude",
-          "Latitude"
+          "Latitude",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -75655,9 +75707,9 @@
       },
       "EVA.Core.OrganizationUnits.ListShopsInAreaResponse_ShopInfo": {
         "required": [
-          "ID",
           "Longitude",
-          "Latitude"
+          "Latitude",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -75769,9 +75821,9 @@
       },
       "EVA.Core.OrganizationUnits.OrganizationUnitTreeDto": {
         "required": [
-          "Children",
+          "Name",
           "ID",
-          "Name"
+          "Children"
         ],
         "type": "object",
         "properties": {
@@ -75889,11 +75941,11 @@
       },
       "EVA.Core.OrganizationUnits.UpdateOrganizationUnitSettings": {
         "required": [
-          "RoleSetID",
-          "AssortmentID",
-          "ID",
           "UseForAccounting",
-          "EnableEndlessSupplierStock"
+          "EnableEndlessSupplierStock",
+          "ID",
+          "RoleSetID",
+          "AssortmentID"
         ],
         "type": "object",
         "properties": {
@@ -77303,11 +77355,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Addresses.AddressBookDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77352,11 +77404,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Airport.FlightDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77401,11 +77453,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.DataModels.CurrencyDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77450,11 +77502,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Devices.Dto.StationDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77499,11 +77551,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Devices.ListDevicesModel": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77548,11 +77600,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Finance.Cash.ListCashDepositsItem": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77597,11 +77649,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Finance.Cash.ListCashExpensesItem": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77646,11 +77698,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Finance.Cash.ListCashTransactionLedgerGroup": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77695,11 +77747,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Finance.Cash.ListCashTransactionLedgerItem": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77744,11 +77796,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Finance.Dto.FinancialPeriodDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77793,11 +77845,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Finance.Dto.GeneralLedgerDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77842,11 +77894,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Finance.FinancialPeriodAuditDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77891,11 +77943,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Finance.ListFinancialPeriodExports2Response_FinancialPeriodExport": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77940,11 +77992,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Finance.ListGeneralLedgersResponse_GeneralLedger": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -77989,11 +78041,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Invoices.ListInvoiceExportsForInvoiceResponse_InvoiceExportDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78038,11 +78090,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Invoices.ListInvoiceLedgerResponse_InvoiceLedgerDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78087,11 +78139,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Invoices.ListShipmentLinesToInvoiceResponse_Model": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78136,11 +78188,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Invoices.ListShipmentsToInvoiceResponse_Model": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78185,11 +78237,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Invoicing.ListInvoicesDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78234,11 +78286,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.MessageQueue.MessageQueueErrorDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78283,11 +78335,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.nsOpeningHours.ListOpeningHoursTemplatesOrganizationUnitSetsResponse_Data": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78332,11 +78384,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.nsOpeningHours.ListOpeningHoursTemplatesResponse_Data": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78381,11 +78433,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Orders.CommittedOrderLine": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78430,11 +78482,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Orders.Dto.OrderDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78479,11 +78531,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Orders.Dto.OrderLineDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78528,11 +78580,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Orders.ListOrderExportsForOrderResponse_OrderExportDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78577,11 +78629,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Orders.ListOrderLedgerForOrderResponse_OrderLedgerDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78626,11 +78678,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Orders.ListOrderLinesInvoiceSummaryResponse_Model": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78675,11 +78727,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Orders.OrderSearchResultItem": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78724,11 +78776,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Orders.OrderWithCustomerReferences": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78773,11 +78825,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Orders.ReturnToSupplier.ReturnToSupplierRequestModel": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78822,11 +78874,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.OrganizationUnits.ListOrganizationUnitsDetailedResponse_OrganizationUnit": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78871,11 +78923,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.OrganizationUnits.ListOrganizationUnitSummariesResponse_OrganizationUnit": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78920,11 +78972,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.OrganizationUnits.ListShopsByProximityResponse_ShopInfo": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -78969,11 +79021,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.OrganizationUnits.ListShopsInAreaResponse_ShopInfo": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79018,11 +79070,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Payments.ListPaymentTransactionLedgerResponse_PaymentTransactionLedgerDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79067,11 +79119,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Pricing.ManualTaxExemptionReason": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79116,11 +79168,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Pricing.TaxCodeItem": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79165,11 +79217,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Pricing.TaxRateModel": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79214,11 +79266,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.ProductBundles.ListProductBundlesResponseResult": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79263,11 +79315,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Products.GetProductStructureResponse": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79312,11 +79364,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Products.ListBrandsResponse_BrandDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79361,11 +79413,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.RecurringTasks.RecurringTask": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79410,11 +79462,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Services.CustomerInteractionTasks.ListCustomerInteractionTasksResponse_CustomerInteractionTaskDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79459,11 +79511,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Services.FullStockCountServices.ListFullStockCountDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79508,11 +79560,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Services.FullStockCountServices.ListFullStockCountLabelDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79557,11 +79609,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Services.FullStockCountServices.ListFullStockCountLabelProductDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79606,11 +79658,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Services.FullStockCountServices.ListFullStockCountLabelSummaryResponse_Label": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79655,11 +79707,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Services.ListUserTasksResponse_UserTask": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79704,11 +79756,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Services.OrderInterventionTasks.OrderInterventionTaskDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79753,11 +79805,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Services.StockReplenishment.StockReplenishmentTaskDataDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79802,11 +79854,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Services.ZonedCycleCounts.ListCycleCountZoneGroupsResponse_CycleCountZoneGroupDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79851,11 +79903,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Shipments.ListShipmentExportsForShipmentResponse_ShipmentExportDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79900,11 +79952,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Shipments.ListShipmentLedgerForShipmentResponse_ShipmentLedgerDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79949,11 +80001,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Shipments.PurchaseOrderShipmentDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -79998,11 +80050,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Shipments.ShipmentLineDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80047,11 +80099,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Shipments.ShipmentPackageDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80096,11 +80148,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.StockMutations.StockMutationDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80145,11 +80197,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Suppliers.ListOrganizationUnitSuppliersModel": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80194,11 +80246,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.SuspendedOrders.ListSuspendedOrdersResponse_SuspendedOrderDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80243,11 +80295,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Translations.ListEntityTranslation": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80292,11 +80344,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Translations.ListStringTranslation": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80341,11 +80393,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Types.ReturnToSupplier.ReturnToSupplierTaskOrderLine": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80390,11 +80442,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Types.ReturnToSupplier.ReturnToSupplierTaskShipmentLine": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80439,11 +80491,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.UserInteractions.ListUserInteractionsResponse_UserInteractionDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80488,11 +80540,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Users.BorrowedProducts.ListUserBorrowedProductsResponse_Model": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80537,11 +80589,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Users.ListApiKeysItem": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80586,11 +80638,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Users.SearchUsersResponse_UserSearchDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80635,11 +80687,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Users.SimpleUserDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80684,11 +80736,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.Users.UserGroupDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80733,11 +80785,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.UserTasks.Dto.UserTaskTypeOrganizationUnitSetDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80782,11 +80834,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.UserTasks.FullStockCountUserTask.FullStockCountResult": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80831,11 +80883,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.UserTasks.FullStockCountUserTask.FullStockCountSummaryRecord": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80880,11 +80932,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.UserTasks.ZonedCycleCountUserTask.CycleCountZonesForOrganizationUnitDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80929,11 +80981,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.UserTasks.ZonedCycleCountUserTask.ListZonedCycleCountsDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -80978,11 +81030,11 @@
       },
       "EVA.Core.PagedResult_1_EVA.Core.UserTasks.ZonedCycleCountUserTask.ZonedCycleCountScheduleDto": {
         "required": [
-          "Limit",
-          "Total",
+          "Offset",
           "NumberOfPages",
           "CurrentPage",
-          "Offset"
+          "Total",
+          "Limit"
         ],
         "type": "object",
         "properties": {
@@ -81337,8 +81389,8 @@
       "EVA.Core.Payments.CreatePayment": {
         "required": [
           "PaymentTypeID",
-          "AutoShipAfterConfirm",
-          "OrderID"
+          "OrderID",
+          "AutoShipAfterConfirm"
         ],
         "type": "object",
         "properties": {
@@ -81536,8 +81588,8 @@
       },
       "EVA.Core.Payments.CreateRefundResponse": {
         "required": [
-          "RefundedOnOrder",
-          "Success"
+          "Success",
+          "RefundedOnOrder"
         ],
         "type": "object",
         "properties": {
@@ -81582,20 +81634,20 @@
       },
       "EVA.Core.Payments.Dto.PaymentTransactionDto": {
         "required": [
-          "RequiresCapture",
-          "Type",
-          "Change",
-          "IsRefund",
-          "PendingOrConfirmed",
-          "ID",
-          "CurrencyID",
-          "IsConfirmed",
-          "HasUnresolvedDispute",
-          "IsAuthorizationAdjustment",
           "TypeID",
-          "PaidAmount",
+          "IsAuthorizationAdjustment",
+          "Type",
+          "ID",
+          "IsConfirmed",
           "Amount",
-          "HasDispute"
+          "IsRefund",
+          "HasUnresolvedDispute",
+          "CurrencyID",
+          "Change",
+          "PaidAmount",
+          "RequiresCapture",
+          "HasDispute",
+          "PendingOrConfirmed"
         ],
         "type": "object",
         "properties": {
@@ -81723,8 +81775,8 @@
       },
       "EVA.Core.Payments.Dto.PaymentTypeDto": {
         "required": [
-          "Code",
           "Name",
+          "Code",
           "PrintOnDocuments",
           "IsRoundingType"
         ],
@@ -81925,20 +81977,20 @@
       },
       "EVA.Core.Payments.GetPaymentTransactionsResponse_PaymentTransaction": {
         "required": [
-          "RequiresCapture",
-          "Type",
-          "Change",
-          "IsRefund",
-          "PendingOrConfirmed",
-          "ID",
-          "CurrencyID",
-          "IsConfirmed",
-          "HasUnresolvedDispute",
-          "IsAuthorizationAdjustment",
           "TypeID",
-          "PaidAmount",
+          "IsAuthorizationAdjustment",
+          "Type",
+          "ID",
+          "IsConfirmed",
           "Amount",
-          "HasDispute"
+          "IsRefund",
+          "HasUnresolvedDispute",
+          "CurrencyID",
+          "Change",
+          "PaidAmount",
+          "RequiresCapture",
+          "HasDispute",
+          "PendingOrConfirmed"
         ],
         "type": "object",
         "properties": {
@@ -82156,12 +82208,12 @@
       },
       "EVA.Core.Payments.ListPaymentTransactionLedgerResponse_PaymentTransactionLedgerDto": {
         "required": [
-          "CreatedBy",
-          "ID",
-          "CreationTime",
           "TypeID",
+          "ID",
+          "TypeName",
+          "CreationTime",
           "PaymentTransactionID",
-          "TypeName"
+          "CreatedBy"
         ],
         "type": "object",
         "properties": {
@@ -82237,10 +82289,10 @@
       },
       "EVA.Core.Payments.PaymentTransactionActions": {
         "required": [
-          "Update",
           "Approve",
           "Refund",
           "Capture",
+          "Update",
           "Cancel"
         ],
         "type": "object",
@@ -82265,14 +82317,14 @@
       },
       "EVA.Core.Payments.RefundablePaymentTransaction": {
         "required": [
-          "ForeignRefundableAmount",
-          "ID",
-          "CurrencyID",
-          "ForeignPaidAmount",
-          "RefundableAmount",
-          "CanRefundWithoutInteraction",
-          "CreationTime",
           "TypeID",
+          "RefundableAmount",
+          "ID",
+          "ForeignPaidAmount",
+          "CanRefundWithoutInteraction",
+          "ForeignRefundableAmount",
+          "CreationTime",
+          "CurrencyID",
           "PaidAmount"
         ],
         "type": "object",
@@ -82400,9 +82452,9 @@
       },
       "EVA.Core.Pricing.CreateManualTaxExemptionReason": {
         "required": [
-          "Code",
           "Lines",
           "Name",
+          "Code",
           "OrganizationUnitSetID"
         ],
         "type": "object",
@@ -82427,8 +82479,8 @@
       },
       "EVA.Core.Pricing.CreateManualTaxExemptionReason_CreateManualTaxExemptionReasonLine": {
         "required": [
-          "TaxName",
-          "TaxRate"
+          "TaxRate",
+          "TaxName"
         ],
         "type": "object",
         "properties": {
@@ -82503,8 +82555,8 @@
       },
       "EVA.Core.Pricing.CreateTaxRate": {
         "required": [
-          "Rate",
-          "TaxCodeID"
+          "TaxCodeID",
+          "Rate"
         ],
         "type": "object",
         "properties": {
@@ -82916,8 +82968,8 @@
       },
       "EVA.Core.Pricing.ListProductPricesItem": {
         "required": [
-          "ProductID",
-          "PriceListID"
+          "PriceListID",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -83246,8 +83298,8 @@
       },
       "EVA.Core.Pricing.PushPriceList_MarkupData": {
         "required": [
-          "FactorValue",
-          "ExcludeProductsInFilter"
+          "ExcludeProductsInFilter",
+          "FactorValue"
         ],
         "type": "object",
         "properties": {
@@ -83350,11 +83402,11 @@
       },
       "EVA.Core.Pricing.TaxRateModel": {
         "required": [
-          "Rate",
-          "TaxCodeName",
           "ID",
+          "CountryID",
+          "TaxCodeName",
           "TaxCodeID",
-          "CountryID"
+          "Rate"
         ],
         "type": "object",
         "properties": {
@@ -83392,9 +83444,9 @@
       },
       "EVA.Core.Pricing.UpdateManualTaxExemptionReason": {
         "required": [
+          "Name",
           "Code",
           "ID",
-          "Name",
           "OrganizationUnitSetID"
         ],
         "type": "object",
@@ -83416,8 +83468,8 @@
       },
       "EVA.Core.Pricing.UpdateSimplePrices": {
         "required": [
-          "SkipPriceListRecalculation",
-          "Prices"
+          "Prices",
+          "SkipPriceListRecalculation"
         ],
         "type": "object",
         "properties": {
@@ -83491,9 +83543,9 @@
       },
       "EVA.Core.Pricing.UpdateTaxRate": {
         "required": [
-          "Rate",
           "ID",
-          "TaxCodeID"
+          "TaxCodeID",
+          "Rate"
         ],
         "type": "object",
         "properties": {
@@ -83664,8 +83716,8 @@
       },
       "EVA.Core.ProductBundles.ApplyBundleProductSelection": {
         "required": [
-          "OrderID",
-          "BundleProductOrderLineID"
+          "BundleProductOrderLineID",
+          "OrderID"
         ],
         "type": "object",
         "properties": {
@@ -83708,8 +83760,8 @@
       "EVA.Core.ProductBundles.BundleProductLine": {
         "required": [
           "ID",
-          "IsRequired",
           "IncludedInBundlePrice",
+          "IsRequired",
           "IsDeleted"
         ],
         "type": "object",
@@ -83749,12 +83801,12 @@
       },
       "EVA.Core.ProductBundles.BundleProductLineOption": {
         "required": [
-          "ProductID",
-          "Quantity",
+          "Sequence",
           "ID",
+          "Quantity",
+          "ProductID",
           "AdditionalProductQuantity",
-          "ProductBundleLineID",
-          "Sequence"
+          "ProductBundleLineID"
         ],
         "type": "object",
         "properties": {
@@ -84200,9 +84252,9 @@
       },
       "EVA.Core.ProductBundles.GetProductBundleResponse_LineOption": {
         "required": [
-          "Quantity",
+          "Sequence",
           "ID",
-          "Sequence"
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -84456,8 +84508,8 @@
       },
       "EVA.Core.Products.ConfigurableProductDto": {
         "required": [
-          "ProductID",
-          "HasDimensions"
+          "HasDimensions",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -84556,8 +84608,8 @@
       },
       "EVA.Core.Products.Dto.ProductDto": {
         "required": [
-          "CatalogID",
-          "ID"
+          "ID",
+          "CatalogID"
         ],
         "type": "object",
         "properties": {
@@ -84925,8 +84977,8 @@
       },
       "EVA.Core.Products.GetProductRequirementValuesForOrderLineResponse": {
         "required": [
-          "ProductID",
-          "OrderLineID"
+          "OrderLineID",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -84974,8 +85026,8 @@
       },
       "EVA.Core.Products.GetProductRequirementValuesForOrderResponse_ProductRequirement": {
         "required": [
-          "ProductID",
-          "OrderLineID"
+          "OrderLineID",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -85129,8 +85181,8 @@
       },
       "EVA.Core.Products.GetProductUnitOfMeasureQuantities_Model": {
         "required": [
-          "Quantity",
-          "ID"
+          "ID",
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -85262,12 +85314,12 @@
       },
       "EVA.Core.Products.PriceInfo": {
         "required": [
-          "ProductID",
-          "TaxRate",
-          "Price",
-          "PriceListUsageTypeID",
           "PriceListID",
-          "PriceInTax"
+          "TaxRate",
+          "ProductID",
+          "PriceListUsageTypeID",
+          "PriceInTax",
+          "Price"
         ],
         "type": "object",
         "properties": {
@@ -85300,8 +85352,8 @@
       },
       "EVA.Core.Products.PrintProductPriceLabel": {
         "required": [
-          "Quantity",
-          "ID"
+          "ID",
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -85552,9 +85604,9 @@
       },
       "EVA.Core.Products.SearchProductsResponse": {
         "required": [
+          "Page",
           "Total",
-          "PageSize",
-          "Page"
+          "PageSize"
         ],
         "type": "object",
         "properties": {
@@ -85648,8 +85700,8 @@
       },
       "EVA.Core.PurchaseOrders.AddPurchaseOrderLines_Line": {
         "required": [
-          "ProductID",
-          "Quantity"
+          "Quantity",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -85695,9 +85747,9 @@
       },
       "EVA.Core.PurchaseOrders.AddPurchaseOrderLinesResponse_ResultLine": {
         "required": [
-          "ProductID",
-          "Quantity",
           "ID",
+          "Quantity",
+          "ProductID",
           "UnitPrice"
         ],
         "type": "object",
@@ -85811,8 +85863,8 @@
       "EVA.Core.PurchaseOrders.CreateShipmentReceipt": {
         "required": [
           "Lines",
-          "ShipmentID",
-          "CompletesShipment"
+          "CompletesShipment",
+          "ShipmentID"
         ],
         "type": "object",
         "properties": {
@@ -85839,8 +85891,8 @@
       },
       "EVA.Core.PurchaseOrders.CreateShipmentReceipt_Line": {
         "required": [
-          "CompletesShipmentLine",
           "ShipmentLineID",
+          "CompletesShipmentLine",
           "QuantityReceived"
         ],
         "type": "object",
@@ -86020,8 +86072,8 @@
       },
       "EVA.Core.PurchaseOrders.GetProductSupplierInfoForProductsResponse_ProductSupplierInfo": {
         "required": [
-          "ProductID",
           "SupplierProductID",
+          "ProductID",
           "UnitCost"
         ],
         "type": "object",
@@ -86082,8 +86134,8 @@
       },
       "EVA.Core.PurchaseOrders.GetProductSupplierInfoForProductsResponse_UnitOfMeasure": {
         "required": [
-          "Quantity",
-          "ID"
+          "ID",
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -86186,8 +86238,8 @@
       },
       "EVA.Core.PurchaseOrders.GetShipmentReceiptResponse": {
         "required": [
-          "ID",
           "Lines",
+          "ID",
           "TotalQuantityReceived"
         ],
         "type": "object",
@@ -86221,9 +86273,9 @@
       },
       "EVA.Core.PurchaseOrders.GetShipmentReceiptResponse_LineDto": {
         "required": [
-          "ShipmentLine",
+          "QuantityReceived",
           "StockLabel",
-          "QuantityReceived"
+          "ShipmentLine"
         ],
         "type": "object",
         "properties": {
@@ -86241,9 +86293,9 @@
       },
       "EVA.Core.PurchaseOrders.GetShipmentReceiptResponse_LineDto_ShipmentLineDto": {
         "required": [
-          "QuantityShipped",
-          "QuantityDelivered",
           "OrderLineID",
+          "QuantityDelivered",
+          "QuantityShipped",
           "OrderID"
         ],
         "type": "object",
@@ -86271,9 +86323,9 @@
       },
       "EVA.Core.PurchaseOrders.GetSupplierStockForProduct": {
         "required": [
-          "SupplierID",
+          "OrganizationUnitID",
           "ProductID",
-          "OrganizationUnitID"
+          "SupplierID"
         ],
         "type": "object",
         "properties": {
@@ -86539,8 +86591,8 @@
       },
       "EVA.Core.PurchaseOrders.SupplierCreateOrUpdatePurchaseOrder": {
         "required": [
-          "BackendID",
           "Lines",
+          "BackendID",
           "Receive",
           "Ship"
         ],
@@ -86739,8 +86791,8 @@
       },
       "EVA.Core.PurchaseOrders.SupplierShipPurchaseOrderConfirmation": {
         "required": [
-          "BackendID",
-          "Lines"
+          "Lines",
+          "BackendID"
         ],
         "type": "object",
         "properties": {
@@ -86856,10 +86908,10 @@
       },
       "EVA.Core.Push.AddPushNotificationDevice": {
         "required": [
-          "BackendSystemID",
-          "MobileAppID",
+          "DeviceToken",
           "DeviceOS",
-          "DeviceToken"
+          "BackendSystemID",
+          "MobileAppID"
         ],
         "type": "object",
         "properties": {
@@ -86913,10 +86965,10 @@
       },
       "EVA.Core.QuickBuys.CreateQuickBuy": {
         "required": [
-          "Type",
           "Name",
-          "OrganizationUnitSetID",
-          "ProductSearchTemplateID"
+          "Type",
+          "ProductSearchTemplateID",
+          "OrganizationUnitSetID"
         ],
         "type": "object",
         "properties": {
@@ -87037,8 +87089,8 @@
       "EVA.Core.QuickBuys.GetQuickBuyResponse": {
         "required": [
           "ID",
-          "OrganizationUnitSetID",
-          "ProductSearchTemplateID"
+          "ProductSearchTemplateID",
+          "OrganizationUnitSetID"
         ],
         "type": "object",
         "properties": {
@@ -87091,8 +87143,8 @@
       "EVA.Core.QuickBuys.GetQuickBuysResponse_QuickBuyItem": {
         "required": [
           "ID",
-          "OrganizationUnitSetID",
-          "ProductSearchTemplateID"
+          "ProductSearchTemplateID",
+          "OrganizationUnitSetID"
         ],
         "type": "object",
         "properties": {
@@ -87116,11 +87168,11 @@
       },
       "EVA.Core.QuickBuys.UpdateQuickBuy": {
         "required": [
+          "Name",
           "Type",
           "ID",
-          "Name",
-          "OrganizationUnitSetID",
-          "ProductSearchTemplateID"
+          "ProductSearchTemplateID",
+          "OrganizationUnitSetID"
         ],
         "type": "object",
         "properties": {
@@ -87389,8 +87441,8 @@
       "EVA.Core.RecurringTasks.UpdateRecurringTask": {
         "required": [
           "Cron",
-          "FullName",
-          "ID"
+          "ID",
+          "FullName"
         ],
         "type": "object",
         "properties": {
@@ -87642,6 +87694,37 @@
         },
         "additionalProperties": false
       },
+      "EVA.Core.Scripting.GetScriptExtensionPoints": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "EVA.Core.Scripting.GetScriptExtensionPointsResponse": {
+        "type": "object",
+        "properties": {
+          "Error": {
+            "$ref": "#/components/schemas/EVA.Core.ServiceError"
+          },
+          "ExtensionPoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EVA.Core.Scripting.GetScriptExtensionPointsResponse_ExtensionPoint"
+            }
+          },
+          "Metadata": {
+            "$ref": "#/components/schemas/EVA.Core.ResponseMessageMetadata"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EVA.Core.Scripting.GetScriptExtensionPointsResponse_ExtensionPoint": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "EVA.Core.Scripting.GetScriptResponse": {
         "required": [
           "ID",
@@ -87711,8 +87794,8 @@
       },
       "EVA.Core.Scripting.ParseScript": {
         "required": [
-          "IncludeCompletionSuggestions",
-          "IncludeAST"
+          "IncludeAST",
+          "IncludeCompletionSuggestions"
         ],
         "type": "object",
         "properties": {
@@ -87781,8 +87864,8 @@
       },
       "EVA.Core.Scripting.ScriptError": {
         "required": [
-          "SourceLineNumber",
-          "SourceColumn"
+          "SourceColumn",
+          "SourceLineNumber"
         ],
         "type": "object",
         "properties": {
@@ -87888,10 +87971,10 @@
       },
       "EVA.Core.Search.AggregationFilterModel": {
         "required": [
+          "StatsAggregation",
           "TermsAggregation",
-          "ExactMatch",
           "Negation",
-          "StatsAggregation"
+          "ExactMatch"
         ],
         "type": "object",
         "properties": {
@@ -87936,8 +88019,8 @@
       },
       "EVA.Core.Search.FilterModel": {
         "required": [
-          "ExactMatch",
-          "Negation"
+          "Negation",
+          "ExactMatch"
         ],
         "type": "object",
         "properties": {
@@ -88180,9 +88263,9 @@
       },
       "EVA.Core.Search.ProductSearchItemProductRequirementMetadata": {
         "required": [
-          "IsArray",
           "ID",
-          "IsRequired"
+          "IsRequired",
+          "IsArray"
         ],
         "type": "object",
         "properties": {
@@ -88246,12 +88329,12 @@
       },
       "EVA.Core.Security.ListKeysItem": {
         "required": [
-          "IsPublicSession",
+          "CreatedByUserID",
+          "UserID",
           "ID",
           "CreationTime",
-          "UserID",
-          "CreatedByUserID",
-          "IsActive"
+          "IsActive",
+          "IsPublicSession"
         ],
         "type": "object",
         "properties": {
@@ -88342,12 +88425,12 @@
       },
       "EVA.Core.Services.AvailableUserTaskDto": {
         "required": [
-          "HasUrgency",
-          "ID",
-          "Priority",
-          "CreationTime",
+          "Sequence",
           "CanBeIgnored",
-          "Sequence"
+          "ID",
+          "HasUrgency",
+          "CreationTime",
+          "Priority"
         ],
         "type": "object",
         "properties": {
@@ -88628,9 +88711,9 @@
       "EVA.Core.Services.CreateUserTaskTypeOrganizationUnitSet": {
         "required": [
           "Required",
-          "IgnoreForPeriodClosing",
+          "OrganizationUnitSetID",
           "UserTaskTypeID",
-          "OrganizationUnitSetID"
+          "IgnoreForPeriodClosing"
         ],
         "type": "object",
         "properties": {
@@ -88660,8 +88743,8 @@
       },
       "EVA.Core.Services.CustomerInteractionTasks.CreateCustomerInteractionTask": {
         "required": [
-          "CustomerID",
-          "TypeID"
+          "TypeID",
+          "CustomerID"
         ],
         "type": "object",
         "properties": {
@@ -88772,8 +88855,8 @@
       },
       "EVA.Core.Services.CustomerInteractionTasks.CustomerInteractionUserTaskDto": {
         "required": [
-          "IsCompleted",
           "OrganizationUnitID",
+          "IsCompleted",
           "IsActive"
         ],
         "type": "object",
@@ -88872,9 +88955,9 @@
       },
       "EVA.Core.Services.CustomerInteractionTasks.GetCustomerInteractionTaskByIDResponse": {
         "required": [
-          "CustomerID",
           "ID",
-          "UserTaskID"
+          "UserTaskID",
+          "CustomerID"
         ],
         "type": "object",
         "properties": {
@@ -88998,9 +89081,9 @@
       },
       "EVA.Core.Services.CustomerInteractionTasks.ListCustomerInteractionTasksResponse_CustomerInteractionTaskDto": {
         "required": [
-          "CustomerID",
           "ID",
-          "UserTaskID"
+          "UserTaskID",
+          "CustomerID"
         ],
         "type": "object",
         "properties": {
@@ -89114,10 +89197,10 @@
       },
       "EVA.Core.Services.CycleCounts.GetCycleCountSettingsResponse": {
         "required": [
-          "MaxCycleCountsPerShopPerDay",
           "OrganizationUnitID",
-          "PastDueProductsOnly",
+          "MaxCycleCountsPerShopPerDay",
           "MaxCycleCountsPerShop",
+          "PastDueProductsOnly",
           "GenerateCycleCountAfterNASC"
         ],
         "type": "object",
@@ -89239,8 +89322,8 @@
       },
       "EVA.Core.Services.DeleteUserTaskTypeOrganizationUnitSet": {
         "required": [
-          "UserTaskTypeID",
-          "OrganizationUnitSetID"
+          "OrganizationUnitSetID",
+          "UserTaskTypeID"
         ],
         "type": "object",
         "properties": {
@@ -89255,8 +89338,8 @@
       },
       "EVA.Core.Services.DeviceStatusSummary": {
         "required": [
-          "Status",
-          "ID"
+          "ID",
+          "Status"
         ],
         "type": "object",
         "properties": {
@@ -89322,9 +89405,9 @@
       },
       "EVA.Core.Services.FullStockCountServices.AddProductToFullStockCountLabel": {
         "required": [
-          "ProductID",
+          "ID",
           "Quantity",
-          "ID"
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -89388,8 +89471,8 @@
       },
       "EVA.Core.Services.FullStockCountServices.CompleteFullStockCount": {
         "required": [
-          "UserTaskID",
-          "DismissDeviationsAsStockMutations"
+          "DismissDeviationsAsStockMutations",
+          "UserTaskID"
         ],
         "type": "object",
         "properties": {
@@ -89438,8 +89521,8 @@
       },
       "EVA.Core.Services.FullStockCountServices.CreateFullStockCount": {
         "required": [
-          "IsExternal",
-          "ReturnCurrentStock"
+          "ReturnCurrentStock",
+          "IsExternal"
         ],
         "type": "object",
         "properties": {
@@ -89514,8 +89597,8 @@
       },
       "EVA.Core.Services.FullStockCountServices.CreateFullStockCountResponse_ProductStock": {
         "required": [
-          "ProductID",
           "QuantityOnHand",
+          "ProductID",
           "StockLabelID"
         ],
         "type": "object",
@@ -89573,14 +89656,14 @@
       "EVA.Core.Services.FullStockCountServices.GetFullStockCountResponse": {
         "required": [
           "Progress",
+          "ID",
           "IsCompleted",
           "RecountInterval",
-          "ID",
-          "IsReady",
-          "UserTaskID",
           "CreationTime",
-          "IsExternal",
-          "IsActive"
+          "UserTaskID",
+          "IsReady",
+          "IsActive",
+          "IsExternal"
         ],
         "type": "object",
         "properties": {
@@ -89639,15 +89722,15 @@
       },
       "EVA.Core.Services.FullStockCountServices.ListFullStockCountDto": {
         "required": [
+          "CreatedByID",
+          "OrganizationUnitID",
+          "ID",
           "IsCompleted",
           "RecountInterval",
-          "CreatedByID",
-          "ID",
-          "OrganizationUnitID",
-          "UserTaskID",
           "CreationTime",
-          "IsExternal",
-          "IsActive"
+          "UserTaskID",
+          "IsActive",
+          "IsExternal"
         ],
         "type": "object",
         "properties": {
@@ -89699,11 +89782,11 @@
       },
       "EVA.Core.Services.FullStockCountServices.ListFullStockCountLabelDto": {
         "required": [
-          "FullStockCountID",
-          "IsCompleted",
           "ID",
-          "UserTaskID",
+          "IsCompleted",
           "IsRecount",
+          "FullStockCountID",
+          "UserTaskID",
           "StockLabelID",
           "IsActive"
         ],
@@ -89750,8 +89833,8 @@
       },
       "EVA.Core.Services.FullStockCountServices.ListFullStockCountLabelProductDto": {
         "required": [
-          "ProductID",
-          "Quantity"
+          "Quantity",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -89859,9 +89942,9 @@
       },
       "EVA.Core.Services.FullStockCountServices.ListFullStockCountLabelSummaryResponse": {
         "required": [
-          "FullStockCountIsExternal",
           "FullStockCountID",
-          "FullStockCountIsCompleted"
+          "FullStockCountIsCompleted",
+          "FullStockCountIsExternal"
         ],
         "type": "object",
         "properties": {
@@ -89903,8 +89986,8 @@
       },
       "EVA.Core.Services.FullStockCountServices.ListFullStockCountLabelSummaryResponse_Label": {
         "required": [
-          "IsCompleted",
-          "FullStockLabelID"
+          "FullStockLabelID",
+          "IsCompleted"
         ],
         "type": "object",
         "properties": {
@@ -89934,8 +90017,8 @@
       },
       "EVA.Core.Services.FullStockCountServices.ListFullStockCountLabelSummaryResponse_Product": {
         "required": [
-          "ProductID",
-          "CountQuantity"
+          "CountQuantity",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -90141,10 +90224,10 @@
       },
       "EVA.Core.Services.FullStockCountServices.StartFullStockCountLabelResponse": {
         "required": [
-          "FullStockCountID",
           "ID",
-          "UserTaskID",
           "IsRecount",
+          "FullStockCountID",
+          "UserTaskID",
           "StockLabelID"
         ],
         "type": "object",
@@ -90187,8 +90270,8 @@
       },
       "EVA.Core.Services.FullStockCountServices.StartFullStockCountResponse": {
         "required": [
-          "RecountInterval",
           "ID",
+          "RecountInterval",
           "UserTaskID"
         ],
         "type": "object",
@@ -90395,8 +90478,8 @@
       },
       "EVA.Core.Services.GetUserTaskCounts": {
         "required": [
-          "ExcludeChildOrganizations",
           "IncludeAssignedTasks",
+          "ExcludeChildOrganizations",
           "IncludeAllTasks"
         ],
         "type": "object",
@@ -90572,8 +90655,8 @@
       },
       "EVA.Core.Services.GetUserTaskTypeOrganizationUnitSet": {
         "required": [
-          "UserTaskTypeID",
-          "OrganizationUnitSetID"
+          "OrganizationUnitSetID",
+          "UserTaskTypeID"
         ],
         "type": "object",
         "properties": {
@@ -90619,8 +90702,8 @@
       },
       "EVA.Core.Services.InitialCycleCountDto": {
         "required": [
-          "ID",
-          "OrganizationUnitID"
+          "OrganizationUnitID",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -90638,8 +90721,8 @@
       },
       "EVA.Core.Services.InitialCycleCountLabelDto": {
         "required": [
-          "Number",
           "CreatedByID",
+          "Number",
           "ID",
           "CreationTime"
         ],
@@ -90714,8 +90797,8 @@
       },
       "EVA.Core.Services.InitialCycleCounts.CountProductForInitialCycleCount": {
         "required": [
-          "ProductID",
           "Quantity",
+          "ProductID",
           "LabelID"
         ],
         "type": "object",
@@ -90754,8 +90837,8 @@
       "EVA.Core.Services.InitialCycleCounts.DeleteInitialCycleCountResult": {
         "required": [
           "ProductID",
-          "StockLabel",
-          "LabelID"
+          "LabelID",
+          "StockLabel"
         ],
         "type": "object",
         "properties": {
@@ -90819,8 +90902,8 @@
       },
       "EVA.Core.Services.InitialCycleCounts.ListInitialCycleCountLabels": {
         "required": [
-          "Limit",
           "InitialCycleCountID",
+          "Limit",
           "Start"
         ],
         "type": "object",
@@ -91242,8 +91325,8 @@
       },
       "EVA.Core.Services.ListUserTasksResponse_UserTask": {
         "required": [
-          "IsCompleted",
           "ID",
+          "IsCompleted",
           "Priority",
           "IsActive"
         ],
@@ -91380,8 +91463,8 @@
       "EVA.Core.Services.OrderInterventionTasks.OrderInterventionTaskDto": {
         "required": [
           "ID",
-          "UserTaskID",
           "CreationTime",
+          "UserTaskID",
           "OrderID"
         ],
         "type": "object",
@@ -91440,8 +91523,8 @@
       },
       "EVA.Core.Services.OrganizationUnitDeviceStatus": {
         "required": [
-          "Status",
           "ID",
+          "Status",
           "ApplicationID"
         ],
         "type": "object",
@@ -91478,10 +91561,10 @@
       },
       "EVA.Core.Services.OriginalOrder": {
         "required": [
-          "IsCompleted",
+          "IsShipped",
           "ID",
-          "IsPaid",
-          "IsShipped"
+          "IsCompleted",
+          "IsPaid"
         ],
         "type": "object",
         "properties": {
@@ -91508,8 +91591,8 @@
       },
       "EVA.Core.Services.ProductReturnLine": {
         "required": [
-          "ProductID",
-          "Quantity"
+          "Quantity",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -91716,9 +91799,9 @@
       },
       "EVA.Core.Services.ReservationCleanup.CompleteReservationCleanup": {
         "required": [
+          "NoConfirmation",
           "CreateNewTaskForRemainingLines",
-          "Task",
-          "NoConfirmation"
+          "Task"
         ],
         "type": "object",
         "properties": {
@@ -91762,9 +91845,9 @@
       },
       "EVA.Core.Services.ReservationCleanup.CompleteReservationCleanup_ReservationCleanupTaskLine": {
         "required": [
-          "NothingToReturn",
           "QuantityToReturn",
           "OrderLine",
+          "NothingToReturn",
           "QuantityReturned"
         ],
         "type": "object",
@@ -91860,8 +91943,8 @@
       },
       "EVA.Core.Services.ReservationCleanupWorkSetOrderLine": {
         "required": [
-          "NothingToReturn",
           "QuantityToReturn",
+          "NothingToReturn",
           "QuantityReturned"
         ],
         "type": "object",
@@ -91917,14 +92000,14 @@
       },
       "EVA.Core.Services.ReturnOrder": {
         "required": [
-          "IsReturnWithoutProducts",
+          "IsShipped",
           "TotalAmountInTax",
-          "IsCompleted",
           "ID",
+          "IsCompleted",
           "ForeignPaidAmount",
           "IsPaid",
           "CreationTime",
-          "IsShipped",
+          "IsReturnWithoutProducts",
           "PaidAmount"
         ],
         "type": "object",
@@ -91965,8 +92048,8 @@
       },
       "EVA.Core.Services.ReturnOrderLines": {
         "required": [
-          "ForceCreate",
           "Lines",
+          "ForceCreate",
           "CreateInOriginalOrganizationUnit"
         ],
         "type": "object",
@@ -92018,10 +92101,10 @@
       },
       "EVA.Core.Services.SecondChanceProductRegistrationUserTask.CompleteSecondChanceProductRegistration": {
         "required": [
-          "Price",
+          "NotReturnable",
           "Description",
           "UserTaskID",
-          "NotReturnable"
+          "Price"
         ],
         "type": "object",
         "properties": {
@@ -92173,9 +92256,9 @@
       },
       "EVA.Core.Services.StockReplenishment.CreateStockReplenishmentTask": {
         "required": [
-          "ProductID",
+          "OrganizationUnitID",
           "Quantity",
-          "OrganizationUnitID"
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -92224,8 +92307,8 @@
       },
       "EVA.Core.Services.StockReplenishment.GetStockReplenishmentTaskData": {
         "required": [
-          "ProductID",
-          "OrganizationUnitID"
+          "OrganizationUnitID",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -92240,8 +92323,8 @@
       },
       "EVA.Core.Services.StockReplenishment.GetStockReplenishmentTaskDataResponse": {
         "required": [
-          "AutoGenerateQuantity",
-          "Disabled"
+          "Disabled",
+          "AutoGenerateQuantity"
         ],
         "type": "object",
         "properties": {
@@ -92335,10 +92418,10 @@
       },
       "EVA.Core.Services.StockReplenishment.StockReplenishmentTaskDataDto": {
         "required": [
-          "ProductID",
+          "Disabled",
           "OrganizationUnitID",
           "AutoGenerateQuantity",
-          "Disabled"
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -92359,10 +92442,10 @@
       },
       "EVA.Core.Services.StockReplenishment.UpdateStockReplenishmentTaskData": {
         "required": [
-          "ProductID",
+          "Disabled",
           "OrganizationUnitID",
           "AutoGenerateQuantity",
-          "Disabled"
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -92422,8 +92505,8 @@
       },
       "EVA.Core.Services.StockReservation.CompleteStockReservationTask_StockReservationTaskLine": {
         "required": [
-          "ForceComplete",
-          "OrderLineID"
+          "OrderLineID",
+          "ForceComplete"
         ],
         "type": "object",
         "properties": {
@@ -92506,13 +92589,13 @@
       },
       "EVA.Core.Services.StockReservation.StartStockReservationLine": {
         "required": [
-          "ProductID",
-          "Quantity",
           "ProductUnitPrice",
-          "QuantityOnHand",
           "ProductDisplayValue",
-          "TotalAmount",
-          "OrderLineID"
+          "QuantityOnHand",
+          "Quantity",
+          "OrderLineID",
+          "ProductID",
+          "TotalAmount"
         ],
         "type": "object",
         "properties": {
@@ -92583,8 +92666,8 @@
         "required": [
           "Lines",
           "UserTaskID",
-          "ServiceLines",
-          "OrderID"
+          "OrderID",
+          "ServiceLines"
         ],
         "type": "object",
         "properties": {
@@ -92642,13 +92725,13 @@
       },
       "EVA.Core.Services.StockReservationTaskLineDto": {
         "required": [
-          "ProductID",
-          "IsCancelled",
-          "ForceComplete",
           "QuantityOnHand",
           "IsReserved",
           "MustBeOrdered",
-          "OrderLineID"
+          "IsCancelled",
+          "OrderLineID",
+          "ProductID",
+          "ForceComplete"
         ],
         "type": "object",
         "properties": {
@@ -92693,12 +92776,12 @@
       },
       "EVA.Core.Services.StockWithInitialCycleCountResultDto": {
         "required": [
-          "ProductID",
-          "Quantity",
           "QuantityOnHand",
-          "StockLabel",
           "OrganizationUnitID",
-          "StockLabelID"
+          "Quantity",
+          "ProductID",
+          "StockLabelID",
+          "StockLabel"
         ],
         "type": "object",
         "properties": {
@@ -92813,9 +92896,9 @@
       "EVA.Core.Services.UpdateUserTaskTypeOrganizationUnitSet": {
         "required": [
           "Required",
-          "IgnoreForPeriodClosing",
+          "OrganizationUnitSetID",
           "UserTaskTypeID",
-          "OrganizationUnitSetID"
+          "IgnoreForPeriodClosing"
         ],
         "type": "object",
         "properties": {
@@ -92855,8 +92938,8 @@
       },
       "EVA.Core.Services.ZonedCycleCounts.CompleteZonedCycleCountPreCount": {
         "required": [
-          "UserTaskID",
-          "Results"
+          "Results",
+          "UserTaskID"
         ],
         "type": "object",
         "properties": {
@@ -93002,8 +93085,8 @@
       },
       "EVA.Core.Services.ZonedCycleCounts.CreateZonedCycleCount": {
         "required": [
-          "ProductID",
-          "OrganizationUnitID"
+          "OrganizationUnitID",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -93509,11 +93592,11 @@
       },
       "EVA.Core.Services.ZonedCycleCounts.GetZonedCycleCountResponse": {
         "required": [
-          "IsCompleted",
           "CreatedByID",
           "ID",
-          "UserTaskID",
+          "IsCompleted",
           "CreationTime",
+          "UserTaskID",
           "IsActive"
         ],
         "type": "object",
@@ -93662,9 +93745,9 @@
       },
       "EVA.Core.Services.ZonedCycleCounts.GetZonedCyleCountStockLabelQuantities": {
         "required": [
+          "ExpectedQuantity",
           "CurrentQuantityOnHand",
-          "CountedQuantity",
-          "ExpectedQuantity"
+          "CountedQuantity"
         ],
         "type": "object",
         "properties": {
@@ -94206,8 +94289,8 @@
       },
       "EVA.Core.Services.ZonedCycleCounts.UpdateCycleCountZone": {
         "required": [
-          "ID",
-          "Name"
+          "Name",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -94641,9 +94724,9 @@
       "EVA.Core.Shipments.GetShipmentExportByIDResponse": {
         "required": [
           "ID",
-          "ShippedToOrganizationUnitID",
+          "CreationTime",
           "ShipmentID",
-          "CreationTime"
+          "ShippedToOrganizationUnitID"
         ],
         "type": "object",
         "properties": {
@@ -94726,17 +94809,17 @@
       },
       "EVA.Core.Shipments.GetShipmentResponse": {
         "required": [
-          "IsCompleted",
-          "ID",
-          "TotalQuantityDelivered",
           "NetTotalQuantityShipped",
-          "IsDeleted",
-          "PaymentHandledByCarrier",
-          "TotalQuantityShipped",
+          "IsExported",
+          "ID",
           "LineCount",
-          "IsDelivered",
+          "TotalQuantityDelivered",
+          "IsCompleted",
           "NetTotalQuantityDelivered",
-          "IsExported"
+          "IsDelivered",
+          "TotalQuantityShipped",
+          "IsDeleted",
+          "PaymentHandledByCarrier"
         ],
         "type": "object",
         "properties": {
@@ -94846,9 +94929,9 @@
       "EVA.Core.Shipments.GetShipmentResponse_OrderInShipment": {
         "required": [
           "TotalAmountInTax",
-          "OrderID",
           "OpenAmount",
-          "PaidAmount"
+          "PaidAmount",
+          "OrderID"
         ],
         "type": "object",
         "properties": {
@@ -94887,12 +94970,12 @@
       },
       "EVA.Core.Shipments.GetShipmentResponse_ShipmentPackage": {
         "required": [
+          "Width",
+          "Length",
+          "ID",
           "Height",
           "Quantity",
-          "Length",
-          "Weight",
-          "ID",
-          "Width"
+          "Weight"
         ],
         "type": "object",
         "properties": {
@@ -95117,11 +95200,11 @@
       },
       "EVA.Core.Shipments.ListShipmentLedgerForShipmentResponse_ShipmentLedgerDto": {
         "required": [
+          "TypeID",
           "CreatedByID",
           "ID",
-          "ShipmentID",
           "CreationTime",
-          "TypeID"
+          "ShipmentID"
         ],
         "type": "object",
         "properties": {
@@ -95332,8 +95415,8 @@
       },
       "EVA.Core.Shipments.ModifyQuantityShipped_ShipmentLine": {
         "required": [
-          "QuantityShipped",
-          "ShipmentLineID"
+          "ShipmentLineID",
+          "QuantityShipped"
         ],
         "type": "object",
         "properties": {
@@ -95349,8 +95432,8 @@
       "EVA.Core.Shipments.ProducePackingSlip": {
         "required": [
           "Print",
-          "ShipmentID",
-          "Download"
+          "Download",
+          "ShipmentID"
         ],
         "type": "object",
         "properties": {
@@ -95426,18 +95509,18 @@
       },
       "EVA.Core.Shipments.PurchaseOrderShipmentDto": {
         "required": [
-          "ShipmentDate",
-          "IsCompleted",
-          "ID",
-          "StatusID",
-          "TotalQuantityDelivered",
-          "OrganizationUnitID",
           "NetTotalQuantityShipped",
-          "IsDeleted",
+          "StatusID",
+          "OrganizationUnitID",
+          "ID",
+          "TotalQuantityDelivered",
+          "IsCompleted",
+          "NetTotalQuantityDelivered",
+          "ShipmentDate",
           "CreationTime",
           "TotalQuantityShipped",
-          "NetTotalQuantityDelivered",
-          "TotalPackageCountIndication"
+          "TotalPackageCountIndication",
+          "IsDeleted"
         ],
         "type": "object",
         "properties": {
@@ -95534,8 +95617,8 @@
       },
       "EVA.Core.Shipments.ReceiveShipmentWorkSet": {
         "required": [
-          "ShippedToOrganizationUnitID",
-          "ShipmentID"
+          "ShipmentID",
+          "ShippedToOrganizationUnitID"
         ],
         "type": "object",
         "properties": {
@@ -95574,11 +95657,11 @@
       },
       "EVA.Core.Shipments.ReceiveShipmentWorkSetLine": {
         "required": [
-          "QuantityShipped",
-          "ProductID",
           "NetQuantityShipped",
           "QuantityAlreadyReceived",
+          "ProductID",
           "NetQuantityDelivered",
+          "QuantityShipped",
           "QuantityOrdered"
         ],
         "type": "object",
@@ -95624,9 +95707,9 @@
       },
       "EVA.Core.Shipments.ReceiveShipmentWorkSetLinePackage": {
         "required": [
-          "Quantity",
           "QuantityBarcode",
-          "QuantityTotal"
+          "QuantityTotal",
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -95690,20 +95773,20 @@
       },
       "EVA.Core.Shipments.ShipmentLineDto": {
         "required": [
-          "QuantityShipped",
           "TotalAmountInTax",
-          "IsCompleted",
-          "TaxRate",
           "ID",
-          "UnitPriceInTax",
-          "ShipmentID",
-          "QuantityDelivered",
+          "TaxRate",
+          "IsCompleted",
           "NetQuantityShipped",
-          "TotalAmount",
-          "NetQuantityDelivered",
-          "UnitPrice",
           "OrderLineID",
-          "OrderID"
+          "QuantityDelivered",
+          "NetQuantityDelivered",
+          "UnitPriceInTax",
+          "QuantityShipped",
+          "UnitPrice",
+          "ShipmentID",
+          "OrderID",
+          "TotalAmount"
         ],
         "type": "object",
         "properties": {
@@ -95797,11 +95880,11 @@
       },
       "EVA.Core.Shipments.ShipmentPackageDto_PackageDto": {
         "required": [
-          "Height",
+          "Width",
           "Length",
-          "Weight",
           "ID",
-          "Width"
+          "Height",
+          "Weight"
         ],
         "type": "object",
         "properties": {
@@ -96115,9 +96198,9 @@
       "EVA.Core.Shipping.ShippingMethodByOrderLineDto": {
         "required": [
           "ID",
+          "CarrierID",
           "ExtraCosts",
           "Priority",
-          "CarrierID",
           "PaymentHandledByCarrier"
         ],
         "type": "object",
@@ -96170,9 +96253,9 @@
       "EVA.Core.Shipping.ShippingMethodDto": {
         "required": [
           "ID",
+          "CarrierID",
           "ExtraCosts",
           "Priority",
-          "CarrierID",
           "PaymentHandledByCarrier"
         ],
         "type": "object",
@@ -96247,9 +96330,9 @@
       },
       "EVA.Core.Stock.AdjustStock_Adjustment": {
         "required": [
-          "ProductID",
-          "Quantity",
           "OrganizationUnitID",
+          "Quantity",
+          "ProductID",
           "StockLabelID",
           "StockMutationReasonID"
         ],
@@ -96326,8 +96409,8 @@
       },
       "EVA.Core.Stock.CommitOrderLinesResponse_CommitmentResultForOrderLine": {
         "required": [
-          "IsCommitted",
-          "OrderLineID"
+          "OrderLineID",
+          "IsCommitted"
         ],
         "type": "object",
         "properties": {
@@ -96360,9 +96443,9 @@
       },
       "EVA.Core.Stock.CreateStockMutations_StockMutation": {
         "required": [
-          "Quantity",
           "Delta",
-          "Timestamp"
+          "Timestamp",
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -96390,9 +96473,9 @@
       },
       "EVA.Core.Stock.CreateStockNotification": {
         "required": [
+          "OrganizationUnitID",
           "ProductID",
-          "EmailAddress",
-          "OrganizationUnitID"
+          "EmailAddress"
         ],
         "type": "object",
         "properties": {
@@ -96519,8 +96602,8 @@
       },
       "EVA.Core.Stock.GetProductAvailability": {
         "required": [
-          "Options",
-          "Products"
+          "Products",
+          "Options"
         ],
         "type": "object",
         "properties": {
@@ -96754,9 +96837,9 @@
       },
       "EVA.Core.Stock.GetProductRunRates": {
         "required": [
-          "Since",
+          "ProductIDs",
           "WarehouseOrganizationUnitID",
-          "ProductIDs"
+          "Since"
         ],
         "type": "object",
         "properties": {
@@ -96778,9 +96861,9 @@
       },
       "EVA.Core.Stock.GetProductRunRatesResponse": {
         "required": [
-          "DailyRunRate",
+          "MonthlyRunRate",
           "TotalQuantity",
-          "MonthlyRunRate"
+          "DailyRunRate"
         ],
         "type": "object",
         "properties": {
@@ -96810,11 +96893,11 @@
       },
       "EVA.Core.Stock.GetProductRunRatesResponse_RunRate": {
         "required": [
-          "ProductID",
+          "MonthlyRunRate",
           "SoldFromOrganizationUnitID",
-          "DailyRunRate",
           "TotalQuantity",
-          "MonthlyRunRate"
+          "ProductID",
+          "DailyRunRate"
         ],
         "type": "object",
         "properties": {
@@ -96930,14 +97013,14 @@
       },
       "EVA.Core.Stock.GetStockAvailabilityEstimateForOrderResponse_DependsOnPurchaseOrderLine": {
         "required": [
-          "QuantityToShip",
-          "QuantityShipped",
-          "RequestedDate",
-          "ProductID",
           "ID",
-          "QuantityDelivered",
+          "QuantityToShip",
           "CreationTime",
-          "OrderID"
+          "ProductID",
+          "QuantityDelivered",
+          "QuantityShipped",
+          "OrderID",
+          "RequestedDate"
         ],
         "type": "object",
         "properties": {
@@ -96975,13 +97058,13 @@
       },
       "EVA.Core.Stock.GetStockAvailabilityEstimateForOrderResponse_OrderLine": {
         "required": [
-          "RequestedDate",
-          "ProductID",
           "CanBeFulfilled",
-          "IsCommitted",
           "ShouldBeSplit",
+          "OrderLineID",
+          "ProductID",
           "IsBlocked",
-          "OrderLineID"
+          "IsCommitted",
+          "RequestedDate"
         ],
         "type": "object",
         "properties": {
@@ -97055,8 +97138,8 @@
       },
       "EVA.Core.Stock.GetStockAvailabilityEstimateForOrderResponse_OrderLineMadeToOrderStatus": {
         "required": [
-          "HasBeenRequested",
-          "HasBeenCompleted"
+          "HasBeenCompleted",
+          "HasBeenRequested"
         ],
         "type": "object",
         "properties": {
@@ -97074,12 +97157,12 @@
       },
       "EVA.Core.Stock.GetStockAvailabilityEstimateForOrderResponse_OrderLineMadeToOrderStatus_MadeToOrderPurchaseOrderLine": {
         "required": [
-          "QuantityToShip",
-          "QuantityShipped",
           "ID",
-          "IsOverdue",
+          "QuantityToShip",
           "IsConfirmed",
+          "IsOverdue",
           "QuantityDelivered",
+          "QuantityShipped",
           "OrderID"
         ],
         "type": "object",
@@ -97135,10 +97218,10 @@
       },
       "EVA.Core.Stock.GetStockAvailabilityEstimateForOrderResponse_PurchaseOrderLine": {
         "required": [
-          "RequestedDate",
-          "Quantity",
           "ID",
-          "OrderID"
+          "Quantity",
+          "OrderID",
+          "RequestedDate"
         ],
         "type": "object",
         "properties": {
@@ -97182,9 +97265,9 @@
       },
       "EVA.Core.Stock.GetStockAvailabilityEstimateForProducts": {
         "required": [
-          "IncludeReservedOrders",
           "Products",
-          "IncludeShopReplenishments"
+          "IncludeShopReplenishments",
+          "IncludeReservedOrders"
         ],
         "type": "object",
         "properties": {
@@ -97266,8 +97349,8 @@
       },
       "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse_Product": {
         "required": [
-          "WarehouseQuantityAvailable",
           "WarehouseQuantityOnHand",
+          "WarehouseQuantityAvailable",
           "ID",
           "QuantityToShipOnOrder",
           "WarehouseQuantityCommitted"
@@ -97330,13 +97413,13 @@
       },
       "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse_PurchaseOrderLine": {
         "required": [
-          "RequestedDate",
-          "Quantity",
           "ID",
-          "IsOverdue",
           "IsConfirmed",
+          "IsOverdue",
+          "Quantity",
+          "OrderID",
           "QuantityAvailable",
-          "OrderID"
+          "RequestedDate"
         ],
         "type": "object",
         "properties": {
@@ -97390,10 +97473,10 @@
       },
       "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse_SalesOrderLine": {
         "required": [
-          "RequestedDate",
           "Quantity",
           "OrderLineID",
-          "OrderID"
+          "OrderID",
+          "RequestedDate"
         ],
         "type": "object",
         "properties": {
@@ -97435,11 +97518,11 @@
       },
       "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse_ShopReplenishment": {
         "required": [
-          "RequestedDate",
-          "Quantity",
           "IsConfirmed",
+          "Quantity",
           "OrderLineID",
-          "OrderID"
+          "OrderID",
+          "RequestedDate"
         ],
         "type": "object",
         "properties": {
@@ -97464,8 +97547,8 @@
       },
       "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse_WarehouseStock": {
         "required": [
-          "WarehouseID",
-          "QuantityOnHand"
+          "QuantityOnHand",
+          "WarehouseID"
         ],
         "type": "object",
         "properties": {
@@ -97530,13 +97613,13 @@
       },
       "EVA.Core.Stock.GetStockAvailabilityTimelineResponse_TimelineItem": {
         "required": [
-          "ProductID",
-          "CumulativeSumQuantityOnHand",
           "DeltaQuantityOnHand",
-          "OrganizationUnitID",
-          "CumulativeSumQuantityAvailable",
-          "Date",
           "DeltaQuantityCommitted",
+          "CumulativeSumQuantityAvailable",
+          "OrganizationUnitID",
+          "CumulativeSumQuantityOnHand",
+          "ProductID",
+          "Date",
           "CumulativeSumQuantityCommitted"
         ],
         "type": "object",
@@ -97666,9 +97749,9 @@
       },
       "EVA.Core.Stock.GetStockDetailsForProductResponse": {
         "required": [
-          "SellableStockInStoresWithinApplication",
           "QuantityOnHand",
-          "SellableQuantityAvailable"
+          "SellableQuantityAvailable",
+          "SellableStockInStoresWithinApplication"
         ],
         "type": "object",
         "properties": {
@@ -97751,9 +97834,9 @@
       },
       "EVA.Core.Stock.GetStockNotification": {
         "required": [
+          "OrganizationUnitID",
           "ProductID",
-          "EmailAddress",
-          "OrganizationUnitID"
+          "EmailAddress"
         ],
         "type": "object",
         "properties": {
@@ -97825,8 +97908,8 @@
       },
       "EVA.Core.Stock.ListStockMutationsResponse": {
         "required": [
-          "FullStockCountIsExternal",
-          "FullStockCountInProgress"
+          "FullStockCountInProgress",
+          "FullStockCountIsExternal"
         ],
         "type": "object",
         "properties": {
@@ -97893,10 +97976,10 @@
       },
       "EVA.Core.Stock.MoveStock_Movement": {
         "required": [
-          "SourceStockLabelID",
-          "Quantity",
+          "OrganizationUnitID",
           "DestinationStockLabelID",
-          "OrganizationUnitID"
+          "SourceStockLabelID",
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -98029,8 +98112,8 @@
       },
       "EVA.Core.Stock.ProductAvailabilityPickupOrganizationUnit_PickupOpeningHours": {
         "required": [
-          "DayOfWeek",
-          "Closed"
+          "Closed",
+          "DayOfWeek"
         ],
         "type": "object",
         "properties": {
@@ -98101,8 +98184,8 @@
       },
       "EVA.Core.Stock.ProductAvailabilityResult_DeliveryAvailabilityResult": {
         "required": [
-          "HasStock",
-          "IsAvailable"
+          "IsAvailable",
+          "HasStock"
         ],
         "type": "object",
         "properties": {
@@ -98125,8 +98208,8 @@
       },
       "EVA.Core.Stock.ProductAvailabilityResult_PickupAvailabilityResult": {
         "required": [
-          "HasStock",
-          "IsAvailable"
+          "IsAvailable",
+          "HasStock"
         ],
         "type": "object",
         "properties": {
@@ -98153,15 +98236,15 @@
       },
       "EVA.Core.Stock.ProductAvailabilityResult_ProductAvailabilityDetails": {
         "required": [
-          "SupplierQuantityCommitted",
-          "SupplierQuantityAvailable",
-          "EffectiveQuantityOnHand",
-          "EffectiveQuantityAvailable",
           "QuantityOnHand",
-          "OrdersWaitingForStockQuantity",
-          "SupplierQuantityOnHand",
           "QuantityReservedForOtherOrganizationUnits",
-          "QuantityCommitted"
+          "SupplierQuantityCommitted",
+          "EffectiveQuantityAvailable",
+          "EffectiveQuantityOnHand",
+          "QuantityCommitted",
+          "OrdersWaitingForStockQuantity",
+          "SupplierQuantityAvailable",
+          "SupplierQuantityOnHand"
         ],
         "type": "object",
         "properties": {
@@ -98240,9 +98323,9 @@
       },
       "EVA.Core.Stock.ProductAvailabilityResult_ProductAvailabilityDetails_ExpectedStockItem": {
         "required": [
-          "Quantity",
-          "ExpectedOnStockDate",
           "QuantityCommitted",
+          "ExpectedOnStockDate",
+          "Quantity",
           "OrderID"
         ],
         "type": "object",
@@ -98426,8 +98509,8 @@
       },
       "EVA.Core.Stock.UpdateStock_ProductDto": {
         "required": [
-          "Quantity",
-          "ID"
+          "ID",
+          "Quantity"
         ],
         "type": "object",
         "properties": {
@@ -98442,8 +98525,8 @@
       },
       "EVA.Core.Stock.UploadAndProcessStockExcelFile": {
         "required": [
-          "IsFullStockMutationFile",
-          "Data"
+          "Data",
+          "IsFullStockMutationFile"
         ],
         "type": "object",
         "properties": {
@@ -98476,8 +98559,8 @@
       },
       "EVA.Core.Stock.UploadAndProcessStockJSONFile": {
         "required": [
-          "IsFullStockMutationFile",
-          "Data"
+          "Data",
+          "IsFullStockMutationFile"
         ],
         "type": "object",
         "properties": {
@@ -98572,9 +98655,9 @@
       },
       "EVA.Core.StockMovementFollowUp.StockMovementFollowUpWorkSet": {
         "required": [
-          "ProductID",
-          "Quantity",
           "StockMovementFollowUpTaskID",
+          "Quantity",
+          "ProductID",
           "UserTaskID"
         ],
         "type": "object",
@@ -98641,8 +98724,8 @@
       },
       "EVA.Core.StockMutations.OrganizationUnitWithStock": {
         "required": [
-          "SellableStock",
-          "ID"
+          "ID",
+          "SellableStock"
         ],
         "type": "object",
         "properties": {
@@ -98660,17 +98743,17 @@
       },
       "EVA.Core.StockMutations.StockMutationDto": {
         "required": [
-          "MutationQuantity",
-          "ProductID",
-          "SourceStockLabelID",
-          "DestinationStockLabelID",
-          "ID",
-          "DestinationStockLabel",
-          "AutomaticCorrectionQuantity",
           "SourceStockLabel",
-          "UnitCost",
+          "ID",
+          "MutationQuantity",
+          "DestinationStockLabelID",
+          "DestinationStockLabel",
           "CreationTime",
-          "ReasonID"
+          "SourceStockLabelID",
+          "ProductID",
+          "AutomaticCorrectionQuantity",
+          "ReasonID",
+          "UnitCost"
         ],
         "type": "object",
         "properties": {
@@ -98878,9 +98961,9 @@
       },
       "EVA.Core.Suppliers.ListOrganizationUnitSuppliersModel": {
         "required": [
-          "SupplierOrganizationUnitID",
+          "OrganizationUnitID",
           "ID",
-          "OrganizationUnitID"
+          "SupplierOrganizationUnitID"
         ],
         "type": "object",
         "properties": {
@@ -98962,9 +99045,9 @@
       "EVA.Core.SuspendedOrders.ListSuspendedOrdersResponse_SuspendedOrderDto": {
         "required": [
           "TotalAmountInTax",
+          "OrderID",
           "SuspensionTime",
-          "TotalAmount",
-          "OrderID"
+          "TotalAmount"
         ],
         "type": "object",
         "properties": {
@@ -99032,10 +99115,10 @@
       },
       "EVA.Core.Translations.DeleteEntityTranslation": {
         "required": [
-          "EntityID",
-          "EntityType",
           "LanguageID",
-          "EntityField"
+          "EntityID",
+          "EntityField",
+          "EntityType"
         ],
         "type": "object",
         "properties": {
@@ -99059,8 +99142,8 @@
       },
       "EVA.Core.Translations.DeleteStringTranslation": {
         "required": [
-          "LanguageID",
           "Key",
+          "LanguageID",
           "CountryID"
         ],
         "type": "object",
@@ -99079,10 +99162,10 @@
       },
       "EVA.Core.Translations.GetEntityTranslation": {
         "required": [
-          "EntityID",
-          "EntityType",
           "LanguageID",
-          "EntityField"
+          "EntityID",
+          "EntityField",
+          "EntityType"
         ],
         "type": "object",
         "properties": {
@@ -99136,8 +99219,8 @@
       },
       "EVA.Core.Translations.GetStringTranslation": {
         "required": [
-          "LanguageID",
           "Key",
+          "LanguageID",
           "CountryID"
         ],
         "type": "object",
@@ -99312,11 +99395,11 @@
       },
       "EVA.Core.Translations.ReplaceEntityTranslation": {
         "required": [
-          "EntityID",
-          "EntityType",
           "LanguageID",
+          "EntityID",
           "EntityField",
-          "Value"
+          "Value",
+          "EntityType"
         ],
         "type": "object",
         "properties": {
@@ -99347,8 +99430,8 @@
       },
       "EVA.Core.Translations.ReplaceStringTranslation": {
         "required": [
-          "LanguageID",
           "Key",
+          "LanguageID",
           "CountryID",
           "Value"
         ],
@@ -99489,9 +99572,9 @@
       },
       "EVA.Core.TransputJobs.TransputJobWithRelatedExportDataDto": {
         "required": [
+          "TypeID",
           "ID",
-          "CreationTime",
-          "TypeID"
+          "CreationTime"
         ],
         "type": "object",
         "properties": {
@@ -99888,8 +99971,8 @@
       },
       "EVA.Core.Types.Custom.Services.UpdateCustomUserTaskTemplate": {
         "required": [
-          "ID",
-          "TypeID"
+          "TypeID",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -99946,8 +100029,8 @@
       "EVA.Core.Types.Print.Services.CreatePrintTask": {
         "required": [
           "Type",
-          "BlobID",
-          "OrganizationUnitID"
+          "OrganizationUnitID",
+          "BlobID"
         ],
         "type": "object",
         "properties": {
@@ -100069,8 +100152,8 @@
       },
       "EVA.Core.Types.PrintPriceLabel.PrintPriceLabelUserTaskDataProduct": {
         "required": [
-          "ProductID",
-          "Quantity"
+          "Quantity",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -100252,10 +100335,10 @@
       },
       "EVA.Core.Types.PrintPriceLabel.Services.StartPrintPriceLabelTaskResponse_PriceLabelProduct": {
         "required": [
-          "ProductID",
-          "Quantity",
           "ProductUnitPrice",
-          "ProductUnitPriceInTax"
+          "ProductUnitPriceInTax",
+          "Quantity",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -100306,8 +100389,8 @@
       },
       "EVA.Core.Types.ReturnToSupplier.CompleteReturnToSupplierTask": {
         "required": [
-          "FinalizeReturnToSupplierOrder",
-          "UserTaskID"
+          "UserTaskID",
+          "FinalizeReturnToSupplierOrder"
         ],
         "type": "object",
         "properties": {
@@ -100431,10 +100514,10 @@
       },
       "EVA.Core.Types.ReturnToSupplier.ReturnToSupplierTaskOrderLine": {
         "required": [
-          "ProductID",
           "Quantity",
-          "StockLabel",
-          "OrderLineID"
+          "OrderLineID",
+          "ProductID",
+          "StockLabel"
         ],
         "type": "object",
         "properties": {
@@ -100477,8 +100560,8 @@
       },
       "EVA.Core.Types.ReturnToSupplier.ReturnToSupplierTaskOrderLine_UnitOfMeasure": {
         "required": [
-          "BaseQuantityTotal",
           "Quantity",
+          "BaseQuantityTotal",
           "UnitOfMeasureQuantity"
         ],
         "type": "object",
@@ -100506,10 +100589,10 @@
       },
       "EVA.Core.Types.ReturnToSupplier.ReturnToSupplierTaskShipmentLine": {
         "required": [
-          "ProductID",
           "Quantity",
-          "StockLabel",
-          "OrderLineID"
+          "OrderLineID",
+          "ProductID",
+          "StockLabel"
         ],
         "type": "object",
         "properties": {
@@ -100552,8 +100635,8 @@
       },
       "EVA.Core.Types.ReturnToSupplier.ReturnToSupplierTaskShipmentLine_UnitOfMeasure": {
         "required": [
-          "BaseQuantityTotal",
           "Quantity",
+          "BaseQuantityTotal",
           "UnitOfMeasureQuantity"
         ],
         "type": "object",
@@ -100582,8 +100665,8 @@
       "EVA.Core.Types.ReturnToSupplier.ReturnToSupplierUserTaskData": {
         "required": [
           "HasMarkedProducts",
-          "IsSingularReturnToSupplierTask",
           "UseExcludePolicyOnReturnToSupplierShipment",
+          "IsSingularReturnToSupplierTask",
           "OrderID"
         ],
         "type": "object",
@@ -100927,9 +101010,9 @@
       },
       "EVA.Core.Types.ShipFromStore.Services.StartShipFromStoreTaskResponse": {
         "required": [
+          "ShouldBePrinting",
           "UserTaskID",
-          "OrderID",
-          "ShouldBePrinting"
+          "OrderID"
         ],
         "type": "object",
         "properties": {
@@ -101081,11 +101164,11 @@
       "EVA.Core.Types.ShipFromStore.Services.StartShipFromStoreTaskResponse_ShipFromStoreLine": {
         "required": [
           "TotalAmountInTax",
-          "NetTotalAmountInTax",
-          "Quantity",
           "NetTotalAmount",
-          "TotalAmount",
-          "OrderLineID"
+          "Quantity",
+          "OrderLineID",
+          "NetTotalAmountInTax",
+          "TotalAmount"
         ],
         "type": "object",
         "properties": {
@@ -101179,8 +101262,8 @@
       },
       "EVA.Core.Types.ShipFromStore.ShipFromStorePrintUserTaskData": {
         "required": [
-          "IsReady",
-          "IsError"
+          "IsError",
+          "IsReady"
         ],
         "type": "object",
         "properties": {
@@ -101450,8 +101533,8 @@
       },
       "EVA.Core.Types.ZonedCycleCounts.ZonedCycleCountUserTaskData": {
         "required": [
-          "ProductID",
-          "Progress"
+          "Progress",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -101560,9 +101643,9 @@
       "EVA.Core.UserInteractions.GetUserInteractionByIDResponse": {
         "required": [
           "CreatedByID",
+          "UserID",
           "ID",
-          "CreationTime",
-          "UserID"
+          "CreationTime"
         ],
         "type": "object",
         "properties": {
@@ -101687,9 +101770,9 @@
       "EVA.Core.UserInteractions.ListUserInteractionsResponse_UserInteractionDto": {
         "required": [
           "CreatedByID",
+          "UserID",
           "ID",
-          "CreationTime",
-          "UserID"
+          "CreationTime"
         ],
         "type": "object",
         "properties": {
@@ -101919,8 +102002,8 @@
       },
       "EVA.Core.Users.BorrowedProducts.AddUserBorrowedProductToOrder": {
         "required": [
-          "ProductID",
           "UserID",
+          "ProductID",
           "OrderID"
         ],
         "type": "object",
@@ -101991,9 +102074,9 @@
       },
       "EVA.Core.Users.BorrowedProducts.ListUserBorrowedProductsResponse_Model": {
         "required": [
-          "ProductID",
+          "UserID",
           "CreationTime",
-          "UserID"
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -102052,9 +102135,9 @@
       },
       "EVA.Core.Users.BorrowedProducts.RegisterUserBorrowedProducts": {
         "required": [
-          "ProductID",
+          "UserID",
           "Quantity",
-          "UserID"
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -102072,10 +102155,10 @@
       },
       "EVA.Core.Users.BorrowedProducts.ReturnUserBorrowedProducts": {
         "required": [
-          "ProductID",
-          "Quantity",
+          "IsDamaged",
           "UserID",
-          "IsDamaged"
+          "Quantity",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -102096,9 +102179,9 @@
       },
       "EVA.Core.Users.ChangeUserPassword": {
         "required": [
-          "NewPassword",
           "UserID",
-          "OldPassword"
+          "OldPassword",
+          "NewPassword"
         ],
         "type": "object",
         "properties": {
@@ -102165,8 +102248,8 @@
       "EVA.Core.Users.CheckUsernameAvailabilityResponse": {
         "required": [
           "IsValid",
-          "PasswordResetRequired",
-          "IsAvailable"
+          "IsAvailable",
+          "PasswordResetRequired"
         ],
         "type": "object",
         "properties": {
@@ -102609,8 +102692,8 @@
       },
       "EVA.Core.Users.CreateCustomer_UserAssociations_UserAssociation": {
         "required": [
-          "UserID",
-          "TypeID"
+          "TypeID",
+          "UserID"
         ],
         "type": "object",
         "properties": {
@@ -102650,9 +102733,9 @@
       },
       "EVA.Core.Users.CreateUserAssociation": {
         "required": [
-          "RelatedUserID",
           "TypeID",
-          "PrimaryUserID"
+          "PrimaryUserID",
+          "RelatedUserID"
         ],
         "type": "object",
         "properties": {
@@ -103272,14 +103355,14 @@
       },
       "EVA.Core.Users.GetUserResponse": {
         "required": [
-          "IsIncognito",
           "CreatedByID",
           "ID",
-          "IsDeleted",
-          "CreationTime",
           "IsDeactivated",
+          "CreationTime",
+          "AllowPasswordLogin",
+          "IsIncognito",
           "IsDebtor",
-          "AllowPasswordLogin"
+          "IsDeleted"
         ],
         "type": "object",
         "properties": {
@@ -103433,8 +103516,8 @@
       },
       "EVA.Core.Users.IdentificationDto": {
         "required": [
-          "ID",
-          "ValidTo"
+          "ValidTo",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -103485,8 +103568,8 @@
       },
       "EVA.Core.Users.ListApiKeysItem": {
         "required": [
-          "ID",
-          "UserID"
+          "UserID",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -103707,9 +103790,9 @@
         "required": [
           "CreatedByID",
           "ID",
-          "IsDeleted",
+          "AllowPasswordLogin",
           "IsDebtor",
-          "AllowPasswordLogin"
+          "IsDeleted"
         ],
         "type": "object",
         "properties": {
@@ -103997,8 +104080,8 @@
       },
       "EVA.Core.Users.PushUser_UserSubscription": {
         "required": [
-          "SubscriptionID",
-          "Subscribed"
+          "Subscribed",
+          "SubscriptionID"
         ],
         "type": "object",
         "properties": {
@@ -104082,8 +104165,8 @@
       },
       "EVA.Core.Users.ResetUserPassword": {
         "required": [
-          "Token",
-          "NewPassword"
+          "NewPassword",
+          "Token"
         ],
         "type": "object",
         "properties": {
@@ -104113,8 +104196,8 @@
       },
       "EVA.Core.Users.SearchUsers": {
         "required": [
-          "IncludeCustomers",
-          "IncludeEmployees"
+          "IncludeEmployees",
+          "IncludeCustomers"
         ],
         "type": "object",
         "properties": {
@@ -104329,8 +104412,8 @@
       },
       "EVA.Core.Users.SetUserConsignment": {
         "required": [
-          "UseConsignment",
-          "UserID"
+          "UserID",
+          "UseConsignment"
         ],
         "type": "object",
         "properties": {
@@ -104405,8 +104488,8 @@
       },
       "EVA.Core.Users.SocialSecurityNumber.GetUserInfoBySocialSecurityNumber": {
         "required": [
-          "SocialSecurityNumber",
-          "CountryID"
+          "CountryID",
+          "SocialSecurityNumber"
         ],
         "type": "object",
         "properties": {
@@ -104573,13 +104656,13 @@
       },
       "EVA.Core.Users.Subscriptions.GetAvailableSubscriptionsResponse_SubscriptionDto": {
         "required": [
-          "UserIdentifierRequiredForSubscription",
-          "Preferred",
-          "ID",
-          "ConfirmationRequired",
           "Name",
-          "Default",
-          "Hidden"
+          "ID",
+          "Hidden",
+          "ConfirmationRequired",
+          "Preferred",
+          "UserIdentifierRequiredForSubscription",
+          "Default"
         ],
         "type": "object",
         "properties": {
@@ -104661,13 +104744,13 @@
       },
       "EVA.Core.Users.Subscriptions.GetUserSubscriptionsResponse_SubscriptionDto": {
         "required": [
-          "UserIdentifierRequiredForSubscription",
-          "Preferred",
-          "ID",
-          "ConfirmationRequired",
           "Name",
-          "Default",
-          "Hidden"
+          "ID",
+          "Hidden",
+          "ConfirmationRequired",
+          "Preferred",
+          "UserIdentifierRequiredForSubscription",
+          "Default"
         ],
         "type": "object",
         "properties": {
@@ -104987,8 +105070,8 @@
       },
       "EVA.Core.Users.UpdateUserAssociationType": {
         "required": [
-          "ID",
-          "Name"
+          "Name",
+          "ID"
         ],
         "type": "object",
         "properties": {
@@ -105122,9 +105205,9 @@
         "required": [
           "CreatedByID",
           "ID",
-          "IsDeleted",
+          "AllowPasswordLogin",
           "IsDebtor",
-          "AllowPasswordLogin"
+          "IsDeleted"
         ],
         "type": "object",
         "properties": {
@@ -105260,8 +105343,8 @@
       },
       "EVA.Core.Users.UserPhoneNumberModel": {
         "required": [
-          "IsPrimary",
-          "ID"
+          "ID",
+          "IsPrimary"
         ],
         "type": "object",
         "properties": {
@@ -105434,12 +105517,12 @@
       },
       "EVA.Core.UserTasks.Dto.UserTaskDto": {
         "required": [
-          "HasUrgency",
-          "IsCompleted",
-          "ID",
-          "Priority",
           "OrganizationUnitID",
+          "ID",
+          "IsCompleted",
+          "HasUrgency",
           "CreationTime",
+          "Priority",
           "IsActive"
         ],
         "type": "object",
@@ -105586,8 +105669,8 @@
       "EVA.Core.UserTasks.Dto.UserTaskTypeDto": {
         "required": [
           "ID",
-          "DefaultRequired",
-          "DefaultPriority"
+          "DefaultPriority",
+          "DefaultRequired"
         ],
         "type": "object",
         "properties": {
@@ -105616,10 +105699,10 @@
       "EVA.Core.UserTasks.Dto.UserTaskTypeOrganizationUnitSetDto": {
         "required": [
           "Required",
-          "IgnoreForPeriodClosing",
           "ID",
+          "OrganizationUnitSetID",
           "UserTaskTypeID",
-          "OrganizationUnitSetID"
+          "IgnoreForPeriodClosing"
         ],
         "type": "object",
         "properties": {
@@ -105643,9 +105726,9 @@
       },
       "EVA.Core.UserTasks.FullStockCountUserTask.FullStockCountLabelUserTaskData": {
         "required": [
-          "FullStockCountID",
           "ID",
           "IsRecount",
+          "FullStockCountID",
           "StockLabelID"
         ],
         "type": "object",
@@ -105673,10 +105756,10 @@
       },
       "EVA.Core.UserTasks.FullStockCountUserTask.FullStockCountResult": {
         "required": [
-          "FullStockCountLabelID",
-          "ProductID",
           "Quantity",
-          "StockLabelID"
+          "ProductID",
+          "StockLabelID",
+          "FullStockCountLabelID"
         ],
         "type": "object",
         "properties": {
@@ -105724,16 +105807,16 @@
       },
       "EVA.Core.UserTasks.FullStockCountUserTask.FullStockCountSummaryRecord": {
         "required": [
-          "ProductID",
-          "CycleCountCreated",
-          "CurrentQuantity",
-          "DeviationAmount",
-          "CountQuantity",
-          "DeviationQuantity",
-          "StockMutationQuantity",
           "AbsoluteDeviationQuantity",
+          "StockMutationQuantity",
+          "CountQuantity",
+          "DeviationAmount",
+          "AbsoluteDeviationAmount",
+          "CurrentQuantity",
+          "ProductID",
           "StockLabelID",
-          "AbsoluteDeviationAmount"
+          "DeviationQuantity",
+          "CycleCountCreated"
         ],
         "type": "object",
         "properties": {
@@ -105920,16 +106003,16 @@
       },
       "EVA.Core.UserTasks.FullStockCountUserTask.ListFullStockCountSummaryResponse": {
         "required": [
-          "TotalNegativeDeviationAmount",
-          "CreatedBy",
-          "Progress",
-          "IsCompleted",
           "TotalProducts",
-          "TotalPositiveDeviationAmount",
-          "OrganizationUnitID",
-          "CreationTime",
-          "FinalSummaryValues",
           "TotalDeviations",
+          "Progress",
+          "OrganizationUnitID",
+          "FinalSummaryValues",
+          "IsCompleted",
+          "TotalPositiveDeviationAmount",
+          "CreationTime",
+          "CreatedBy",
+          "TotalNegativeDeviationAmount",
           "IsExternal"
         ],
         "type": "object",
@@ -106170,14 +106253,14 @@
       },
       "EVA.Core.UserTasks.ZonedCycleCountUserTask.ListZonedCycleCountsDto": {
         "required": [
-          "ProductID",
-          "IsCompleted",
           "CreatedByID",
-          "ID",
           "OrganizationUnitID",
-          "UserTaskID",
-          "CreationTime",
+          "ID",
           "FinishedPreCountTasks",
+          "IsCompleted",
+          "CreationTime",
+          "ProductID",
+          "UserTaskID",
           "TotalPreCountTasks",
           "IsActive"
         ],
@@ -106383,8 +106466,8 @@
       },
       "EVA.Core.UserTasktypes.StockReplenishment.StockReplenishmentWorkSetItem": {
         "required": [
-          "Quantity",
           "StockReplenishmentTaskID",
+          "Quantity",
           "UserTaskID"
         ],
         "type": "object",
@@ -106431,8 +106514,8 @@
       },
       "EVA.Core.UserTaskTypes.StockReservation.OrderLineToOrder": {
         "required": [
-          "QuantityToOrder",
-          "OrderLineID"
+          "OrderLineID",
+          "QuantityToOrder"
         ],
         "type": "object",
         "properties": {
@@ -106448,10 +106531,10 @@
       "EVA.Core.UserTaskTypes.StockReservation.ReservationDeviationWorkSet": {
         "required": [
           "TaskID",
-          "ProductID",
-          "QuantityToMoveToSellable",
           "QuantityToCancel",
-          "QuantityMovedBack"
+          "QuantityMovedBack",
+          "QuantityToMoveToSellable",
+          "ProductID"
         ],
         "type": "object",
         "properties": {
@@ -106564,9 +106647,9 @@
       },
       "EVA.Core.Validation.RequiredData": {
         "required": [
+          "OrderLines",
           "Customer",
-          "Order",
-          "OrderLines"
+          "Order"
         ],
         "type": "object",
         "properties": {
@@ -106883,8 +106966,8 @@
       },
       "EVA.Payment.Adyen.Legacy.SDK.AdyenCheckoutSDKPaymentMethodRequestProperties": {
         "required": [
-          "Recurring",
-          "ExcludeLineItems"
+          "ExcludeLineItems",
+          "Recurring"
         ],
         "type": "object",
         "properties": {
@@ -106989,17 +107072,17 @@
       },
       "EVA.Payment.Buckaroo.BuckarooPaymentMethodPayData": {
         "required": [
-          "MerchantSendsEmail",
-          "ShippingBirthDate",
-          "SendMail",
-          "ShippingCosts",
-          "B2B",
+          "BillingHouseNumber",
+          "DateDue",
           "BillingBirthDate",
-          "AddressesDiffer",
           "Accept",
           "ShippingHouseNumber",
-          "BillingHouseNumber",
-          "DateDue"
+          "B2B",
+          "MerchantSendsEmail",
+          "SendMail",
+          "AddressesDiffer",
+          "ShippingBirthDate",
+          "ShippingCosts"
         ],
         "type": "object",
         "properties": {
