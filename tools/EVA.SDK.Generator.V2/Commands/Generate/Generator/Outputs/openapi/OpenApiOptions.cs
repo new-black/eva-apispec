@@ -9,6 +9,7 @@ public class OpenApiOptions
   public string Version { get; set; }
   public bool Terse { get; set; }
   public string Format { get; set; }
+  public string Host { get; set; }
 }
 
 public class OpenApiOptionsBinder : BinderBase<OpenApiOptions>, IOptionProvider
@@ -28,13 +29,19 @@ public class OpenApiOptionsBinder : BinderBase<OpenApiOptions>, IOptionProvider
     description: "The format to output"
   ).WithDefault("json").FromAmong("json", "yaml");
 
+  private Option<string> Host = new Option<string>(
+    name: "--opt-host",
+    description: "The host to use"
+  ).WithDefault("");
+
   protected override OpenApiOptions GetBoundValue(BindingContext ctx)
   {
     return new OpenApiOptions
     {
       Version = Version.Value(ctx),
       Terse = Terse.Value(ctx),
-      Format = Format.Value(ctx)
+      Format = Format.Value(ctx),
+      Host = Host.Value(ctx)
     };
   }
 
@@ -43,5 +50,6 @@ public class OpenApiOptionsBinder : BinderBase<OpenApiOptions>, IOptionProvider
     yield return Version;
     yield return Terse;
     yield return Format;
+    yield return Host;
   }
 }

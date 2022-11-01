@@ -5,6 +5,7 @@ using Microsoft.OpenApi;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Services;
 using Microsoft.OpenApi.Writers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.openapi;
@@ -61,7 +62,7 @@ public class OpenApiOutput : IOutput
       },
       Servers = new List<OpenApiServer>
       {
-        new OpenApiServer { Url = "https://test.api.com" }
+        new OpenApiServer { Url = _options.Host  }
       },
       Paths = new OpenApiPaths(),
       Components = new OpenApiComponents
