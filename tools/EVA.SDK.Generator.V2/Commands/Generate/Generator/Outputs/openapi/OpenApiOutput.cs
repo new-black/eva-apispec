@@ -131,7 +131,25 @@ public class OpenApiOutput : IOutput
       {
         Extensions = new Dictionary<string, IOpenApiExtension>
         {
-          { "x-ms-notification-content", new ExtensionEmptyObject() }
+          { "x-ms-notification-content", new ExtensionNotification(new OpenApiSchema
+          {
+            Type = "object",
+            Properties = new Dictionary<string, OpenApiSchema>
+            {
+              {"UID", new OpenApiSchema{Type = "string"}},
+              {"CreationTime", new OpenApiSchema{Type = "string"}},
+              {"TimeZone", new OpenApiSchema{Type = "string"}},
+              {"Target", new OpenApiSchema{Type = "string"}},
+              {"EventType", new OpenApiSchema{Type = "string"}},
+              {"Identifier", new OpenApiSchema{Type = "string"}},
+              {"BackendID", new OpenApiSchema{Type = "string"}},
+              {"BackendSystemID", new OpenApiSchema{Type = "string"}},
+              {"Region", new OpenApiSchema{Type = "string"}},
+              {"Attempt", new OpenApiSchema{Type = "number"}},
+              {"Environment", new OpenApiSchema{Type = "string"}},
+              {"Data", new OpenApiSchema{Type = "any"}}
+            }
+          }) }
         },
         Parameters = new List<OpenApiParameter>
         {
@@ -154,8 +172,8 @@ public class OpenApiOutput : IOutput
           {
             OperationType.Post, new OpenApiOperation
             {
-              Summary = "Subscribe the Azure Connector Trigger",
-              Description = "Subscribe the Azure Connector Trigger",
+              Summary = "EVA Event triggered",
+              Description = "EVA Event triggered",
               OperationId = "AzureConnectorSubscribe",
               Tags = new List<OpenApiTag> { new OpenApiTag { Name = "Technical" } },
               Extensions = new Dictionary<string, IOpenApiExtension>
@@ -437,11 +455,20 @@ public class OpenApiOutput : IOutput
     }
   }
 
-  private class ExtensionEmptyObject : IOpenApiExtension
+  private class ExtensionNotification : IOpenApiExtension
   {
+    private readonly OpenApiSchema _schema;
+
+    public ExtensionNotification(OpenApiSchema schema)
+    {
+      _schema = schema;
+    }
+
     public void Write(IOpenApiWriter writer, OpenApiSpecVersion specVersion)
     {
       writer.WriteStartObject();
+      writer.WritePropertyName("schema");
+      _schema.Serialize(writer, specVersion);
       writer.WriteEndObject();
     }
   }
