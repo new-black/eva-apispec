@@ -4,6 +4,7 @@ using EVA.API.Spec;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Extensions;
+using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Services;
 using Microsoft.OpenApi.Writers;
@@ -23,6 +24,14 @@ public class OpenApiOutput : IOutput
   {
     options.EnsureRemove("generics");
     options.EnsureRemove("unused-type-params");
+
+    if (_options.Preset == "azure-connector")
+    {
+      options.EnsureRemove("inheritance");
+      _options.Terse = true;
+      _options.Format = "json";
+      _options.Version = "v2";
+    }
   }
 
   public async Task Write(ApiDefinitionModel input, string outputDirectory)
@@ -62,25 +71,46 @@ public class OpenApiOutput : IOutput
       },
       Servers = new List<OpenApiServer>
       {
-        new OpenApiServer { Url = _options.Host  }
+        new OpenApiServer { Url = _options.Host }
       },
       Paths = new OpenApiPaths(),
-      Components = new OpenApiComponents
+      Components = new OpenApiComponents { },
+      SecurityRequirements = new List<OpenApiSecurityRequirement>
       {
-        SecuritySchemes =
+        new OpenApiSecurityRequirement
         {
-          {
-            "eva-auth", new OpenApiSecurityScheme
-            {
-              Description = "The default authentication mechanism when communicating with EVA",
-              Type = SecuritySchemeType.ApiKey,
-              Name = "Authorization",
-              In = ParameterLocation.Header
-            }
-          }
+          { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "eva-auth" } }, new List<string>() }
         }
       }
     };
+
+    if (_options.Preset == "azure-connector")
+    {
+      model.Components.SecuritySchemes.Add("eva-auth", new OpenApiSecurityScheme
+      {
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows
+        {
+          AuthorizationCode = new OpenApiOAuthFlow
+          {
+            AuthorizationUrl = new Uri("https://henk2.platform-tools.on-eva.io/ui/auth/azure-connector"),
+            TokenUrl = new Uri("https://henk2.platform-tools.on-eva.io/api/auth/azure-connector"),
+            RefreshUrl = null,
+            Scopes = new Dictionary<string, string>()
+          }
+        }
+      });
+    }
+    else
+    {
+      model.Components.SecuritySchemes.Add("eva-auth", new OpenApiSecurityScheme
+      {
+        Description = "The default authentication mechanism when communicating with EVA",
+        Type = SecuritySchemeType.ApiKey,
+        Name = "Authorization",
+        In = ParameterLocation.Header
+      });
+    }
 
     // Render each service
     foreach (var service in input.Services)
@@ -92,6 +122,105 @@ public class OpenApiOutput : IOutput
     foreach (var (id, type) in input.Types)
     {
       model.Components.Schemas.Add(FixName(id), ToSchema(input, type));
+    }
+
+    if (_options.Preset == "azure-connector")
+    {
+      // Render the trigger link
+      model.Paths.Add("/api/azure-connector/subscribe", new OpenApiPathItem
+      {
+        Extensions = new Dictionary<string, IOpenApiExtension>
+        {
+          { "x-ms-notification-content", new ExtensionEmptyObject() }
+        },
+        Parameters = new List<OpenApiParameter>
+        {
+          new OpenApiParameter
+          {
+            In = ParameterLocation.Header,
+            Name = "EVA-User-Agent",
+            Required = true,
+            AllowEmptyValue = false,
+            Schema = new OpenApiSchema
+            {
+              Default = new OpenApiString("eva-sdk-openapi"),
+              Type = "string"
+            },
+            Style = ParameterStyle.Simple
+          }
+        },
+        Operations = new Dictionary<OperationType, OpenApiOperation>
+        {
+          {
+            OperationType.Post, new OpenApiOperation
+            {
+              Summary = "Subscribe the Azure Connector Trigger",
+              Description = "Subscribe the Azure Connector Trigger",
+              OperationId = "AzureConnectorSubscribe",
+              Tags = new List<OpenApiTag> { new OpenApiTag { Name = "Technical" } },
+              Extensions = new Dictionary<string, IOpenApiExtension>
+              {
+                { "x-ms-trigger", new ExtensionString("single") }
+              },
+              Security = new List<OpenApiSecurityRequirement>
+              {
+                new OpenApiSecurityRequirement
+                {
+                  {
+                    new OpenApiSecurityScheme
+                    {
+                      Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "eva-auth" }
+                    },
+                    ImmutableList<string>.Empty
+                  }
+                }
+              },
+              RequestBody = new OpenApiRequestBody
+              {
+                Required = true,
+                Content = new Dictionary<string, OpenApiMediaType>
+                {
+                  {
+                    "application/json", new OpenApiMediaType
+                    {
+                      Schema = new OpenApiSchema
+                      {
+                        Type = "object",
+                        Required = new HashSet<string> { "CallbackUrl", "EventType" },
+                        Properties = new Dictionary<string, OpenApiSchema>
+                        {
+                          {
+                            "EventType", new OpenApiSchema
+                            {
+                              Type = "string",
+                              Title = "EventType",
+                              Description = "The type of events to receive",
+                              Enum = input.EventTargets.SelectMany(t => t.Types.Select(tt => new OpenApiString($"{t.Target}/{tt}") as IOpenApiAny)).ToList()
+                            }
+                          },
+                          {
+                            "CallbackUrl", new OpenApiSchema
+                            {
+                              Type = "string",
+                              Title = "",
+                              Description = "The callback url",
+                              Extensions = new Dictionary<string, IOpenApiExtension>
+                              {
+                                { "x-ms-notification-url", new ExtensionBool(true) },
+                                { "x-ms-visibility", new ExtensionString("internal") }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
     }
 
     return model;
@@ -275,5 +404,45 @@ public class OpenApiOutput : IOutput
   private string TagFromAssembly(string name)
   {
     return name.StartsWith("EVA.") ? name[4..] : name;
+  }
+
+
+  private class ExtensionBool : IOpenApiExtension
+  {
+    private readonly bool _value;
+
+    public ExtensionBool(bool value)
+    {
+      _value = value;
+    }
+
+    public void Write(IOpenApiWriter writer, OpenApiSpecVersion specVersion)
+    {
+      writer.WriteValue(_value);
+    }
+  }
+
+  private class ExtensionString : IOpenApiExtension
+  {
+    private readonly string _value;
+
+    public ExtensionString(string value)
+    {
+      _value = value;
+    }
+
+    public void Write(IOpenApiWriter writer, OpenApiSpecVersion specVersion)
+    {
+      writer.WriteValue(_value);
+    }
+  }
+
+  private class ExtensionEmptyObject : IOpenApiExtension
+  {
+    public void Write(IOpenApiWriter writer, OpenApiSpecVersion specVersion)
+    {
+      writer.WriteStartObject();
+      writer.WriteEndObject();
+    }
   }
 }

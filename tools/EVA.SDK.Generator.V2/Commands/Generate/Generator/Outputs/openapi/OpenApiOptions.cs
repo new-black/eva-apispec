@@ -10,6 +10,7 @@ public class OpenApiOptions
   public bool Terse { get; set; }
   public string Format { get; set; }
   public string Host { get; set; }
+  public string Preset { get; set; }
 }
 
 public class OpenApiOptionsBinder : BinderBase<OpenApiOptions>, IOptionProvider
@@ -34,6 +35,11 @@ public class OpenApiOptionsBinder : BinderBase<OpenApiOptions>, IOptionProvider
     description: "The host to use"
   ).WithDefault("");
 
+  private Option<string> Preset = new Option<string>(
+    name: "--opt-preset",
+    description: "The preset to use. This might override other options."
+  ).FromAmong("none", "azure-connector").WithDefault("none");
+
   protected override OpenApiOptions GetBoundValue(BindingContext ctx)
   {
     return new OpenApiOptions
@@ -41,7 +47,8 @@ public class OpenApiOptionsBinder : BinderBase<OpenApiOptions>, IOptionProvider
       Version = Version.Value(ctx),
       Terse = Terse.Value(ctx),
       Format = Format.Value(ctx),
-      Host = Host.Value(ctx)
+      Host = Host.Value(ctx),
+      Preset = Preset.Value(ctx)
     };
   }
 
@@ -51,5 +58,6 @@ public class OpenApiOptionsBinder : BinderBase<OpenApiOptions>, IOptionProvider
     yield return Terse;
     yield return Format;
     yield return Host;
+    yield return Preset;
   }
 }
