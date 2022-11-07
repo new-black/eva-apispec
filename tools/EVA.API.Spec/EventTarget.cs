@@ -8,6 +8,9 @@ public class EventTarget
   [JsonPropertyName("target")]
   public string Target { get; set; }
 
-  [JsonPropertyName("types")]
-  public ImmutableArray<string> Types { get; set; }
+  [JsonPropertyName("type")]
+  public string Type { get; set; }
+
+  [JsonPropertyName("dataType")]
+  public string? DataType { get; set; }
 }

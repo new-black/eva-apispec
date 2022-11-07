@@ -126,106 +126,102 @@ public class OpenApiOutput : IOutput
 
     if (_options.Preset == "azure-connector")
     {
-      // Render the trigger link
-      model.Paths.Add("/api/azure-connector/subscribe", new OpenApiPathItem
+      foreach (var eventExportType in input.EventTargets)
       {
-        Extensions = new Dictionary<string, IOpenApiExtension>
+        // Render the trigger link
+        model.Paths.Add($"/api/azure-connector/subscribe/{eventExportType.Target}/{eventExportType.Type}", new OpenApiPathItem
         {
-          { "x-ms-notification-content", new ExtensionNotification(new OpenApiSchema
+          Extensions = new Dictionary<string, IOpenApiExtension>
           {
-            Type = "object",
-            Properties = new Dictionary<string, OpenApiSchema>
             {
-              {"UID", new OpenApiSchema{Type = "string"}},
-              {"CreationTime", new OpenApiSchema{Type = "string"}},
-              {"TimeZone", new OpenApiSchema{Type = "string"}},
-              {"Target", new OpenApiSchema{Type = "string"}},
-              {"EventType", new OpenApiSchema{Type = "string"}},
-              {"Identifier", new OpenApiSchema{Type = "string"}},
-              {"BackendID", new OpenApiSchema{Type = "string"}},
-              {"BackendSystemID", new OpenApiSchema{Type = "string"}},
-              {"Region", new OpenApiSchema{Type = "string"}},
-              {"Attempt", new OpenApiSchema{Type = "number"}},
-              {"Environment", new OpenApiSchema{Type = "string"}},
-              {"Data", new OpenApiSchema{Type = "any"}}
-            }
-          }) }
-        },
-        Parameters = new List<OpenApiParameter>
-        {
-          new OpenApiParameter
-          {
-            In = ParameterLocation.Header,
-            Name = "EVA-User-Agent",
-            Required = true,
-            AllowEmptyValue = false,
-            Schema = new OpenApiSchema
-            {
-              Default = new OpenApiString("eva-sdk-openapi"),
-              Type = "string"
-            },
-            Style = ParameterStyle.Simple
-          }
-        },
-        Operations = new Dictionary<OperationType, OpenApiOperation>
-        {
-          {
-            OperationType.Post, new OpenApiOperation
-            {
-              Summary = "EVA Event triggered",
-              Description = "EVA Event triggered",
-              OperationId = "AzureConnectorSubscribe",
-              Tags = new List<OpenApiTag> { new OpenApiTag { Name = "Technical" } },
-              Extensions = new Dictionary<string, IOpenApiExtension>
+              "x-ms-notification-content", new ExtensionNotification(new OpenApiSchema
               {
-                { "x-ms-trigger", new ExtensionString("single") }
-              },
-              Security = new List<OpenApiSecurityRequirement>
-              {
-                new OpenApiSecurityRequirement
+                Type = "object",
+                Properties = new Dictionary<string, OpenApiSchema>
                 {
-                  {
-                    new OpenApiSecurityScheme
-                    {
-                      Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "eva-auth" }
-                    },
-                    ImmutableList<string>.Empty
-                  }
+                  { "UID", new OpenApiSchema { Type = "string" } },
+                  { "CreationTime", new OpenApiSchema { Type = "string" } },
+                  { "TimeZone", new OpenApiSchema { Type = "string" } },
+                  { "Target", new OpenApiSchema { Type = "string" } },
+                  { "EventType", new OpenApiSchema { Type = "string" } },
+                  { "Identifier", new OpenApiSchema { Type = "string" } },
+                  { "BackendID", new OpenApiSchema { Type = "string" } },
+                  { "BackendSystemID", new OpenApiSchema { Type = "string" } },
+                  { "Region", new OpenApiSchema { Type = "string" } },
+                  { "Attempt", new OpenApiSchema { Type = "number" } },
+                  { "Environment", new OpenApiSchema { Type = "string" } },
+                  { "Data", new OpenApiSchema { Type = "any" } }
                 }
-              },
-              RequestBody = new OpenApiRequestBody
+              })
+            }
+          },
+          Parameters = new List<OpenApiParameter>
+          {
+            new OpenApiParameter
+            {
+              In = ParameterLocation.Header,
+              Name = "EVA-User-Agent",
+              Required = true,
+              AllowEmptyValue = false,
+              Schema = new OpenApiSchema
               {
-                Required = true,
-                Content = new Dictionary<string, OpenApiMediaType>
+                Default = new OpenApiString("eva-sdk-openapi"),
+                Type = "string"
+              },
+              Style = ParameterStyle.Simple
+            }
+          },
+          Operations = new Dictionary<OperationType, OpenApiOperation>
+          {
+            {
+              OperationType.Post, new OpenApiOperation
+              {
+                Summary = $"EVA Event - {eventExportType.Target} {eventExportType.Type}",
+                Description = $"EVA Event - {eventExportType.Target} {eventExportType.Type}",
+                OperationId = $"AzureConnectorSubscribe{eventExportType.Target}{eventExportType.Type}",
+                Tags = new List<OpenApiTag> { new OpenApiTag { Name = "Technical" } },
+                Extensions = new Dictionary<string, IOpenApiExtension>
                 {
+                  { "x-ms-trigger", new ExtensionString("single") }
+                },
+                Security = new List<OpenApiSecurityRequirement>
+                {
+                  new OpenApiSecurityRequirement
                   {
-                    "application/json", new OpenApiMediaType
                     {
-                      Schema = new OpenApiSchema
+                      new OpenApiSecurityScheme
                       {
-                        Type = "object",
-                        Required = new HashSet<string> { "CallbackUrl", "EventType" },
-                        Properties = new Dictionary<string, OpenApiSchema>
+                        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "eva-auth" }
+                      },
+                      ImmutableList<string>.Empty
+                    }
+                  }
+                },
+                RequestBody = new OpenApiRequestBody
+                {
+                  Required = true,
+                  Content = new Dictionary<string, OpenApiMediaType>
+                  {
+                    {
+                      "application/json", new OpenApiMediaType
+                      {
+                        Schema = new OpenApiSchema
                         {
+                          Type = "object",
+                          Required = new HashSet<string> { "CallbackUrl" },
+                          Properties = new Dictionary<string, OpenApiSchema>
                           {
-                            "EventType", new OpenApiSchema
                             {
-                              Type = "string",
-                              Title = "EventType",
-                              Description = "The type of events to receive",
-                              Enum = input.EventTargets.SelectMany(t => t.Types.Select(tt => new OpenApiString($"{t.Target}/{tt}") as IOpenApiAny)).ToList()
-                            }
-                          },
-                          {
-                            "CallbackUrl", new OpenApiSchema
-                            {
-                              Type = "string",
-                              Title = "",
-                              Description = "The callback url",
-                              Extensions = new Dictionary<string, IOpenApiExtension>
+                              "CallbackUrl", new OpenApiSchema
                               {
-                                { "x-ms-notification-url", new ExtensionBool(true) },
-                                { "x-ms-visibility", new ExtensionString("internal") }
+                                Type = "string",
+                                Title = "",
+                                Description = "The callback url",
+                                Extensions = new Dictionary<string, IOpenApiExtension>
+                                {
+                                  { "x-ms-notification-url", new ExtensionBool(true) },
+                                  { "x-ms-visibility", new ExtensionString("internal") }
+                                }
                               }
                             }
                           }
@@ -237,8 +233,8 @@ public class OpenApiOutput : IOutput
               }
             }
           }
-        }
-      });
+        });
+      }
     }
 
     return model;
