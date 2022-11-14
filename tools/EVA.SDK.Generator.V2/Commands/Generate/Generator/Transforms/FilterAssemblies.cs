@@ -84,6 +84,20 @@ public class FilterAssemblies : ITransform
       }
     }
 
+    // Filter the errors
+    var count2 = input.Errors.Length;
+    var result2 = new List<ErrorSpecification>();
+    foreach (var error in input.Errors)
+    {
+      var targetName = Transform(error.Assembly);
+      if (targetName != null)
+      {
+        error.Assembly = targetName;
+        result2.Add(error);
+      }
+    }
+    input.Errors = result2.ToImmutableArray();
+
     // Orphaned types
     if (options.OrphanedTypesAssembly != null)
     {
@@ -97,6 +111,6 @@ public class FilterAssemblies : ITransform
       }
     }
 
-    return input.Services.Length == count1 ? ITransform.TransformResult.NoChanges : ITransform.TransformResult.Changes;
+    return (input.Services.Length == count1 && input.Errors.Length == count2) ? ITransform.TransformResult.NoChanges : ITransform.TransformResult.Changes;
   }
 }

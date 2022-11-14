@@ -15,7 +15,8 @@ public class EvaSpecOutput : IOutput
 
   public void FixOptions(GenerateOptions options)
   {
-    // No-op
+    options.EnsureRemove("event-exports");
+    options.EnsureRemove("errors");
   }
 
   public async Task Write(ApiDefinitionModel input, string outputDirectory)

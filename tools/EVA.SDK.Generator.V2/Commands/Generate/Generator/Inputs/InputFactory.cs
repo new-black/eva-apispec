@@ -17,7 +17,7 @@ public class InputFactory
       return new SpecificVersionInput(version);
     }
 
-    if (input.StartsWith("https://")) return new HttpInput(input);
+    if (input.StartsWith("https://") || input.StartsWith("http://")) return new HttpInput(input);
     return new FileInput(input);
   }
 }

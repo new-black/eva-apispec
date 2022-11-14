@@ -16,6 +16,8 @@ public class SwiftOutput : IOutput
   public void FixOptions(GenerateOptions options)
   {
     options.EnsureRemove("options");
+    options.EnsureRemove("event-exports");
+    options.EnsureRemove("errors");
   }
 
   public async Task Write(ApiDefinitionModel input, string outputDirectory)
@@ -245,7 +247,7 @@ public class SwiftOutput : IOutput
   {
     var n = typeReference.Nullable ? "?" : string.Empty;
 
-    if (typeReference is { Name: "string" or "duration" }) return $"String{n}";
+    if (typeReference is { Name: "string" or "duration" or "binary" }) return $"String{n}";
     if (typeReference is { Name: "int16" or "int32" or "int64" }) return $"Int{n}";
     if (typeReference is { Name: "float128" }) return $"Decimal{n}";
     if (typeReference is { Name: "float64" }) return $"Double{n}";

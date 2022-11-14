@@ -54,9 +54,11 @@ nested-types: Will bring nested types to to root level.
 options: Will remove type information where its a ""anyOf"" construction and instead only output whatever is shared among them.
 deprecated-properties: Will remove all deprecated properties immediately and not wait till the deprecation hits.
 deprecated-services: Will remove all deprecated services immediately and not wait till the deprecation hits.
+errors: Will remove all type information about possible errors.
+event-exports: Will remove all type information about event exports.
 "
   ) { AllowMultipleArgumentsPerToken = true }.FromAmong("inheritance", "generics", "unused-type-params", "empty-types", "nested-types", "options", "deprecated-properties",
-    "deprecated-properties", "deprecated-services");
+    "deprecated-properties", "deprecated-services", "errors", "event-exports");
 
 
   public readonly Option<string[]> FilterAssemblies = new(

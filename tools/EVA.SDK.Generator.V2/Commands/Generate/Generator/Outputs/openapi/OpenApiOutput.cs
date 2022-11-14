@@ -24,6 +24,7 @@ public class OpenApiOutput : IOutput
   {
     options.EnsureRemove("generics");
     options.EnsureRemove("unused-type-params");
+    options.EnsureRemove("errors");
 
     if (_options.Preset == "azure-connector")
     {
@@ -31,6 +32,10 @@ public class OpenApiOutput : IOutput
       _options.Terse = true;
       _options.Format = "json";
       _options.Version = "v2";
+    }
+    else
+    {
+      options.EnsureRemove("event-exports");
     }
   }
 
@@ -302,6 +307,7 @@ public class OpenApiOutput : IOutput
     if (type.Name == "int32") return new OpenApiSchema { Type = "integer" };
     if (type.Name == "int64") return new OpenApiSchema { Type = "integer" };
     if (type.Name == "string") return new OpenApiSchema { Type = "string" };
+    if (type.Name == "binary") return new OpenApiSchema { Type = "string" };
     if (type.Name == "bool") return new OpenApiSchema { Type = "boolean" };
     if (type.Name == "guid") return new OpenApiSchema { Type = "string", Format = "uuid" };
     if (type.Name == "float32") return new OpenApiSchema { Type = "number" };

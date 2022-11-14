@@ -98,6 +98,8 @@ public static class GenerationRunner
     if (remove.Remove("unused-type-params")) yield return new RemoveUnusedGenericArguments();
     if (remove.Remove("empty-types")) yield return new RemoveEmptyTypes();
     if (remove.Remove("nested-types")) yield return new RemoveNestedTypes();
+    if (remove.Remove("event-exports")) yield return new RemoveEventExports();
+    if (remove.Remove("errors")) yield return new RemoveErrors();
 
     yield return new FixDependencies();
     yield return new RemoveUnusedTypes();

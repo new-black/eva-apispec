@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Helpers;
 
@@ -21,6 +22,12 @@ public class IndentedStringBuilder
   public void WriteLine(string s) => _builder.Append(new string(' ', _indent*_indentSize) + s + _linebreak);
   public void Write(string s) => _builder.Append(new string(' ', _indent*_indentSize) + s);
 
+  public void WriteLines(string s, string prefix = null)
+  {
+    var lines = s.Split('\n');
+    foreach(var l in lines) WriteLine((prefix ?? string.Empty) + l);
+  }
+
   public void WriteIndentend(Action<IndentedStringBuilder> o)
   {
     _indent++;
@@ -31,5 +38,15 @@ public class IndentedStringBuilder
   public override string ToString()
   {
     return _builder.ToString();
+  }
+
+  public void WriteManifestResourceStream(string name)
+  {
+    var assembly = Assembly.GetExecutingAssembly();
+    var resourceName = assembly.GetManifestResourceNames().First(n => n.EndsWith(name));
+    using var stream = assembly.GetManifestResourceStream(resourceName);
+    using var reader = new StreamReader(stream);
+    var content = reader.ReadToEnd();
+    WriteLines(content);
   }
 }
