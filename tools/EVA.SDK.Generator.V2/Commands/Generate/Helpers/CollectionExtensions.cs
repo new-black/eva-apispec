@@ -20,9 +20,21 @@ public static class CollectionExtensions
 
     for (var i = 0; i < list.Length; i++)
     {
-      if(i != idx) result.Add(list[i]);
+      if (i != idx) result.Add(list[i]);
     }
 
     return ImmutableArray.CreateRange(result);
+  }
+
+  public static Dictionary<TKey, List<TValue>> ToLookupDictionary<TSource, TKey, TValue>(this IEnumerable<TSource> list, Func<TSource, TKey> keySelector, Func<TSource, TValue> valueSelector)
+    where TKey : notnull
+  {
+    return list.GroupBy(keySelector).ToDictionary(x => x.Key, x => x.Select(valueSelector).ToList());
+  }
+
+  public static Dictionary<TKey, List<TSource>> ToLookupDictionary<TSource, TKey>(this IEnumerable<TSource> list, Func<TSource, TKey> keySelector)
+    where TKey : notnull
+  {
+    return list.GroupBy(keySelector).ToDictionary(x => x.Key, x => x.ToList());
   }
 }

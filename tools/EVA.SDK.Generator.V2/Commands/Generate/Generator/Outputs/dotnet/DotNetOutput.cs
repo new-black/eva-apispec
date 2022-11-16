@@ -16,63 +16,36 @@ public class DotNetOutput : IOutput
     options.EnsureRemove("event-exports");
   }
 
-  private void WriteErrors(Dictionary<string, ErrorSpecification> errors, IndentedStringBuilder o)
+  private void WriteErrors(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, IndentedStringBuilder o, string name)
   {
-    var nonPrefixed = new Dictionary<string, ErrorSpecification>();
-    var prefixed = new Dictionary<string, Dictionary<string, ErrorSpecification>>();
+    if (!errors.Errors.Any() && !errors.SubErrors.Any()) return;
 
-    // Select into batches
-    foreach (var (prefix, errorSpec) in errors)
+    o.WriteLine($"public static class {name}");
+    o.WriteLine("{");
+    o.WriteIndentend(o =>
     {
-      var idx = prefix.IndexOf(':');
-      if (idx == -1)
+      foreach (var e in errors.Errors)
       {
-        nonPrefixed.Add(prefix, errorSpec);
-      }
-      else
-      {
-        var p = prefix[..idx];
-        var q = prefixed[p] = prefixed.GetValueOrDefault(p) ?? new();
-        q[prefix[(idx + 1)..]] = errorSpec;
-      }
-    }
-
-    // Write top-level
-    foreach (var (name, errorSpec) in nonPrefixed)
-    {
-      var message = errorSpec.Message;
-      if (errorSpec.Arguments.Any())
-      {
-        message = string.Format(message, errorSpec.Arguments.Select((a, i) => $"{{{a.Name ?? i.ToString()}:{a.Type.Name}}}").ToArray());
+        o.WriteLines(e.error.MessageWithEnhancedArguments(), "/// ");
+        o.WriteLine($"public const string {e.Name} = \"{e.error.Name}\";");
       }
 
-      o.WriteLines(message, "/// ");
-      o.WriteLine($"public const string {name} = \"{errorSpec.Name}\";");
-    }
-
-    // Write subtypes
-    o.WriteLine();
-    foreach (var (prefix, subErrors) in prefixed)
-    {
-      o.WriteLine($"public static class {prefix}");
-      o.WriteLine("{");
-      o.WriteIndentend(o2 => WriteErrors(subErrors, o2));
-      o.WriteLine("}");
-    }
+      foreach (var (prefix,suberrors) in errors.SubErrors)
+      {
+        WriteErrors(suberrors, o, prefix);
+      }
+    });
   }
 
   public async Task Write(ApiDefinitionModel input, string outputDirectory)
   {
-    var servicesGroupedByAssembly = input.Services.GroupBy(s => s.Assembly);
-    var typesGroupedByAssembly = input.Types.GroupBy(x => x.Value.Assembly).ToDictionary(x => x.Key, x => x.ToList());
-    var handledAssemblies = new HashSet<string>();
+    var groupedInput = input.GroupByAssembly();
 
-    foreach (var services in servicesGroupedByAssembly)
+    foreach (var i in groupedInput)
     {
-      handledAssemblies.Add(services.Key);
       var handledTypes = new HashSet<string>();
 
-      var actualNamespace = FixNamespace(services.Key);
+      var actualNamespace = FixNamespace(i.Assembly);
       var sb = new IndentedStringBuilder(2);
 
       sb.WriteLine("#nullable enable");
@@ -91,17 +64,9 @@ public class DotNetOutput : IOutput
           o.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.cs");
         }
 
-        var errors = input.Errors.Where(e => e.Assembly == services.Key).ToDictionary(x => x.Name);
+        WriteErrors(i.Errors.GroupByPrefix(), o, "Errors");
 
-        if (errors.Any())
-        {
-          o.WriteLine("public static class Errors");
-          o.WriteLine("{");
-          o.WriteIndentend(o2 => WriteErrors(errors, o2));
-          o.WriteLine("}");
-        }
-
-        foreach (var service in services)
+        foreach (var service in i.Services)
         {
           var requestType = input.Types[service.RequestTypeID];
           var responseType = input.Types[service.ResponseTypeID];
@@ -118,26 +83,13 @@ public class DotNetOutput : IOutput
           }
         }
 
-        foreach (var type in typesGroupedByAssembly.GetValueOrDefault(services.Key, new List<KeyValuePair<string, TypeSpecification>>()))
+        foreach (var type in i.Types)
         {
           if (handledTypes.Contains(type.Key) || type.Value.ParentType != null) continue;
           o.WriteLine();
           WriteType(type.Key, type.Value, o, input);
         }
       });
-      sb.WriteLine("}");
-
-      await File.WriteAllTextAsync(Path.Combine(outputDirectory, $"{actualNamespace}.cs"), sb.ToString());
-    }
-
-    foreach (var types in input.Types.Values.GroupBy(t => t.Assembly).Where(g => !handledAssemblies.Contains(g.Key)))
-    {
-      var actualNamespace = FixNamespace(types.Key);
-
-      var sb = new IndentedStringBuilder(2);
-
-      sb.WriteLine("#nullable enable");
-      sb.WriteLine();
       sb.WriteLine("}");
 
       await File.WriteAllTextAsync(Path.Combine(outputDirectory, $"{actualNamespace}.cs"), sb.ToString());

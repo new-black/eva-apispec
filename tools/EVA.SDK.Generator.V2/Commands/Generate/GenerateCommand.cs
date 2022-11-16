@@ -6,6 +6,7 @@ using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.dotnet;
 using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.evaspec;
 using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.openapi;
 using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.swift;
+using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.typescript;
 using EVA.SDK.Generator.V2.Commands.Generate.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate;
@@ -23,6 +24,7 @@ public class GenerateCommand
     AddOutput<OpenApiOptions, OpenApiOptionsBinder>(generateCommand, optionsBinder, "openapi", o => new OpenApiOutput(o));
     AddOutput<SwiftOptions, SwiftOptionsBinder>(generateCommand, optionsBinder, "swift", o => new SwiftOutput(o));
     AddOutput<DotNetOptions, DotNetOptionsBinder>(generateCommand, optionsBinder, "dotnet", o => new DotNetOutput(o));
+    AddOutput<TypescriptOptions, TypescriptOptionsBinder>(generateCommand, optionsBinder, "typescript", o => new TypescriptOutput(o));
   }
 
   private static void AddOutput<T, TBinder>(Command generateCommand, GenerateOptionsBinder optionsBinder, string name, Func<T, IOutput> outputBuilder)
