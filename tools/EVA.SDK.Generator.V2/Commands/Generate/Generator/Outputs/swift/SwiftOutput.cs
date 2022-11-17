@@ -133,7 +133,8 @@ public class SwiftOutput : IOutput
         for (var i = 0; i < list.Count; i++)
         {
           var prop = list[i];
-          o.WriteLine($"{prop.Key}: {GetPropTypeName(prop.Value.Type, input, id)}{(prop.Value.Type.Nullable ? " = nil" : string.Empty)}{(i == list.Count - 1 ? string.Empty : ",")}");
+          var propDefault = GetPropDefault(prop.Value.Type, input);
+          o.WriteLine($"{prop.Key}: {GetPropTypeName(prop.Value.Type, input, id)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}" )}{(i == list.Count - 1 ? string.Empty : ",")}");
         }
       });
 
@@ -243,6 +244,16 @@ public class SwiftOutput : IOutput
     return GetTypeName(typeReference, input);
   }
 
+  private string GetPropDefault(TypeReference typeReference, ApiDefinitionModel input)
+  {
+    return typeReference switch
+    {
+      { Name: "string", Nullable: false } => "\"\"",
+      { Nullable: true } => "nil",
+      _ => string.Empty
+    };
+  }
+
   private string GetTypeName(TypeReference typeReference, ApiDefinitionModel input)
   {
     var n = typeReference.Nullable ? "?" : string.Empty;
@@ -277,7 +288,6 @@ public class SwiftOutput : IOutput
     }
 
     Console.WriteLine("No idea how to handle: " + JsonSerializer.Serialize(typeReference, IndentedSerializationHelper.Default.TypeReference));
-
     return "ASDF";
   }
 
