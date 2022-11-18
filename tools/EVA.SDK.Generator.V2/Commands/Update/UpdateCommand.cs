@@ -1,8 +1,6 @@
 ﻿using System.CommandLine;
 using System.Diagnostics;
-using System.Net.Http.Headers;
 using System.Reflection;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using EVA.SDK.Generator.V2.Commands.Generate.Helpers;
 using EVA.SDK.Generator.V2.Helpers;
@@ -85,8 +83,8 @@ public class UpdateCommand
         }
 
         // Download the asset
-        //await HttpHelpers.GetToFile(asset.BrowserDownloadUrl, newExeLocation);
-        File.Copy(currentExeLocation, newExeLocation);
+        await HttpHelpers.GetToFile(asset.BrowserDownloadUrl, newExeLocation);
+        //File.Copy(currentExeLocation, newExeLocation);
 
         // Start child process for replacement
         Process.Start(new ProcessStartInfo
