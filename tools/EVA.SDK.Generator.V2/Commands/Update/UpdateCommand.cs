@@ -74,7 +74,7 @@ public class UpdateCommand
         Console.WriteLine("Trying to update {0} -> {1}", version, latestVersion);
 
         // Find the correct asset
-        var expectedAssetName = Path.GetFileNameWithoutExtension(currentExeLocation);
+        var expectedAssetName = Path.GetFileName(currentExeLocation);
         var asset = response.Assets.FirstOrDefault(a => a.Name == expectedAssetName);
         if (asset == null)
         {
