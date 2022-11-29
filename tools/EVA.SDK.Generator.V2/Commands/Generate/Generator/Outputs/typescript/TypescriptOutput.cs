@@ -239,10 +239,10 @@ public class TypescriptOutput : IOutput
       { Name: "string" or "date" or "binary" or "guid" or "duration" } => $"string{n}",
       { Name: "bool" } => $"boolean{n}",
       { Name: "int32" or "int64" or "int16" or "float32" or "float64" or "float128" } => $"number{n}",
-      { Name: "array", Arguments: [var a] } => $"{ToReference(input, a, ctx)}[]{n}",
-      { Name: ['_', .. var x] } => x,
-      { Name: "map", Arguments: [var k, var v] } =>
-        $"{{[key:{ToReference(input, k, ctx, false)}]:{ToReference(input, v, ctx)}}}{n}",
+      //{ Name: "array", Arguments: [var a] } => $"{ToReference(input, a, ctx)}[]{n}",
+      //{ Name: ['_', .. var x] } => x,
+      //{ Name: "map", Arguments: [var k, var v] } =>
+       // $"{{[key:{ToReference(input, k, ctx, false)}]:{ToReference(input, v, ctx)}}}{n}",
       _ => null
     };
     if (preset != null) return preset;

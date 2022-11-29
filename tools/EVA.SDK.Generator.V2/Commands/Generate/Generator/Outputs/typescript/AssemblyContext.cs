@@ -15,7 +15,7 @@ public class AssemblyContext
   /// <summary>
   /// The name of the current assembly;
   /// </summary>
-  public required string AssemblyName { get; init; }
+  public string AssemblyName { get; init; }
 
   public void RegisterReferencedModule(string assembly)
   {

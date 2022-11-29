@@ -225,14 +225,14 @@ public class DotNetOutput : IOutput
     if (r.Name == "duration") return $"TimeSpan{n}";
 
     // Special case for type IDictionary<string, object?>
-    if (r is { Name: "map", Arguments: [ { Name: "string" }, { Name: "any" }] })
+    /*if (r is { Name: "map", Arguments: [ { Name: "string" }, { Name: "any" }] })
     {
       return (context & TypeContext.Request) != 0 ? $"IDictionary<string, JToken>{n}" : $"JObject{n}";
     }
     if (r is { Name: "map", Arguments: [ { Name: "int64" }, { Name: "any" }] })
     {
       return $"IDictionary<long, JToken>{n}";
-    }
+    }*/
 
     if (r.Name == "map") return $"IDictionary<{GetFullName(r.Arguments[0], input, context)},{GetFullName(r.Arguments[1], input, context)}>{n}";
     if (r.Name == "object") return $"JObject{n}";
