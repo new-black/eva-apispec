@@ -234,17 +234,21 @@ public class TypescriptOutput : IOutput
   {
     var nullable = overrideNullable ?? typeReference.Nullable;
     var n = nullable ? " | null" : string.Empty;
+
     var preset = typeReference switch
     {
       { Name: "string" or "date" or "binary" or "guid" or "duration" } => $"string{n}",
       { Name: "bool" } => $"boolean{n}",
       { Name: "int32" or "int64" or "int16" or "float32" or "float64" or "float128" } => $"number{n}",
       //{ Name: "array", Arguments: [var a] } => $"{ToReference(input, a, ctx)}[]{n}",
+      { Name: "array", Arguments.Length: 1 } => $"{ToReference(input, typeReference.Arguments[0], ctx)}[]{n}",
       //{ Name: ['_', .. var x] } => x,
-      //{ Name: "map", Arguments: [var k, var v] } =>
-       // $"{{[key:{ToReference(input, k, ctx, false)}]:{ToReference(input, v, ctx)}}}{n}",
+      _ when typeReference.Name.StartsWith("_") => typeReference.Name[1..],
+      //{ Name: "map", Arguments: [var k, var v] } => $"{{[key:{ToReference(input, k, ctx, false)}]:{ToReference(input, v, ctx)}}}{n}",
+      { Name: "map", Arguments.Length: 2 } => $"{{[key:{ToReference(input, typeReference.Arguments[0], ctx, false)}]:{ToReference(input, typeReference.Arguments[1], ctx)}}}{n}",
       _ => null
     };
+
     if (preset != null) return preset;
 
     // Object
