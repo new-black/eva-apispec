@@ -8,6 +8,7 @@
   "typeArguments": [],
   "typeDependencies": [
     "EVA.Core.Discounts.SearchDiscountsByQueryFilter\u002BDiscountActiveRange",
+    "EVA.Core.DataModels.DiscountDeactivationReasons",
     "EVA.Core.DataModels.DiscountTriggers",
     "EVA.Core.DataModels.OrderTypes"
   ],
@@ -63,6 +64,22 @@
         "isEvaID": true,
         "isExternalID": false
       },
+      "allowedValues": []
+    },
+    "DeactivationReasons": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.DataModels.DiscountDeactivationReasons",
+            "args": [],
+            "nullable": false
+          }
+        ],
+        "nullable": true
+      },
+      "description": "You can filter discounts based on their deactivation reason.The array is interpreted as an \u0027or\u0027 value list\nTo get discounts with a specific deactivation reason, only provide the deactivation reason you want. For example:\n- providing an empty value will return all discounts\n- providing \u0060None\u0060 (0) will return discounts that are active.\n- providing \u0060Unverified\u0060 (1) will return discounts that are inactive because they are unverified.\n- providing \u0060Unverified\u0060 (1) and \u0060DisabledByUser\u0060 (2) will return discounts that are inactive because they are either unverified OR disabled by user.\n- providing \u0060Unverified\u0060 (1) and \u0060DisabledByUser\u0060 (2) as a combined flag (3) will return discounts that are inactive because they are unverified AND disabled by user.",
+      "skippable": false,
       "allowedValues": []
     },
     "Description": {
@@ -138,6 +155,11 @@
       },
       "description": "Filter on active state. Optional values are; null = active and inactive, true = active only, false = inactive.",
       "skippable": false,
+      "deprecated": {
+        "announced": 668,
+        "active": 672,
+        "comment": "IsActive is deprecated and will be removed in 2.0.676: Replaced by the \u0060DeactivationReasons\u0060. Provide empty value in \u0060DeactivationReasons\u0060 to filter on active/verified discounts."
+      },
       "allowedValues": []
     },
     "IsActiveAndVerified": {
@@ -147,6 +169,11 @@
         "nullable": true
       },
       "skippable": false,
+      "deprecated": {
+        "announced": 668,
+        "active": 672,
+        "comment": "IsActiveAndVerified is deprecated and will be removed in 2.0.676: Replaced by the \u0060DeactivationReasons\u0060. Provide empty value in \u0060DeactivationReasons\u0060 to filter on active/verified discounts."
+      },
       "allowedValues": []
     },
     "IsVerified": {
@@ -156,6 +183,11 @@
         "nullable": true
       },
       "skippable": false,
+      "deprecated": {
+        "announced": 668,
+        "active": 672,
+        "comment": "IsVerified is deprecated and will be removed in 2.0.676: Replaced by the \u0060DeactivationReasons\u0060. Provide \u0060Unverified\u0060 in \u0060DeactivationReasons\u0060 to filter on unverified discounts."
+      },
       "allowedValues": []
     },
     "LayerID": {
