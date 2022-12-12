@@ -47,13 +47,6 @@ public class AzureConnectorExtender
             Type = "string"
           },
           Style = ParameterStyle.Simple
-        },
-        new OpenApiParameter
-        {
-          In = ParameterLocation.Path,
-          Name = "subscriptionID",
-          Required = true,
-          Schema = new OpenApiSchema { Type = "string" }
         }
       },
       Operations = new Dictionary<OperationType, OpenApiOperation>
@@ -65,6 +58,16 @@ public class AzureConnectorExtender
             Description = $"Delete a trigger",
             OperationId = $"AzureConnectorUnsubscribe",
             Tags = new List<OpenApiTag> { new() { Name = "Technical" } },
+            Parameters = new List<OpenApiParameter>
+            {
+              new OpenApiParameter
+              {
+                In = ParameterLocation.Path,
+                Name = "subscriptionID",
+                Required = true,
+                Schema = new OpenApiSchema { Type = "string" }
+              }
+            },
             Security = new List<OpenApiSecurityRequirement>
             {
               new()
