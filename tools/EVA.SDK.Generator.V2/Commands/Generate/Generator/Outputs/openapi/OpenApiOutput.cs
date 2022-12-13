@@ -221,7 +221,7 @@ public class OpenApiOutput : IOutput
         {
           OperationType.Post, new OpenApiOperation
           {
-            Summary = service.Name,
+            Summary = service.RequestTypeID,
             Description = input.Types[service.RequestTypeID].Description ?? $"The {service.Name} service",
             OperationId = service.Name,
             Tags = new List<OpenApiTag> { new OpenApiTag { Name = TagFromAssembly(service.Assembly), Description = TagFromAssembly(service.Assembly) } },
@@ -240,7 +240,7 @@ public class OpenApiOutput : IOutput
             },
             RequestBody = new OpenApiRequestBody
             {
-              Description = input.Types[service.RequestTypeID].Description ?? $"A request to {service.Name}",
+              Description = "",
               Required = true,
               Content = new Dictionary<string, OpenApiMediaType>
               {

@@ -6,8 +6,11 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.dotnet;
 
 public class DotNetOutput : IOutput
 {
+  private readonly DotNetOptions _options;
+
   public DotNetOutput(DotNetOptions options)
   {
+    _options = options;
   }
 
   public void FixOptions(GenerateOptions options)
@@ -35,6 +38,7 @@ public class DotNetOutput : IOutput
         WriteErrors(suberrors, o, prefix);
       }
     });
+    o.WriteLine("}");
   }
 
   public async Task Write(ApiDefinitionModel input, string outputDirectory)
@@ -99,7 +103,7 @@ public class DotNetOutput : IOutput
   private void WriteType(string id, TypeSpecification spec, IndentedStringBuilder sb, ApiDefinitionModel input)
   {
     // These types have special handling
-    if (id == "EVA.Core.DayOfWeek") return;
+    if (_options.UseNativeDayOfWeek && id == "EVA.Core.DayOfWeek") return;
 
     if (spec.EnumIsFlag.HasValue)
     {
@@ -241,7 +245,7 @@ public class DotNetOutput : IOutput
     if (r.Name == "object") return $"JObject{n}";
     if (r.Name == "EVA.Core.Search.IProductSearchItem") return $"JObject{n}";
     if (r.Name == "any") return (context & TypeContext.Request) != 0 ? $"object{n}" : $"JToken{n}";
-    if (r.Name == "EVA.Core.DayOfWeek") return $"DayOfWeek{n}";
+    if (_options.UseNativeDayOfWeek && r.Name == "EVA.Core.DayOfWeek") return $"DayOfWeek{n}";
 
     if (r.Name.StartsWith("EVA."))
     {
