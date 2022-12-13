@@ -33,7 +33,7 @@ public class DotNetOutput : IOutput
         o.WriteLine($"public const string {e.Name} = \"{e.error.Name}\";");
       }
 
-      foreach (var (prefix,suberrors) in errors.SubErrors)
+      foreach (var (prefix, suberrors) in errors.SubErrors)
       {
         WriteErrors(suberrors, o, prefix);
       }
@@ -56,7 +56,7 @@ public class DotNetOutput : IOutput
       sb.WriteLine();
       sb.WriteLine("using System;");
       sb.WriteLine("using System.Collections.Generic;");
-      sb.WriteLine("using Newtonsoft.Json.Linq;");
+      if (_options.JsonSerializer == "newtonsoft") sb.WriteLine("using Newtonsoft.Json.Linq;");
       sb.WriteLine("using System.ComponentModel;");
       sb.WriteLine();
       sb.WriteLine($"namespace {actualNamespace}");
@@ -66,6 +66,10 @@ public class DotNetOutput : IOutput
         if (actualNamespace == "EVA.SDK.Core")
         {
           o.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.cs");
+          if (_options.JsonSerializer == "newtonsoft")
+          {
+            o.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.NewtonsoftJson.cs");
+          }
         }
 
         WriteErrors(i.Errors.GroupByPrefix(), o, "Errors");
@@ -172,29 +176,33 @@ public class DotNetOutput : IOutput
 
   private void WriteTypeBody(string id, TypeSpecification spec, IndentedStringBuilder o, ApiDefinitionModel input, TypeContext context)
   {
-    if (spec.Properties != null)
+    foreach (var prop in spec.Properties)
     {
-      foreach (var prop in spec.Properties)
+      if (prop.Value.Description != null)
       {
-        if (prop.Value.Description != null)
-        {
-          o.WriteLine("/// <summary>");
-          o.WriteLines(prop.Value.Description, "/// ");
-          o.WriteLine("/// </summary>");
-        }
+        o.WriteLine("/// <summary>");
+        o.WriteLines(prop.Value.Description, "/// ");
+        o.WriteLine("/// </summary>");
+      }
 
-        if (prop.Value.DataModelInformation != null)
-        {
-          o.WriteLine("/// <remarks>");
-          o.WriteLine($"/// Entity type: {prop.Value.DataModelInformation.Name}");
-          o.WriteLine("/// </remarks>");
-        }
+      if (prop.Value.DataModelInformation != null)
+      {
+        o.WriteLine("/// <remarks>");
+        o.WriteLine($"/// Entity type: {prop.Value.DataModelInformation.Name}");
+        o.WriteLine("/// </remarks>");
+      }
 
-        if (prop.Value.Deprecated != null)
-        {
-          o.WriteLine($"[Obsolete(@\"{prop.Value.Deprecated.Comment?.Replace("\"", "\"\"")}\")]");
-        }
+      if (prop.Value.Deprecated != null)
+      {
+        o.WriteLine($"[Obsolete(@\"{prop.Value.Deprecated.Comment?.Replace("\"", "\"\"")}\")]");
+      }
 
+      if (prop.Value.Skippable)
+      {
+        o.WriteLine($"public EVA.SDK.Core.Maybe<{GetFullName(prop.Value.Type, input, context)}> {prop.Key} {{ get; set; }}");
+      }
+      else
+      {
         o.WriteLine($"public {GetFullName(prop.Value.Type, input, context)} {prop.Key} {{ get; set; }}");
       }
     }
