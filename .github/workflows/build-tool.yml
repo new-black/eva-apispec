@@ -32,6 +32,12 @@ jobs:
       run: dotnet publish tools/EVA.SDK.Generator.V2/ -o ./out/linux-x64/ --sc -p:PublishTrimmed=true -p:PublishSingleFile=true -p:DebugType=embedded -p:Version=${{ env.version }} -r linux-x64;mv ./out/linux-x64/EVA.SDK.Generator.V2 ./sdk-generator-linux-x64
     - name: Build osx-x64
       run: dotnet publish tools/EVA.SDK.Generator.V2/ -o ./out/osx-x64/ --sc -p:PublishTrimmed=true -p:PublishSingleFile=true -p:DebugType=embedded -p:Version=${{ env.version }} -r osx-x64;mv ./out/osx-x64/EVA.SDK.Generator.V2 ./sdk-generator-osx-x64
+    - name: Validate a few cases
+      run: |
+        ./sdk-generator-linux-x64 generate dotnet --in spec/spec.json --out ./out --overwrite --remove inheritance
+        ./sdk-generator-linux-x64 generate openapi --in spec/spec.json --out ./out --overwrite --remove inheritance
+        ./sdk-generator-linux-x64 generate openapi --in spec/spec.json --out ./out --overwrite --remove inheritance --opt-preset azure-connector --opt-host https://some.awesome.api.com/api/
+        ./sdk-generator-linux-x64 generate swift --in spec/spec.json --out ./out --overwrite
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
