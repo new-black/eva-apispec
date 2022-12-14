@@ -6,6 +6,15 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.dotnet;
 
 public class DotNetOutput : IOutput
 {
+  [Flags]
+  public enum TypeContext
+  {
+    None = 0,
+    Request = 1,
+    Response = 2,
+    Both = Request | Response
+  }
+
   private readonly DotNetOptions _options;
 
   public DotNetOutput(DotNetOptions options)
@@ -169,7 +178,7 @@ public class DotNetOutput : IOutput
     o.WriteLine($"public class {service.Name} : EVA.SDK.Core.IResponseType<{GetFullName(service.ResponseTypeID, input)}>");
     o.WriteLine("{");
 
-    o.WriteIndentend(o => { WriteTypeBody(service.RequestTypeID, requestType, o, input, API.Spec.TypeContext.Request); });
+    o.WriteIndentend(o => { WriteTypeBody(service.RequestTypeID, requestType, o, input, TypeContext.Request); });
 
     o.WriteLine("}");
   }
@@ -189,6 +198,12 @@ public class DotNetOutput : IOutput
       {
         o.WriteLine("/// <remarks>");
         o.WriteLine($"/// Entity type: {prop.Value.DataModelInformation.Name}");
+        if (context.HasFlag(TypeContext.Request) && prop.Value.DataModelInformation.SupportsCustomID)
+        {
+          o.WriteLine("/// Supports passing in the Custom ID as a string.");
+          if (prop.Value.DataModelInformation.Lenient) o.WriteLine("/// Allows missing/invalid values when using EVA-IDs-Mode: ExternalIDs.");
+        }
+
         o.WriteLine("/// </remarks>");
       }
 
@@ -197,14 +212,9 @@ public class DotNetOutput : IOutput
         o.WriteLine($"[Obsolete(@\"{prop.Value.Deprecated.Comment?.Replace("\"", "\"\"")}\")]");
       }
 
-      if (prop.Value.Skippable)
-      {
-        o.WriteLine($"public EVA.SDK.Core.Maybe<{GetFullName(prop.Value.Type, input, context)}> {prop.Key} {{ get; set; }}");
-      }
-      else
-      {
-        o.WriteLine($"public {GetFullName(prop.Value.Type, input, context)} {prop.Key} {{ get; set; }}");
-      }
+      var fullPropName = GetFullName(prop.Value.Type, input, context, prop is { Value.DataModelInformation.SupportsCustomID: true } && context.HasFlag(TypeContext.Request));
+      fullPropName = prop.Value.Skippable ? $"EVA.SDK.Core.Maybe<{fullPropName}>" : fullPropName;
+      o.WriteLine($"public {fullPropName} {prop.Key} {{ get; set; }}");
     }
 
     foreach (var ts in input.Types.Where(t => t.Value.ParentType == id))
@@ -213,13 +223,12 @@ public class DotNetOutput : IOutput
     }
   }
 
-  private string GetFullName(TypeReference r, ApiDefinitionModel input, TypeContext context)
+  private string GetFullName(TypeReference r, ApiDefinitionModel input, TypeContext context, bool returnCustomID)
   {
     var n = r.Nullable ? "?" : string.Empty;
 
     if (r.Name == "guid") return $"System.Guid{n}";
     if (r.Name == "string") return $"string{n}";
-    if (r.Name == "int64") return $"long{n}";
     if (r.Name == "int32") return $"int{n}";
     if (r.Name == "int16") return $"short{n}";
     if (r.Name == "bool") return $"bool{n}";
@@ -227,10 +236,17 @@ public class DotNetOutput : IOutput
     if (r.Name == "float128") return $"decimal{n}";
     if (r.Name == "float64") return $"double{n}";
     if (r.Name == "float32") return $"float{n}";
+
+    if (r.Name == "int64")
+    {
+      if (returnCustomID && _options.EnableCustomIdMode) return $"EVA.SDK.Core.LongOrString{n}";
+      return $"long{n}";
+    }
+
     if (r.Name == "array")
     {
       var type = (context & TypeContext.Request) != 0 ? "IEnumerable" : "IList";
-      return $"{type}<{GetFullName(r.Arguments[0], input, context)}>{n}";
+      return $"{type}<{GetFullName(r.Arguments[0], input, context, returnCustomID)}>{n}";
     }
 
     if (r.Name == "date") return $"System.DateTime{n}";
@@ -238,18 +254,18 @@ public class DotNetOutput : IOutput
 
     // Special case for type IDictionary<string, object?>
     //if (r is { Name: "map", Arguments: [ { Name: "string" }, { Name: "any" }] })
-    if (r.Name == "map" && r.Arguments.Length == 2 && r.Arguments[0].Name == "string" && r.Arguments[1].Name == "any")
+    if (r is { Name: "map", Arguments.Length: 2 } && r.Arguments[0].Name == "string" && r.Arguments[1].Name == "any")
     {
       return (context & TypeContext.Request) != 0 ? $"IDictionary<string, JToken>{n}" : $"JObject{n}";
     }
 
     //if (r is { Name: "map", Arguments: [ { Name: "int64" }, { Name: "any" }] })
-    if (r.Name == "map" && r.Arguments.Length == 2 && r.Arguments[0].Name == "int64" && r.Arguments[1].Name == "any")
+    if (r is { Name: "map", Arguments.Length: 2 } && r.Arguments[0].Name == "int64" && r.Arguments[1].Name == "any")
     {
       return $"IDictionary<long, JToken>{n}";
     }
 
-    if (r.Name == "map") return $"IDictionary<{GetFullName(r.Arguments[0], input, context)},{GetFullName(r.Arguments[1], input, context)}>{n}";
+    if (r.Name == "map") return $"IDictionary<{GetFullName(r.Arguments[0], input, context, false)},{GetFullName(r.Arguments[1], input, context, returnCustomID)}>{n}";
     if (r.Name == "object") return $"JObject{n}";
     if (r.Name == "EVA.Core.Search.IProductSearchItem") return $"JObject{n}";
     if (r.Name == "any") return (context & TypeContext.Request) != 0 ? $"object{n}" : $"JToken{n}";
@@ -261,7 +277,7 @@ public class DotNetOutput : IOutput
 
       if (r.Arguments.Any())
       {
-        var joinedArguments = string.Join(',', r.Arguments.Select(a => GetFullName(a, input, context)));
+        var joinedArguments = string.Join(',', r.Arguments.Select(a => GetFullName(a, input, context, false)));
         return $"{FixNamespace(name[..name.IndexOf('`')])}<{joinedArguments}>{n}";
       }
       else

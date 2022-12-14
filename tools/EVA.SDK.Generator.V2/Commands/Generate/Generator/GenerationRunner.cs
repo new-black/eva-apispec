@@ -1,6 +1,8 @@
-﻿using EVA.SDK.Generator.V2.Commands.Generate.Generator.Inputs;
+﻿using System.Text.Json;
+using EVA.SDK.Generator.V2.Commands.Generate.Generator.Inputs;
 using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs;
 using EVA.SDK.Generator.V2.Commands.Generate.Generator.Transforms;
+using EVA.SDK.Generator.V2.Commands.Generate.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Generator;
 
@@ -23,14 +25,20 @@ public static class GenerationRunner
     foreach (var filter in filters) filter.Transform(model, opt);
 
     // Run transformations
-    while (true)
+    for (var i = 0; i < 10; i++)
     {
+      Console.WriteLine($"\nRunning iteration {i}");
       var changes = ITransform.TransformResult.NoChanges;
 
       foreach (var transform in transforms)
       {
         var result = transform.Transform(model, opt);
-        if(result == ITransform.TransformResult.Changes) Console.WriteLine("[TRANSFORM]: " + transform.GetType().Name);
+        Console.WriteLine("[{0}]: {1}", transform.GetType().Name, result);
+        if (result == ITransform.TransformResult.Changes)
+          model = JsonSerializer.Deserialize(
+            JsonSerializer.Serialize(model, NonIndentedSerializationHelper.Default.ApiDefinitionModel),
+            NonIndentedSerializationHelper.Default.ApiDefinitionModel
+          )!;
         changes |= result;
       }
 
@@ -100,6 +108,7 @@ public static class GenerationRunner
     if (remove.Remove("nested-types")) yield return new RemoveNestedTypes();
     if (remove.Remove("event-exports")) yield return new RemoveEventExports();
     if (remove.Remove("errors")) yield return new RemoveErrors();
+    if (remove.Remove("shared-req-res-types")) yield return new RemoveSharedRequestResponseTypes();
 
     yield return new FixDependencies();
     yield return new RemoveUnusedTypes();

@@ -8,6 +8,7 @@ public class DotNetOptions
 {
   public bool UseNativeDayOfWeek { get; set; }
   public string JsonSerializer { get; set; }
+  public bool EnableCustomIdMode { get; set; }
 }
 
 public class DotNetOptionsBinder : BinderBase<DotNetOptions>, IOptionProvider
@@ -22,12 +23,18 @@ public class DotNetOptionsBinder : BinderBase<DotNetOptions>, IOptionProvider
     description: "What serializer to use for JSON serialization"
   ).FromAmong("newtonsoft").WithDefault("newtonsoft");
 
+  private Option<bool> EnableCustomIdMode = new Option<bool>(
+    name: "--opt-custom-ids",
+    description: "Enable support for custom IDs through LongOrString"
+  ).WithDefault(false);
+
   protected override DotNetOptions GetBoundValue(BindingContext bindingContext)
   {
     return new DotNetOptions
     {
       UseNativeDayOfWeek = UseNativeDayOfWeek.Value(bindingContext),
-      JsonSerializer = JsonSerializer.Value(bindingContext)!
+      JsonSerializer = JsonSerializer.Value(bindingContext)!,
+      EnableCustomIdMode = EnableCustomIdMode.Value(bindingContext)
     };
   }
 
@@ -35,5 +42,6 @@ public class DotNetOptionsBinder : BinderBase<DotNetOptions>, IOptionProvider
   {
     yield return UseNativeDayOfWeek;
     yield return JsonSerializer;
+    yield return EnableCustomIdMode;
   }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using EVA.API.Spec;
+using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Generator.Transforms;
 
@@ -8,7 +9,10 @@ public class RemoveUnusedTypes : ITransform
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options)
   {
     var allUnusedTypes = input.Types.Keys.ToHashSet();
-    var typesToIterate = new HashSet<string>(input.Services.Select(s => s.RequestTypeID).Concat(input.Services.Select(s => s.ResponseTypeID)));
+    var typesToIterate = new HashSet<string>(
+      input.Services.Select(s => s.RequestTypeID)
+        .Concat(input.Services.Select(s => s.ResponseTypeID))
+        .Concat(input.EventTargets.Select(e => e.DataType).FilterNotNull()));
     var allUsedTypes = new HashSet<string>();
 
     while (typesToIterate.Any())
@@ -29,7 +33,6 @@ public class RemoveUnusedTypes : ITransform
 
     if (allUnusedTypes.Any())
     {
-      Console.WriteLine($"[TRANSFORM]: Removed {allUnusedTypes.Count} unused types");
       input.Types = input.Types.Where(kv => !allUnusedTypes.Contains(kv.Key)).ToImmutableSortedDictionary();
       return ITransform.TransformResult.Changes;
     }

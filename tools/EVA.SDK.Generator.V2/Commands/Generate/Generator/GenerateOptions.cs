@@ -56,9 +56,10 @@ deprecated-properties: Will remove all deprecated properties immediately and not
 deprecated-services: Will remove all deprecated services immediately and not wait till the deprecation hits.
 errors: Will remove all type information about possible errors.
 event-exports: Will remove all type information about event exports.
+shared-req-res-types: Will split types that are used both as request and response types into two separate types.
 "
   ) { AllowMultipleArgumentsPerToken = true }.FromAmong("inheritance", "generics", "unused-type-params", "empty-types", "nested-types", "options", "deprecated-properties",
-    "deprecated-properties", "deprecated-services", "errors", "event-exports");
+    "deprecated-properties", "deprecated-services", "errors", "event-exports", "shared-req-res-types");
 
 
   public readonly Option<string[]> FilterAssemblies = new(

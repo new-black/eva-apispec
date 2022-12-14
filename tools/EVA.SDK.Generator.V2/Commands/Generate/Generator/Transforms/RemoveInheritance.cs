@@ -22,7 +22,7 @@ public class RemoveInheritance : ITransform
         changes = ITransform.TransformResult.Changes;
 
         TypeSpecification baseType;
-        if (type.Extends.Arguments == null || !type.Extends.Arguments.Any())
+        if (!type.Extends.Arguments.Any())
         {
           baseType = input.Types[type.Extends.Name];
         }

@@ -41,12 +41,9 @@ public static class ApiDefinitionModelExtensions
       foreach (var x in type.Extends.EnumerateAllTypeReferences()) yield return x;
     }
 
-    if (type.Properties != null)
+    foreach (var (_, prop) in type.Properties)
     {
-      foreach (var (_, prop) in type.Properties)
-      {
-        foreach (var x in prop.Type.EnumerateAllTypeReferences()) yield return x;
-      }
+      foreach (var x in prop.Type.EnumerateAllTypeReferences()) yield return x;
     }
   }
 
@@ -59,12 +56,9 @@ public static class ApiDefinitionModelExtensions
       foreach (var x in reference.Shared.EnumerateAllTypeReferences()) yield return x;
     }
 
-    if (reference.Arguments != null)
+    foreach (var arg in reference.Arguments)
     {
-      foreach (var arg in reference.Arguments)
-      {
-        foreach (var x in arg.EnumerateAllTypeReferences()) yield return x;
-      }
+      foreach (var x in arg.EnumerateAllTypeReferences()) yield return x;
     }
   }
 
@@ -147,6 +141,7 @@ public static class ApiDefinitionModelExtensions
     {
       message = string.Format(message, spec.Arguments.Select((a, i) => $"{{{a.Name ?? i.ToString()}:{a.Type.Name}}}").ToArray());
     }
+
     return message;
   }
 
@@ -203,7 +198,7 @@ public static class ApiDefinitionModelExtensions
   public class GroupedApiDefinitionModel
   {
     public string Assembly { get; set; }
-    public Dictionary<string,TypeSpecification> Types { get; set; }
+    public Dictionary<string, TypeSpecification> Types { get; set; }
     public List<ServiceModel> Services { get; set; }
     public List<ErrorSpecification> Errors { get; set; }
   }
