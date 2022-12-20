@@ -198,9 +198,9 @@ public class DotNetOutput : IOutput
       {
         o.WriteLine("/// <remarks>");
         o.WriteLine($"/// Entity type: {prop.Value.DataModelInformation.Name}");
-        if (context.HasFlag(TypeContext.Request) && prop.Value.DataModelInformation.SupportsCustomID)
+        if (context.HasFlag(TypeContext.Request) && prop.Value.DataModelInformation.SupportsBackendID)
         {
-          o.WriteLine("/// Supports passing in the Custom ID as a string.");
+          o.WriteLine("/// Supports passing in the BackendID as a string.");
           if (prop.Value.DataModelInformation.Lenient) o.WriteLine("/// Allows missing/invalid values when using EVA-IDs-Mode: ExternalIDs.");
         }
 
@@ -212,7 +212,7 @@ public class DotNetOutput : IOutput
         o.WriteLine($"[Obsolete(@\"{prop.Value.Deprecated.Comment?.Replace("\"", "\"\"")}\")]");
       }
 
-      var fullPropName = GetFullName(prop.Value.Type, input, context, prop is { Value.DataModelInformation.SupportsCustomID: true } && context.HasFlag(TypeContext.Request));
+      var fullPropName = GetFullName(prop.Value.Type, input, context, prop is { Value.DataModelInformation.SupportsBackendID: true } && context.HasFlag(TypeContext.Request));
       fullPropName = prop.Value.Skippable ? $"EVA.SDK.Core.Maybe<{fullPropName}>" : fullPropName;
       o.WriteLine($"public {fullPropName} {prop.Key} {{ get; set; }}");
     }
