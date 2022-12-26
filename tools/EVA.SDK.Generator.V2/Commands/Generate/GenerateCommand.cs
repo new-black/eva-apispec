@@ -7,6 +7,7 @@ using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.evaspec;
 using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.openapi;
 using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.swift;
 using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.typescript;
+using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.zod;
 using EVA.SDK.Generator.V2.Commands.Generate.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate;
@@ -25,6 +26,7 @@ public class GenerateCommand
     AddOutput<SwiftOptions, SwiftOptionsBinder>(generateCommand, optionsBinder, "swift", o => new SwiftOutput(o));
     AddOutput<DotNetOptions, DotNetOptionsBinder>(generateCommand, optionsBinder, "dotnet", o => new DotNetOutput(o));
     AddOutput<TypescriptOptions, TypescriptOptionsBinder>(generateCommand, optionsBinder, "typescript", o => new TypescriptOutput(o));
+    AddOutput<ZodOptions, ZodOptionsBinder>(generateCommand, optionsBinder, "zod", o => new ZodOutput(o));
   }
 
   private static void AddOutput<T, TBinder>(Command generateCommand, GenerateOptionsBinder optionsBinder, string name, Func<T, IOutput> outputBuilder)

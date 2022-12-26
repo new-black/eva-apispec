@@ -21,6 +21,8 @@ public class OpenApiOutput : IOutput
     _options = options;
   }
 
+  public string OutputPattern => null;
+
   public void FixOptions(GenerateOptions options)
   {
     options.EnsureRemove("generics");

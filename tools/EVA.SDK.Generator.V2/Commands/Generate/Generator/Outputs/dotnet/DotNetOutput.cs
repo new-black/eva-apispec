@@ -22,6 +22,8 @@ public class DotNetOutput : IOutput
     _options = options;
   }
 
+  public string OutputPattern => "EVA.*.cs";
+
   public void FixOptions(GenerateOptions options)
   {
     options.EnsureRemove("options");
@@ -34,7 +36,7 @@ public class DotNetOutput : IOutput
 
     o.WriteLine($"public static class {name}");
     o.WriteLine("{");
-    o.WriteIndentend(o =>
+    o.WriteIndented(o =>
     {
       foreach (var e in errors.Errors)
       {
@@ -64,13 +66,15 @@ public class DotNetOutput : IOutput
       sb.WriteLine("#nullable enable");
       sb.WriteLine();
       sb.WriteLine("using System;");
+      sb.WriteLine("using System.Collections;");
       sb.WriteLine("using System.Collections.Generic;");
-      if (_options.JsonSerializer == "newtonsoft") sb.WriteLine("using Newtonsoft.Json.Linq;");
       sb.WriteLine("using System.ComponentModel;");
+      sb.WriteLine("using System.Linq;");
+      if (_options.JsonSerializer == "newtonsoft") sb.WriteLine("using Newtonsoft.Json.Linq;");
       sb.WriteLine();
       sb.WriteLine($"namespace {actualNamespace}");
       sb.WriteLine("{");
-      sb.WriteIndentend(o =>
+      sb.WriteIndented(o =>
       {
         if (actualNamespace == "EVA.SDK.Core")
         {
@@ -123,7 +127,7 @@ public class DotNetOutput : IOutput
       if (spec.EnumIsFlag.Value) sb.WriteLine("[Flags]");
       sb.WriteLine($"public enum {spec.TypeName}");
       sb.WriteLine("{");
-      sb.WriteIndentend(o =>
+      sb.WriteIndented(o =>
       {
         foreach (var (name, value) in spec.EnumValues)
         {
@@ -144,7 +148,7 @@ public class DotNetOutput : IOutput
       sb.WriteLine($"public class {typeName}");
       sb.WriteLine("{");
       var usage = (spec.Usage.Request ? TypeContext.Request : TypeContext.None) | (spec.Usage.Response ? TypeContext.Response : TypeContext.None);
-      sb.WriteIndentend(o => { WriteTypeBody(id, spec, o, input, usage); });
+      sb.WriteIndented(o => { WriteTypeBody(id, spec, o, input, usage); });
       sb.WriteLine("}");
     }
   }
@@ -153,7 +157,7 @@ public class DotNetOutput : IOutput
   {
     sb.WriteLine($"public class {spec.TypeName} : EVA.SDK.Core.IResponseMessage");
     sb.WriteLine("{");
-    sb.WriteIndentend(o => { WriteTypeBody(id, spec, o, input, TypeContext.Response); });
+    sb.WriteIndented(o => { WriteTypeBody(id, spec, o, input, TypeContext.Response); });
     sb.WriteLine("}");
   }
 
@@ -178,7 +182,7 @@ public class DotNetOutput : IOutput
     o.WriteLine($"public class {service.Name} : EVA.SDK.Core.IResponseType<{GetFullName(service.ResponseTypeID, input)}>");
     o.WriteLine("{");
 
-    o.WriteIndentend(o => { WriteTypeBody(service.RequestTypeID, requestType, o, input, TypeContext.Request); });
+    o.WriteIndented(o => { WriteTypeBody(service.RequestTypeID, requestType, o, input, TypeContext.Request); });
 
     o.WriteLine("}");
   }
@@ -212,8 +216,16 @@ public class DotNetOutput : IOutput
         o.WriteLine($"[Obsolete(@\"{prop.Value.Deprecated.Comment?.Replace("\"", "\"\"")}\")]");
       }
 
-      var fullPropName = GetFullName(prop.Value.Type, input, context, prop is { Value.DataModelInformation.SupportsBackendID: true } && context.HasFlag(TypeContext.Request));
+      var shouldOutputCustomIDs = prop is { Value.DataModelInformation.SupportsBackendID: true } && context.HasFlag(TypeContext.Request);
+      var fullPropName = GetFullName(prop.Value.Type, input, context, shouldOutputCustomIDs);
       fullPropName = prop.Value.Skippable ? $"EVA.SDK.Core.Maybe<{fullPropName}>" : fullPropName;
+
+      // This is very hacky, but here we go!!!!
+      if (_options.EnableCustomIdMode && shouldOutputCustomIDs && fullPropName is "EVA.SDK.Core.Maybe<EVA.SDK.Core.ModelID>" or "EVA.SDK.Core.Maybe<EVA.SDK.Core.ModelID?>")
+      {
+        fullPropName = "EVA.SDK.Core.MaybeModelID";
+      }
+
       o.WriteLine($"public {fullPropName} {prop.Key} {{ get; set; }}");
     }
 
@@ -239,13 +251,18 @@ public class DotNetOutput : IOutput
 
     if (r.Name == "int64")
     {
-      if (returnCustomID && _options.EnableCustomIdMode) return $"EVA.SDK.Core.LongOrString{n}";
+      if (returnCustomID && _options.EnableCustomIdMode) return $"EVA.SDK.Core.ModelID{n}";
       return $"long{n}";
+    }
+
+    if (returnCustomID && r.Name == "array" && r.Arguments[0] is {Name: "int64", Nullable: false} && _options.EnableCustomIdMode)
+    {
+      return $"EVA.SDK.Core.ModelIDList{n}";
     }
 
     if (r.Name == "array")
     {
-      var type = (context & TypeContext.Request) != 0 ? "IEnumerable" : "IList";
+      var type = (context & TypeContext.Request) != 0 ? "IEnumerable" : "List";
       return $"{type}<{GetFullName(r.Arguments[0], input, context, returnCustomID)}>{n}";
     }
 

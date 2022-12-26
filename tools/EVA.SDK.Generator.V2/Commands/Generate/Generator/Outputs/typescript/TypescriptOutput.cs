@@ -14,6 +14,8 @@ public class TypescriptOutput : IOutput
     _options = options;
   }
 
+  public string OutputPattern => null;
+
   public void FixOptions(GenerateOptions options)
   {
     // No-op
@@ -32,7 +34,7 @@ public class TypescriptOutput : IOutput
 
       // Write namespace
       sb.WriteLine($"export namespace {FixNamespace(group.Assembly)} {{");
-      sb.WriteIndentend(o =>
+      sb.WriteIndented(o =>
       {
         // Preset types
         if (group.Assembly == "EVA.Core")
@@ -61,7 +63,7 @@ public class TypescriptOutput : IOutput
       var importsBuilder = new StringBuilder();
       foreach (var x in assemblyCtx.ReferencedModules)
       {
-        importsBuilder.AppendLine($"import {{ {FixNamespace(x)} }} from '{GetModuleReference(x)}';");
+        importsBuilder.AppendLine($"import {{ {FixNamespace(x)} }} from '{GetModuleReference(x, _options.PackagePrefix)}';");
       }
 
       importsBuilder.AppendLine();
@@ -85,14 +87,14 @@ public class TypescriptOutput : IOutput
 
         ctx.RegisterReferencedModule(typespec.Assembly);
         var extenderName = $"Extenders_{FixTypeName(input, typeid)}_{propname}";
-        sb.WriteLine($"declare module '{GetModuleReference(typespec.Assembly)}' {{");
-        sb.WriteIndentend(o =>
+        sb.WriteLine($"declare module '{GetModuleReference(typespec.Assembly, _options.PackagePrefix)}' {{");
+        sb.WriteIndented(o =>
         {
           o.WriteLine($"export namespace {FixNamespace(typespec.Assembly)} {{");
-          o.WriteIndentend(o =>
+          o.WriteIndented(o =>
           {
             o.WriteLine($"export interface {extenderName} {{");
-            o.WriteIndentend(o =>
+            o.WriteIndented(o =>
             {
               foreach (var tita in typesInThisAssembly)
               {
@@ -114,7 +116,7 @@ public class TypescriptOutput : IOutput
     if (errors.Errors.Any())
     {
       o.WriteLine($"export const enum {prefix} {{");
-      o.WriteIndentend(o =>
+      o.WriteIndented(o =>
       {
         foreach (var error in errors.Errors)
         {
@@ -127,7 +129,7 @@ public class TypescriptOutput : IOutput
     else if (errors.SubErrors.Any())
     {
       o.WriteLine($"export namespace {prefix} {{");
-      o.WriteIndentend(o =>
+      o.WriteIndented(o =>
       {
         foreach (var (groupName, e) in errors.SubErrors)
         {
@@ -147,7 +149,7 @@ public class TypescriptOutput : IOutput
         // We don't care about flag enums, there is no difference in TypeScript
         if (type.Description != null) WriteComment(o, type.Description);
         o.WriteLine($"export const enum {FixTypeName(input, id)} {{");
-        o.WriteIndentend(o =>
+        o.WriteIndented(o =>
         {
           foreach (var (name, value) in type.EnumValues.ToTotals().OrderBy(x => x.Value))
           {
@@ -164,9 +166,9 @@ public class TypescriptOutput : IOutput
         if (type.Description != null) WriteComment(o, type.Description);
         var fixedTypeName = FixTypeName(input, id);
         o.WriteLine($"export interface {fixedTypeName}{typeArgument} {{");
-        o.WriteIndentend(o =>
+        o.WriteIndented(o =>
         {
-          foreach (var (propName, propSpec) in (type.Properties ?? ImmutableSortedDictionary<string, PropertySpecification>.Empty))
+          foreach (var (propName, propSpec) in type.Properties)
           {
             var propComment = new StringBuilder();
             if (propSpec.DataModelInformation is { Name: var dmi }) propComment.AppendLine($"Entity type: {dmi}");
@@ -283,7 +285,7 @@ public class TypescriptOutput : IOutput
   /// </summary>
   /// <param name="s"></param>
   /// <returns></returns>
-  private static string EscapeForString(string s)
+  internal static string EscapeForString(string s)
   {
     return $"'{s.Replace("'", @"\'")}'";
   }
@@ -293,7 +295,7 @@ public class TypescriptOutput : IOutput
   /// </summary>
   /// <param name="s"></param>
   /// <returns></returns>
-  private static string FixNamespace(string s)
+  internal static string FixNamespace(string s)
   {
     if (s.StartsWith("EVA.")) s = "Eva." + s[4..];
     return s.Replace(".", string.Empty);
@@ -305,7 +307,7 @@ public class TypescriptOutput : IOutput
   /// <param name="input"></param>
   /// <param name="name"></param>
   /// <returns></returns>
-  private static string FixTypeName(ApiDefinitionModel input, string name)
+  internal static string FixTypeName(ApiDefinitionModel input, string name)
   {
     var spec = input.Types[name];
     if (name.StartsWith(spec.Assembly + "."))
@@ -326,7 +328,7 @@ public class TypescriptOutput : IOutput
   /// <param name="name"></param>
   /// <param name="currentAssembly"></param>
   /// <returns></returns>
-  private static string GetTypeRef(ApiDefinitionModel input, string name, AssemblyContext? ctx)
+  internal static string GetTypeRef(ApiDefinitionModel input, string name, AssemblyContext? ctx)
   {
     var spec = input.Types[name];
     var assembly = spec.Assembly == ctx?.AssemblyName ? string.Empty : $"{FixNamespace(spec.Assembly)}.";
@@ -334,16 +336,16 @@ public class TypescriptOutput : IOutput
     return $"{assembly}{FixTypeName(input, name)}";
   }
 
-  private string GetModuleReference(string s)
+  internal static string GetModuleReference(string s, string? packagePrefix)
   {
-    if (_options.PackagePrefix == null)
+    if (packagePrefix == null)
     {
       return $"./{s}";
     }
     else
     {
       if (s.StartsWith("EVA.")) s = s[4..];
-      return $"{_options.PackagePrefix}{s.Replace(".", "-").ToLowerInvariant()}";
+      return $"{packagePrefix}{s.Replace(".", "-").ToLowerInvariant()}";
     }
   }
 }

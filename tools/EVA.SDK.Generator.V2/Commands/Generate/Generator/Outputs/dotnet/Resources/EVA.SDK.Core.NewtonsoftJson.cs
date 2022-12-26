@@ -10,6 +10,23 @@ public partial struct Maybe<T> : OptionalConverter.IGenericAccess
   }
 }
 
+[Newtonsoft.Json.JsonConverter(typeof(OptionalConverter))]
+public partial struct MaybeModelID : OptionalConverter.IGenericAccess
+{
+  Type OptionalConverter.IGenericAccess.GenericType => _valueIsPresent && _value.IsLong ? typeof(long) : typeof(string);
+  bool OptionalConverter.IGenericAccess.IsValuePresent => _valueIsPresent;
+
+  object OptionalConverter.IGenericAccess.Value
+  {
+    set
+    {
+      _value = (ModelID)value;
+      _valueIsPresent = true;
+    }
+    get => _value;
+  }
+}
+
 public class OptionalConverter : Newtonsoft.Json.JsonConverter
 {
   public override void WriteJson(Newtonsoft.Json.JsonWriter writer, object value, Newtonsoft.Json.JsonSerializer serializer)
@@ -47,35 +64,51 @@ public class OptionalConverter : Newtonsoft.Json.JsonConverter
   }
 }
 
-[Newtonsoft.Json.JsonConverter(typeof(LongOrStringConverter))]
-public partial struct LongOrString
+[Newtonsoft.Json.JsonConverter(typeof(ModelID.Converter))]
+public partial struct ModelID
 {
+  private class Converter : Newtonsoft.Json.JsonConverter
+  {
+    public override void WriteJson(Newtonsoft.Json.JsonWriter writer, object value, Newtonsoft.Json.JsonSerializer serializer)
+    {
+      var ls = (ModelID)value;
 
+      if(ls.IsLong)
+        writer.WriteValue(ls.Long);
+      else
+        writer.WriteValue(ls.String);
+    }
+
+    public override object ReadJson(Newtonsoft.Json.JsonReader reader, Type objectType, object existingValue, Newtonsoft.Json.JsonSerializer serializer)
+    {
+      if(reader.TokenType == Newtonsoft.Json.JsonToken.Integer)
+        return new ModelID((long)reader.Value);
+      if(reader.TokenType == Newtonsoft.Json.JsonToken.String)
+        return new ModelID((string)reader.Value);
+      if(reader.TokenType == Newtonsoft.Json.JsonToken.Null)
+        return new ModelID((string) null);
+
+      return existingValue;
+    }
+
+    public override bool CanConvert(Type objectType) => true;
+  }
 }
 
-public class LongOrStringConverter : Newtonsoft.Json.JsonConverter
+[Newtonsoft.Json.JsonConverter(typeof(ModelIDList.Converter))]
+public partial class ModelIDList
 {
-  public override void WriteJson(Newtonsoft.Json.JsonWriter writer, object value, Newtonsoft.Json.JsonSerializer serializer)
+  private class Converter : Newtonsoft.Json.JsonConverter<ModelIDList>
   {
-    var ls = (LongOrString)value;
+    public override void WriteJson(Newtonsoft.Json.JsonWriter writer, ModelIDList value, Newtonsoft.Json.JsonSerializer serializer)
+    {
+      serializer.Serialize(writer, value._ids);
+    }
 
-    if(ls.IsLong)
-      writer.WriteValue(ls.Long);
-    else
-      writer.WriteValue(ls.String);
+    public override ModelIDList ReadJson(Newtonsoft.Json.JsonReader reader, Type objectType, ModelIDList existingValue, bool hasExistingValue, Newtonsoft.Json.JsonSerializer serializer)
+    {
+      var values = serializer.Deserialize<List<ModelID>>(reader);
+      return values == null ? null : new ModelIDList(values);
+    }
   }
-
-  public override object ReadJson(Newtonsoft.Json.JsonReader reader, Type objectType, object existingValue, Newtonsoft.Json.JsonSerializer serializer)
-  {
-    if(reader.TokenType == Newtonsoft.Json.JsonToken.Integer)
-      return new LongOrString((long)reader.Value);
-    if(reader.TokenType == Newtonsoft.Json.JsonToken.String)
-      return new LongOrString((string)reader.Value);
-    if(reader.TokenType == Newtonsoft.Json.JsonToken.Null)
-      return new LongOrString((string) null);
-
-    return existingValue;
-  }
-
-  public override bool CanConvert(Type objectType) => true;
 }

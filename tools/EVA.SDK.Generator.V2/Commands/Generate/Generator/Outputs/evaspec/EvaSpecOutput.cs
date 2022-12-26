@@ -13,6 +13,8 @@ public class EvaSpecOutput : IOutput
     _options = options;
   }
 
+  public string OutputPattern => null;
+
   public void FixOptions(GenerateOptions options)
   {
     // No-op

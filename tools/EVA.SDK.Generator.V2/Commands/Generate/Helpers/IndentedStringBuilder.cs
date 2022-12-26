@@ -7,20 +7,52 @@ public class IndentedStringBuilder
 {
   private readonly int _indentSize;
   private int _indent = 0;
-  private StringBuilder _builder = new StringBuilder();
+  private StringBuilder _builder = new();
   private readonly string _linebreak = "\n";
+  private bool _writeIndent = true;
+
+  public IDisposable Indentation => new IndentationScope(this);
 
   public IndentedStringBuilder(int indentSize)
   {
     _indentSize = indentSize;
   }
 
-  public void Indent() => _indent++;
-  public void Outdent() => _indent--;
+  private sealed class IndentationScope : IDisposable
+  {
+    private readonly IndentedStringBuilder _sb;
 
-  public void WriteLine() => _builder.Append(_linebreak);
-  public void WriteLine(string s) => _builder.Append(new string(' ', _indent*_indentSize) + s + _linebreak);
-  public void Write(string s) => _builder.Append(new string(' ', _indent*_indentSize) + s);
+    public IndentationScope(IndentedStringBuilder sb)
+    {
+      _sb = sb;
+      _sb._indent++;
+    }
+
+    public void Dispose() => _sb._indent--;
+  }
+
+  private void WriteIndent() => _builder.Append(new string(' ', _indent * _indentSize));
+
+  public void WriteLine()
+  {
+    _builder.Append(_linebreak);
+    _writeIndent = true;
+  }
+
+  public void WriteLine(string s)
+  {
+    if(_writeIndent) WriteIndent();
+    _builder.Append(s);
+    _builder.Append(_linebreak);
+    _writeIndent = true;
+  }
+
+  public void Write(string s)
+  {
+    if(_writeIndent) WriteIndent();
+    _builder.Append(s);
+    _writeIndent = false;
+  }
 
   public void WriteLines(string s, string prefix = null)
   {
@@ -28,7 +60,7 @@ public class IndentedStringBuilder
     foreach(var l in lines) WriteLine((prefix ?? string.Empty) + l);
   }
 
-  public void WriteIndentend(Action<IndentedStringBuilder> o)
+  public void WriteIndented(Action<IndentedStringBuilder> o)
   {
     _indent++;
     o(this);

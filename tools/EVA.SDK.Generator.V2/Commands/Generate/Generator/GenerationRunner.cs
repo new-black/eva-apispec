@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.IO.Enumeration;
+using System.Text.Json;
 using EVA.SDK.Generator.V2.Commands.Generate.Generator.Inputs;
 using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs;
 using EVA.SDK.Generator.V2.Commands.Generate.Generator.Transforms;
@@ -46,7 +47,7 @@ public static class GenerationRunner
     }
 
     // Target directory handling
-    EnsureEmptyOutputFolderExists(opt);
+    EnsureEmptyOutputFolderExists(opt, output.OutputPattern);
 
     // Output
     await output.Write(model, opt.OutputDirectory);
@@ -56,15 +57,27 @@ public static class GenerationRunner
   /// This method will ensure the output path exists and is an empty directory.
   /// </summary>
   /// <exception cref="Exception"></exception>
-  private static void EnsureEmptyOutputFolderExists(GenerateOptions opt)
+  private static void EnsureEmptyOutputFolderExists(GenerateOptions opt, string? outputPattern)
   {
     var fullOutputPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), opt.OutputDirectory));
     opt.OutputDirectory = fullOutputPath;
     if (opt.Overwrite)
     {
-      if (File.Exists(fullOutputPath)) File.Delete(fullOutputPath);
-      if (Directory.Exists(fullOutputPath)) Directory.Delete(fullOutputPath, true);
-      Directory.CreateDirectory(fullOutputPath);
+      if (outputPattern == null)
+      {
+        if (File.Exists(fullOutputPath)) File.Delete(fullOutputPath);
+        if (Directory.Exists(fullOutputPath)) Directory.Delete(fullOutputPath, true);
+        Directory.CreateDirectory(fullOutputPath);
+      }
+      else
+      {
+        var allFiles = Directory.GetFiles(fullOutputPath, outputPattern, SearchOption.AllDirectories);
+        foreach (var file in allFiles)
+        {
+          var relativeFile = Path.GetRelativePath(fullOutputPath, file);
+          if (FileSystemName.MatchesSimpleExpression(outputPattern, relativeFile, true)) File.Delete(file);
+        }
+      }
     }
     else
     {

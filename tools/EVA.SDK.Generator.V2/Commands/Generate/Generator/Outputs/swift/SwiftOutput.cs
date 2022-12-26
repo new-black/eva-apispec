@@ -13,6 +13,8 @@ public class SwiftOutput : IOutput
     _options = options;
   }
 
+  public string OutputPattern => null;
+
   public void FixOptions(GenerateOptions options)
   {
     options.EnsureRemove("options");
@@ -36,19 +38,22 @@ public class SwiftOutput : IOutput
       output.WriteLine("import Foundation");
       output.WriteLine();
       output.WriteLine($"public class {filename}: EvaService<{reqName}, {resName}> {{");
-      output.Indent();
-      output.WriteLine("public init(endpoint: EvaEndpoint) {");
-      output.Indent();
-      output.WriteLine("super.init(");
-      output.Indent();
-      output.WriteLine("endpoint: endpoint,");
-      output.WriteLine($"name: \"{assembly}:{service.Name}\",");
-      output.WriteLine($"path: \"{service.Path}\"");
-      output.Outdent();
-      output.WriteLine(")");
-      output.Outdent();
-      output.WriteLine("}");
-      output.Outdent();
+      output.WriteIndented(output =>
+      {
+        output.WriteLine("public init(endpoint: EvaEndpoint) {");
+        output.WriteIndented(output =>
+        {
+          output.WriteLine("super.init(");
+          output.WriteIndented(output =>
+          {
+            output.WriteLine("endpoint: endpoint,");
+            output.WriteLine($"name: \"{assembly}:{service.Name}\",");
+            output.WriteLine($"path: \"{service.Path}\"");
+          });
+          output.WriteLine(")");
+        });
+        output.WriteLine("}");
+      });
       output.WriteLine("}");
       output.Write(string.Empty);
 
@@ -123,49 +128,49 @@ public class SwiftOutput : IOutput
 
     if (type.Properties != null)
     {
-      output.Indent();
-
-      output.WriteLine("public init(");
-
-      output.WriteIndentend(o =>
+      output.WriteIndented(output =>
       {
-        var list = type.Properties.ToList();
-        for (var i = 0; i < list.Count; i++)
+        output.WriteLine("public init(");
+
+        output.WriteIndented(o =>
         {
-          var prop = list[i];
-          var propDefault = GetPropDefault(prop.Value.Type, input);
-          o.WriteLine($"{prop.Key}: {GetPropTypeName(prop.Value.Type, input, id)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}" )}{(i == list.Count - 1 ? string.Empty : ",")}");
-        }
-      });
+          var list = type.Properties.ToList();
+          for (var i = 0; i < list.Count; i++)
+          {
+            var prop = list[i];
+            var propDefault = GetPropDefault(prop.Value.Type, input);
+            o.WriteLine(
+              $"{prop.Key}: {GetPropTypeName(prop.Value.Type, input, id)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
+          }
+        });
 
-      output.WriteLine(") {");
+        output.WriteLine(") {");
 
-      output.WriteIndentend(o =>
-      {
-        foreach (var prop in type.Properties.Keys)
+        output.WriteIndented(o =>
         {
-          o.WriteLine($"self.{prop} = {prop}");
-        }
-      });
+          foreach (var prop in type.Properties.Keys)
+          {
+            o.WriteLine($"self.{prop} = {prop}");
+          }
+        });
 
-      output.WriteLine("}");
-      output.WriteLine();
-
-      foreach (var (propName, prop) in type.Properties)
-      {
-        var propType = GetPropTypeName(prop.Type, input, id);
-        if (prop.Description != null) WriteComment(prop.Description, output);
-        if (prop.Deprecated != null)
-        {
-          output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(prop.Deprecated.Comment)}\")");
-        }
-
-        var safePropertyName = new[] { "Type" }.Contains(propName) ? $"`{propName}`" : propName;
-        output.WriteLine($"public var {safePropertyName} : {propType}");
+        output.WriteLine("}");
         output.WriteLine();
-      }
 
-      output.Outdent();
+        foreach (var (propName, prop) in type.Properties)
+        {
+          var propType = GetPropTypeName(prop.Type, input, id);
+          if (prop.Description != null) WriteComment(prop.Description, output);
+          if (prop.Deprecated != null)
+          {
+            output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(prop.Deprecated.Comment)}\")");
+          }
+
+          var safePropertyName = new[] { "Type" }.Contains(propName) ? $"`{propName}`" : propName;
+          output.WriteLine($"public var {safePropertyName} : {propType}");
+          output.WriteLine();
+        }
+      });
     }
     else
     {
@@ -177,7 +182,7 @@ public class SwiftOutput : IOutput
     {
       output.WriteLine();
 
-      output.WriteIndentend(o => { WriteType(nestedType, nestedID, nestedType.TypeName, input, o); });
+      output.WriteIndented(o => { WriteType(nestedType, nestedID, nestedType.TypeName, input, o); });
     }
 
     output.WriteLine("}");
@@ -187,7 +192,7 @@ public class SwiftOutput : IOutput
   {
     output.WriteLine($"public enum {typename}: Int, Codable {{");
 
-    output.WriteIndentend(o =>
+    output.WriteIndented(o =>
     {
       foreach (var (name, value) in type.EnumValues.OrderBy(v => v.Value.Value))
       {
@@ -202,12 +207,12 @@ public class SwiftOutput : IOutput
   {
     output.WriteLine($"public struct {typename}: OptionSet, Codable {{");
 
-    output.WriteIndentend(o =>
+    output.WriteIndented(o =>
     {
       o.WriteLine("public let rawValue: Int");
       o.WriteLine();
       o.WriteLine("public init(rawValue: Int) {");
-      o.WriteIndentend(o => { o.WriteLine("self.rawValue = rawValue"); });
+      o.WriteIndented(o => { o.WriteLine("self.rawValue = rawValue"); });
       o.WriteLine("}");
       o.WriteLine();
 
@@ -232,7 +237,7 @@ public class SwiftOutput : IOutput
       // IndirectOptional time!
       if (typeReference.Nullable)
       {
-        var nestedReference = new TypeReference(typeReference.Name, typeReference.Arguments, false){Shared = typeReference.Shared};
+        var nestedReference = new TypeReference(typeReference.Name, typeReference.Arguments, false) { Shared = typeReference.Shared };
         return $"IndirectOptional<{GetTypeName(nestedReference, input)}>?";
       }
       else
