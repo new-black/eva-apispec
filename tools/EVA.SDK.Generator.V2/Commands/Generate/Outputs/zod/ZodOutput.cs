@@ -5,33 +5,22 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.zod;
 
-public class ZodOutput : IOutput
+public class ZodOutput : IOutput<ZodOptions>
 {
-  private readonly ZodOptions _options;
+  public string? OutputPattern => null;
 
-  public string OutputPattern => null;
+  public string[] ForcedRemoves => new[] { "unused-type-params", "empty-types", "errors", "event-exports", "nested-types" };
 
-  public ZodOutput(ZodOptions options)
-  {
-    _options = options;
-  }
-
-  public void FixOptions(GenerateOptions options)
-  {
-    options.EnsureRemove("unused-type-params");
-    options.EnsureRemove("empty-types");
-  }
-
-  public async Task Write(ApiDefinitionModel input, string outputDirectory)
+  public async Task Write(ApiDefinitionModel input, ZodOptions options)
   {
     foreach (var group in input.GroupByAssembly())
     {
       var assemblyCtx = new AssemblyContext(group.Assembly);
-      var sb = new IndentedStringBuilder(2);
+      var o = new IndentedStringBuilder(2);
 
       // Write namespace
-      sb.WriteLine($"export namespace {TypescriptOutput.FixNamespace(group.Assembly)} {{");
-      sb.WriteIndented(o =>
+      o.WriteLine($"export namespace {TypescriptOutput.FixNamespace(group.Assembly)} {{");
+      using (o.Indentation)
       {
         // Preset types
         if (group.Assembly == "EVA.Core")
@@ -45,8 +34,9 @@ public class ZodOutput : IOutput
 
         // Write the types
         WriteTypes(group, o, input, assemblyCtx);
-      });
-      sb.WriteLine("}");
+      }
+
+      o.WriteLine("}");
 
       // Write the import statements
       var importsBuilder = new StringBuilder();
@@ -58,9 +48,9 @@ public class ZodOutput : IOutput
       importsBuilder.AppendLine("import { z } from 'zod';");
 
       importsBuilder.AppendLine();
-      importsBuilder.AppendLine(sb.ToString());
+      importsBuilder.AppendLine(o.ToString());
 
-      await File.WriteAllTextAsync(Path.Combine(outputDirectory, $"{group.Assembly}.ts"), importsBuilder.ToString());
+      await File.WriteAllTextAsync(Path.Combine(options.OutputDirectory, $"{group.Assembly}.ts"), importsBuilder.ToString());
     }
   }
 
@@ -86,7 +76,7 @@ public class ZodOutput : IOutput
 
         if (type.EnumIsFlag.HasValue)
         {
-          WriteEnum(o, type, fixedTypeName);
+          WriteEnum(o, type, fixedTypeName, type.EnumIsFlag.Value);
           continue;
         }
 
@@ -158,9 +148,9 @@ public class ZodOutput : IOutput
     }
   }
 
-  private static void WriteEnum(IndentedStringBuilder o, TypeSpecification type, string fixedTypeName)
+  private static void WriteEnum(IndentedStringBuilder o, TypeSpecification type, string fixedTypeName, bool isFlag)
   {
-    if (type.EnumIsFlag.Value)
+    if (isFlag)
     {
       o.WriteLine($"export const {fixedTypeName} = z.number();");
     }
@@ -179,7 +169,7 @@ public class ZodOutput : IOutput
     }
   }
 
-  private void WriteInterfaceProperties(ApiDefinitionModel input, AssemblyContext ctx, TypeSpecification? type, IndentedStringBuilder o, string fixedTypeName)
+  private void WriteInterfaceProperties(ApiDefinitionModel input, AssemblyContext ctx, TypeSpecification type, IndentedStringBuilder o, string fixedTypeName)
   {
     foreach (var (propName, propSpec) in type.Properties)
     {
@@ -213,7 +203,7 @@ public class ZodOutput : IOutput
     if (ps.Type is { Name: "option", Arguments: var options })
     {
       // Only use types from this assembly, and add an extender. This extender is patched later on.
-      var typesFromCurrentAssembly = options.Where(o => input.Types[o.Name].Assembly == ctx.AssemblyName);
+      var typesFromCurrentAssembly = options.Where(o => input.Types[o.Name].Assembly == ctx.AssemblyName).ToArray();
       var nullable = overrideNullable ?? ps.Type.Nullable || typesFromCurrentAssembly.Any(o => o.Nullable);
 
       var allReferences = typesFromCurrentAssembly.Select(tr => ToInterfaceReference(input, tr, ctx, false)).Concat(nullable ? new[] { "null" } : Enumerable.Empty<string>());
@@ -271,11 +261,9 @@ public class ZodOutput : IOutput
       // var args = typeReference.Arguments.Select(a => ToReference(input, a, ctx));
       // return $"{GetTypeRef(input, typeReference.Name, ctx)}<{string.Join(", ", args)}>";
     }
-
-    return "z.unknown()";
   }
 
-  private void WriteProperties(ApiDefinitionModel input, AssemblyContext ctx, TypeSpecification? type, IndentedStringBuilder o, string fixedTypeName)
+  private void WriteProperties(ApiDefinitionModel input, AssemblyContext ctx, TypeSpecification type, IndentedStringBuilder o, string fixedTypeName)
   {
     foreach (var (propName, propSpec) in type.Properties)
     {
@@ -378,7 +366,5 @@ public class ZodOutput : IOutput
       var args = typeReference.Arguments.Select(a => ToReference(input, a, ctx));
       return $"{TypescriptOutput.GetTypeRef(input, typeReference.Name, ctx)}({string.Join(", ", args)})";
     }
-
-    return "z.unknown()";
   }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using EVA.API.Spec;
-using EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi.Extensions;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Extensions;
@@ -10,55 +9,31 @@ using Microsoft.OpenApi.Writers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
 
-public class OpenApiOutput : IOutput
+public class OpenApiOutput : IOutput<OpenApiOptions>
 {
-  private readonly OpenApiOptions _options;
-
-  public OpenApiOutput(OpenApiOptions options)
-  {
-    _options = options;
-  }
-
   public string OutputPattern => null;
 
-  public void FixOptions(GenerateOptions options)
-  {
-    options.EnsureRemove("generics");
-    options.EnsureRemove("unused-type-params");
-    options.EnsureRemove("errors");
+  public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "event-exports" };
 
-    if (_options.Preset == "azure-connector")
-    {
-      options.EnsureRemove("inheritance");
-      _options.Terse = true;
-      _options.Format = "json";
-      _options.Version = "v2";
-    }
-    else
-    {
-      options.EnsureRemove("event-exports");
-    }
-  }
-
-  public async Task Write(ApiDefinitionModel input, string outputDirectory)
+  public async Task Write(ApiDefinitionModel input, OpenApiOptions options)
   {
-    var outputPath = Path.GetFullPath(Path.Combine(outputDirectory, "openapi.json"));
+    var outputPath = Path.GetFullPath(Path.Combine(options.OutputDirectory, "openapi.json"));
     Console.WriteLine($"Writing OpenAPI file: {outputPath}");
 
-    var model = GetModel(input);
+    var model = GetModel(input, options.Host);
 
-    var version = _options.Version == "v2" ? OpenApiSpecVersion.OpenApi2_0 : OpenApiSpecVersion.OpenApi3_0;
+    var version = options.Version == "v2" ? OpenApiSpecVersion.OpenApi2_0 : OpenApiSpecVersion.OpenApi3_0;
 
     await using var file = File.OpenWrite(outputPath);
     await using var textWriter = new StreamWriter(file);
-    IOpenApiWriter writer = _options.Format == "yaml"
+    IOpenApiWriter writer = options.Format == "yaml"
       ? new OpenApiYamlWriter(textWriter, new OpenApiWriterSettings())
-      : new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = _options.Terse });
+      : new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = options.Terse });
 
     model.Serialize(writer, version);
   }
 
-  private OpenApiDocument GetModel(ApiDefinitionModel input)
+  internal static OpenApiDocument GetModel(ApiDefinitionModel input, string host)
   {
     // Base
     var model = new OpenApiDocument
@@ -77,7 +52,7 @@ public class OpenApiOutput : IOutput
       },
       Servers = new List<OpenApiServer>
       {
-        new OpenApiServer { Url = _options.Host }
+        new OpenApiServer { Url = host }
       },
       Paths = new OpenApiPaths(),
       Components = new OpenApiComponents { },
@@ -89,7 +64,6 @@ public class OpenApiOutput : IOutput
         }
       }
     };
-
 
     model.Components.SecuritySchemes.Add("eva-auth", new OpenApiSecurityScheme
     {
@@ -111,15 +85,10 @@ public class OpenApiOutput : IOutput
       model.Components.Schemas.Add(FixName(id), ToSchema(input, type));
     }
 
-    if (_options.Preset == "azure-connector")
-    {
-      AzureConnectorExtender.Extend(model, input);
-    }
-
     return model;
   }
 
-  private OpenApiSchema ToSchema(ApiDefinitionModel input, TypeSpecification type)
+  private static OpenApiSchema ToSchema(ApiDefinitionModel input, TypeSpecification type)
   {
     var result = new OpenApiSchema
     {
@@ -151,7 +120,7 @@ public class OpenApiOutput : IOutput
     return result;
   }
 
-  private OpenApiSchema? ToSchema(ApiDefinitionModel input, TypeReference type)
+  private static OpenApiSchema? ToSchema(ApiDefinitionModel input, TypeReference type)
   {
     if (type.Name == "int16") return new OpenApiSchema { Type = "integer" };
     if (type.Name == "int32") return new OpenApiSchema { Type = "integer" };
@@ -194,7 +163,7 @@ public class OpenApiOutput : IOutput
     return null;
   }
 
-  private OpenApiPathItem ToPathItem(ApiDefinitionModel input, ServiceModel service)
+  private static OpenApiPathItem ToPathItem(ApiDefinitionModel input, ServiceModel service)
   {
     return new OpenApiPathItem
     {
@@ -276,7 +245,7 @@ public class OpenApiOutput : IOutput
     };
   }
 
-  private OpenApiSchema ToSchema(ApiDefinitionModel input, string id)
+  private static OpenApiSchema ToSchema(ApiDefinitionModel input, string id)
   {
     return new OpenApiSchema
     {
@@ -290,12 +259,12 @@ public class OpenApiOutput : IOutput
 
   private static readonly Regex _nameRegex = new Regex("[^a-zA-Z0-9-._]", RegexOptions.Compiled);
 
-  private string FixName(string name)
+  private static string FixName(string name)
   {
     return _nameRegex.Replace(name, "_").Trim('_');
   }
 
-  private string TagFromAssembly(string name)
+  private static string TagFromAssembly(string name)
   {
     return name.StartsWith("EVA.") ? name[4..] : name;
   }

@@ -37,9 +37,6 @@ public class FlattenGenerics : INamedTransform
   /// <param name="reference">The reference that should be flattened</param>
   /// <param name="availableSpecs"></param>
   /// <param name="toBeChecked"></param>
-  /// <param name="id">The id as returned from GetFlattenedName()</param>
-  /// <param name="alreadyGenerated">The set of already generated types.</param>
-  /// <param name="input">The entire input</param>
   /// <returns></returns>
   private bool FlattenReference(TypeReference reference, Dictionary<string, TypeSpecification> availableSpecs, Stack<TypeSpecification> toBeChecked)
   {

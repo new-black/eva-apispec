@@ -3,37 +3,27 @@ using EVA.API.Spec;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.evaspec;
 
-public class EvaSpecOutput : IOutput
+public class EvaSpecOutput : IOutput<EvaSpecOptions>
 {
-  private readonly EvaSpecOptions _options;
+  public string? OutputPattern => null;
 
-  public EvaSpecOutput(EvaSpecOptions options)
-  {
-    _options = options;
-  }
+  public string[] ForcedRemoves => Array.Empty<string>();
 
-  public string OutputPattern => null;
-
-  public void FixOptions(GenerateOptions options)
-  {
-    // No-op
-  }
-
-  public async Task Write(ApiDefinitionModel input, string outputDirectory)
+  public async Task Write(ApiDefinitionModel input, EvaSpecOptions options)
   {
     // Main spec file
-    var specFile = Path.Combine(outputDirectory, "spec.json");
+    var specFile = Path.Combine(options.OutputDirectory, "spec.json");
 
     Console.WriteLine($"Writing EVA Spec file: {specFile}");
     await using var file = File.OpenWrite(specFile);
     await JsonSerializer.SerializeAsync(file, input, JsonContext.Default.ApiDefinitionModel);
 
     // Source files
-    if (!_options.IncludeSrcFiles) return;
+    if (!options.IncludeSrcFiles) return;
 
     // Setup dirs
-    var servicesDir = Path.GetFullPath(Path.Combine(outputDirectory, "./src/services"));
-    var typesDir = Path.GetFullPath(Path.Combine(outputDirectory, "./src/types"));
+    var servicesDir = Path.GetFullPath(Path.Combine(options.OutputDirectory, "./src/services"));
+    var typesDir = Path.GetFullPath(Path.Combine(options.OutputDirectory, "./src/types"));
     Directory.CreateDirectory(servicesDir);
     Directory.CreateDirectory(typesDir);
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Text.Json;
 using EVA.API.Spec;
 
 namespace EVA.SDK.Generator.V2.Helpers;

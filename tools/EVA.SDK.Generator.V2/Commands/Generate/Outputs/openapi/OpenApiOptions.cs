@@ -4,16 +4,15 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
 
-public class OpenApiOptions
+public class OpenApiOptions : GenerateOptions
 {
   public string Version { get; set; }
   public bool Terse { get; set; }
   public string Format { get; set; }
   public string Host { get; set; }
-  public string Preset { get; set; }
 }
 
-public class OpenApiOptionsBinder : BinderBase<OpenApiOptions>, IOptionProvider
+public class OpenApiOptionsBinder : BaseGenerateOptionsBinder<OpenApiOptions>
 {
   private Option<string> Version = new Option<string>(
     name: "--opt-version",
@@ -35,29 +34,19 @@ public class OpenApiOptionsBinder : BinderBase<OpenApiOptions>, IOptionProvider
     description: "The host to use"
   ).WithDefault("");
 
-  private Option<string> Preset = new Option<string>(
-    name: "--opt-preset",
-    description: "The preset to use. This might override other options."
-  ).FromAmong("none", "azure-connector").WithDefault("none");
-
-  protected override OpenApiOptions GetBoundValue(BindingContext ctx)
-  {
-    return new OpenApiOptions
-    {
-      Version = Version.Value(ctx),
-      Terse = Terse.Value(ctx),
-      Format = Format.Value(ctx),
-      Host = Host.Value(ctx),
-      Preset = Preset.Value(ctx)
-    };
-  }
-
-  public IEnumerable<Option> GetAllOptions()
+  protected override IEnumerable<Option> GetOptions()
   {
     yield return Version;
     yield return Terse;
     yield return Format;
     yield return Host;
-    yield return Preset;
+  }
+
+  protected override void BuildOptions(OpenApiOptions options, BindingContext ctx)
+  {
+    options.Version = Version.Value(ctx);
+    options.Terse = Terse.Value(ctx);
+    options.Format = Format.Value(ctx);
+    options.Host = Host.Value(ctx);
   }
 }

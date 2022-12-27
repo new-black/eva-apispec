@@ -1,26 +1,22 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Binding;
-using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.zod;
 
-public class ZodOptions
+public class ZodOptions : GenerateOptions
 {
 
 }
 
-public class ZodOptionsBinder : BinderBase<ZodOptions>, IOptionProvider
+public class ZodOptionsBinder : BaseGenerateOptionsBinder<ZodOptions>
 {
-  protected override ZodOptions GetBoundValue(BindingContext ctx)
-  {
-    return new ZodOptions
-    {
-
-    };
-  }
-
-  public IEnumerable<Option> GetAllOptions()
+  protected override IEnumerable<Option> GetOptions()
   {
     yield break;
+  }
+
+  protected override void BuildOptions(ZodOptions options, BindingContext bindingContext)
+  {
+
   }
 }

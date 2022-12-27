@@ -4,25 +4,13 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.swift;
 
-public class SwiftOutput : IOutput
+public class SwiftOutput : IOutput<SwiftOptions>
 {
-  private readonly SwiftOptions _options;
+  public string? OutputPattern => null;
 
-  public SwiftOutput(SwiftOptions options)
-  {
-    _options = options;
-  }
+  public string[] ForcedRemoves => new[] { "options", "event-exports", "errors" };
 
-  public string OutputPattern => null;
-
-  public void FixOptions(GenerateOptions options)
-  {
-    options.EnsureRemove("options");
-    options.EnsureRemove("event-exports");
-    options.EnsureRemove("errors");
-  }
-
-  public async Task Write(ApiDefinitionModel input, string outputDirectory)
+  public async Task Write(ApiDefinitionModel input, SwiftOptions options)
   {
     // Write all services
     foreach (var service in input.Services)
@@ -58,7 +46,7 @@ public class SwiftOutput : IOutput
       output.Write(string.Empty);
 
 
-      var filepath = Path.Combine(outputDirectory, $"{assembly}/{filename}.swift");
+      var filepath = Path.Combine(options.OutputDirectory, $"{assembly}/{filename}.swift");
       if (!Directory.Exists(Path.GetDirectoryName(filepath))) Directory.CreateDirectory(Path.GetDirectoryName(filepath));
       await File.WriteAllTextAsync(filepath, output.ToString());
     }
@@ -78,16 +66,16 @@ public class SwiftOutput : IOutput
       output.WriteLine("import Foundation");
       output.WriteLine();
 
-      WriteType(type, id, typename, input, output);
+      WriteType(type, id, typename, input, output, options);
 
 
-      var filepath = Path.Combine(outputDirectory, $"{assembly}/{filename}.swift");
+      var filepath = Path.Combine(options.OutputDirectory, $"{assembly}/{filename}.swift");
       if (!Directory.Exists(Path.GetDirectoryName(filepath))) Directory.CreateDirectory(Path.GetDirectoryName(filepath));
       await File.WriteAllTextAsync(filepath, output.ToString());
     }
   }
 
-  private void WriteType(TypeSpecification type, string id, string typename, ApiDefinitionModel input, IndentedStringBuilder output)
+  private void WriteType(TypeSpecification type, string id, string typename, ApiDefinitionModel input, IndentedStringBuilder output, SwiftOptions options)
   {
     if (type.Description != null)
     {
@@ -97,7 +85,7 @@ public class SwiftOutput : IOutput
     var service = input.Services.FirstOrDefault(s => s.RequestTypeID == id);
     if (service is { Deprecated: { } deprecationInfo })
     {
-      output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(deprecationInfo.Comment)}\")");
+      output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(deprecationInfo.Comment ?? string.Empty)}\")");
     }
 
     if (type.EnumIsFlag.HasValue)
@@ -114,7 +102,7 @@ public class SwiftOutput : IOutput
       return;
     }
 
-    var extends = type.Extends == null ? "Codable" : GetTypeName(type.Extends, input);
+    var extends = type.Extends == null ? "Codable" : GetTypeName(type.Extends, input, options);
 
     var typeArguments = string.Empty;
     if (type.TypeArguments.Any())
@@ -126,63 +114,56 @@ public class SwiftOutput : IOutput
     output.WriteLine($"public struct {typename}{typeArguments}: {extends} {{");
     output.WriteLine();
 
-    if (type.Properties != null)
+    output.WriteIndented(output =>
     {
-      output.WriteIndented(output =>
+      output.WriteLine("public init(");
+
+      output.WriteIndented(o =>
       {
-        output.WriteLine("public init(");
-
-        output.WriteIndented(o =>
+        var list = type.Properties.ToList();
+        for (var i = 0; i < list.Count; i++)
         {
-          var list = type.Properties.ToList();
-          for (var i = 0; i < list.Count; i++)
-          {
-            var prop = list[i];
-            var propDefault = GetPropDefault(prop.Value.Type, input);
-            o.WriteLine(
-              $"{prop.Key}: {GetPropTypeName(prop.Value.Type, input, id)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
-          }
-        });
-
-        output.WriteLine(") {");
-
-        output.WriteIndented(o =>
-        {
-          foreach (var prop in type.Properties.Keys)
-          {
-            o.WriteLine($"self.{prop} = {prop}");
-          }
-        });
-
-        output.WriteLine("}");
-        output.WriteLine();
-
-        foreach (var (propName, prop) in type.Properties)
-        {
-          var propType = GetPropTypeName(prop.Type, input, id);
-          if (prop.Description != null) WriteComment(prop.Description, output);
-          if (prop.Deprecated != null)
-          {
-            output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(prop.Deprecated.Comment)}\")");
-          }
-
-          var safePropertyName = new[] { "Type" }.Contains(propName) ? $"`{propName}`" : propName;
-          output.WriteLine($"public var {safePropertyName} : {propType}");
-          output.WriteLine();
+          var prop = list[i];
+          var propDefault = GetPropDefault(prop.Value.Type, input);
+          o.WriteLine(
+            $"{prop.Key}: {GetPropTypeName(prop.Value.Type, input, id, options)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
         }
       });
-    }
-    else
-    {
-      output.WriteLine("public init() {}");
-    }
+
+      output.WriteLine(") {");
+
+      output.WriteIndented(o =>
+      {
+        foreach (var prop in type.Properties.Keys)
+        {
+          o.WriteLine($"self.{prop} = {prop}");
+        }
+      });
+
+      output.WriteLine("}");
+      output.WriteLine();
+
+      foreach (var (propName, prop) in type.Properties)
+      {
+        var propType = GetPropTypeName(prop.Type, input, id, options);
+        if (prop.Description != null) WriteComment(prop.Description, output);
+        if (prop.Deprecated != null)
+        {
+          output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(prop.Deprecated.Comment ?? string.Empty)}\")");
+        }
+
+        var safePropertyName = new[] { "Type" }.Contains(propName) ? $"`{propName}`" : propName;
+        output.WriteLine($"public var {safePropertyName} : {propType}");
+        output.WriteLine();
+      }
+    });
 
     // Write the nested types
     foreach (var (nestedID, nestedType) in input.Types.Where(kv => kv.Value.ParentType == id))
     {
       output.WriteLine();
 
-      output.WriteIndented(o => { WriteType(nestedType, nestedID, nestedType.TypeName, input, o); });
+      output.WriteIndented(o => { WriteType(nestedType, nestedID, nestedType.TypeName, input, o, options); });
     }
 
     output.WriteLine("}");
@@ -230,7 +211,7 @@ public class SwiftOutput : IOutput
     output.WriteLine("}");
   }
 
-  private string GetPropTypeName(TypeReference typeReference, ApiDefinitionModel input, string? typeContext)
+  private string GetPropTypeName(TypeReference typeReference, ApiDefinitionModel input, string? typeContext, SwiftOptions options)
   {
     if (typeReference.Name == typeContext)
     {
@@ -238,18 +219,18 @@ public class SwiftOutput : IOutput
       if (typeReference.Nullable)
       {
         var nestedReference = new TypeReference(typeReference.Name, typeReference.Arguments, false) { Shared = typeReference.Shared };
-        return $"IndirectOptional<{GetTypeName(nestedReference, input)}>?";
+        return $"IndirectOptional<{GetTypeName(nestedReference, input, options)}>?";
       }
       else
       {
-        return $"IndirectOptional<{GetTypeName(typeReference, input)}>";
+        return $"IndirectOptional<{GetTypeName(typeReference, input, options)}>";
       }
     }
 
-    return GetTypeName(typeReference, input);
+    return GetTypeName(typeReference, input, options);
   }
 
-  private string GetPropDefault(TypeReference typeReference, ApiDefinitionModel input)
+  private static string GetPropDefault(TypeReference typeReference, ApiDefinitionModel input)
   {
     return typeReference switch
     {
@@ -259,7 +240,7 @@ public class SwiftOutput : IOutput
     };
   }
 
-  private string GetTypeName(TypeReference typeReference, ApiDefinitionModel input)
+  private string GetTypeName(TypeReference typeReference, ApiDefinitionModel input, SwiftOptions options)
   {
     var n = typeReference.Nullable ? "?" : string.Empty;
 
@@ -270,14 +251,14 @@ public class SwiftOutput : IOutput
     if (typeReference is { Name: "date" }) return $"Date{n}";
     if (typeReference is { Name: "bool" }) return $"Bool{n}";
     if (typeReference is { Name: "guid" }) return $"UUID{n}";
-    if (typeReference is { Name: "array", Arguments: { Length: 1 } x }) return $"[{GetTypeName(x[0], input)}]{n}";
-    if (typeReference is { Name: "any" or "object" }) return $"{_options.AnyCodeableName}{n}";
-    if (typeReference is { Name: "map" }) return $"[String: {GetTypeName(typeReference.Arguments[1], input)}]{n}";
+    if (typeReference is { Name: "array", Arguments: { Length: 1 } x }) return $"[{GetTypeName(x[0], input, options)}]{n}";
+    if (typeReference is { Name: "any" or "object" }) return $"{options.AnyCodeableName}{n}";
+    if (typeReference is { Name: "map" }) return $"[String: {GetTypeName(typeReference.Arguments[1], input, options)}]{n}";
     if (typeReference.Name.StartsWith("_")) return $"{typeReference.Name[1..]}{n}";
 
     if (typeReference.Name.StartsWith("EVA.") && typeReference.Arguments is { Length: > 0 })
     {
-      return $"{GetTypeName(typeReference.Name, input)}<{string.Join(", ", typeReference.Arguments.Select(a => GetTypeName(a, input)))}>{n}";
+      return $"{GetTypeName(typeReference.Name, input)}<{string.Join(", ", typeReference.Arguments.Select(a => GetTypeName(a, input, options)))}>{n}";
     }
 
     if (typeReference.Name.StartsWith("EVA."))
@@ -296,7 +277,7 @@ public class SwiftOutput : IOutput
     return "ASDF";
   }
 
-  private string GetTypeName(string id, ApiDefinitionModel input)
+  private static string GetTypeName(string id, ApiDefinitionModel input)
   {
     var reference = input.Types[id];
     var assembly = reference.Assembly;
@@ -312,7 +293,7 @@ public class SwiftOutput : IOutput
     return $"{assembly}{typeName}".Replace(".", string.Empty);
   }
 
-  private string FolderFromAssembly(string assembly)
+  private static string FolderFromAssembly(string assembly)
   {
     if (assembly.StartsWith("EVA.")) assembly = assembly[4..];
     assembly = assembly.Replace(".Services", string.Empty);
@@ -321,7 +302,7 @@ public class SwiftOutput : IOutput
     return assembly;
   }
 
-  private string FileNameFromType(TypeSpecification type)
+  private static string FileNameFromType(TypeSpecification type)
   {
     var assembly = type.Assembly;
     if (assembly.StartsWith("EVA.")) assembly = assembly[4..];
@@ -337,7 +318,7 @@ public class SwiftOutput : IOutput
     return $"{assembly}{typeName}".Replace(".", string.Empty);
   }
 
-  private void WriteComment(string s, IndentedStringBuilder output)
+  private static void WriteComment(string s, IndentedStringBuilder output)
   {
     foreach (var line in s.Split('\n').Select(x => x.Trim('\r')))
     {
@@ -345,7 +326,7 @@ public class SwiftOutput : IOutput
     }
   }
 
-  private string EscapeString(string comment)
+  private static string EscapeString(string comment)
   {
     return comment.Replace("\"", "\\\"");
   }

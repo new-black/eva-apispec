@@ -3,7 +3,7 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.dotnet;
 
-public class DotNetOutput : IOutput
+public class DotNetOutput : IOutput<DotNetOptions>
 {
   [Flags]
   public enum TypeContext
@@ -13,20 +13,8 @@ public class DotNetOutput : IOutput
     Response = 2
   }
 
-  private readonly DotNetOptions _options;
-
-  public DotNetOutput(DotNetOptions options)
-  {
-    _options = options;
-  }
-
   public string OutputPattern => "EVA.*.cs";
-
-  public void FixOptions(GenerateOptions options)
-  {
-    options.EnsureRemove("options");
-    options.EnsureRemove("event-exports");
-  }
+  public string[] ForcedRemoves => new[] { "options", "event-exports" };
 
   private void WriteErrors(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, IndentedStringBuilder o, string name)
   {
@@ -50,7 +38,7 @@ public class DotNetOutput : IOutput
     o.WriteLine("}");
   }
 
-  public async Task Write(ApiDefinitionModel input, string outputDirectory)
+  public async Task Write(ApiDefinitionModel input, DotNetOptions options)
   {
     var groupedInput = input.GroupByAssembly();
 
@@ -68,7 +56,7 @@ public class DotNetOutput : IOutput
       sb.WriteLine("using System.Collections.Generic;");
       sb.WriteLine("using System.ComponentModel;");
       sb.WriteLine("using System.Linq;");
-      if (_options.JsonSerializer == "newtonsoft") sb.WriteLine("using Newtonsoft.Json.Linq;");
+      if (options.JsonSerializer == "newtonsoft") sb.WriteLine("using Newtonsoft.Json.Linq;");
       sb.WriteLine();
       sb.WriteLine($"namespace {actualNamespace}");
       sb.WriteLine("{");
@@ -77,7 +65,7 @@ public class DotNetOutput : IOutput
         if (actualNamespace == "EVA.SDK.Core")
         {
           o.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.cs");
-          if (_options.JsonSerializer == "newtonsoft")
+          if (options.JsonSerializer == "newtonsoft")
           {
             o.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.NewtonsoftJson.cs");
           }
@@ -91,14 +79,14 @@ public class DotNetOutput : IOutput
           var responseType = input.Types[service.ResponseTypeID];
 
           o.WriteLine();
-          WriteRequestType(service.RequestTypeID, requestType, o, input, service);
+          WriteRequestType(service.RequestTypeID, requestType, o, input, service, options);
           handledTypes.Add(service.RequestTypeID);
           o.WriteLine();
 
           // Write response
           if (responseType.Assembly == service.Assembly && handledTypes.Add(service.ResponseTypeID))
           {
-            WriteResponseType(service.ResponseTypeID, responseType, o, input);
+            WriteResponseType(service.ResponseTypeID, responseType, o, input, options);
           }
         }
 
@@ -106,19 +94,19 @@ public class DotNetOutput : IOutput
         {
           if (handledTypes.Contains(type.Key) || type.Value.ParentType != null) continue;
           o.WriteLine();
-          WriteType(type.Key, type.Value, o, input);
+          WriteType(type.Key, type.Value, o, input, options);
         }
       });
       sb.WriteLine("}");
 
-      await File.WriteAllTextAsync(Path.Combine(outputDirectory, $"{actualNamespace}.cs"), sb.ToString());
+      await File.WriteAllTextAsync(Path.Combine(options.OutputDirectory, $"{actualNamespace}.cs"), sb.ToString());
     }
   }
 
-  private void WriteType(string id, TypeSpecification spec, IndentedStringBuilder sb, ApiDefinitionModel input)
+  private void WriteType(string id, TypeSpecification spec, IndentedStringBuilder sb, ApiDefinitionModel input, DotNetOptions options)
   {
     // These types have special handling
-    if (_options.UseNativeDayOfWeek && id == "EVA.Core.DayOfWeek") return;
+    if (options.UseNativeDayOfWeek && id == "EVA.Core.DayOfWeek") return;
 
     if (spec.EnumIsFlag.HasValue)
     {
@@ -146,20 +134,20 @@ public class DotNetOutput : IOutput
       sb.WriteLine($"public class {typeName}");
       sb.WriteLine("{");
       var usage = (spec.Usage.Request ? TypeContext.Request : TypeContext.None) | (spec.Usage.Response ? TypeContext.Response : TypeContext.None);
-      sb.WriteIndented(o => { WriteTypeBody(id, spec, o, input, usage); });
+      sb.WriteIndented(o => { WriteTypeBody(id, spec, o, input, usage, options); });
       sb.WriteLine("}");
     }
   }
 
-  private void WriteResponseType(string id, TypeSpecification spec, IndentedStringBuilder sb, ApiDefinitionModel input)
+  private void WriteResponseType(string id, TypeSpecification spec, IndentedStringBuilder sb, ApiDefinitionModel input, DotNetOptions options)
   {
     sb.WriteLine($"public class {spec.TypeName} : EVA.SDK.Core.IResponseMessage");
     sb.WriteLine("{");
-    sb.WriteIndented(o => { WriteTypeBody(id, spec, o, input, TypeContext.Response); });
+    sb.WriteIndented(o => { WriteTypeBody(id, spec, o, input, TypeContext.Response, options); });
     sb.WriteLine("}");
   }
 
-  private void WriteRequestType(string id, TypeSpecification requestType, IndentedStringBuilder o, ApiDefinitionModel input, ServiceModel service)
+  private void WriteRequestType(string id, TypeSpecification requestType, IndentedStringBuilder o, ApiDefinitionModel input, ServiceModel service, DotNetOptions options)
   {
     if (requestType.Description != null)
     {
@@ -180,12 +168,12 @@ public class DotNetOutput : IOutput
     o.WriteLine($"public class {service.Name} : EVA.SDK.Core.IResponseType<{GetFullName(service.ResponseTypeID, input)}>");
     o.WriteLine("{");
 
-    o.WriteIndented(o => { WriteTypeBody(service.RequestTypeID, requestType, o, input, TypeContext.Request); });
+    o.WriteIndented(o => { WriteTypeBody(service.RequestTypeID, requestType, o, input, TypeContext.Request, options); });
 
     o.WriteLine("}");
   }
 
-  private void WriteTypeBody(string id, TypeSpecification spec, IndentedStringBuilder o, ApiDefinitionModel input, TypeContext context)
+  private void WriteTypeBody(string id, TypeSpecification spec, IndentedStringBuilder o, ApiDefinitionModel input, TypeContext context, DotNetOptions options)
   {
     foreach (var prop in spec.Properties)
     {
@@ -215,11 +203,11 @@ public class DotNetOutput : IOutput
       }
 
       var shouldOutputCustomIDs = prop is { Value.DataModelInformation.SupportsBackendID: true } && context.HasFlag(TypeContext.Request);
-      var fullPropName = GetFullName(prop.Value.Type, input, context, shouldOutputCustomIDs);
+      var fullPropName = GetFullName(prop.Value.Type, input, context, shouldOutputCustomIDs, options);
       fullPropName = prop.Value.Skippable ? $"EVA.SDK.Core.Maybe<{fullPropName}>" : fullPropName;
 
       // This is very hacky, but here we go!!!!
-      if (_options.EnableCustomIdMode && shouldOutputCustomIDs && fullPropName is "EVA.SDK.Core.Maybe<EVA.SDK.Core.ModelID>" or "EVA.SDK.Core.Maybe<EVA.SDK.Core.ModelID?>")
+      if (options.EnableCustomIdMode && shouldOutputCustomIDs && fullPropName is "EVA.SDK.Core.Maybe<EVA.SDK.Core.ModelID>" or "EVA.SDK.Core.Maybe<EVA.SDK.Core.ModelID?>")
       {
         fullPropName = "EVA.SDK.Core.MaybeModelID";
       }
@@ -229,11 +217,11 @@ public class DotNetOutput : IOutput
 
     foreach (var ts in input.Types.Where(t => t.Value.ParentType == id))
     {
-      WriteType(ts.Key, ts.Value, o, input);
+      WriteType(ts.Key, ts.Value, o, input, options);
     }
   }
 
-  private string GetFullName(TypeReference r, ApiDefinitionModel input, TypeContext context, bool returnCustomID)
+  private string GetFullName(TypeReference r, ApiDefinitionModel input, TypeContext context, bool returnCustomID, DotNetOptions options)
   {
     var n = r.Nullable ? "?" : string.Empty;
 
@@ -249,11 +237,11 @@ public class DotNetOutput : IOutput
 
     if (r.Name == "int64")
     {
-      if (returnCustomID && _options.EnableCustomIdMode) return $"EVA.SDK.Core.ModelID{n}";
+      if (returnCustomID && options.EnableCustomIdMode) return $"EVA.SDK.Core.ModelID{n}";
       return $"long{n}";
     }
 
-    if (returnCustomID && r.Name == "array" && r.Arguments[0] is {Name: "int64", Nullable: false} && _options.EnableCustomIdMode)
+    if (returnCustomID && r.Name == "array" && r.Arguments[0] is {Name: "int64", Nullable: false} && options.EnableCustomIdMode)
     {
       return $"EVA.SDK.Core.ModelIDList{n}";
     }
@@ -261,7 +249,7 @@ public class DotNetOutput : IOutput
     if (r.Name == "array")
     {
       var type = (context & TypeContext.Request) != 0 ? "IEnumerable" : "List";
-      return $"{type}<{GetFullName(r.Arguments[0], input, context, returnCustomID)}>{n}";
+      return $"{type}<{GetFullName(r.Arguments[0], input, context, returnCustomID, options)}>{n}";
     }
 
     if (r.Name == "date") return $"System.DateTime{n}";
@@ -280,11 +268,11 @@ public class DotNetOutput : IOutput
       return $"IDictionary<long, JToken>{n}";
     }
 
-    if (r.Name == "map") return $"IDictionary<{GetFullName(r.Arguments[0], input, context, false)},{GetFullName(r.Arguments[1], input, context, returnCustomID)}>{n}";
+    if (r.Name == "map") return $"IDictionary<{GetFullName(r.Arguments[0], input, context, false, options)},{GetFullName(r.Arguments[1], input, context, returnCustomID, options)}>{n}";
     if (r.Name == "object") return $"JObject{n}";
     if (r.Name == "EVA.Core.Search.IProductSearchItem") return $"JObject{n}";
     if (r.Name == "any") return (context & TypeContext.Request) != 0 ? $"object{n}" : $"JToken{n}";
-    if (_options.UseNativeDayOfWeek && r.Name == "EVA.Core.DayOfWeek") return $"DayOfWeek{n}";
+    if (options.UseNativeDayOfWeek && r.Name == "EVA.Core.DayOfWeek") return $"DayOfWeek{n}";
 
     if (r.Name.StartsWith("EVA."))
     {
@@ -292,7 +280,7 @@ public class DotNetOutput : IOutput
 
       if (r.Arguments.Any())
       {
-        var joinedArguments = string.Join(',', r.Arguments.Select(a => GetFullName(a, input, context, false)));
+        var joinedArguments = string.Join(',', r.Arguments.Select(a => GetFullName(a, input, context, false, options)));
         return $"{FixNamespace(name[..name.IndexOf('`')])}<{joinedArguments}>{n}";
       }
       else

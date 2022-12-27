@@ -4,14 +4,14 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.dotnet;
 
-public class DotNetOptions
+public class DotNetOptions : GenerateOptions
 {
   public bool UseNativeDayOfWeek { get; set; }
   public string JsonSerializer { get; set; }
   public bool EnableCustomIdMode { get; set; }
 }
 
-public class DotNetOptionsBinder : BinderBase<DotNetOptions>, IOptionProvider
+public class DotNetOptionsBinder : BaseGenerateOptionsBinder<DotNetOptions>
 {
   private Option<bool> UseNativeDayOfWeek = new Option<bool>(
     name: "--opt-native-dow",
@@ -28,20 +28,17 @@ public class DotNetOptionsBinder : BinderBase<DotNetOptions>, IOptionProvider
     description: "Enable support for custom IDs through LongOrString"
   ).WithDefault(false);
 
-  protected override DotNetOptions GetBoundValue(BindingContext bindingContext)
-  {
-    return new DotNetOptions
-    {
-      UseNativeDayOfWeek = UseNativeDayOfWeek.Value(bindingContext),
-      JsonSerializer = JsonSerializer.Value(bindingContext)!,
-      EnableCustomIdMode = EnableCustomIdMode.Value(bindingContext)
-    };
-  }
-
-  public IEnumerable<Option> GetAllOptions()
+  protected override IEnumerable<Option> GetOptions()
   {
     yield return UseNativeDayOfWeek;
     yield return JsonSerializer;
     yield return EnableCustomIdMode;
+  }
+
+  protected override void BuildOptions(DotNetOptions options, BindingContext bindingContext)
+  {
+    options.UseNativeDayOfWeek = UseNativeDayOfWeek.Value(bindingContext);
+    options.JsonSerializer = JsonSerializer.Value(bindingContext)!;
+    options.EnableCustomIdMode = EnableCustomIdMode.Value(bindingContext);
   }
 }

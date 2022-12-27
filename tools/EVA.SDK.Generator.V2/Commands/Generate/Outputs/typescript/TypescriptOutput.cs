@@ -1,40 +1,29 @@
-﻿using System.Collections.Immutable;
-using System.Text;
+﻿using System.Text;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.typescript;
 
-public class TypescriptOutput : IOutput
+public class TypescriptOutput : IOutput<TypescriptOptions>
 {
-  private readonly TypescriptOptions _options;
+  public string? OutputPattern => null;
 
-  public TypescriptOutput(TypescriptOptions options)
-  {
-    _options = options;
-  }
+  public string[] ForcedRemoves => Array.Empty<string>();
 
-  public string OutputPattern => null;
-
-  public void FixOptions(GenerateOptions options)
-  {
-    // No-op
-  }
-
-  public async Task Write(ApiDefinitionModel input, string outputDirectory)
+  public async Task Write(ApiDefinitionModel input, TypescriptOptions options)
   {
     foreach (var group in input.GroupByAssembly())
     {
       var assemblyCtx = new AssemblyContext(group.Assembly);
 
-      var sb = new IndentedStringBuilder(2);
+      var o = new IndentedStringBuilder(2);
 
       // Write the extenders
-      WriteExtensions(input, sb, assemblyCtx);
+      WriteExtensions(input, o, assemblyCtx, options);
 
       // Write namespace
-      sb.WriteLine($"export namespace {FixNamespace(group.Assembly)} {{");
-      sb.WriteIndented(o =>
+      o.WriteLine($"export namespace {FixNamespace(group.Assembly)} {{");
+      using (o.Indentation)
       {
         // Preset types
         if (group.Assembly == "EVA.Core")
@@ -56,30 +45,31 @@ public class TypescriptOutput : IOutput
         {
           o.WriteLine($"export interface {extender} {{ }}");
         }
-      });
-      sb.WriteLine("}");
+      }
+
+      o.WriteLine("}");
 
       // Write the import statements
       var importsBuilder = new StringBuilder();
       foreach (var x in assemblyCtx.ReferencedModules)
       {
-        importsBuilder.AppendLine($"import {{ {FixNamespace(x)} }} from '{GetModuleReference(x, _options.PackagePrefix)}';");
+        importsBuilder.AppendLine($"import {{ {FixNamespace(x)} }} from '{GetModuleReference(x, options.PackagePrefix)}';");
       }
 
       importsBuilder.AppendLine();
-      importsBuilder.AppendLine(sb.ToString());
+      importsBuilder.AppendLine(o.ToString());
 
-      await File.WriteAllTextAsync(Path.Combine(outputDirectory, $"{group.Assembly}.ts"), importsBuilder.ToString());
+      await File.WriteAllTextAsync(Path.Combine(options.OutputDirectory, $"{group.Assembly}.ts"), importsBuilder.ToString());
     }
   }
 
-  private void WriteExtensions(ApiDefinitionModel input, IndentedStringBuilder sb, AssemblyContext ctx)
+  private void WriteExtensions(ApiDefinitionModel input, IndentedStringBuilder o, AssemblyContext ctx, TypescriptOptions options)
   {
     foreach (var (typeid, typespec) in input.Types)
     {
       if (typespec.Assembly == ctx.AssemblyName) continue;
 
-      foreach (var (propname, propspec) in (typespec.Properties ?? ImmutableSortedDictionary<string, PropertySpecification>.Empty))
+      foreach (var (propname, propspec) in typespec.Properties)
       {
         if (propspec.Type.Name != "option") continue;
         var typesInThisAssembly = propspec.Type.Arguments.Where(tr => input.Types[tr.Name].Assembly == ctx.AssemblyName).ToList();
@@ -87,26 +77,29 @@ public class TypescriptOutput : IOutput
 
         ctx.RegisterReferencedModule(typespec.Assembly);
         var extenderName = $"Extenders_{FixTypeName(input, typeid)}_{propname}";
-        sb.WriteLine($"declare module '{GetModuleReference(typespec.Assembly, _options.PackagePrefix)}' {{");
-        sb.WriteIndented(o =>
+        o.WriteLine($"declare module '{GetModuleReference(typespec.Assembly, options.PackagePrefix)}' {{");
+        using (o.Indentation)
         {
           o.WriteLine($"export namespace {FixNamespace(typespec.Assembly)} {{");
-          o.WriteIndented(o =>
+          using (o.Indentation)
           {
             o.WriteLine($"export interface {extenderName} {{");
-            o.WriteIndented(o =>
+            using (o.Indentation)
             {
               foreach (var tita in typesInThisAssembly)
               {
                 var typeRef = GetTypeRef(input, tita.Name, null);
                 o.WriteLine($"{typeRef.Replace(".", string.Empty)}: {typeRef}{(tita.Nullable ? " | null" : string.Empty)};");
               }
-            });
+            }
+
             o.WriteLine("}");
-          });
+          }
+
           o.WriteLine("}");
-        });
-        sb.WriteLine("}");
+        }
+
+        o.WriteLine("}");
       }
     }
   }
@@ -116,26 +109,28 @@ public class TypescriptOutput : IOutput
     if (errors.Errors.Any())
     {
       o.WriteLine($"export const enum {prefix} {{");
-      o.WriteIndented(o =>
+      using (o.Indentation)
       {
         foreach (var error in errors.Errors)
         {
           WriteComment(o, error.error.MessageWithEnhancedArguments());
           o.WriteLine($"{error.Name} = '{error.error.Name}',");
         }
-      });
+      }
+
       o.WriteLine("}");
     }
     else if (errors.SubErrors.Any())
     {
       o.WriteLine($"export namespace {prefix} {{");
-      o.WriteIndented(o =>
+      using (o.Indentation)
       {
         foreach (var (groupName, e) in errors.SubErrors)
         {
           WriteErrorGroup(e, o, groupName);
         }
-      });
+      }
+
       o.WriteLine("}");
     }
   }
@@ -149,13 +144,14 @@ public class TypescriptOutput : IOutput
         // We don't care about flag enums, there is no difference in TypeScript
         if (type.Description != null) WriteComment(o, type.Description);
         o.WriteLine($"export const enum {FixTypeName(input, id)} {{");
-        o.WriteIndented(o =>
+        using (o.Indentation)
         {
           foreach (var (name, value) in type.EnumValues.ToTotals().OrderBy(x => x.Value))
           {
             o.WriteLine($"{name} = {value},");
           }
-        });
+        }
+
         o.WriteLine("}");
         o.WriteLine();
       }
@@ -166,7 +162,7 @@ public class TypescriptOutput : IOutput
         if (type.Description != null) WriteComment(o, type.Description);
         var fixedTypeName = FixTypeName(input, id);
         o.WriteLine($"export interface {fixedTypeName}{typeArgument} {{");
-        o.WriteIndented(o =>
+        using (o.Indentation)
         {
           foreach (var (propName, propSpec) in type.Properties)
           {
@@ -192,7 +188,8 @@ public class TypescriptOutput : IOutput
               o.WriteLine($"{propName}?: {ToReference(input, propSpec, propName, fixedTypeName, ctx)};");
             }
           }
-        });
+        }
+
         o.WriteLine("}");
         o.WriteLine();
       }
@@ -326,7 +323,7 @@ public class TypescriptOutput : IOutput
   /// </summary>
   /// <param name="input"></param>
   /// <param name="name"></param>
-  /// <param name="currentAssembly"></param>
+  /// <param name="ctx"></param>
   /// <returns></returns>
   internal static string GetTypeRef(ApiDefinitionModel input, string name, AssemblyContext? ctx)
   {
@@ -338,14 +335,9 @@ public class TypescriptOutput : IOutput
 
   internal static string GetModuleReference(string s, string? packagePrefix)
   {
-    if (packagePrefix == null)
-    {
-      return $"./{s}";
-    }
-    else
-    {
-      if (s.StartsWith("EVA.")) s = s[4..];
-      return $"{packagePrefix}{s.Replace(".", "-").ToLowerInvariant()}";
-    }
+    if (packagePrefix == null) return $"./{s}";
+
+    if (s.StartsWith("EVA.")) s = s[4..];
+    return $"{packagePrefix}{s.Replace(".", "-").ToLowerInvariant()}";
   }
 }

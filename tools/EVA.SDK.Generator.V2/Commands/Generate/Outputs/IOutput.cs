@@ -2,9 +2,9 @@
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs;
 
-public interface IOutput
+public interface IOutput<T>
 {
-  string OutputPattern { get; }
-  void FixOptions(GenerateOptions options);
-  Task Write(ApiDefinitionModel input, string outputDirectory);
+  string? OutputPattern { get; }
+  string[] ForcedRemoves { get; }
+  Task Write(ApiDefinitionModel input, T options);
 }

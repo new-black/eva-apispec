@@ -30,8 +30,8 @@ builder.AddMiddleware(async (ctx, next) =>
   }
   catch (Exception ex)
   {
-    throw;
-    //await Console.Error.WriteLineAsync("Something went wrong:");
+    await Console.Error.WriteLineAsync("Something went wrong:");
+    await Console.Error.WriteLineAsync(ex.ToString());
   }
 });
 builder.UseDefaults();

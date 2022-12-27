@@ -1,5 +1,4 @@
 ﻿using System.IO.Enumeration;
-using System.Text.Json;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms.Filters;
@@ -11,7 +10,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate;
 
 public static class GenerationPipeline
 {
-  private static readonly INamedTransform[] _transforms =
+  internal static readonly INamedTransform[] Transforms =
   {
     new RemoveDeprecatedProperties(),
     new RemoveDeprecatedServices(),
@@ -25,13 +24,13 @@ public static class GenerationPipeline
     new RemoveUnusedGenericArguments()
   };
 
-  private static ITransform _transform1 = new FixDependencies();
-  private static ITransform _transform2 = new RemoveUnusedTypes();
+  private static readonly ITransform _transform1 = new FixDependencies();
+  private static readonly ITransform _transform2 = new RemoveUnusedTypes();
 
-  public static async Task Run(GenerateOptions opt, IOutput output)
+  public static async Task Run<T>(T opt, IOutput<T> output) where T : GenerateOptions
   {
     // Some outputs require certain options
-    output.FixOptions(opt);
+    foreach (var o in output.ForcedRemoves) opt.EnsureRemove(o);
 
     // Find all parts of the pipeline
     var input = InputFactory.GetInputFromString(opt.Input);
@@ -74,7 +73,7 @@ public static class GenerationPipeline
     EnsureEmptyOutputFolderExists(opt, output.OutputPattern);
 
     // Output
-    await output.Write(model, opt.OutputDirectory);
+    await output.Write(model, opt);
   }
 
   /// <summary>
@@ -131,7 +130,7 @@ public static class GenerationPipeline
   {
     var remove = (options.Remove ?? new List<string>()).Distinct().ToHashSet();
 
-    foreach (var transform in _transforms)
+    foreach (var transform in Transforms)
     {
       if (remove.Contains(transform.Name)) yield return transform;
     }
