@@ -1,23 +1,23 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Binding;
-using EVA.SDK.Generator.V2.Commands.Generate.Generator;
-using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs;
-using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.dotnet;
-using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.evaspec;
-using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.openapi;
-using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.swift;
-using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.typescript;
-using EVA.SDK.Generator.V2.Commands.Generate.Generator.Outputs.zod;
-using EVA.SDK.Generator.V2.Commands.Generate.Helpers;
+using EVA.SDK.Generator.V2.Commands.Generate.Outputs;
+using EVA.SDK.Generator.V2.Commands.Generate.Outputs.dotnet;
+using EVA.SDK.Generator.V2.Commands.Generate.Outputs.evaspec;
+using EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
+using EVA.SDK.Generator.V2.Commands.Generate.Outputs.swift;
+using EVA.SDK.Generator.V2.Commands.Generate.Outputs.typescript;
+using EVA.SDK.Generator.V2.Commands.Generate.Outputs.zod;
+using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate;
 
-public class GenerateCommand
+public static class GenerateCommand
 {
   public static void Register(Command command)
   {
     var generateCommand = new Command("generate");
     command.Add(generateCommand);
+
     var optionsBinder = new GenerateOptionsBinder();
     generateCommand.AddGlobalOptions(optionsBinder);
 
@@ -40,7 +40,7 @@ public class GenerateCommand
     {
       try
       {
-        await GenerationRunner.Run(generateOptions, outputBuilder(outputOptions));
+        await GenerationPipeline.Run(generateOptions, outputBuilder(outputOptions));
       }
       catch (Exception ex)
       {

@@ -1,26 +1,20 @@
 ﻿using System.CommandLine;
-using EVA.SDK.Generator.V2.Commands.Generate.Generator.Inputs;
-using EVA.SDK.Generator.V2.Commands.Generate.Helpers;
+using EVA.SDK.Generator.V2.Inputs;
 
 namespace EVA.SDK.Generator.V2.Commands.ApiVersion;
 
-public class ApiVersionCommand
+public static class ApiVersionCommand
 {
   public static void Register(Command command)
   {
     var listAssembliesCommand = new Command("api-version");
     command.Add(listAssembliesCommand);
-    var inputOption = new Option<string>(
-      name: "--in",
-      description: "The source of the input file. If not specified, will download the latest available."
-    );
-    inputOption.AddAlias("-i");
-    listAssembliesCommand.AddOption(inputOption);
+
+    listAssembliesCommand.AddOption(SharedOptions.Input);
     listAssembliesCommand.SetHandler(async src =>
     {
-      var input = InputFactory.GetInputFromString(src);
-      var model = await input.Read(true);
+      var model = await InputFactory.GetInputFromString(src).Read(true);
       Console.WriteLine(model.ApiVersion);
-    }, inputOption);
+    }, SharedOptions.Input);
   }
 }

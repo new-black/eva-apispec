@@ -6,14 +6,14 @@
     "request": true,
     "response": false
   },
+  "enumIsFlag": null,
   "typeArguments": [],
   "typeDependencies": [
     "EVA.Core.RequestMessage\u00601",
-    "EVA.Core.CreateResponse",
     "EVA.Core.DataModels.ProductRelationDirection",
+    "EVA.Core.DataModels.StockRelationType",
     "EVA.Core.Search.FilterModel",
-    "EVA.PIM.Services.Products.CreateProductRelationType\u002BRelation",
-    "EVA.Core.DataModels.StockRelationType"
+    "EVA.PIM.Services.Products.CreateProductRelationType\u002BRelation"
   ],
   "extends": {
     "ref": "EVA.Core.RequestMessage\u00601",
@@ -21,9 +21,11 @@
       {
         "ref": "EVA.Core.CreateResponse",
         "args": [],
+        "shared": null,
         "nullable": true
       }
     ],
+    "shared": null,
     "nullable": false
   },
   "properties": {
@@ -31,41 +33,78 @@
       "type": {
         "ref": "string",
         "args": [],
+        "shared": null,
         "nullable": true
       },
+      "description": null,
       "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     },
     "Direction": {
       "type": {
         "ref": "EVA.Core.DataModels.ProductRelationDirection",
         "args": [],
+        "shared": null,
         "nullable": false
       },
       "description": "The direction of the relation. This can either be;\nUnidirectional; one-way relation. For example \u0027parent-child\u0027 or \u0027replaced by\u0027\nBidirectional; two-way relation. For example \u0027maybe your also intrested in\u0027 or \u0027others also bought\u0027\nGroup; collective relation which allows for many products as part of a group. For example \u0027all products that are blue\u0027 or \u0027all products from summer-2022\u0027. This type does not accept a StockRelationType.",
       "skippable": false,
+      "deprecated": null,
       "required": {
-        "current": true
+        "current": true,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
       },
       "requiredAllowEmpty": {
-        "current": false
+        "current": false,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
       },
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     },
     "PrimaryName": {
       "type": {
         "ref": "string",
         "args": [],
+        "shared": null,
         "nullable": false
       },
       "description": "This is the primary name the relation. For example; if primary name is \u0027Blocks\u0027, the secondary name could be something in the lines of \u0027Blocked by\u0027.",
       "skippable": false,
+      "deprecated": null,
       "required": {
-        "current": true
+        "current": true,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
       },
       "requiredAllowEmpty": {
-        "current": false
+        "current": false,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
       },
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     },
     "ProductSearchFilters": {
@@ -75,28 +114,46 @@
           {
             "ref": "string",
             "args": [],
+            "shared": null,
             "nullable": true
           },
           {
             "ref": "EVA.Core.Search.FilterModel",
             "args": [],
+            "shared": null,
             "nullable": true
           }
         ],
+        "shared": null,
         "nullable": true
       },
       "description": "Only available when Direction is set to \u0060Group\u0060.",
       "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     },
     "ProductSearchTemplateID": {
       "type": {
         "ref": "int64",
         "args": [],
+        "shared": null,
         "nullable": true
       },
       "description": "Only available when Direction is set to \u0060Group\u0060.",
       "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     },
     "Relations": {
@@ -106,39 +163,73 @@
           {
             "ref": "EVA.PIM.Services.Products.CreateProductRelationType\u002BRelation",
             "args": [],
+            "shared": null,
             "nullable": true
           }
         ],
+        "shared": null,
         "nullable": true
       },
+      "description": null,
       "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     },
     "SecondaryName": {
       "type": {
         "ref": "string",
         "args": [],
+        "shared": null,
         "nullable": true
       },
       "description": "This is the secondary name the relation. For example; if primary name is \u0027Blocks\u0027, the secondary name could be something in the lines of \u0027Blocked by\u0027.",
       "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     },
     "StockRelationType": {
       "type": {
         "ref": "EVA.Core.DataModels.StockRelationType",
         "args": [],
+        "shared": null,
         "nullable": false
       },
       "description": "Indicates which stock relation type the relation has. In most cases this will be \u0027None\u0027. The following options are available:\nNone; No stock relation\nReplacing; When the PrimaryProduct is no longer in stock, the system can automaticly use the RelatedProduct as it\u0027s replacement (or vice versa if \u0060Direction\u0060 is set to \u0060Bidirectional\u0060).",
       "skippable": false,
+      "deprecated": null,
       "required": {
-        "current": true
+        "current": true,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
       },
       "requiredAllowEmpty": {
-        "current": false
+        "current": false,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
       },
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     }
-  }
+  },
+  "enumValues": null,
+  "parent": null
 }

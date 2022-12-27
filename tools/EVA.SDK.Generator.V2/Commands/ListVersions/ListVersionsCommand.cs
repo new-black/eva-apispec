@@ -1,41 +1,28 @@
 ﻿using System.CommandLine;
-using System.Text.Json;
 using System.Text.Json.Serialization;
+using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.ListVersions;
 
-public class ListVersionsCommand
+public static class ListVersionsCommand
 {
   public static void Register(Command command)
   {
     var listVersionsCommand = new Command("list-versions");
     command.AddCommand(listVersionsCommand);
 
-    listVersionsCommand.SetHandler((Func<Task>)(async () =>
+    listVersionsCommand.SetHandler(async () =>
     {
-      using var http = new HttpClient
+      var result = await HttpHelpers.GetJson(HttpConstants.RefsUrl, JsonContext.Default.RefsOutputArray);
+      foreach (var reference in result.Select(x => x.Ref).FilterNotNull().Where(x => x.StartsWith("refs/tags/spec/")))
       {
-        DefaultRequestHeaders =
-        {
-          {"User-Agent", HttpConstants.UserAgent}
-        }
-      };
-      using var response = await http.GetAsync(HttpConstants.RefsUrl);
-      var result = await JsonSerializer.DeserializeAsync<RefsOutput[]>(await response.Content.ReadAsStreamAsync(), RefsOutputContext.Default.RefsOutputArray);
-
-      foreach (var r in result.Where(x => x.Ref.StartsWith("refs/tags/spec/")))
-      {
-        Console.WriteLine($"- {r.Ref[15..]}");
+        Console.WriteLine($"- {reference[15..]}");
       }
-    }));
+    });
   }
 }
 
 internal class RefsOutput
 {
-  [JsonPropertyName("ref")]
-  public string Ref { get; set; }
+  [JsonPropertyName("ref")] public string? Ref { get; set; }
 }
-
-[JsonSerializable(typeof(RefsOutput[]))]
-internal partial class RefsOutputContext : JsonSerializerContext { }

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using EVA.SDK.Generator.V2.Commands.Generate.Helpers;
+using EVA.SDK.Generator.V2.Exceptions;
 using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Update;
@@ -17,10 +17,10 @@ public class UpdateCommand
     var option = new Option<bool>(name: "--wait") { IsHidden = true }.WithDefault(false);
     updateCommand.AddOption(option);
 
-    updateCommand.SetHandler((Func<bool, Task>)(async (bool wait) =>
+    updateCommand.SetHandler(async wait =>
     {
       // Locations
-      var currentExeLocation = Process.GetCurrentProcess().MainModule.FileName;
+      var currentExeLocation = Environment.ProcessPath;
 
       if (wait)
       {
@@ -53,12 +53,11 @@ public class UpdateCommand
         Console.WriteLine("Current version: {0}", version);
 
         // Find latest version
-        var response = await HttpHelpers.GetJson<UpdateCommand.LatestResponse>(HttpConstants.LatestReleaseTage, NonIndentedSerializationHelper.Default.LatestResponse);
+        var response = await HttpHelpers.GetJson(HttpConstants.LatestReleaseTage, JsonContext.Default.LatestResponse);
         var latestVersion = response.TagName;
         if (!latestVersion.StartsWith(HttpConstants.TagPrefix))
         {
-          Console.WriteLine("Could not determine latest version, update cancelled");
-          return;
+          throw new SdkException("Could not determine latest version, update cancelled");
         }
 
         latestVersion = latestVersion[(HttpConstants.TagPrefix.Length)..];
@@ -78,13 +77,11 @@ public class UpdateCommand
         var asset = response.Assets.FirstOrDefault(a => a.Name == expectedAssetName);
         if (asset == null)
         {
-          Console.WriteLine("Cannot find asset: {0}", expectedAssetName);
-          return;
+          throw new SdkException($"Cannot find asset: {expectedAssetName}");
         }
 
         // Download the asset
         await HttpHelpers.GetToFile(asset.BrowserDownloadUrl, newExeLocation);
-        //File.Copy(currentExeLocation, newExeLocation);
 
         // Start child process for replacement
         Process.Start(new ProcessStartInfo
@@ -94,7 +91,7 @@ public class UpdateCommand
           Arguments = "update --wait"
         });
       }
-    }), option);
+    }, option);
   }
 
   public class LatestResponse
