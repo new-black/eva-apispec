@@ -4,7 +4,13 @@ namespace EVA.API.Spec;
 
 public class DataModelInformation
 {
-  [JsonPropertyName("name")] public string Name { get; set; }
+  [JsonConstructor]
+  public DataModelInformation(string name)
+  {
+    Name = name;
+  }
+
+  [JsonPropertyName("name")] public string Name { get; }
   [JsonPropertyName("lenient")] public bool Lenient { get; set; }
   [JsonPropertyName("supportsCustomID")] public bool SupportsBackendID { get; set; }
   [JsonPropertyName("isEvaID")] public bool IsEvaID { get; set; }

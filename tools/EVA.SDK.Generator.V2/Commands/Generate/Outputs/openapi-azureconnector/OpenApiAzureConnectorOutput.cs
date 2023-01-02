@@ -11,7 +11,7 @@ public class OpenApiAzureConnectorOutput : IOutput<OpenApiAzureConnectorOptions>
 
   public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "inheritance" };
 
-  public async Task Write(ApiDefinitionModel input, OpenApiAzureConnectorOptions options)
+  public async Task Write(ApiDefinitionModel input, OpenApiAzureConnectorOptions options, OutputWriter outputWriter)
   {
     var outputPath = Path.GetFullPath(Path.Combine(options.OutputDirectory, "openapi.json"));
     Console.WriteLine($"Writing OpenAPI file: {outputPath}");
@@ -19,10 +19,12 @@ public class OpenApiAzureConnectorOutput : IOutput<OpenApiAzureConnectorOptions>
     var model = OpenApiOutput.GetModel(input, options.Host);
     AzureConnectorExtender.Extend(model, input);
 
-    await using var file = File.OpenWrite(outputPath);
-    await using var textWriter = new StreamWriter(file);
-    IOpenApiWriter writer = new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = true });
+    await using (var file = outputWriter.WriteStreamAsync("openapi.json"))
+    {
+      await using var textWriter = new StreamWriter(file.Value);
+      IOpenApiWriter writer = new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = true });
 
-    model.Serialize(writer, OpenApiSpecVersion.OpenApi2_0);
+      model.Serialize(writer, OpenApiSpecVersion.OpenApi2_0);
+    }
   }
 }

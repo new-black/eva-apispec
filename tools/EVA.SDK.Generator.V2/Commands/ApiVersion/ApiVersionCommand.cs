@@ -1,5 +1,6 @@
 ﻿using System.CommandLine;
 using EVA.SDK.Generator.V2.Inputs;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace EVA.SDK.Generator.V2.Commands.ApiVersion;
 
@@ -13,7 +14,7 @@ public static class ApiVersionCommand
     listAssembliesCommand.AddOption(SharedOptions.Input);
     listAssembliesCommand.SetHandler(async src =>
     {
-      var model = await InputFactory.GetInputFromString(src).Read(true);
+      var model = await InputFactory.GetInputFromString(src).Read(NullLogger.Instance);
       Console.WriteLine(model.ApiVersion);
     }, SharedOptions.Input);
   }

@@ -45,17 +45,9 @@ public static class GenerateCommand
 
     generateCommand.AddCommand(command);
 
-    command.SetHandler(async outputOptions =>
+    command.SetHandler(async (outputOptions, logger) =>
     {
-      try
-      {
-        await GenerationPipeline.Run(outputOptions, output);
-      }
-      catch (Exception ex)
-      {
-        await Console.Error.WriteLineAsync("[ERROR]: " + ex.Message);
-        throw;
-      }
-    }, binder);
+        await GenerationPipeline.Run(outputOptions, output, logger);
+    }, binder, LogBinder.Instance);
   }
 }

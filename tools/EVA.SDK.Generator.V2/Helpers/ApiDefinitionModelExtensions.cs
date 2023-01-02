@@ -105,26 +105,14 @@ public static class ApiDefinitionModelExtensions
     {
       var types = typesGroupedByAssembly.GetValueOrDefault(g.Key) ?? new List<KeyValuePair<string, TypeSpecification>>();
       var errors = errorsGroupedByAssembly.GetValueOrDefault(g.Key) ?? new List<ErrorSpecification>();
-      result.Add(new GroupedApiDefinitionModel
-      {
-        Assembly = g.Key,
-        Errors = errors,
-        Types = new Dictionary<string, TypeSpecification>(types),
-        Services = g.ToList()
-      });
+      result.Add(new GroupedApiDefinitionModel(g.Key, new Dictionary<string, TypeSpecification>(types), g.ToList(), errors));
       handledAssemblies.Add(g.Key);
     }
 
     foreach (var (assembly, types) in typesGroupedByAssembly.Where(x => !handledAssemblies.Contains(x.Key)))
     {
       var errors = errorsGroupedByAssembly.GetValueOrDefault(assembly) ?? new List<ErrorSpecification>();
-      result.Add(new GroupedApiDefinitionModel
-      {
-        Assembly = assembly,
-        Errors = errors,
-        Types = new Dictionary<string, TypeSpecification>(types),
-        Services = new List<ServiceModel>()
-      });
+      result.Add(new GroupedApiDefinitionModel(assembly, new Dictionary<string, TypeSpecification>(types), new List<ServiceModel>(), errors));
     }
 
     return result;
@@ -162,11 +150,10 @@ public static class ApiDefinitionModelExtensions
       }
     }
 
-    return new PrefixGroupedErrors
-    {
-      Errors = rootErrors,
-      SubErrors = subErrors.ToImmutableSortedDictionary(x => x.Key, x => GroupByPrefix(x.Value, skip + x.Key.Length + 1))
-    };
+    return new PrefixGroupedErrors(
+      rootErrors,
+      subErrors.ToImmutableSortedDictionary(x => x.Key, x => GroupByPrefix(x.Value, skip + x.Key.Length + 1))
+    );
   }
 
   public static Dictionary<string, long> ToTotals(this ImmutableSortedDictionary<string, EnumValueSpecification> source)
@@ -185,17 +172,7 @@ public static class ApiDefinitionModelExtensions
     return result;
   }
 
-  public class PrefixGroupedErrors
-  {
-    public List<(string Name, ErrorSpecification error)> Errors { get; set; }
-    public ImmutableSortedDictionary<string, PrefixGroupedErrors> SubErrors { get; set; }
-  }
+  public record PrefixGroupedErrors(List<(string Name, ErrorSpecification error)> Errors, ImmutableSortedDictionary<string, PrefixGroupedErrors> SubErrors);
 
-  public class GroupedApiDefinitionModel
-  {
-    public string Assembly { get; set; }
-    public Dictionary<string, TypeSpecification> Types { get; set; }
-    public List<ServiceModel> Services { get; set; }
-    public List<ErrorSpecification> Errors { get; set; }
-  }
+  public record GroupedApiDefinitionModel(string Assembly, Dictionary<string, TypeSpecification> Types, List<ServiceModel> Services, List<ErrorSpecification> Errors);
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
@@ -9,7 +10,7 @@ public class RemoveEmptyTypes : INamedTransform
   public string Name => "empty-types";
   public string Description => "Will remove all types that don't have any properties";
 
-  public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options)
+  public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
     var whitelistedIDs = input.Services.Select(s => s.RequestTypeID).Concat(input.Services.Select(s => s.ResponseTypeID)).ToHashSet();
     var changes = ITransform.TransformResult.NoChanges;

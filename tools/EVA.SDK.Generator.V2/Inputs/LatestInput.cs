@@ -1,11 +1,13 @@
-﻿namespace EVA.SDK.Generator.V2.Inputs;
+﻿using Microsoft.Extensions.Logging;
+
+namespace EVA.SDK.Generator.V2.Inputs;
 
 internal class LatestInput : BaseGithubInput
 {
-  protected override string GetUrl(bool quiet)
+  protected override string GetUrl(ILogger logger)
   {
     var url = HttpConstants.LatestSpecUrl;
-    if(!quiet) Console.WriteLine($"Downloading latest version from: {HttpConstants.LatestSpecUrl}");
+    logger.LogInformation("Downloading latest spec from: {Url}", HttpConstants.LatestSpecUrl);
     return url;
   }
 }

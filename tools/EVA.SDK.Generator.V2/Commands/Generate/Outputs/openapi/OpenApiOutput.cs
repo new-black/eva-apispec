@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using EVA.API.Spec;
+using EVA.SDK.Generator.V2.Exceptions;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Extensions;
@@ -11,11 +12,11 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
 
 public class OpenApiOutput : IOutput<OpenApiOptions>
 {
-  public string OutputPattern => null;
+  public string? OutputPattern => null;
 
   public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "event-exports" };
 
-  public async Task Write(ApiDefinitionModel input, OpenApiOptions options)
+  public async Task Write(ApiDefinitionModel input, OpenApiOptions options, OutputWriter outputWriter)
   {
     var outputPath = Path.GetFullPath(Path.Combine(options.OutputDirectory, "openapi.json"));
     Console.WriteLine($"Writing OpenAPI file: {outputPath}");
@@ -24,13 +25,15 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
 
     var version = options.Version == "v2" ? OpenApiSpecVersion.OpenApi2_0 : OpenApiSpecVersion.OpenApi3_0;
 
-    await using var file = File.OpenWrite(outputPath);
-    await using var textWriter = new StreamWriter(file);
-    IOpenApiWriter writer = options.Format == "yaml"
-      ? new OpenApiYamlWriter(textWriter, new OpenApiWriterSettings())
-      : new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = options.Terse });
+    await using (var file = outputWriter.WriteStreamAsync("openapi.json"))
+    {
+      await using var textWriter = new StreamWriter(file.Value);
+      IOpenApiWriter writer = options.Format == "yaml"
+        ? new OpenApiYamlWriter(textWriter, new OpenApiWriterSettings())
+        : new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = options.Terse });
 
-    model.Serialize(writer, version);
+      model.Serialize(writer, version);
+    }
   }
 
   internal static OpenApiDocument GetModel(ApiDefinitionModel input, string host)
@@ -55,7 +58,7 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
         new OpenApiServer { Url = host }
       },
       Paths = new OpenApiPaths(),
-      Components = new OpenApiComponents { },
+      Components = new OpenApiComponents(),
       SecurityRequirements = new List<OpenApiSecurityRequirement>
       {
         new OpenApiSecurityRequirement
@@ -97,20 +100,14 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
       Properties = new Dictionary<string, OpenApiSchema>()
     };
 
-    if (type.Properties != null)
+    foreach (var (name, prop) in type.Properties)
     {
-      foreach (var (name, prop) in type.Properties)
-      {
-        var schema = ToSchema(input, prop.Type);
-        if (schema != null)
-        {
-          schema.Description = prop.Description;
-          result.Properties.Add(name, schema);
-        }
-      }
-
-      result.Required = type.Properties.Where(p => !p.Value.Type.Nullable).Select(p => p.Key).OrderBy(x => x).ToImmutableHashSet();
+      var schema = ToSchema(input, prop.Type);
+      schema.Description = prop.Description;
+      result.Properties.Add(name, schema);
     }
+
+    result.Required = type.Properties.Where(p => !p.Value.Type.Nullable).Select(p => p.Key).OrderBy(x => x).ToImmutableHashSet();
 
     if (type.Extends != null)
     {
@@ -120,7 +117,7 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
     return result;
   }
 
-  private static OpenApiSchema? ToSchema(ApiDefinitionModel input, TypeReference type)
+  private static OpenApiSchema ToSchema(ApiDefinitionModel input, TypeReference type)
   {
     if (type.Name == "int16") return new OpenApiSchema { Type = "integer" };
     if (type.Name == "int32") return new OpenApiSchema { Type = "integer" };
@@ -153,14 +150,12 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
       }
     }
 
-    if (!type.Name.StartsWith("_") && (type.Arguments == null || !type.Arguments.Any()))
+    if (!type.Name.StartsWith("_") && !type.Arguments.Any())
     {
-      return ToSchema(input, type.Name);
+      return ToSchema(type.Name);
     }
 
-    //Console.WriteLine("Saw: " + type.Name);
-    throw new Exception(type.Name);
-    return null;
+    throw new SdkException($"Cannot build openapi schema from {type.Name}");
   }
 
   private static OpenApiPathItem ToPathItem(ApiDefinitionModel input, ServiceModel service)
@@ -216,7 +211,7 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
                 {
                   "application/json", new OpenApiMediaType
                   {
-                    Schema = ToSchema(input, service.RequestTypeID)
+                    Schema = ToSchema(service.RequestTypeID)
                   }
                 }
               }
@@ -232,7 +227,7 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
                     {
                       "application/json", new OpenApiMediaType
                       {
-                        Schema = ToSchema(input, service.ResponseTypeID)
+                        Schema = ToSchema(service.ResponseTypeID)
                       }
                     }
                   }
@@ -245,7 +240,7 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
     };
   }
 
-  private static OpenApiSchema ToSchema(ApiDefinitionModel input, string id)
+  private static OpenApiSchema ToSchema(string id)
   {
     return new OpenApiSchema
     {

@@ -1,5 +1,6 @@
 ﻿using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
@@ -8,7 +9,7 @@ public class RemoveUnusedGenericArguments : INamedTransform
   public string Name => "unused-type-params";
   public string Description => "Removes unused generic type parameters";
 
-  public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options)
+  public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
     var changes = ITransform.TransformResult.NoChanges;
 

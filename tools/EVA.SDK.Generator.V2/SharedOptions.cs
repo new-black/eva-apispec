@@ -9,4 +9,9 @@ public static class SharedOptions
     name: "--in",
     description: "The source of the input file. If not specified, will download the latest available."
   ).WithAlias("-i");
+
+  public static Option<string> LogLevel = new Option<string>(
+    name: "--log-level",
+    description: "The log level to use. Defaults to 'info'."
+  ).WithDefault("info").WithAlias("-l").FromAmong("trace", "debug", "info", "warning", "error", "none");
 }

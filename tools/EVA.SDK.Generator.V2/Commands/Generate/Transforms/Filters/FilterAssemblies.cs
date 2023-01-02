@@ -2,6 +2,7 @@
 using System.IO.Enumeration;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms.Filters;
 
@@ -14,7 +15,7 @@ public class FilterAssemblies : ITransform
     _assemblies = assemblies.Select(x => x.Split(':')).Select(x => (x[0],x.Skip(1).FirstOrDefault())).ToList();
   }
 
-  public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options)
+  public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
     var cache = new Dictionary<string, string?>();
 

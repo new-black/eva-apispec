@@ -8,5 +8,8 @@ public enum ApiSpecFuncScope
   Edit = 2,
   Delete = 4,
   View = 8,
-  Manage = Create | Edit | Delete | View | 16
+  Manage = Create | Edit | Delete | View | 16,
+  Settings = 32,
+  Scripting = 64,
+  All = Manage | Settings | Scripting
 }

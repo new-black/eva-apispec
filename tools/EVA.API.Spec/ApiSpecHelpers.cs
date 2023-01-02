@@ -83,7 +83,7 @@ public static class ApiSpecHelpers
         }
         else if (name == Specials.Option)
         {
-          Process(typeReference.Shared);
+          if(typeReference.Shared != null) Process(typeReference.Shared);
           foreach (var t in typeReference.Arguments) Process(t);
         }
         else if (name.StartsWith("_"))
@@ -149,7 +149,7 @@ public static class ApiSpecHelpers
         }
         else if (name == Specials.Option)
         {
-          Process(typeReference.Shared);
+          if(typeReference.Shared != null) Process(typeReference.Shared);
           foreach (var t in typeReference.Arguments) Process(t);
         }
         else if (name.StartsWith("_"))

@@ -11,14 +11,14 @@ public static class ListVersionsCommand
     var listVersionsCommand = new Command("list-versions");
     command.AddCommand(listVersionsCommand);
 
-    listVersionsCommand.SetHandler(async () =>
+    listVersionsCommand.SetHandler(async logger =>
     {
-      var result = await HttpHelpers.GetJson(HttpConstants.RefsUrl, JsonContext.Default.RefsOutputArray);
+      var result = await HttpHelpers.GetJson(HttpConstants.RefsUrl, JsonContext.Default.RefsOutputArray, logger);
       foreach (var reference in result.Select(x => x.Ref).FilterNotNull().Where(x => x.StartsWith("refs/tags/spec/")))
       {
         Console.WriteLine($"- {reference[15..]}");
       }
-    });
+    }, LogBinder.Instance);
   }
 }
 

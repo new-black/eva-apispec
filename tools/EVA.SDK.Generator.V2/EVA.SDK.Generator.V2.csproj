@@ -1,52 +1,55 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <LangVersion>10</LangVersion>
-        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
-      <InvariantGlobalization>true</InvariantGlobalization>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>10</LangVersion>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimmerDefaultAction>link</TrimmerDefaultAction>
+    <PublishSingleFile>true</PublishSingleFile>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
 
-        <!-- <PublishSingleFile>true</PublishSingleFile>
-        <SelfContained>true</SelfContained>
-        <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
-        <PublishTrimmed>true</PublishTrimmed> -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <DebuggerSupport>false</DebuggerSupport>
+    <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+    <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+    <EventSourceSupport>false</EventSourceSupport>
+    <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+    <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+    <StartupHookSupport>false</StartupHookSupport>
+    <CustomResourceTypesSupport>false</CustomResourceTypesSupport>
+    <EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization>false</EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization>
+    <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+    <EnableCppCLIHostActivation>false</EnableCppCLIHostActivation>
+    <NullabilityInfoContextSupport>false</NullabilityInfoContextSupport>
+  </PropertyGroup>
 
-        <!-- Other trimmings -->
-        <!-- <DebuggerSupport>false</DebuggerSupport>
-        <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
-        <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
-        <EventSourceSupport>false</EventSourceSupport>
-        <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
-        <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
-        <UseSystemResourceKeys>true</UseSystemResourceKeys>
-        <StartupHookSupport>false</StartupHookSupport>
-        <CustomResourceTypesSupport>false</CustomResourceTypesSupport>
-        <EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization>false</EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization>
-        <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
-        <EnableCppCLIHostActivation>false</EnableCppCLIHostActivation>
-        <NullabilityInfoContextSupport>false</NullabilityInfoContextSupport> -->
-    </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EVA.API.Spec\EVA.API.Spec.csproj" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\EVA.API.Spec\EVA.API.Spec.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.4.5" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Microsoft.OpenApi" Version="1.4.5" />
-      <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-    </ItemGroup>
+  <ItemGroup>
+    <TrimmerRootDescriptor Include="trimming-roots.xml" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="Commands\Generate\Outputs\dotnet\Resources\EVA.SDK.Core.cs" />
-      <EmbeddedResource Include="Commands\Generate\Outputs\dotnet\Resources\EVA.SDK.Core.cs" />
-      <Compile Remove="Commands\Generate\Outputs\dotnet\Resources\EVA.SDK.Core.NewtonsoftJson.cs" />
-      <EmbeddedResource Include="Commands\Generate\Outputs\dotnet\Resources\EVA.SDK.Core.NewtonsoftJson.cs" />
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Commands\Generate\Outputs\dotnet\Resources\EVA.SDK.Core.cs" />
+    <EmbeddedResource Include="Commands\Generate\Outputs\dotnet\Resources\EVA.SDK.Core.cs" />
+    <Compile Remove="Commands\Generate\Outputs\dotnet\Resources\EVA.SDK.Core.NewtonsoftJson.cs" />
+    <EmbeddedResource Include="Commands\Generate\Outputs\dotnet\Resources\EVA.SDK.Core.NewtonsoftJson.cs" />
+  </ItemGroup>
 
-    <Target Name="ConfigureTrimming" BeforeTargets="PrepareForILLink">
+  <Target Name="ConfigureTrimming" BeforeTargets="PrepareForILLink">
     <ItemGroup>
       <ManagedAssemblyToLink Condition="'%(Filename)' == 'Microsoft.OpenApi'">
         <TrimmerSingleWarn>False</TrimmerSingleWarn>

@@ -7,7 +7,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate;
 
 public class GenerateOptions
 {
-  public string Input { get; set; } = string.Empty;
+  public string? Input { get; set; }
   public string OutputDirectory { get; set; } = string.Empty;
 
 
@@ -60,7 +60,7 @@ public abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : Gen
   {
     var result = new T
     {
-      Input = SharedOptions.Input.Value(ctx) ?? string.Empty,
+      Input = SharedOptions.Input.Value(ctx),
       OutputDirectory = OutputDir.Value(ctx) ?? string.Empty,
       Overwrite = Overwrite.Value(ctx),
       Remove = _remove?.Value(ctx),

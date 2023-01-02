@@ -11,7 +11,7 @@ public class ZodOutput : IOutput<ZodOptions>
 
   public string[] ForcedRemoves => new[] { "unused-type-params", "empty-types", "errors", "event-exports", "nested-types" };
 
-  public async Task Write(ApiDefinitionModel input, ZodOptions options)
+  public async Task Write(ApiDefinitionModel input, ZodOptions options, OutputWriter writer)
   {
     foreach (var group in input.GroupByAssembly())
     {
@@ -50,7 +50,7 @@ public class ZodOutput : IOutput<ZodOptions>
       importsBuilder.AppendLine();
       importsBuilder.AppendLine(o.ToString());
 
-      await File.WriteAllTextAsync(Path.Combine(options.OutputDirectory, $"{group.Assembly}.ts"), importsBuilder.ToString());
+      await writer.WriteFileAsync($"{group.Assembly}.ts", importsBuilder.ToString());
     }
   }
 

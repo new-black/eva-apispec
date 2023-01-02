@@ -3,8 +3,10 @@ using EVA.SDK.Generator.V2.Commands.Generate.Outputs;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms.Filters;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms.Internal;
+using EVA.SDK.Generator.V2.Exceptions;
 using EVA.SDK.Generator.V2.Helpers;
 using EVA.SDK.Generator.V2.Inputs;
+using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate;
 
@@ -12,6 +14,7 @@ public static class GenerationPipeline
 {
   internal static readonly INamedTransform[] Transforms =
   {
+    new FlattenGenerics(),
     new RemoveDeprecatedProperties(),
     new RemoveDeprecatedServices(),
     new RemoveEmptyTypes(),
@@ -27,7 +30,7 @@ public static class GenerationPipeline
   private static readonly ITransform _transform1 = new FixDependencies();
   private static readonly ITransform _transform2 = new RemoveUnusedTypes();
 
-  public static async Task Run<T>(T opt, IOutput<T> output) where T : GenerateOptions
+  public static async Task Run<T>(T opt, IOutput<T> output, ILogger logger) where T : GenerateOptions
   {
     // Some outputs require certain options
     foreach (var o in output.ForcedRemoves) opt.EnsureRemove(o);
@@ -38,28 +41,30 @@ public static class GenerationPipeline
     var filters = FindFilters(opt).ToList();
 
     // The input
-    var model = await input.Read();
+    var model = await input.Read(logger);
 
     // Run filters (once)
-    foreach (var filter in filters) filter.Transform(model, opt);
+    foreach (var filter in filters) filter.Transform(model, opt, logger);
 
     // Run transformations
+    logger.LogInformation("Running transformations: {Transforms}", string.Join(", ", transforms.Select(t => t.Name)));
     for (var i = 0; i < 10; i++)
     {
-      Console.WriteLine($"\nRunning iteration {i}");
+      logger.LogDebug("\\nRunning iteration {iteration}", i);
       var changes = ITransform.TransformResult.NoChanges;
 
       foreach (var transform in transforms)
       {
-        var result = transform.Transform(model, opt);
-        result |= _transform1.Transform(model, opt);
-        result |= _transform2.Transform(model, opt);
+        var result = transform.Transform(model, opt, logger);
+        result |= _transform1.Transform(model, opt, logger);
+        result |= _transform2.Transform(model, opt, logger);
 
-        Console.WriteLine("[{0}]: {1}", transform.GetType().Name, result);
+        logger.LogDebug("Transform {transform} returned {result}", transform.GetType().Name, result);
 
         // Clone model if needed
         if (result.HasFlag(ITransform.TransformResult.StructuralChanges))
         {
+          logger.LogTrace("Cloning model");
           model = JsonContext.Default.ApiDefinitionModel.Clone(model);
         }
 
@@ -70,17 +75,19 @@ public static class GenerationPipeline
     }
 
     // Target directory handling
-    EnsureEmptyOutputFolderExists(opt, output.OutputPattern);
+    EnsureEmptyOutputFolderExists(opt, output.OutputPattern, logger);
 
     // Output
-    await output.Write(model, opt);
+    var writer = new OutputWriter(opt.OutputDirectory);
+    await output.Write(model, opt, writer);
+    logger.LogInformation(writer.ToReport());
   }
 
   /// <summary>
   /// This method will ensure the output path exists and is an empty directory.
   /// </summary>
   /// <exception cref="Exception"></exception>
-  private static void EnsureEmptyOutputFolderExists(GenerateOptions opt, string? outputPattern)
+  private static void EnsureEmptyOutputFolderExists(GenerateOptions opt, string? outputPattern, ILogger logger)
   {
     var fullOutputPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), opt.OutputDirectory));
     opt.OutputDirectory = fullOutputPath;
@@ -104,12 +111,12 @@ public static class GenerationPipeline
     }
     else
     {
-      if (File.Exists(fullOutputPath)) throw new Exception($"Cannot output to {fullOutputPath}, it is a file");
-      if (Directory.Exists(fullOutputPath) && Directory.GetFileSystemEntries(fullOutputPath).Any()) throw new Exception($"Cannot output to {fullOutputPath}, it is not empty");
+      if (File.Exists(fullOutputPath)) throw new SdkException($"Cannot output to {fullOutputPath}, it is a file");
+      if (Directory.Exists(fullOutputPath) && Directory.GetFileSystemEntries(fullOutputPath).Any()) throw new SdkException($"Cannot output to {fullOutputPath}, it is not empty");
       Directory.CreateDirectory(fullOutputPath);
     }
 
-    Console.WriteLine($"Outputting to: {fullOutputPath}");
+    logger.LogInformation("Outputting to: {FullOutputPath}", fullOutputPath);
   }
 
 
@@ -126,7 +133,7 @@ public static class GenerationPipeline
     }
   }
 
-  private static IEnumerable<ITransform> FindTransforms(GenerateOptions options)
+  private static IEnumerable<INamedTransform> FindTransforms(GenerateOptions options)
   {
     var remove = (options.Remove ?? new List<string>()).Distinct().ToHashSet();
 

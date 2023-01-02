@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
@@ -9,7 +10,7 @@ public class RemoveSharedRequestResponseTypes : INamedTransform
   public string Name => "shared-req-res-types";
   public string Description => "Splits types that are used in both requests and responses into separate types";
 
-  public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options)
+  public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
     ApiSpecHelpers.RebuildTypeContext(input);
 

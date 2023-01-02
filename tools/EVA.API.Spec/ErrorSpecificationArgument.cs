@@ -4,9 +4,16 @@ namespace EVA.API.Spec;
 
 public class ErrorSpecificationArgument
 {
+  [JsonConstructor]
+  public ErrorSpecificationArgument(TypeReference type, string name)
+  {
+    Type = type;
+    Name = name;
+  }
+
   [JsonPropertyName("type")]
-  public TypeReference Type { get; set; }
+  public TypeReference Type { get; }
 
   [JsonPropertyName("name")]
-  public string? Name { get; set; }
+  public string Name { get; }
 }

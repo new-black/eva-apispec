@@ -1,4 +1,5 @@
 ﻿using EVA.API.Spec;
+using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
@@ -12,7 +13,7 @@ public interface ITransform
     NoChanges = 0
   }
 
-  TransformResult Transform(ApiDefinitionModel input, GenerateOptions options);
+  TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger);
 }
 
 public interface INamedTransform : ITransform

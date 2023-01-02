@@ -38,7 +38,7 @@ public class DotNetOutput : IOutput<DotNetOptions>
     o.WriteLine("}");
   }
 
-  public async Task Write(ApiDefinitionModel input, DotNetOptions options)
+  public async Task Write(ApiDefinitionModel input, DotNetOptions options, OutputWriter writer)
   {
     var groupedInput = input.GroupByAssembly();
 
@@ -99,7 +99,7 @@ public class DotNetOutput : IOutput<DotNetOptions>
       });
       sb.WriteLine("}");
 
-      await File.WriteAllTextAsync(Path.Combine(options.OutputDirectory, $"{actualNamespace}.cs"), sb.ToString());
+      await writer.WriteFileAsync($"{actualNamespace}.cs", sb.ToString());
     }
   }
 

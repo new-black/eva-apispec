@@ -2,6 +2,7 @@
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Exceptions;
 using EVA.SDK.Generator.V2.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Inputs;
 
@@ -14,9 +15,9 @@ internal class HttpInput : IInput
     _url = url;
   }
 
-  public async Task<ApiDefinitionModel> Read(bool quiet = false)
+  public async Task<ApiDefinitionModel> Read(ILogger logger)
   {
-    if(!quiet) Console.WriteLine("Downloading from: " + _url);
+    logger.LogInformation("Downloading spec from: {url}", _url);
 
     using var http = new HttpClient
     {

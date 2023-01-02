@@ -10,7 +10,7 @@ public class TypescriptOutput : IOutput<TypescriptOptions>
 
   public string[] ForcedRemoves => Array.Empty<string>();
 
-  public async Task Write(ApiDefinitionModel input, TypescriptOptions options)
+  public async Task Write(ApiDefinitionModel input, TypescriptOptions options, OutputWriter writer)
   {
     foreach (var group in input.GroupByAssembly())
     {
@@ -59,7 +59,7 @@ public class TypescriptOutput : IOutput<TypescriptOptions>
       importsBuilder.AppendLine();
       importsBuilder.AppendLine(o.ToString());
 
-      await File.WriteAllTextAsync(Path.Combine(options.OutputDirectory, $"{group.Assembly}.ts"), importsBuilder.ToString());
+      await writer.WriteFileAsync($"{group.Assembly}.ts", importsBuilder.ToString());
     }
   }
 

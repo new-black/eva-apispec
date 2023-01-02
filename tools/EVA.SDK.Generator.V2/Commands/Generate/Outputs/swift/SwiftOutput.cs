@@ -10,7 +10,7 @@ public class SwiftOutput : IOutput<SwiftOptions>
 
   public string[] ForcedRemoves => new[] { "options", "event-exports", "errors" };
 
-  public async Task Write(ApiDefinitionModel input, SwiftOptions options)
+  public async Task Write(ApiDefinitionModel input, SwiftOptions options, OutputWriter writer)
   {
     // Write all services
     foreach (var service in input.Services)
@@ -46,9 +46,7 @@ public class SwiftOutput : IOutput<SwiftOptions>
       output.Write(string.Empty);
 
 
-      var filepath = Path.Combine(options.OutputDirectory, $"{assembly}/{filename}.swift");
-      if (!Directory.Exists(Path.GetDirectoryName(filepath))) Directory.CreateDirectory(Path.GetDirectoryName(filepath));
-      await File.WriteAllTextAsync(filepath, output.ToString());
+      await writer.WriteFileAsync($"{assembly}/{filename}.swift", output.ToString());
     }
 
     // Write all types
@@ -68,10 +66,7 @@ public class SwiftOutput : IOutput<SwiftOptions>
 
       WriteType(type, id, typename, input, output, options);
 
-
-      var filepath = Path.Combine(options.OutputDirectory, $"{assembly}/{filename}.swift");
-      if (!Directory.Exists(Path.GetDirectoryName(filepath))) Directory.CreateDirectory(Path.GetDirectoryName(filepath));
-      await File.WriteAllTextAsync(filepath, output.ToString());
+      await writer.WriteFileAsync($"{assembly}/{filename}.swift", output.ToString());
     }
   }
 

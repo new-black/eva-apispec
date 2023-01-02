@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
@@ -9,7 +10,7 @@ public class FlattenGenerics : INamedTransform
   public string Name => "generics";
   public string Description => "Flattens generic types";
 
-  public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options)
+  public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
     var toBeChecked = new Stack<TypeSpecification>(input.Types.Values);
     var result = new Dictionary<string, TypeSpecification>(input.Types);
@@ -22,7 +23,7 @@ public class FlattenGenerics : INamedTransform
 
       foreach (var reference in type.EnumerateAllTypeReferences())
       {
-        if (FlattenReference(reference, result, toBeChecked)) changes = ITransform.TransformResult.StructuralChanges;
+        if (FlattenReference(reference, result, toBeChecked, logger)) changes = ITransform.TransformResult.StructuralChanges;
       }
     }
 
@@ -38,7 +39,7 @@ public class FlattenGenerics : INamedTransform
   /// <param name="availableSpecs"></param>
   /// <param name="toBeChecked"></param>
   /// <returns></returns>
-  private bool FlattenReference(TypeReference reference, Dictionary<string, TypeSpecification> availableSpecs, Stack<TypeSpecification> toBeChecked)
+  private bool FlattenReference(TypeReference reference, Dictionary<string, TypeSpecification> availableSpecs, Stack<TypeSpecification> toBeChecked, ILogger logger)
   {
     // These don't need flattening
     if (!reference.Arguments.Any() || reference.Name == "option") return false;
@@ -55,7 +56,7 @@ public class FlattenGenerics : INamedTransform
     }
 
     // First deep-clone the template
-    Console.WriteLine("Found new reference to be flattened: " + id);
+    logger.LogDebug("Flattening type: {type}", id);
 
     var result = availableSpecs[reference.Name];
     result = result.TemplateWith(reference.Arguments);

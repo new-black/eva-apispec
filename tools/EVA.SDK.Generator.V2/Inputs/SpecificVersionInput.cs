@@ -1,4 +1,6 @@
-﻿namespace EVA.SDK.Generator.V2.Inputs;
+﻿using Microsoft.Extensions.Logging;
+
+namespace EVA.SDK.Generator.V2.Inputs;
 
 internal class SpecificVersionInput : BaseGithubInput
 {
@@ -9,10 +11,10 @@ internal class SpecificVersionInput : BaseGithubInput
     _version = version;
   }
 
-  protected override string GetUrl(bool quiet)
+  protected override string GetUrl(ILogger logger)
   {
     var url = string.Format(HttpConstants.SpecificVersionUrl, _version);
-    if(!quiet) Console.WriteLine($"Downloading version {_version} from: {url}");
+    logger.LogInformation("Downloading spec {Version} from: {Url}", _version, url);
     return url;
   }
 }

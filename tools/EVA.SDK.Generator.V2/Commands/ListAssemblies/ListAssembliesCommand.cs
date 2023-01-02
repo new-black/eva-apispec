@@ -12,13 +12,13 @@ public static class ListAssembliesCommand
     command.Add(listAssembliesCommand);
 
     listAssembliesCommand.AddOption(SharedOptions.Input);
-    listAssembliesCommand.SetHandler(async src =>
+    listAssembliesCommand.SetHandler(async (src, logger) =>
     {
-      var model = await InputFactory.GetInputFromString(src).Read();
+      var model = await InputFactory.GetInputFromString(src).Read(logger);
       foreach (var assembly in model.EnumerateAllAssemblies())
       {
         Console.WriteLine($"- {assembly}");
       }
-    }, SharedOptions.Input);
+    }, SharedOptions.Input, LogBinder.Instance);
   }
 }
