@@ -1,25 +1,23 @@
 ﻿using EVA.API.Spec;
+using EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Writers;
 
-namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi.Extensions;
+namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi_azureconnector;
 
-public class OpenApiAzureConnectorOutput : IOutput<OpenApiAzureConnectorOptions>
+internal class OpenApiAzureConnectorOutput : IOutput<OpenApiAzureConnectorOptions>
 {
   public string? OutputPattern => null;
 
   public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "inheritance" };
 
-  public async Task Write(ApiDefinitionModel input, OpenApiAzureConnectorOptions options, OutputWriter outputWriter)
+  public async Task Write(OutputContext<OpenApiAzureConnectorOptions> ctx)
   {
-    var outputPath = Path.GetFullPath(Path.Combine(options.OutputDirectory, "openapi.json"));
-    Console.WriteLine($"Writing OpenAPI file: {outputPath}");
+    var model = OpenApiOutput.GetModel(ctx.Input, ctx.Options.Host);
+    AzureConnectorExtender.Extend(model, ctx.Input);
 
-    var model = OpenApiOutput.GetModel(input, options.Host);
-    AzureConnectorExtender.Extend(model, input);
-
-    await using (var file = outputWriter.WriteStreamAsync("openapi.json"))
+    await using (var file = ctx.Writer.WriteStreamAsync("openapi.json"))
     {
       await using var textWriter = new StreamWriter(file.Value);
       IOpenApiWriter writer = new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = true });

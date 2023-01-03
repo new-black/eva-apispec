@@ -3,7 +3,7 @@ using EVA.SDK.Generator.V2.Commands.Generate.Outputs;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.dotnet;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.evaspec;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
-using EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi.Extensions;
+using EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi_azureconnector;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.swift;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.typescript;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.zod;
@@ -11,9 +11,9 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate;
 
-public static class GenerateCommand
+internal static class GenerateCommand
 {
-  public static void Register(Command command)
+  internal static void Register(Command command)
   {
     var generateCommand = new Command("generate");
     command.Add(generateCommand);

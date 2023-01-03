@@ -1,17 +1,20 @@
 ﻿using System.Text.Json;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.swift;
 
-public class SwiftOutput : IOutput<SwiftOptions>
+internal class SwiftOutput : IOutput<SwiftOptions>
 {
   public string? OutputPattern => null;
 
   public string[] ForcedRemoves => new[] { "options", "event-exports", "errors" };
 
-  public async Task Write(ApiDefinitionModel input, SwiftOptions options, OutputWriter writer)
+  public async Task Write(OutputContext<SwiftOptions> ctx)
   {
+    var (input, _, writer, _) = ctx;
+
     // Write all services
     foreach (var service in input.Services)
     {
@@ -26,22 +29,22 @@ public class SwiftOutput : IOutput<SwiftOptions>
       output.WriteLine("import Foundation");
       output.WriteLine();
       output.WriteLine($"public class {filename}: EvaService<{reqName}, {resName}> {{");
-      output.WriteIndented(output =>
+      using (output.Indentation)
       {
         output.WriteLine("public init(endpoint: EvaEndpoint) {");
-        output.WriteIndented(output =>
+        using (output.Indentation)
         {
           output.WriteLine("super.init(");
-          output.WriteIndented(output =>
+          using (output.Indentation)
           {
             output.WriteLine("endpoint: endpoint,");
             output.WriteLine($"name: \"{assembly}:{service.Name}\",");
             output.WriteLine($"path: \"{service.Path}\"");
-          });
+          }
           output.WriteLine(")");
-        });
+        }
         output.WriteLine("}");
-      });
+      }
       output.WriteLine("}");
       output.Write(string.Empty);
 
@@ -64,20 +67,20 @@ public class SwiftOutput : IOutput<SwiftOptions>
       output.WriteLine("import Foundation");
       output.WriteLine();
 
-      WriteType(type, id, typename, input, output, options);
+      WriteType(type, id, typename, output, ctx);
 
       await writer.WriteFileAsync($"{assembly}/{filename}.swift", output.ToString());
     }
   }
 
-  private void WriteType(TypeSpecification type, string id, string typename, ApiDefinitionModel input, IndentedStringBuilder output, SwiftOptions options)
+  private void WriteType(TypeSpecification type, string id, string typename, IndentedStringBuilder output, OutputContext<SwiftOptions> ctx)
   {
     if (type.Description != null)
     {
       WriteComment(type.Description, output);
     }
 
-    var service = input.Services.FirstOrDefault(s => s.RequestTypeID == id);
+    var service = ctx.Input.Services.FirstOrDefault(s => s.RequestTypeID == id);
     if (service is { Deprecated: { } deprecationInfo })
     {
       output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(deprecationInfo.Comment ?? string.Empty)}\")");
@@ -97,7 +100,7 @@ public class SwiftOutput : IOutput<SwiftOptions>
       return;
     }
 
-    var extends = type.Extends == null ? "Codable" : GetTypeName(type.Extends, input, options);
+    var extends = type.Extends == null ? "Codable" : GetTypeName(type.Extends, ctx);
 
     var typeArguments = string.Empty;
     if (type.TypeArguments.Any())
@@ -119,9 +122,9 @@ public class SwiftOutput : IOutput<SwiftOptions>
         for (var i = 0; i < list.Count; i++)
         {
           var prop = list[i];
-          var propDefault = GetPropDefault(prop.Value.Type, input);
+          var propDefault = GetPropDefault(prop.Value.Type);
           o.WriteLine(
-            $"{prop.Key}: {GetPropTypeName(prop.Value.Type, input, id, options)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
+            $"{prop.Key}: {GetPropTypeName(prop.Value.Type, id, ctx)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
         }
       });
 
@@ -140,7 +143,7 @@ public class SwiftOutput : IOutput<SwiftOptions>
 
       foreach (var (propName, prop) in type.Properties)
       {
-        var propType = GetPropTypeName(prop.Type, input, id, options);
+        var propType = GetPropTypeName(prop.Type, id, ctx);
         if (prop.Description != null) WriteComment(prop.Description, output);
         if (prop.Deprecated != null)
         {
@@ -154,11 +157,11 @@ public class SwiftOutput : IOutput<SwiftOptions>
     });
 
     // Write the nested types
-    foreach (var (nestedID, nestedType) in input.Types.Where(kv => kv.Value.ParentType == id))
+    foreach (var (nestedID, nestedType) in ctx.Input.Types.Where(kv => kv.Value.ParentType == id))
     {
       output.WriteLine();
 
-      output.WriteIndented(o => { WriteType(nestedType, nestedID, nestedType.TypeName, input, o, options); });
+      output.WriteIndented(o => { WriteType(nestedType, nestedID, nestedType.TypeName, o, ctx); });
     }
 
     output.WriteLine("}");
@@ -206,7 +209,7 @@ public class SwiftOutput : IOutput<SwiftOptions>
     output.WriteLine("}");
   }
 
-  private string GetPropTypeName(TypeReference typeReference, ApiDefinitionModel input, string? typeContext, SwiftOptions options)
+  private string GetPropTypeName(TypeReference typeReference, string? typeContext, OutputContext<SwiftOptions> ctx)
   {
     if (typeReference.Name == typeContext)
     {
@@ -214,62 +217,62 @@ public class SwiftOutput : IOutput<SwiftOptions>
       if (typeReference.Nullable)
       {
         var nestedReference = new TypeReference(typeReference.Name, typeReference.Arguments, false) { Shared = typeReference.Shared };
-        return $"IndirectOptional<{GetTypeName(nestedReference, input, options)}>?";
+        return $"IndirectOptional<{GetTypeName(nestedReference, ctx)}>?";
       }
       else
       {
-        return $"IndirectOptional<{GetTypeName(typeReference, input, options)}>";
+        return $"IndirectOptional<{GetTypeName(typeReference, ctx)}>";
       }
     }
 
-    return GetTypeName(typeReference, input, options);
+    return GetTypeName(typeReference, ctx);
   }
 
-  private static string GetPropDefault(TypeReference typeReference, ApiDefinitionModel input)
+  private static string GetPropDefault(TypeReference typeReference)
   {
     return typeReference switch
     {
-      { Name: "string", Nullable: false } => "\"\"",
+      { Name: ApiSpecConsts.String, Nullable: false } => "\"\"",
       { Nullable: true } => "nil",
       _ => string.Empty
     };
   }
 
-  private string GetTypeName(TypeReference typeReference, ApiDefinitionModel input, SwiftOptions options)
+  private string GetTypeName(TypeReference typeReference, OutputContext<SwiftOptions> ctx)
   {
     var n = typeReference.Nullable ? "?" : string.Empty;
 
-    if (typeReference is { Name: "string" or "duration" or "binary" }) return $"String{n}";
-    if (typeReference is { Name: "int16" or "int32" or "int64" }) return $"Int{n}";
-    if (typeReference is { Name: "float128" }) return $"Decimal{n}";
-    if (typeReference is { Name: "float64" }) return $"Double{n}";
-    if (typeReference is { Name: "date" }) return $"Date{n}";
-    if (typeReference is { Name: "bool" }) return $"Bool{n}";
-    if (typeReference is { Name: "guid" }) return $"UUID{n}";
-    if (typeReference is { Name: "array", Arguments: { Length: 1 } x }) return $"[{GetTypeName(x[0], input, options)}]{n}";
-    if (typeReference is { Name: "any" or "object" }) return $"{options.AnyCodeableName}{n}";
-    if (typeReference is { Name: "map" }) return $"[String: {GetTypeName(typeReference.Arguments[1], input, options)}]{n}";
+    if (typeReference is { Name: ApiSpecConsts.String or ApiSpecConsts.Duration or ApiSpecConsts.Binary }) return $"String{n}";
+    if (typeReference is { Name: ApiSpecConsts.Int16 or ApiSpecConsts.Int32 or ApiSpecConsts.Int64 }) return $"Int{n}";
+    if (typeReference is { Name: ApiSpecConsts.Float128 }) return $"Decimal{n}";
+    if (typeReference is { Name: ApiSpecConsts.Float64 }) return $"Double{n}";
+    if (typeReference is { Name: ApiSpecConsts.Date }) return $"Date{n}";
+    if (typeReference is { Name: ApiSpecConsts.Bool }) return $"Bool{n}";
+    if (typeReference is { Name: ApiSpecConsts.Guid }) return $"UUID{n}";
+    if (typeReference is { Name: ApiSpecConsts.Specials.Array, Arguments: { Length: 1 } x }) return $"[{GetTypeName(x[0], ctx)}]{n}";
+    if (typeReference is { Name: ApiSpecConsts.Any or ApiSpecConsts.Object }) return $"{ctx.Options.AnyCodableName}{n}";
+    if (typeReference is { Name: ApiSpecConsts.Specials.Map }) return $"[String: {GetTypeName(typeReference.Arguments[1], ctx)}]{n}";
     if (typeReference.Name.StartsWith("_")) return $"{typeReference.Name[1..]}{n}";
 
     if (typeReference.Name.StartsWith("EVA.") && typeReference.Arguments is { Length: > 0 })
     {
-      return $"{GetTypeName(typeReference.Name, input)}<{string.Join(", ", typeReference.Arguments.Select(a => GetTypeName(a, input, options)))}>{n}";
+      return $"{GetTypeName(typeReference.Name, ctx.Input)}<{string.Join(", ", typeReference.Arguments.Select(a => GetTypeName(a, ctx)))}>{n}";
     }
 
     if (typeReference.Name.StartsWith("EVA."))
     {
-      if (input.Types.TryGetValue(typeReference.Name, out var referencedType) && referencedType.ParentType != null)
+      if (ctx.Input.Types.TryGetValue(typeReference.Name, out var referencedType) && referencedType.ParentType != null)
       {
         return $"{referencedType.TypeName}{n}";
       }
       else
       {
-        return $"{GetTypeName(typeReference.Name, input)}{n}";
+        return $"{GetTypeName(typeReference.Name, ctx.Input)}{n}";
       }
     }
 
-    Console.WriteLine("No idea how to handle: " + JsonSerializer.Serialize(typeReference, JsonContext.Default.TypeReference));
-    return "ASDF";
+    ctx.Logger.LogWarning("Type cannot be handled by this output: {Type}, outputting as \"object\"", typeReference.Name);
+    return $"{ctx.Options.AnyCodableName}{n}";
   }
 
   private static string GetTypeName(string id, ApiDefinitionModel input)

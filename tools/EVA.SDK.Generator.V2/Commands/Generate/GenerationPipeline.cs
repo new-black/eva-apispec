@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate;
 
-public static class GenerationPipeline
+internal static class GenerationPipeline
 {
   internal static readonly INamedTransform[] Transforms =
   {
@@ -30,7 +30,7 @@ public static class GenerationPipeline
   private static readonly ITransform _transform1 = new FixDependencies();
   private static readonly ITransform _transform2 = new RemoveUnusedTypes();
 
-  public static async Task Run<T>(T opt, IOutput<T> output, ILogger logger) where T : GenerateOptions
+  internal static async Task Run<T>(T opt, IOutput<T> output, ILogger logger) where T : GenerateOptions
   {
     // Some outputs require certain options
     foreach (var o in output.ForcedRemoves) opt.EnsureRemove(o);
@@ -50,8 +50,8 @@ public static class GenerationPipeline
     logger.LogInformation("Running transformations: {Transforms}", string.Join(", ", transforms.Select(t => t.Name)));
     for (var i = 0; i < 10; i++)
     {
-      logger.LogDebug("\\nRunning iteration {iteration}", i);
-      var changes = ITransform.TransformResult.NoChanges;
+      logger.LogDebug("\\nRunning iteration {Iteration}", i);
+      var changes = ITransform.TransformResult.None;
 
       foreach (var transform in transforms)
       {
@@ -59,7 +59,7 @@ public static class GenerationPipeline
         result |= _transform1.Transform(model, opt, logger);
         result |= _transform2.Transform(model, opt, logger);
 
-        logger.LogDebug("Transform {transform} returned {result}", transform.GetType().Name, result);
+        logger.LogDebug("Transform {Transform} returned {Result}", transform.GetType().Name, result);
 
         // Clone model if needed
         if (result.HasFlag(ITransform.TransformResult.StructuralChanges))
@@ -71,7 +71,7 @@ public static class GenerationPipeline
         changes |= result;
       }
 
-      if (changes == ITransform.TransformResult.NoChanges) break;
+      if (changes == ITransform.TransformResult.None) break;
     }
 
     // Target directory handling
@@ -79,8 +79,8 @@ public static class GenerationPipeline
 
     // Output
     var writer = new OutputWriter(opt.OutputDirectory);
-    await output.Write(model, opt, writer);
-    logger.LogInformation(writer.ToReport());
+    await output.Write(new OutputContext<T>(model, opt, writer, logger));
+    logger.LogInformation("{WriterReport}", writer.ToReport());
   }
 
   /// <summary>
@@ -105,7 +105,7 @@ public static class GenerationPipeline
         foreach (var file in allFiles)
         {
           var relativeFile = Path.GetRelativePath(fullOutputPath, file);
-          if (FileSystemName.MatchesSimpleExpression(outputPattern, relativeFile, true)) File.Delete(file);
+          if (FileSystemName.MatchesSimpleExpression(outputPattern, relativeFile)) File.Delete(file);
         }
       }
     }

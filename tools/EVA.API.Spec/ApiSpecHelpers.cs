@@ -2,50 +2,7 @@
 
 public static class ApiSpecHelpers
 {
-  public static class Primitives
-  {
-    public const string String = "string";
-    public const string Int16 = "int16";
-    public const string Int32 = "int32";
-    public const string Int64 = "int64";
-    public const string Float32 = "float32";
-    public const string Float64 = "float64";
-    public const string Float128 = "float128";
-    public const string Date = "date";
-    public const string Guid = "guid";
-    public const string Bool = "bool";
-    public const string Duration = "duration";
-    public const string Object = "object";
-    public const string Any = "any";
-    public const string Binary = "binary";
-
-    public static readonly HashSet<string> All = new()
-    {
-      String,
-      Int16,
-      Int32,
-      Int64,
-      Float32,
-      Float64,
-      Float128,
-      Date,
-      Guid,
-      Bool,
-      Duration,
-      Object,
-      Any,
-      Binary
-    };
-  }
-
-  public static class Specials
-  {
-    public const string Array = "array";
-    public const string Map = "map";
-    public const string Option = "option";
-  }
-
-  public static Dictionary<string, List<int>> DetermineActuallyUsedTypeArguments(ApiDefinitionModel apiDefinitionModel)
+  private static Dictionary<string, List<int>> DetermineActuallyUsedTypeArguments(ApiDefinitionModel apiDefinitionModel)
   {
     var result = new Dictionary<string, List<int>>();
 
@@ -61,7 +18,7 @@ public static class ApiSpecHelpers
       void Process(TypeReference typeReference)
       {
         // Ignore primitives
-        if (Primitives.All.Contains(typeReference.Name)) return;
+        if (ApiSpecConsts.AllPrimitives.Contains(typeReference.Name)) return;
 
         var name = typeReference.Name;
         if (char.IsUpper(name[0]) && typeReference.Arguments.IsEmpty)
@@ -72,16 +29,16 @@ public static class ApiSpecHelpers
         {
           foreach(var i in DetermineUsedTypeArgument(name)) Process(typeReference.Arguments[i]);
         }
-        else if (name == Specials.Map && typeReference.Arguments.Length == 2)
+        else if (name == ApiSpecConsts.Specials.Map && typeReference.Arguments.Length == 2)
         {
           Process(typeReference.Arguments[0]);
           Process(typeReference.Arguments[1]);
         }
-        else if (name == Specials.Array && typeReference.Arguments.Length == 1)
+        else if (name == ApiSpecConsts.Specials.Array && typeReference.Arguments.Length == 1)
         {
           Process(typeReference.Arguments[0]);
         }
-        else if (name == Specials.Option)
+        else if (name == ApiSpecConsts.Specials.Option)
         {
           if(typeReference.Shared != null) Process(typeReference.Shared);
           foreach (var t in typeReference.Arguments) Process(t);
@@ -114,7 +71,7 @@ public static class ApiSpecHelpers
     return result;
   }
 
-  public static Dictionary<string, List<string>> DetermineActuallyUsedTypes(ApiDefinitionModel apiDefinitionModel)
+  private static Dictionary<string, List<string>> DetermineActuallyUsedTypes(ApiDefinitionModel apiDefinitionModel)
   {
     var usedTypeArguments = DetermineActuallyUsedTypeArguments(apiDefinitionModel);
     var usedTypes = new Dictionary<string, List<string>>();
@@ -126,7 +83,7 @@ public static class ApiSpecHelpers
       void Process(TypeReference typeReference)
       {
         // Ignore primitives
-        if (Primitives.All.Contains(typeReference.Name)) return;
+        if (ApiSpecConsts.AllPrimitives.Contains(typeReference.Name)) return;
 
         var name = typeReference.Name;
         if (char.IsUpper(name[0]) && typeReference.Arguments.IsEmpty)
@@ -138,16 +95,16 @@ public static class ApiSpecHelpers
           list.Add(name);
           foreach (var i in usedTypeArguments.GetValueOrDefault(name) ?? Enumerable.Empty<int>()) Process(typeReference.Arguments[i]);
         }
-        else if (name == Specials.Map && typeReference.Arguments.Length == 2)
+        else if (name == ApiSpecConsts.Specials.Map && typeReference.Arguments.Length == 2)
         {
           Process(typeReference.Arguments[0]);
           Process(typeReference.Arguments[1]);
         }
-        else if (name == Specials.Array && typeReference.Arguments.Length == 1)
+        else if (name == ApiSpecConsts.Specials.Array && typeReference.Arguments.Length == 1)
         {
           Process(typeReference.Arguments[0]);
         }
-        else if (name == Specials.Option)
+        else if (name == ApiSpecConsts.Specials.Option)
         {
           if(typeReference.Shared != null) Process(typeReference.Shared);
           foreach (var t in typeReference.Arguments) Process(t);
@@ -187,7 +144,6 @@ public static class ApiSpecHelpers
 
       foreach (var x in actuallyUsedDependencies.GetValueOrDefault(id) ?? Enumerable.Empty<string>())
       {
-        if(x.EndsWith("AddressDtoResponse")) Console.WriteLine(id);
         ApplyRequest(x);
       }
     }

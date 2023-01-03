@@ -2,37 +2,15 @@
 
 namespace EVA.SDK.Generator.V2.Helpers;
 
-public static class CollectionExtensions
+internal static class CollectionExtensions
 {
-  public static int IndexOf<T>(this ImmutableArray<T> list, T value) where T : class
+  internal static ImmutableArray<T> WithoutIndex<T>(this ImmutableArray<T> list, int idx)
   {
-    for (var i = 0; i < list.Length; i++)
-    {
-      if (list[i] == value) return i;
-    }
-
-    return -1;
-  }
-
-  public static ImmutableArray<T> WithoutIndex<T>(this ImmutableArray<T> list, int idx, bool nullIfEmpty = false)
-  {
-    var result = new List<T>();
-
-    for (var i = 0; i < list.Length; i++)
-    {
-      if (i != idx) result.Add(list[i]);
-    }
-
+    var result = list.Where((_, i) => i != idx).ToList();
     return ImmutableArray.CreateRange(result);
   }
 
-  public static Dictionary<TKey, List<TValue>> ToLookupDictionary<TSource, TKey, TValue>(this IEnumerable<TSource> list, Func<TSource, TKey> keySelector, Func<TSource, TValue> valueSelector)
-    where TKey : notnull
-  {
-    return list.GroupBy(keySelector).ToDictionary(x => x.Key, x => x.Select(valueSelector).ToList());
-  }
-
-  public static Dictionary<TKey, List<TSource>> ToLookupDictionary<TSource, TKey>(this IEnumerable<TSource> list, Func<TSource, TKey> keySelector)
+  internal static Dictionary<TKey, List<TSource>> ToLookupDictionary<TSource, TKey>(this IEnumerable<TSource> list, Func<TSource, TKey> keySelector)
     where TKey : notnull
   {
     return list.GroupBy(keySelector).ToDictionary(x => x.Key, x => x.ToList());

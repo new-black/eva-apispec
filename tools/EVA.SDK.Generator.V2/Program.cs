@@ -18,7 +18,7 @@ public static class Program
   {
     // Build the command
     var command = new RootCommand("The EVA SDK Suite");
-    command.AddGlobalOption(SharedOptions.LogLevel);
+    command.AddGlobalOption(SharedOptions.LogLevel.Option);
 
     GenerateCommand.Register(command);
     ListAssembliesCommand.Register(command);

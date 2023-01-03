@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
-public class FlattenGenerics : INamedTransform
+internal class FlattenGenerics : INamedTransform
 {
   public string Name => "generics";
   public string Description => "Flattens generic types";
@@ -15,7 +15,7 @@ public class FlattenGenerics : INamedTransform
     var toBeChecked = new Stack<TypeSpecification>(input.Types.Values);
     var result = new Dictionary<string, TypeSpecification>(input.Types);
 
-    var changes = ITransform.TransformResult.NoChanges;
+    var changes = ITransform.TransformResult.None;
     while (toBeChecked.TryPop(out var type))
     {
       // Skip generics
@@ -23,7 +23,10 @@ public class FlattenGenerics : INamedTransform
 
       foreach (var reference in type.EnumerateAllTypeReferences())
       {
-        if (FlattenReference(reference, result, toBeChecked, logger)) changes = ITransform.TransformResult.StructuralChanges;
+        if (FlattenReference(reference, result, toBeChecked, logger))
+        {
+          changes = ITransform.TransformResult.StructuralChanges;
+        }
       }
     }
 
@@ -38,11 +41,12 @@ public class FlattenGenerics : INamedTransform
   /// <param name="reference">The reference that should be flattened</param>
   /// <param name="availableSpecs"></param>
   /// <param name="toBeChecked"></param>
+  /// <param name="logger"></param>
   /// <returns></returns>
   private bool FlattenReference(TypeReference reference, Dictionary<string, TypeSpecification> availableSpecs, Stack<TypeSpecification> toBeChecked, ILogger logger)
   {
     // These don't need flattening
-    if (!reference.Arguments.Any() || reference.Name == "option") return false;
+    if (reference.Arguments.Length == 0 || reference.Name == ApiSpecConsts.Specials.Option) return false;
     if (!char.IsUpper(reference.Name[0])) return false;
 
     var id = GetFlattenedName(reference, false);
@@ -56,7 +60,7 @@ public class FlattenGenerics : INamedTransform
     }
 
     // First deep-clone the template
-    logger.LogDebug("Flattening type: {type}", id);
+    logger.LogDebug("Flattening type: {Type}", id);
 
     var result = availableSpecs[reference.Name];
     result = result.TemplateWith(reference.Arguments);
@@ -70,14 +74,11 @@ public class FlattenGenerics : INamedTransform
     return true;
   }
 
-  private string GetFlattenedName(TypeReference reference, bool includeNullable)
+  private static string GetFlattenedName(TypeReference reference, bool includeNullable)
   {
     var prefix = includeNullable && !reference.Nullable ? "NotNull" : string.Empty;
 
-    if (reference.Arguments == null || !reference.Arguments.Any())
-    {
-      return prefix + reference.Name;
-    }
+    if (!reference.Arguments.Any()) return prefix + reference.Name;
 
     return $"{prefix}{reference.Name}[{string.Join(',', reference.Arguments.Select(x => GetFlattenedName(x, true)))}]";
   }

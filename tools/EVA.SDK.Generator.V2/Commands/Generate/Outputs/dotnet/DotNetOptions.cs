@@ -4,41 +4,41 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.dotnet;
 
-public class DotNetOptions : GenerateOptions
+internal class DotNetOptions : GenerateOptions
 {
-  public bool UseNativeDayOfWeek { get; set; }
-  public string JsonSerializer { get; set; }
-  public bool EnableCustomIdMode { get; set; }
+  internal bool UseNativeDayOfWeek { get; set; } = DotNetOptionsBinder.UseNativeDayOfWeek.Default;
+  internal string JsonSerializer { get; set; } = DotNetOptionsBinder.JsonSerializer.Default;
+  internal bool EnableCustomIdMode { get; set; } = DotNetOptionsBinder.EnableCustomIdMode.Default;
 }
 
-public class DotNetOptionsBinder : BaseGenerateOptionsBinder<DotNetOptions>
+internal class DotNetOptionsBinder : BaseGenerateOptionsBinder<DotNetOptions>
 {
-  private Option<bool> UseNativeDayOfWeek = new Option<bool>(
+  internal static readonly OptionWithDefault<bool> UseNativeDayOfWeek = new Option<bool>(
     name: "--opt-native-dow",
     description: "Use the native DayOfWeek enum instead of the custom one"
   ).WithDefault(false);
 
-  private Option<string> JsonSerializer = new Option<string>(
+  internal static readonly OptionWithDefault<string> JsonSerializer = new Option<string>(
     name: "--opt-json-serializer",
     description: "What serializer to use for JSON serialization"
   ).FromAmong("newtonsoft").WithDefault("newtonsoft");
 
-  private Option<bool> EnableCustomIdMode = new Option<bool>(
+  internal static readonly OptionWithDefault<bool> EnableCustomIdMode = new Option<bool>(
     name: "--opt-custom-ids",
     description: "Enable support for custom IDs through LongOrString"
   ).WithDefault(false);
 
   protected override IEnumerable<Option> GetOptions()
   {
-    yield return UseNativeDayOfWeek;
-    yield return JsonSerializer;
-    yield return EnableCustomIdMode;
+    yield return UseNativeDayOfWeek.Option;
+    yield return JsonSerializer.Option;
+    yield return EnableCustomIdMode.Option;
   }
 
-  protected override void BuildOptions(DotNetOptions options, BindingContext bindingContext)
+  protected override void BuildOptions(DotNetOptions options, BindingContext ctx)
   {
-    options.UseNativeDayOfWeek = UseNativeDayOfWeek.Value(bindingContext);
-    options.JsonSerializer = JsonSerializer.Value(bindingContext)!;
-    options.EnableCustomIdMode = EnableCustomIdMode.Value(bindingContext);
+    options.UseNativeDayOfWeek = UseNativeDayOfWeek.Value(ctx);
+    options.JsonSerializer = JsonSerializer.Value(ctx);
+    options.EnableCustomIdMode = EnableCustomIdMode.Value(ctx);
   }
 }

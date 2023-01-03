@@ -17,7 +17,7 @@ internal class HttpInput : IInput
 
   public async Task<ApiDefinitionModel> Read(ILogger logger)
   {
-    logger.LogInformation("Downloading spec from: {url}", _url);
+    logger.LogInformation("Downloading spec from: {Url}", _url);
 
     using var http = new HttpClient
     {

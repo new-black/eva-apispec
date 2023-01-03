@@ -2,23 +2,23 @@
 using System.CommandLine.Binding;
 using EVA.SDK.Generator.V2.Helpers;
 
-namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi.Extensions;
+namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi_azureconnector;
 
-public class OpenApiAzureConnectorOptions : GenerateOptions
+internal class OpenApiAzureConnectorOptions : GenerateOptions
 {
-  public string Host { get; set; }
+  internal string Host { get; set; } = OpenApiAzureConnectorOptionsBinder.Host.Default;
 }
 
-public class OpenApiAzureConnectorOptionsBinder : BaseGenerateOptionsBinder<OpenApiAzureConnectorOptions>
+internal class OpenApiAzureConnectorOptionsBinder : BaseGenerateOptionsBinder<OpenApiAzureConnectorOptions>
 {
-  private Option<string> Host = new Option<string>(
+  internal static readonly OptionWithDefault<string> Host = new Option<string>(
     name: "--opt-host",
     description: "The host to use"
   ).WithDefault("");
 
   protected override IEnumerable<Option> GetOptions()
   {
-    yield return Host;
+    yield return Host.Option;
   }
 
   protected override void BuildOptions(OpenApiAzureConnectorOptions options, BindingContext ctx)

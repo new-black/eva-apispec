@@ -7,11 +7,15 @@ using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Writers;
 
-namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi.Extensions;
+namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi_azureconnector;
 
-public class AzureConnectorExtender
+internal static class AzureConnectorExtender
 {
-  public static void Extend(OpenApiDocument model, ApiDefinitionModel input)
+  private const string AuthorizationUrl = "https://henk2.platform-tools.on-eva.io/ui/auth/azure-connector";
+  private const string TokenUrl = "https://henk2.platform-tools.on-eva.io/api/auth/azure-connector";
+  private const string RefreshUrl = "https://henk2.platform-tools.on-eva.io/api/auth/azure-connector/refresh";
+
+  internal static void Extend(OpenApiDocument model, ApiDefinitionModel input)
   {
     // Replace auth method
     model.Components.SecuritySchemes.Remove("eva-auth");
@@ -22,9 +26,9 @@ public class AzureConnectorExtender
       {
         AuthorizationCode = new OpenApiOAuthFlow
         {
-          AuthorizationUrl = new Uri("https://henk2.platform-tools.on-eva.io/ui/auth/azure-connector"),
-          TokenUrl = new Uri("https://henk2.platform-tools.on-eva.io/api/auth/azure-connector"),
-          RefreshUrl = new Uri("https://henk2.platform-tools.on-eva.io/api/auth/azure-connector/refresh"),
+          AuthorizationUrl = new Uri(AuthorizationUrl),
+          TokenUrl = new Uri(TokenUrl),
+          RefreshUrl = new Uri(RefreshUrl),
           Scopes = new Dictionary<string, string>()
         }
       }
@@ -35,7 +39,7 @@ public class AzureConnectorExtender
     {
       Parameters = new List<OpenApiParameter>
       {
-        new OpenApiParameter
+        new()
         {
           In = ParameterLocation.Header,
           Name = "EVA-User-Agent",
@@ -54,13 +58,13 @@ public class AzureConnectorExtender
         {
           OperationType.Delete, new OpenApiOperation
           {
-            Summary = $"Delete a trigger",
-            Description = $"Delete a trigger",
-            OperationId = $"AzureConnectorUnsubscribe",
+            Summary = "Delete a trigger",
+            Description = "Delete a trigger",
+            OperationId = "AzureConnectorUnsubscribe",
             Tags = new List<OpenApiTag> { new() { Name = "Technical" } },
             Parameters = new List<OpenApiParameter>
             {
-              new OpenApiParameter
+              new()
               {
                 In = ParameterLocation.Path,
                 Name = "subscriptionID",
@@ -118,7 +122,7 @@ public class AzureConnectorExtender
         },
         Parameters = new List<OpenApiParameter>
         {
-          new OpenApiParameter
+          new()
           {
             In = ParameterLocation.Header,
             Name = "EVA-User-Agent",
@@ -207,7 +211,7 @@ public class AzureConnectorExtender
     }
   }
 
-  private class ExtensionBool : IOpenApiExtension
+  private sealed class ExtensionBool : IOpenApiExtension
   {
     private readonly bool _value;
 
@@ -222,7 +226,7 @@ public class AzureConnectorExtender
     }
   }
 
-  private class ExtensionString : IOpenApiExtension
+  private sealed class ExtensionString : IOpenApiExtension
   {
     private readonly string _value;
 
@@ -237,7 +241,7 @@ public class AzureConnectorExtender
     }
   }
 
-  private class ExtensionNotification : IOpenApiExtension
+  private sealed class ExtensionNotification : IOpenApiExtension
   {
     private readonly OpenApiSchema _schema;
     private readonly string? _description;

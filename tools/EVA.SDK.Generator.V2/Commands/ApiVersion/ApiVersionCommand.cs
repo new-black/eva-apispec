@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace EVA.SDK.Generator.V2.Commands.ApiVersion;
 
-public static class ApiVersionCommand
+internal static class ApiVersionCommand
 {
-  public static void Register(Command command)
+  internal static void Register(Command command)
   {
     var listAssembliesCommand = new Command("api-version");
     command.Add(listAssembliesCommand);

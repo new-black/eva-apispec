@@ -1,18 +1,21 @@
 ﻿using System.Text;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.typescript;
+using EVA.SDK.Generator.V2.Exceptions;
 using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.zod;
 
-public class ZodOutput : IOutput<ZodOptions>
+internal class ZodOutput : IOutput<ZodOptions>
 {
   public string? OutputPattern => null;
 
   public string[] ForcedRemoves => new[] { "unused-type-params", "empty-types", "errors", "event-exports", "nested-types" };
 
-  public async Task Write(ApiDefinitionModel input, ZodOptions options, OutputWriter writer)
+  public async Task Write(OutputContext<ZodOptions> ctx)
   {
+    var (input, _, writer, _) = ctx;
+
     foreach (var group in input.GroupByAssembly())
     {
       var assemblyCtx = new AssemblyContext(group.Assembly);
@@ -23,7 +26,7 @@ public class ZodOutput : IOutput<ZodOptions>
       using (o.Indentation)
       {
         // Preset types
-        if (group.Assembly == "EVA.Core")
+        if (group.Assembly == ApiSpecConsts.WellKnown.CoreAssembly)
         {
           o.WriteLine();
           o.WriteLine("const _literalSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);");
@@ -42,7 +45,7 @@ public class ZodOutput : IOutput<ZodOptions>
       var importsBuilder = new StringBuilder();
       foreach (var x in assemblyCtx.ReferencedModules)
       {
-        importsBuilder.AppendLine($"import {{ {TypescriptOutput.FixNamespace(x)} }} from '{TypescriptOutput.GetModuleReference(x, null)}';");
+        importsBuilder.Append("import { ").Append(TypescriptOutput.FixNamespace(x)).Append(" } from '").Append(TypescriptOutput.GetModuleReference(x, null)).AppendLine("';");
       }
 
       importsBuilder.AppendLine("import { z } from 'zod';");
@@ -91,7 +94,10 @@ public class ZodOutput : IOutput<ZodOptions>
             o.Write("return ");
             if (type.Extends != null) o.Write($"{ToReference(input, type.Extends, ctx, false)}.merge(");
             o.WriteLine("z.object({");
-            o.WriteIndented(o => { WriteProperties(input, ctx, type, o, fixedTypeName); });
+            using (o.Indentation)
+            {
+              WriteProperties(input, ctx, type, o);
+            }
             o.Write("})");
             if (type.Extends != null) o.Write(")");
             o.WriteLine(";");
@@ -103,7 +109,10 @@ public class ZodOutput : IOutput<ZodOptions>
           o.Write($"export const {fixedTypeName} = ");
           if (type.Extends != null) o.Write($"{ToReference(input, type.Extends, ctx, false)}.merge(");
           o.WriteLine("z.object({");
-          o.WriteIndented(o => { WriteProperties(input, ctx, type, o, fixedTypeName); });
+          using (o.Indentation)
+          {
+            WriteProperties(input, ctx, type, o);
+          }
           o.Write("})");
           if (type.Extends != null) o.Write(")");
           o.WriteLine(";");
@@ -129,20 +138,20 @@ public class ZodOutput : IOutput<ZodOptions>
           o.WriteLine($"interface {fixedTypeName}Schema {{");
           using (o.Indentation)
           {
-            WriteInterfaceProperties(input, ctx, type, o, fixedTypeName);
+            WriteInterfaceProperties(input, ctx, type, o);
           }
           o.WriteLine("}");
 
           o.WriteLine($"export const {fixedTypeName}: z.ZodType<{fixedTypeName}Schema> = z.lazy(() => z.object({{");
           using (o.Indentation)
           {
-            WriteProperties(input, ctx, type, o, fixedTypeName);
+            WriteProperties(input, ctx, type, o);
           }
           o.WriteLine("}));");
         }
         else
         {
-          throw new Exception("Self referencing generics are not supported");
+          throw new SdkException("Self referencing generics are not supported");
         }
       }
     }
@@ -157,50 +166,50 @@ public class ZodOutput : IOutput<ZodOptions>
     else
     {
       o.WriteLine($"export enum {fixedTypeName}Schema {{");
-      o.WriteIndented(o =>
+      using (o.Indentation)
       {
         foreach (var v in type.EnumValues)
         {
           o.WriteLine($"{v.Key} = {v.Value.Value},");
         }
-      });
+      }
       o.WriteLine("}");
       o.WriteLine($"export const {fixedTypeName} = z.nativeEnum({fixedTypeName}Schema);");
     }
   }
 
-  private void WriteInterfaceProperties(ApiDefinitionModel input, AssemblyContext ctx, TypeSpecification type, IndentedStringBuilder o, string fixedTypeName)
+  private void WriteInterfaceProperties(ApiDefinitionModel input, AssemblyContext ctx, TypeSpecification type, IndentedStringBuilder o)
   {
     foreach (var (propName, propSpec) in type.Properties)
     {
       if (propSpec.Type.Nullable && !propSpec.Skippable)
       {
-        o.WriteLine($"{propName}?: {ToInterfaceReference(input, propSpec, propName, fixedTypeName, ctx)},");
+        o.WriteLine($"{propName}?: {ToInterfaceReference(input, propSpec, ctx)},");
       }
       else if (propSpec.Type.Nullable && propSpec.Skippable)
       {
-        o.WriteLine($"{propName}?: {ToInterfaceReference(input, propSpec, propName, fixedTypeName, ctx)},");
+        o.WriteLine($"{propName}?: {ToInterfaceReference(input, propSpec, ctx)},");
       }
       else if (!propSpec.Type.Nullable && !propSpec.Skippable)
       {
-        o.WriteLine($"{propName}: {ToInterfaceReference(input, propSpec, propName, fixedTypeName, ctx)},");
+        o.WriteLine($"{propName}: {ToInterfaceReference(input, propSpec, ctx)},");
       }
       else if (!propSpec.Type.Nullable && propSpec.Skippable)
       {
-        o.WriteLine($"{propName}?: {ToInterfaceReference(input, propSpec, propName, fixedTypeName, ctx)},");
+        o.WriteLine($"{propName}?: {ToInterfaceReference(input, propSpec, ctx)},");
       }
     }
   }
 
-  private string ToInterfaceReference(ApiDefinitionModel input, PropertySpecification ps, string propName, string typeName, AssemblyContext ctx, bool? overrideNullable = null)
+  private string ToInterfaceReference(ApiDefinitionModel input, PropertySpecification ps, AssemblyContext ctx, bool? overrideNullable = null)
   {
-    if (ps.Type.Name == "string" && ps.AllowedValues.Any())
+    if (ps.Type.Name == ApiSpecConsts.String && ps.AllowedValues.Any())
     {
       return string.Join(" | ", ps.AllowedValues.Select(TypescriptOutput.EscapeForString).Concat(overrideNullable ?? ps.Type.Nullable ? new[] { "null" } : Array.Empty<string>()));
     }
 
     // Option
-    if (ps.Type is { Name: "option", Arguments: var options })
+    if (ps.Type is { Name: ApiSpecConsts.Specials.Option, Arguments: var options })
     {
       // Only use types from this assembly, and add an extender. This extender is patched later on.
       var typesFromCurrentAssembly = options.Where(o => input.Types[o.Name].Assembly == ctx.AssemblyName).ToArray();
@@ -213,87 +222,79 @@ public class ZodOutput : IOutput<ZodOptions>
     return ToInterfaceReference(input, ps.Type, ctx, overrideNullable);
   }
 
-  private string ToInterfaceReference(ApiDefinitionModel input, TypeReference typeReference, AssemblyContext ctx, bool? overrideNullable = null)
+  private static string ToInterfaceReference(ApiDefinitionModel input, TypeReference typeReference, AssemblyContext ctx, bool? overrideNullable = null)
   {
     var nullable = overrideNullable ?? typeReference.Nullable;
     var n = nullable ? " | null" : string.Empty;
 
     var preset = typeReference switch
     {
-      { Name: "string" or "date" or "binary" or "guid" or "duration" } => $"string{n}",
-      { Name: "bool" } => $"boolean{n}",
-      { Name: "int32" or "int64" or "int16" or "float32" or "float64" or "float128" } => $"number{n}",
-      //{ Name: "array", Arguments: [var a] } => $"{ToReference(input, a, ctx)}[]{n}",
-      { Name: "array", Arguments.Length: 1 } => $"({ToInterfaceReference(input, typeReference.Arguments[0], ctx)})[]{n}",
-      //{ Name: ['_', .. var x] } => x,
+      { Name: ApiSpecConsts.String or ApiSpecConsts.Date or ApiSpecConsts.Binary or ApiSpecConsts.Guid or ApiSpecConsts.Duration } => $"string{n}",
+      { Name: ApiSpecConsts.Bool } => $"boolean{n}",
+      { Name: ApiSpecConsts.Int32 or ApiSpecConsts.Int64 or ApiSpecConsts.Int16 or ApiSpecConsts.Float32 or ApiSpecConsts.Float64 or ApiSpecConsts.Float128 } => $"number{n}",
+      { Name: ApiSpecConsts.Specials.Array, Arguments.Length: 1 } => $"({ToInterfaceReference(input, typeReference.Arguments[0], ctx)})[]{n}",
       _ when typeReference.Name.StartsWith("_") => typeReference.Name[1..],
-      //{ Name: "map", Arguments: [var k, var v] } => $"{{[key:{ToReference(input, k, ctx, false)}]:{ToReference(input, v, ctx)}}}{n}",
-      { Name: "map", Arguments.Length: 2 } => $"{{[key:{ToInterfaceReference(input, typeReference.Arguments[0], ctx, false)}]:{ToInterfaceReference(input, typeReference.Arguments[1], ctx)}}}{n}",
+      { Name: ApiSpecConsts.Specials.Map, Arguments.Length: 2 } => $"{{[key:{ToInterfaceReference(input, typeReference.Arguments[0], ctx, false)}]:{ToInterfaceReference(input, typeReference.Arguments[1], ctx)}}}{n}",
       _ => null
     };
 
     if (preset != null) return preset;
 
     // Object
-    if (typeReference is { Name: "object" })
+    if (typeReference is { Name: ApiSpecConsts.Object })
     {
-      ctx.RegisterReferencedModule("EVA.Core");
-      return ctx.AssemblyName == "EVA.Core" ? $"Record<string, _anyValue>{n}" : $"Record<string, EvaCore._anyValue>{n}";
+      ctx.RegisterReferencedModule(ApiSpecConsts.WellKnown.CoreAssembly);
+      return ctx.AssemblyName == ApiSpecConsts.WellKnown.CoreAssembly ? $"Record<string, _anyValue>{n}" : $"Record<string, EvaCore._anyValue>{n}";
     }
 
     // Any
-    if (typeReference is { Name: "any" })
+    if (typeReference is { Name: ApiSpecConsts.Any })
     {
-      ctx.RegisterReferencedModule("EVA.Core");
-      return ctx.AssemblyName == "EVA.Core" ? $"_anyValue{n}" : $"EvaCore._anyValue{n}";
+      ctx.RegisterReferencedModule(ApiSpecConsts.WellKnown.CoreAssembly);
+      return ctx.AssemblyName == ApiSpecConsts.WellKnown.CoreAssembly ? $"_anyValue{n}" : $"EvaCore._anyValue{n}";
     }
 
     // Apparently a type
     ctx.RegisterReferencedModule(input.Types[typeReference.Name].Assembly);
     if (!typeReference.Arguments.Any())
     {
-      var t = ToReference(input, typeReference, ctx);
-      return $"z.infer<typeof {t}>{n}";
+      return $"z.infer<typeof {ToReference(input, typeReference, ctx)}>{n}";
     }
-    else
-    {
-      return "unknown";
-      // var args = typeReference.Arguments.Select(a => ToReference(input, a, ctx));
-      // return $"{GetTypeRef(input, typeReference.Name, ctx)}<{string.Join(", ", args)}>";
-    }
+
+    return "unknown";
   }
 
-  private void WriteProperties(ApiDefinitionModel input, AssemblyContext ctx, TypeSpecification type, IndentedStringBuilder o, string fixedTypeName)
+  private void WriteProperties(ApiDefinitionModel input, AssemblyContext ctx, TypeSpecification type, IndentedStringBuilder o)
   {
     foreach (var (propName, propSpec) in type.Properties)
     {
       if (propSpec.Type.Nullable && !propSpec.Skippable)
       {
-        o.WriteLine($"{propName}: {ToReference(input, propSpec, propName, fixedTypeName, ctx)}.optional(),");
+        o.WriteLine($"{propName}: {ToReference(input, propSpec, ctx)}.optional(),");
       }
       else if (propSpec.Type.Nullable && propSpec.Skippable)
       {
-        o.WriteLine($"{propName}: {ToReference(input, propSpec, propName, fixedTypeName, ctx)}.optional(),");
+        o.WriteLine($"{propName}: {ToReference(input, propSpec, ctx)}.optional(),");
       }
       else if (!propSpec.Type.Nullable && !propSpec.Skippable)
       {
-        o.WriteLine($"{propName}: {ToReference(input, propSpec, propName, fixedTypeName, ctx)},");
+        o.WriteLine($"{propName}: {ToReference(input, propSpec, ctx)},");
       }
       else if (!propSpec.Type.Nullable && propSpec.Skippable)
       {
-        o.WriteLine($"{propName}: {ToReference(input, propSpec, propName, fixedTypeName, ctx)}.optional(),");
+        o.WriteLine($"{propName}: {ToReference(input, propSpec, ctx)}.optional(),");
       }
     }
   }
 
-  private string ToReference(ApiDefinitionModel input, PropertySpecification ps, string propName, string typeName, AssemblyContext ctx, bool? overrideNullable = null)
+  private static string ToReference(ApiDefinitionModel input, PropertySpecification ps, AssemblyContext ctx, bool? overrideNullable = null)
   {
-    if (ps.Type.Name == "string" && ps.AllowedValues.Any())
+    if (ps.Type.Name == ApiSpecConsts.String && ps.AllowedValues.Any())
     {
       return $"z.enum([{string.Join(", ", ps.AllowedValues.Select(TypescriptOutput.EscapeForString))}]){(overrideNullable ?? ps.Type.Nullable ? ".nullable()" : "")}";
     }
 
-    if (ps.Type is { Name: "option", Arguments: var options })
+    if (ps.Type is { Name: ApiSpecConsts.Specials.Option, Arguments: var options })
     {
       // TODO: Extenders
 
@@ -301,36 +302,33 @@ public class ZodOutput : IOutput<ZodOptions>
       if (options.Length == 1) return ToReference(input, options.First(), ctx, overrideNullable);
 
       // Only add types from this assembly
-      // var typesFromCurrentAssembly = options.Where(o => !input.Types.TryGetValue(o.Name, out var x) || x.Assembly == ctx.AssemblyName);
-      var typesFromCurrentAssembly = options;
-      var nullable = overrideNullable ?? ps.Type.Nullable || typesFromCurrentAssembly.Any(o => o.Nullable);
+      var nullable = overrideNullable ?? ps.Type.Nullable || options.Any(o => o.Nullable);
 
-      var allReferences = typesFromCurrentAssembly.Select(tr => ToReference(input, tr, ctx, overrideNullable));
+      var allReferences = options.Select(tr => ToReference(input, tr, ctx, overrideNullable));
       return $"z.union([{string.Join(", ", allReferences)}]){(overrideNullable ?? nullable ? ".nullable()" : "")}";
     }
 
     return ToReference(input, ps.Type, ctx, overrideNullable);
   }
 
-  private string ToReference(ApiDefinitionModel input, TypeReference typeReference, AssemblyContext ctx, bool? overrideNullable = null)
+  private static string ToReference(ApiDefinitionModel input, TypeReference typeReference, AssemblyContext ctx, bool? overrideNullable = null)
   {
     var nullable = overrideNullable ?? typeReference.Nullable;
     var n = nullable ? ".nullable()" : string.Empty;
 
     var preset = typeReference switch
     {
-      { Name: "string" } => $"z.string(){n}",
-      { Name: "date" } => $"z.string().datetime(){n}",
-      { Name: "binary" } => $"z.string(){n}",
-      { Name: "guid" } => $"z.string().uuid(){n}",
-      { Name: "duration" } => $"z.string(){n}",
-      { Name: "bool" } => $"z.boolean(){n}",
-      { Name: "int32" or "int64" or "int16" } => $"z.number().int(){n}",
-      { Name: "float32" or "float64" or "float128" } => $"z.number(){n}",
+      { Name: ApiSpecConsts.String } => $"z.string(){n}",
+      { Name: ApiSpecConsts.Date } => $"z.string().datetime(){n}",
+      { Name: ApiSpecConsts.Binary } => $"z.string(){n}",
+      { Name: ApiSpecConsts.Guid } => $"z.string().uuid(){n}",
+      { Name: ApiSpecConsts.Duration } => $"z.string(){n}",
+      { Name: ApiSpecConsts.Bool } => $"z.boolean(){n}",
+      { Name: ApiSpecConsts.Int32 or ApiSpecConsts.Int64 or ApiSpecConsts.Int16 } => $"z.number().int(){n}",
+      { Name: ApiSpecConsts.Float32 or ApiSpecConsts.Float64 or ApiSpecConsts.Float128 } => $"z.number(){n}",
 
-      { Name: "array", Arguments.Length: 1 } => $"{ToReference(input, typeReference.Arguments[0], ctx)}.array(){n}",
-      // //{ Name: "map", Arguments: [var k, var v] } => $"{{[key:{ToReference(input, k, ctx, false)}]:{ToReference(input, v, ctx)}}}{n}",
-      { Name: "map", Arguments.Length: 2 } => $"z.record({ToReference(input, typeReference.Arguments[1], ctx)}){n}",
+      { Name: ApiSpecConsts.Specials.Array, Arguments.Length: 1 } => $"{ToReference(input, typeReference.Arguments[0], ctx)}.array(){n}",
+      { Name: ApiSpecConsts.Specials.Map, Arguments.Length: 2 } => $"z.record({ToReference(input, typeReference.Arguments[1], ctx)}){n}",
       _ => null
     };
 
@@ -342,17 +340,17 @@ public class ZodOutput : IOutput<ZodOptions>
     }
 
     // Object
-    if (typeReference is { Name: "object" })
+    if (typeReference is { Name: ApiSpecConsts.Object })
     {
-      ctx.RegisterReferencedModule("EVA.Core");
-      return ctx.AssemblyName == "EVA.Core" ? $"z.record(TAnyValue){n}" : $"z.record(EvaCore.TAnyValue){n}";
+      ctx.RegisterReferencedModule(ApiSpecConsts.WellKnown.CoreAssembly);
+      return ctx.AssemblyName == ApiSpecConsts.WellKnown.CoreAssembly ? $"z.record(TAnyValue){n}" : $"z.record(EvaCore.TAnyValue){n}";
     }
 
     // Any
-    if (typeReference is { Name: "any" })
+    if (typeReference is { Name: ApiSpecConsts.Any })
     {
-      ctx.RegisterReferencedModule("EVA.Core");
-      return ctx.AssemblyName == "EVA.Core" ? $"TAnyValue{n}" : $"EvaCore.TAnyValue{n}";
+      ctx.RegisterReferencedModule(ApiSpecConsts.WellKnown.CoreAssembly);
+      return ctx.AssemblyName == ApiSpecConsts.WellKnown.CoreAssembly ? $"TAnyValue{n}" : $"EvaCore.TAnyValue{n}";
     }
 
     // Apparently a type
@@ -361,10 +359,8 @@ public class ZodOutput : IOutput<ZodOptions>
     {
       return TypescriptOutput.GetTypeRef(input, typeReference.Name, ctx);
     }
-    else
-    {
-      var args = typeReference.Arguments.Select(a => ToReference(input, a, ctx));
-      return $"{TypescriptOutput.GetTypeRef(input, typeReference.Name, ctx)}({string.Join(", ", args)})";
-    }
+
+    var args = typeReference.Arguments.Select(a => ToReference(input, a, ctx));
+    return $"{TypescriptOutput.GetTypeRef(input, typeReference.Name, ctx)}({string.Join(", ", args)})";
   }
 }

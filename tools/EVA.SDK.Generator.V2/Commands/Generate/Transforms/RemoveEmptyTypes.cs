@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
-public class RemoveEmptyTypes : INamedTransform
+internal class RemoveEmptyTypes : INamedTransform
 {
   public string Name => "empty-types";
   public string Description => "Will remove all types that don't have any properties";
@@ -13,7 +13,7 @@ public class RemoveEmptyTypes : INamedTransform
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
     var whitelistedIDs = input.Services.Select(s => s.RequestTypeID).Concat(input.Services.Select(s => s.ResponseTypeID)).ToHashSet();
-    var changes = ITransform.TransformResult.NoChanges;
+    var changes = ITransform.TransformResult.None;
 
     while (true)
     {
@@ -22,7 +22,7 @@ public class RemoveEmptyTypes : INamedTransform
       foreach (var (id, type) in input.Types)
       {
         if (type.Properties.Any()) continue;
-        if (type.EnumValues != null) continue;
+        if (type.EnumIsFlag.HasValue) continue;
         if (whitelistedIDs.Contains(id)) continue;
 
         var redirect = type.Extends ?? new TypeReference("object", ImmutableArray<TypeReference>.Empty, false);

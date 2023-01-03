@@ -4,9 +4,9 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.ListVersions;
 
-public static class ListVersionsCommand
+internal static class ListVersionsCommand
 {
-  public static void Register(Command command)
+  internal static void Register(Command command)
   {
     var listVersionsCommand = new Command("list-versions");
     command.AddCommand(listVersionsCommand);

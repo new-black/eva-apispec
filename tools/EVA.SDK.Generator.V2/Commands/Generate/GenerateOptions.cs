@@ -5,71 +5,71 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate;
 
-public class GenerateOptions
+internal class GenerateOptions
 {
-  public string? Input { get; set; }
-  public string OutputDirectory { get; set; } = string.Empty;
-
-
-
-  public bool Overwrite { get; set; }
+  internal string? Input { get; init; }
+  internal string OutputDirectory { get; set; } = string.Empty;
+  internal bool Overwrite { get; init; }
 
   // Filters
-  public string[]? FilterAssemblies { get; set; }
-  public string[]? FilterServices { get; set; }
+  internal string[]? FilterAssemblies { get; init; }
+  internal string[]? FilterServices { get; init; }
 
-  public List<string>? Remove { get; set; }
+  internal List<string>? Remove { get; set; }
 
-  public string? OrphanedTypesAssembly { get; set; }
+  internal string? OrphanedTypesAssembly { get; init; }
 
-  public void EnsureRemove(string remove)
+  internal void EnsureRemove(string remove)
   {
     Remove ??= new List<string>();
     if (!Remove.Contains(remove)) Remove.Add(remove);
   }
 }
 
-public abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : GenerateOptions, new()
+internal static class BaseGenerateOptionsBinderOptions
 {
-  public readonly Option<string> OutputDir = new Option<string>(
+  internal static readonly Option<string> OutputDir = new Option<string>(
     name: "--out",
     description: "The directory to write the output to"
   ) { IsRequired = true }.WithAlias("-o");
 
-  public readonly Option<bool> Overwrite = new(
+  internal static readonly Option<bool> Overwrite = new(
     name: "--overwrite",
     description: "Overwrite the entire output directory if it exists"
   );
 
-  public readonly Option<string[]> FilterAssemblies = new(
+  internal static readonly Option<string[]> FilterAssemblies = new(
     name: "--assembly",
     description: "Only output services from this assembly. Can be specified multiple time. Supports format Assembly.Source:Assembly.Target to allow for assembly rewriting."
   ) { AllowMultipleArgumentsPerToken = true };
 
-  public readonly Option<string> OrphanedTypesAssembly = new(
+  internal static readonly Option<string> OrphanedTypesAssembly = new(
     name: "--orphaned-types-assembly",
     description: "Merge all types from assemblies without services into the given assembly."
   );
 
-  public readonly Option<string[]> FilterServices = new(
+  internal static readonly Option<string[]> FilterServices = new(
     name: "--service",
     description: "Only output this single service. Can be specified multiple time. This is case sensitive."
   );
+}
 
-  protected override T GetBoundValue(BindingContext ctx)
+internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : GenerateOptions, new()
+{
+  protected override T GetBoundValue(BindingContext bindingContext)
   {
     var result = new T
     {
-      Input = SharedOptions.Input.Value(ctx),
-      OutputDirectory = OutputDir.Value(ctx) ?? string.Empty,
-      Overwrite = Overwrite.Value(ctx),
-      Remove = _remove?.Value(ctx),
-      FilterAssemblies = FilterAssemblies.Value(ctx),
-      FilterServices = FilterServices.Value(ctx),
-      OrphanedTypesAssembly = OrphanedTypesAssembly.Value(ctx)
+      Input = SharedOptions.Input.Value(bindingContext),
+      OutputDirectory = BaseGenerateOptionsBinderOptions.OutputDir.Value(bindingContext) ?? string.Empty,
+      Overwrite = BaseGenerateOptionsBinderOptions.Overwrite.Value(bindingContext),
+      Remove = _remove?.Value(bindingContext),
+      FilterAssemblies = BaseGenerateOptionsBinderOptions.FilterAssemblies.Value(bindingContext),
+      FilterServices = BaseGenerateOptionsBinderOptions.FilterServices.Value(bindingContext),
+      OrphanedTypesAssembly = BaseGenerateOptionsBinderOptions.OrphanedTypesAssembly.Value(bindingContext)
     };
 
-    BuildOptions(result, ctx);
+    BuildOptions(result, bindingContext);
     return result;
   }
 
@@ -78,11 +78,11 @@ public abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : Gen
   public IEnumerable<Option> GetAllOptions(string[] forcedRemoves)
   {
     yield return SharedOptions.Input;
-    yield return OutputDir;
-    yield return Overwrite;
-    yield return FilterAssemblies;
-    yield return FilterServices;
-    yield return OrphanedTypesAssembly;
+    yield return BaseGenerateOptionsBinderOptions.OutputDir;
+    yield return BaseGenerateOptionsBinderOptions.Overwrite;
+    yield return BaseGenerateOptionsBinderOptions.FilterAssemblies;
+    yield return BaseGenerateOptionsBinderOptions.FilterServices;
+    yield return BaseGenerateOptionsBinderOptions.OrphanedTypesAssembly;
 
     foreach (var opt in GetOptions()) yield return opt;
 
@@ -102,5 +102,5 @@ public abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : Gen
 
   protected abstract IEnumerable<Option> GetOptions();
 
-  protected abstract void BuildOptions(T options, BindingContext bindingContext);
+  protected abstract void BuildOptions(T options, BindingContext ctx);
 }

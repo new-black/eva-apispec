@@ -3,17 +3,17 @@ using System.Text;
 
 namespace EVA.SDK.Generator.V2.Helpers;
 
-public class IndentedStringBuilder
+internal class IndentedStringBuilder
 {
   private readonly int _indentSize;
-  private int _indent = 0;
+  private int _indent;
   private readonly StringBuilder _builder = new();
-  private const string Linebreak = "\n";
+  private const char Linebreak = '\n';
   private bool _writeIndent = true;
 
-  public IDisposable Indentation => new IndentationScope(this);
+  internal IDisposable Indentation => new IndentationScope(this);
 
-  public IndentedStringBuilder(int indentSize)
+  internal IndentedStringBuilder(int indentSize)
   {
     _indentSize = indentSize;
   }
@@ -22,7 +22,7 @@ public class IndentedStringBuilder
   {
     private readonly IndentedStringBuilder _sb;
 
-    public IndentationScope(IndentedStringBuilder sb)
+    internal IndentationScope(IndentedStringBuilder sb)
     {
       _sb = sb;
       _sb._indent++;
@@ -33,13 +33,13 @@ public class IndentedStringBuilder
 
   private void WriteIndent() => _builder.Append(new string(' ', _indent * _indentSize));
 
-  public void WriteLine()
+  internal void WriteLine()
   {
     _builder.Append(Linebreak);
     _writeIndent = true;
   }
 
-  public void WriteLine(string s)
+  internal void WriteLine(string s)
   {
     if(_writeIndent) WriteIndent();
     _builder.Append(s);
@@ -47,20 +47,20 @@ public class IndentedStringBuilder
     _writeIndent = true;
   }
 
-  public void Write(string s)
+  internal void Write(string s)
   {
     if(_writeIndent) WriteIndent();
     _builder.Append(s);
     _writeIndent = false;
   }
 
-  public void WriteLines(string s, string? prefix = null)
+  internal void WriteLines(string s, string? prefix = null)
   {
     var lines = s.Split('\n');
     foreach(var l in lines) WriteLine((prefix ?? string.Empty) + l);
   }
 
-  public void WriteIndented(Action<IndentedStringBuilder> o)
+  internal void WriteIndented(Action<IndentedStringBuilder> o)
   {
     _indent++;
     o(this);
@@ -72,7 +72,7 @@ public class IndentedStringBuilder
     return _builder.ToString();
   }
 
-  public void WriteManifestResourceStream(string name)
+  internal void WriteManifestResourceStream(string name)
   {
     var assembly = Assembly.GetExecutingAssembly();
     var resourceName = assembly.GetManifestResourceNames().First(n => n.EndsWith(name));

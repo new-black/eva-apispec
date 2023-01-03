@@ -4,14 +4,14 @@ using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
-public class RemoveUnusedGenericArguments : INamedTransform
+internal class RemoveUnusedGenericArguments : INamedTransform
 {
   public string Name => "unused-type-params";
   public string Description => "Removes unused generic type parameters";
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
-    var changes = ITransform.TransformResult.NoChanges;
+    var changes = ITransform.TransformResult.None;
 
     while (true)
     {
@@ -19,7 +19,6 @@ public class RemoveUnusedGenericArguments : INamedTransform
 
       foreach (var (id, type) in input.Types)
       {
-        if (type.TypeArguments == null) continue;
         if (!type.TypeArguments.Any()) continue;
 
         // Start by assuming they are all unused, they can only be acquitted by a reference
@@ -35,13 +34,13 @@ public class RemoveUnusedGenericArguments : INamedTransform
         {
           hasChanges = true;
           changes = ITransform.TransformResult.StructuralChanges;
-          type.TypeArguments = type.TypeArguments.WithoutIndex(unusedIndex, true);
+          type.TypeArguments = type.TypeArguments.WithoutIndex(unusedIndex);
 
           foreach (var reference in input.EnumerateAllTypeReferences())
           {
             if (reference.Name == id)
             {
-              reference.Arguments = reference.Arguments.WithoutIndex(unusedIndex, true);
+              reference.Arguments = reference.Arguments.WithoutIndex(unusedIndex);
             }
           }
         }

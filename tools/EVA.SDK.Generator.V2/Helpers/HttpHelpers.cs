@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Helpers;
 
-public static class HttpHelpers
+internal static class HttpHelpers
 {
   private static readonly HttpClient _http = new()
   {
@@ -22,7 +22,7 @@ public static class HttpHelpers
     await using var stream = await response.Content.ReadAsStreamAsync();
     var result = await JsonSerializer.DeserializeAsync(stream, info);
     if (result == null) throw new UnparsableResponseException(url);
-    logger.LogInformation("Downloaded {size} from {url}", StringHelpers.FormatSize(stream.Position), url);
+    logger.LogInformation("Downloaded {Size} from {Url}", StringHelpers.FormatSize(stream.Position), url);
     return result;
   }
 
@@ -34,6 +34,6 @@ public static class HttpHelpers
     await target.FlushAsync();
     target.Close();
 
-    logger.LogInformation("Downloaded {size} from {url}", StringHelpers.FormatSize(new FileInfo(path).Length), url);
+    logger.LogInformation("Downloaded {Size} from {Url}", StringHelpers.FormatSize(new FileInfo(path).Length), url);
   }
 }

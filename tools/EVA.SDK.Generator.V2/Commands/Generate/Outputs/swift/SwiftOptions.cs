@@ -4,25 +4,25 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.swift;
 
-public class SwiftOptions : GenerateOptions
+internal class SwiftOptions : GenerateOptions
 {
-  public string AnyCodeableName { get; set; }
+  internal string AnyCodableName { get; set; } = SwiftOptionsBinder.AnyCodableName.Default;
 }
 
-public class SwiftOptionsBinder : BaseGenerateOptionsBinder<SwiftOptions>
+internal class SwiftOptionsBinder : BaseGenerateOptionsBinder<SwiftOptions>
 {
-  private Option<string> AnyCodeableName = new Option<string>(
+  internal static readonly OptionWithDefault<string> AnyCodableName = new Option<string>(
     name: "--opt-anycodable-name",
     description: "The name to use for AnyCodable"
   ).WithDefault("EvaAnyCodable");
 
   protected override IEnumerable<Option> GetOptions()
   {
-    yield return AnyCodeableName;
+    yield return AnyCodableName.Option;
   }
 
   protected override void BuildOptions(SwiftOptions options, BindingContext ctx)
   {
-    options.AnyCodeableName = AnyCodeableName.Value(ctx);
+    options.AnyCodableName = AnyCodableName.Value(ctx);
   }
 }

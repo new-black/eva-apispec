@@ -6,14 +6,14 @@ namespace EVA.SDK.Generator.V2.Helpers;
 /// <summary>
 /// Some helpers that should make it easier to build an output.
 /// </summary>
-public static class ApiDefinitionModelExtensions
+internal static class ApiDefinitionModelExtensions
 {
   /// <summary>
   /// Enumerates through all TypeReferences that are in the model.
   /// </summary>
   /// <param name="model"></param>
   /// <returns></returns>
-  public static IEnumerable<TypeReference> EnumerateAllTypeReferences(this ApiDefinitionModel model)
+  internal static IEnumerable<TypeReference> EnumerateAllTypeReferences(this ApiDefinitionModel model)
   {
     foreach (var (_, type) in model.Types)
     {
@@ -26,14 +26,14 @@ public static class ApiDefinitionModelExtensions
   /// </summary>
   /// <param name="model"></param>
   /// <returns></returns>
-  public static IEnumerable<string> EnumerateAllAssemblies(this ApiDefinitionModel model)
+  internal static IEnumerable<string> EnumerateAllAssemblies(this ApiDefinitionModel model)
   {
     var serviceAssemblies = model.Services.Select(s => s.Assembly);
     var typeAssemblies = model.Types.Values.Select(t => t.Assembly);
     return serviceAssemblies.Concat(typeAssemblies).Distinct().OrderBy(x => x).ToList();
   }
 
-  public static IEnumerable<TypeReference> EnumerateAllTypeReferences(this TypeSpecification type)
+  internal static IEnumerable<TypeReference> EnumerateAllTypeReferences(this TypeSpecification type)
   {
     if (type.Extends != null)
     {
@@ -46,7 +46,7 @@ public static class ApiDefinitionModelExtensions
     }
   }
 
-  public static IEnumerable<TypeReference> EnumerateAllTypeReferences(this TypeReference reference)
+  private static IEnumerable<TypeReference> EnumerateAllTypeReferences(this TypeReference reference)
   {
     yield return reference;
 
@@ -67,7 +67,7 @@ public static class ApiDefinitionModelExtensions
   /// <param name="spec"></param>
   /// <param name="mapping"></param>
   /// <returns></returns>
-  public static TypeSpecification TemplateWith(this TypeSpecification spec, IEnumerable<TypeReference> mapping)
+  internal static TypeSpecification TemplateWith(this TypeSpecification spec, IEnumerable<TypeReference> mapping)
   {
     // Create a copy first-thing, this makes sure we won't modify the original.
     spec = JsonContext.Default.TypeSpecification.Clone(spec);
@@ -93,7 +93,7 @@ public static class ApiDefinitionModelExtensions
     return spec;
   }
 
-  public static List<GroupedApiDefinitionModel> GroupByAssembly(this ApiDefinitionModel model)
+  internal static List<GroupedApiDefinitionModel> GroupByAssembly(this ApiDefinitionModel model)
   {
     var servicesGroupedByAssembly = model.Services.GroupBy(s => s.Assembly);
     var typesGroupedByAssembly = model.Types.ToLookupDictionary(t => t.Value.Assembly);
@@ -118,18 +118,18 @@ public static class ApiDefinitionModelExtensions
     return result;
   }
 
-  public static string MessageWithEnhancedArguments(this ErrorSpecification spec)
+  internal static string MessageWithEnhancedArguments(this ErrorSpecification spec)
   {
     var message = spec.Message;
     if (spec.Arguments.Any())
     {
-      message = string.Format(message, spec.Arguments.Select((a, i) => $"{{{a.Name ?? i.ToString()}:{a.Type.Name}}}").ToArray());
+      message = string.Format(message, spec.Arguments.Select(a => (object)$"{{{a.Name}:{a.Type.Name}}}").ToArray());
     }
 
     return message;
   }
 
-  public static PrefixGroupedErrors GroupByPrefix(this List<ErrorSpecification> errors, int skip = 0)
+  internal static PrefixGroupedErrors GroupByPrefix(this List<ErrorSpecification> errors, int skip = 0)
   {
     var rootErrors = new List<(string Name, ErrorSpecification error)>();
     var subErrors = new SortedDictionary<string, List<ErrorSpecification>>();
@@ -156,7 +156,7 @@ public static class ApiDefinitionModelExtensions
     );
   }
 
-  public static Dictionary<string, long> ToTotals(this ImmutableSortedDictionary<string, EnumValueSpecification> source)
+  internal static Dictionary<string, long> ToTotals(this ImmutableSortedDictionary<string, EnumValueSpecification> source)
   {
     var result = new Dictionary<string, long>();
 
@@ -172,7 +172,7 @@ public static class ApiDefinitionModelExtensions
     return result;
   }
 
-  public record PrefixGroupedErrors(List<(string Name, ErrorSpecification error)> Errors, ImmutableSortedDictionary<string, PrefixGroupedErrors> SubErrors);
+  internal record PrefixGroupedErrors(List<(string Name, ErrorSpecification error)> Errors, ImmutableSortedDictionary<string, PrefixGroupedErrors> SubErrors);
 
-  public record GroupedApiDefinitionModel(string Assembly, Dictionary<string, TypeSpecification> Types, List<ServiceModel> Services, List<ErrorSpecification> Errors);
+  internal record GroupedApiDefinitionModel(string Assembly, Dictionary<string, TypeSpecification> Types, List<ServiceModel> Services, List<ErrorSpecification> Errors);
 }

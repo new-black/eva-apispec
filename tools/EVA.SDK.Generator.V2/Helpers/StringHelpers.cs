@@ -1,8 +1,8 @@
 ﻿namespace EVA.SDK.Generator.V2.Helpers;
 
-public class StringHelpers
+internal static class StringHelpers
 {
-  public static string FormatSize(long size)
+  internal static string FormatSize(long size)
   {
     var suffixes = new[] { "B", "KB", "MB", "GB", "TB", "PB" };
     var suffixIndex = 0;

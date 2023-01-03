@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms.Internal;
 
-public class RemoveUnusedTypes : ITransform
+internal class RemoveUnusedTypes : ITransform
 {
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
@@ -32,14 +32,9 @@ public class RemoveUnusedTypes : ITransform
       }
     }
 
-    if (allUnusedTypes.Any())
-    {
-      input.Types = input.Types.Where(kv => !allUnusedTypes.Contains(kv.Key)).ToImmutableSortedDictionary();
-      return ITransform.TransformResult.Changes;
-    }
-    else
-    {
-      return ITransform.TransformResult.NoChanges;
-    }
+    if (!allUnusedTypes.Any()) return ITransform.TransformResult.None;
+
+    input.Types = input.Types.Where(kv => !allUnusedTypes.Contains(kv.Key)).ToImmutableSortedDictionary();
+    return ITransform.TransformResult.Changes;
   }
 }

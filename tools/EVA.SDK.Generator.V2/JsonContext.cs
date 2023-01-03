@@ -15,5 +15,5 @@ namespace EVA.SDK.Generator.V2;
 [JsonSerializable(typeof(UpdateCommand.LatestResponse))]
 internal partial class JsonContext : JsonSerializerContext
 {
-  internal static JsonContext Indented { get; } = new JsonContext(new JsonSerializerOptions { WriteIndented = true });
+  internal static JsonContext Indented { get; } = new(new JsonSerializerOptions { WriteIndented = true });
 }

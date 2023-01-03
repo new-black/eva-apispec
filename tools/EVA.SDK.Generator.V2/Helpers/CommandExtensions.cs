@@ -2,9 +2,9 @@
 
 namespace EVA.SDK.Generator.V2.Helpers;
 
-public static class CommandExtensions
+internal static class CommandExtensions
 {
-  public static void AddOptions(this Command command, IEnumerable<Option> options)
+  internal static void AddOptions(this Command command, IEnumerable<Option> options)
   {
     foreach (var opt in options)
     {

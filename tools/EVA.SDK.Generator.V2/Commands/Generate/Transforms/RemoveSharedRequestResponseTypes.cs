@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
-public class RemoveSharedRequestResponseTypes : INamedTransform
+internal class RemoveSharedRequestResponseTypes : INamedTransform
 {
   public string Name => "shared-req-res-types";
   public string Description => "Splits types that are used in both requests and responses into separate types";
@@ -14,40 +14,39 @@ public class RemoveSharedRequestResponseTypes : INamedTransform
   {
     ApiSpecHelpers.RebuildTypeContext(input);
 
-    var changes = ITransform.TransformResult.NoChanges;
+    var changes = ITransform.TransformResult.None;
     var renameCache = new Dictionary<string, string>();
 
     // Split all types into request and response types
     var newTypes = new Dictionary<string, TypeSpecification>(input.Types);
     foreach (var (typeID, typeSpec) in input.Types)
     {
-      if (!typeSpec.EnumIsFlag.HasValue && typeSpec.Usage is { Request: true, Response: true })
+      if (typeSpec.EnumIsFlag.HasValue || typeSpec.Usage is not { Request: true, Response: true }) continue;
+
+      // Create a copy
+      var responseTypeSpec = JsonContext.Default.TypeSpecification.Clone(typeSpec);
+      typeSpec.Usage.Response = false;
+      responseTypeSpec.Usage.Request = false;
+
+      // Find new ID and name
+      var responseTypeID = typeID;
+      var addedResponses = 0;
+      while(newTypes.ContainsKey(responseTypeID))
       {
-        // Create a copy
-        var responseTypeSpec = JsonContext.Default.TypeSpecification.Clone(typeSpec);
-        typeSpec.Usage.Response = false;
-        responseTypeSpec.Usage.Request = false;
-
-        // Find new ID and name
-        var responseTypeID = typeID;
-        var addedResponses = 0;
-        while(newTypes.ContainsKey(responseTypeID))
-        {
-          responseTypeID = AddResponse(responseTypeID);
-          addedResponses++;
-        }
-        renameCache.Add(typeID, responseTypeID);
-
-        for (var i = 0; i < addedResponses; i++) responseTypeSpec.TypeName = AddResponse(responseTypeSpec.TypeName);
-        newTypes.Add(responseTypeID, responseTypeSpec);
+        responseTypeID = AddResponse(responseTypeID);
+        addedResponses++;
       }
+      renameCache.Add(typeID, responseTypeID);
+
+      for (var i = 0; i < addedResponses; i++) responseTypeSpec.TypeName = AddResponse(responseTypeSpec.TypeName);
+      newTypes.Add(responseTypeID, responseTypeSpec);
     }
 
-    if (!renameCache.Any()) return ITransform.TransformResult.NoChanges;
+    if (!renameCache.Any()) return ITransform.TransformResult.None;
     input.Types = newTypes.ToImmutableSortedDictionary();
 
     // Update the referenced
-    foreach (var (id,typeSpec) in input.Types)
+    foreach (var (_,typeSpec) in input.Types)
     {
       if (!typeSpec.Usage.Response) continue;
 
@@ -59,11 +58,10 @@ public class RemoveSharedRequestResponseTypes : INamedTransform
 
       foreach (var typeReference in typeSpec.EnumerateAllTypeReferences())
       {
-        if(renameCache.TryGetValue(typeReference.Name, out var rename))
-        {
-          typeReference.Name = rename;
-          changes = ITransform.TransformResult.Changes;
-        }
+        if (!renameCache.TryGetValue(typeReference.Name, out var rename)) continue;
+
+        typeReference.Name = rename;
+        changes = ITransform.TransformResult.Changes;
       }
     }
 

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms.Filters;
 
-public class FilterAssemblies : ITransform
+internal class FilterAssemblies : ITransform
 {
   private readonly List<(string filter, string? output)> _assemblies;
 
@@ -25,11 +25,10 @@ public class FilterAssemblies : ITransform
 
       foreach (var (filter,output) in _assemblies)
       {
-        if (FileSystemName.MatchesSimpleExpression(filter, input, true))
-        {
-          result = output ?? input;
-          break;
-        }
+        if (!FileSystemName.MatchesSimpleExpression(filter, input)) continue;
+
+        result = output ?? input;
+        break;
       }
 
       cache[input] = result;
@@ -46,7 +45,7 @@ public class FilterAssemblies : ITransform
     }
 
     Console.WriteLine("\nGrouping:");
-    foreach (var x in loggableAssemblies.Where(x => x.mappedTo != null & x.mappedTo != x.assembly).GroupBy(x => x.mappedTo))
+    foreach (var x in loggableAssemblies.Where(x => x.mappedTo != null && x.mappedTo != x.assembly).GroupBy(x => x.mappedTo))
     {
       Console.WriteLine($"  {x.Key}");
       foreach (var y in x)
@@ -112,6 +111,6 @@ public class FilterAssemblies : ITransform
       }
     }
 
-    return (input.Services.Length == count1 && input.Errors.Length == count2) ? ITransform.TransformResult.NoChanges : ITransform.TransformResult.Changes;
+    return input.Services.Length == count1 && input.Errors.Length == count2 ? ITransform.TransformResult.None : ITransform.TransformResult.Changes;
   }
 }

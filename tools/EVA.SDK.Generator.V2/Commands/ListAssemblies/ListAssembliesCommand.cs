@@ -4,9 +4,9 @@ using EVA.SDK.Generator.V2.Inputs;
 
 namespace EVA.SDK.Generator.V2.Commands.ListAssemblies;
 
-public static class ListAssembliesCommand
+internal static class ListAssembliesCommand
 {
-  public static void Register(Command command)
+  internal static void Register(Command command)
   {
     var listAssembliesCommand = new Command("list-assemblies");
     command.Add(listAssembliesCommand);

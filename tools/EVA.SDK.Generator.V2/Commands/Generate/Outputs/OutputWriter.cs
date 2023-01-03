@@ -1,28 +1,27 @@
 ﻿using System.Text;
 using EVA.SDK.Generator.V2.Helpers;
-using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs;
 
-public class OutputWriter
+internal class OutputWriter
 {
   private readonly string _directory;
 
   private readonly List<(string name, long size)> _writtenFiles = new();
 
-  public OutputWriter(string directory)
+  internal OutputWriter(string directory)
   {
     _directory = directory;
   }
 
-  private void EnsureDirectoryExists(string file)
+  private static void EnsureDirectoryExists(string file)
   {
     var directory = Path.GetDirectoryName(file);
     if (directory == null) return;
     if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
   }
 
-  public async Task WriteFileAsync(string file, string content)
+  internal async Task WriteFileAsync(string file, string content)
   {
     var path = Path.Combine(_directory, file);
     EnsureDirectoryExists(path);
@@ -45,7 +44,7 @@ public class OutputWriter
     var sb = new StringBuilder();
 
     var totalSize = _writtenFiles.Sum(x => x.size);
-    sb.Append($"Wrote {_writtenFiles.Count} files with total size of {StringHelpers.FormatSize(totalSize)}");
+    sb.Append("Wrote ").Append(_writtenFiles.Count).Append(" files with total size of ").Append(StringHelpers.FormatSize(totalSize));
     if (_writtenFiles.Count is <= 1 or > 40) return sb.ToString();
 
     var records = _writtenFiles.Select(f => (f.name, sizeStr:StringHelpers.FormatSize(f.size), f.size)).OrderByDescending(x => x.size).ToList();
@@ -55,7 +54,7 @@ public class OutputWriter
 
     foreach (var f in records)
     {
-      sb.AppendLine($"  {f.sizeStr.PadLeft(sizeColumnWidth)} {((int)(100.0f * f.size / totalSize)).ToString().PadLeft(3)}% {f.name}");
+      sb.Append("  ").Append(f.sizeStr.PadLeft(sizeColumnWidth)).Append(' ').Append(((int)(100.0f * f.size / totalSize)).ToString().PadLeft(3)).Append("% ").AppendLine(f.name);
     }
 
     return sb.ToString();
@@ -67,8 +66,7 @@ public class OutputWriter
 
     internal T Value { get; }
 
-    public DisposableCallback(T wrapped, Action callback)
-
+    internal DisposableCallback(T wrapped, Action callback)
     {
       Value = wrapped;
       _callback = callback;

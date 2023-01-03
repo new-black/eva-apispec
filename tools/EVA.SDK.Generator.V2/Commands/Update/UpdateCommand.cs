@@ -9,11 +9,11 @@ using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Update;
 
-public class UpdateCommand
+internal static class UpdateCommand
 {
-  private static readonly Option<bool> _waitOption = new Option<bool>(name: "--wait") { IsHidden = true }.WithDefault(false);
+  private static readonly Option<bool> _waitOption = new(name: "--wait") { IsHidden = true };
 
-  public static void Register(Command command)
+  internal static void Register(Command command)
   {
     var updateCommand = new Command("update");
     updateCommand.AddOption(_waitOption);
@@ -24,7 +24,7 @@ public class UpdateCommand
     {
       // Locations
       var currentExeLocation = Environment.ProcessPath;
-      if(currentExeLocation == null) throw new SdkException("Could not determine current executable location");
+      if (currentExeLocation == null) throw new SdkException("Could not determine current executable location");
 
       if (wait)
       {
@@ -39,16 +39,19 @@ public class UpdateCommand
 
   private static async Task DownloadNewExecutable(string currentExeLocation, ILogger logger)
   {
-    var newExeLocation = Path.Combine(Path.GetDirectoryName(currentExeLocation), "new-" + Path.GetFileName(currentExeLocation));
+    var newExeLocation = PathInSameFolder(currentExeLocation, static p => $"new-{p}");
+    var entryAssembly = Assembly.GetEntryAssembly();
+    if (entryAssembly == null) throw new SdkException("Could not determine entry assembly");
 
     // Find current version
-    var version = Assembly.GetEntryAssembly().GetName().Version.ToString(3);
-    Console.WriteLine("Current version: {0}", version);
+    var version = entryAssembly.GetName().Version?.ToString(3);
+    if (version == null) throw new SdkException("Could not determine current version");
+    logger.LogInformation("Current version: {CurrentVersion}", version);
 
     // Find latest version
     var response = await HttpHelpers.GetJson(HttpConstants.LatestReleaseTage, JsonContext.Default.LatestResponse, logger);
     var latestVersion = response.TagName;
-    if (!latestVersion.StartsWith(HttpConstants.TagPrefix))
+    if (latestVersion == null || !latestVersion.StartsWith(HttpConstants.TagPrefix))
     {
       throw new SdkException("Could not determine latest version, update cancelled");
     }
@@ -67,11 +70,12 @@ public class UpdateCommand
 
     // Find the correct asset
     var expectedAssetName = $"sdk-generator-{GetRuntimeIdentifier()}{(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".exe" : "")}";
-    var asset = response.Assets.FirstOrDefault(a => a.Name == expectedAssetName);
-    if (asset == null) throw new SdkException($"Cannot find asset: {expectedAssetName} for version {latestVersion}");
+    var asset = response.Assets?.FirstOrDefault(a => a.Name == expectedAssetName && a.BrowserDownloadUrl != null);
+    var browserDownloadUrl = asset?.BrowserDownloadUrl;
+    if (asset == null || browserDownloadUrl == null) throw new SdkException($"Cannot find asset: {expectedAssetName} for version {latestVersion}");
 
     // Download the asset
-    await HttpHelpers.GetToFile(asset.BrowserDownloadUrl, newExeLocation, logger);
+    await HttpHelpers.GetToFile(browserDownloadUrl, newExeLocation, logger);
 
     // Start child process for replacement
     Process.Start(new ProcessStartInfo
@@ -84,7 +88,7 @@ public class UpdateCommand
 
   private static async Task TrySwitchExecutables(string currentExeLocation)
   {
-    var newExeLocation = Path.Combine(Path.GetDirectoryName(currentExeLocation), Path.GetFileName(currentExeLocation)[4..]);
+    var newExeLocation = PathInSameFolder(currentExeLocation, static p => p[4..]);
 
     // Try 10 times
     foreach (var _ in Enumerable.Range(0, 10))
@@ -105,16 +109,33 @@ public class UpdateCommand
     }
   }
 
+  private static string PathInSameFolder(string file, Func<string, string> transformFileName)
+  {
+    var directory = Path.GetDirectoryName(file);
+    directory ??= string.Empty;
+    return Path.Combine(directory, transformFileName(Path.GetFileName(file)));
+  }
+
   private static string GetRuntimeIdentifier()
   {
     var arch = RuntimeInformation.ProcessArchitecture;
-    var os = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-      ? "win"
-      : RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
-        ? "linux"
-        : RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-          ? "osx"
-          : throw new SdkException("Unsupported OS");
+    string os;
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+    {
+      os = "win";
+    }
+    else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+    {
+      os = "linux";
+    }
+    else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+    {
+      os = "osx";
+    }
+    else
+    {
+      throw new SdkException("Unsupported OS");
+    }
 
     return (arch, os) switch
     {
@@ -127,16 +148,16 @@ public class UpdateCommand
 
   public class LatestResponse
   {
-    [JsonPropertyName("assets")] public List<Asset> Assets { get; set; }
+    [JsonPropertyName("assets")] public List<Asset>? Assets { get; set; }
 
-    [JsonPropertyName("tag_name")] public string TagName { get; set; }
+    [JsonPropertyName("tag_name")] public string? TagName { get; set; }
 
     public class Asset
     {
-      [JsonPropertyName("name")] public string Name { get; set; }
+      [JsonPropertyName("name")] public string? Name { get; set; }
 
       [JsonPropertyName("browser_download_url")]
-      public string BrowserDownloadUrl { get; set; }
+      public string? BrowserDownloadUrl { get; set; }
     }
   }
 }

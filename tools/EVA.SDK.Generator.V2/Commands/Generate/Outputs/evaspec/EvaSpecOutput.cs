@@ -3,37 +3,33 @@ using EVA.API.Spec;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.evaspec;
 
-public class EvaSpecOutput : IOutput<EvaSpecOptions>
+internal class EvaSpecOutput : IOutput<EvaSpecOptions>
 {
   public string? OutputPattern => null;
 
   public string[] ForcedRemoves => Array.Empty<string>();
 
-  public async Task Write(ApiDefinitionModel input, EvaSpecOptions options, OutputWriter writer)
+  public async Task Write(OutputContext<EvaSpecOptions> ctx)
   {
     // Main spec file
-    await using (var file = writer.WriteStreamAsync("spec.json"))
+    await using (var file = ctx.Writer.WriteStreamAsync("spec.json"))
     {
-      await JsonSerializer.SerializeAsync(file.Value, input, JsonContext.Default.ApiDefinitionModel);
+      await JsonSerializer.SerializeAsync(file.Value, ctx.Input, JsonContext.Default.ApiDefinitionModel);
     }
 
     // Source files
-    if (!options.IncludeSrcFiles) return;
+    if (!ctx.Options.IncludeSrcFiles) return;
 
     // Write things
-    foreach (var service in input.Services)
+    foreach (var service in ctx.Input.Services)
     {
-      await using (var file = writer.WriteStreamAsync($"src/services/{service.Name}.json"))
-      {
-        await JsonSerializer.SerializeAsync(file.Value, service, JsonContext.Indented.ServiceModel);
-      }
+      await using var file = ctx.Writer.WriteStreamAsync($"src/services/{service.Name}.json");
+      await JsonSerializer.SerializeAsync(file.Value, service, JsonContext.Indented.ServiceModel);
     }
-    foreach (var (id, type) in input.Types)
+    foreach (var (id, type) in ctx.Input.Types)
     {
-      await using (var file = writer.WriteStreamAsync($"src/types/{id}.json"))
-      {
-        await JsonSerializer.SerializeAsync(file.Value, type, JsonContext.Indented.TypeSpecification);
-      }
+      await using var file = ctx.Writer.WriteStreamAsync($"src/types/{id}.json");
+      await JsonSerializer.SerializeAsync(file.Value, type, JsonContext.Indented.TypeSpecification);
     }
   }
 }

@@ -4,14 +4,16 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.typescript;
 
-public class TypescriptOutput : IOutput<TypescriptOptions>
+internal class TypescriptOutput : IOutput<TypescriptOptions>
 {
   public string? OutputPattern => null;
 
   public string[] ForcedRemoves => Array.Empty<string>();
 
-  public async Task Write(ApiDefinitionModel input, TypescriptOptions options, OutputWriter writer)
+  public async Task Write(OutputContext<TypescriptOptions> ctx)
   {
+    var (input, options, writer, _) = ctx;
+
     foreach (var group in input.GroupByAssembly())
     {
       var assemblyCtx = new AssemblyContext(group.Assembly);
@@ -26,7 +28,7 @@ public class TypescriptOutput : IOutput<TypescriptOptions>
       using (o.Indentation)
       {
         // Preset types
-        if (group.Assembly == "EVA.Core")
+        if (group.Assembly == ApiSpecConsts.WellKnown.CoreAssembly)
         {
           o.WriteLine();
           o.WriteLine("export type TAnyValue = string | number | boolean | Date | Array<TAnyValue> | { [key: string]: TAnyValue };");
@@ -71,7 +73,7 @@ public class TypescriptOutput : IOutput<TypescriptOptions>
 
       foreach (var (propname, propspec) in typespec.Properties)
       {
-        if (propspec.Type.Name != "option") continue;
+        if (propspec.Type.Name != ApiSpecConsts.Specials.Option) continue;
         var typesInThisAssembly = propspec.Type.Arguments.Where(tr => input.Types[tr.Name].Assembly == ctx.AssemblyName).ToList();
         if (!typesInThisAssembly.Any()) continue;
 
@@ -207,16 +209,16 @@ public class TypescriptOutput : IOutput<TypescriptOptions>
 
   private string ToReference(ApiDefinitionModel input, PropertySpecification ps, string propName, string typeName, AssemblyContext ctx, bool? overrideNullable = null)
   {
-    if (ps.Type.Name == "string" && ps.AllowedValues.Any())
+    if (ps.Type.Name == ApiSpecConsts.String && ps.AllowedValues.Any())
     {
       return string.Join(" | ", ps.AllowedValues.Select(EscapeForString).Concat(overrideNullable ?? ps.Type.Nullable ? new[] { "null" } : Array.Empty<string>()));
     }
 
     // Option
-    if (ps.Type is { Name: "option", Arguments: var options })
+    if (ps.Type is { Name: ApiSpecConsts.Specials.Option, Arguments: var options })
     {
       // Only use types from this assembly, and add an extender. This extender is patched later on.
-      var typesFromCurrentAssembly = options.Where(o => input.Types[o.Name].Assembly == ctx.AssemblyName);
+      var typesFromCurrentAssembly = options.Where(o => input.Types[o.Name].Assembly == ctx.AssemblyName).ToList();
       var extenderName = $"Extenders_{typeName}_{propName}";
       var extenderRef = $"{extenderName}[keyof {extenderName}]";
       ctx.AddExtenderToGenerate(extenderName);
@@ -236,32 +238,29 @@ public class TypescriptOutput : IOutput<TypescriptOptions>
 
     var preset = typeReference switch
     {
-      { Name: "string" or "date" or "binary" or "guid" or "duration" } => $"string{n}",
-      { Name: "bool" } => $"boolean{n}",
-      { Name: "int32" or "int64" or "int16" or "float32" or "float64" or "float128" } => $"number{n}",
-      //{ Name: "array", Arguments: [var a] } => $"{ToReference(input, a, ctx)}[]{n}",
-      { Name: "array", Arguments.Length: 1 } => $"{ToReference(input, typeReference.Arguments[0], ctx)}[]{n}",
-      //{ Name: ['_', .. var x] } => x,
+      { Name: ApiSpecConsts.String or ApiSpecConsts.Date or ApiSpecConsts.Binary or ApiSpecConsts.Guid or ApiSpecConsts.Duration } => $"string{n}",
+      { Name: ApiSpecConsts.Bool } => $"boolean{n}",
+      { Name: ApiSpecConsts.Int32 or ApiSpecConsts.Int64 or ApiSpecConsts.Int16 or ApiSpecConsts.Float32 or ApiSpecConsts.Float64 or ApiSpecConsts.Float128 } => $"number{n}",
+      { Name: ApiSpecConsts.Specials.Array, Arguments.Length: 1 } => $"{ToReference(input, typeReference.Arguments[0], ctx)}[]{n}",
       _ when typeReference.Name.StartsWith("_") => typeReference.Name[1..],
-      //{ Name: "map", Arguments: [var k, var v] } => $"{{[key:{ToReference(input, k, ctx, false)}]:{ToReference(input, v, ctx)}}}{n}",
-      { Name: "map", Arguments.Length: 2 } => $"{{[key:{ToReference(input, typeReference.Arguments[0], ctx, false)}]:{ToReference(input, typeReference.Arguments[1], ctx)}}}{n}",
+      { Name: ApiSpecConsts.Specials.Map, Arguments.Length: 2 } => $"{{[key:{ToReference(input, typeReference.Arguments[0], ctx, false)}]:{ToReference(input, typeReference.Arguments[1], ctx)}}}{n}",
       _ => null
     };
 
     if (preset != null) return preset;
 
     // Object
-    if (typeReference is { Name: "object" })
+    if (typeReference is { Name: ApiSpecConsts.Object })
     {
-      ctx.RegisterReferencedModule("EVA.Core");
-      return ctx.AssemblyName == "EVA.Core" ? $"Record<string, TAnyValue>{n}" : $"Record<string, EvaCore.TAnyValue>{n}";
+      ctx.RegisterReferencedModule(ApiSpecConsts.WellKnown.CoreAssembly);
+      return ctx.AssemblyName == ApiSpecConsts.WellKnown.CoreAssembly ? $"Record<string, TAnyValue>{n}" : $"Record<string, EvaCore.TAnyValue>{n}";
     }
 
     // Any
-    if (typeReference is { Name: "any" })
+    if (typeReference is { Name: ApiSpecConsts.Any })
     {
-      ctx.RegisterReferencedModule("EVA.Core");
-      return ctx.AssemblyName == "EVA.Core" ? $"TAnyValue{n}" : $"EvaCore.TAnyValue{n}";
+      ctx.RegisterReferencedModule(ApiSpecConsts.WellKnown.CoreAssembly);
+      return ctx.AssemblyName == ApiSpecConsts.WellKnown.CoreAssembly ? $"TAnyValue{n}" : $"EvaCore.TAnyValue{n}";
     }
 
     // Apparently a type

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms.Filters;
 
-public class FilterServices : ITransform
+internal class FilterServices : ITransform
 {
   private readonly HashSet<string> _services;
 
@@ -17,6 +17,6 @@ public class FilterServices : ITransform
   {
     var count1 = input.Services.Length;
     input.Services = input.Services.Where(s => _services.Contains(s.Name)).ToImmutableArray();
-    return input.Services.Length == count1 ? ITransform.TransformResult.NoChanges : ITransform.TransformResult.Changes;
+    return input.Services.Length == count1 ? ITransform.TransformResult.None : ITransform.TransformResult.Changes;
   }
 }

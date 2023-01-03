@@ -18,7 +18,7 @@ internal class FileInput : IInput
   {
     if (!File.Exists(_path)) throw new SdkException($"Cannot find file: {_path}");
 
-    logger.LogInformation("Reading spec from: {path}", _path);
+    logger.LogInformation("Reading spec from: {Path}", _path);
     await using var file = File.OpenRead(_path);
 
     var result = await JsonContext.Default.ApiDefinitionModel.DeserializeAsync(file);

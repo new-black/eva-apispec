@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms.Internal;
 
-public class FixDependencies : ITransform
+internal class FixDependencies : ITransform
 {
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
@@ -18,6 +18,6 @@ public class FixDependencies : ITransform
         .ToImmutableArray();
     }
 
-    return ITransform.TransformResult.NoChanges;
+    return ITransform.TransformResult.None;
   }
 }

@@ -4,42 +4,42 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
 
-public class OpenApiOptions : GenerateOptions
+internal class OpenApiOptions : GenerateOptions
 {
-  public string Version { get; set; }
-  public bool Terse { get; set; }
-  public string Format { get; set; }
-  public string Host { get; set; }
+  internal string Version { get; set; } = OpenApiOptionsBinder.Version.Default;
+  internal bool Terse { get; set; } = OpenApiOptionsBinder.Terse.Default;
+  internal string Format { get; set; } = OpenApiOptionsBinder.Format.Default;
+  internal string Host { get; set; } = OpenApiOptionsBinder.Host.Default;
 }
 
-public class OpenApiOptionsBinder : BaseGenerateOptionsBinder<OpenApiOptions>
+internal class OpenApiOptionsBinder : BaseGenerateOptionsBinder<OpenApiOptions>
 {
-  private Option<string> Version = new Option<string>(
+  internal static readonly OptionWithDefault<string> Version = new Option<string>(
     name: "--opt-version",
     description: "The OpenAPI version to output"
   ).FromAmong("v2", "v3").WithDefault("v3");
 
-  private Option<bool> Terse = new Option<bool>(
+  internal static readonly OptionWithDefault<bool> Terse = new Option<bool>(
     name: "--opt-terse",
     description: "Remove as much whitespace from the output as possible. Ignore when format:yaml"
   ).WithDefault(false);
 
-  private Option<string> Format = new Option<string>(
+  internal static readonly OptionWithDefault<string> Format = new Option<string>(
     name: "--opt-format",
     description: "The format to output"
-  ).WithDefault("json").FromAmong("json", "yaml");
+  ).FromAmong("json", "yaml").WithDefault("json");
 
-  private Option<string> Host = new Option<string>(
+  internal static readonly OptionWithDefault<string> Host = new Option<string>(
     name: "--opt-host",
     description: "The host to use"
   ).WithDefault("");
 
   protected override IEnumerable<Option> GetOptions()
   {
-    yield return Version;
-    yield return Terse;
-    yield return Format;
-    yield return Host;
+    yield return Version.Option;
+    yield return Terse.Option;
+    yield return Format.Option;
+    yield return Host.Option;
   }
 
   protected override void BuildOptions(OpenApiOptions options, BindingContext ctx)

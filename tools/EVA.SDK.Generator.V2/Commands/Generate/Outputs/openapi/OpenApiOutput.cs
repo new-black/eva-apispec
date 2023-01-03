@@ -10,29 +10,26 @@ using Microsoft.OpenApi.Writers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
 
-public class OpenApiOutput : IOutput<OpenApiOptions>
+internal class OpenApiOutput : IOutput<OpenApiOptions>
 {
   public string? OutputPattern => null;
 
   public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "event-exports" };
 
-  public async Task Write(ApiDefinitionModel input, OpenApiOptions options, OutputWriter outputWriter)
+  public async Task Write(OutputContext<OpenApiOptions> ctx)
   {
-    var outputPath = Path.GetFullPath(Path.Combine(options.OutputDirectory, "openapi.json"));
-    Console.WriteLine($"Writing OpenAPI file: {outputPath}");
+    var model = GetModel(ctx.Input, ctx.Options.Host);
 
-    var model = GetModel(input, options.Host);
+    var version = ctx.Options.Version == "v2" ? OpenApiSpecVersion.OpenApi2_0 : OpenApiSpecVersion.OpenApi3_0;
 
-    var version = options.Version == "v2" ? OpenApiSpecVersion.OpenApi2_0 : OpenApiSpecVersion.OpenApi3_0;
-
-    await using (var file = outputWriter.WriteStreamAsync("openapi.json"))
+    await using (var file = ctx.Writer.WriteStreamAsync("openapi.json"))
     {
       await using var textWriter = new StreamWriter(file.Value);
-      IOpenApiWriter writer = options.Format == "yaml"
+      IOpenApiWriter openApiWriter = ctx.Options.Format == "yaml"
         ? new OpenApiYamlWriter(textWriter, new OpenApiWriterSettings())
-        : new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = options.Terse });
+        : new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = ctx.Options.Terse });
 
-      model.Serialize(writer, version);
+      model.Serialize(openApiWriter, version);
     }
   }
 
@@ -119,27 +116,27 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
 
   private static OpenApiSchema ToSchema(ApiDefinitionModel input, TypeReference type)
   {
-    if (type.Name == "int16") return new OpenApiSchema { Type = "integer" };
-    if (type.Name == "int32") return new OpenApiSchema { Type = "integer" };
-    if (type.Name == "int64") return new OpenApiSchema { Type = "integer" };
-    if (type.Name == "string") return new OpenApiSchema { Type = "string" };
-    if (type.Name == "binary") return new OpenApiSchema { Type = "string" };
-    if (type.Name == "bool") return new OpenApiSchema { Type = "boolean" };
-    if (type.Name == "guid") return new OpenApiSchema { Type = "string", Format = "uuid" };
-    if (type.Name == "float32") return new OpenApiSchema { Type = "number" };
-    if (type.Name == "float64") return new OpenApiSchema { Type = "number" };
-    if (type.Name == "float128") return new OpenApiSchema { Type = "number" };
-    if (type.Name == "duration") return new OpenApiSchema { Type = "string" };
-    if (type.Name == "object") return new OpenApiSchema { Type = "object", AdditionalPropertiesAllowed = true };
-    if (type.Name == "any") return new OpenApiSchema { Type = "object", AdditionalPropertiesAllowed = true };
-    if (type.Name == "date") return new OpenApiSchema { Type = "string", Format = "date-time" };
-    if (type.Name == "array") return new OpenApiSchema { Type = "array", Items = ToSchema(input, type.Arguments.Single()) };
-    if (type.Name == "option") return new OpenApiSchema { AnyOf = type.Arguments.Select(a => ToSchema(input, a)).ToList() };
+    if (type.Name == ApiSpecConsts.Int16) return new OpenApiSchema { Type = "integer" };
+    if (type.Name == ApiSpecConsts.Int32) return new OpenApiSchema { Type = "integer" };
+    if (type.Name == ApiSpecConsts.Int64) return new OpenApiSchema { Type = "integer" };
+    if (type.Name == ApiSpecConsts.String) return new OpenApiSchema { Type = "string" };
+    if (type.Name == ApiSpecConsts.Binary) return new OpenApiSchema { Type = "string" };
+    if (type.Name == ApiSpecConsts.Bool) return new OpenApiSchema { Type = "boolean" };
+    if (type.Name == ApiSpecConsts.Guid) return new OpenApiSchema { Type = "string", Format = "uuid" };
+    if (type.Name == ApiSpecConsts.Float32) return new OpenApiSchema { Type = "number" };
+    if (type.Name == ApiSpecConsts.Float64) return new OpenApiSchema { Type = "number" };
+    if (type.Name == ApiSpecConsts.Float128) return new OpenApiSchema { Type = "number" };
+    if (type.Name == ApiSpecConsts.Duration) return new OpenApiSchema { Type = "string" };
+    if (type.Name == ApiSpecConsts.Object) return new OpenApiSchema { Type = "object", AdditionalPropertiesAllowed = true };
+    if (type.Name == ApiSpecConsts.Any) return new OpenApiSchema { Type = "object", AdditionalPropertiesAllowed = true };
+    if (type.Name == ApiSpecConsts.Date) return new OpenApiSchema { Type = "string", Format = "date-time" };
+    if (type.Name == ApiSpecConsts.Specials.Array) return new OpenApiSchema { Type = "array", Items = ToSchema(input, type.Arguments.Single()) };
+    if (type.Name == ApiSpecConsts.Specials.Option) return new OpenApiSchema { AnyOf = type.Arguments.Select(a => ToSchema(input, a)).ToList() };
 
-    if (type.Name == "map")
+    if (type.Name == ApiSpecConsts.Specials.Map)
     {
       var keyType = type.Arguments[0].Name;
-      if (keyType is "string" or "int64" or "float128" or "date" || (char.IsUpper(keyType[0]) && input.Types[keyType].EnumIsFlag.HasValue))
+      if (keyType is ApiSpecConsts.String or ApiSpecConsts.Int64 or ApiSpecConsts.Float128 or ApiSpecConsts.Date || (char.IsUpper(keyType[0]) && input.Types[keyType].EnumIsFlag.HasValue))
       {
         return new OpenApiSchema
         {
@@ -158,6 +155,18 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
     throw new SdkException($"Cannot build openapi schema from {type.Name}");
   }
 
+  private static OpenApiSchema ToSchema(string id)
+  {
+    return new OpenApiSchema
+    {
+      Reference = new OpenApiReference
+      {
+        Id = FixName(id),
+        Type = ReferenceType.Schema
+      }
+    };
+  }
+
   private static OpenApiPathItem ToPathItem(ApiDefinitionModel input, ServiceModel service)
   {
     return new OpenApiPathItem
@@ -166,7 +175,7 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
       Description = input.Types[service.RequestTypeID].Description ?? $"The {service.Name} service",
       Parameters = new List<OpenApiParameter>
       {
-        new OpenApiParameter
+        new()
         {
           In = ParameterLocation.Header,
           Name = "EVA-User-Agent",
@@ -188,10 +197,10 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
             Summary = service.RequestTypeID,
             Description = input.Types[service.RequestTypeID].Description ?? $"The {service.Name} service",
             OperationId = service.Name,
-            Tags = new List<OpenApiTag> { new OpenApiTag { Name = TagFromAssembly(service.Assembly), Description = TagFromAssembly(service.Assembly) } },
+            Tags = new List<OpenApiTag> { new() { Name = TagFromAssembly(service.Assembly), Description = TagFromAssembly(service.Assembly) } },
             Security = new List<OpenApiSecurityRequirement>
             {
-              new OpenApiSecurityRequirement
+              new()
               {
                 {
                   new OpenApiSecurityScheme
@@ -240,19 +249,7 @@ public class OpenApiOutput : IOutput<OpenApiOptions>
     };
   }
 
-  private static OpenApiSchema ToSchema(string id)
-  {
-    return new OpenApiSchema
-    {
-      Reference = new OpenApiReference
-      {
-        Id = FixName(id),
-        Type = ReferenceType.Schema
-      }
-    };
-  }
-
-  private static readonly Regex _nameRegex = new Regex("[^a-zA-Z0-9-._]", RegexOptions.Compiled);
+  private static readonly Regex _nameRegex = new("[^a-zA-Z0-9-._]", RegexOptions.Compiled);
 
   private static string FixName(string name)
   {

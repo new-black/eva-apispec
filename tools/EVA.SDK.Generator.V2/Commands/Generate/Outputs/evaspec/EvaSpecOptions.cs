@@ -4,14 +4,14 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.evaspec;
 
-public class EvaSpecOptions : GenerateOptions
+internal class EvaSpecOptions : GenerateOptions
 {
-  public bool IncludeSrcFiles { get; set; }
+  internal bool IncludeSrcFiles { get; set; }
 }
 
-public class EvaSpecOptionsBinder : BaseGenerateOptionsBinder<EvaSpecOptions>
+internal class EvaSpecOptionsBinder : BaseGenerateOptionsBinder<EvaSpecOptions>
 {
-  private Option<bool> IncludeSrcFiles = new(
+  private static readonly Option<bool> IncludeSrcFiles = new(
     name: "--opt-include-src",
     description: "Includes formatted source files in output intended for human readability"
   );
