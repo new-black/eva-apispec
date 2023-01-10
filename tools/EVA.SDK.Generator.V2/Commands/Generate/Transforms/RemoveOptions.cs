@@ -18,20 +18,29 @@ internal class RemoveOptions : INamedTransform
       if (typeReference is not { Name: ApiSpecConsts.Specials.Option, Shared: { } }) continue;
 
       // If the shared object does not have any objects, and does not extend any other object. Flatten this to an generic object
-      var sharedSpec = input.Types[typeReference.Shared.Name];
-      if (sharedSpec is { Properties.Count: 0, Extends: null })
+      if (typeReference.Shared.Name == ApiSpecConsts.Object)
       {
-        typeReference.Name = ApiSpecConsts.Object;
         typeReference.Arguments = ImmutableArray<TypeReference>.Empty;
         typeReference.Nullable = typeReference.Shared.Nullable;
         typeReference.Shared = null;
       }
       else
       {
-        typeReference.Name = typeReference.Shared.Name;
-        typeReference.Arguments = typeReference.Shared.Arguments;
-        typeReference.Nullable = typeReference.Shared.Nullable;
-        typeReference.Shared = null;
+        var sharedSpec = input.Types[typeReference.Shared.Name];
+        if (sharedSpec is { Properties.Count: 0, Extends: null })
+        {
+          typeReference.Name = ApiSpecConsts.Object;
+          typeReference.Arguments = ImmutableArray<TypeReference>.Empty;
+          typeReference.Nullable = typeReference.Shared.Nullable;
+          typeReference.Shared = null;
+        }
+        else
+        {
+          typeReference.Name = typeReference.Shared.Name;
+          typeReference.Arguments = typeReference.Shared.Arguments;
+          typeReference.Nullable = typeReference.Shared.Nullable;
+          typeReference.Shared = null;
+        }
       }
 
       changes = ITransform.TransformResult.StructuralChanges;
