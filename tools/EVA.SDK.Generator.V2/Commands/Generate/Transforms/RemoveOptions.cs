@@ -22,8 +22,8 @@ internal class RemoveOptions : INamedTransform
       {
         typeReference.Arguments = ImmutableArray<TypeReference>.Empty;
         typeReference.Nullable = typeReference.Shared.Nullable;
-        typeReference.Shared = null;
         typeReference.Name = typeReference.Shared.Name;
+        typeReference.Shared = null;
       }
       else
       {

@@ -101,6 +101,7 @@ internal static class GenerationPipeline
       }
       else
       {
+        if (!Directory.Exists(fullOutputPath)) Directory.CreateDirectory(fullOutputPath);
         var allFiles = Directory.GetFiles(fullOutputPath, outputPattern, SearchOption.AllDirectories);
         foreach (var file in allFiles)
         {
