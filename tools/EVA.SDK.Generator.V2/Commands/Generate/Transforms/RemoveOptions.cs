@@ -18,11 +18,12 @@ internal class RemoveOptions : INamedTransform
       if (typeReference is not { Name: ApiSpecConsts.Specials.Option, Shared: { } }) continue;
 
       // If the shared object does not have any objects, and does not extend any other object. Flatten this to an generic object
-      if (typeReference.Shared.Name == ApiSpecConsts.Object)
+      if (typeReference.Shared.Name is ApiSpecConsts.Object or ApiSpecConsts.Any)
       {
         typeReference.Arguments = ImmutableArray<TypeReference>.Empty;
         typeReference.Nullable = typeReference.Shared.Nullable;
         typeReference.Shared = null;
+        typeReference.Name = typeReference.Shared.Name;
       }
       else
       {
