@@ -8,7 +8,9 @@
   },
   "enumIsFlag": null,
   "typeArguments": [],
-  "typeDependencies": [],
+  "typeDependencies": [
+    "EVA.Core.UserTasks.FullStockCountUserTask.ListFullStockCountsFilter\u002BFullStockCountFilterState"
+  ],
   "extends": null,
   "properties": {
     "Completed": {
@@ -20,7 +22,11 @@
       },
       "description": "When omitted, all FullStockCounts are returned.\nWhen false, only uncompleted FullStockCounts are returned.\nWhen true, only completed or cancelled FullStockCounts are returned.",
       "skippable": false,
-      "deprecated": null,
+      "deprecated": {
+        "announced": 670,
+        "active": 678,
+        "comment": "Completed is deprecated and will be removed in 2.0.686: Replaced by \u0060State\u0060 filter."
+      },
       "required": null,
       "requiredAllowEmpty": null,
       "minValue": null,
@@ -110,6 +116,31 @@
         "isEvaID": true,
         "isExternalID": false
       },
+      "allowedValues": []
+    },
+    "State": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.UserTasks.FullStockCountUserTask.ListFullStockCountsFilter\u002BFullStockCountFilterState",
+            "args": [],
+            "shared": null,
+            "nullable": false
+          }
+        ],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "This filters full stock counts with specific states;\n\u0060New\u0060 returns full stock counts that have been created but not yet started\n\u0060Active\u0060 returns full stock counts which are currenty in count process.\n\u0060Completed\u0060 return full stock counts that are completed (but not cancelled)\n\u0060Cancelled\u0060 return full stock counts that are cancelled\n\nIf no states are added (aka; empty list) ALL full stock counts will be returned.\nIf multiple states are desired, you can add both states to the list. For example: to get all completed and cancelled full stock count, both the \u0060Completed\u0060 and the \u0060Cancelled\u0060 state can be added to the list.",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     },
     "UserID": {
