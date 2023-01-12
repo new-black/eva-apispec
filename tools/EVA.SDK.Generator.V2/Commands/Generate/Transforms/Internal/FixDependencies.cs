@@ -13,6 +13,7 @@ internal class FixDependencies : ITransform
     {
       type.TypeDependencies = type.EnumerateAllTypeReferences()
         .Select(r => r.Name)
+        .Concat(type.ParentType == null ? Array.Empty<string>() : new[] { type.ParentType })
         .Distinct()
         .Where(n => char.IsUpper(n[0]))
         .ToImmutableArray();
