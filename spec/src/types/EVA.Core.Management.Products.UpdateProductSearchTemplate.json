@@ -9,7 +9,9 @@
   "enumIsFlag": null,
   "typeArguments": [],
   "typeDependencies": [
-    "EVA.Core.RequestMessageWithEmptyResponse"
+    "EVA.Core.RequestMessageWithEmptyResponse",
+    "EVA.Core.Search.FilterModel",
+    "EVA.Core.DataModels.ProductSearchTemplateTypes"
   ],
   "extends": {
     "ref": "EVA.Core.RequestMessageWithEmptyResponse",
@@ -20,8 +22,21 @@
   "properties": {
     "Filters": {
       "type": {
-        "ref": "any",
-        "args": [],
+        "ref": "map",
+        "args": [
+          {
+            "ref": "string",
+            "args": [],
+            "shared": null,
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.Search.FilterModel",
+            "args": [],
+            "shared": null,
+            "nullable": true
+          }
+        ],
         "shared": null,
         "nullable": true
       },
@@ -62,10 +77,10 @@
     },
     "IncludeLeafProducts": {
       "type": {
-        "ref": "any",
+        "ref": "bool",
         "args": [],
         "shared": null,
-        "nullable": true
+        "nullable": false
       },
       "description": null,
       "skippable": true,
@@ -80,7 +95,7 @@
     },
     "MinimumRefreshInterval": {
       "type": {
-        "ref": "any",
+        "ref": "duration",
         "args": [],
         "shared": null,
         "nullable": true
@@ -98,7 +113,7 @@
     },
     "Name": {
       "type": {
-        "ref": "any",
+        "ref": "string",
         "args": [],
         "shared": null,
         "nullable": true
@@ -116,10 +131,10 @@
     },
     "Type": {
       "type": {
-        "ref": "any",
+        "ref": "EVA.Core.DataModels.ProductSearchTemplateTypes",
         "args": [],
         "shared": null,
-        "nullable": true
+        "nullable": false
       },
       "description": null,
       "skippable": true,
