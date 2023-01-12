@@ -42,6 +42,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
   public async Task Write(OutputContext<DotNetOptions> ctx)
   {
     var groupedInput = ctx.Input.GroupByAssembly();
+    var allResponseTypes = ctx.Input.Services.Select(s => s.ResponseTypeID).ToHashSet();
 
     foreach (var i in groupedInput)
     {
@@ -80,14 +81,14 @@ internal class DotNetOutput : IOutput<DotNetOptions>
           var responseType = ctx.Input.Types[service.ResponseTypeID];
 
           o.WriteLine();
-          WriteRequestType(requestType, o, service, ctx);
+          WriteRequestType(requestType, o, service, ctx, allResponseTypes);
           handledTypes.Add(service.RequestTypeID);
           o.WriteLine();
 
           // Write response
           if (responseType.Assembly == service.Assembly && handledTypes.Add(service.ResponseTypeID))
           {
-            WriteResponseType(service.ResponseTypeID, responseType, o, ctx);
+            WriteResponseType(service.ResponseTypeID, responseType, o, ctx, allResponseTypes);
           }
         }
 
@@ -95,7 +96,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         {
           if (handledTypes.Contains(type.Key) || type.Value.ParentType != null) continue;
           o.WriteLine();
-          WriteType(type.Key, type.Value, o, ctx);
+          WriteType(type.Key, type.Value, o, ctx, allResponseTypes);
         }
       });
       sb.WriteLine("}");
@@ -104,7 +105,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     }
   }
 
-  private void WriteType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx)
+  private void WriteType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
   {
     // These types have special handling
     if (ctx.Options.UseNativeDayOfWeek && id == ApiSpecConsts.WellKnown.DayOfWeek) return;
@@ -132,23 +133,23 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         typeName = typeName.Split('`')[0] + $"<{string.Join(',', spec.TypeArguments.Select(x => x[1..]))}>";
       }
 
-      sb.WriteLine($"public class {typeName}");
+      sb.WriteLine($"public class {typeName}{(allResponseTypes.Contains(id) ? " : EVA.SDK.Core.IResponseMessage" : string.Empty)}");
       sb.WriteLine("{");
       var usage = (spec.Usage.Request ? TypeContext.Request : TypeContext.None) | (spec.Usage.Response ? TypeContext.Response : TypeContext.None);
-      sb.WriteIndented(o => { WriteTypeBody(id, spec, o, usage, ctx); });
+      sb.WriteIndented(o => { WriteTypeBody(id, spec, o, usage, ctx, allResponseTypes); });
       sb.WriteLine("}");
     }
   }
 
-  private void WriteResponseType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx)
+  private void WriteResponseType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
   {
     sb.WriteLine($"public class {spec.TypeName} : EVA.SDK.Core.IResponseMessage");
     sb.WriteLine("{");
-    sb.WriteIndented(o => { WriteTypeBody(id, spec, o, TypeContext.Response, ctx); });
+    sb.WriteIndented(o => { WriteTypeBody(id, spec, o, TypeContext.Response, ctx, allResponseTypes); });
     sb.WriteLine("}");
   }
 
-  private void WriteRequestType(TypeSpecification requestType, IndentedStringBuilder o, ServiceModel service, OutputContext<DotNetOptions> ctx)
+  private void WriteRequestType(TypeSpecification requestType, IndentedStringBuilder o, ServiceModel service, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
   {
     if (requestType.Description != null)
     {
@@ -171,13 +172,13 @@ internal class DotNetOutput : IOutput<DotNetOptions>
 
     using (o.Indentation)
     {
-      WriteTypeBody(service.RequestTypeID, requestType, o, TypeContext.Request, ctx);
+      WriteTypeBody(service.RequestTypeID, requestType, o, TypeContext.Request, ctx, allResponseTypes);
     }
 
     o.WriteLine("}");
   }
 
-  private void WriteTypeBody(string id, TypeSpecification spec, IndentedStringBuilder o, TypeContext context, OutputContext<DotNetOptions> ctx)
+  private void WriteTypeBody(string id, TypeSpecification spec, IndentedStringBuilder o, TypeContext context, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
   {
     foreach (var prop in spec.Properties)
     {
@@ -221,7 +222,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
 
     foreach (var ts in ctx.Input.Types.Where(t => t.Value.ParentType == id))
     {
-      WriteType(ts.Key, ts.Value, o, ctx);
+      WriteType(ts.Key, ts.Value, o, ctx, allResponseTypes);
     }
   }
 
