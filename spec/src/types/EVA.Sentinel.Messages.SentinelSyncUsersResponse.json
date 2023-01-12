@@ -1,6 +1,6 @@
 {
-  "typename": "FunctionalityDto",
-  "assembly": "EVA.Core.LiveGuard",
+  "typename": "SentinelSyncUsersResponse",
+  "assembly": "EVA.Sentinel",
   "description": null,
   "usage": {
     "request": false,
@@ -9,14 +9,28 @@
   "enumIsFlag": null,
   "typeArguments": [],
   "typeDependencies": [
-    "EVA.Core.Security.FunctionalityScope"
+    "EVA.Core.ResponseMessage",
+    "EVA.Core.LiveGuard.Messages.UserDto",
+    "EVA.Core.LiveGuard.Messages.RoleDto"
   ],
-  "extends": null,
+  "extends": {
+    "ref": "EVA.Core.ResponseMessage",
+    "args": [],
+    "shared": null,
+    "nullable": false
+  },
   "properties": {
-    "Functionality": {
+    "Roles": {
       "type": {
-        "ref": "string",
-        "args": [],
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.LiveGuard.Messages.RoleDto",
+            "args": [],
+            "shared": null,
+            "nullable": true
+          }
+        ],
         "shared": null,
         "nullable": true
       },
@@ -31,30 +45,19 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "FunctionalityScope": {
+    "Users": {
       "type": {
-        "ref": "EVA.Core.Security.FunctionalityScope",
-        "args": [],
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.LiveGuard.Messages.UserDto",
+            "args": [],
+            "shared": null,
+            "nullable": true
+          }
+        ],
         "shared": null,
-        "nullable": false
-      },
-      "description": null,
-      "skippable": false,
-      "deprecated": null,
-      "required": null,
-      "requiredAllowEmpty": null,
-      "minValue": null,
-      "maxValue": null,
-      "stringLengthConstraint": null,
-      "datamodel": null,
-      "allowedValues": []
-    },
-    "RequiresElevation": {
-      "type": {
-        "ref": "bool",
-        "args": [],
-        "shared": null,
-        "nullable": false
+        "nullable": true
       },
       "description": null,
       "skippable": false,
@@ -69,5 +72,5 @@
     }
   },
   "enumValues": {},
-  "parent": "EVA.Core.LiveGuard.Messages.SentinelSyncUsersResponse\u002BRoleDto"
+  "parent": null
 }
