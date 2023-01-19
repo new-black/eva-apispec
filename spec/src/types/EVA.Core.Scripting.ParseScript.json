@@ -10,9 +10,11 @@
   "typeArguments": [],
   "typeDependencies": [
     "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.ScriptToken",
     "EVA.Core.Scripting.ParseTypes",
     "EVA.Core.Scripting.ParseScript\u002BDocumentationRequestInfo",
-    "EVA.Core.Scripting.ParseScript\u002BAvailableVariablesRequestInfo"
+    "EVA.Core.Scripting.ParseScript\u002BAvailableVariablesRequestInfo",
+    "EVA.Core.Scripting.ParseScript\u002BCompletionRequestInfo"
   ],
   "extends": {
     "ref": "EVA.Core.RequestMessage\u00601",
@@ -46,6 +48,24 @@
       "datamodel": null,
       "allowedValues": []
     },
+    "CompletionRequest": {
+      "type": {
+        "ref": "EVA.Core.Scripting.ParseScript\u002BCompletionRequestInfo",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
     "CompletionSource": {
       "type": {
         "ref": "string",
@@ -55,7 +75,11 @@
       },
       "description": "The script that you want to have auto-completion suggestions for.\nThis can be different than the full Source as you only want to provide completion suggestions at the current cursor position,\nso you can provide the full source for validation purposes and provide the script up to the cursor position for auto-completion suggestions.",
       "skippable": false,
-      "deprecated": null,
+      "deprecated": {
+        "announced": 671,
+        "active": 675,
+        "comment": "CompletionSource is deprecated and will be removed in 2.0.679: Use CompletionRequest."
+      },
       "required": null,
       "requiredAllowEmpty": null,
       "minValue": null,
@@ -100,24 +124,6 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "IncludeCompletionSuggestions": {
-      "type": {
-        "ref": "bool",
-        "args": [],
-        "shared": null,
-        "nullable": false
-      },
-      "description": null,
-      "skippable": false,
-      "deprecated": null,
-      "required": null,
-      "requiredAllowEmpty": null,
-      "minValue": null,
-      "maxValue": null,
-      "stringLengthConstraint": null,
-      "datamodel": null,
-      "allowedValues": []
-    },
     "IncludeStructure": {
       "type": {
         "ref": "bool",
@@ -144,6 +150,31 @@
         "nullable": true
       },
       "description": "The script to parse.",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "SourceTokens": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.ScriptToken",
+            "args": [],
+            "shared": null,
+            "nullable": true
+          }
+        ],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "The script to parse, in token format as returned by ParseScript when IncludeStructure is passed in as \u0060true\u0060.",
       "skippable": false,
       "deprecated": null,
       "required": null,

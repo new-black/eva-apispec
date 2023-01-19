@@ -1,26 +1,26 @@
 {
-  "typename": "ValueList\u00601",
+  "typename": "CompletionRequestInfo",
   "assembly": "EVA.Core",
   "description": null,
   "usage": {
     "request": true,
-    "response": true
+    "response": false
   },
   "enumIsFlag": null,
-  "typeArguments": [
-    "_T"
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.ScriptToken"
   ],
-  "typeDependencies": [],
   "extends": null,
   "properties": {
-    "Count": {
+    "Source": {
       "type": {
-        "ref": "int32",
+        "ref": "string",
         "args": [],
         "shared": null,
-        "nullable": false
+        "nullable": true
       },
-      "description": null,
+      "description": "The script that you want to have auto-completion suggestions for.\nThis can be different than the full Source as you only want to provide completion suggestions at the current cursor position,\nso you can provide the full source for validation purposes and provide the script up to the cursor position for auto-completion suggestions.",
       "skippable": false,
       "deprecated": null,
       "required": null,
@@ -31,28 +31,17 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "IsReadOnly": {
+    "SourceTokens": {
       "type": {
-        "ref": "bool",
-        "args": [],
-        "shared": null,
-        "nullable": false
-      },
-      "description": null,
-      "skippable": false,
-      "deprecated": null,
-      "required": null,
-      "requiredAllowEmpty": null,
-      "minValue": null,
-      "maxValue": null,
-      "stringLengthConstraint": null,
-      "datamodel": null,
-      "allowedValues": []
-    },
-    "Item": {
-      "type": {
-        "ref": "_T",
-        "args": [],
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.ScriptToken",
+            "args": [],
+            "shared": null,
+            "nullable": true
+          }
+        ],
         "shared": null,
         "nullable": true
       },
@@ -69,5 +58,5 @@
     }
   },
   "enumValues": {},
-  "parent": null
+  "parent": "EVA.Core.Scripting.ParseScript"
 }
