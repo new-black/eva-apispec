@@ -172,6 +172,12 @@ internal static class ApiDefinitionModelExtensions
     return result;
   }
 
+  internal static TypeReference CloneAsNotNull(this TypeReference reference)
+  {
+    if(!reference.Nullable) return reference;
+    return new TypeReference(reference.Name, reference.Arguments, false) { Shared = reference.Shared };
+  }
+
   internal record PrefixGroupedErrors(List<(string Name, ErrorSpecification error)> Errors, ImmutableSortedDictionary<string, PrefixGroupedErrors> SubErrors);
 
   internal record GroupedApiDefinitionModel(string Assembly, Dictionary<string, TypeSpecification> Types, List<ServiceModel> Services, List<ErrorSpecification> Errors);

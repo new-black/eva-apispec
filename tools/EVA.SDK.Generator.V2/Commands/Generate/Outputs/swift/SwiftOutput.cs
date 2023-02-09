@@ -216,7 +216,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       // IndirectOptional time!
       if (typeReference.Nullable)
       {
-        var nestedReference = new TypeReference(typeReference.Name, typeReference.Arguments, false) { Shared = typeReference.Shared };
+        var nestedReference = typeReference.CloneAsNotNull();
         return $"IndirectOptional<{GetTypeName(nestedReference, ctx)}>?";
       }
       else
@@ -249,7 +249,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     if (typeReference is { Name: ApiSpecConsts.Date }) return $"Date{n}";
     if (typeReference is { Name: ApiSpecConsts.Bool }) return $"Bool{n}";
     if (typeReference is { Name: ApiSpecConsts.Guid }) return $"UUID{n}";
-    if (typeReference is { Name: ApiSpecConsts.Specials.Array, Arguments: { Length: 1 } x }) return $"[{GetTypeName(x[0], ctx)}]{n}";
+    if (typeReference is { Name: ApiSpecConsts.Specials.Array, Arguments: { Length: 1 } x }) return $"[{GetTypeName(x[0].CloneAsNotNull(), ctx)}]{n}";
     if (typeReference is { Name: ApiSpecConsts.Any or ApiSpecConsts.Object }) return $"{ctx.Options.AnyCodableName}{n}";
     if (typeReference is { Name: ApiSpecConsts.Specials.Map }) return $"[String: {GetTypeName(typeReference.Arguments[1], ctx)}]{n}";
     if (typeReference.Name.StartsWith("_")) return $"{typeReference.Name[1..]}{n}";
