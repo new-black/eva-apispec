@@ -251,12 +251,17 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     if (typeReference is { Name: ApiSpecConsts.Guid }) return $"UUID{n}";
     if (typeReference is { Name: ApiSpecConsts.Specials.Array, Arguments: { Length: 1 } x }) return $"[{GetTypeName(x[0].CloneAsNotNull(), ctx)}]{n}";
     if (typeReference is { Name: ApiSpecConsts.Any or ApiSpecConsts.Object }) return $"{ctx.Options.AnyCodableName}{n}";
-    if (typeReference is { Name: ApiSpecConsts.Specials.Map }) return $"[String: {GetTypeName(typeReference.Arguments[1], ctx)}]{n}";
+    if (typeReference is { Name: ApiSpecConsts.Specials.Map })
+    {
+      var ta = typeReference.Arguments[1];
+      if(ctx.Options.OptimisticNullability) ta = ta.CloneAsNotNull();
+      return $"[String: {GetTypeName(ta, ctx)}]{n}";
+    }
     if (typeReference.Name.StartsWith("_")) return $"{typeReference.Name[1..]}{n}";
 
     if (typeReference.Name.StartsWith("EVA.") && typeReference.Arguments is { Length: > 0 })
     {
-      return $"{GetTypeName(typeReference.Name, ctx.Input)}<{string.Join(", ", typeReference.Arguments.Select(a => GetTypeName(a, ctx)))}>{n}";
+      return $"{GetTypeName(typeReference.Name, ctx.Input)}<{string.Join(", ", typeReference.Arguments.Select(a => GetTypeName(ctx.Options.OptimisticNullability ? a.CloneAsNotNull() : a, ctx)))}>{n}";
     }
 
     if (typeReference.Name.StartsWith("EVA."))
