@@ -28,7 +28,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       output.WriteLine("import Foundation");
       output.WriteLine();
-      output.WriteLine($"public class {filename}: EvaService<{reqName}, {resName}> {{");
+      output.WriteLine($"public final class {filename}: EvaService<{reqName}, {resName}> {{");
       using (output.Indentation)
       {
         output.WriteLine("public init(endpoint: EvaEndpoint) {");
