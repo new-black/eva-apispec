@@ -11,7 +11,8 @@
   "typeDependencies": [
     "EVA.Core.RequestMessage\u00601",
     "EVA.Core.Pricing.PushPriceList\u002BComponent",
-    "EVA.Core.Pricing.PushPriceList\u002BActiveOrganizationUnit"
+    "EVA.Core.Pricing.PushPriceList\u002BActiveOrganizationUnit",
+    "EVA.Core.Pricing.PushPriceList\u002BLowProductCountOptions"
   ],
   "extends": {
     "ref": "EVA.Core.RequestMessage\u00601",
@@ -146,6 +147,24 @@
       "datamodel": null,
       "allowedValues": []
     },
+    "LowProductCountOption": {
+      "type": {
+        "ref": "EVA.Core.Pricing.PushPriceList\u002BLowProductCountOptions",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": "The PushPriceList service is optimized for updating a pricelist in its entirety, so for many products at once when using a PriceEntry component. When using few products or even single products this service can perform unnecessary work. It\u0027s always recommended to\nuse this service in a large batch manner but if that\u0027s not possible you can specify your intent by using either LowProductCountOption = Auto or Optimize. Effectively this service will simply store the new price entries and return.\nThe updated prices won\u0027t become effective until the next calculation round, which happens every 15 minutes. The threshold for \u0027low product count\u0027 is set at 100 products.",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
     "Name": {
       "type": {
         "ref": "string",
@@ -155,6 +174,24 @@
       },
       "description": "The name of the pricelist. Must be present for the creation of a pricelist but can be left empty in subsequent calls.",
       "skippable": true,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "RecalculateEffectivePrices": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": "Whether or not to immediately recalculate the effective prices after processing the changes. Otherwise, the prices are automatically recalculated every 15 minutes. Until such a recalculation has been performed, the old price will remain active.\nDefaults to false, only specify as true if you cannot wait for the normal recalculation cycle.",
+      "skippable": false,
       "deprecated": null,
       "required": null,
       "requiredAllowEmpty": null,
