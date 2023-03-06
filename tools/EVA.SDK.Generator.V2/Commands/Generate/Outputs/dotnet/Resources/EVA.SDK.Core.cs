@@ -8,6 +8,11 @@ public interface IResponseType<out TResponse> where TResponse : IResponseMessage
 
 }
 
+public interface IEVAClient<TOptions>
+{
+  public System.Threading.Tasks.Task<TResponse> CallService<TResponse>(IResponseType<TResponse> requestMessage, TOptions options = default) where TResponse : IResponseMessage;
+}
+
 public class RequestMessageAttribute : Attribute
 {
   public string Path { get; }

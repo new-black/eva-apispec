@@ -92,6 +92,8 @@ internal class DotNetOutput : IOutput<DotNetOptions>
           }
         }
 
+        WriteExtensionMethods(i.Services, ctx, o);
+
         foreach (var type in i.Types)
         {
           if (handledTypes.Contains(type.Key) || type.Value.ParentType != null) continue;
@@ -103,6 +105,60 @@ internal class DotNetOutput : IOutput<DotNetOptions>
 
       await ctx.Writer.WriteFileAsync($"{actualNamespace}.cs", sb.ToString());
     }
+  }
+
+  private void WriteExtensionMethods(List<ServiceModel> services, OutputContext<DotNetOptions> ctx, IndentedStringBuilder o)
+  {
+    o.WriteLine("public static class EVAExtensions");
+    o.WriteLine("{");
+    using (o.Indentation)
+    {
+      foreach (var service in services)
+      {
+        var resType = GetFullName(service.ResponseTypeID, ctx.Input);
+        var reqType = GetFullName(service.RequestTypeID, ctx.Input);
+
+        o.WriteLine($"public static System.Threading.Tasks.Task<{resType}> {service.Name}<TOptions>(this EVA.SDK.Core.IEVAClient<TOptions> client, {reqType} request, TOptions options = default)");
+        o.WriteLine("{");
+        using (o.Indentation)
+        {
+          o.WriteLine($"return client.CallService(request, options);");
+        }
+        o.WriteLine("}");
+
+        var requestType = ctx.Input.Types[service.RequestTypeID];
+
+        o.WriteLine($"public static System.Threading.Tasks.Task<{resType}> {service.Name}<TOptions>(this EVA.SDK.Core.IEVAClient<TOptions> client,");
+        using (o.Indentation)
+        {
+          foreach (var property in requestType.Properties.OrderBy(p => p.Value.Type.Nullable ? 1 : 0))
+          {
+            var propName = GetFullPropName(TypeContext.Request, ctx, property.Value);
+            o.WriteLine($"{propName} {property.Key}{(property.Value.Type.Nullable ? " = default" : "")},");
+          }
+
+          o.WriteLine(" TOptions options = default)");
+        }
+        o.WriteLine("{");
+        using (o.Indentation)
+        {
+          o.WriteLine($"var request = new {reqType}");
+          o.WriteLine("{");
+          using (o.Indentation)
+          {
+            foreach (var p in requestType.Properties)
+            {
+              o.WriteLine($"{p.Key} = {p.Key},");
+            }
+          }
+          o.WriteLine("};");
+
+          o.WriteLine($"return client.CallService(request, options);");
+        }
+        o.WriteLine("}");
+      }
+    }
+    o.WriteLine("}");
   }
 
   private void WriteType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
@@ -207,15 +263,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         o.WriteLine($"[Obsolete(@\"{prop.Value.Deprecated.Comment?.Replace("\"", "\"\"")}\")]");
       }
 
-      var shouldOutputCustomIDs = prop is { Value.DataModelInformation.SupportsBackendID: true } && context.HasFlag(TypeContext.Request);
-      var fullPropName = GetFullName(prop.Value.Type,  context, shouldOutputCustomIDs, ctx);
-      fullPropName = prop.Value.Skippable ? $"EVA.SDK.Core.Maybe<{fullPropName}>" : fullPropName;
-
-      // This is very hacky, but here we go!!!!
-      if (ctx.Options.EnableCustomIdMode && shouldOutputCustomIDs && fullPropName is "EVA.SDK.Core.Maybe<EVA.SDK.Core.ModelID>" or "EVA.SDK.Core.Maybe<EVA.SDK.Core.ModelID?>")
-      {
-        fullPropName = "EVA.SDK.Core.MaybeModelID";
-      }
+      var fullPropName = GetFullPropName(context, ctx, prop.Value);
 
       o.WriteLine($"public {fullPropName} {prop.Key} {{ get; set; }}");
     }
@@ -224,6 +272,21 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     {
       WriteType(ts.Key, ts.Value, o, ctx, allResponseTypes);
     }
+  }
+
+  private string GetFullPropName(TypeContext context, OutputContext<DotNetOptions> ctx, PropertySpecification prop)
+  {
+    var shouldOutputCustomIDs = prop is { DataModelInformation.SupportsBackendID: true } && context.HasFlag(TypeContext.Request);
+    var fullPropName = GetFullName(prop.Type, context, shouldOutputCustomIDs, ctx);
+    fullPropName = prop.Skippable ? $"EVA.SDK.Core.Maybe<{fullPropName}>" : fullPropName;
+
+    // This is very hacky, but here we go!!!!
+    if (ctx.Options.EnableCustomIdMode && shouldOutputCustomIDs && fullPropName is "EVA.SDK.Core.Maybe<EVA.SDK.Core.ModelID>" or "EVA.SDK.Core.Maybe<EVA.SDK.Core.ModelID?>")
+    {
+      fullPropName = "EVA.SDK.Core.MaybeModelID";
+    }
+
+    return fullPropName;
   }
 
   private string GetFullName(TypeReference r, TypeContext context, bool returnCustomID, OutputContext<DotNetOptions> ctx)
