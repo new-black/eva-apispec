@@ -251,6 +251,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     if (typeReference is { Name: ApiSpecConsts.Guid }) return $"UUID{n}";
     if (typeReference is { Name: ApiSpecConsts.Specials.Array, Arguments: { Length: 1 } x }) return $"[{GetTypeName(x[0].CloneAsNotNull(), ctx)}]{n}";
     if (typeReference is { Name: ApiSpecConsts.Any or ApiSpecConsts.Object }) return $"{ctx.Options.AnyCodableName}{n}";
+    if (typeReference is { Name: ApiSpecConsts.WellKnown.IProductSearchItem }) return $"[String: {ctx.Options.AnyCodableName}]{n}";
     if (typeReference is { Name: ApiSpecConsts.Specials.Map })
     {
       var ta = typeReference.Arguments[1];
