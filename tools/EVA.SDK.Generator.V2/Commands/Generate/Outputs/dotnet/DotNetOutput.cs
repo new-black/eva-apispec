@@ -118,6 +118,9 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         var resType = GetFullName(service.ResponseTypeID, ctx.Input);
         var reqType = GetFullName(service.RequestTypeID, ctx.Input);
 
+        var requestType = ctx.Input.Types[service.RequestTypeID];
+        if(requestType.Properties.Count > 1) continue;
+
         o.WriteLine($"public static System.Threading.Tasks.Task<{resType}> {service.Name}<TOptions>(this EVA.SDK.Core.IEVAClient<TOptions> client, {reqType} request, TOptions options = default)");
         o.WriteLine("{");
         using (o.Indentation)
@@ -125,8 +128,6 @@ internal class DotNetOutput : IOutput<DotNetOptions>
           o.WriteLine($"return client.CallService(request, options);");
         }
         o.WriteLine("}");
-
-        var requestType = ctx.Input.Types[service.RequestTypeID];
 
         o.WriteLine($"public static System.Threading.Tasks.Task<{resType}> {service.Name}<TOptions>(this EVA.SDK.Core.IEVAClient<TOptions> client,");
         using (o.Indentation)
