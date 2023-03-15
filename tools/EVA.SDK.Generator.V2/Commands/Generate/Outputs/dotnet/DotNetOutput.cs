@@ -121,14 +121,6 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         var requestType = ctx.Input.Types[service.RequestTypeID];
         if(requestType.Properties.Count > 1) continue;
 
-        o.WriteLine($"public static System.Threading.Tasks.Task<{resType}> {service.Name}<TOptions>(this EVA.SDK.Core.IEVAClient<TOptions> client, {reqType} request, TOptions options = default)");
-        o.WriteLine("{");
-        using (o.Indentation)
-        {
-          o.WriteLine($"return client.CallService(request, options);");
-        }
-        o.WriteLine("}");
-
         o.WriteLine($"public static System.Threading.Tasks.Task<{resType}> {service.Name}<TOptions>(this EVA.SDK.Core.IEVAClient<TOptions> client,");
         using (o.Indentation)
         {
