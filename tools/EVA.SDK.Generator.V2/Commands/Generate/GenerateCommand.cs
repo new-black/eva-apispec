@@ -1,5 +1,7 @@
 ﻿using System.CommandLine;
+using System.Diagnostics;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs;
+using EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.dotnet;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.evaspec;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
@@ -20,6 +22,7 @@ internal static class GenerateCommand
 
     AddOutput<EvaSpecOptions, EvaSpecOptionsBinder, EvaSpecOutput>(generateCommand, "evaspec");
     AddOutput<OpenApiOptions, OpenApiOptionsBinder, OpenApiOutput>(generateCommand, "openapi");
+    AddOutput<ApiDocsOptions, ApiDocsOptionsBinder, ApiDocsOutput>(generateCommand, "apidocs", hidden: true);
     AddOutput<OpenApiAzureConnectorOptions, OpenApiAzureConnectorOptionsBinder, OpenApiAzureConnectorOutput>(generateCommand, "openapi-azureconnector");
     AddOutput<SwiftOptions, SwiftOptionsBinder, SwiftOutput>(generateCommand, "swift");
     AddOutput<DotNetOptions, DotNetOptionsBinder, DotNetOutput>(generateCommand, "dotnet");
@@ -27,7 +30,7 @@ internal static class GenerateCommand
     AddOutput<ZodOptions, ZodOptionsBinder, ZodOutput>(generateCommand, "zod");
   }
 
-  private static void AddOutput<T, TBinder, TOutput>(Command generateCommand, string name)
+  private static void AddOutput<T, TBinder, TOutput>(Command generateCommand, string name, bool hidden = false)
     where TBinder : BaseGenerateOptionsBinder<T>, new() where T : GenerateOptions, new() where TOutput : IOutput<T>, new()
   {
     var binder = new TBinder();
@@ -40,14 +43,11 @@ internal static class GenerateCommand
       description += $"\n\nThese features are removed by default:\n{string.Join('\n', forcedRemoves.Select(x => $" - {x}"))}";
     }
 
-    var command = new Command(name) { Description = description };
+    var command = new Command(name) { Description = description, IsHidden = hidden };
     command.AddOptions(binder.GetAllOptions(forcedRemoves));
 
     generateCommand.AddCommand(command);
 
-    command.SetHandler(async (outputOptions, logger) =>
-    {
-        await GenerationPipeline.Run(outputOptions, output, logger);
-    }, binder, LogBinder.Instance);
+    command.SetHandler(async (outputOptions, logger) => { await GenerationPipeline.Run(outputOptions, output, logger); }, binder, LogBinder.Instance);
   }
 }

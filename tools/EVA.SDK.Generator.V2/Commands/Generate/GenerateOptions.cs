@@ -5,7 +5,7 @@ using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate;
 
-internal class GenerateOptions
+public class GenerateOptions
 {
   internal string? Input { get; init; }
   internal string OutputDirectory { get; set; } = string.Empty;
