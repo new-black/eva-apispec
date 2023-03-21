@@ -1,4 +1,102 @@
 {
   "name": "CreateShipment",
-  "description": "Create a new shipment\n\nIt is required to specify an Order. This can be done with \u0060OrderID\u0060 or by sending \u0060OrderBackendID\u0060 and \u0060OrderBackendSystemID\u0060.\n\nTo create a pending Shipment, set \u0060IsPending\u0060 to true. A pending shipment has to be shipped with the ShipShipment service."
+  "description": "Create a new shipment\n\nIt is required to specify an Order. This can be done with \u0060OrderID\u0060 or by sending \u0060OrderBackendID\u0060 and \u0060OrderBackendSystemID\u0060.\n\nTo create a pending Shipment, set \u0060IsPending\u0060 to true. A pending shipment has to be shipped with the ShipShipment service.",
+  "request": {
+    "properties": [
+      {
+        "name": "BackendID",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "BackendSystemID",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "CustomFields",
+        "description": "Optional additional custom fields",
+        "type": "array"
+      },
+      {
+        "name": "ExpectedDeliveryDate",
+        "description": null,
+        "type": "date"
+      },
+      {
+        "name": "IsPending",
+        "description": null,
+        "type": "bool"
+      },
+      {
+        "name": "Lines",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "OrderBackendID",
+        "description": "Reference to the order that is being shipped - required when \u0060OrderID\u0060 is omitted",
+        "type": "string"
+      },
+      {
+        "name": "OrderBackendSystemID",
+        "description": "Reference to the system from which the order originated - required when \u0060OrderID\u0060 is omitted",
+        "type": "string"
+      },
+      {
+        "name": "OrderFulfillmentID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "OrderID",
+        "description": "ID of the order that is being shipped - required when \u0060OrderBackendID\u0060 and \u0060OrderBackendSystemID\u0060 are omitted",
+        "type": "int64"
+      },
+      {
+        "name": "PackageID",
+        "description": "Optional. When only lines are provided, the PackageID can be used to create a package for all lines.",
+        "type": "int64"
+      },
+      {
+        "name": "Packages",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "ReceiveMethod",
+        "description": null,
+        "type": "EVA.Core.DataModels.ShipmentReceiveMethods"
+      },
+      {
+        "name": "ShipmentDate",
+        "description": null,
+        "type": "date"
+      },
+      {
+        "name": "ShippedFromOrganizationUnitID",
+        "description": "Optional, will be determined based on the Order",
+        "type": "int64"
+      },
+      {
+        "name": "TrackingCode",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "TrackingLink",
+        "description": null,
+        "type": "string"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "ID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  }
 }

@@ -1,4 +1,47 @@
 {
   "name": "CreateReplenishmentProposal",
-  "description": "Creates a new \u0060ReplenishmentProposal\u0060.\n\nThe new proposal is picked up and processed asynchronously and could take a while after creation to complete generating its results, depending on the\namount of sources, targets, products and the algorithm used. Check the \u0060Status\u0060 property in the \u0060GetReplenishmentProposal\u0060 response to see if it\u0027s\ncompleted.\n\nTo allow selecting the output types for the generated proposal, the property \u0060OutputTypes\u0060 can be set. It is a flags enum of the type\n\u0060ReplenishmentOutputTypes\u0060. If the \u0060OutputTypes\u0060 is not set, it will fall back to the setting \u0060Replenishment:Outputs\u0060."
+  "description": "Creates a new \u0060ReplenishmentProposal\u0060.\n\nThe new proposal is picked up and processed asynchronously and could take a while after creation to complete generating its results, depending on the\namount of sources, targets, products and the algorithm used. Check the \u0060Status\u0060 property in the \u0060GetReplenishmentProposal\u0060 response to see if it\u0027s\ncompleted.\n\nTo allow selecting the output types for the generated proposal, the property \u0060OutputTypes\u0060 can be set. It is a flags enum of the type\n\u0060ReplenishmentOutputTypes\u0060. If the \u0060OutputTypes\u0060 is not set, it will fall back to the setting \u0060Replenishment:Outputs\u0060.",
+  "request": {
+    "properties": [
+      {
+        "name": "OutputTypes",
+        "description": "Optional parameter to override the standard output types for created replenishment proposals",
+        "type": "EVA.Replenishment.Services.ReplenishmentOutputTypes"
+      },
+      {
+        "name": "SourceOrganizationUnitIDs",
+        "description": "Required when \u0060SourceOrganizationUnitSetID\u0060 is omitted",
+        "type": "array"
+      },
+      {
+        "name": "SourceOrganizationUnitSetID",
+        "description": "Required when \u0060SourceOrganizationUnitIDs\u0060 is omitted",
+        "type": "int64"
+      },
+      {
+        "name": "StockLabels",
+        "description": "Optional list of stock labels to generate replenishment proposal for",
+        "type": "array"
+      },
+      {
+        "name": "TargetOrganizationUnitIDs",
+        "description": "Required when \u0060TargetOrganizationUnitSetID\u0060 is omitted",
+        "type": "array"
+      },
+      {
+        "name": "TargetOrganizationUnitSetID",
+        "description": "Required when \u0060TargetOrganizationUnitIDs\u0060 is omitted",
+        "type": "int64"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "ID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  }
 }

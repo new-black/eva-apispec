@@ -1,4 +1,42 @@
 {
   "name": "GetShoppingCart",
-  "description": "This returns the requested order. The order is retreived based on the OrderID.\n\nThe order will be recalculated:\n- Discounts\n- ShippingCosts\n- GiftWrappingCosts\n- OrderLine prices\n\nIf no recalculation is needed, use the GetOrder service instead. In general the approach would be: use GetShoppingCart while building the order, after PrepareOrderForCheckout has been called, switch to GetOrder.\n\nTo include the result of \u0060GetRequiredDataForOrder\u0060, the property \u0060AdditionalOrderDataOptions.RequiredFor\u0060 can be set to the desired level of requirements.\nTo include the result of \u0060GetProductRequirementValuesForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludeProductRequirements\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060GetGiftWrappingOptionsForOrder\u0060 and \u0060GetAvailableGiftWrappingLinesForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludeGiftWrapping\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060PrefigureDiscounts\u0060 and \u0060GetPotentialDiscountsForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludePrefigureDiscounts\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060GetPickProductDiscountOptionsForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludePickProductOptions\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060ListAvailableShippingMethods\u0060, the property \u0060AdditionalOrderDataOptions.IncludeAvailableShippingMethods\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060GetAvailablePaymentMethods\u0060, the property \u0060AdditionalOrderDataOptions.IncludeAvailablePaymentMethods\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060GetAvailableRefundPaymentMethodsForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludeAvailableRefundPaymentMethods\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060ValidateOrderShipment\u0060, the property \u0060AdditionalOrderDataOptions.IncludeValidateShipment\u0060 can be set to \u0060true\u0060.\nTo include the available actions for the PaymentTransactions, the property \u0060AdditionalOrderDataOptions.IncludePaymentTransactionActions\u0060 can be set to \u0060true\u0060."
+  "description": "This returns the requested order. The order is retreived based on the OrderID.\n\nThe order will be recalculated:\n- Discounts\n- ShippingCosts\n- GiftWrappingCosts\n- OrderLine prices\n\nIf no recalculation is needed, use the GetOrder service instead. In general the approach would be: use GetShoppingCart while building the order, after PrepareOrderForCheckout has been called, switch to GetOrder.\n\nTo include the result of \u0060GetRequiredDataForOrder\u0060, the property \u0060AdditionalOrderDataOptions.RequiredFor\u0060 can be set to the desired level of requirements.\nTo include the result of \u0060GetProductRequirementValuesForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludeProductRequirements\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060GetGiftWrappingOptionsForOrder\u0060 and \u0060GetAvailableGiftWrappingLinesForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludeGiftWrapping\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060PrefigureDiscounts\u0060 and \u0060GetPotentialDiscountsForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludePrefigureDiscounts\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060GetPickProductDiscountOptionsForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludePickProductOptions\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060ListAvailableShippingMethods\u0060, the property \u0060AdditionalOrderDataOptions.IncludeAvailableShippingMethods\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060GetAvailablePaymentMethods\u0060, the property \u0060AdditionalOrderDataOptions.IncludeAvailablePaymentMethods\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060GetAvailableRefundPaymentMethodsForOrder\u0060, the property \u0060AdditionalOrderDataOptions.IncludeAvailableRefundPaymentMethods\u0060 can be set to \u0060true\u0060.\nTo include the result of \u0060ValidateOrderShipment\u0060, the property \u0060AdditionalOrderDataOptions.IncludeValidateShipment\u0060 can be set to \u0060true\u0060.\nTo include the available actions for the PaymentTransactions, the property \u0060AdditionalOrderDataOptions.IncludePaymentTransactionActions\u0060 can be set to \u0060true\u0060.",
+  "request": {
+    "properties": [
+      {
+        "name": "AdditionalOrderDataOptions",
+        "description": null,
+        "type": "EVA.Core.Orders.AdditionalOrderDataOptions"
+      },
+      {
+        "name": "IncludeAllPayments",
+        "description": "By default only confirmed payments are returned, enabling this flag will return all PaymentTransactions",
+        "type": "bool"
+      },
+      {
+        "name": "OrderID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "AdditionalOrderData",
+        "description": null,
+        "type": "EVA.Core.Orders.AdditionalOrderData"
+      },
+      {
+        "name": "Amounts",
+        "description": null,
+        "type": "EVA.Core.Orders.OpenOrderAmounts"
+      },
+      {
+        "name": "ShoppingCart",
+        "description": null,
+        "type": "EVA.Core.Orders.Dto.OrderDto"
+      }
+    ]
+  }
 }

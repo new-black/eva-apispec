@@ -1,4 +1,46 @@
 {
   "name": "ProcessStockMutationFile",
-  "description": "Processes a (delta)stock mutation file.\n\nExpected format of the file is JSON with the following markup:\n\n\u0060\u0060\u0060\n[\n  {\n    \u0022ProductID\u0022: [Optional, int],\n    \u0022ProductBackendID\u0022: [Optional, string],\n    \u0022QuantityOnHand\u0022: [Required, int, value \u003E= 0]\n  },\n  ...\n]\n\u0060\u0060\u0060\n\nMutation will only be processed for valid ProductIDs or ProductBackendIDs. In case ProductID and ProductBackendID are provided,\nProductBackendID will be selected as the search parameter."
+  "description": "Processes a (delta)stock mutation file.\n\nExpected format of the file is JSON with the following markup:\n\n\u0060\u0060\u0060\n[\n  {\n    \u0022ProductID\u0022: [Optional, int],\n    \u0022ProductBackendID\u0022: [Optional, string],\n    \u0022QuantityOnHand\u0022: [Required, int, value \u003E= 0]\n  },\n  ...\n]\n\u0060\u0060\u0060\n\nMutation will only be processed for valid ProductIDs or ProductBackendIDs. In case ProductID and ProductBackendID are provided,\nProductBackendID will be selected as the search parameter.",
+  "request": {
+    "properties": [
+      {
+        "name": "BackendSystemID",
+        "description": "The \u0060BackendSystemID\u0060 that belongs to the \u0060ProductBackendID\u0060s",
+        "type": "string"
+      },
+      {
+        "name": "EmailAddress",
+        "description": "An email address to mail the processing result to. When left empty, the logged in user context will be used",
+        "type": "string"
+      },
+      {
+        "name": "FileBlobID",
+        "description": null,
+        "type": "guid"
+      },
+      {
+        "name": "IsFullStockMutationFile",
+        "description": "If set to false (default), only the stock for the products that are present in the file will be updated (delta).\n\nIf set to true, all the products will be updated - products not present in the file will be updated to quantity 0.",
+        "type": "bool"
+      },
+      {
+        "name": "OrganizationUnitID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "StockLabelID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "StockMutationReasonID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  },
+  "response": {
+    "properties": []
+  }
 }

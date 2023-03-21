@@ -1,4 +1,77 @@
 {
   "name": "ImportProducts",
-  "description": "This service lets you create and update a set of products and their content.\n\nThe set is products is hierarchical in nature. For example, if you have a shirt that comes in 3 colors and 5 sizes per color, you would normally define a root product that then contains the 3 color products\nand each color product would contain the 5 different sizes, which would be the SKU. How you define the hierarchy is up to you, it\u0027s also fine to have the 3 color products as root products and only have them\ncontain the SKUs, or to forego a hierarchy entirely and just create the SKUs, but creating the root and color products is useful for search and frontend purposes.\n\n\nAn example request of a hierarchy:\n\n{\n  \u0022ID\u0022: \u0022special_shirt\u0022,\n  \u0022Name\u0022: \u0022Special Shirt\u0022,\n  \u0022TaxCode\u0022: \u0022High\u0022,\n  \u0022Variations\u0022: {\n    \u0022Property\u0022: \u0022color_code\u0022,\n    \u0022LogicalLevel\u0022: \u0022color\u0022,\n    \u0022Products\u0022: [\n      {\n        \u0022ID\u0022: \u0022special_shirt_blue\u0022,\n        \u0022Name\u0022: \u0022Special Shirt - Blue\u0022,\n        \u0022VariationValues\u0022: [\n          {\n            \u0022LanguageID\u0022: null,\n            \u0022Value\u0022: \u0022BLUE\u0022\n          }\n        ],\n        \u0022Variations\u0022: {\n          \u0022Property\u0022: \u0022size_code\u0022,\n          \u0022LogicalLevel\u0022: \u0022size\u0022,\n          \u0022Products\u0022: [\n            {\n              \u0022ID\u0022: \u0022sku_special_shirt_blue_xl\u0022,\n              \u0022VariationValues\u0022: [\n                {\n                  \u0022LanguageID\u0022: null,\n                  \u0022Value\u0022: \u0022XL\u0022\n                }\n              ]\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+  "description": "This service lets you create and update a set of products and their content.\n\nThe set is products is hierarchical in nature. For example, if you have a shirt that comes in 3 colors and 5 sizes per color, you would normally define a root product that then contains the 3 color products\nand each color product would contain the 5 different sizes, which would be the SKU. How you define the hierarchy is up to you, it\u0027s also fine to have the 3 color products as root products and only have them\ncontain the SKUs, or to forego a hierarchy entirely and just create the SKUs, but creating the root and color products is useful for search and frontend purposes.\n\n\nAn example request of a hierarchy:\n\n{\n  \u0022ID\u0022: \u0022special_shirt\u0022,\n  \u0022Name\u0022: \u0022Special Shirt\u0022,\n  \u0022TaxCode\u0022: \u0022High\u0022,\n  \u0022Variations\u0022: {\n    \u0022Property\u0022: \u0022color_code\u0022,\n    \u0022LogicalLevel\u0022: \u0022color\u0022,\n    \u0022Products\u0022: [\n      {\n        \u0022ID\u0022: \u0022special_shirt_blue\u0022,\n        \u0022Name\u0022: \u0022Special Shirt - Blue\u0022,\n        \u0022VariationValues\u0022: [\n          {\n            \u0022LanguageID\u0022: null,\n            \u0022Value\u0022: \u0022BLUE\u0022\n          }\n        ],\n        \u0022Variations\u0022: {\n          \u0022Property\u0022: \u0022size_code\u0022,\n          \u0022LogicalLevel\u0022: \u0022size\u0022,\n          \u0022Products\u0022: [\n            {\n              \u0022ID\u0022: \u0022sku_special_shirt_blue_xl\u0022,\n              \u0022VariationValues\u0022: [\n                {\n                  \u0022LanguageID\u0022: null,\n                  \u0022Value\u0022: \u0022XL\u0022\n                }\n              ]\n            }\n          ]\n        }\n      }\n    ]\n  }\n}",
+  "request": {
+    "properties": [
+      {
+        "name": "CustomPropertyTypes",
+        "description": "Custom properties used in product content can be defined by specifying their definition in this collection.",
+        "type": "array"
+      },
+      {
+        "name": "DownloadImagesInBackground",
+        "description": "When not specified, or explicitly specified as \u0060false\u0060, images will be downloaded while you wait and may cause this service to run for a long time. Defaults to \u0060true\u0060.",
+        "type": "bool"
+      },
+      {
+        "name": "ImageBlobCategory",
+        "description": "A string that identifies the category in which the ProductImages will be stored. It\u0027s optional, when not provided the SystemID will be used instead.",
+        "type": "string"
+      },
+      {
+        "name": "LayerName",
+        "description": "The layer on which the content will be stored. Defaults to \u0027ImportProducts-Base\u0027. If you want to store the content on a different layer, you can specify it here. If the content also\nspecifies a language/country this will be combined with the provided layer name to create a layer name like \u0027\u003Cname\u003E \u003Clanguage\u003E \u003Ccountry\u003E\u0027, so the provided LayerName is not necessarily the absolute\nvalue that is used for the layer, only if you leave LanguageID/CountryID as null on the content.",
+        "type": "string"
+      },
+      {
+        "name": "Products",
+        "description": "The list of products to create or update. If a product does not exist it\u0027s created and if a product with the same ID and SystemID already exists it is updated.",
+        "type": "array"
+      },
+      {
+        "name": "RootLogicalLevel",
+        "description": "The LogicalLevel that will be assigned to the root level of a product hierarcy. If not specified a default value is used.\n\nSee ProductVariation.LogicalLevel for more information.",
+        "type": "string"
+      },
+      {
+        "name": "SystemID",
+        "description": "A string that identifies the system that was used to call this service. In combination with a product\u0027s ID, this is what uniquely identifies the product in EVA.\nThe SystemID must be the same for every call, if it\u0027s different from a previous call then new products will be created.",
+        "type": "string"
+      },
+      {
+        "name": "Type",
+        "description": "Determines the behavior of this service.",
+        "type": "EVA.PIM.Services.Products.ImportProducts\u002BImportType"
+      },
+      {
+        "name": "WaitForProductComposition",
+        "description": "By default this service only blocks for the time that it takes to store the requested modifications. After that time, some processing still needs to happen before the product is fully ready and searchable, but this happens in the background.\nIf this parameter is specified as true then this service blocks for the full duration that it takes to complete the full process.",
+        "type": "bool"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "CreatedProductIDs",
+        "description": "The EVA IDs of the products that were newly created by this call.",
+        "type": "array"
+      },
+      {
+        "name": "PreviewResult",
+        "description": "If the Type of the request was PreviewOnly this property will contain the product structure that would be generated.",
+        "type": "string"
+      },
+      {
+        "name": "ProductMap",
+        "description": "Contains an entry for every product mapping the input string ID to its internal EVA integer ID.",
+        "type": "array"
+      },
+      {
+        "name": "UpdatedProductIDs",
+        "description": "The EVA IDs of the products were touched by this call.",
+        "type": "array"
+      }
+    ]
+  }
 }

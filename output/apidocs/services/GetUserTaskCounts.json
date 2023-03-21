@@ -1,4 +1,47 @@
 {
   "name": "GetUserTaskCounts",
-  "description": "Return the total number of open tasks, and the count per task type."
+  "description": "Return the total number of open tasks, and the count per task type.",
+  "request": {
+    "properties": [
+      {
+        "name": "ExcludeChildOrganizations",
+        "description": "When specified, will include only tasks from the specified organization unit, excluding child organizations",
+        "type": "bool"
+      },
+      {
+        "name": "IncludeAllTasks",
+        "description": "When specified, will include all tasks, regardless if the user can execute them",
+        "type": "bool"
+      },
+      {
+        "name": "IncludeAssignedTasks",
+        "description": "When specified, will include all assigned tasks in the counts (regardless of whom it is assigned to)",
+        "type": "bool"
+      },
+      {
+        "name": "OrganizationUnitID",
+        "description": "Defaults to the current organization when omitted - includes child organizations",
+        "type": "int64"
+      },
+      {
+        "name": "UserTaskTypes",
+        "description": "Optionally (and additionally) filter on specified types",
+        "type": "array"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "DetailedNumberOfTasks",
+        "description": null,
+        "type": "map"
+      },
+      {
+        "name": "NumberOfTasks",
+        "description": null,
+        "type": "int32"
+      }
+    ]
+  }
 }

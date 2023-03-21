@@ -1,4 +1,97 @@
 {
   "name": "ParseScript",
-  "description": "Parses a script for validation and auto-completion.\n\nCan be used as the user types their script, for that purpose use these parameters:\n- Type: Fast, doing Full performs a full compilation of the script which can take longer. Using Full can be done before the user hits the Save button, or for example every 10th keystroke or so.\n\nUse IncludeCompletionSuggestions if you want to display auto-completion suggestions to the user.\n\nYou can verify the entire script and get completion results by passing in the full script as the Source and only the text until the user\u0027s cursor in the CompletionSource.\n\nA list of the available dialects can be retrieved by calling GetScriptDialects."
+  "description": "Parses a script for validation and auto-completion.\n\nCan be used as the user types their script, for that purpose use these parameters:\n- Type: Fast, doing Full performs a full compilation of the script which can take longer. Using Full can be done before the user hits the Save button, or for example every 10th keystroke or so.\n\nUse IncludeCompletionSuggestions if you want to display auto-completion suggestions to the user.\n\nYou can verify the entire script and get completion results by passing in the full script as the Source and only the text until the user\u0027s cursor in the CompletionSource.\n\nA list of the available dialects can be retrieved by calling GetScriptDialects.",
+  "request": {
+    "properties": [
+      {
+        "name": "AvailableVariablesRequest",
+        "description": null,
+        "type": "EVA.Core.Scripting.ParseScript\u002BAvailableVariablesRequestInfo"
+      },
+      {
+        "name": "CompletionRequest",
+        "description": null,
+        "type": "EVA.Core.Scripting.ParseScript\u002BCompletionRequestInfo"
+      },
+      {
+        "name": "Dialect",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "DocumentationRequest",
+        "description": null,
+        "type": "EVA.Core.Scripting.ParseScript\u002BDocumentationRequestInfo"
+      },
+      {
+        "name": "IncludeStructure",
+        "description": null,
+        "type": "bool"
+      },
+      {
+        "name": "Source",
+        "description": "The script to parse.",
+        "type": "string"
+      },
+      {
+        "name": "SourceTokens",
+        "description": "The script to parse, in token format as returned by ParseScript when IncludeStructure is passed in as \u0060true\u0060.",
+        "type": "array"
+      },
+      {
+        "name": "Type",
+        "description": null,
+        "type": "EVA.Core.Scripting.ParseTypes"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "AvailableVariables",
+        "description": null,
+        "type": "EVA.Core.Scripting.AvailableVariablesResult"
+      },
+      {
+        "name": "CSharpSource",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "CompletionSuggestions",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "Documentation",
+        "description": null,
+        "type": "EVA.Core.Parsing.DocumentationResult"
+      },
+      {
+        "name": "Errors",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "HasErrors",
+        "description": null,
+        "type": "bool"
+      },
+      {
+        "name": "HasWarnings",
+        "description": null,
+        "type": "bool"
+      },
+      {
+        "name": "Structure",
+        "description": null,
+        "type": "EVA.Core.ScriptStructure"
+      },
+      {
+        "name": "Warnings",
+        "description": null,
+        "type": "array"
+      }
+    ]
+  }
 }

@@ -1,4 +1,52 @@
 {
   "name": "ShipOrder",
-  "description": "Ships the specified order. When Lines are specified, only those lines will be shipped.\n\nShipping of Lines includes:\n- Activating giftcards\n- Mutating the stock of the products\n- Potentially invoicing of the lines\n- Validating requirements"
+  "description": "Ships the specified order. When Lines are specified, only those lines will be shipped.\n\nShipping of Lines includes:\n- Activating giftcards\n- Mutating the stock of the products\n- Potentially invoicing of the lines\n- Validating requirements",
+  "request": {
+    "properties": [
+      {
+        "name": "FinalShipment",
+        "description": null,
+        "type": "bool"
+      },
+      {
+        "name": "Force",
+        "description": "Use with caution.\nSet this to true if you want to skip requirements that would otherwise cause validation errors. Like shipping delivery lines, which you usually don\u0027t want from a shop.",
+        "type": "bool"
+      },
+      {
+        "name": "Lines",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "OrderID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "ShippedFromOrganizationUnitID",
+        "description": "The OrganizationUnit the shipment was physically shipped from.",
+        "type": "int64"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "Messages",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "ShipmentIDs",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "ShippedOrderLineIDs",
+        "description": null,
+        "type": "array"
+      }
+    ]
+  }
 }

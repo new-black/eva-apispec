@@ -1,4 +1,52 @@
 {
   "name": "ListStockForOrganizationUnits",
-  "description": "List the Stock per product/stocklabel for a subset of OrganizationUnits.\n\nThe page size \u0060Limit\u0060 has a maximum value of \u00601.024\u0060 for this service (unless \u0060DownloadOverview\u0060 is \u0060true\u0060)."
+  "description": "List the Stock per product/stocklabel for a subset of OrganizationUnits.\n\nThe page size \u0060Limit\u0060 has a maximum value of \u00601.024\u0060 for this service (unless \u0060DownloadOverview\u0060 is \u0060true\u0060).",
+  "request": {
+    "properties": [
+      {
+        "name": "DateTime",
+        "description": "View the stock on a certain moment in time",
+        "type": "date"
+      },
+      {
+        "name": "DownloadOverview",
+        "description": "When specified, the response will contain an \u0060Url\u0060 instead to download the Excel from",
+        "type": "bool"
+      },
+      {
+        "name": "IncludeZeroQuantityStock",
+        "description": "If specified as true, stock with a quantity of zero is also returned by this service. Defaults to false, meaning that products with a zero stock quantity will not be returned by this service.",
+        "type": "bool"
+      },
+      {
+        "name": "OrganizationUnitIDs",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "Query",
+        "description": "Filter on products, is used as input in ElasticSearch",
+        "type": "string"
+      },
+      {
+        "name": "SplitByOrganizationUnit",
+        "description": "The stock will (not) be grouped by OrganizationUnit",
+        "type": "bool"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "Products",
+        "description": null,
+        "type": "map"
+      },
+      {
+        "name": "Url",
+        "description": null,
+        "type": "string"
+      }
+    ]
+  }
 }

@@ -1,4 +1,26 @@
 {
   "name": "SetOrderSoldBy",
-  "description": "Sets the SoldBy of the specified Sales Order to the provided UserID. The user must have type Employee. This service can only be called on Orders that have not been invoiced yet.\nAs SoldBy is a line-level property this service will update all lines on the order that have not been invoiced yet."
+  "description": "Sets the SoldBy of the specified Sales Order to the provided UserID. The user must have type Employee. This service can only be called on Orders that have not been invoiced yet.\nAs SoldBy is a line-level property this service will update all lines on the order that have not been invoiced yet.",
+  "request": {
+    "properties": [
+      {
+        "name": "OrderID",
+        "description": "The Order to set the SoldBy for. Must be an Order of type Sales.",
+        "type": "int64"
+      },
+      {
+        "name": "OrderLineID",
+        "description": "If specified the SoldBy will only be set for the given OrderLine.\nIf SetOrderSoldBy is again called at a later time for the whole order (so without specifying an OrderLineID) then this value is not preserved.\n\nWhen the SoldBy has been set on an individual OrderLine then that SoldBy is not automatically set on newly created OrderLines.",
+        "type": "int64"
+      },
+      {
+        "name": "UserID",
+        "description": "The User that will become the SoldBy. Must be of type Employee.",
+        "type": "int64"
+      }
+    ]
+  },
+  "response": {
+    "properties": []
+  }
 }

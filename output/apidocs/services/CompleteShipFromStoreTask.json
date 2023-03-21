@@ -1,4 +1,62 @@
 {
   "name": "CompleteShipFromStoreTask",
-  "description": "Completes the ShipFromOrder task, indicating that the shipment of the order has taken place.\n\nThe order will be shipped and the shop stock will be moved to Transit."
+  "description": "Completes the ShipFromOrder task, indicating that the shipment of the order has taken place.\n\nThe order will be shipped and the shop stock will be moved to Transit.",
+  "request": {
+    "properties": [
+      {
+        "name": "FinalShipment",
+        "description": "Optional for subtype Ship, requesting to cancel all that was not shipped (also see \u0060UnpickedLinesReasonID\u0060)",
+        "type": "bool"
+      },
+      {
+        "name": "PickedOrderLines",
+        "description": "Optional for subtype Pick",
+        "type": "array"
+      },
+      {
+        "name": "Shipments",
+        "description": "Optional for subtype Ship",
+        "type": "array"
+      },
+      {
+        "name": "ShouldBePrinting",
+        "description": "If you want to override printing behavior - will default to the \u0060ShouldBePrinting\u0060 value from \u0060StartShipFromStoreTask\u0060",
+        "type": "bool"
+      },
+      {
+        "name": "StationID",
+        "description": "Required for subtypes Pick and Ship",
+        "type": "int64"
+      },
+      {
+        "name": "UnpickedLinesReasonID",
+        "description": "The reason why not all lines might be picked",
+        "type": "int64"
+      },
+      {
+        "name": "UserTaskID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "CompletionData",
+        "description": null,
+        "type": "any"
+      },
+      {
+        "name": "Next",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "ShipmentIDs",
+        "description": null,
+        "type": "array"
+      }
+    ]
+  }
 }

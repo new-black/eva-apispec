@@ -1,4 +1,26 @@
 {
   "name": "SetOrderBackendIdentifier",
-  "description": "Sets \u0060BackendID\u0060/\u0060BackendSystemID\u0060 on specified \u0060OrderID\u0060.\n\nThis combination may not already exist, and the targeted order may not be completed, or  already have a \u0060BackendID\u0060/\u0060BackendSystemID\u0060 set.\n\n:warning: Careful! Use at your own risk!\n\nAn order may already have any of the following things, which will not automatically be regenerated/resent because of this identifier change, and could\nresult in mapping issues on any external system listening in on these. Any of these would also apply to return orders referencing this order, or stock\nmutations that have been caused by this order.\n\n* Order exports to third parties\n* Event exports (order created, order updated, ...)\n* Data Lake exports\n* Shipment labels with third party carriers\n* Financial exports (Cookbook)\n* Created documents (receipts, invoices, ...)"
+  "description": "Sets \u0060BackendID\u0060/\u0060BackendSystemID\u0060 on specified \u0060OrderID\u0060.\n\nThis combination may not already exist, and the targeted order may not be completed, or  already have a \u0060BackendID\u0060/\u0060BackendSystemID\u0060 set.\n\n:warning: Careful! Use at your own risk!\n\nAn order may already have any of the following things, which will not automatically be regenerated/resent because of this identifier change, and could\nresult in mapping issues on any external system listening in on these. Any of these would also apply to return orders referencing this order, or stock\nmutations that have been caused by this order.\n\n* Order exports to third parties\n* Event exports (order created, order updated, ...)\n* Data Lake exports\n* Shipment labels with third party carriers\n* Financial exports (Cookbook)\n* Created documents (receipts, invoices, ...)",
+  "request": {
+    "properties": [
+      {
+        "name": "BackendID",
+        "description": "A unique identifier for the order, within the context of given \u0060BackendSystemID\u0060",
+        "type": "string"
+      },
+      {
+        "name": "BackendSystemID",
+        "description": "A code, free of choice for the calling 3rd party application creating the order",
+        "type": "string"
+      },
+      {
+        "name": "OrderID",
+        "description": "The EVA order identifier",
+        "type": "int64"
+      }
+    ]
+  },
+  "response": {
+    "properties": []
+  }
 }

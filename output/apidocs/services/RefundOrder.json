@@ -1,4 +1,42 @@
 {
   "name": "RefundOrder",
-  "description": "Triggers a refund request for the given Order.\n\nThe amount to refund is optional, if not specified it will be the amount available to refund on the order."
+  "description": "Triggers a refund request for the given Order.\n\nThe amount to refund is optional, if not specified it will be the amount available to refund on the order.",
+  "request": {
+    "properties": [
+      {
+        "name": "AmountToRefund",
+        "description": null,
+        "type": "float128"
+      },
+      {
+        "name": "OrderID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "Reason",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "WaitForCompletion",
+        "description": "Handle all the refund in process, this can take a long time if multiple transactions are involved.",
+        "type": "bool"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "AmountAvailableToRefund",
+        "description": "Only set when WaitForCompletion is true",
+        "type": "float128"
+      },
+      {
+        "name": "CreatedTransactions",
+        "description": "Only set when WaitForCompletion is true",
+        "type": "array"
+      }
+    ]
+  }
 }

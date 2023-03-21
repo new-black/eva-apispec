@@ -1,4 +1,67 @@
 {
   "name": "CreateProductRelationType",
-  "description": "Create a new ProductRelationType."
+  "description": "Create a new ProductRelationType.",
+  "request": {
+    "properties": [
+      {
+        "name": "BackendID",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "Direction",
+        "description": "The direction of the relation. This can either be;\nUnidirectional; one-way relation. For example \u0027parent-child\u0027 or \u0027replaced by\u0027\nBidirectional; two-way relation. For example \u0027maybe your also intrested in\u0027 or \u0027others also bought\u0027\nGroup; collective relation which allows for many products as part of a group. For example \u0027all products that are blue\u0027 or \u0027all products from summer-2022\u0027. This type does not accept a StockRelationType.",
+        "type": "EVA.Core.DataModels.ProductRelationDirection"
+      },
+      {
+        "name": "DynamicRelationProductID",
+        "description": "You can create dynamic bi- or uni directional relations by defining a \u0060DynamicRelationProductID\u0060 in combination with a \u0060ProductSearchTemplateID\u0060 or \u0060ProductSearchFilters\u0060.\nBy setting the \u0060UseDynamicRelationProductAsRelatedProduct\u0060 to false (default), the \u0060DynamicRelationProductID\u0060 will be considered as the primary product and the result from the \u0060ProductSearchTemplateID\u0060 or \u0060ProductSearchFilters\u0060 will be considered as related products\nBy setting the \u0060UseDynamicRelationProductAsRelatedProduct\u0060 to true , the result from the \u0060ProductSearchTemplateID\u0060 or \u0060ProductSearchFilters\u0060 will be considered as primary products and the \u0060DynamicRelationProductID\u0060 will be considered as the related product",
+        "type": "int64"
+      },
+      {
+        "name": "PrimaryName",
+        "description": "This is the primary name the relation. For example; if primary name is \u0027Blocks\u0027, the secondary name could be something in the lines of \u0027Blocked by\u0027.",
+        "type": "string"
+      },
+      {
+        "name": "ProductSearchFilters",
+        "description": "Only available when Direction is set to \u0060Group\u0060.",
+        "type": "map"
+      },
+      {
+        "name": "ProductSearchTemplateID",
+        "description": "Only available when Direction is set to \u0060Group\u0060.",
+        "type": "int64"
+      },
+      {
+        "name": "Relations",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "SecondaryName",
+        "description": "This is the secondary name the relation. For example; if primary name is \u0027Blocks\u0027, the secondary name could be something in the lines of \u0027Blocked by\u0027.",
+        "type": "string"
+      },
+      {
+        "name": "StockRelationType",
+        "description": "Indicates which stock relation type the relation has. In most cases this will be \u0027None\u0027. The following options are available:\nNone; No stock relation\nReplacing; When the PrimaryProduct is no longer in stock, the system can automaticly use the RelatedProduct as it\u0027s replacement (or vice versa if \u0060Direction\u0060 is set to \u0060Bidirectional\u0060).",
+        "type": "EVA.Core.DataModels.StockRelationType"
+      },
+      {
+        "name": "UseDynamicRelationProductAsRelatedProduct",
+        "description": null,
+        "type": "bool"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "ID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  }
 }

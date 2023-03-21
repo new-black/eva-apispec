@@ -1,4 +1,67 @@
 {
   "name": "SupplierCreateOrUpdatePurchaseOrder",
-  "description": "Creates a purchase order (or updates it if it already exists).\n\nWhen the order already exists, only the lines can be updated (see \u0060SupplierUpdatePurchaseOrder\u0060) - other properties will be ignored.\n\n:lightbulb: Using \u0060SupplierCreateOrder\u0060 and \u0060SupplierUpdatePurchaseOrder\u0060 is preferred."
+  "description": "Creates a purchase order (or updates it if it already exists).\n\nWhen the order already exists, only the lines can be updated (see \u0060SupplierUpdatePurchaseOrder\u0060) - other properties will be ignored.\n\n:lightbulb: Using \u0060SupplierCreateOrder\u0060 and \u0060SupplierUpdatePurchaseOrder\u0060 is preferred.",
+  "request": {
+    "properties": [
+      {
+        "name": "BackendID",
+        "description": "Identifer of the order from the 3rd party",
+        "type": "string"
+      },
+      {
+        "name": "BackendSystemID",
+        "description": "Identifier of the 3rd party system that created the order",
+        "type": "string"
+      },
+      {
+        "name": "CustomFields",
+        "description": null,
+        "type": "map"
+      },
+      {
+        "name": "ExpectedDeliveryDate",
+        "description": "Date that the supplier expects to deliver the shipment(s) of the purchase order",
+        "type": "date"
+      },
+      {
+        "name": "Lines",
+        "description": "Contents of the purchase order.",
+        "type": "array"
+      },
+      {
+        "name": "Receive",
+        "description": "Receive the order immediately after shipping, works only if \u0060Ship\u0060 is set to true",
+        "type": "bool"
+      },
+      {
+        "name": "Ship",
+        "description": "Ship the order immediately after creation",
+        "type": "bool"
+      },
+      {
+        "name": "ShipFromOrganizationUnitID",
+        "description": "OrganizationUnit who will be supplying the stock.",
+        "type": "int64"
+      },
+      {
+        "name": "ShipToOrganizationUnitID",
+        "description": "OrganizationUnit that will be receiving the purchase order shipment(s).",
+        "type": "int64"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "IsCreated",
+        "description": null,
+        "type": "bool"
+      },
+      {
+        "name": "IsUpdated",
+        "description": null,
+        "type": "bool"
+      }
+    ]
+  }
 }

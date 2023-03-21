@@ -1,4 +1,72 @@
 {
   "name": "CreateCustomerReturn",
-  "description": "Create a return order from an existing sales order (\u0060OrderID\u0060).\n\nWhen a \u0060TargetOrderID\u0060 has been specified, newly created lines are added to that specific order. When omitted, the lines are either added to the\nexisting, original order (in case that is still permitted) or a new order is created automatically.\n\nReturns information on the (newly created?) return order."
+  "description": "Create a return order from an existing sales order (\u0060OrderID\u0060).\n\nWhen a \u0060TargetOrderID\u0060 has been specified, newly created lines are added to that specific order. When omitted, the lines are either added to the\nexisting, original order (in case that is still permitted) or a new order is created automatically.\n\nReturns information on the (newly created?) return order.",
+  "request": {
+    "properties": [
+      {
+        "name": "AmountToRefund",
+        "description": "When a ReturnWithoutProducts is done, but not the full amount should be refunded, a different amount can be provided - cannot exceed the worth of the returned products",
+        "type": "float128"
+      },
+      {
+        "name": "BackendID",
+        "description": "Optional, attached to a possible newly created (return) order - requires \u0060BackendSystemID\u0060",
+        "type": "string"
+      },
+      {
+        "name": "BackendSystemID",
+        "description": "Optional, attached to a possible newly created (return) order - requires \u0060BackendID\u0060",
+        "type": "string"
+      },
+      {
+        "name": "CreateInOriginalOrganizationUnit",
+        "description": "Attach the order to the same OrganizationUnit as the returned order",
+        "type": "bool"
+      },
+      {
+        "name": "Lines",
+        "description": "Lines to return",
+        "type": "array"
+      },
+      {
+        "name": "OrderID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "RefundCorrectionReasonID",
+        "description": "When not the whole amount is refunded, a reason for this correction can be set. This will only have an affect if \u0060AmountToRefund\u0060 is lower than the total amount of this return.",
+        "type": "int64"
+      },
+      {
+        "name": "ReturnWithoutProducts",
+        "description": "The products will not be returned, so the return order will be shipped immediately and the stock will be corrected",
+        "type": "bool"
+      },
+      {
+        "name": "SecurityCode",
+        "description": "User is allowed to create return order when a valid security code is provided. The user has to have the ReturnWithoutSecurityCode role when omitted. \u0060CRM:Return:RequiresOrderSecurityCode\u0060 needs to be enabled.",
+        "type": "string"
+      },
+      {
+        "name": "StockOrganizationUnitID",
+        "description": "When the stock should be returned to a specific OrganizationUnit (see \u0060GetReturnableStatusForOrder.StockOrganizationUnits\u0060)",
+        "type": "int64"
+      },
+      {
+        "name": "TargetOrderID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "OrderID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  }
 }

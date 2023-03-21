@@ -1,4 +1,77 @@
 {
   "name": "PushPriceList",
-  "description": "A service that allows to manage the entirety of a price list."
+  "description": "A service that allows to manage the entirety of a price list.",
+  "request": {
+    "properties": [
+      {
+        "name": "ActiveForOrganizationUnits",
+        "description": "The organization units that use this pricelist. If left empty will leave the current configuration unchanged. If specified, will replace the current configuration.",
+        "type": "array"
+      },
+      {
+        "name": "Components",
+        "description": "The list of components that make up the pricelist. If left empty this will leave the current configuration unchanged. If specified only the components present will be modified. Components must be explictly deleted.",
+        "type": "array"
+      },
+      {
+        "name": "CurrencyID",
+        "description": "The currency for the pricelist. Must be present for the creation of a pricelist but can be left empty in subsequent calls.",
+        "type": "string"
+      },
+      {
+        "name": "ID",
+        "description": "The unique identifier for this pricelist.",
+        "type": "string"
+      },
+      {
+        "name": "IsActive",
+        "description": "Whether or not the pricelist is active.",
+        "type": "bool"
+      },
+      {
+        "name": "LowProductCountOption",
+        "description": "The PushPriceList service is optimized for updating a pricelist in its entirety, so for many products at once when using a PriceEntry component. When using few products or even single products this service can perform unnecessary work. It\u0027s always recommended to\nuse this service in a large batch manner but if that\u0027s not possible you can specify your intent by using either LowProductCountOption = Auto or Optimize. Effectively this service will simply store the new price entries and return.\nThe updated prices won\u0027t become effective until the next calculation round, which happens every 15 minutes. The threshold for \u0027low product count\u0027 is set at 100 products.",
+        "type": "EVA.Core.Pricing.PushPriceList\u002BLowProductCountOptions"
+      },
+      {
+        "name": "Name",
+        "description": "The name of the pricelist. Must be present for the creation of a pricelist but can be left empty in subsequent calls.",
+        "type": "string"
+      },
+      {
+        "name": "RecalculateEffectivePrices",
+        "description": "Whether or not to immediately recalculate the effective prices after processing the changes. Otherwise, the prices are automatically recalculated every 15 minutes. Until such a recalculation has been performed, the old price will remain active.\nDefaults to false, only specify as true if you cannot wait for the normal recalculation cycle.",
+        "type": "bool"
+      },
+      {
+        "name": "SpecifiedPricesIncludeTax",
+        "description": "If set to true then all prices specified on this price list will be interpreted as already VAT-included. If set to false then all prices will be interpreted as VAT-excluded. If not specified then the default value is true.\n\nSo if a price entry of 90 EUR is added to this pricelist with SpecifiedPricesIncludeTax = true (or not specified) then the price will be interpreted as 90 EUR already including VAT.\nIf SpecifiedPricesIncludeTax = false then the price will be interpreted as 90 EUR excluding VAT so that will be added on top for any orders created with this price.",
+        "type": "bool"
+      },
+      {
+        "name": "SystemID",
+        "description": "A string that identifies the system that was used to call this service. In combination with the ID of the pricelist, this is what uniquely identifies the pricelist in EVA.\nThe SystemID must be the same for every call, if it\u0027s different from a previous call then a new pricelist will be created.",
+        "type": "string"
+      },
+      {
+        "name": "TimeZone",
+        "description": "The timezone that will be used to interpret activation times for prices.",
+        "type": "string"
+      },
+      {
+        "name": "WaitForCompletion",
+        "description": "If specified as true, the call to PushPriceList will not return until all uploaded prices have been stored and all prices have been recalculated. Normally this process runs in the background.",
+        "type": "bool"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "PriceListID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  }
 }

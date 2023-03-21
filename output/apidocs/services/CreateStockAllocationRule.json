@@ -1,4 +1,72 @@
 {
   "name": "CreateStockAllocationRule",
-  "description": "Creates a StockAllocationRule for the SupplierOrganizationUnitID and OrganizationUnitID.\n\n- If \u0060ProductID\u0060 is left null, this is a \u0027catch-all\u0027 rule, meaning that the rule applies to all products (but it can still be overriden by a rule with a specific \u0060ProductID\u0060).\nOnly a reservation can be a catch-all rule, a limitation must specify a \u0060ProductID\u0060 or a \u0060ProductSearchTemplateID\u0060.\n- \u0060RefillPeriodInDays\u0060 is ignored when the Type is not a \u0060Limitation\u0060, as only a \u0060Limitation\u0060 can be refilled.\n- If \u0060ValueType\u0060 is \u0060Percentage\u0060, then \u0060Value\u0060 must be between 0 and 100.\n- \u0060OrganizationUnitSupplierID\u0060 is a reference to a supplier relationship between OrganizationUnits, not to an OrganizationUnit.\nThis is for example the supplier relationship between a warehouse and a store. Available OrganizationUnitSuppliers can be found through \u0060ListOrganizationUnitSuppliers\u0060.\n- When left empty, OrganizationUnitID defaults to the OrganizationUnitID on the OrganizationUnitSupplier. So if the supplier relationship is between a warehouse and a store, this will\ndefault to the store. When specified, the OrganizationUnitID *must* be one that the supplier of the relationship *directly* supplies to.\nFor example, if a supplier relationship exists between a warehouse and a country OrganizationUnit then you *can\u0027t* specify a store that falls\nunder that country OrganizationUnit. In that case, you should create a StockAllocationRule between the country and the store,\nnot between the warehouse and the store."
+  "description": "Creates a StockAllocationRule for the SupplierOrganizationUnitID and OrganizationUnitID.\n\n- If \u0060ProductID\u0060 is left null, this is a \u0027catch-all\u0027 rule, meaning that the rule applies to all products (but it can still be overriden by a rule with a specific \u0060ProductID\u0060).\nOnly a reservation can be a catch-all rule, a limitation must specify a \u0060ProductID\u0060 or a \u0060ProductSearchTemplateID\u0060.\n- \u0060RefillPeriodInDays\u0060 is ignored when the Type is not a \u0060Limitation\u0060, as only a \u0060Limitation\u0060 can be refilled.\n- If \u0060ValueType\u0060 is \u0060Percentage\u0060, then \u0060Value\u0060 must be between 0 and 100.\n- \u0060OrganizationUnitSupplierID\u0060 is a reference to a supplier relationship between OrganizationUnits, not to an OrganizationUnit.\nThis is for example the supplier relationship between a warehouse and a store. Available OrganizationUnitSuppliers can be found through \u0060ListOrganizationUnitSuppliers\u0060.\n- When left empty, OrganizationUnitID defaults to the OrganizationUnitID on the OrganizationUnitSupplier. So if the supplier relationship is between a warehouse and a store, this will\ndefault to the store. When specified, the OrganizationUnitID *must* be one that the supplier of the relationship *directly* supplies to.\nFor example, if a supplier relationship exists between a warehouse and a country OrganizationUnit then you *can\u0027t* specify a store that falls\nunder that country OrganizationUnit. In that case, you should create a StockAllocationRule between the country and the store,\nnot between the warehouse and the store.",
+  "request": {
+    "properties": [
+      {
+        "name": "EndDate",
+        "description": null,
+        "type": "date"
+      },
+      {
+        "name": "OrganizationUnitID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "OrganizationUnitSupplierID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "Priority",
+        "description": "In case there is not enough stock, Priority is used to determine who gets preference. A higher Priority means a higher preference.",
+        "type": "int32"
+      },
+      {
+        "name": "ProductID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "ProductSearchTemplateID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "RefillPeriodInDays",
+        "description": null,
+        "type": "int32"
+      },
+      {
+        "name": "StartDate",
+        "description": null,
+        "type": "date"
+      },
+      {
+        "name": "Type",
+        "description": null,
+        "type": "EVA.Core.DataModels.StockAllocationRuleTypes"
+      },
+      {
+        "name": "Value",
+        "description": null,
+        "type": "int32"
+      },
+      {
+        "name": "ValueType",
+        "description": null,
+        "type": "EVA.Core.DataModels.StockAllocationRuleValueTypes"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "ID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  }
 }

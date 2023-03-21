@@ -1,4 +1,52 @@
 {
   "name": "CreateBlob",
-  "description": "Creates a new, empty blob. If you wish to store data in there directly, use the \u0060StoreBlob\u0060 service instead.\n\nEmpty blobs are placeholders; eventually, you\u0027ll want to push data in there. This service allows you to create that placeholder, and it is expected you then use the\nmultipart or raw binary \u0060POST\u0060 call to \u0060/blob/{Guid}\u0060 to push your data.\n\nThe combination of \u0060Category\u0060 and \u0060OriginalName\u0060 must be unique, as the \u0060GetBlobInfoService\u0060 allows retrieval based on these values. Internally, a fresh and unique \u0060Guid\u0060 is\ngenerated and returned from this request. The response also contains the full \u0060Url\u0060 by which this blob can be accessed (which will contain aforementioned \u0060Guid\u0060). Use this\npath to POST your data, too!\n\n- [x] The \u0060MimeType\u0060 is required, a few suggestions would be \u0060application/pdf\u0060, \u0060text/csv\u0060 or \u0060application/json\u0060 - but you probably already know this.\n- [x] The \u0060ExpireDate\u0060 is the date at which the given blob should expire. Leave this empty to *suggest* to keep it forever. We will bag it and get rid of it when the time is right. :hocho:\n\nWhen retrieving the blob, it will be returned to you using the \u0060MimeType\u0060 as \u0060ContentType\u0060 header and a proper \u0060Expires\u0060 header."
+  "description": "Creates a new, empty blob. If you wish to store data in there directly, use the \u0060StoreBlob\u0060 service instead.\n\nEmpty blobs are placeholders; eventually, you\u0027ll want to push data in there. This service allows you to create that placeholder, and it is expected you then use the\nmultipart or raw binary \u0060POST\u0060 call to \u0060/blob/{Guid}\u0060 to push your data.\n\nThe combination of \u0060Category\u0060 and \u0060OriginalName\u0060 must be unique, as the \u0060GetBlobInfoService\u0060 allows retrieval based on these values. Internally, a fresh and unique \u0060Guid\u0060 is\ngenerated and returned from this request. The response also contains the full \u0060Url\u0060 by which this blob can be accessed (which will contain aforementioned \u0060Guid\u0060). Use this\npath to POST your data, too!\n\n- [x] The \u0060MimeType\u0060 is required, a few suggestions would be \u0060application/pdf\u0060, \u0060text/csv\u0060 or \u0060application/json\u0060 - but you probably already know this.\n- [x] The \u0060ExpireDate\u0060 is the date at which the given blob should expire. Leave this empty to *suggest* to keep it forever. We will bag it and get rid of it when the time is right. :hocho:\n\nWhen retrieving the blob, it will be returned to you using the \u0060MimeType\u0060 as \u0060ContentType\u0060 header and a proper \u0060Expires\u0060 header.",
+  "request": {
+    "properties": [
+      {
+        "name": "Category",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "ExpireDate",
+        "description": null,
+        "type": "date"
+      },
+      {
+        "name": "LocationType",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "MimeType",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "OriginalName",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "Uri",
+        "description": null,
+        "type": "string"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "Guid",
+        "description": null,
+        "type": "guid"
+      },
+      {
+        "name": "Url",
+        "description": null,
+        "type": "string"
+      }
+    ]
+  }
 }

@@ -1,4 +1,42 @@
 {
   "name": "ShipExternalOrder",
-  "description": "Ships an order that has been exported to an external system by another proces"
+  "description": "Ships an order that has been exported to an external system by another proces",
+  "request": {
+    "properties": [
+      {
+        "name": "BackendID",
+        "description": "Reference to the order that is being shipped - required when \u0060ID\u0060 is omitted",
+        "type": "string"
+      },
+      {
+        "name": "BackendSystemID",
+        "description": "Reference to the system from which the order originated - required when \u0060ID\u0060 is omitted",
+        "type": "string"
+      },
+      {
+        "name": "FinalShipment",
+        "description": "Indicates if this is the last shipment. If this is set to true and there are still lines that are not shipped, the lines will be cancelled",
+        "type": "bool"
+      },
+      {
+        "name": "ID",
+        "description": "ID of the order that is being shipped - required when \u0060BackendID\u0060 and \u0060BackendSystemID\u0060 are omitted",
+        "type": "int64"
+      },
+      {
+        "name": "Shipments",
+        "description": null,
+        "type": "array"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "ShipmentIDs",
+        "description": null,
+        "type": "array"
+      }
+    ]
+  }
 }

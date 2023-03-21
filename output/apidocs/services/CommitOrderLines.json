@@ -1,4 +1,32 @@
 {
   "name": "CommitOrderLines",
-  "description": "This service allows you to manually commit the stock for the given OrderLineIDs.\nThe response contains whether or not the commitment was successful, per OrderLine.\n\nCommitment can be unsucessful for two reasons:\n\n- No commitment is necessary. This is because it\u0027s an OrderLine that can\u0027t be committed, for example one without a stock product, or because the order type doesn\u0027t allow commitments.\n- Insufficient stock. This service only allows creating a commitment when there\u0027s sufficient available stock. Use the MoveCommitments or UncommitOrderLines services to create available stock."
+  "description": "This service allows you to manually commit the stock for the given OrderLineIDs.\nThe response contains whether or not the commitment was successful, per OrderLine.\n\nCommitment can be unsucessful for two reasons:\n\n- No commitment is necessary. This is because it\u0027s an OrderLine that can\u0027t be committed, for example one without a stock product, or because the order type doesn\u0027t allow commitments.\n- Insufficient stock. This service only allows creating a commitment when there\u0027s sufficient available stock. Use the MoveCommitments or UncommitOrderLines services to create available stock.",
+  "request": {
+    "properties": [
+      {
+        "name": "CommitmentStatus",
+        "description": null,
+        "type": "EVA.Core.DataModels.OrderLineCommitmentStatus"
+      },
+      {
+        "name": "OrderID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "OrderLineIDs",
+        "description": null,
+        "type": "array"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "Results",
+        "description": null,
+        "type": "array"
+      }
+    ]
+  }
 }

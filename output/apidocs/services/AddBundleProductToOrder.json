@@ -1,4 +1,42 @@
 {
   "name": "AddBundleProductToOrder",
-  "description": "The normal \u0060AddProductToOrder\u0060 cannot be used for adding a Product with type \u0060BundleProduct\u0060 to an order. Instead, \u0060AddBundleProductToOrder\u0060 must be\nused. In addition to the \u0060BundleProductID\u0060, this service accepts an optional \u0060LineSelection\u0060, which represents the bundle\u0027s configuration in terms of\nwhich products you\u0027ve chosen.\n\nThe \u0060LineSelection\u0060 data structure contains a \u0060SelectedProductID\u0060, which must refer to a ProductID that is a valid option for this bundle, according\nto what \u0060GetBundleProductDetails\u0060 returns.\n\nIf no \u0060LineSelection\u0060 is provided then the default products of the bundle are added to the Order."
+  "description": "The normal \u0060AddProductToOrder\u0060 cannot be used for adding a Product with type \u0060BundleProduct\u0060 to an order. Instead, \u0060AddBundleProductToOrder\u0060 must be\nused. In addition to the \u0060BundleProductID\u0060, this service accepts an optional \u0060LineSelection\u0060, which represents the bundle\u0027s configuration in terms of\nwhich products you\u0027ve chosen.\n\nThe \u0060LineSelection\u0060 data structure contains a \u0060SelectedProductID\u0060, which must refer to a ProductID that is a valid option for this bundle, according\nto what \u0060GetBundleProductDetails\u0060 returns.\n\nIf no \u0060LineSelection\u0060 is provided then the default products of the bundle are added to the Order.",
+  "request": {
+    "properties": [
+      {
+        "name": "BundleProductID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "LineActionType",
+        "description": null,
+        "type": "EVA.Core.Enumerations.LineActionTypes"
+      },
+      {
+        "name": "LineSelection",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "OrderID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "ParentOrderLineID",
+        "description": "If specified the new bundle OrderLine becomes a child of the specified OrderLine.",
+        "type": "int64"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "OrderLineID",
+        "description": "Created or updated OrderLineID",
+        "type": "int64"
+      }
+    ]
+  }
 }

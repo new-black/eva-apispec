@@ -1,4 +1,52 @@
 {
   "name": "StartCloseCashJournal",
-  "description": "Initiates the closing of a cash journal. This does not yet mutate anything, but returns all the details you need about a cash journal to be able to close it.\n\nThis consists of:\n\n- The information about the device and station\n- Which expenses and deposits were made from this device.\n- What payments were made.\n- What the \u0060ExpectedClosingAmount\u0060 is, which is a summary of the previous journal\u0027s closing amount plus all transactions.\n- Possible pending cash deposits on this device"
+  "description": "Initiates the closing of a cash journal. This does not yet mutate anything, but returns all the details you need about a cash journal to be able to close it.\n\nThis consists of:\n\n- The information about the device and station\n- Which expenses and deposits were made from this device.\n- What payments were made.\n- What the \u0060ExpectedClosingAmount\u0060 is, which is a summary of the previous journal\u0027s closing amount plus all transactions.\n- Possible pending cash deposits on this device",
+  "request": {
+    "properties": [
+      {
+        "name": "CurrencyID",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "DeviceID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "PaymentTypeID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "CashJournalDetails",
+        "description": null,
+        "type": "EVA.Core.Finance.Cash.CashJournalDetailsModel"
+      },
+      {
+        "name": "ExpectedClosingAmount",
+        "description": null,
+        "type": "float128"
+      },
+      {
+        "name": "MaximalAllowedDeviation",
+        "description": null,
+        "type": "float128"
+      },
+      {
+        "name": "MinimalAllowedDeviation",
+        "description": null,
+        "type": "float128"
+      },
+      {
+        "name": "PendingCashDeposits",
+        "description": null,
+        "type": "array"
+      }
+    ]
+  }
 }

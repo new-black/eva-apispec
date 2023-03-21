@@ -1,4 +1,122 @@
 {
   "name": "Login",
-  "description": "Authenticates user"
+  "description": "Authenticates user",
+  "request": {
+    "properties": [
+      {
+        "name": "AsEmployee",
+        "description": "When set, the (non)-employees will be explicity filtered. Used primarily when Customers and Employees are split, but can also be used to make sure no Customers can login.",
+        "type": "bool"
+      },
+      {
+        "name": "AuthenticationToken",
+        "description": "The current authenticationtoken, can be used to select the same OrganizationUnit when logging in onto a website with an anonymous token.\nOr can be used when switching to another OrganizationUnit, no other properties are required in that case.",
+        "type": "string"
+      },
+      {
+        "name": "Context",
+        "description": "Defines the context where the Login is done, can be used to alter some properties automatically when logging in.",
+        "type": "string"
+      },
+      {
+        "name": "CustomAuthenticateData",
+        "description": "When using a custom authenticator, the data goes here.",
+        "type": "option"
+      },
+      {
+        "name": "CustomAuthenticatorType",
+        "description": "When using a custom authenticator, the type goes here.",
+        "type": "string"
+      },
+      {
+        "name": "IdentificationCode",
+        "description": "The employee IdentificationCode used to login by QR or PIN",
+        "type": "string"
+      },
+      {
+        "name": "LanguageID",
+        "description": "The preferred Language for the session",
+        "type": "string"
+      },
+      {
+        "name": "OrganizationUnitID",
+        "description": "Used to login to a specific OrganizationUnit",
+        "type": "int64"
+      },
+      {
+        "name": "Password",
+        "description": "The password associated with the Username",
+        "type": "string"
+      },
+      {
+        "name": "PublicLogin",
+        "description": "No subnet check, but requests are only allowed to services with the AllowPublic attribute",
+        "type": "bool"
+      },
+      {
+        "name": "SelectFirstOrganizationUnit",
+        "description": "Login on the first OrganizationUnit in the tree where the user has the Login functionality",
+        "type": "bool"
+      },
+      {
+        "name": "TwoFactorAuthenticationToken",
+        "description": "The two-factor authenticator confirmation token",
+        "type": "string"
+      },
+      {
+        "name": "TwoFactorAuthenticator",
+        "description": "The two-factor authenticator code that granted the confirmation token",
+        "type": "string"
+      },
+      {
+        "name": "TwoFactorRememberMe",
+        "description": "If a successful two-factor authentication should be remembered on this IP address",
+        "type": "bool"
+      },
+      {
+        "name": "UserType",
+        "description": "Filters the available Roles/Functionalities when those are explicitly attached to an UserType",
+        "type": "EVA.Core.UserTypes"
+      },
+      {
+        "name": "Username",
+        "description": "Primary identifier of the user, can be an EmailAddress or Nickname",
+        "type": "string"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "Authentication",
+        "description": null,
+        "type": "EVA.Core.Enumerations.AuthenticationResults"
+      },
+      {
+        "name": "FailureReason",
+        "description": null,
+        "type": "EVA.Core.Enumerations.AuthenticationFailureReasons"
+      },
+      {
+        "name": "IsCustomAuthenticateResult",
+        "description": null,
+        "type": "bool"
+      },
+      {
+        "name": "OrganizationUnits",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "TwoFactorAuthenticators",
+        "description": "The available two-factor authenticators, returned when the Authentication result is NeedsTwoFactorAuthentication, for use in a sequential Login call",
+        "type": "array"
+      },
+      {
+        "name": "User",
+        "description": null,
+        "type": "EVA.Core.Users.LoggedInUserDto"
+      }
+    ]
+  }
 }

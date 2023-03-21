@@ -1,4 +1,67 @@
 {
   "name": "SupplierCreatePurchaseOrder",
-  "description": null
+  "description": null,
+  "request": {
+    "properties": [
+      {
+        "name": "BackendID",
+        "description": "Identifier of the order from the 3rd party",
+        "type": "string"
+      },
+      {
+        "name": "BackendSystemID",
+        "description": "Identifier of the 3rd party system that created the order",
+        "type": "string"
+      },
+      {
+        "name": "CopyBackendReferenceOnShip",
+        "description": "Copy the orderlines backendreference to the shipmentlines backendreference, works only if \u0060Ship\u0060 is set to true",
+        "type": "bool"
+      },
+      {
+        "name": "CustomFields",
+        "description": null,
+        "type": "map"
+      },
+      {
+        "name": "ExpectedDeliveryDate",
+        "description": "Date that the supplier expects to deliver the shipment(s) of the purchase order",
+        "type": "date"
+      },
+      {
+        "name": "Lines",
+        "description": "Contents of the purchase order.\nNote: Only one key property can be used to identify the product. When different properties are used, the request will be invalid.\nThis will become redundant when ProductID is the only property left.",
+        "type": "array"
+      },
+      {
+        "name": "Receive",
+        "description": "Receive the order immediately after shipping, works only if \u0060Ship\u0060 is set to true",
+        "type": "bool"
+      },
+      {
+        "name": "Ship",
+        "description": "Ship the order immediately after creation",
+        "type": "bool"
+      },
+      {
+        "name": "ShipFromOrganizationUnitID",
+        "description": "OrganizationUnit who will be supplying the stock.",
+        "type": "int64"
+      },
+      {
+        "name": "ShipToOrganizationUnitID",
+        "description": "OrganizationUnit that will be receiving the purchase order shipment(s).",
+        "type": "int64"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "ID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  }
 }

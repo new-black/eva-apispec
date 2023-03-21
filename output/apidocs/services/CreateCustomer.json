@@ -1,4 +1,57 @@
 {
   "name": "CreateCustomer",
-  "description": "Creates a customer.\n\nThis is allowed when you are an employee, or by anonymous if the CustomerCanRegister (default true) is enabled.\n\nBe sure to handle errors for registering, which could be (amongst others);\n\n  * InvalidEmailAddress\n  * EmailAddressInUse\n  * NicknameInUse\n  * FiscalIDInUse"
+  "description": "Creates a customer.\n\nThis is allowed when you are an employee, or by anonymous if the CustomerCanRegister (default true) is enabled.\n\nBe sure to handle errors for registering, which could be (amongst others);\n\n  * InvalidEmailAddress\n  * EmailAddressInUse\n  * NicknameInUse\n  * FiscalIDInUse",
+  "request": {
+    "properties": [
+      {
+        "name": "AccountType",
+        "description": "Is this a Standard/Basic/Incognito account?",
+        "type": "EVA.Core.DataModels.UserAccountType"
+      },
+      {
+        "name": "Associations",
+        "description": "Optional associations to other users, e.g. child, parent, neighbour, friend, colleague, ...",
+        "type": "EVA.Core.Users.CreateCustomer\u002BUserAssociations"
+      },
+      {
+        "name": "AttachToOrder",
+        "description": "Automatically attach the new customer to the order identified by \u0060OrderID\u0060.",
+        "type": "bool"
+      },
+      {
+        "name": "AutoLogin",
+        "description": "Set to \u0060true\u0060 to automatically authenticate as this new user.",
+        "type": "bool"
+      },
+      {
+        "name": "OrderID",
+        "description": "Identifier for the order to automatically attach the new customer to (see \u0060AttachToOrder\u0060 parameter).",
+        "type": "int64"
+      },
+      {
+        "name": "User",
+        "description": null,
+        "type": "EVA.Core.Users.CreateCustomer\u002BCustomer"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "Barcode",
+        "description": null,
+        "type": "string"
+      },
+      {
+        "name": "Result",
+        "description": null,
+        "type": "EVA.Core.Users.CreateCustomerResults"
+      },
+      {
+        "name": "User",
+        "description": null,
+        "type": "EVA.Core.Users.LoggedInUserDto"
+      }
+    ]
+  }
 }

@@ -1,4 +1,57 @@
 {
   "name": "CreateFullStockCount",
-  "description": "Initiate the Full Stock Count process for the current store. **Prevents basic store functionalities once started.**"
+  "description": "Initiate the Full Stock Count process for the current store. **Prevents basic store functionalities once started.**",
+  "request": {
+    "properties": [
+      {
+        "name": "AllowStockMutationsDuringCount",
+        "description": "When this value is set to true, EVA will allow for stockmutations to be done during the fullstockcount.\nWARNING: setting this value to true will make the outcome of the fullstockcount unreliable, because quantities on the full stock count label products can be changed before or after a count has been done.",
+        "type": "bool"
+      },
+      {
+        "name": "CreateFullStockCountLabelsForShelves",
+        "description": "When supplied, it will automatically call \u0060AddLabelToFullStockCount\u0060 for each Shelf defined in your replenishment configuration. Ignored when IsExternal is set to true.",
+        "type": "bool"
+      },
+      {
+        "name": "InitialFullStockCountLabels",
+        "description": "When supplied, it will automatically call \u0060AddLabelToFullStockCount\u0060 for each InitialLabel. Ignored when IsExternal or CreateFullStockCountLabelsForShelves is set to true.",
+        "type": "array"
+      },
+      {
+        "name": "IsExternal",
+        "description": "Indicates if the full stock count is done by an external party.\nWhen false, the full stock count will be created and all basic store functionalities will be blocked once started.\n\nWhen true, the full stock count will be created with a snapshot from the current stock. To set the result of the external full stock count, the \u0027UploadExternalFullStockCount\u0027 can be called.\nBasic store functionalities will remaining in working order. Deviations will be calculated based on stock mutations.\nThe UserTask will be started automatically.",
+        "type": "bool"
+      },
+      {
+        "name": "RecountInterval",
+        "description": "When supplied, it will automatically create a validation recount based on the given recount interval. Ignored when IsExternal is set to true.",
+        "type": "int32"
+      },
+      {
+        "name": "ReturnCurrentStock",
+        "description": "When set to true, the service will return the current stock information.",
+        "type": "bool"
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "CurrentStock",
+        "description": null,
+        "type": "array"
+      },
+      {
+        "name": "ID",
+        "description": null,
+        "type": "int64"
+      },
+      {
+        "name": "UserTaskID",
+        "description": null,
+        "type": "int64"
+      }
+    ]
+  }
 }
