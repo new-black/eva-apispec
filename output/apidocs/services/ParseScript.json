@@ -6,42 +6,124 @@
       {
         "name": "AvailableVariablesRequest",
         "description": null,
-        "type": "EVA.Core.Scripting.ParseScript\u002BAvailableVariablesRequestInfo"
+        "type": "EVA.Core.Scripting.ParseScript\u002BAvailableVariablesRequestInfo",
+        "properties": [
+          {
+            "name": "Column",
+            "description": "The 0-based column number of the position in the script that you would like to know the available variables for.",
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Line",
+            "description": "The 1-based line number of the position in the script that you would like to know the available variables for.",
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "CompletionRequest",
         "description": null,
-        "type": "EVA.Core.Scripting.ParseScript\u002BCompletionRequestInfo"
+        "type": "EVA.Core.Scripting.ParseScript\u002BCompletionRequestInfo",
+        "properties": [
+          {
+            "name": "Source",
+            "description": "The script that you want to have auto-completion suggestions for.\nThis can be different than the full Source as you only want to provide completion suggestions at the current cursor position,\nso you can provide the full source for validation purposes and provide the script up to the cursor position for auto-completion suggestions.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SourceTokens",
+            "description": null,
+            "type": "EVA.Core.ScriptToken[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "Dialect",
         "description": null,
-        "type": "string"
+        "type": "string",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "DocumentationRequest",
         "description": null,
-        "type": "EVA.Core.Scripting.ParseScript\u002BDocumentationRequestInfo"
+        "type": "EVA.Core.Scripting.ParseScript\u002BDocumentationRequestInfo",
+        "properties": [
+          {
+            "name": "Column",
+            "description": "The 0-based column number of the position in the script that you would like documentation for.",
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Line",
+            "description": "The 1-based line number of the position in the script that you would like documentation for.",
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "IncludeStructure",
         "description": null,
-        "type": "bool"
+        "type": "bool",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "Source",
         "description": "The script to parse.",
-        "type": "string"
+        "type": "string",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "SourceTokens",
         "description": "The script to parse, in token format as returned by ParseScript when IncludeStructure is passed in as \u0060true\u0060.",
-        "type": "array"
+        "type": "EVA.Core.ScriptToken[]?",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "Type",
         "description": null,
-        "type": "EVA.Core.Scripting.ParseTypes"
+        "type": "EVA.Core.Scripting.ParseTypes",
+        "properties": null,
+        "recursion": false,
+        "enumValues": {
+          "Fast": 1,
+          "Full": 7,
+          "None": 0,
+          "Parse": 1,
+          "Transpile": 7,
+          "TypeCheck": 3
+        }
       }
     ]
   },
@@ -50,47 +132,166 @@
       {
         "name": "AvailableVariables",
         "description": null,
-        "type": "EVA.Core.Scripting.AvailableVariablesResult"
+        "type": "EVA.Core.Scripting.AvailableVariablesResult",
+        "properties": [
+          {
+            "name": "Variables",
+            "description": null,
+            "type": "EVA.Core.Transpilation.VariableNode[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "CSharpSource",
         "description": null,
-        "type": "string"
+        "type": "string",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "CompletionSuggestions",
         "description": null,
-        "type": "array"
+        "type": "EVA.Core.Parsing.CompletionSuggestion[]?",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "Documentation",
         "description": null,
-        "type": "EVA.Core.Parsing.DocumentationResult"
+        "type": "EVA.Core.Parsing.DocumentationResult",
+        "properties": [
+          {
+            "name": "Component",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Documentation",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "Errors",
         "description": null,
-        "type": "array"
+        "type": "EVA.Core.Scripting.ScriptError[]?",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "HasErrors",
         "description": null,
-        "type": "bool"
+        "type": "bool",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "HasWarnings",
         "description": null,
-        "type": "bool"
+        "type": "bool",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "Structure",
         "description": null,
-        "type": "EVA.Core.ScriptStructure"
+        "type": "EVA.Core.ScriptStructure",
+        "properties": [
+          {
+            "name": "RootNode",
+            "description": null,
+            "type": "EVA.Core.ScriptNode",
+            "properties": [
+              {
+                "name": "Children",
+                "description": null,
+                "type": "EVA.Core.ScriptNode[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Info",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ParentID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Tokens",
+                "description": null,
+                "type": "int32[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Type",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Tokens",
+            "description": null,
+            "type": "EVA.Core.ScriptToken[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
       },
       {
         "name": "Warnings",
         "description": null,
-        "type": "array"
+        "type": "EVA.Core.Scripting.ScriptWarning[]?",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
       }
     ]
   }
