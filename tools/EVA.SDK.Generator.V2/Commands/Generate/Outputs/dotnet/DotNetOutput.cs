@@ -146,7 +146,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
           }
           o.WriteLine("};");
 
-          o.WriteLine($"return client.CallService(request, options);");
+          o.WriteLine("return client.CallService(request, options);");
         }
         o.WriteLine("}");
       }
