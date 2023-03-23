@@ -1,6 +1,8 @@
 {
   "name": "UploadFullStockCountLabels",
   "description": "Upload an excel with labels to the specified full stock count.\nCaution! The Name column can only be max 50 chars. Names larger then that will be rejected.\nCaution! This service will not change existing labels, but only add new ones. Duplicate detection is done on case insensitve Name in combination with StockLabel.",
+  "method": "POST",
+  "path": "/api/core/UploadFullStockCountLabels",
   "request": {
     "properties": [
       {
@@ -27,7 +29,98 @@
         "name": "Added",
         "description": null,
         "type": "EVA.Core.Services.FullStockCountServices.UploadFullStockCountLabelsResponse\u002BAddedLabel[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "ID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Name",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StockLabelID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -35,7 +128,38 @@
         "name": "Rejected",
         "description": null,
         "type": "EVA.Core.Services.FullStockCountServices.UploadFullStockCountLabelsResponse\u002BRejectedLabel[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Name",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Reason",
+            "description": null,
+            "type": "EVA.Core.Services.FullStockCountServices.UploadFullStockCountLabelsResponse\u002BRejectionReason",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "AlreadyExists": 4,
+              "DuplicateInUpload": 3,
+              "NameToLong": 1,
+              "None": 0,
+              "UknownStockLabel": 2
+            }
+          },
+          {
+            "name": "StockLabel",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

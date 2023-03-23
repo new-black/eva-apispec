@@ -1,6 +1,8 @@
 {
   "name": "ListShopsInArea",
   "description": "List the Shop OrganizationUnits in a certain area\n\nIncluded are the OpeningHours in the next 7 days, and the Regular OpeningHours.\n\nThis service is useful for showing all shops in a map, where you want to search in a given rectangle.",
+  "method": "POST",
+  "path": "/api/core/ListShopsInArea",
   "request": {
     "properties": [
       {
@@ -20,6 +22,58 @@
             "name": "Longitude",
             "description": null,
             "type": "float64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "PageConfig",
+        "description": null,
+        "type": "EVA.Core.PageConfig\u00601[map[string,string]]",
+        "properties": [
+          {
+            "name": "Filter",
+            "description": null,
+            "type": "{string: string}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Limit",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SortDirection",
+            "description": null,
+            "type": "EVA.Core.SortDirection",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Ascending": 0,
+              "Descending": 1
+            }
+          },
+          {
+            "name": "SortProperty",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Start",
+            "description": null,
+            "type": "int32",
             "properties": null,
             "recursion": false,
             "enumValues": null
@@ -72,6 +126,501 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Result",
+        "description": null,
+        "type": "EVA.Core.PagedResult\u00601[EVA.Core.OrganizationUnits.ListShopsInAreaResponse\u002BShopInfo]",
+        "properties": [
+          {
+            "name": "CurrentPage",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Filters",
+            "description": null,
+            "type": "{string: string}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Limit",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "NumberOfPages",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Offset",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Page",
+            "description": null,
+            "type": "EVA.Core.OrganizationUnits.ListShopsInAreaResponse\u002BShopInfo[]?",
+            "properties": [
+              {
+                "name": "Address",
+                "description": null,
+                "type": "EVA.Core.Addresses.AddressDto",
+                "properties": [
+                  {
+                    "name": "Address1",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Address2",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "City",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "CountryID",
+                    "description": "ISO 3166-1",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "District",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "EmailAddress",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "FirstName",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "HouseNumber",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "LastName",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Latitude",
+                    "description": null,
+                    "type": "float64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Longitude",
+                    "description": null,
+                    "type": "float64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "PhoneNumber",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Region",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "State",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Subdistrict",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ZipCode",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Latitude",
+                "description": null,
+                "type": "float64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Longitude",
+                "description": null,
+                "type": "float64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "PhoneNumber",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "RegularOpeningHours",
+                "description": null,
+                "type": "EVA.Core.Dates.RegularOpeningHours[]?",
+                "properties": [
+                  {
+                    "name": "Closed",
+                    "description": null,
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ClosingTime",
+                    "description": null,
+                    "type": "duration",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "DayOfWeek",
+                    "description": null,
+                    "type": "EVA.Core.DayOfWeek",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "Friday": 5,
+                      "Monday": 1,
+                      "Saturday": 6,
+                      "Sunday": 0,
+                      "Thursday": 4,
+                      "Tuesday": 2,
+                      "Wednesday": 3
+                    }
+                  },
+                  {
+                    "name": "OpeningTime",
+                    "description": null,
+                    "type": "duration",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "UpcomingOpeningHours",
+                "description": null,
+                "type": "EVA.Core.Dates.WeekOpeningsDto[]?",
+                "properties": [
+                  {
+                    "name": "Closed",
+                    "description": null,
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ClosingTime",
+                    "description": null,
+                    "type": "duration",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Date",
+                    "description": null,
+                    "type": "date",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "DayOfWeek",
+                    "description": null,
+                    "type": "EVA.Core.DayOfWeek",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "Friday": 5,
+                      "Monday": 1,
+                      "Saturday": 6,
+                      "Sunday": 0,
+                      "Thursday": 4,
+                      "Tuesday": 2,
+                      "Wednesday": 3
+                    }
+                  },
+                  {
+                    "name": "OpeningTime",
+                    "description": null,
+                    "type": "duration",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "PageConfig",
+            "description": null,
+            "type": "EVA.Core.PageConfig\u00601[map[string,string]]",
+            "properties": [
+              {
+                "name": "Filter",
+                "description": null,
+                "type": "{string: string}?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Limit",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "SortDirection",
+                "description": null,
+                "type": "EVA.Core.SortDirection",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "Ascending": 0,
+                  "Descending": 1
+                }
+              },
+              {
+                "name": "SortProperty",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Start",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SortDirection",
+            "description": null,
+            "type": "EVA.Core.SortDirection",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Ascending": 0,
+              "Descending": 1
+            }
+          },
+          {
+            "name": "SortProperty",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Total",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

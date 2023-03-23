@@ -1,6 +1,8 @@
 {
   "name": "StoreBlob",
   "description": "Creates a new blob and stores \u0060Data\u0060 to it.\n\nThe combination of \u0060Category\u0060 and \u0060OriginalName\u0060 must be unique, as the \u0060GetBlobInfoService\u0060 allows retrieval based on these values. Internally, a fresh and unique \u0060Guid\u0060 is\ngenerated and returned from this request. The response also contains the full \u0060Url\u0060 by which this blob can be accessed (which will contain aforementioned \u0060Guid\u0060).\n\n- [x] The \u0060MimeType\u0060 is required, a few suggestions would be \u0060application/pdf\u0060, \u0060text/csv\u0060 or \u0060application/json\u0060 - but you probably already know this.\n- [x] The \u0060ExpireDate\u0060 is the date at which the given blob should expire. Leave this empty to *suggest* to keep it forever. We will bag it and get rid of it when the time is right. :hocho:\n\nWhen retrieving the blob, it will be returned to you using the \u0060MimeType\u0060 as \u0060ContentType\u0060 header and a proper \u0060Expires\u0060 header.\n\n*NOTE*: leaving \u0060OriginalName\u0060 empty means EVA treats this file as a temporary one and it\u0027ll be removed after a set period. Which can be manipulated through the setting \u0060Blobs:DefaultLifeTime\u0060\nwhich is the default expire time for these kinds of blobs in minutes.",
+  "method": "POST",
+  "path": "/api/blobs/StoreBlob",
   "request": {
     "properties": [
       {
@@ -48,10 +50,76 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Guid",
         "description": null,
         "type": "guid",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },

@@ -1,6 +1,8 @@
 {
   "name": "ProcessPrintTasks",
   "description": "Processes the print tasks for each required ID.\n\nThis service does not throws an expeption in the case of mulptiple user task ids, but the output will be a dictionary containing\nan Error (EVA.Framework.Error) for every print task that encounters an issue. The UserTaskID will be the key in that specific Dictionary.\n\nIn the case of a single user task id, the service will behave exactly as the depracated ProcessPrintTask service did, throwing the encountered exception.",
+  "method": "POST",
+  "path": "/api/core/ProcessPrintTasks",
   "request": {
     "properties": [
       {
@@ -24,10 +26,76 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "FailedUserTasks",
         "description": null,
         "type": "{int64: EVA.Core.Error}?",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

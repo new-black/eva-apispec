@@ -1,19 +1,105 @@
 {
   "name": "MoveCommitments",
   "description": "This service allows you to move stock commitments from one OrderLine (\u0060SourceOrderLineID\u0060) to another OrderLine (\u0060DestinationOrderLineID\u0060).\n\n- If the Source and Destination do not share the same ProductID, a \u0060CannotMoveCommitment\u0060 error is returned.\n- If the Source does not have a commitment, a \u0060CannotMoveCommitment\u0060 error is returned.",
+  "method": "POST",
+  "path": "/api/core/MoveCommitments",
   "request": {
     "properties": [
       {
         "name": "Movements",
         "description": null,
         "type": "EVA.Core.Stock.MoveCommitments\u002BCommitmentMovement[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "DestinationOrderLineID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SourceOrderLineID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

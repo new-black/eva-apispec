@@ -1,6 +1,8 @@
 {
   "name": "ListCashExpenses",
   "description": "Lists all cash expenses for your current financial period.",
+  "method": "POST",
+  "path": "/api/core/ListCashExpenses",
   "request": {
     "properties": [
       {
@@ -32,6 +34,41 @@
             ],
             "recursion": false,
             "enumValues": null
+          },
+          {
+            "name": "Limit",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SortDirection",
+            "description": null,
+            "type": "EVA.Core.SortDirection",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Ascending": 0,
+              "Descending": 1
+            }
+          },
+          {
+            "name": "SortProperty",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Start",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
           }
         ],
         "recursion": false,
@@ -40,6 +77,450 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Result",
+        "description": null,
+        "type": "EVA.Core.PagedResult\u00601[EVA.Core.Finance.Cash.ListCashExpensesItem]",
+        "properties": [
+          {
+            "name": "CurrentPage",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Filters",
+            "description": null,
+            "type": "{string: string}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Limit",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "NumberOfPages",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Offset",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Page",
+            "description": null,
+            "type": "EVA.Core.Finance.Cash.ListCashExpensesItem[]?",
+            "properties": [
+              {
+                "name": "Amount",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "BlobID",
+                "description": null,
+                "type": "guid",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CashJournalID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CashTransactionLedgerID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CreationTime",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CurrencyID",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Device",
+                "description": null,
+                "type": "EVA.Core.Finance.Cash.ListCashExpensesItem\u002BExpenseDevice",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Station",
+                    "description": null,
+                    "type": "EVA.Core.Finance.Cash.ListCashExpensesItem\u002BExpenseStation",
+                    "properties": [
+                      {
+                        "name": "ID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Name",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Type",
+                    "description": null,
+                    "type": "EVA.Core.API.FlagsEnumDto",
+                    "properties": [
+                      {
+                        "name": "ID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "IDs",
+                        "description": null,
+                        "type": "int32[]?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Name",
+                        "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Names",
+                        "description": null,
+                        "type": "string[]?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "SignatureBlobID",
+                "description": null,
+                "type": "guid",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "TaxCode",
+                "description": null,
+                "type": "EVA.Core.API.EnumDto",
+                "properties": [
+                  {
+                    "name": "Description",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Type",
+                "description": null,
+                "type": "EVA.Core.Finance.Cash.ListCashExpensesItem\u002BExpenseType",
+                "properties": [
+                  {
+                    "name": "AmountType",
+                    "description": null,
+                    "type": "EVA.Core.DataModels.CashExpenseAmountTypes",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "Expense": 0,
+                      "Income": 1
+                    }
+                  },
+                  {
+                    "name": "Description",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "PageConfig",
+            "description": null,
+            "type": "EVA.Core.PageConfig\u00601[map[string,string]]",
+            "properties": [
+              {
+                "name": "Filter",
+                "description": null,
+                "type": "{string: string}?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Limit",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "SortDirection",
+                "description": null,
+                "type": "EVA.Core.SortDirection",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "Ascending": 0,
+                  "Descending": 1
+                }
+              },
+              {
+                "name": "SortProperty",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Start",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SortDirection",
+            "description": null,
+            "type": "EVA.Core.SortDirection",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Ascending": 0,
+              "Descending": 1
+            }
+          },
+          {
+            "name": "SortProperty",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Total",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

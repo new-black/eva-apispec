@@ -1,6 +1,8 @@
 {
   "name": "ValidateReturnToSupplierRequest",
   "description": "Validate a ReturnToSupplierRequest\n\nThis will check if for all OrganizationUnits in the set a Supplier could be determined.\n\nThe service will return all available suppliers for each OrganizationUnit and will pick it when a single one is available.\nWhen no Suppliers are available, no Order can be generated.\nIf more than one Supplier is available, the correct one should be picked with the SetSuppliersForReturnToSupplierRequest service.",
+  "method": "POST",
+  "path": "/api/core/ValidateReturnToSupplierRequest",
   "request": {
     "properties": [
       {
@@ -16,10 +18,175 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "OrganizationUnits",
         "description": null,
         "type": "EVA.Core.Orders.ReturnToSupplier.OrganizationUnitValidationModel[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "AvailableSuppliers",
+            "description": null,
+            "type": "EVA.Core.Orders.ReturnToSupplier.SupplierValidationModel[]?",
+            "properties": [
+              {
+                "name": "OrganizationUnitBackendID",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrganizationUnitID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrganizationUnitName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrganizationUnitBackendID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrganizationUnitID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrganizationUnitName",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "PickedSupplier",
+            "description": null,
+            "type": "EVA.Core.Orders.ReturnToSupplier.SupplierValidationModel",
+            "properties": [
+              {
+                "name": "OrganizationUnitBackendID",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrganizationUnitID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrganizationUnitName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Skipped",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

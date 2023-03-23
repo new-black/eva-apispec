@@ -1,6 +1,8 @@
 {
   "name": "SupplierCreatePurchaseOrder",
   "description": null,
+  "method": "POST",
+  "path": "/api/core/SupplierCreatePurchaseOrder",
   "request": {
     "properties": [
       {
@@ -47,7 +49,64 @@
         "name": "Lines",
         "description": "Contents of the purchase order.\nNote: Only one key property can be used to identify the product. When different properties are used, the request will be invalid.\nThis will become redundant when ProductID is the only property left.",
         "type": "EVA.Core.PurchaseOrders.SupplierCreatePurchaseOrder\u002BSupplierCreatePurchaseOrderBatchableLine[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "BackendID",
+            "description": "Backend ID of the product",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "BackendReference",
+            "description": "The BackendReference of the line to create",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Barcode",
+            "description": "Barcode of the product",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "CustomID",
+            "description": "Custom ID of the product",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ProductID",
+            "description": "Identifier of the product",
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Quantity",
+            "description": "Quantity that is expected to be shipped",
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnitPrice",
+            "description": null,
+            "type": "float128",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -88,10 +147,76 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "ID",
         "description": null,
         "type": "int64",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

@@ -1,6 +1,8 @@
 {
   "name": "CompleteReturnToSupplierTask",
   "description": "Completes the ReturnToSupplier task.\n\nWhen the setting \u0027AllowConcurrentReturnToSupplierTasks\u0027 is true, the \u0027FinalizeReturnToSupplierOrder\u0027 value is checked to determine what to do;\n - When \u0027FinalizeReturnToSupplierOrder\u0027 is set to true, the cycle will be completed and no new task will be created. The last task that was created will be deactivated.\n - When \u0027FinalizeReturnToSupplierOrder\u0027 is set to false, the current task and shipment will be closed. Other tasks will remain open.\n\nWhen the setting \u0027AllowConcurrentReturnToSupplierTasks\u0027 is false, the service will automatically finalize the cycle.\n\nWhen CompleteReturnToSupplierTask is called and there are no lines on the task shipment, the shipment will be removed.",
+  "method": "POST",
+  "path": "/api/core/CompleteReturnToSupplierTask",
   "request": {
     "properties": [
       {
@@ -22,6 +24,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

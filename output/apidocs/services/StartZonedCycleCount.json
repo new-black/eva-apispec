@@ -1,6 +1,8 @@
 {
   "name": "StartZonedCycleCount",
   "description": null,
+  "method": "POST",
+  "path": "/api/core/StartZonedCycleCount",
   "request": {
     "properties": [
       {
@@ -27,7 +29,90 @@
         "name": "CurrentStock",
         "description": null,
         "type": "EVA.Core.Services.ZonedCycleCounts.StartZonedCyleCountCurrentStock[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "CurrentQuantityOnHand",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StockLabel",
+            "description": null,
+            "type": "EVA.Core.API.EnumDto",
+            "properties": [
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -48,10 +133,77 @@
         "enumValues": null
       },
       {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "PreCountedQuantities",
         "description": null,
         "type": "EVA.Core.Services.ZonedCycleCounts.StartZonedCycleCountPreCountedQuantity[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "CountedQuantity",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StockLabel",
+            "description": null,
+            "type": "EVA.Core.API.EnumDto",
+            "properties": [
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -67,7 +219,132 @@
         "name": "PreCounts",
         "description": null,
         "type": "EVA.Core.Services.ZonedCycleCounts.StartZonedCycleCountPreCountDto[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "CycleCountZone",
+            "description": null,
+            "type": "EVA.Core.API.EnumDto",
+            "properties": [
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "IsCompleted",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Results",
+            "description": null,
+            "type": "EVA.Core.Services.ZonedCycleCounts.StartZonedCycleCountPreCountResult[]?",
+            "properties": [
+              {
+                "name": "CountedQuantity",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CreationTime",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "StockLabel",
+                "description": null,
+                "type": "EVA.Core.API.EnumDto",
+                "properties": [
+                  {
+                    "name": "Description",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "User",
+            "description": null,
+            "type": "EVA.Core.Services.ZonedCycleCounts.StartZonedCycleCountPreCountUserDto",
+            "properties": [
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -173,7 +450,24 @@
                 "name": "LogicalLevelHierarchy",
                 "description": null,
                 "type": "EVA.Core.Search.ProductSearchItemLogicalLevelHierarchyEntry[]?",
-                "properties": null,
+                "properties": [
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ProductID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
                 "recursion": false,
                 "enumValues": null
               },
@@ -218,7 +512,56 @@
                     "name": "Media",
                     "description": null,
                     "type": "EVA.Core.Search.IProductSearchItemMediaEntry[]?",
-                    "properties": null,
+                    "properties": [
+                      {
+                        "name": "Blob",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ID",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Name",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Sequence",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Type",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Url",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
                     "recursion": false,
                     "enumValues": null
                   },
@@ -267,7 +610,56 @@
                     "name": "Swatches",
                     "description": null,
                     "type": "EVA.Core.Search.IProductSearchItemMediaEntry[]?",
-                    "properties": null,
+                    "properties": [
+                      {
+                        "name": "Blob",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ID",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Name",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Sequence",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Type",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Url",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
                     "recursion": false,
                     "enumValues": null
                   }
@@ -352,7 +744,153 @@
                 "name": "ProductRequirements",
                 "description": null,
                 "type": "EVA.Core.Search.ProductSearchItemProductRequirementMetadata[]?",
-                "properties": null,
+                "properties": [
+                  {
+                    "name": "Data",
+                    "description": null,
+                    "type": "object",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "DataType",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "IsArray",
+                    "description": null,
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "IsRequired",
+                    "description": null,
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Options",
+                    "description": null,
+                    "type": "EVA.Core.DataModels.CustomFieldOptions",
+                    "properties": [
+                      {
+                        "name": "DefaultValue",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "EnumValues",
+                        "description": null,
+                        "type": "{string: string}?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "IsArray",
+                        "description": null,
+                        "type": "bool",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "IsRequired",
+                        "description": null,
+                        "type": "bool",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "MaximumDate",
+                        "description": null,
+                        "type": "date",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "MaximumLength",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "MaximumValue",
+                        "description": null,
+                        "type": "float128",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "MinimumDate",
+                        "description": null,
+                        "type": "date",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "MinimumLength",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "MinimumValue",
+                        "description": null,
+                        "type": "float128",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "OrderType",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
                 "recursion": false,
                 "enumValues": null
               },
@@ -515,7 +1053,32 @@
         "name": "StockLabelsToCount",
         "description": null,
         "type": "EVA.Core.API.EnumDto[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Description",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Name",
+            "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -523,7 +1086,57 @@
         "name": "StockMutationQuantitiesSincePreCount",
         "description": null,
         "type": "EVA.Core.Services.ZonedCycleCounts.StartZonedCycleCountStockMutationQuantity[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Since",
+            "description": null,
+            "type": "date",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StockLabel",
+            "description": null,
+            "type": "EVA.Core.API.EnumDto",
+            "properties": [
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "TotalMutationQuantity",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -531,7 +1144,90 @@
         "name": "StockMutationsSincePreCount",
         "description": null,
         "type": "EVA.Core.Services.ZonedCycleCounts.StartZonedCycleCountStockMutation[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "CreationTime",
+            "description": null,
+            "type": "date",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "MutationQuantity",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StockLabel",
+            "description": null,
+            "type": "EVA.Core.API.EnumDto",
+            "properties": [
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StockMutationReason",
+            "description": null,
+            "type": "EVA.Core.API.EnumDto",
+            "properties": [
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },

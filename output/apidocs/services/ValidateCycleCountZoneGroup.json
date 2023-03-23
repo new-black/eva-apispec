@@ -1,6 +1,8 @@
 {
   "name": "ValidateCycleCountZoneGroup",
   "description": "Before calling Create/UpdateCycleCountZone group you can call this service to perform some checks on the validity of the new zone group.\nCurrently it only returns warnings and calling it is not required before creating or updating the group, but it is recommended as it prevents confusing situations such as the same OrganizationUnit being part\nof multiple groups at the same time.",
+  "method": "POST",
+  "path": "/api/core/ValidateCycleCountZoneGroup",
   "request": {
     "properties": [
       {
@@ -16,6 +18,47 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "HasWarnings",
         "description": null,
         "type": "bool",
@@ -24,10 +67,52 @@
         "enumValues": null
       },
       {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Warnings",
         "description": null,
         "type": "EVA.Core.Services.ZonedCycleCounts.ValidateCycleCountZoneGroupResponse\u002BWarning[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

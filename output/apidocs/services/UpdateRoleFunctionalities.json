@@ -1,13 +1,60 @@
 {
   "name": "UpdateRoleFunctionalities",
   "description": "Update functionalities on a role.",
+  "method": "POST",
+  "path": "/api/core/management/UpdateRoleFunctionalities",
   "request": {
     "properties": [
       {
         "name": "Functionalities",
         "description": null,
         "type": "EVA.Core.Management.Rights.UpdateRoleFunctionalities\u002BFunctionalityToUpdate[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "ElevationScope",
+            "description": "Scopes available only when elevated for this functionality. Should be set to \u0060None (0)\u0060 for unscoped functionalities. To remove this functionality, set to \u0060null\u0060.",
+            "type": "EVA.Core.Security.FunctionalityScope",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "All": 127,
+              "Create": 1,
+              "Delete": 4,
+              "Edit": 2,
+              "Manage": 31,
+              "None": 0,
+              "Scripting": 64,
+              "Settings": 32,
+              "View": 8
+            }
+          },
+          {
+            "name": "Functionality",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Scope",
+            "description": "Scopes available for this functionality. Should be set to \u0060None (0)\u0060 for unscoped functionalities. To remove this functionality, set to \u0060null\u0060.",
+            "type": "EVA.Core.Security.FunctionalityScope",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "All": 127,
+              "Create": 1,
+              "Delete": 4,
+              "Edit": 2,
+              "Manage": 31,
+              "None": 0,
+              "Scripting": 64,
+              "Settings": 32,
+              "View": 8
+            }
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -22,6 +69,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

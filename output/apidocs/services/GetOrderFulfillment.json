@@ -1,6 +1,8 @@
 {
   "name": "GetOrderFulfillment",
   "description": "Gets the details of an OrderFulfillment, except for its Lines which can be paged in through ListOrderFulfillmentLines with a filter on OrderFulfillmentID.",
+  "method": "POST",
+  "path": "/api/core/GetOrderFulfillment",
   "request": {
     "properties": [
       {
@@ -40,6 +42,47 @@
         "enumValues": null
       },
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "FulfillmentMethod",
         "description": null,
         "type": "string",
@@ -64,6 +107,31 @@
         "enumValues": null
       },
       {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "OrchestrationDetails",
         "description": null,
         "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData",
@@ -72,7 +140,345 @@
             "name": "Fulfillments",
             "description": null,
             "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BFulfillment[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "Score",
+                "description": null,
+                "type": "float64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ScoreExplanation",
+                "description": null,
+                "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BFulfillmentScoreExplanation",
+                "properties": [
+                  {
+                    "name": "Description",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ScoreExplanations",
+                    "description": null,
+                    "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BScoreExplanation[]?",
+                    "properties": [
+                      {
+                        "name": "DeltaScore",
+                        "description": null,
+                        "type": "float64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Description",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Expression",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "NewScore",
+                        "description": null,
+                        "type": "float64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "PreviousScore",
+                        "description": null,
+                        "type": "float64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Variables",
+                        "description": null,
+                        "type": "{string: any}?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Shipments",
+                "description": null,
+                "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BShipment[]?",
+                "properties": [
+                  {
+                    "name": "Data",
+                    "description": null,
+                    "type": "{string: any}?",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "FulfillmentAction",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "OrderLines",
+                    "description": null,
+                    "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BOrderLine[]?",
+                    "properties": [
+                      {
+                        "name": "ID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Quantity",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Score",
+                        "description": null,
+                        "type": "float64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ScoreExplanations",
+                        "description": null,
+                        "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BScoreExplanation[]?",
+                        "properties": [
+                          {
+                            "name": "DeltaScore",
+                            "description": null,
+                            "type": "float64",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Description",
+                            "description": null,
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Expression",
+                            "description": null,
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "NewScore",
+                            "description": null,
+                            "type": "float64",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "PreviousScore",
+                            "description": null,
+                            "type": "float64",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Variables",
+                            "description": null,
+                            "type": "{string: any}?",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          }
+                        ],
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Score",
+                    "description": null,
+                    "type": "float64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ScoreExplanation",
+                    "description": null,
+                    "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BFulfillmentScoreExplanation",
+                    "properties": [
+                      {
+                        "name": "Description",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ScoreExplanations",
+                        "description": null,
+                        "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BScoreExplanation[]?",
+                        "properties": [
+                          {
+                            "name": "DeltaScore",
+                            "description": null,
+                            "type": "float64",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Description",
+                            "description": null,
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Expression",
+                            "description": null,
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "NewScore",
+                            "description": null,
+                            "type": "float64",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "PreviousScore",
+                            "description": null,
+                            "type": "float64",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Variables",
+                            "description": null,
+                            "type": "{string: any}?",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          }
+                        ],
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Sheet",
+                    "description": null,
+                    "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BSheet",
+                    "properties": [
+                      {
+                        "name": "ID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Name",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Supplier",
+                    "description": null,
+                    "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BSupplier",
+                    "properties": [
+                      {
+                        "name": "BackendID",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Name",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -80,7 +486,57 @@
             "name": "OrderLines",
             "description": null,
             "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BOrderLineResult[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "GroupID",
+                "description": null,
+                "type": "guid",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "PotentialSuppliers",
+                "description": null,
+                "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BOrderLineResult\u002BPotentialSupplier[]?",
+                "properties": [
+                  {
+                    "name": "OrganizationUnitID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Score",
+                    "description": null,
+                    "type": "float64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Sheet",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -88,7 +544,82 @@
             "name": "Rejections",
             "description": null,
             "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BSupplierRejection[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "FulfillmentMethods",
+                "description": null,
+                "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BFulfillmentMethod[]?",
+                "properties": [
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Reasons",
+                    "description": null,
+                    "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BRejectionReason[]?",
+                    "properties": [
+                      {
+                        "name": "Description",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "OrderLineIDs",
+                        "description": null,
+                        "type": "int64[]?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ProductIDs",
+                        "description": null,
+                        "type": "int64[]?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Reason",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "SupplierOrganizationUnitID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "SupplierOrganizationUnitName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -96,7 +627,24 @@
             "name": "Sheets",
             "description": null,
             "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BSheet[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -104,7 +652,105 @@
             "name": "ValidSuppliers",
             "description": null,
             "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BValidSupplier[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "FulfillableOrderLineIDs",
+                "description": null,
+                "type": "int64[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "FulfillmentMethod",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Score",
+                "description": null,
+                "type": "float64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ScoreExplanations",
+                "description": null,
+                "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentOrchestrationData\u002BScoreExplanation[]?",
+                "properties": [
+                  {
+                    "name": "DeltaScore",
+                    "description": null,
+                    "type": "float64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Description",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Expression",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "NewScore",
+                    "description": null,
+                    "type": "float64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "PreviousScore",
+                    "description": null,
+                    "type": "float64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Variables",
+                    "description": null,
+                    "type": "{string: any}?",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "SupplierID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "SupplierName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           }
@@ -202,7 +848,14 @@
         "type": "EVA.Core.Orders.Fulfillment.OrderFulfillmentLineStatuses[]?",
         "properties": null,
         "recursion": false,
-        "enumValues": null
+        "enumValues": {
+          "Cancelled": 100,
+          "Completed": 1000,
+          "Deactivated": 50,
+          "InProgress": 900,
+          "New": 0,
+          "WaitingForStock": 500
+        }
       },
       {
         "name": "SupplierOrganizationUnit",

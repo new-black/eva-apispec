@@ -1,6 +1,8 @@
 {
   "name": "UploadSynchronization",
   "description": "Import data stored in provided synchronization file. Provide a list of data IDs that should be imported.",
+  "method": "POST",
+  "path": "/api/sync/UploadSynchronization",
   "request": {
     "properties": [
       {
@@ -15,7 +17,41 @@
         "name": "Import",
         "description": null,
         "type": "EVA.Sync.Service.UploadSynchronization\u002BFileDataToImport[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "ID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Values",
+            "description": null,
+            "type": "EVA.Sync.Service.UploadSynchronization\u002BFileDataToImport\u002BFileDataToImportValue[]?",
+            "properties": [
+              {
+                "name": "Type",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Value",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }
@@ -24,10 +60,76 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Errors",
         "description": null,
         "type": "string[]?",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -43,7 +145,48 @@
         "name": "Processed",
         "description": null,
         "type": "EVA.Sync.Service.UploadSynchronizationResponse\u002BUploadSynchronizationResult[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "ErrorDescription",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "IsNew",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "IsSuccess",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

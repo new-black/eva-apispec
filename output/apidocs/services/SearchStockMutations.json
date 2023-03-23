@@ -1,6 +1,8 @@
 {
   "name": "SearchStockMutations",
   "description": "This service allows retrieval of StockMutations, filtered by a Query and/or a set of filters.",
+  "method": "POST",
+  "path": "/api/core/management/SearchStockMutations",
   "request": {
     "properties": [
       {
@@ -146,6 +148,72 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Result",
         "description": null,
         "type": "EVA.Core.ScrollablePagedResult\u00601[EVA.Core.StockMutations.SearchStockMutationResult]",
@@ -162,7 +230,380 @@
             "name": "Page",
             "description": null,
             "type": "EVA.Core.StockMutations.SearchStockMutationResult[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "AutomaticCorrectionQuantity",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CreatedBy",
+                "description": null,
+                "type": "EVA.Core.StockMutations.SearchStockMutationResult\u002BUserResult",
+                "properties": [
+                  {
+                    "name": "EmailAddress",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "FirstName",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "LastName",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CreationTime",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "DestinationStockLabel",
+                "description": null,
+                "type": "EVA.Core.StockMutations.SearchStockMutationResult\u002BIdNameValue",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "MutationQuantity",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderLine",
+                "description": null,
+                "type": "EVA.Core.StockMutations.SearchStockMutationResult\u002BOrderLineResult",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "OrderID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrganizationUnit",
+                "description": null,
+                "type": "EVA.Core.StockMutations.SearchStockMutationResult\u002BIdNameValue",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Product",
+                "description": null,
+                "type": "EVA.Core.StockMutations.SearchStockMutationResult\u002BProductResult",
+                "properties": [
+                  {
+                    "name": "BackendID",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "CustomID",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "PrimitiveName",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Reason",
+                "description": null,
+                "type": "EVA.Core.StockMutations.SearchStockMutationResult\u002BReasonResult",
+                "properties": [
+                  {
+                    "name": "BackendID",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Remark",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ShipmentLine",
+                "description": null,
+                "type": "EVA.Core.StockMutations.SearchStockMutationResult\u002BShipmentLineResult",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Shipment",
+                    "description": null,
+                    "type": "EVA.Core.StockMutations.SearchStockMutationResult\u002BShipmentResult",
+                    "properties": [
+                      {
+                        "name": "ID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "TrackingCode",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "SourceStockLabel",
+                "description": null,
+                "type": "EVA.Core.StockMutations.SearchStockMutationResult\u002BIdNameValue",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Type",
+                "description": null,
+                "type": "EVA.Core.StockMutations.SearchStockMutationResult\u002BIdNameValue",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "UnitCost",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "UserTask",
+                "description": null,
+                "type": "EVA.Core.StockMutations.SearchStockMutationResult\u002BUserTaskResult",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Type",
+                    "description": null,
+                    "type": "EVA.Core.StockMutations.SearchStockMutationResult\u002BIdNameValue",
+                    "properties": [
+                      {
+                        "name": "ID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Name",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },

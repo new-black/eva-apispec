@@ -1,6 +1,8 @@
 {
   "name": "ReplaceProductSearchSynonyms",
   "description": "Replaces all search synonyms for a given LanguageID/CountryID with the provided ones.\nAny synonyms not present in the request but that currently exist will be deleted.\n\n## Rules\nThe \u0060Rule\u0060 must be formatted according to [what Elasticsearch accepts](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-synonym-tokenfilter.html#_solr_synonyms):\n\n- Comma-separated values: \u0060jump, leap, hop\u0060 causes any of the matched terms to be replaced by all of the terms.\n- Arrow notation: \u0060britain=\u003Eengland\u0060 causes the left side to be replaced by the right side.\n\nTo create a synonym, a \u0060LanguageID\u0060 is required.",
+  "method": "POST",
+  "path": "/api/pim/ReplaceProductSearchSynonyms",
   "request": {
     "properties": [
       {
@@ -22,6 +24,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

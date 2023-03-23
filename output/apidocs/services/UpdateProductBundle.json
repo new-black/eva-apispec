@@ -1,6 +1,8 @@
 {
   "name": "UpdateProductBundle",
   "description": "This service is largely the same as CreateProductBundle.\nThe model passed into the request body is considered to be the entire bundle configuration.\nAny lines that are currently present but not present in the update model are removed from the bundle.\nThe only parameter that is different is that the model requires an ID to be set for the root object and its lines, which you get back from the \u0060GetProductBundle\u0060 and \u0060ListProductBundles\u0060 services.",
+  "method": "POST",
+  "path": "/api/core/UpdateProductBundle",
   "request": {
     "properties": [
       {
@@ -23,13 +25,182 @@
         "name": "Lines",
         "description": null,
         "type": "EVA.Core.ProductBundles.UpdateProductBundleLine[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "BackendID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "DefaultProductID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Description",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": "Can be left null for new lines to be added to the bundle.",
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "MaxSelectedOptionsCount",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Options",
+            "description": null,
+            "type": "EVA.Core.ProductBundles.UpdateProductBundleLineOption[]?",
+            "properties": [
+              {
+                "name": "AdditionalProductID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "AdditionalProductQuantity",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ExcludesProductIDs",
+                "description": null,
+                "type": "int64[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ProductID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Quantity",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "EVA.Core.DataModels.ProductBundleLineTypes",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Optional": 1,
+              "OptionalIncludedInPrice": 2,
+              "Required": 0
+            }
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

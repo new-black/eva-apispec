@@ -1,6 +1,8 @@
 {
   "name": "SplitOrderLine",
   "description": "Split an OrderLine in two lines.\n\nThe new line will have a QuantityOrdered of QuantityToSplit and on the existing line there will be QuantityToShip items cancelled.\nIf the OrderLine has a negative QuantityToShip, the QuantityOrdered of the new line will be -QuantityToSplit.\n\nThe QuantityToSplit should always be greather than 0 and smaller than the absolute value of the QuantityToShip of the OrderLine.",
+  "method": "POST",
+  "path": "/api/core/SplitOrderLine",
   "request": {
     "properties": [
       {
@@ -23,6 +25,72 @@
   },
   "response": {
     "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
       {
         "name": "OrderLineID",
         "description": null,

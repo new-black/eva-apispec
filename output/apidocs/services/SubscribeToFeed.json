@@ -1,6 +1,8 @@
 {
   "name": "SubscribeToFeed",
   "description": "Subscribe to the specified feed for the current User\u0027s \u0060ApplicationID\u0060.\n\n\u0060Name\u0060 is the name of the file you wish to watch. The \u0060WebhookUrl\u0060 is called with a JSON POST request, in which the Feed\u0027s \u0060name\u0060 and \u0060applicationID\u0060 are specified. This request does not contain the data\nitself, your application will have to fetch the data using your current approaches to download this feed. This may seem verbose, but we have no guarantee the endpoint is secure, and we can\u0027t just send\npossibly sensitive information there!\n\nTo unsubscribe, call the \u0060UnsubscribeFromFeed\u0060 service with the returned \u0060ID\u0060 value.",
+  "method": "POST",
+  "path": "/api/core/SubscribeToFeed",
   "request": {
     "properties": [
       {
@@ -24,10 +26,76 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "ID",
         "description": null,
         "type": "int64",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

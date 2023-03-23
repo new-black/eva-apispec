@@ -1,6 +1,8 @@
 {
   "name": "CancelOrder",
   "description": "Cancel a complete order or a subset of lines.\n\nThe order can be identified by an OrderID or by BackendID \u002B BackendSystemID, the lines can be identified by an OrderLineID or by BackendID.\n\nThe result will tell you if it was successful.",
+  "method": "POST",
+  "path": "/api/core/CancelOrder",
   "request": {
     "properties": [
       {
@@ -31,7 +33,32 @@
         "name": "OrderLines",
         "description": "Lines to cancel - or, if none are specified, all open lines of the order will be cancelled",
         "type": "EVA.Core.Orders.CancelOrder\u002BLineToCancel[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "BackendID",
+            "description": "Reference to the orderline that is being cancelled - required when \u0060OrderLineID\u0060 is omitted",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrderLineID",
+            "description": "ID of the orderline that is being cancelled - required when \u0060BackendID\u0060 is omitted",
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Quantity",
+            "description": "Quantity to be cancelled. If left blank the full order line will be cancelled",
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }
@@ -39,6 +66,72 @@
   },
   "response": {
     "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
       {
         "name": "Result",
         "description": null,

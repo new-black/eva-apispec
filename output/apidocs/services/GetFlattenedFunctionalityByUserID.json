@@ -1,6 +1,8 @@
 {
   "name": "GetFlattenedFunctionalityByUserID",
   "description": "Retrieve the currently assigned functionalities flattened on specified OU.",
+  "method": "POST",
+  "path": "/api/core/management/GetFlattenedFunctionalityByUserID",
   "request": {
     "properties": [
       {
@@ -24,6 +26,47 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Functionalities",
         "description": null,
         "type": "string[]?",
@@ -32,10 +75,70 @@
         "enumValues": null
       },
       {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "ScopedFunctionalities",
         "description": null,
         "type": "EVA.Core.Management.Rights.FunctionalityWithScope[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Functionality",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequiresElevation",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Scope",
+            "description": null,
+            "type": "EVA.Core.Security.FunctionalityScope",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "All": 127,
+              "Create": 1,
+              "Delete": 4,
+              "Edit": 2,
+              "Manage": 31,
+              "None": 0,
+              "Scripting": 64,
+              "Settings": 32,
+              "View": 8
+            }
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

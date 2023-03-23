@@ -1,6 +1,8 @@
 {
   "name": "PrefigureDiscounts",
   "description": "List the discounts that potentially could be activated.\nIf a \u0060ProductIDs\u0060, \u0060ProductSearchID\u0060 or \u0060ProductSearch\u0060 is set, the service will check if the resulting products are a eligible to one or more discounts. If an \u0060OrderID\u0060 is provided, the context of the given order is taken into account, that can include user specific discounts, order OU specific discount, etc.\n\nBe aware that:\n- If \u0060ProductIDs\u0060 is given, \u0060ProductSearchID\u0060 and \u0060ProductSearch\u0060 are ignored\n- If \u0060ProductSearchID\u0060 is given, \u0060ProductIDs\u0060 and \u0060ProductSearch\u0060 are ignored\n- If \u0060ProductSearch\u0060 is given, \u0060ProductIDs\u0060 and \u0060ProductSearchID\u0060 are ignored",
+  "method": "POST",
+  "path": "/api/core/PrefigureDiscounts",
   "request": {
     "properties": [
       {
@@ -453,7 +455,27 @@
             "name": "Sort",
             "description": null,
             "type": "EVA.Core.SortFieldDescriptor[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "Direction",
+                "description": null,
+                "type": "EVA.Core.SortDirection",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "Ascending": 0,
+                  "Descending": 1
+                }
+              },
+              {
+                "name": "FieldName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -494,10 +516,1267 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Results",
         "description": null,
         "type": "EVA.Core.Discounts.PrefigureDiscountResult[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "ActionData",
+            "description": null,
+            "type": "object",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ActionResult",
+            "description": null,
+            "type": "EVA.Core.Discounts.PrefigureDiscountResult\u002BDataResult",
+            "properties": [
+              {
+                "name": "CustomerFilterResult",
+                "description": null,
+                "type": "EVA.Core.DataModels.CustomFieldFilterResult",
+                "properties": [
+                  {
+                    "name": "ConditionResults",
+                    "description": null,
+                    "type": "EVA.Core.DataModels.CustomFieldFilterConditionResult[]?",
+                    "properties": [
+                      {
+                        "name": "CurrentValue",
+                        "description": null,
+                        "type": "EVA.Core.DataModels.CustomFieldValue",
+                        "properties": [
+                          {
+                            "name": "ArrayValues",
+                            "description": "Used for multiple values",
+                            "type": "EVA.Core.DataModels.CustomFieldValue[]?",
+                            "properties": [],
+                            "recursion": true,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "BlobValue",
+                            "description": "Used for datatype Blob",
+                            "type": "guid",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "BoolValue",
+                            "description": "Used for datatype Bool",
+                            "type": "bool",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "DateTimeValue",
+                            "description": "Used for datatype DateTime and Date",
+                            "type": "date",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "NumberValue",
+                            "description": "Used for datatype Integer and Decimal",
+                            "type": "float128",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "StringValue",
+                            "description": "Used for datatype String, Text and Enum",
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          }
+                        ],
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "CurrentValuePresent",
+                        "description": null,
+                        "type": "bool",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "CustomFieldId",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ExpectedValue",
+                        "description": null,
+                        "type": "EVA.Core.DataModels.CustomFieldValue",
+                        "properties": [
+                          {
+                            "name": "ArrayValues",
+                            "description": "Used for multiple values",
+                            "type": "EVA.Core.DataModels.CustomFieldValue[]?",
+                            "properties": [],
+                            "recursion": true,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "BlobValue",
+                            "description": "Used for datatype Blob",
+                            "type": "guid",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "BoolValue",
+                            "description": "Used for datatype Bool",
+                            "type": "bool",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "DateTimeValue",
+                            "description": "Used for datatype DateTime and Date",
+                            "type": "date",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "NumberValue",
+                            "description": "Used for datatype Integer and Decimal",
+                            "type": "float128",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "StringValue",
+                            "description": "Used for datatype String, Text and Enum",
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          }
+                        ],
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Matches",
+                        "description": null,
+                        "type": "bool",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "FilterResults",
+                    "description": null,
+                    "type": "EVA.Core.DataModels.CustomFieldFilterResult[]?",
+                    "properties": [],
+                    "recursion": true,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "FilterType",
+                    "description": null,
+                    "type": "EVA.Core.DataModels.CustomFieldFilterType",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "And": 0,
+                      "Or": 1
+                    }
+                  },
+                  {
+                    "name": "Matches",
+                    "description": null,
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderAmountMissing",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderAmountMissingForNextTier",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ProductSetResults",
+                "description": null,
+                "type": "EVA.Core.Discounts.PrefigureDiscountResult\u002BProductSetResult[]?",
+                "properties": [
+                  {
+                    "name": "ProductAmountMissing",
+                    "description": null,
+                    "type": "EVA.Core.Discounts.PrefigureDiscountResult\u002BProductWithAmount[]?",
+                    "properties": [
+                      {
+                        "name": "Amount",
+                        "description": null,
+                        "type": "float128",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ProductID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ProductAmountMissingForNextTier",
+                    "description": null,
+                    "type": "EVA.Core.Discounts.PrefigureDiscountResult\u002BProductWithAmount[]?",
+                    "properties": [
+                      {
+                        "name": "Amount",
+                        "description": null,
+                        "type": "float128",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ProductID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ProductQuantityMissing",
+                    "description": null,
+                    "type": "EVA.Core.Discounts.PrefigureDiscountResult\u002BProductWithQuantity[]?",
+                    "properties": [
+                      {
+                        "name": "ProductID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Quantity",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ProductQuantityMissingForNextTier",
+                    "description": null,
+                    "type": "EVA.Core.Discounts.PrefigureDiscountResult\u002BProductWithQuantity[]?",
+                    "properties": [
+                      {
+                        "name": "ProductID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Quantity",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ProductSet",
+                    "description": null,
+                    "type": "EVA.Core.Discounts.ProductSet",
+                    "properties": [
+                      {
+                        "name": "CountryID",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "DiscountableQuantityOfProducts",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Filters",
+                        "description": null,
+                        "type": "EVA.Core.Discounts.ProductSet\u002BFilter[]?",
+                        "properties": [
+                          {
+                            "name": "ExactMatch",
+                            "description": null,
+                            "type": "bool",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Exclude",
+                            "description": null,
+                            "type": "bool",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "From",
+                            "description": null,
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "PropertyName",
+                            "description": null,
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "To",
+                            "description": null,
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Values",
+                            "description": null,
+                            "type": "any[]?",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          }
+                        ],
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ID",
+                        "description": null,
+                        "type": "guid",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "IsDiscountableProductSet",
+                        "description": null,
+                        "type": "bool",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "LanguageID",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Name",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ProductIDs",
+                        "description": null,
+                        "type": "int64[]?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ProductSearchID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "RequiredProductAmount",
+                        "description": null,
+                        "type": "float128",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "RequiredQuantityOfProducts",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "SetAmountMissing",
+                    "description": null,
+                    "type": "float128",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "SetAmountMissingForNextTier",
+                    "description": null,
+                    "type": "float128",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "SetQuantityMissing",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "SetQuantityMissingForNextTier",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "RequirementsMet",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "RequiresCustomer",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "RequiresCustomerCustomData",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "RequiresMinimumAmount",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "TypeName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ActionType",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "BackendID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ConditionsResults",
+            "description": null,
+            "type": "EVA.Core.Discounts.PrefigureDiscountResult\u002BDataResult[]?",
+            "properties": [
+              {
+                "name": "CustomerFilterResult",
+                "description": null,
+                "type": "EVA.Core.DataModels.CustomFieldFilterResult",
+                "properties": [
+                  {
+                    "name": "ConditionResults",
+                    "description": null,
+                    "type": "EVA.Core.DataModels.CustomFieldFilterConditionResult[]?",
+                    "properties": [
+                      {
+                        "name": "CurrentValue",
+                        "description": null,
+                        "type": "EVA.Core.DataModels.CustomFieldValue",
+                        "properties": [
+                          {
+                            "name": "ArrayValues",
+                            "description": "Used for multiple values",
+                            "type": "EVA.Core.DataModels.CustomFieldValue[]?",
+                            "properties": [],
+                            "recursion": true,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "BlobValue",
+                            "description": "Used for datatype Blob",
+                            "type": "guid",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "BoolValue",
+                            "description": "Used for datatype Bool",
+                            "type": "bool",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "DateTimeValue",
+                            "description": "Used for datatype DateTime and Date",
+                            "type": "date",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "NumberValue",
+                            "description": "Used for datatype Integer and Decimal",
+                            "type": "float128",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "StringValue",
+                            "description": "Used for datatype String, Text and Enum",
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          }
+                        ],
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "CurrentValuePresent",
+                        "description": null,
+                        "type": "bool",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "CustomFieldId",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ExpectedValue",
+                        "description": null,
+                        "type": "EVA.Core.DataModels.CustomFieldValue",
+                        "properties": [
+                          {
+                            "name": "ArrayValues",
+                            "description": "Used for multiple values",
+                            "type": "EVA.Core.DataModels.CustomFieldValue[]?",
+                            "properties": [],
+                            "recursion": true,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "BlobValue",
+                            "description": "Used for datatype Blob",
+                            "type": "guid",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "BoolValue",
+                            "description": "Used for datatype Bool",
+                            "type": "bool",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "DateTimeValue",
+                            "description": "Used for datatype DateTime and Date",
+                            "type": "date",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "NumberValue",
+                            "description": "Used for datatype Integer and Decimal",
+                            "type": "float128",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "StringValue",
+                            "description": "Used for datatype String, Text and Enum",
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          }
+                        ],
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Matches",
+                        "description": null,
+                        "type": "bool",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "FilterResults",
+                    "description": null,
+                    "type": "EVA.Core.DataModels.CustomFieldFilterResult[]?",
+                    "properties": [],
+                    "recursion": true,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "FilterType",
+                    "description": null,
+                    "type": "EVA.Core.DataModels.CustomFieldFilterType",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "And": 0,
+                      "Or": 1
+                    }
+                  },
+                  {
+                    "name": "Matches",
+                    "description": null,
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderAmountMissing",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderAmountMissingForNextTier",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ProductSetResults",
+                "description": null,
+                "type": "EVA.Core.Discounts.PrefigureDiscountResult\u002BProductSetResult[]?",
+                "properties": [
+                  {
+                    "name": "ProductAmountMissing",
+                    "description": null,
+                    "type": "EVA.Core.Discounts.PrefigureDiscountResult\u002BProductWithAmount[]?",
+                    "properties": [
+                      {
+                        "name": "Amount",
+                        "description": null,
+                        "type": "float128",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ProductID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ProductAmountMissingForNextTier",
+                    "description": null,
+                    "type": "EVA.Core.Discounts.PrefigureDiscountResult\u002BProductWithAmount[]?",
+                    "properties": [
+                      {
+                        "name": "Amount",
+                        "description": null,
+                        "type": "float128",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ProductID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ProductQuantityMissing",
+                    "description": null,
+                    "type": "EVA.Core.Discounts.PrefigureDiscountResult\u002BProductWithQuantity[]?",
+                    "properties": [
+                      {
+                        "name": "ProductID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Quantity",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ProductQuantityMissingForNextTier",
+                    "description": null,
+                    "type": "EVA.Core.Discounts.PrefigureDiscountResult\u002BProductWithQuantity[]?",
+                    "properties": [
+                      {
+                        "name": "ProductID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Quantity",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ProductSet",
+                    "description": null,
+                    "type": "EVA.Core.Discounts.ProductSet",
+                    "properties": [
+                      {
+                        "name": "CountryID",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "DiscountableQuantityOfProducts",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Filters",
+                        "description": null,
+                        "type": "EVA.Core.Discounts.ProductSet\u002BFilter[]?",
+                        "properties": [
+                          {
+                            "name": "ExactMatch",
+                            "description": null,
+                            "type": "bool",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Exclude",
+                            "description": null,
+                            "type": "bool",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "From",
+                            "description": null,
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "PropertyName",
+                            "description": null,
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "To",
+                            "description": null,
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Values",
+                            "description": null,
+                            "type": "any[]?",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          }
+                        ],
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ID",
+                        "description": null,
+                        "type": "guid",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "IsDiscountableProductSet",
+                        "description": null,
+                        "type": "bool",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "LanguageID",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Name",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ProductIDs",
+                        "description": null,
+                        "type": "int64[]?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ProductSearchID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "RequiredProductAmount",
+                        "description": null,
+                        "type": "float128",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "RequiredQuantityOfProducts",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "SetAmountMissing",
+                    "description": null,
+                    "type": "float128",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "SetAmountMissingForNextTier",
+                    "description": null,
+                    "type": "float128",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "SetQuantityMissing",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "SetQuantityMissingForNextTier",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "RequirementsMet",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "RequiresCustomer",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "RequiresCustomerCustomData",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "RequiresMinimumAmount",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "TypeName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "CouponPresent",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Description",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "DiscountID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "EligibleProductIDs",
+            "description": null,
+            "type": "int64[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "IsAlreadyApplied",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "MarketingDescription",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequirementsMet",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequiresCoupon",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequiresCustomer",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequiresCustomerCustomData",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequiresCustomerEmail",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequiresMinimumAmount",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

@@ -1,19 +1,105 @@
 {
   "name": "VerifySerialNumbers",
   "description": "Verify the serial numbers on given order lines, lifting the \u0060SerialNumberValidationRequired\u0060 hold status. Specified lines without hold status are\nsilently skipped and ignored.\n\nOptionally specify the \u0060SerialNumber\u0060 that was validated to match, preventing possible race conditions. Invalid matches will return a 400 BAD REQUEST\nand not make any change to lines that may have been valid.",
+  "method": "POST",
+  "path": "/api/core/VerifySerialNumbers",
   "request": {
     "properties": [
       {
         "name": "SerialNumbers",
         "description": null,
         "type": "EVA.Core.Orders.VerifySerialNumbers\u002BVerifySerialNumber[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "OrderLineID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SerialNumber",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

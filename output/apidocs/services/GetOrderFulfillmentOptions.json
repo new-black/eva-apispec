@@ -1,6 +1,8 @@
 {
   "name": "GetOrderFulfillmentOptions",
   "description": null,
+  "method": "POST",
+  "path": "/api/core/GetOrderFulfillmentOptions",
   "request": {
     "properties": [
       {
@@ -225,10 +227,142 @@
         "enumValues": null
       },
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "FulfillmentOptions",
         "description": null,
         "type": "EVA.Core.Fulfillment.GetOrderFulfillmentOptionsResponse\u002BFulfillmentOption[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "ApplicableToOrderLineIDs",
+            "description": null,
+            "type": "int64[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SameDayDelivery",
+            "description": null,
+            "type": "EVA.Core.Fulfillment.GetOrderFulfillmentOptionsResponse\u002BFulfillmentOption\u002BSameDayDeliveryOption",
+            "properties": [
+              {
+                "name": "CutoffTime",
+                "description": null,
+                "type": "duration",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "EstimatedDeliveryTimeframeFrom",
+                "description": null,
+                "type": "duration",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "EstimatedDeliveryTimeframeTo",
+                "description": null,
+                "type": "duration",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "IsAvailable",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ShippingCosts",
+            "description": null,
+            "type": "float128",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -236,7 +370,100 @@
         "name": "PotentialFulfillmentOptions",
         "description": null,
         "type": "EVA.Core.Fulfillment.GetOrderFulfillmentOptionsResponse\u002BPotentialFulfillmentOption[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "BlockingOrderLineIDs",
+            "description": null,
+            "type": "int64[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "BlockingReason",
+            "description": null,
+            "type": "EVA.Core.Orders.Fulfillment.PotentialFulfillmentOptionBlockingReasons",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "NoPartialFulfillmentAllowed": 0
+            }
+          },
+          {
+            "name": "PotentialFulfillmentOptions",
+            "description": null,
+            "type": "EVA.Core.Fulfillment.GetOrderFulfillmentOptionsResponse\u002BFulfillmentOption[]?",
+            "properties": [
+              {
+                "name": "ApplicableToOrderLineIDs",
+                "description": null,
+                "type": "int64[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "SameDayDelivery",
+                "description": null,
+                "type": "EVA.Core.Fulfillment.GetOrderFulfillmentOptionsResponse\u002BFulfillmentOption\u002BSameDayDeliveryOption",
+                "properties": [
+                  {
+                    "name": "CutoffTime",
+                    "description": null,
+                    "type": "duration",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "EstimatedDeliveryTimeframeFrom",
+                    "description": null,
+                    "type": "duration",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "EstimatedDeliveryTimeframeTo",
+                    "description": null,
+                    "type": "duration",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "IsAvailable",
+                    "description": null,
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ShippingCosts",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

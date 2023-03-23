@@ -1,6 +1,8 @@
 {
   "name": "CompleteReservationCleanup",
   "description": null,
+  "method": "POST",
+  "path": "/api/core/CompleteReservationCleanup",
   "request": {
     "properties": [
       {
@@ -28,7 +30,68 @@
             "name": "Lines",
             "description": "Every line on the cleanup task must be represented in this collection and each line must have an indication what needs\nto happen to it in the context of the cleanup. The options are:\n\n- The product was returned, in which case QuantityReturned must have a value.\n- There was nothing there to return, in which case NothingToReturn must be set to true. A cyclecount will be generated for the product to make sure.\n- The reservation must be extended, in which case ReservationExpirationOverride must have a value.",
             "type": "EVA.Core.Services.ReservationCleanup.CompleteReservationCleanup\u002BReservationCleanupTaskLine[]",
-            "properties": null,
+            "properties": [
+              {
+                "name": "NothingToReturn",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "NothingToReturnAction",
+                "description": null,
+                "type": "EVA.Core.Services.ReservationCleanup.CompleteReservationCleanup\u002BNothingToReturnAction",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "Cancel": 0,
+                  "Complete": 1
+                }
+              },
+              {
+                "name": "OrderLine",
+                "description": null,
+                "type": "EVA.Core.Services.ReservationCleanup.CompleteReservationCleanup\u002BReservationCleanupTaskOrderLine",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "QuantityReturned",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "QuantityToReturn",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ReservationExpirationOverride",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -47,6 +110,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

@@ -1,6 +1,8 @@
 {
   "name": "ExplainProductPrices",
   "description": "Returns a tree representation of how the price was derived for the given ProductIDs in the given PriceListID.",
+  "method": "POST",
+  "path": "/api/core/ExplainProductPrices",
   "request": {
     "properties": [
       {
@@ -24,10 +26,150 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Products",
         "description": null,
         "type": "EVA.Core.Pricing.ExplainProductPricesResponse\u002BProductPricingExplanation[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Explanations",
+            "description": null,
+            "type": "EVA.Core.Pricing.ExplainProductPricesResponse\u002BProductPricingExplanation\u002BExplanation[]?",
+            "properties": [
+              {
+                "name": "Children",
+                "description": null,
+                "type": "EVA.Core.Pricing.ExplainProductPricesResponse\u002BProductPricingExplanation\u002BExplanation[]?",
+                "properties": [],
+                "recursion": true,
+                "enumValues": null
+              },
+              {
+                "name": "Data",
+                "description": null,
+                "type": "any",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Message",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "NewPrice",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "NodeType",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OldPrice",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "PriceListID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ProductID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

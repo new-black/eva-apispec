@@ -1,6 +1,8 @@
 {
   "name": "PreviewPriceListRoundingAdjustment",
   "description": "Given the data on how rounding should be applied this service will perform the rounding on the given example prices to preview what the rounding would look like.",
+  "method": "POST",
+  "path": "/api/core/management/PreviewPriceListRoundingAdjustment",
   "request": {
     "properties": [
       {
@@ -32,7 +34,47 @@
             "name": "Targets",
             "description": null,
             "type": "EVA.Core.Pricing.RoundingData\u002BRoundingTarget[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "Amount",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "AmountType",
+                "description": null,
+                "type": "EVA.Core.Pricing.RoundingAmountType",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "Divisor": 1,
+                  "Fraction": 0
+                }
+              },
+              {
+                "name": "Direction",
+                "description": null,
+                "type": "EVA.Core.Pricing.RoundingDirection",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "Closest": 0,
+                  "Down": 2,
+                  "Up": 1
+                }
+              },
+              {
+                "name": "MaximumTolerance",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           }
@@ -53,10 +95,93 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Results",
         "description": null,
         "type": "EVA.Core.Management.Pricing.PreviewPriceListRoundingAdjustmentResponse\u002BRoundingResult[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "InputPrice",
+            "description": null,
+            "type": "float128",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OutputPrice",
+            "description": null,
+            "type": "float128",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

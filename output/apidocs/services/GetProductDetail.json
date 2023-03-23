@@ -1,6 +1,8 @@
 {
   "name": "GetProductDetail",
   "description": "Get product details by id",
+  "method": "POST",
+  "path": "/api/core/GetProductDetail",
   "request": {
     "properties": [
       {
@@ -16,10 +18,779 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Relations",
         "description": null,
         "type": "EVA.Core.Products.ProductRelationDTO[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Direction",
+            "description": null,
+            "type": "EVA.Core.DataModels.ProductRelationDirection",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Bidirectional": 1,
+              "Group": 2,
+              "Unidirectional": 0
+            }
+          },
+          {
+            "name": "PrimaryName",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "PrimaryProductID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ProductRelationTypeBackendID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ProductRelationTypeID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RelatedProductID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SecondaryName",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StockRelationType",
+            "description": null,
+            "type": "EVA.Core.DataModels.StockRelationType",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "None": 0,
+              "Replacing": 1
+            }
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Result",
+        "description": null,
+        "type": "EVA.Core.Search.IProductSearchItem",
+        "properties": [
+          {
+            "name": "BackendID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Barcodes",
+            "description": null,
+            "type": "string[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "BrandName",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ConfigurableProperties",
+            "description": null,
+            "type": "string[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "CurrencyID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "CustomID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "DisplayPrice",
+            "description": null,
+            "type": "float128",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "DisplayValue",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ExcludeFromGiftWrapping",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "LogicalLevel",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "LogicalLevelHierarchy",
+            "description": null,
+            "type": "EVA.Core.Search.ProductSearchItemLogicalLevelHierarchyEntry[]?",
+            "properties": [
+              {
+                "name": "Name",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ProductID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "LongDescription",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "MaxQuantityPerOrder",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Media",
+            "description": null,
+            "type": "EVA.Core.Search.IProductSearchItemProductMedia",
+            "properties": [
+              {
+                "name": "Gallery",
+                "description": null,
+                "type": "string[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ImageCount",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Media",
+                "description": null,
+                "type": "EVA.Core.Search.IProductSearchItemMediaEntry[]?",
+                "properties": [
+                  {
+                    "name": "Blob",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Sequence",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Type",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Url",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "PrimaryImage",
+                "description": null,
+                "type": "EVA.Core.Search.IProductSearchItemPrimaryImage",
+                "properties": [
+                  {
+                    "name": "Blob",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Type",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Url",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Swatches",
+                "description": null,
+                "type": "EVA.Core.Search.IProductSearchItemMediaEntry[]?",
+                "properties": [
+                  {
+                    "name": "Blob",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Sequence",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Type",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Url",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Name",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OriginalPrice",
+            "description": null,
+            "type": "float128",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ParentHierarchy",
+            "description": null,
+            "type": "int64[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Parents",
+            "description": null,
+            "type": "int64[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "PrimaryImage",
+            "description": null,
+            "type": "EVA.Core.Search.IProductSearchItemPrimaryImage",
+            "properties": [
+              {
+                "name": "Blob",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Type",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Url",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ProductRequirements",
+            "description": null,
+            "type": "EVA.Core.Search.ProductSearchItemProductRequirementMetadata[]?",
+            "properties": [
+              {
+                "name": "Data",
+                "description": null,
+                "type": "object",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "DataType",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "IsArray",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "IsRequired",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Options",
+                "description": null,
+                "type": "EVA.Core.DataModels.CustomFieldOptions",
+                "properties": [
+                  {
+                    "name": "DefaultValue",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "EnumValues",
+                    "description": null,
+                    "type": "{string: string}?",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "IsArray",
+                    "description": null,
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "IsRequired",
+                    "description": null,
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "MaximumDate",
+                    "description": null,
+                    "type": "date",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "MaximumLength",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "MaximumValue",
+                    "description": null,
+                    "type": "float128",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "MinimumDate",
+                    "description": null,
+                    "type": "date",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "MinimumLength",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "MinimumValue",
+                    "description": null,
+                    "type": "float128",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderType",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "PublicationStatuses",
+            "description": null,
+            "type": "string[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ShortDescription",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Status",
+            "description": null,
+            "type": "EVA.Core.DataModels.ProductStatus",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "DeliveryOnly": 4,
+              "DisableBackorder": 32,
+              "DisableDelivery": 8,
+              "DisablePickup": 16,
+              "NonSellable": 64,
+              "None": 0,
+              "PreRelease": 1,
+              "UseUp": 34
+            }
+          },
+          {
+            "name": "TaxExemptionCode",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "TaxExemptionReason",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "EVA.Core.DataModels.ProductTypes",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "BundleProduct": 2048,
+              "Configurable": 16384,
+              "CustomPricing": 64,
+              "External": 128,
+              "GiftCard": 8,
+              "GreetingCard": 32,
+              "Insurance": 2,
+              "MadeToOrder": 8192,
+              "Marketing": 4,
+              "None": 0,
+              "NotReturnable": 262144,
+              "OrderCosts": 256,
+              "ProductSet": 1024,
+              "SecondChance": 131072,
+              "Service": 16,
+              "Stock": 1,
+              "SupplierProduct": 32768,
+              "SystemGenerated": 512,
+              "Template": 65536,
+              "VirtualProduct": 4096
+            }
+          },
+          {
+            "name": "Unstackable",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

@@ -1,19 +1,131 @@
 {
   "name": "UpdateShipmentStatus",
   "description": "Updates the shipment status, creating ledger entries on shipment level.\n\nWill be processed as a whole; a single failing line in \u0060Lines\u0060 will prevent all other updates in a single call from persisting.",
+  "method": "POST",
+  "path": "/api/core/UpdateShipmentStatus",
   "request": {
     "properties": [
       {
         "name": "Lines",
         "description": null,
         "type": "EVA.Core.Shipments.UpdateShipmentStatusLine[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Date",
+            "description": "Date the event occurred - leave empty for \u0027now\u0027.",
+            "type": "date",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Description",
+            "description": "Optional, additional description, most commonly for the carrier status update code description for CarrierStatus types",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ShipmentID",
+            "description": "Identifier of the EVA shipment this update is specific for",
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": "Type of shipment status update; 0 = CarrierStatus",
+            "type": "EVA.Core.Shipments.ShipmentStatusType",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "CarrierStatus": 0
+            }
+          },
+          {
+            "name": "Value",
+            "description": "Optional, additional information, most commonly for the carrier status update code (B01, D01, ...) for CarrierStatus types",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

@@ -1,6 +1,8 @@
 {
   "name": "UpdateProductSearchStrategy",
   "description": "Updates a search strategy, replacing the current strategy with the one provided and setting the LanguageID/CountryID\nto the provided ones (both are optional).\n\nAll parts of the \u0060Strategy\u0060 field are optional.",
+  "method": "POST",
+  "path": "/api/pim/UpdateProductSearchStrategy",
   "request": {
     "properties": [
       {
@@ -68,7 +70,24 @@
                 "name": "VariationAggregations",
                 "description": null,
                 "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BAggregationStrategy\u002BProductVariationAggregation[]?",
-                "properties": null,
+                "properties": [
+                  {
+                    "name": "LogicalLevel",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "VariationField",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
                 "recursion": false,
                 "enumValues": null
               }
@@ -85,7 +104,24 @@
                 "name": "Filters",
                 "description": null,
                 "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BFilterCondition[]?",
-                "properties": null,
+                "properties": [
+                  {
+                    "name": "FilterValue",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ProductPropertyTypeID",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
                 "recursion": false,
                 "enumValues": null
               },
@@ -139,7 +175,134 @@
                 "name": "Queries",
                 "description": null,
                 "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BMultiMatchQuery[]?",
-                "properties": null,
+                "properties": [
+                  {
+                    "name": "Analyzer",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Boost",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Fuzziness",
+                    "description": null,
+                    "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BMultiMatchFuzziness",
+                    "properties": [
+                      {
+                        "name": "EditDistance",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "MaxExpansions",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "PrefixLength",
+                        "description": null,
+                        "type": "int32",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "MinimumShouldMatch",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Operator",
+                    "description": null,
+                    "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BMatchOperator",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "And": 0,
+                      "Or": 1
+                    }
+                  },
+                  {
+                    "name": "PropertiesToSearch",
+                    "description": null,
+                    "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BProductPropertyTypeToSearch[]?",
+                    "properties": [
+                      {
+                        "name": "Boost",
+                        "description": null,
+                        "type": "float64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "ID",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "RequirementType",
+                    "description": null,
+                    "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BQueryRequirementType",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "Must": 0,
+                      "Should": 1
+                    }
+                  },
+                  {
+                    "name": "Slop",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Type",
+                    "description": null,
+                    "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BMultiMatchType",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "BestFields": 0,
+                      "CrossFields": 2,
+                      "MostFields": 1,
+                      "Phrase": 3,
+                      "PhrasePrefix": 4
+                    }
+                  }
+                ],
                 "recursion": false,
                 "enumValues": null
               },
@@ -230,7 +393,35 @@
                 "name": "ScoringFunctions",
                 "description": null,
                 "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BScoringFunction[]?",
-                "properties": null,
+                "properties": [
+                  {
+                    "name": "Options",
+                    "description": null,
+                    "type": "object",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Type",
+                    "description": null,
+                    "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BScoringFunctionTypes",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "FieldValueFactor": 0,
+                      "Script": 1
+                    }
+                  },
+                  {
+                    "name": "Weight",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
                 "recursion": false,
                 "enumValues": null
               },
@@ -283,7 +474,71 @@
                 "name": "Sort",
                 "description": null,
                 "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BSortingStrategySort[]?",
-                "properties": null,
+                "properties": [
+                  {
+                    "name": "Field",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "MissingValue",
+                    "description": null,
+                    "type": "any",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Order",
+                    "description": null,
+                    "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BSortingStrategyOrder",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "Ascending": 0,
+                      "Descending": 1
+                    }
+                  },
+                  {
+                    "name": "Script",
+                    "description": null,
+                    "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BSortingStrategySortScript",
+                    "properties": [
+                      {
+                        "name": "Language",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Source",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Type",
+                        "description": null,
+                        "type": "EVA.PIM.DataModels.ProductSearchStrategyModel\u002BSortingScriptType",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": {
+                          "Number": 0,
+                          "String": 1
+                        }
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
                 "recursion": false,
                 "enumValues": null
               },
@@ -326,6 +581,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

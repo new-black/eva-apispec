@@ -1,6 +1,8 @@
 {
   "name": "ListBlobsForOrder",
   "description": "Get the blobs that are attached to an Order\n\nIt\u0027s required to specify the order, optionally the blobs can also be filtered on \u0060InvoiceID\u0060 of \u0060ShipmentID\u0060.",
+  "method": "POST",
+  "path": "/api/core/ListBlobsForOrder",
   "request": {
     "properties": [
       {
@@ -32,10 +34,186 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Result",
         "description": null,
         "type": "EVA.Core.Blobs.OrderBlobDto[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "BlobID",
+            "description": null,
+            "type": "guid",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "CreationTime",
+            "description": null,
+            "type": "date",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "InvoiceID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "MimeType",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Name",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrderID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrderLineID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrganizationUnitBackendID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrganizationUnitID",
+            "description": "Optional OrganizationUnit based on Shipment.OrganizationUnit or Invoice.OrganizationUnit",
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrganizationUnitName",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ShipmentID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "EVA.Core.DataModels.OrderBlobTypes",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Export": 11,
+              "Identification": 6,
+              "Invoice": 1,
+              "InvoiceThermal": 2,
+              "None": 0,
+              "PackingSlip": 7,
+              "PickSlip": 8,
+              "PinReceipt": 10,
+              "ReturnForm": 4,
+              "ReturnLabel": 3,
+              "ShipmentLabel": 5,
+              "ThermalPrint": 9
+            }
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

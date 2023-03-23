@@ -1,6 +1,8 @@
 {
   "name": "StartCloseCashJournal",
   "description": "Initiates the closing of a cash journal. This does not yet mutate anything, but returns all the details you need about a cash journal to be able to close it.\n\nThis consists of:\n\n- The information about the device and station\n- Which expenses and deposits were made from this device.\n- What payments were made.\n- What the \u0060ExpectedClosingAmount\u0060 is, which is a summary of the previous journal\u0027s closing amount plus all transactions.\n- Possible pending cash deposits on this device",
+  "method": "POST",
+  "path": "/api/core/StartCloseCashJournal",
   "request": {
     "properties": [
       {
@@ -40,7 +42,81 @@
             "name": "CashTransactions",
             "description": null,
             "type": "EVA.Core.Finance.Cash.CashJournalDetailsModel\u002BCashTransactionLedger[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "Amount",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CreationTime",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Denominations",
+                "description": null,
+                "type": "EVA.Core.Finance.Cash.CashJournalDetailsModel\u002BCashDenominations",
+                "properties": [
+                  {
+                    "name": "BankNotes",
+                    "description": null,
+                    "type": "{float128: int32}?",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Coins",
+                    "description": null,
+                    "type": "{float128: int32}?",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Type",
+                "description": null,
+                "type": "EVA.Core.DataModels.CashTransactionLedgerTypes",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "AmountGiven": 5,
+                  "Change": 6,
+                  "Correction": 3,
+                  "Deposit": 2,
+                  "Expense": 4,
+                  "MoveFrom": 0,
+                  "MoveTo": 1
+                }
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -89,7 +165,125 @@
             "name": "Corrections",
             "description": null,
             "type": "EVA.Core.Finance.Cash.CashJournalDetailsModel\u002BCashCorrection[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "Amount",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CashTransactionLedger",
+                "description": null,
+                "type": "EVA.Core.Finance.Cash.CashJournalDetailsModel\u002BCashTransactionLedger",
+                "properties": [
+                  {
+                    "name": "Amount",
+                    "description": null,
+                    "type": "float128",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "CreationTime",
+                    "description": null,
+                    "type": "date",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Denominations",
+                    "description": null,
+                    "type": "EVA.Core.Finance.Cash.CashJournalDetailsModel\u002BCashDenominations",
+                    "properties": [
+                      {
+                        "name": "BankNotes",
+                        "description": null,
+                        "type": "{float128: int32}?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Coins",
+                        "description": null,
+                        "type": "{float128: int32}?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Description",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Type",
+                    "description": null,
+                    "type": "EVA.Core.DataModels.CashTransactionLedgerTypes",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "AmountGiven": 5,
+                      "Change": 6,
+                      "Correction": 3,
+                      "Deposit": 2,
+                      "Expense": 4,
+                      "MoveFrom": 0,
+                      "MoveTo": 1
+                    }
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Remark",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Type",
+                "description": null,
+                "type": "EVA.Core.DataModels.CashCorrectionTypes",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "CashJournalClosing": 2,
+                  "CashJournalOpening": 1
+                }
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -105,7 +299,114 @@
             "name": "Deposits",
             "description": null,
             "type": "EVA.Core.Finance.Cash.CashJournalDetailsModel\u002BCashDeposit[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "Amount",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CashTransactionLedger",
+                "description": null,
+                "type": "EVA.Core.Finance.Cash.CashJournalDetailsModel\u002BCashTransactionLedger",
+                "properties": [
+                  {
+                    "name": "Amount",
+                    "description": null,
+                    "type": "float128",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "CreationTime",
+                    "description": null,
+                    "type": "date",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Denominations",
+                    "description": null,
+                    "type": "EVA.Core.Finance.Cash.CashJournalDetailsModel\u002BCashDenominations",
+                    "properties": [
+                      {
+                        "name": "BankNotes",
+                        "description": null,
+                        "type": "{float128: int32}?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Coins",
+                        "description": null,
+                        "type": "{float128: int32}?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Description",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Type",
+                    "description": null,
+                    "type": "EVA.Core.DataModels.CashTransactionLedgerTypes",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "AmountGiven": 5,
+                      "Change": 6,
+                      "Correction": 3,
+                      "Deposit": 2,
+                      "Expense": 4,
+                      "MoveFrom": 0,
+                      "MoveTo": 1
+                    }
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Number",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -212,7 +513,81 @@
             "name": "Expenses",
             "description": null,
             "type": "EVA.Core.Finance.Cash.CashJournalDetailsModel\u002BCashExpense[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "Amount",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "BlobID",
+                "description": null,
+                "type": "guid",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CreationTime",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "TaxCode",
+                "description": null,
+                "type": "EVA.Core.API.EnumDto",
+                "properties": [
+                  {
+                    "name": "Description",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -343,6 +718,47 @@
         "enumValues": null
       },
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "ExpectedClosingAmount",
         "description": null,
         "type": "float128",
@@ -359,6 +775,31 @@
         "enumValues": null
       },
       {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "MinimalAllowedDeviation",
         "description": null,
         "type": "float128",
@@ -370,7 +811,32 @@
         "name": "PendingCashDeposits",
         "description": null,
         "type": "EVA.Core.Finance.StartCloseCashJournalResponse\u002BPendingCashDeposit[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Amount",
+            "description": null,
+            "type": "float128",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Number",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

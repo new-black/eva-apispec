@@ -1,6 +1,8 @@
 {
   "name": "CompleteShipFromStoreTask",
   "description": "Completes the ShipFromOrder task, indicating that the shipment of the order has taken place.\n\nThe order will be shipped and the shop stock will be moved to Transit.",
+  "method": "POST",
+  "path": "/api/core/CompleteShipFromStoreTask",
   "request": {
     "properties": [
       {
@@ -15,7 +17,32 @@
         "name": "PickedOrderLines",
         "description": "Optional for subtype Pick",
         "type": "EVA.Core.Types.ShipFromStore.Services.CompleteShipFromStoreTask\u002BPickedOrderLine[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "ID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ProductID",
+            "description": "Assuming original \u0060ProductID\u0060 when omitted - useful when using a replacement product",
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Quantity",
+            "description": "Assuming full quantity when omitted - useful for partial picks or replacement products",
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -23,7 +50,83 @@
         "name": "Shipments",
         "description": "Optional for subtype Ship",
         "type": "EVA.Core.Types.ShipFromStore.Services.CompleteShipFromStoreTask\u002BShipment[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Lines",
+            "description": null,
+            "type": "EVA.Core.Types.ShipFromStore.Services.CompleteShipFromStoreTask\u002BShipmentLine[]?",
+            "properties": [
+              {
+                "name": "OrderLineID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Quantity",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Packages",
+            "description": null,
+            "type": "EVA.Core.Types.ShipFromStore.Services.CompleteShipFromStoreTask\u002BShipmentPackage[]?",
+            "properties": [
+              {
+                "name": "Lines",
+                "description": null,
+                "type": "EVA.Core.Types.ShipFromStore.Services.CompleteShipFromStoreTask\u002BShipmentLine[]?",
+                "properties": [
+                  {
+                    "name": "OrderLineID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Quantity",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "PackageID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ShippingMethodID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -72,10 +175,199 @@
         "enumValues": null
       },
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Next",
         "description": null,
         "type": "EVA.Core.Types.ShipFromStore.Services.NextUserTaskDto[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Description",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ParentID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Priority",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SubType",
+            "description": null,
+            "type": "EVA.Core.API.EnumDto",
+            "properties": [
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "EVA.Core.UserTasks.Dto.UserTaskTypeDto",
+            "properties": [
+              {
+                "name": "DefaultPriority",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "DefaultRequired",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ExpectedTimeToComplete",
+                "description": null,
+                "type": "duration",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },

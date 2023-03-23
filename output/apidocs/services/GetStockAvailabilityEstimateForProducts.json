@@ -1,6 +1,8 @@
 {
   "name": "GetStockAvailabilityEstimateForProducts",
   "description": "Given a set of products this service returns a detailed estimate for each product when it\u0027s expected to be available.",
+  "method": "POST",
+  "path": "/api/core/GetStockAvailabilityEstimateForProducts",
   "request": {
     "properties": [
       {
@@ -31,7 +33,24 @@
         "name": "Products",
         "description": null,
         "type": "EVA.Core.Stock.GetStockAvailabilityEstimateForProducts\u002BProduct[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "ID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestedDate",
+            "description": null,
+            "type": "date",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }
@@ -40,10 +59,538 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Products",
         "description": null,
         "type": "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse\u002BProduct[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "AvailabilityDates",
+            "description": null,
+            "type": "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse\u002BAvailabilityDate[]?",
+            "properties": [
+              {
+                "name": "Date",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "PurchaseOrderLines",
+                "description": null,
+                "type": "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse\u002BPurchaseOrderLine[]?",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "IsConfirmed",
+                    "description": null,
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "IsOverdue",
+                    "description": null,
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "OrderID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Quantity",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "QuantityAvailable",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "RequestedDate",
+                    "description": null,
+                    "type": "date",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "QuantityAvailable",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "PurchaseOrderLines",
+            "description": null,
+            "type": "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse\u002BPurchaseOrderLine[]?",
+            "properties": [
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "IsConfirmed",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "IsOverdue",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Quantity",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "QuantityAvailable",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "RequestedDate",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "QuantityToShipOnOrder",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ReservedOrderLines",
+            "description": null,
+            "type": "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse\u002BReservedOrderLine[]?",
+            "properties": [
+              {
+                "name": "OrderID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderLineID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "QuantityReserved",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ShopName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SalesOrderLines",
+            "description": null,
+            "type": "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse\u002BSalesOrderLine[]?",
+            "properties": [
+              {
+                "name": "CommitmentDate",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CommitmentStatus",
+                "description": null,
+                "type": "EVA.Core.DataModels.OrderLineCommitmentStatus",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "ForcedCommit": 10,
+                  "HardCommit": 2,
+                  "ManualCommit": 5,
+                  "SoftCommit": 1,
+                  "Uncommitted": 0
+                }
+              },
+              {
+                "name": "ExportDate",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ExportStatus",
+                "description": null,
+                "type": "EVA.Core.DataModels.OrderExportStatuses",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "Exported": 3,
+                  "Exporting": 2,
+                  "NotExported": 0,
+                  "ShouldBeExported": 1,
+                  "WillNotBeExported": 4
+                }
+              },
+              {
+                "name": "FulfillmentStatus",
+                "description": null,
+                "type": "EVA.Core.DataModels.OrderLineAvailabilityStatus",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "Blocked": 5,
+                  "CanFulfill": 15,
+                  "CannotFulfill": 10,
+                  "CannotFulfillOnTime": 12,
+                  "Unknown": 0
+                }
+              },
+              {
+                "name": "OrderID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderLineID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderType",
+                "description": null,
+                "type": "EVA.Core.DataModels.OrderTypes",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "Purchase": 1,
+                  "Sales": 0
+                }
+              },
+              {
+                "name": "Quantity",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "RequestedDate",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ShopReplenishments",
+            "description": null,
+            "type": "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse\u002BShopReplenishment[]?",
+            "properties": [
+              {
+                "name": "IsConfirmed",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderLineID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Quantity",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "RequestedDate",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "WarehouseQuantityAvailable",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "WarehouseQuantityCommitted",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "WarehouseQuantityOnHand",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "WarehouseStock",
+            "description": null,
+            "type": "EVA.Core.Stock.GetStockAvailabilityEstimateForProductsResponse\u002BWarehouseStock[]?",
+            "properties": [
+              {
+                "name": "QuantityOnHand",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "StockLabel",
+                "description": null,
+                "type": "EVA.Core.API.EnumDto",
+                "properties": [
+                  {
+                    "name": "Description",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "WarehouseID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "WarehouseName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

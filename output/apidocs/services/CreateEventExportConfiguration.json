@@ -1,6 +1,8 @@
 {
   "name": "CreateEventExportConfiguration",
   "description": "Create event export configurations (HTTPS only).\n\nEvent Export Configurations allow you to configure specific endpoints (webhooks) for EventTargets and EventTypes.\nNot setting EventTarget \u0026 EventType will configure the endpoint for all targets and types.\nSet AuthenticationHeaderType and AuthenticationHeaderValue if you want to configure some sort of authentication.",
+  "method": "POST",
+  "path": "/api/core/CreateEventExportConfiguration",
   "request": {
     "properties": [
       {
@@ -45,7 +47,24 @@
             "name": "ExcludedMessageTypes",
             "description": null,
             "type": "EVA.Core.DataModels.EventExportConfigurationTarget[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "EventType",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "TargetID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -61,7 +80,24 @@
             "name": "MessageTypes",
             "description": null,
             "type": "EVA.Core.DataModels.EventExportConfigurationTarget[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "EventType",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "TargetID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -130,10 +166,76 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "ID",
         "description": null,
         "type": "int64",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

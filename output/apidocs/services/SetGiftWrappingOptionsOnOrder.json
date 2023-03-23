@@ -1,13 +1,57 @@
 {
   "name": "SetGiftWrappingOptionsOnOrder",
   "description": "Set the GiftWrapping options on an Order.\n\nThere are 4 options:\n\n - Wrap the complete order: set \u0060WrapOrder\u0060 to \u0060true\u0060\n - Wrap the complete order individually: set \u0060WrapIndividually\u0060 to \u0060true\u0060\n - Wrap parts of the order: set \u0060GiftWraps\u0060 with a set of wraps\n - Wrap nothing: set everything to \u0060null\u0060\n\nA \u0060GiftWrap\u0060 consists out of an optional \u0060Message\u0060 (could be printed on a card), an optional \u0060GreetingCardProductID\u0060 and a set of \u0060WrapLines\u0060. A\n\u0060WrapLine\u0060 has an \u0060OrderLineID\u0060 and a \u0060Quantity\u0060.\n\nIf a \u0060GreetingCardProductID\u0060 and/or \u0060Message\u0060 is desired when the order should be completely wrapped, or without any giftwrapping at all, set these\nproperties on root level. In all other cases they should be set on the \u0060GiftWraps\u0060.",
+  "method": "POST",
+  "path": "/api/core/SetGiftWrappingOptionsOnOrder",
   "request": {
     "properties": [
       {
         "name": "GiftWraps",
         "description": null,
         "type": "EVA.Core.GiftWrapping.GiftWrapDto[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "GreetingCardProductID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Lines",
+            "description": null,
+            "type": "EVA.Core.GiftWrapping.WrapLine[]",
+            "properties": [
+              {
+                "name": "OrderLineID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Quantity",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -54,6 +98,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

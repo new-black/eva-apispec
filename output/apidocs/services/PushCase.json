@@ -1,6 +1,8 @@
 {
   "name": "PushCase",
   "description": "Push and import a case.",
+  "method": "POST",
+  "path": "/api/core/management/PushCase",
   "request": {
     "properties": [
       {
@@ -536,7 +538,28 @@
         "name": "Interactions",
         "description": null,
         "type": "EVA.Core.Management.Cases.PushCase\u002BPushCaseInteraction[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Text",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "EVA.Core.DataModels.InteractionType",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Communication": 0,
+              "Ledger": 2,
+              "Note": 1
+            }
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -630,10 +653,76 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "ID",
         "description": null,
         "type": "int64",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

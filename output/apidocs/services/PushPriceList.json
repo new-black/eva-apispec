@@ -1,13 +1,63 @@
 {
   "name": "PushPriceList",
   "description": "A service that allows to manage the entirety of a price list.",
+  "method": "POST",
+  "path": "/api/core/PushPriceList",
   "request": {
     "properties": [
       {
         "name": "ActiveForOrganizationUnits",
         "description": "The organization units that use this pricelist. If left empty will leave the current configuration unchanged. If specified, will replace the current configuration.",
         "type": "EVA.Core.Pricing.PushPriceList\u002BActiveOrganizationUnit[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Delete",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrganizationUnitID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "PricingGroupID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "TargetOrganizationUnitID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UsageType",
+            "description": null,
+            "type": "EVA.Core.Pricing.PushPriceList\u002BPriceListUsageTypes",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Cost": 1,
+              "PotentialDiscountedPrice": 5,
+              "Promotion": 2,
+              "Purchase": 3,
+              "RecommendedRetail": 4,
+              "Sales": 0
+            }
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -15,7 +65,195 @@
         "name": "Components",
         "description": "The list of components that make up the pricelist. If left empty this will leave the current configuration unchanged. If specified only the components present will be modified. Components must be explictly deleted.",
         "type": "EVA.Core.Pricing.PushPriceList\u002BComponent[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "CopyPricesFromOtherPriceListData",
+            "description": "The data that accompanies a Component with Type = PricesFromOtherPriceList which is a component to copy prices from another pricelist.\n\nIs useful for example for promotion prices, where you first \u0027import\u0027 the prices from the original pricelist, and then apply a negative markup to them to create a promotion discount.\n\nWhich prices you copy can be modified by specifying a ProductSearchTemplateID, only products that are contained in the results of the search will be copied,\nunless ExcludeProductsInFilter is set to true, in which case the reverse is true; all products except the matching ones will have their prices copied.",
+            "type": "EVA.Core.Pricing.PushPriceList\u002BCopyPricesFromOtherPriceListData",
+            "properties": [
+              {
+                "name": "ExcludeProductsInFilter",
+                "description": "If true, all products except the matching ones will have their prices copied. If false, only the matching ones will have their prices copied.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "PriceListID",
+                "description": "The ID of the pricelist to copy prices from.",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ProductSearchTemplateID",
+                "description": "The ID of the ProductSearchTemplate to use to filter the products to copy. If left empty all products will be copied.",
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Delete",
+            "description": "If specified as true, the component will be deleted.",
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "EndDate",
+            "description": "Determines when this component will become inactive. After this date the component will not be included in the calculation of the pricelist.",
+            "type": "date",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": "The unique identifier for this component. Required.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "MarkupData",
+            "description": "The data that accompanies a Component with Type = Markup which is a component that alters the price value of the previusly applied components,\neither up or down. The markup/markdown can either be an absolute value or a percentage depending on the Type.",
+            "type": "EVA.Core.Pricing.PushPriceList\u002BMarkupData",
+            "properties": [
+              {
+                "name": "ExcludeProductsInFilter",
+                "description": "If true, all products except the matching ones will have their prices copied. If false, only the matching ones will have their prices copied.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "FactorValue",
+                "description": "The value of the markup/markdown. If Type is Amount, this is the amount to add to the price.\nIf Type is Percentage, this is the amount that the Price will be multiplied by.\n\nA 10% markup should be specified as 1.10, a 25% discount should be specified as 0.75.",
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ProductSearchTemplateID",
+                "description": "The ID of the ProductSearchTemplate to use to filter the products to copy. If left empty all products will be copied.",
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Type",
+                "description": "The type of markup/markdown. Either absolute amount or a percentage. Determines how FactorValue will be interpreted.",
+                "type": "EVA.Core.Pricing.FactorType",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "Amount": 0,
+                  "Percentage": 1
+                }
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Name",
+            "description": "The name of the component. If left empty on creation of the component the ID will be used as the name.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "PriceEntriesData",
+            "description": "The data that accompanies a Component with Type = PriceEntries, so a component that is simply a list of product/price pairs.\nThe simplest and most direct way to give a product a price.\n\nThis data consists of either a list of product/price pairs or a BlobID which is a reference to a previously created blob in EVA that contains data of the following format:\n\n[\n    {\n      \u0022ProductID\u0022: \u0022\u003CProductID\u003E\u0022,\n      \u0022Price\u0022: \u003CPrice\u003E\n    },\n    ...\n]\n\nIf you only supply a handful of prices, the inline data works well, but for large quantities of prices you may want to use the BlobID method.\n\nThis data is ignored for all other Component types.\n\nPriceEntries data is processed asynchronously in the background and will not be immediately visible after the service call returns.",
+            "type": "EVA.Core.Pricing.PushPriceList\u002BPriceEntriesData",
+            "properties": [
+              {
+                "name": "BlobID",
+                "description": "The blob that refers to the price entry data that was previously uploaded to a Blob in EVA. If left empty the inline data will be used.\n\nThe data in the blob must be in the following format:\n\n[\n    {\n      \u0022ProductID\u0022: \u0022\u003CProductID\u003E\u0022,\n      \u0022Price\u0022: \u003CPrice\u003E\n    },\n    ...\n]",
+                "type": "guid",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Prices",
+                "description": "The inline data that will be used to create the price entries. If left empty the blob will be used.",
+                "type": "EVA.Core.Pricing.PushPriceList\u002BPriceEntriesData\u002BPriceEntryPrice[]?",
+                "properties": [
+                  {
+                    "name": "Price",
+                    "description": null,
+                    "type": "float128",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ProductID",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "PricingGroupID",
+            "description": "The PricingGroupID that this component is active for. Components with a PricingGroupID are only active for users that are members of that group. If left empty the component will be active for all users.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SequenceNumber",
+            "description": "Components are applied in the order of their sequence number, from lowest to highest.",
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StartDate",
+            "description": "Determines when this component will become active. Until then the component will not be included in the calculation of the pricelist.",
+            "type": "date",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": "Determines the type of the component. Cannot be changed after creation.",
+            "type": "EVA.Core.Pricing.PushPriceList\u002BComponentTypes",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "CopyPricesFromOtherPriceList": 2,
+              "Markup": 1,
+              "PriceEntries": 0
+            }
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -107,6 +345,72 @@
   },
   "response": {
     "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
       {
         "name": "PriceListID",
         "description": null,

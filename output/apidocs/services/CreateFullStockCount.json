@@ -1,6 +1,8 @@
 {
   "name": "CreateFullStockCount",
   "description": "Initiate the Full Stock Count process for the current store. **Prevents basic store functionalities once started.**",
+  "method": "POST",
+  "path": "/api/core/CreateFullStockCount",
   "request": {
     "properties": [
       {
@@ -23,7 +25,24 @@
         "name": "InitialFullStockCountLabels",
         "description": "When supplied, it will automatically call \u0060AddLabelToFullStockCount\u0060 for each InitialLabel. Ignored when IsExternal or CreateFullStockCountLabelsForShelves is set to true.",
         "type": "EVA.Core.Services.FullStockCountServices.CreateFullStockCount\u002BInitialFullStockCountLabel[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Name",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StockLabelID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -59,7 +78,73 @@
         "name": "CurrentStock",
         "description": null,
         "type": "EVA.Core.Services.FullStockCountServices.CreateFullStockCountResponse\u002BProductStock[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "ProductID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "QuantityOnHand",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StockLabelID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -68,6 +153,31 @@
         "description": null,
         "type": "int64",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },

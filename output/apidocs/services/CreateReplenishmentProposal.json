@@ -1,6 +1,8 @@
 {
   "name": "CreateReplenishmentProposal",
   "description": "Creates a new \u0060ReplenishmentProposal\u0060.\n\nThe new proposal is picked up and processed asynchronously and could take a while after creation to complete generating its results, depending on the\namount of sources, targets, products and the algorithm used. Check the \u0060Status\u0060 property in the \u0060GetReplenishmentProposal\u0060 response to see if it\u0027s\ncompleted.\n\nTo allow selecting the output types for the generated proposal, the property \u0060OutputTypes\u0060 can be set. It is a flags enum of the type\n\u0060ReplenishmentOutputTypes\u0060. If the \u0060OutputTypes\u0060 is not set, it will fall back to the setting \u0060Replenishment:Outputs\u0060.",
+  "method": "POST",
+  "path": "/api/replenishment/CreateReplenishmentProposal",
   "request": {
     "properties": [
       {
@@ -38,7 +40,24 @@
         "name": "StockLabels",
         "description": "Optional list of stock labels to generate replenishment proposal for",
         "type": "EVA.Replenishment.Services.CreateReplenishmentProposal\u002BStockLabelDto[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "SequenceID",
+            "description": "Ordering of the labels, to determine priority in scarcity",
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StockLabelID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -63,10 +82,76 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "ID",
         "description": null,
         "type": "int64",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

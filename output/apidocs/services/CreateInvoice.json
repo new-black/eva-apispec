@@ -1,13 +1,24 @@
 {
   "name": "CreateInvoice",
   "description": "Creates a new invoice for the given \u0060OrganizationUnitID\u0060 (the one who writes the invoice)\nand the \u0060SupplierOrganizationUnitID\u0060 (the one who receives good/services).\n\n- \u0060InvoiceDate\u0060 is the date on which the invoice was created.\n- \u0060InvoiceNumber\u0060 is the unique number for the invoice.\n- \u0060Blobs\u0060 can contain PDF\u0027s or other media that can for example be a copy of the invoice\n- \u0060OriginalTotalAmount\u0060 is the amount that is expected on the invoice. E.g. this can differ from the amount that is computed based on the invoice lines\n- \u0060Type\u0060 indicates if this is an invoice for a sales or purchase orders",
+  "method": "POST",
+  "path": "/api/core/CreateInvoice",
   "request": {
     "properties": [
       {
         "name": "Blobs",
         "description": null,
         "type": "EVA.Core.Invoicing.InvoiceBlobDto[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "BlobID",
+            "description": null,
+            "type": "guid",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -134,10 +145,76 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "ID",
         "description": null,
         "type": "int64",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

@@ -1,6 +1,8 @@
 {
   "name": "CompleteCloseCashJournal",
   "description": "Completes the closing of a cash journal, making the device once again unavailable for cash transactions until a new journal is opened.\n\nThis service expects a list of coins and notes, which summed up must equal the given \u0060TotalAmount\u0060.\n\nIf the \u0060TotalAmount\u0060 is different from what was expected (returned as \u0060ExpectedClosingAmount\u0060 in \u0060StartCloseCashJournal\u0060 ) then this deviation\nmust be corrected and provided through a list of corrections in the \u0060Corrections\u0060 field.\n\nFor cash journals that either do not use or ignore cash journals, most properties will automatically be set to the expected amounts. Should you\nwant to enforce validation, regardless, specify the \u0060ForceValidation\u0060 as \u0060true\u0060.\n\nPending cash deposits need to be accounted for as well - supply their \u0060ID\u0060s as \u0060PendingCashDeposits\u0060. Do not add the \u0060Amount\u0060 of cash deposits\nto the \u0060TotalAmount\u0060, as the user cannot usually verify the cash deposit content.",
+  "method": "POST",
+  "path": "/api/core/CompleteCloseCashJournal",
   "request": {
     "properties": [
       {
@@ -23,7 +25,32 @@
         "name": "Corrections",
         "description": null,
         "type": "EVA.Core.Finance.CompleteCloseCashJournal\u002BCashCorrection[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Amount",
+            "description": null,
+            "type": "float128",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Description",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ReasonID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -86,6 +113,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

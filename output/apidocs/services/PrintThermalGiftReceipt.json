@@ -1,13 +1,32 @@
 {
   "name": "PrintThermalGiftReceipt",
   "description": "Print a *gift* receipt; a regular receipt, but without any price- or payment details. This document is intended to accompany the purchase when gifted, so the recipient can return or exchange it without (direct) knowledge of the price.\n    The \u0060Lines\u0060 property is optional, when omitted the entire order (from \u0060OrderID\u0060) will be printed. Also, \u0060Name\u0060 and \u0060Remark\u0060 are optional and intended for the gift recipient, only.",
+  "method": "POST",
+  "path": "/api/core/PrintThermalGiftReceipt",
   "request": {
     "properties": [
       {
         "name": "Lines",
         "description": null,
         "type": "EVA.Core.Orders.Documents.PrintThermalGiftReceiptLine[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "OrderLineID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Quantity",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -46,6 +65,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

@@ -1,6 +1,8 @@
 {
   "name": "SearchDiscountsByQuery",
   "description": "Searches the Discounts with the given filter and returns a paged response.",
+  "method": "POST",
+  "path": "/api/core/management/SearchDiscountsByQuery",
   "request": {
     "properties": [
       {
@@ -76,7 +78,16 @@
                 "type": "EVA.Core.DataModels.DiscountDeactivationReasons[]?",
                 "properties": null,
                 "recursion": false,
-                "enumValues": null
+                "enumValues": {
+                  "ByDiscountBudget": 8,
+                  "ByDiscountCampaignBudget": 32,
+                  "ByDiscountCampaignTimeFrame": 64,
+                  "ByDiscountTimeFrame": 16,
+                  "ByDiscountUsage": 4,
+                  "DisabledByUser": 2,
+                  "None": 0,
+                  "Unverified": 1
+                }
               },
               {
                 "name": "Description",
@@ -108,7 +119,13 @@
                 "type": "EVA.Core.DataModels.DiscountTriggers[]?",
                 "properties": null,
                 "recursion": false,
-                "enumValues": null
+                "enumValues": {
+                  "Automatic": 0,
+                  "Bundles": 4,
+                  "Coupon": 2,
+                  "Manual": 1,
+                  "SystemManaged": -1
+                }
               },
               {
                 "name": "HasRestitutionOrganizationUnit",
@@ -172,6 +189,41 @@
             ],
             "recursion": false,
             "enumValues": null
+          },
+          {
+            "name": "Limit",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SortDirection",
+            "description": null,
+            "type": "EVA.Core.SortDirection",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Ascending": 0,
+              "Descending": 1
+            }
+          },
+          {
+            "name": "SortProperty",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Start",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
           }
         ],
         "recursion": false,
@@ -180,6 +232,476 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Result",
+        "description": null,
+        "type": "EVA.Core.PagedResult\u00601[EVA.Core.Management.Discounts.SearchDiscountsByQueryResponse\u002BDiscountDto]",
+        "properties": [
+          {
+            "name": "CurrentPage",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Filters",
+            "description": null,
+            "type": "{string: string}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Limit",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "NumberOfPages",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Offset",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Page",
+            "description": null,
+            "type": "EVA.Core.Management.Discounts.SearchDiscountsByQueryResponse\u002BDiscountDto[]?",
+            "properties": [
+              {
+                "name": "Budget",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "BudgetAvailable",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "BudgetProgress",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CampaignID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CouponsGeneratedByOtherDiscount",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CreatedByFullName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CreatedByID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CurrencyID",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CustomUserUsageLimitFieldID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "DeactivateWhenBudgetReached",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "DeactivationReasons",
+                "description": null,
+                "type": "EVA.Core.DataModels.DiscountDeactivationReasons",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "ByDiscountBudget": 8,
+                  "ByDiscountCampaignBudget": 32,
+                  "ByDiscountCampaignTimeFrame": 64,
+                  "ByDiscountTimeFrame": 16,
+                  "ByDiscountUsage": 4,
+                  "DisabledByUser": 2,
+                  "None": 0,
+                  "Unverified": 1
+                }
+              },
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "DiscountOrderType",
+                "description": null,
+                "type": "EVA.Core.DataModels.DiscountOrderTypes",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "All": 3,
+                  "None": 0,
+                  "Purchase": 2,
+                  "Sales": 1
+                }
+              },
+              {
+                "name": "Enabled",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "EndDate",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "GeneratedFromTemplate",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ImageBlobID",
+                "description": null,
+                "type": "guid",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "LayerID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "LayerName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "MaximumUsage",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrganizationUnitSetDescription",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrganizationUnitSetID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrganizationUnitSetName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrganizationUnitSetType",
+                "description": null,
+                "type": "EVA.Core.DataModels.OrganizationUnitSetTypes",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "AdHoc": 2,
+                  "Custom": 1,
+                  "System": 0
+                }
+              },
+              {
+                "name": "RestitutionOrganizationUnitID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "StartDate",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "TotalDiscountGiven",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "UsageCount",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "UserUsageLimit",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "UserUsageReloadStrategy",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "PageConfig",
+            "description": null,
+            "type": "EVA.Core.PageConfig\u00601[map[string,string]]",
+            "properties": [
+              {
+                "name": "Filter",
+                "description": null,
+                "type": "{string: string}?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Limit",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "SortDirection",
+                "description": null,
+                "type": "EVA.Core.SortDirection",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "Ascending": 0,
+                  "Descending": 1
+                }
+              },
+              {
+                "name": "SortProperty",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Start",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SortDirection",
+            "description": null,
+            "type": "EVA.Core.SortDirection",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Ascending": 0,
+              "Descending": 1
+            }
+          },
+          {
+            "name": "SortProperty",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Total",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

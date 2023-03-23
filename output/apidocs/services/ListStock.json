@@ -1,10 +1,305 @@
 {
   "name": "ListStock",
   "description": "Returns a paginated list of all stock, optionally filtered.",
+  "method": "POST",
+  "path": "/api/core/ListStock",
   "request": {
-    "properties": null
+    "properties": [
+      {
+        "name": "InitialPageConfig",
+        "description": null,
+        "type": "EVA.Core.PageTokenConfig\u00601[EVA.Core.StockMutations.ListStockFilter]",
+        "properties": [
+          {
+            "name": "Filter",
+            "description": null,
+            "type": "EVA.Core.StockMutations.ListStockFilter",
+            "properties": [
+              {
+                "name": "OrganizationUnitIDs",
+                "description": null,
+                "type": "int64[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ProductIDs",
+                "description": null,
+                "type": "int64[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "StockLabelIDs",
+                "description": null,
+                "type": "int64[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Limit",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "PageToken",
+        "description": null,
+        "type": "string",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "NextPageToken",
+        "description": null,
+        "type": "string",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "PreviousPageToken",
+        "description": null,
+        "type": "string",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Results",
+        "description": null,
+        "type": "EVA.Core.Stock.ListStockResponse\u002BListStockItem[]?",
+        "properties": [
+          {
+            "name": "OrganizationUnit",
+            "description": null,
+            "type": "EVA.Core.Stock.ListStockResponse\u002BListStockItem\u002BOrganizationUnitInfo",
+            "properties": [
+              {
+                "name": "BackendID",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Type",
+                "description": null,
+                "type": "EVA.Core.OrganizationUnitTypes",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "B2b": 4096,
+                  "Consignment": 3072,
+                  "Container": 4,
+                  "Country": 36,
+                  "DisableLogin": 512,
+                  "EVA": 128,
+                  "ExternalSupplier": 1024,
+                  "Franchise": 64,
+                  "None": 0,
+                  "Pickup": 8,
+                  "Region": 8196,
+                  "Restitution": 32768,
+                  "ReturnsPortal": 16384,
+                  "Shop": 1,
+                  "Supplier": 1024,
+                  "TestOrganizationUnit": 256,
+                  "Warehouse": 16,
+                  "WebShop": 2
+                }
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Product",
+            "description": null,
+            "type": "EVA.Core.Stock.ListStockResponse\u002BListStockItem\u002BProductInfo",
+            "properties": [
+              {
+                "name": "BackendID",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CustomID",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "QuantityCommitted",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "QuantityOnHand",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StockLabel",
+            "description": null,
+            "type": "EVA.Core.API.EnumDto",
+            "properties": [
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

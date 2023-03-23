@@ -1,6 +1,8 @@
 {
   "name": "SupplierShipPurchaseOrder",
   "description": "Ships a Purchase Order with specified lines. Supply either \u0060ID\u0060 or a \u0060BackendID\u0060/\u0060BackendSystemID\u0060 combination to\nidentify the order.\n\nIf you wish to receive on behalf of a different organization, identify that organization by specifying a\n\u0060ShipToOrganizationUnitBackendID\u0060. Should this organization reside in a different cluster, this call will be proxied\nto that cluster for you.",
+  "method": "POST",
+  "path": "/api/core/SupplierShipPurchaseOrder",
   "request": {
     "properties": [
       {
@@ -23,7 +25,89 @@
         "name": "Confirmations",
         "description": null,
         "type": "EVA.Core.PurchaseOrders.SupplierShipPurchaseOrderConfirmation[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "BackendID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "CustomFieldsByBackendID",
+            "description": null,
+            "type": "{string: EVA.Core.DataModels.CustomFieldValue}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ExpectedDeliveryDate",
+            "description": null,
+            "type": "date",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Lines",
+            "description": null,
+            "type": "EVA.Core.PurchaseOrders.SupplierShipPurchaseOrderConfirmationLine[]",
+            "properties": [
+              {
+                "name": "BackendID",
+                "description": "Identifier of the product",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Barcode",
+                "description": "Please use \u0060BackendID\u0060",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CustomID",
+                "description": "Please use \u0060BackendID\u0060",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Quantity",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "TrackingCode",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "TrackingLink",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -46,6 +130,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

@@ -1,6 +1,8 @@
 {
   "name": "StartOpenCashJournal",
   "description": "Starts the opening of a cash journal for the given DeviceID.\n\nIt\u0027s only possible to open a cash journal when an open financial period exists and when the device is a cash device. Retrieving a list of valid devices\ncan be accomplished through the \u0060ListDevices\u0060 service.\n\nCalling this service does not yet do anything, except return the data you need to open a cash journal:\n\n- The available denominations (coins and notes)\n- The details about the previous cash journal\u0027s closing amounts (if it exists), which can be used as an extra check\n- Possible pending cash deposits on this device",
+  "method": "POST",
+  "path": "/api/core/StartOpenCashJournal",
   "request": {
     "properties": [
       {
@@ -64,10 +66,76 @@
         "enumValues": null
       },
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "ExpectedOpeningAmount",
         "description": null,
         "type": "float128",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -121,7 +189,32 @@
         "name": "PendingCashDeposits",
         "description": null,
         "type": "EVA.Core.Finance.StartOpenCashJournalResponse\u002BPendingCashDeposit[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Amount",
+            "description": null,
+            "type": "float128",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Number",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },

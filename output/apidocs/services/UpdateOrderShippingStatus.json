@@ -1,19 +1,165 @@
 {
   "name": "UpdateOrderShippingStatus",
   "description": "Updates the order shipping status, creating ledger entries on order level.\n\nWill be processed as a whole; a single failing line in \u0060Lines\u0060 will prevent all other updates in a single call from persisting.",
+  "method": "POST",
+  "path": "/api/core/UpdateOrderShippingStatus",
   "request": {
     "properties": [
       {
         "name": "Lines",
         "description": null,
         "type": "EVA.Core.Orders.UpdateOrderShippingStatusLine[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "BackendOrderID",
+            "description": "Unique identifier for the order, in respect to the \u0060BackendSystemID\u0060",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "BackendOrderLineID",
+            "description": "BackendID of the EVA order line this update is specific for",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "BackendSystemID",
+            "description": "Owner of the \u0060BackendOrderID\u0060",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Date",
+            "description": "Date the event occurred - leave empty for \u0027now\u0027.",
+            "type": "date",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Description",
+            "description": "Optional, additional description, most commonly for the carrier status update code description for CarrierStatus types",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrderID",
+            "description": "Identifier of the EVA order this update is specific for",
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrderLineID",
+            "description": "Identifier of the EVA order line this update is specific for",
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": "Type of order shipping status update; 0 = Picked, 1 = Packed, 2 = CarrierStatus",
+            "type": "EVA.Core.Orders.OrderShippingStatusType",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "CarrierStatus": 2,
+              "Packed": 1,
+              "Picked": 0
+            }
+          },
+          {
+            "name": "Value",
+            "description": "Optional, additional information, most commonly for the carrier status update code (B01, D01, ...) for CarrierStatus types",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

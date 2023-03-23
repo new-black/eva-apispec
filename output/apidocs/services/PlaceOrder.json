@@ -1,6 +1,8 @@
 {
   "name": "PlaceOrder",
   "description": "Placing an order means it is final for all parties; both agree on the exchange in goods, services and/or money that this order implies.\n\nWill set the \u0060Order\u0060.\u0060IsPlaced\u0060 flag.\n\nThis service can be used to place a single order, or to place a batch at once.",
+  "method": "POST",
+  "path": "/api/core/PlaceOrder",
   "request": {
     "properties": [
       {
@@ -24,6 +26,72 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "ValidationResult",
         "description": null,
         "type": "EVA.Core.Orders.Export.OrderExportValidationResult",
@@ -32,7 +100,24 @@
             "name": "Messages",
             "description": null,
             "type": "EVA.Core.Orders.Export.OrderExportValidationResultMessage[]",
-            "properties": null,
+            "properties": [
+              {
+                "name": "Code",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Message",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -65,7 +150,54 @@
         "name": "ValidationResults",
         "description": null,
         "type": "EVA.Core.Orders.Export.OrderExportValidationResult[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Messages",
+            "description": null,
+            "type": "EVA.Core.Orders.Export.OrderExportValidationResultMessage[]",
+            "properties": [
+              {
+                "name": "Code",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Message",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrderID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Result",
+            "description": null,
+            "type": "EVA.Core.Orders.Export.OrderExportValidationResults",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Invalid": 2,
+              "NothingToBeExported": 3,
+              "Unknown": 0,
+              "Valid": 1
+            }
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

@@ -1,6 +1,8 @@
 {
   "name": "UpdateSimplePrices",
   "description": "Update the prices in the pricelist specified.\n\nThis service takes a simplified approach of the pricing tools EVA offers, but that limits the options you have available. The PriceList to update may\nonly have a single active PriceListAdjustment, and that has to be of type MANUAL_INPUT.\n\n* The pricelist is identified by the \u0060PriceListID\u0060 or the \u0060BackendSystemID\u0060 and \u0060BackendID\u0060.\n* Products can be identified by their (EVA) \u0060ID\u0060 or their \u0060BackendID\u0060",
+  "method": "POST",
+  "path": "/api/core/UpdateSimplePrices",
   "request": {
     "properties": [
       {
@@ -31,7 +33,40 @@
         "name": "Prices",
         "description": null,
         "type": "EVA.Core.Pricing.UpdateSimplePrices\u002BPrice[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "BackendID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "CustomID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "NewPrice",
+            "description": "Leave empty to delete the price for this product",
+            "type": "float128",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ProductID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -46,6 +81,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

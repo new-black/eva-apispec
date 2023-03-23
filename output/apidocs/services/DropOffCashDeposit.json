@@ -1,6 +1,8 @@
 {
   "name": "DropOffCashDeposit",
   "description": "Drops-off a cash deposit previously created and stored on a device (\u0060CreateCashDeposit.DelayDropOff\u0060).\n\nCash deposits created this way will remain in status Pending (\u0060-1\u0060) until it is either dropped-off (\u0060DropOffCashDeposit\u0060) or deleted (\u0060DeleteCashDeposit\u0060). Whilst\npending, it will not create any events, will not be attached to any \u0060CashTransactionLedger\u0060 and therefor will not be attached to any \u0060FinancialPeriod\u0060. You can find\nthese pending cash deposits using \u0060ListCashDeposits\u0060, but then only when filtering for a \u0060DeviceID\u0060 and/or \u0060OrganizationUnitID\u0060 (and optionally \u0060StatusID\u0060).",
+  "method": "POST",
+  "path": "/api/core/DropOffCashDeposit",
   "request": {
     "properties": [
       {
@@ -14,6 +16,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

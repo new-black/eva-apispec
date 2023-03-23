@@ -1,6 +1,8 @@
 {
   "name": "AddBundleProductToOrder",
   "description": "The normal \u0060AddProductToOrder\u0060 cannot be used for adding a Product with type \u0060BundleProduct\u0060 to an order. Instead, \u0060AddBundleProductToOrder\u0060 must be\nused. In addition to the \u0060BundleProductID\u0060, this service accepts an optional \u0060LineSelection\u0060, which represents the bundle\u0027s configuration in terms of\nwhich products you\u0027ve chosen.\n\nThe \u0060LineSelection\u0060 data structure contains a \u0060SelectedProductID\u0060, which must refer to a ProductID that is a valid option for this bundle, according\nto what \u0060GetBundleProductDetails\u0060 returns.\n\nIf no \u0060LineSelection\u0060 is provided then the default products of the bundle are added to the Order.",
+  "method": "POST",
+  "path": "/api/core/AddBundleProductToOrder",
   "request": {
     "properties": [
       {
@@ -29,7 +31,32 @@
         "name": "LineSelection",
         "description": null,
         "type": "EVA.Core.ProductBundles.BundleProductOrderLineSelection[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "LineSelection",
+            "description": null,
+            "type": "EVA.Core.ProductBundles.BundleProductOrderLineSelection[]?",
+            "properties": [],
+            "recursion": true,
+            "enumValues": null
+          },
+          {
+            "name": "ProductBundleLineID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SelectedProductID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -53,6 +80,80 @@
   },
   "response": {
     "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "OrderID",
+        "description": null,
+        "type": "int64",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
       {
         "name": "OrderLineID",
         "description": "Created or updated OrderLineID",

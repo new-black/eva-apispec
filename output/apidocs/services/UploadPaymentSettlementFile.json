@@ -1,6 +1,8 @@
 {
   "name": "UploadPaymentSettlementFile",
   "description": "Upload a new settlement file\n\nThe settelements in the file will be imported and booked into financialevents to allow processing in cookbook.\n\nIt is required to supply the Handler to use. Available handlers can be fetched with the GetAvailablePaymentSettlementFileHandlers service.\n\nFor Settlement records that don\u0027t have a matching PaymentTransaction in EVA there will be financial events generated. The OrganizationUnit where this should happen can be defined with the OrganizationUnitID property.",
+  "method": "POST",
+  "path": "/api/core/management/UploadPaymentSettlementFile",
   "request": {
     "properties": [
       {
@@ -46,6 +48,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

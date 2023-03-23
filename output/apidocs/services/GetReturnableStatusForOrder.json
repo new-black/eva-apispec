@@ -1,6 +1,8 @@
 {
   "name": "GetReturnableStatusForOrder",
   "description": "Gets whether or not an Order is currently returnable.\n\nFor each OrderLine on the Order you\u0027ll get back a result that specifies whether or not it can be returned,\nhow much can be returned and which (if any) other OrderLines must be returned before the line itself can be returned\n(think of parent-child lines where you can\u0027t return a child OrderLine without also returning the parent OrderLine).\n\nIn addition, this service may return \u0060ReturnSets\u0060 which specify that \u0027if you return these OrderLines (specified by \u0060OrderLineIDs\u0060) then\nyou must *also* return these lines (specified by \u0060RequiredOrderLineIDsToReturn\u0060). For example, if you return all normal OrderLines on an Order\nthen you must also return all the free products you have received.",
+  "method": "POST",
+  "path": "/api/core/GetReturnableStatusForOrder",
   "request": {
     "properties": [
       {
@@ -16,10 +18,186 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Result",
         "description": null,
         "type": "EVA.Core.Orders.ReturnableStatusForOrderLine[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "IsReturnable",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "MustBeReturnedWithOrderLineIDs",
+            "description": "When present, this OrderLine can only be returned when the OrderLines specified in this collection are also being returned.",
+            "type": "int64[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrderLineID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrderLineType",
+            "description": null,
+            "type": "EVA.Core.DataModels.OrderLineTypes",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Discount": 1,
+              "DownPayment": 10,
+              "ExtraCosts": 2,
+              "GiftWrappingCosts": 9,
+              "NormalProduct": 0,
+              "PriceCorrection": 7,
+              "ReturnCosts": 6,
+              "Service": 8,
+              "ShippingCosts": 5
+            }
+          },
+          {
+            "name": "OverrideFunctionality",
+            "description": null,
+            "type": "EVA.Core.Security.Functionalities.FunctionalityWithScope",
+            "properties": [
+              {
+                "name": "Functionality",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Scope",
+                "description": null,
+                "type": "EVA.Core.Security.FunctionalityScope",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "All": 127,
+                  "Create": 1,
+                  "Delete": 4,
+                  "Edit": 2,
+                  "Manage": 31,
+                  "None": 0,
+                  "Scripting": 64,
+                  "Settings": 32,
+                  "View": 8
+                }
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Reason",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ReasonCode",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ReturnableAmount",
+            "description": null,
+            "type": "float128",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ReturnableQuantity",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -27,7 +205,24 @@
         "name": "ReturnSets",
         "description": null,
         "type": "EVA.Core.Orders.OrderLinesReturnSet[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "OrderLineIDs",
+            "description": null,
+            "type": "int64[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequiredOrderLineIDsToReturn",
+            "description": null,
+            "type": "int64[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -35,7 +230,37 @@
         "name": "StockOrganizationUnits",
         "description": null,
         "type": "EVA.Core.Orders.StockOrganizationUnit[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "OrganizationUnitID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrganizationUnitName",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Reason",
+            "description": null,
+            "type": "EVA.Core.Orders.Returns.ReturnableStockOrganizationUnitReasons",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "CurrentOrganizationUnit": 0,
+              "ReturnOrganizationUnit": 3,
+              "ShipFromOrganizationUnit": 1,
+              "SupplierOrganizationUnit": 2
+            }
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

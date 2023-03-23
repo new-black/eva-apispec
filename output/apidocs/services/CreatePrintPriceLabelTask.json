@@ -1,6 +1,8 @@
 {
   "name": "CreatePrintPriceLabelTask",
   "description": "Creates a new Print Price Label task with specified products, or append these to existing tasks when applicable.",
+  "method": "POST",
+  "path": "/api/core/CreatePrintPriceLabelTask",
   "request": {
     "properties": [
       {
@@ -15,7 +17,24 @@
         "name": "Products",
         "description": "List of products to print price labels for",
         "type": "EVA.Core.Types.PrintPriceLabel.Services.CreatePrintPriceLabelTask\u002BPrintPriceLabelTaskProduct[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "ProductID",
+            "description": "Product ID",
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Quantity",
+            "description": "Quantity (defaults to 1)",
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }
@@ -24,10 +43,93 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Result",
         "description": null,
         "type": "EVA.Core.Types.PrintPriceLabel.Services.CreatedPrintPriceLabelTask[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "AlreadyExisted",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UserTaskID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

@@ -1,13 +1,66 @@
 {
   "name": "ImportProducts",
   "description": "This service lets you create and update a set of products and their content.\n\nThe set is products is hierarchical in nature. For example, if you have a shirt that comes in 3 colors and 5 sizes per color, you would normally define a root product that then contains the 3 color products\nand each color product would contain the 5 different sizes, which would be the SKU. How you define the hierarchy is up to you, it\u0027s also fine to have the 3 color products as root products and only have them\ncontain the SKUs, or to forego a hierarchy entirely and just create the SKUs, but creating the root and color products is useful for search and frontend purposes.\n\n\nAn example request of a hierarchy:\n\n{\n  \u0022ID\u0022: \u0022special_shirt\u0022,\n  \u0022Name\u0022: \u0022Special Shirt\u0022,\n  \u0022TaxCode\u0022: \u0022High\u0022,\n  \u0022Variations\u0022: {\n    \u0022Property\u0022: \u0022color_code\u0022,\n    \u0022LogicalLevel\u0022: \u0022color\u0022,\n    \u0022Products\u0022: [\n      {\n        \u0022ID\u0022: \u0022special_shirt_blue\u0022,\n        \u0022Name\u0022: \u0022Special Shirt - Blue\u0022,\n        \u0022VariationValues\u0022: [\n          {\n            \u0022LanguageID\u0022: null,\n            \u0022Value\u0022: \u0022BLUE\u0022\n          }\n        ],\n        \u0022Variations\u0022: {\n          \u0022Property\u0022: \u0022size_code\u0022,\n          \u0022LogicalLevel\u0022: \u0022size\u0022,\n          \u0022Products\u0022: [\n            {\n              \u0022ID\u0022: \u0022sku_special_shirt_blue_xl\u0022,\n              \u0022VariationValues\u0022: [\n                {\n                  \u0022LanguageID\u0022: null,\n                  \u0022Value\u0022: \u0022XL\u0022\n                }\n              ]\n            }\n          ]\n        }\n      }\n    ]\n  }\n}",
+  "method": "POST",
+  "path": "/api/pim/ImportProducts",
   "request": {
     "properties": [
       {
         "name": "CustomPropertyTypes",
         "description": "Custom properties used in product content can be defined by specifying their definition in this collection.",
         "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductPropertyConfiguration[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "CategoryID",
+            "description": "The ID of the category the property falls into. Defaults to \u0060default\u0060.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "DataType",
+            "description": "Defines the data type of the property.",
+            "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductPropertyDataTypes",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Bool": 3,
+              "Date": 4,
+              "Double": 2,
+              "Int": 1,
+              "String": 0
+            }
+          },
+          {
+            "name": "IndexType",
+            "description": "Defines whether and how the content of this property is searchable. Note that this is a flags enum so IndexType can both be IndexedNotAnalyzed and IndexedAnalyzed, meaning the field will be indexed in an analyzed *and* a non-analyzed manner.",
+            "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductPropertyIndexTypes",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "IndexedAnalyzed": 2,
+              "IndexedNotAnalyzed": 1,
+              "NotIndexed": 0
+            }
+          },
+          {
+            "name": "IsArray",
+            "description": "Determines if the property allows multiple values or if it\u0027s just a single value.",
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ProductPropertyTypeID",
+            "description": "The ID of the custom property, by convention in snake_case.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -39,7 +92,634 @@
         "name": "Products",
         "description": "The list of products to create or update. If a product does not exist it\u0027s created and if a product with the same ID and SystemID already exists it is updated.",
         "type": "EVA.PIM.Services.Products.ImportProducts\u002BProduct[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Assortments",
+            "description": "If specified this will add the product to those assortments.",
+            "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductAssortment[]?",
+            "properties": [
+              {
+                "name": "AssortmentCode",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "EndDate",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ProductStatus",
+                "description": null,
+                "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductStatus",
+                "properties": [
+                  {
+                    "name": "DeliveryOnly",
+                    "description": "The product won\u0027t be available for endless aisle pickup from shop.",
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "DisableBackorder",
+                    "description": "The product won\u0027t be orderable if there is no available stock.",
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "DisableDelivery",
+                    "description": "The product will be unavailable for delivery.",
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "DisablePickup",
+                    "description": "The product won\u0027t be available from a shop at all.",
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "NonSellable",
+                    "description": "Indicates the product isn\u0027t sellable.",
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "PreRelease",
+                    "description": "The product will be unavailable until the pre-order date.",
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "UseUp",
+                    "description": "Indicates the product won\u0027t be back in store and all current stock is all there is going to be.",
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "StartDate",
+                "description": null,
+                "type": "date",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Barcodes",
+            "description": "An (optional) list of barcodes for this product. A barcode should be globally unique and any duplicate barcodes will result in an error.",
+            "type": "string[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Brand",
+            "description": "The (optional) brand of the product. Only has to be specified on the root level of a hierarchy.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "CommodityCode",
+            "description": "The CommodityCode is used for customs declarations and product tariffs. Can be used to store the HS code of the product.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Content",
+            "description": "The per-language content of the product.\n\nA small set of default properties has been defined, such as Name and MarketingDescription. Additional content can be defined inside \u0060CustomContent\u0060, which is a key-value container\nwhere the key is the name of a property and value should be a single scalar value (string, number, boolean or null) or an array of values.\n\nIf LanguageID is left null, this will be the fallback content for languages that have no content of their own.\nFor example, you may offer a French website but you only have English product content, if you specify your English content with LanguageID = null\nthen products on the French website will have the English content.\n\nIn general, it\u0027s a good idea to choose a language that will serve as the default fallback language and to not specify LanguageID for that language\u0027s content so it will function as the fallback content.",
+            "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductContent[]?",
+            "properties": [
+              {
+                "name": "CountryID",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "CustomContent",
+                "description": null,
+                "type": "{string: any}?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Images",
+                "description": null,
+                "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductImage[]?",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": "The unique identifier for the image. Optional, if null then an ID is generated based on the hash of the ImageUrl",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ImageData",
+                    "description": "The raw image data. Only required if ImageUrl is left empty.",
+                    "type": "binary",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ImageUrl",
+                    "description": "Where can the image be downloaded? Required unless ImageData is provided.",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "IsPrimaryImage",
+                    "description": "If an image is specified as IsPrimaryImage = true then it will be used as the primary image on the product.\nIf there is for some reason multiple images for a product that have IsPrimaryImage set to true then the last image that have this set will become the actual primary image.",
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "LocationType",
+                    "description": "How the image should be stored. Usually empty.",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "MimeType",
+                    "description": "The image mime type. Optional, if null then the mime type will be guessed by the ImageUrl",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": "The human readable name of the image. Optional, if null then the name will be the ID of the image.",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Sequence",
+                    "description": "The sequence number of the image, can be used to determine the display order of images and will be used to determine the primary image of the product.\n\nSmaller numbers mean a higher priority.\n\nBy default this will be null and the sequence of the images will be determined by their ordering in the Images array.\n\nThe number provided here does not necessarily translate to the actual sequence number stored in EVA, only the relative order will be used. Given the sequence 1, 2, 4, 7 the actual sequence stored in EVA\nwill be 0, 1, 2, 3.",
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "LanguageID",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "LongDescription",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "MarketingDescription",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Name",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "PublicationStatuses",
+                "description": "The publication status determines the visibility of the product. A product generally won\u0027t be visible to non-employee users unless it has publication status \u0027public\u0027.",
+                "type": "string[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ShortDescription",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Tags",
+                "description": null,
+                "type": "string[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "UniqueSellingPointBlobIDs",
+                "description": null,
+                "type": "guid[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "UniqueSellingPointTexts",
+                "description": null,
+                "type": "string[]?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "XDimension",
+                "description": null,
+                "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductDimension",
+                "properties": [
+                  {
+                    "name": "PropertyName",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Value",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "YDimension",
+                "description": null,
+                "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductDimension",
+                "properties": [
+                  {
+                    "name": "PropertyName",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Value",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "CountryOfOriginID",
+            "description": "The country of origin for the product. Value must conform to the 2-letter country code as defined by ISO 3166-1.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "CustomID",
+            "description": "The custom identifier for the product.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "GiftCardData",
+            "description": "In case a type GiftCard product is uploaded, this defines the optional data for configuration.",
+            "type": "any",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "GiftCardIsDigital",
+            "description": "In case a type GiftCard product is uploaded, this defines if the product is digital, so it will not require a serialnumber during checkout.",
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "GiftCardType",
+            "description": "In case a type GiftCard product is uploaded, its \u0060GiftCardType\u0060 is mandatory to connect to its provider.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": "The unique identifier for the product.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "IsDeleted",
+            "description": "Set to \u0060True\u0060 to delete the product.",
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "LedgerClassID",
+            "description": "The (optional) ledger class ID of the product. Only has to be specified on the root level of a hierarchy.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ManufacturerID",
+            "description": "Optional field that can be used to store the manufacturer\u0027s identifier for this product.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Name",
+            "description": "The culture independent name of the product by which it can be recognized even if it otherwise does not have any content. Required unless Type = ContentOnly.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequireSerialNumberForSale",
+            "description": "Optional field to indicate a serialnumber will be required when selling this product.",
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Status",
+            "description": "Defines the status of a product.",
+            "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductStatus",
+            "properties": [
+              {
+                "name": "DeliveryOnly",
+                "description": "The product won\u0027t be available for endless aisle pickup from shop.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "DisableBackorder",
+                "description": "The product won\u0027t be orderable if there is no available stock.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "DisableDelivery",
+                "description": "The product will be unavailable for delivery.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "DisablePickup",
+                "description": "The product won\u0027t be available from a shop at all.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "NonSellable",
+                "description": "Indicates the product isn\u0027t sellable.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "PreRelease",
+                "description": "The product will be unavailable until the pre-order date.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "UseUp",
+                "description": "Indicates the product won\u0027t be back in store and all current stock is all there is going to be.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "TaxCode",
+            "description": "The TaxCode determines how sales tax applies to this product. This must refer to an existing TaxCode in EVA, if it doesn\u0027t exist yet an error is returned.\n\nRequired unless Type = ContentOnly.\n\nThe string expected here is the Name property of the tax code, so \u0027High\u0027 for TaxCode High.\n\nEVA defines the following default tax codes:\n\n- High\n- Intermediate\n- Low\n- Zero\n- Exempt\n\nIn a hierarchy, the TaxCode only has to be specified for the root level; all products part of the hierarchy will always have the same TaxCode.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": "Defines what kind of product it is. If the product is part of a hierarchy, this is only relevant for the SKU level, all other levels will have type Configurable.",
+            "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductType",
+            "properties": [
+              {
+                "name": "AllowCustomPricing",
+                "description": "Indicates if custom pricing on the product is allowed.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "BundleProduct",
+                "description": "Indicates the product is of a bundle type.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "GiftCard",
+                "description": "A giftcard product.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Insurance",
+                "description": "Indicates if the product is an insurance product.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Service",
+                "description": "A non-physical product that represents a service of some sort.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Stock",
+                "description": "A normal stock-keeping product. This will be the default if not specified.",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "VariationValues",
+            "description": "Defines the per-language value of the variation property for this product. For example, if the variation property is \u0060color\u0060 then the value could be \u0027red\u0027 or \u0027blue\u0027.\n\nIf the variation value isn\u0027t language sensitive then the LanguageID should be left null. If there isn\u0027t an item where LanguageID is null, all languages for which this product has content must have\na value for the variation property.",
+            "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductVariationValue[]?",
+            "properties": [
+              {
+                "name": "CountryID",
+                "description": "Can be left null if the variation value isn\u0027t culture dependent.",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "LanguageID",
+                "description": "Can be left null if the variation value isn\u0027t culture dependent.",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Value",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Variations",
+            "description": "Defines the variations hierarchy of the product.",
+            "type": "EVA.PIM.Services.Products.ImportProducts\u002BProductVariation",
+            "properties": [
+              {
+                "name": "LogicalLevel",
+                "description": "The LogicalLevel of a product defines the \u0027level\u0027 on which the product can be thought to sit in the hierarchy.\n\nFor example, the various different colors of a shirt can be thought to have LogicalLevel = \u0027color\u0027 and the actual SKU might have LogicalLevel = \u0027size\u0027 or \u0027sku\u0027.\n\nYou are free to use any value, but it\u0027s recommended to keep this consistent between all products, or at least between products of the same kind, as it\u0027s a useful way to\nstructure a frontend by for example filtering on the color level and only show sizes when navigating to the product detail.",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Products",
+                "description": "The actual variations of the product on the specified LogicalLevel.",
+                "type": "EVA.PIM.Services.Products.ImportProducts\u002BProduct[]",
+                "properties": [],
+                "recursion": true,
+                "enumValues": null
+              },
+              {
+                "name": "Property",
+                "description": "The property on which the product hierarchy varies. For example \u0027size\u0027 or \u0027color\u0027.",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -92,6 +772,72 @@
         "enumValues": null
       },
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "PreviewResult",
         "description": "If the Type of the request was PreviewOnly this property will contain the product structure that would be generated.",
         "type": "string",
@@ -103,7 +849,24 @@
         "name": "ProductMap",
         "description": "Contains an entry for every product mapping the input string ID to its internal EVA integer ID.",
         "type": "EVA.PIM.Import.ProductMapItem[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "BackendID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },

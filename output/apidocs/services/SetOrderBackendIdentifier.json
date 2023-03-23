@@ -1,6 +1,8 @@
 {
   "name": "SetOrderBackendIdentifier",
   "description": "Sets \u0060BackendID\u0060/\u0060BackendSystemID\u0060 on specified \u0060OrderID\u0060.\n\nThis combination may not already exist, and the targeted order may not be completed, or  already have a \u0060BackendID\u0060/\u0060BackendSystemID\u0060 set.\n\n:warning: Careful! Use at your own risk!\n\nAn order may already have any of the following things, which will not automatically be regenerated/resent because of this identifier change, and could\nresult in mapping issues on any external system listening in on these. Any of these would also apply to return orders referencing this order, or stock\nmutations that have been caused by this order.\n\n* Order exports to third parties\n* Event exports (order created, order updated, ...)\n* Data Lake exports\n* Shipment labels with third party carriers\n* Financial exports (Cookbook)\n* Created documents (receipts, invoices, ...)",
+  "method": "POST",
+  "path": "/api/core/SetOrderBackendIdentifier",
   "request": {
     "properties": [
       {
@@ -30,6 +32,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

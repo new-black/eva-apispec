@@ -1,6 +1,8 @@
 {
   "name": "CompleteOpenCashJournal",
   "description": "Completes the opening of a cash journal. After this service has been called, it\u0027s possible to make cash transactions on this device.\n\nThis service expects a list of the coins and notes that were counted.\n\nWhen the opening amount is different from last period\u0027s closing amount, it\u0027s required that a correction is provided for this difference\nin \u0060OpeningDeviationCorrection\u0060. This simply consists of a description and an amount.\n\nFor cash journals that either do not use or ignore cash journals, most properties will automatically be set to the expected amounts. Should you\nwant to enforce validation, regardless, specify the \u0060ForceValidation\u0060 as \u0060true\u0060.\n\nPending cash deposits need to be accounted for as well - supply their \u0060ID\u0060s as \u0060PendingCashDeposits\u0060. Do not add the \u0060Amount\u0060 of cash deposits\nto the \u0060TotalAmount\u0060, as the user cannot usually verify the cash deposit content.",
+  "method": "POST",
+  "path": "/api/core/CompleteOpenCashJournal",
   "request": {
     "properties": [
       {
@@ -103,6 +105,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

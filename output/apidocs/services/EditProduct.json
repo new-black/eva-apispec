@@ -1,13 +1,48 @@
 {
   "name": "EditProduct",
   "description": "Modifies given product by its \u0060ID\u0060 for a specific \u0060RevisionID\u0060.\n\nThe \u0060Edits\u0060 is a list of \u0060ProductEdit\u0060 objects, that defines some \u0060Content\u0060 and the \u0060LanguageID\u0060, \u0060CountryID\u0060 and  \u0060LayerID\u0060 it applies to. The \u0060Content\u0060 is a Json object with key-value pairs that holds\nproduct information. The keys are simple strings, but the value can be a scalar value (like an int or string), an array of scalar values or an array of objects.\n\nA \u0060Revision\u0060 is a versioning container in which one or more product modifications are buffered. The changes to the product do not apply directly, but instead are stored in this \u0060Revision\u0060 until it is\nready to be published. Also see the \u0060CreateRevision\u0060 and \u0060ApplyRevision\u0060 services. When omitted, a new \u0027quick\u0027 \u0060Revision\u0060 is created and used here.\n\nA \u0060Layer\u0060 is a hierarchical solution to building product data. Every layer has its own \u0060Level\u0060, where the bottom layers will be overwritten by higher layers for colliding properties. A \u0060Layer\u0060 has a\n\u0060Revision\u0060. Also see the \u0060CreateLayer\u0060 service. When omitted, a new \u0027quick\u0027 \u0060Layer\u0060 is created and used here.",
+  "method": "POST",
+  "path": "/api/pim/EditProduct",
   "request": {
     "properties": [
       {
         "name": "Edits",
         "description": null,
         "type": "EVA.PIM.Services.Products.ProductEdit[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "Content",
+            "description": null,
+            "type": "object",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "CountryID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "LanguageID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "LayerID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -30,6 +65,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

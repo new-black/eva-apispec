@@ -1,6 +1,8 @@
 {
   "name": "CreateShipmentReceipt",
   "description": "Creates a shipment receipt with \u0060Lines\u0060 for specified \u0060ShipmentID\u0060.\n\n* \u0060CompletesShipment\u0060 / \u0060Lines.CompletesShipmentLine\u0060 will close the shipment (line) for futher receipts\n* \u0060Lines.QuantityReceived\u0060 is the delta quantity received in this receipt, so not the new total quantity received\n* \u0060StockLabelID\u0060 is the target StockLabel for the received stock - overrides the StockLabel of the purchase order line",
+  "method": "POST",
+  "path": "/api/core/CreateShipmentReceipt",
   "request": {
     "properties": [
       {
@@ -31,7 +33,40 @@
         "name": "Lines",
         "description": null,
         "type": "EVA.Core.PurchaseOrders.CreateShipmentReceipt\u002BLine[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "CompletesShipmentLine",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "QuantityReceived",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ShipmentLineID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "StockLabelID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -48,10 +83,76 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "ID",
         "description": null,
         "type": "int64",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

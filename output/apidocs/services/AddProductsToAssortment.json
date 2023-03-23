@@ -1,6 +1,8 @@
 {
   "name": "AddProductsToAssortment",
   "description": "Adds or updates the given products to the assortment.\n\nWhen the given products are all root products, the request will automaticly update all childeren.\nBut if the list is a mixed product list, all updates will be applied according to the given information.",
+  "method": "POST",
+  "path": "/api/core/management/AddProductsToAssortment",
   "request": {
     "properties": [
       {
@@ -15,7 +17,82 @@
         "name": "Products",
         "description": "Specific product IDs that will be added to the assortment.",
         "type": "EVA.Core.Services.Assortments.AddProductsToAssortment\u002BAssortmentProduct[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "EndDate",
+            "description": null,
+            "type": "date",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "IgnoreEndDateToChildProducts",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "IgnoreStartDateToChildProducts",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ProductID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ProductStatus",
+            "description": null,
+            "type": "EVA.Core.DataModels.ProductStatus",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "DeliveryOnly": 4,
+              "DisableBackorder": 32,
+              "DisableDelivery": 8,
+              "DisablePickup": 16,
+              "NonSellable": 64,
+              "None": 0,
+              "PreRelease": 1,
+              "UseUp": 34
+            }
+          },
+          {
+            "name": "ProductStatusesToIgnoreToChildProducts",
+            "description": null,
+            "type": "EVA.Core.DataModels.ProductStatus",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "DeliveryOnly": 4,
+              "DisableBackorder": 32,
+              "DisableDelivery": 8,
+              "DisablePickup": 16,
+              "NonSellable": 64,
+              "None": 0,
+              "PreRelease": 1,
+              "UseUp": 34
+            }
+          },
+          {
+            "name": "StartDate",
+            "description": null,
+            "type": "date",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -30,6 +107,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

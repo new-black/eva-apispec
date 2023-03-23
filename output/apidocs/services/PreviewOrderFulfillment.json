@@ -1,6 +1,8 @@
 {
   "name": "PreviewOrderFulfillment",
   "description": "Provides the ability to do a what-if to see how the provided OrderID would be fulfilled.\n\nThis will use the existing sheets with the ability to specify additional new sheets (by not specifying an ID)\nor modify an existing sheet (by providing the ID of an existing sheet).",
+  "method": "POST",
+  "path": "/api/symphony/PreviewOrderFulfillment",
   "request": {
     "properties": [
       {
@@ -36,7 +38,54 @@
             "name": "Lines",
             "description": null,
             "type": "EVA.Symphony.Services.PreviewOrderFulfillment\u002BOrderLineModel[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "CommitmentStatus",
+                "description": null,
+                "type": "EVA.Core.DataModels.OrderLineCommitmentStatus",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "ForcedCommit": 10,
+                  "HardCommit": 2,
+                  "ManualCommit": 5,
+                  "SoftCommit": 1,
+                  "Uncommitted": 0
+                }
+              },
+              {
+                "name": "FulfillmentOrganizationUnitID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ProductID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "QuantityOrdered",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "UnitPrice",
+                "description": null,
+                "type": "float128",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -72,7 +121,24 @@
         "name": "Sheets",
         "description": "If you specify sheets they will either be used as an additional sheet to consider when calculating order fulfillment, or as a replacement for an existing sheet based on whether the ID of the sheet is provided or not.\n\nSpecifying additional sheets can be used as a \u0027what-if\u0027 tool; what would happen to this order if I change this sheet to do this, etc.",
         "type": "EVA.Symphony.Services.PreviewOrderFulfillment\u002BSheetToPreview[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "ID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Source",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -93,7 +159,32 @@
             "name": "StockOverrides",
             "description": null,
             "type": "EVA.Symphony.Services.PreviewOrderFulfillment\u002BStockOverride[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "OrganizationUnitID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ProductID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "QuantityAvailable",
+                "description": null,
+                "type": "int32",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           }
@@ -114,10 +205,532 @@
   "response": {
     "properties": [
       {
+        "name": "AST",
+        "description": null,
+        "type": "object",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "CompletionSuggestions",
+        "description": null,
+        "type": "EVA.Symphony.Services.CompletionSuggestion[]?",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Documentation",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Label",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "EVA.Symphony.Compilation.Autocompletion.CompletionSuggestionType",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Enum": 2,
+              "Keyword": 1,
+              "Variable": 0
+            }
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Errors",
+        "description": null,
+        "type": "EVA.Symphony.Services.ParseSheetError[]?",
+        "properties": [
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SourceColumn",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SourceLine",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SourceLineNumber",
+            "description": null,
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "EVA.Core.Parsing.ParsingErrorType",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "DuplicateVariableDeclaration": 1,
+              "InvalidExpressionValueType": 5,
+              "InvalidOption": 6,
+              "InvalidScopeType": 4,
+              "InvalidSheetType": 3,
+              "InvalidSyntax": 0,
+              "UnknownVariable": 2
+            }
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Fulfillments",
         "description": null,
         "type": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse\u002BFulfillment[]?",
+        "properties": [
+          {
+            "name": "Score",
+            "description": null,
+            "type": "float64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ScoreExplanation",
+            "description": null,
+            "type": "EVA.Symphony.Runtime.FulfillmentScoreExplanation",
+            "properties": [
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ScoreExplanations",
+                "description": null,
+                "type": "EVA.Symphony.Runtime.ScoreExplanation[]?",
+                "properties": [
+                  {
+                    "name": "DeltaScore",
+                    "description": null,
+                    "type": "float64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Description",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Expression",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "NewScore",
+                    "description": null,
+                    "type": "float64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "PreviousScore",
+                    "description": null,
+                    "type": "float64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Variables",
+                    "description": null,
+                    "type": "{string: any}?",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Shipments",
+            "description": null,
+            "type": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse\u002BShipment[]?",
+            "properties": [
+              {
+                "name": "Data",
+                "description": null,
+                "type": "{string: any}?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "FulfillmentAction",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderLines",
+                "description": null,
+                "type": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse\u002BOrderLine[]?",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Quantity",
+                    "description": null,
+                    "type": "int32",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Score",
+                    "description": null,
+                    "type": "float64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ScoreExplanations",
+                    "description": null,
+                    "type": "EVA.Symphony.Runtime.ScoreExplanation[]?",
+                    "properties": [
+                      {
+                        "name": "DeltaScore",
+                        "description": null,
+                        "type": "float64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Description",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Expression",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "NewScore",
+                        "description": null,
+                        "type": "float64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "PreviousScore",
+                        "description": null,
+                        "type": "float64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Variables",
+                        "description": null,
+                        "type": "{string: any}?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Score",
+                "description": null,
+                "type": "float64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ScoreExplanation",
+                "description": null,
+                "type": "EVA.Symphony.Runtime.FulfillmentScoreExplanation",
+                "properties": [
+                  {
+                    "name": "Description",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ScoreExplanations",
+                    "description": null,
+                    "type": "EVA.Symphony.Runtime.ScoreExplanation[]?",
+                    "properties": [
+                      {
+                        "name": "DeltaScore",
+                        "description": null,
+                        "type": "float64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Description",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Expression",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "NewScore",
+                        "description": null,
+                        "type": "float64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "PreviousScore",
+                        "description": null,
+                        "type": "float64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Variables",
+                        "description": null,
+                        "type": "{string: any}?",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Sheet",
+                "description": null,
+                "type": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse\u002BSheet",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Supplier",
+                "description": null,
+                "type": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse\u002BOrganizationUnit",
+                "properties": [
+                  {
+                    "name": "BackendID",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ID",
+                    "description": null,
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "HasErrors",
+        "description": null,
+        "type": "bool",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -125,7 +738,57 @@
         "name": "OrderLines",
         "description": null,
         "type": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse\u002BOrderLineResult[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "GroupID",
+            "description": null,
+            "type": "guid",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "PotentialSuppliers",
+            "description": null,
+            "type": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse\u002BOrderLineResult\u002BPotentialSupplier[]?",
+            "properties": [
+              {
+                "name": "OrganizationUnitID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Score",
+                "description": null,
+                "type": "float64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Sheet",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -133,7 +796,82 @@
         "name": "Rejections",
         "description": null,
         "type": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse\u002BOrganizationUnitFulfllmentRejection[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "FulfillmentMethods",
+            "description": null,
+            "type": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse\u002BOrganizationUnitFulfllmentRejection\u002BFulfillmentMethod[]?",
+            "properties": [
+              {
+                "name": "Name",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Reasons",
+                "description": null,
+                "type": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse\u002BOrganizationUnitFulfllmentRejection\u002BRejectionReason[]?",
+                "properties": [
+                  {
+                    "name": "Description",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "OrderLineIDs",
+                    "description": null,
+                    "type": "int64[]?",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "ProductIDs",
+                    "description": null,
+                    "type": "int64[]?",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Reason",
+                    "description": null,
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SupplierOrganizationUnitID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SupplierOrganizationUnitName",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -141,7 +879,97 @@
         "name": "ValidSuppliers",
         "description": null,
         "type": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse\u002BValidSupplier[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "FulfillableOrderLineIDs",
+            "description": null,
+            "type": "int64[]?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "FulfillmentMethod",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Score",
+            "description": null,
+            "type": "float64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ScoreExplanations",
+            "description": null,
+            "type": "EVA.Symphony.Services.PreviewOrderFulfillmentResponse\u002BValidSupplier\u002BScoreExplanation[]?",
+            "properties": [
+              {
+                "name": "Description",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Expression",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrderLineID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Score",
+                "description": null,
+                "type": "float64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Variables",
+                "description": null,
+                "type": "{string: any}?",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SupplierID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "SupplierName",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

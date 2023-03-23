@@ -1,6 +1,8 @@
 {
   "name": "GetNodeCompletionOptions",
   "description": "Retrieves the completion options for the provided node that is part of the provided AST.\n\nIf no AST is provided this service will return the completion options that a new sheet would have.\n\nThe completion options consist of three possible values:\n\n- Alternatives: with which nodes can the requested node be replaced?\n- NextStatements: if the node is a statement, which statements can come after it?\n- SelfCompletion: if a node contains child nodes, what are the possible node types for those children?",
+  "method": "POST",
+  "path": "/api/symphony/GetNodeCompletionOptions",
   "request": {
     "properties": [
       {
@@ -24,6 +26,72 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Result",
         "description": null,
         "type": "EVA.Symphony.Compilation.NodeCompletionResult",
@@ -32,7 +100,16 @@
             "name": "Alternatives",
             "description": null,
             "type": "EVA.Symphony.Compilation.NodeCompletionResult\u002BICompletionNode[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "NodeType",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },
@@ -40,7 +117,16 @@
             "name": "NextStatements",
             "description": null,
             "type": "EVA.Symphony.Compilation.NodeCompletionResult\u002BICompletionNode[]?",
-            "properties": null,
+            "properties": [
+              {
+                "name": "NodeType",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
             "recursion": false,
             "enumValues": null
           },

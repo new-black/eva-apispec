@@ -1,6 +1,8 @@
 {
   "name": "GetFinancialPeriodClosingImpediments",
   "description": "Gets a list of reasons (if any) why this period cannot be closed yet.\n\nThe current possible reasons are (which is available in the \u0060Type\u0060 property of each item):\n\n## CLOCKED_IN_USER\n\nThe user is still clocked in and must be clocked out.\n\n### Data\n\nThe \u0060Data\u0060 property will contain:\n\n\u0060\u0060\u0060json\n{\n  \u0022UserID\u0022 : 1,\n  \u0022ClockedIn\u0022 : \u00222018-08-01 12:00\u0022,\n  \u0022FirstName\u0022 : \u0022John\u0022,\n  \u0022LastName\u0022  : \u0022Doe\u0022\n}\n\u0060\u0060\u0060\n\n## ACTIVE_USER_TASK\n\nThe user task hasn\u0027t been completed yet and it\u0027s either attached to this financial period, or its past its deadline.\n\n### Data\n\nThe \u0060Data\u0060 property will contain:\n\n\u0060\u0060\u0060json\n{\n\t\u0022UserTaskID\u0022 : 5546,\n\t\u0022UserTaskTypeID\u0022 : 9,\n\t\u0022UserID\u0022 : null,\n\t\u0022UserFullName\u0022 : null,\n\t\u0022IsActive\u0022 : true,\n\t\u0022IsCompleted\u0022 : false,\n\t\u0022Deadline\u0022 : null,\n\t\u0022CreationTime\u0022 : \u00222018-08-01\u0022\n}\n\u0060\u0060\u0060\n\n## OPEN_CASH_JOURNAL\n\nThere is still an open cash journal that needs to be closed before the period can be closed.\n\n### Data\n\nThe \u0060Data\u0060 property will contain:\n\n\u0060\u0060\u0060json\n{\n\u0022CashJournalID\u0022 : 3,\n\u0022DeviceID\u0022 : 1,\n\u0022OpeningAmount\u0022 : 150.15\n}\n\u0060\u0060\u0060\n\n## PCI_QUESTION\n\nThe PCI compliancy question has not been answered yet, this is required to close the period if the OrganizationUnit has been configured to require it.\n\n### Data\n\nNo Data.\n\n## NEGATIVE_STOCK\n\nThere is negative stock that must be corrected (to at least zero) before the period can be closed.\n\n### Data\n\nThe \u0060Data\u0060 property will contain:\n\n\u0060\u0060\u0060json\n{\n  \u0022ProductID\u0022 : 7684,\n  \u0022ProductBackendID\u0022 : \u0022ABC123\u0022,\n  \u0022QuantityOnHand\u0022 : -10,\n  \u0022StockLabelID\u0022 : 1,\n  \u0022StockLabelName\u0022 : \u0022Sellable\u0022,\n  \u0022OrganizationUnitID\u0022 : 182\n}\n\u0060\u0060\u0060\n\nThis data can then be used to correct the stock through AdjustStock/MoveStock.",
+  "method": "POST",
+  "path": "/api/core/GetFinancialPeriodClosingImpediments",
   "request": {
     "properties": [
       {
@@ -16,10 +18,109 @@
   "response": {
     "properties": [
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "Impediments",
         "description": null,
         "type": "EVA.Core.Finance.Periods.FinancialPeriodClosingImpediment[]?",
-        "properties": null,
+        "properties": [
+          {
+            "name": "AllowIgnore",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Data",
+            "description": null,
+            "type": "object",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Description",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }

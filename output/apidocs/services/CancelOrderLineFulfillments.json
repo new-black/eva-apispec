@@ -1,13 +1,32 @@
 {
   "name": "CancelOrderLineFulfillments",
   "description": "Cancels the OrderFulfillmentLines for the given OrderID and provided OrderLineIDs.\nIt will cancel all not already cancelled OrderFulfillmentLines for the orderlines.\nThis will cause them to be re-routed and possible be fulfilled through another supplier or method.",
+  "method": "POST",
+  "path": "/api/core/CancelOrderLineFulfillments",
   "request": {
     "properties": [
       {
         "name": "Lines",
         "description": null,
         "type": "EVA.Core.Fulfillment.CancelOrderLineFulfillments\u002BLine[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "OrderLineID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "QuantityToCancel",
+            "description": "The part of the OrderLine that couldn\u0027t be fulfilled. Can be left null if you want to cancel the entire fulfillment.\nIf a value is specified and splitting fulfillment lines is not enabled (so setting \u0060OrderFulfillment:AllowPartialCancellation\u0060 is false or not defined) an error will be returned.",
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -30,6 +49,73 @@
     ]
   },
   "response": {
-    "properties": null
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
   }
 }

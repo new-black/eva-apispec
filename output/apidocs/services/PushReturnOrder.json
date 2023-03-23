@@ -1,6 +1,8 @@
 {
   "name": "PushReturnOrder",
   "description": "Creates a returnorder with all specified data\n\nIt is required to send the identifier for the ReturnOrder of the external system by providing a BackendSystemID and a BackendID.\n\nA return is based of an OriginalOrder. This order can be identifier by the OriginalBackendID or the OriginalOrderID. One of those is required.\n\nIf the stock is already received, set the \u0060AlreadyReceived\u0060 to true. This will ship the order immediately.\n\nIf the stock is already received and the open amount should be refunded directly, set \u0060AutoRefund\u0060 to true.\n\nThe Lines have to be identified by the original line, this should be done by providing the OriginalBackendID or the OriginalOrderLineID.\nIf those are not available the CustomID of the product can be set, but matching based on that is not advised.",
+  "method": "POST",
+  "path": "/api/core/PushReturnOrder",
   "request": {
     "properties": [
       {
@@ -55,7 +57,64 @@
         "name": "Lines",
         "description": null,
         "type": "EVA.Core.Orders.PushReturnOrder\u002BPushReturnOrderLine[]",
-        "properties": null,
+        "properties": [
+          {
+            "name": "CustomID",
+            "description": "Article number of the product from the 3rd party",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OriginalBackendID",
+            "description": "ID of the original orderline from the 3rd party",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OriginalOrderLineID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ProductID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Quantity",
+            "description": "Quantity that has been returned, positive",
+            "type": "int32",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Remark",
+            "description": "Remark describing something return related",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ReturnReasonID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -153,10 +212,76 @@
         "enumValues": null
       },
       {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
         "name": "ID",
         "description": null,
         "type": "int64",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": null,
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": null,
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       }
