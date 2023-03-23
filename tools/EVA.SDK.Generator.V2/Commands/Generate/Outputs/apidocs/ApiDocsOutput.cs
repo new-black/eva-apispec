@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Immutable;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using EVA.API.Spec;
 
@@ -7,7 +8,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
 internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 {
   public string? OutputPattern => null;
-  public string[] ForcedRemoves => new[] { "generics", "options" };
+  public string[] ForcedRemoves => new[] { "generics", "options", "inheritance" };
 
   public async Task Write(OutputContext<ApiDocsOptions> ctx)
   {
@@ -26,6 +27,8 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     var model = new ServiceItem
     {
       Name = service.Name,
+      Method = "POST",
+      Path = service.Path,
       Request = new ServiceItem.RequestItem
       {
         Properties = new List<ServiceItem.RequestPropertyItem>()
@@ -40,7 +43,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     var requestType = ctx.Input.Types[service.RequestTypeID];
     model.Description = requestType.Description;
 
-    model.Request.Properties = FillRecursiveProperties<ServiceItem.RequestPropertyItem>(ctx.Input, service.RequestTypeID, x =>
+    model.Request.Properties = FillRecursiveProperties<ServiceItem.RequestPropertyItem>(ctx.Input, new TypeReference(service.RequestTypeID, ImmutableArray<TypeReference>.Empty, false), x =>
     {
       return new ServiceItem.RequestPropertyItem
       {
@@ -54,7 +57,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     })!;
 
     // Response type
-    model.Response.Properties = FillRecursiveProperties<ServiceItem.ResponsePropertyItem>(ctx.Input, service.ResponseTypeID, x =>
+    model.Response.Properties = FillRecursiveProperties<ServiceItem.ResponsePropertyItem>(ctx.Input, new TypeReference(service.ResponseTypeID, ImmutableArray<TypeReference>.Empty, false), x =>
     {
       return new ServiceItem.ResponsePropertyItem()
       {
@@ -106,57 +109,100 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     await ctx.Writer.WriteFileAsync("sidebar.json", JsonSerializer.Serialize(sidebar.ToArray(), JsonContext.Default.SidebarItemArray));
   }
 
-  /// <summary>
-  /// Empty list of properties means that it got stopped by the recursion guard.
-  /// </summary>
-  /// <param name="input"></param>
-  /// <param name="id"></param>
-  /// <param name="propertyBuilder"></param>
-  /// <param name="recursionGuard"></param>
-  /// <typeparam name="TProperty"></typeparam>
-  /// <returns></returns>
+  private static Dictionary<string, long>? GetEnumValues(ApiDefinitionModel input, TypeReference? typeReference)
+  {
+    if (typeReference == null) return null;
+
+    var propTypeName = typeReference.Name;
+
+    // Arrays, we just recurse
+    if (propTypeName == ApiSpecConsts.Specials.Array)
+    {
+      return GetEnumValues(input, typeReference.Arguments[0]);
+    }
+
+    // Option, we only expose the shared properties
+    if (propTypeName == ApiSpecConsts.Specials.Option)
+    {
+      return GetEnumValues(input, typeReference.Shared);
+    }
+
+    // Primitives don't have properties
+    if (ApiSpecConsts.AllPrimitives.Contains(propTypeName))
+    {
+      return null;
+    }
+
+    // TODO: Maps don't have properties (for now)
+    if (propTypeName == ApiSpecConsts.Specials.Map)
+    {
+      return null;
+    }
+
+    var type = input.Types[propTypeName];
+    if (type.EnumIsFlag == null)
+    {
+      return null;
+    }
+
+    long TotalValue(string name)
+    {
+      var value = type.EnumValues[name];
+      if (value == null) return 0;
+      return value.Value + value.Extends.Sum(TotalValue);
+    }
+
+    return type.EnumValues.ToDictionary(x => x.Key, x => TotalValue(x.Key));
+  }
+
   private static List<TProperty>? FillRecursiveProperties<TProperty>(
     ApiDefinitionModel input,
-    string id,
+    TypeReference? typeReference,
     Func<(string name, PropertySpecification property, List<TProperty>? nestedProperties, Dictionary<string, long>? enumValues), TProperty> propertyBuilder,
     Stack<string>? recursionGuard = null)
   {
-    var type = input.Types[id];
+    if (typeReference == null) return null;
+
+    var propTypeName = typeReference.Name;
+
+    // Arrays, we just recurse
+    if (propTypeName == ApiSpecConsts.Specials.Array)
+    {
+      return FillRecursiveProperties(input, typeReference.Arguments[0], propertyBuilder, recursionGuard);
+    }
+
+    // Option, we only expose the shared properties
+    if (propTypeName == ApiSpecConsts.Specials.Option)
+    {
+      return FillRecursiveProperties(input, typeReference.Shared, propertyBuilder, recursionGuard);
+    }
+
+    // Primitives don't have properties
+    if (ApiSpecConsts.AllPrimitives.Contains(propTypeName))
+    {
+      return null;
+    }
+
+    // TODO: Maps don't have properties (for now)
+    if (propTypeName == ApiSpecConsts.Specials.Map)
+    {
+      return null;
+    }
+
+    var type = input.Types[propTypeName];
     var properties = new List<TProperty>();
 
     recursionGuard ??= new Stack<string>();
-    if (recursionGuard.Contains(id)) return properties;
-    recursionGuard.Push(id);
+    if (recursionGuard.Contains(propTypeName)) return properties;
+    recursionGuard.Push(propTypeName);
 
     foreach (var (propName, propValue) in type.Properties)
     {
-      // Figure out the nested properties
-      List<TProperty>? nestedProperties = null;
-      Dictionary<string, long>? enumValues = null;
+      // Figure out the nested properties for the type
+      var nestedProperties = FillRecursiveProperties(input, propValue.Type, propertyBuilder, recursionGuard);
 
-      if (!ApiSpecConsts.AllPrimitives.Contains(propValue.Type.Name)
-          && propValue.Type.Name != ApiSpecConsts.Specials.Array
-          && propValue.Type.Name != ApiSpecConsts.Specials.Map
-          && propValue.Type.Name != ApiSpecConsts.Specials.Option)
-      {
-        // This is a regular type, so we could map the properties
-        var propertyType = input.Types[propValue.Type.Name];
-        if (propertyType.EnumIsFlag == null)
-        {
-          nestedProperties = FillRecursiveProperties(input, propValue.Type.Name, propertyBuilder);
-        }
-        else
-        {
-          long TotalValue(string name)
-          {
-            var value = propertyType.EnumValues[name];
-            if (value == null) return 0;
-            return value.Value + value.Extends.Sum(TotalValue);
-          }
-
-          enumValues = propertyType.EnumValues.ToDictionary(x => x.Key, x => TotalValue(x.Key));
-        }
-      }
+      // Figure out the enum values for the type
+      var enumValues = GetEnumValues(input, propValue.Type);
 
       var property = propertyBuilder((propName, propValue, nestedProperties, enumValues));
       properties.Add(property);
@@ -180,6 +226,8 @@ internal class ServiceItem
 {
   [JsonPropertyName("name")] public string Name { get; set; }
   [JsonPropertyName("description")] public string? Description { get; set; }
+  [JsonPropertyName("method")] public string Method { get; set; }
+  [JsonPropertyName("path")] public string Path { get; set; }
   [JsonPropertyName("request")] public RequestItem Request { get; set; }
   [JsonPropertyName("response")] public ResponseItem Response { get; set; }
 
