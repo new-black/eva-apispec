@@ -1,22 +1,30 @@
 {
-  "name": "ListShipmentLines",
-  "description": "List shipmentlines of a shipment, this service replaces the GetShipmentLines and the ListPurchaseOrderShipmentLines services.\n\nThe page size \u0060Limit\u0060 has a maximum value of \u006010.000\u0060 for this service.",
+  "name": "ListWatchtowerDevices",
+  "description": "List the configured watchtower devices with their status",
   "method": "POST",
-  "path": "/api/core/ListShipmentLines",
+  "path": "/api/core/liveguard/ListWatchtowerDevices",
   "request": {
     "properties": [
       {
         "name": "PageConfig",
         "description": null,
-        "type": "EVA.Core.PageConfig\u00601[EVA.Core.Shipments.ListShipmentLinesFilter]",
+        "type": "EVA.Core.PageConfig\u00601[EVA.Core.LiveGuard.Services.Management.ListWatchtowerDevicesFilter]",
         "properties": [
           {
             "name": "Filter",
             "description": null,
-            "type": "EVA.Core.Shipments.ListShipmentLinesFilter",
+            "type": "EVA.Core.LiveGuard.Services.Management.ListWatchtowerDevicesFilter",
             "properties": [
               {
-                "name": "ExcludeEmptyLines",
+                "name": "DeviceID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "IsWatchtowerConnected",
                 "description": null,
                 "type": "bool",
                 "properties": null,
@@ -24,41 +32,25 @@
                 "enumValues": null
               },
               {
-                "name": "OrderIDs",
+                "name": "IsWatchtowerIOConnected",
                 "description": null,
-                "type": "int64[]?",
+                "type": "bool",
                 "properties": null,
                 "recursion": false,
                 "enumValues": null
               },
               {
-                "name": "OrderLineIDs",
+                "name": "MenderID",
                 "description": null,
-                "type": "int64[]?",
+                "type": "guid",
                 "properties": null,
                 "recursion": false,
                 "enumValues": null
               },
               {
-                "name": "ProductIDs",
+                "name": "SerialNumber",
                 "description": null,
-                "type": "int64[]?",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "ShipmentID",
-                "description": null,
-                "type": "int64",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "ShipmentPackageID",
-                "description": null,
-                "type": "int64",
+                "type": "string",
                 "properties": null,
                 "recursion": false,
                 "enumValues": null
@@ -187,7 +179,7 @@
       {
         "name": "Result",
         "description": null,
-        "type": "EVA.Core.PagedResult\u00601[EVA.Core.Shipments.ShipmentLineDto]",
+        "type": "EVA.Core.PagedResult\u00601[EVA.Core.LiveGuard.Services.Management.ListWatchtowerDevicesResponse\u002BWatchtower]",
         "properties": [
           {
             "name": "CurrentPage",
@@ -232,44 +224,8 @@
           {
             "name": "Page",
             "description": null,
-            "type": "EVA.Core.Shipments.ShipmentLineDto[]?",
+            "type": "EVA.Core.LiveGuard.Services.Management.ListWatchtowerDevicesResponse\u002BWatchtower[]?",
             "properties": [
-              {
-                "name": "BackendReference",
-                "description": null,
-                "type": "string",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "CurrencyID",
-                "description": null,
-                "type": "string",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "DeliveryType",
-                "description": null,
-                "type": "EVA.Core.DataModels.ShipmentLineDeliveryTypes",
-                "properties": null,
-                "recursion": false,
-                "enumValues": {
-                  "Default": 0,
-                  "Deficiency": 2,
-                  "Surplus": 1
-                }
-              },
-              {
-                "name": "Description",
-                "description": null,
-                "type": "string",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
               {
                 "name": "ID",
                 "description": null,
@@ -279,7 +235,39 @@
                 "enumValues": null
               },
               {
-                "name": "IsCompleted",
+                "name": "Name",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrganizationUnitID",
+                "description": null,
+                "type": "int64",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "OrganizationUnitName",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "SerialNumber",
+                "description": null,
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "WatchtowerConnected",
                 "description": null,
                 "type": "bool",
                 "properties": null,
@@ -287,79 +275,15 @@
                 "enumValues": null
               },
               {
-                "name": "NetQuantityDelivered",
+                "name": "WatchtowerIOConnected",
                 "description": null,
-                "type": "int32",
+                "type": "bool",
                 "properties": null,
                 "recursion": false,
                 "enumValues": null
               },
               {
-                "name": "NetQuantityShipped",
-                "description": null,
-                "type": "int32",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "OrderID",
-                "description": null,
-                "type": "int64",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "OrderLineID",
-                "description": null,
-                "type": "int64",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "ProductBackendID",
-                "description": null,
-                "type": "string",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "ProductCustomID",
-                "description": null,
-                "type": "string",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "ProductID",
-                "description": null,
-                "type": "int64",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "QuantityDelivered",
-                "description": null,
-                "type": "int32",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "QuantityShipped",
-                "description": null,
-                "type": "int32",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "ShipmentDate",
+                "name": "WatchtowerIOLastSeen",
                 "description": null,
                 "type": "date",
                 "properties": null,
@@ -367,75 +291,9 @@
                 "enumValues": null
               },
               {
-                "name": "ShipmentID",
+                "name": "WatchtowerLastSeen",
                 "description": null,
-                "type": "int64",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "ShipmentPackageID",
-                "description": null,
-                "type": "int64",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "TaxRate",
-                "description": null,
-                "type": "float128",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "TotalAmount",
-                "description": null,
-                "type": "float128",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "TotalAmountInTax",
-                "description": null,
-                "type": "float128",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "Type",
-                "description": null,
-                "type": "EVA.Core.DataModels.OrderLineTypes",
-                "properties": null,
-                "recursion": false,
-                "enumValues": {
-                  "Discount": 1,
-                  "DownPayment": 10,
-                  "ExtraCosts": 2,
-                  "GiftWrappingCosts": 9,
-                  "NormalProduct": 0,
-                  "PriceCorrection": 7,
-                  "ReturnCosts": 6,
-                  "Service": 8,
-                  "ShippingCosts": 5
-                }
-              },
-              {
-                "name": "UnitPrice",
-                "description": null,
-                "type": "float128",
-                "properties": null,
-                "recursion": false,
-                "enumValues": null
-              },
-              {
-                "name": "UnitPriceInTax",
-                "description": null,
-                "type": "float128",
+                "type": "date",
                 "properties": null,
                 "recursion": false,
                 "enumValues": null
