@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Web;
 using EVA.API.Spec;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
@@ -71,6 +72,9 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     })!;
 
     await ctx.Writer.WriteFileAsync($"services/{model.Name}.json", JsonSerializer.Serialize(model, JsonContext.Indented.ServiceItem));
+
+    var html = $"<h1>{HttpUtility.HtmlEncode(model.Name)}</h1><p>{HttpUtility.HtmlEncode(model.Description)}</p>";
+    await ctx.Writer.WriteFileAsync($"services/{model.Name}.html", html);
   }
 
   private static string ToTypeName(TypeReference spec)
