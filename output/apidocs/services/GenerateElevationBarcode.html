@@ -1,0 +1,10 @@
+<h1>GenerateElevationBarcode</h1><p>Generates an elevation barcode for user elevation, which can be scanned by a manager with sufficient rights to elevate the user&#39;s rights.
+
+The returned `Barcode` you should show for a manager to scan, preferably as QR code through our `/barcode` endpoint.
+
+The returned `RequestToken` is our little secret, which you will use to subscribe to the `/elevationBarcode` SignalR hub to listen for scan events. Once a successful
+scan event was triggered, this original `RequestToken` is then &#39;confirmed&#39; and you can use it directly as elevation header for your original call. Keep it safe!
+
+:bulb: Optionally supply the `OrganizationUnitID`, `Functionality` and `Scope` of your original request, so we can check the manager rights directly from the scan
+on his/her device. Omitting these here will fall back to the default security enforced from the user attempting to use the (confirmed) elevation token, which just gives
+a nasty 403 on the employee&#39;s device.</p>

@@ -1,0 +1,16 @@
+<h1>SetOrderBackendIdentifier</h1><p>Sets `BackendID`/`BackendSystemID` on specified `OrderID`.
+
+This combination may not already exist, and the targeted order may not be completed, or  already have a `BackendID`/`BackendSystemID` set.
+
+:warning: Careful! Use at your own risk!
+
+An order may already have any of the following things, which will not automatically be regenerated/resent because of this identifier change, and could
+result in mapping issues on any external system listening in on these. Any of these would also apply to return orders referencing this order, or stock
+mutations that have been caused by this order.
+
+* Order exports to third parties
+* Event exports (order created, order updated, ...)
+* Data Lake exports
+* Shipment labels with third party carriers
+* Financial exports (Cookbook)
+* Created documents (receipts, invoices, ...)</p>

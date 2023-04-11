@@ -1,0 +1,19 @@
+<h1>CreateTaxRate</h1><p>Creates a tax rate.
+
+* `CountryID` is a foreign key to the Countries table, which uses the ISO 3166-2 standard as ID
+* `CountrySubdivisionID` is a foreign key to the CountrySubdivisions table, which uses the ISO 3166-2 standard as ID
+* `TaxCodeID` is a foreign key to the TaxCodes table, which can be listed using the `ListTaxCodes` service
+
+Percentages are a human readable formatted result of a fraction - applications use a `Rate` instead as an actual result of fraction to maintain
+precision and integrity. If you wish to set a 21% tax percentage, that means a 1.21 tax rate. Setting a rate of 1.00 implies a 0% tax percentage,
+and setting to 2.00 would mean a rediculous 100% tax percentage, doubling prices. You can probably tell that a `Rate` of 2.00 here is much more
+readable than a 100% increase, but hey; nobody&#39;s forcing you to stick to percentages. At least - we&#39;re not!
+
+Oh, and you can set a tax rate of 0.00, which would mean it will be fully sponsored by the government and will be free to purchase. The services
+block anything lower than 0.00 and higher than 2.00 for sanity reasons. Will recap when governments gone mad.
+
+:key: The combination of `CountryID`, `CountrySubdivision` and `TaxCodeID` is unique and will be enforced by EVA.
+
+:point_right: `StartDate` and `EndDate` are optional, and can be used to transition from one rate to a next when it changes. Both these dates
+are inclusive, meaning you&#39;d want to set the `EndDate` of the expiring tax rate to 2018-12-31 and the `StartDate` of the new tax rate to
+2019-01-01 (for example).</p>

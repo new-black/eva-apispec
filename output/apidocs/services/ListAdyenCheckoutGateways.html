@@ -1,0 +1,19 @@
+<h1>ListAdyenCheckoutGateways</h1><p>Retrieve all gateways supported by the current configuration of Adyen, matched with the existing payment types in EVA. `ID` is it&#39;s unique
+identifier, `Name` is something that you can show the customer.
+
+It is required to supply an `OrderID` or, the `CurrencyID` and `Amount`.
+When no amount is given, the open amount of the order we be used.
+It is recommended to specify the `Channel`:
+- Web: 1
+- iOS: 2
+- Android: 3
+
+Recommended way of calling this service is with only an `OrderID` and `Channel`.
+
+* If present, the `Details` list will show a list of properties that this gateway supports. Every detail is identied with the `Key`, and to support
+typed inputs, the `Type` is also given. If the `Type` is `select`, one of the items inside the `Items` list needs to be chosen. Here, again, the
+`ID` is it&#39;s unique identifier, and the `Name` is something you can show the customer.
+* If present, the `Brands` list will show a list of supported brands within this payment method, e.g. to list creditcards (mc, visa, amex, ...).
+
+When creating the payment, use the `ID` of the gateway as `GatewayID`. Fill the payment properties `Details` with the properties specific to the
+gateway, as indicated by this response&#39;s `Details` list.</p>

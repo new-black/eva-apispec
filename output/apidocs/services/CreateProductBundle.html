@@ -1,0 +1,12 @@
+<h1>CreateProductBundle</h1><p>This service creates a ProductBundle for the given BundleProductID.
+
+The request body object contains three parameters:
+
+- BackendID: Optional. Can be filled in with the identifier of this bundle by which it is known in another system.
+- BundleProductID: Required. This should refer to an EVA product with type `BundleProduct`.
+- Type: Required. This specifies the type of bundle: discount or configurable. The type can not be changed after the bundle has been created.
+- Lines: Optional. These specify the `ProductBundle`&#39;s lines. If left empty or null at creation, these can be filled in by calling `UpdateProductBundle`. When specified, a line consists of the following:
+    - BackendID: Optional. If the bundle exists in another system, this can refer to it.
+    - Options: A list of available options for this line from which can be chosen. Only contains a ProductID for now, which may refer to a normal sellable product, a product with Type `ConfigurableProduct` or a `BundleProduct` (which would create bundles of bundles).
+    - DefaultProductID: Optional, but required if there are multiple options or if the line option is a Configurable product. The DefaultProductID cannot be a `ConfigurableProduct` or a `BundleProduct`.
+    - IsRequired: Is this line an optional part of the bundle or not?</p>

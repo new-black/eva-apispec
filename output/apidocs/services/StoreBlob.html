@@ -1,0 +1,12 @@
+<h1>StoreBlob</h1><p>Creates a new blob and stores `Data` to it.
+
+The combination of `Category` and `OriginalName` must be unique, as the `GetBlobInfoService` allows retrieval based on these values. Internally, a fresh and unique `Guid` is
+generated and returned from this request. The response also contains the full `Url` by which this blob can be accessed (which will contain aforementioned `Guid`).
+
+- [x] The `MimeType` is required, a few suggestions would be `application/pdf`, `text/csv` or `application/json` - but you probably already know this.
+- [x] The `ExpireDate` is the date at which the given blob should expire. Leave this empty to *suggest* to keep it forever. We will bag it and get rid of it when the time is right. :hocho:
+
+When retrieving the blob, it will be returned to you using the `MimeType` as `ContentType` header and a proper `Expires` header.
+
+*NOTE*: leaving `OriginalName` empty means EVA treats this file as a temporary one and it&#39;ll be removed after a set period. Which can be manipulated through the setting `Blobs:DefaultLifeTime`
+which is the default expire time for these kinds of blobs in minutes.</p>

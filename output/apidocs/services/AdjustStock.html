@@ -1,0 +1,10 @@
+<h1>AdjustStock</h1><p>Book a set of Adjustments to modify stock.
+
+An Adjustment should either have a `ProductID` or `ProductBackendID` to identify the product, an `OrganizationUnitID` to identify the stock keeping
+organization, a `StockLabelID` (see `GetEnumValues` with type `StockLabel`), a `StockMutationReasonID` (see `GetEnumValues` with type `StockMutationReasons`)
+and (of course) a `Quantity` to actually book.
+
+Supply a `BackendSystemID` on the request and `BackendID`&#39;s on the Adjustments to make the request idempotent (optional). When one adjustment in your
+request fails, all of them will fail. Duplicate keys will not be processed again and yield a warning (but thus will not block!).
+
+Optionally supports a `Remark` for each Adjustment.</p>
