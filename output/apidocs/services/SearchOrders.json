@@ -1,10 +1,27 @@
 {
   "name": "SearchOrders",
-  "description": "Search for any type of orders by providing the filter details properties\nImportant search criterias are: OrganizationUnitID, CurrentOrganizationUnitType, OrderID, CustomerID(ClientContext.Type), IsPaid.\nOrderID and IsPaid are going to be replaced by OrderIDs (and array of IDs) and PaymentStatus (an enum).\n\nE.g. request:\n{\n  \u0022OrderIDs\u0022: [\n    \u0022orderID1\u0022,\n    \u0022orderID2\u0022\n  ],\n  \u0022PaymentStatus\u0022: \u0022PaymentStatus\u0022,\n  \u0022IsShipped\u0022: \u0022isShipped\u0022\n}\n\n\nPayment status options:\n    NotPaid = 0,\n    Paid = 1,\n    Partial = 2",
+  "description": "Search for any type of orders by providing the filter details properties\nImportant search criterias are: OrganizationUnitID, CurrentOrganizationUnitType, OrderID, CustomerID(ClientContext.Type), IsPaid.\nOrderID and IsPaid are going to be replaced by OrderIDs (and array of IDs) and PaymentStatus (an enum).\n\nTo include the custom fields of the customer, the property \u0060AdditionalOrderDataOptions.CustomerCustomFields\u0060 can be set to \u0060true\u0060.\n\nE.g. request:\n{\n  \u0022OrderIDs\u0022: [\n    \u0022orderID1\u0022,\n    \u0022orderID2\u0022\n  ],\n  \u0022PaymentStatus\u0022: \u0022PaymentStatus\u0022,\n  \u0022IsShipped\u0022: \u0022isShipped\u0022\n}\n\n\nPayment status options:\n    NotPaid = 0,\n    Paid = 1,\n    Partial = 2",
   "method": "POST",
   "path": "/api/core/SearchOrders",
   "request": {
     "properties": [
+      {
+        "name": "AdditionalOrderDataOptions",
+        "description": null,
+        "type": "EVA.Core.Orders.SearchOrders\u002BAdditionalSearchOrderDataOptions",
+        "properties": [
+          {
+            "name": "CustomerCustomFields",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
       {
         "name": "CarrierID",
         "description": null,
@@ -1034,6 +1051,176 @@
                 "description": null,
                 "type": "EVA.Core.Orders.OrderSearchResultItemCustomer",
                 "properties": [
+                  {
+                    "name": "CustomFields",
+                    "description": null,
+                    "type": "EVA.Core.CustomFields.CustomFieldResponse[]?",
+                    "properties": [
+                      {
+                        "name": "BackendID",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "CustomFieldID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "DataType",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "DataTypeID",
+                        "description": null,
+                        "type": "int64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "DisplayName",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "IsArray",
+                        "description": null,
+                        "type": "bool",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "IsEditableByUser",
+                        "description": null,
+                        "type": "bool",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Name",
+                        "description": null,
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Options",
+                        "description": null,
+                        "type": "EVA.Core.DataModels.CustomFieldOptions",
+                        "properties": [
+                          {
+                            "name": "DefaultValue",
+                            "description": null,
+                            "type": "string",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "EnumValues",
+                            "description": null,
+                            "type": "{string: string}?",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "IsArray",
+                            "description": null,
+                            "type": "bool",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "IsRequired",
+                            "description": null,
+                            "type": "bool",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "MaximumDate",
+                            "description": null,
+                            "type": "date",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "MaximumLength",
+                            "description": null,
+                            "type": "int32",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "MaximumValue",
+                            "description": null,
+                            "type": "float128",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "MinimumDate",
+                            "description": null,
+                            "type": "date",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "MinimumLength",
+                            "description": null,
+                            "type": "int32",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "MinimumValue",
+                            "description": null,
+                            "type": "float128",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          }
+                        ],
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "Value",
+                        "description": null,
+                        "type": "any",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
                   {
                     "name": "EmailAddress",
                     "description": null,
