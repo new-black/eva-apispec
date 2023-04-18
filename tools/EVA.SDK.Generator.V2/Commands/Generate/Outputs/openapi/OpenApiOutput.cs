@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Exceptions;
+using EVA.SDK.Generator.V2.Helpers;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Extensions;
@@ -20,7 +21,11 @@ internal class OpenApiOutput : IOutput<OpenApiOptions>
   {
     var model = GetModel(ctx.Input, ctx.Options.Host);
 
-    var version = ctx.Options.Version == "v2" ? OpenApiSpecVersion.OpenApi2_0 : OpenApiSpecVersion.OpenApi3_0;
+    var version = ctx.Options.Version switch
+    {
+      "v2" => OpenApiSpecVersion.OpenApi2_0,
+      _ => OpenApiSpecVersion.OpenApi3_0
+    };
 
     await using (var file = ctx.Writer.WriteStreamAsync("openapi.json"))
     {
@@ -90,6 +95,31 @@ internal class OpenApiOutput : IOutput<OpenApiOptions>
 
   private static OpenApiSchema ToSchema(ApiDefinitionModel input, TypeSpecification type)
   {
+    if (type.EnumIsFlag.HasValue)
+    {
+      var totals = type.EnumValues.ToTotals();
+      var possibleValues = string.Join('\n', totals.Select(kv => $"* `{kv.Value}` - {kv.Key}"));
+
+      if (type.EnumIsFlag is true)
+      {
+        return new OpenApiSchema
+        {
+          Type = "integer",
+          Description = $"Flags enum, combine any of the below values:\n\n{possibleValues}"
+        };
+      }
+
+      if (type.EnumIsFlag is false)
+      {
+        return new OpenApiSchema
+        {
+          Type = "integer",
+          Enum = totals.Select(kv => new OpenApiInteger((int) kv.Value) as IOpenApiAny).ToList(),
+          Description = $"Possible values:\n\n{possibleValues}"
+        };
+      }
+    }
+
     var result = new OpenApiSchema
     {
       Type = "object",
