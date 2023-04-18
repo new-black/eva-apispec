@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Web;
@@ -21,6 +22,47 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     {
       await GenerateService(ctx, service);
     }
+
+    // Generate typesense output
+    await GenerateTypesense(ctx);
+  }
+
+  private async Task GenerateTypesense(OutputContext<ApiDocsOptions> ctx)
+  {
+    var output = new StringBuilder();
+
+    foreach (var service in ctx.Input.Services)
+    {
+      var requestType = ctx.Input.Types[service.RequestTypeID];
+
+      var o = new RootObject
+      {
+        anchor = service.Name.ToLowerInvariant(),
+        content = requestType.Description,
+        content_camel = requestType.Description,
+        docusaurus_tag = "docs-default-current",
+        hierarchy = new Hierarchy { lvl0 = "Developers", lvl1 = service.Name },
+        hierarchy_lvl0 = "Developers",
+        hierarchy_lvl1 = service.Name,
+        hierarchy_camel = new[] { new Hierarchy_camel { lvl0 = "Developers", lvl1 = service.Name } },
+        hierarchy_radio = new Hierarchy_radio(),
+        hierarchy_radio_camel = new Hierarchy_radio_camel(),
+        item_priority = 75,
+        language = "en",
+        no_variables = true,
+        tags = new[] { "login", "nb", "dev" },
+        type = "content",
+        url = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
+        url_without_anchor = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
+        url_without_variables = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
+        version = new[] { "current" },
+        weight = new Weight { level = 0, page_rank = 0, position = 75 }
+      };
+
+      output.AppendLine(JsonSerializer.Serialize(o, JsonContext.Default.RootObject));
+    }
+
+    ctx.Writer.WriteFileAsync("typesense.ndjson", output.ToString());
   }
 
   private static async Task GenerateService(OutputContext<ApiDocsOptions> ctx, ServiceModel service)
@@ -72,9 +114,6 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     })!;
 
     await ctx.Writer.WriteFileAsync($"services/{model.Name}.json", JsonSerializer.Serialize(model, JsonContext.Indented.ServiceItem));
-
-    var html = $"<h1>{HttpUtility.HtmlEncode(model.Name)}</h1><p>{HttpUtility.HtmlEncode(model.Description)}</p>";
-    await ctx.Writer.WriteFileAsync($"services/{model.Name}.html", html);
   }
 
   private static string ToTypeName(TypeReference spec)
