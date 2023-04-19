@@ -34,10 +34,12 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     foreach (var service in ctx.Input.Services)
     {
       var requestType = ctx.Input.Types[service.RequestTypeID];
+      var id = service.Name.ToLowerInvariant();
 
       var o = new RootObject
       {
-        anchor = service.Name.ToLowerInvariant(),
+        id = $"apidocs_{id}",
+        anchor = id,
         content = requestType.Description,
         content_camel = requestType.Description,
         docusaurus_tag = "docs-default-current",
