@@ -267,14 +267,15 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
     if (typeReference.Name.StartsWith("EVA."))
     {
-      if (ctx.Input.Types.TryGetValue(typeReference.Name, out var referencedType) && referencedType.ParentType != null)
+      var suffix = string.Empty;
+      var idName = typeReference.Name;
+      while (ctx.Input.Types.TryGetValue(idName, out var referencedType) && referencedType.ParentType != null)
       {
-        return $"{GetTypeName(referencedType.ParentType, ctx.Input)}.{referencedType.TypeName}{n}";
+        suffix = $".{referencedType.TypeName}{suffix}";
+        idName = referencedType.ParentType;
       }
-      else
-      {
-        return $"{GetTypeName(typeReference.Name, ctx.Input)}{n}";
-      }
+
+      return $"{GetTypeName(typeReference.Name, ctx.Input)}{suffix}{n}";
     }
 
     ctx.Logger.LogWarning("Type cannot be handled by this output: {Type}, outputting as \"object\"", typeReference.Name);
