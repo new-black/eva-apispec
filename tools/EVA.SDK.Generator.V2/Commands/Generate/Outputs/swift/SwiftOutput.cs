@@ -269,7 +269,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     {
       if (ctx.Input.Types.TryGetValue(typeReference.Name, out var referencedType) && referencedType.ParentType != null)
       {
-        return $"{referencedType.TypeName}{n}";
+        return $"{GetTypeName(referencedType.ParentType, ctx.Input)}.{referencedType.TypeName}{n}";
       }
       else
       {
