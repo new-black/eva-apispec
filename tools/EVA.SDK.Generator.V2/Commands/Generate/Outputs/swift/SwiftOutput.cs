@@ -269,13 +269,14 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     {
       var suffix = string.Empty;
       var idName = typeReference.Name;
+
       while (ctx.Input.Types.TryGetValue(idName, out var referencedType) && referencedType.ParentType != null)
       {
         suffix = $".{referencedType.TypeName}{suffix}";
         idName = referencedType.ParentType;
       }
 
-      return $"{GetTypeName(typeReference.Name, ctx.Input)}{suffix}{n}";
+      return $"{GetTypeName(idName, ctx.Input)}{suffix}{n}";
     }
 
     ctx.Logger.LogWarning("Type cannot be handled by this output: {Type}, outputting as \"object\"", typeReference.Name);
