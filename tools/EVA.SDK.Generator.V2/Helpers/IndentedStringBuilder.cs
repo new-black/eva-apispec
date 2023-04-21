@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 
 namespace EVA.SDK.Generator.V2.Helpers;
 
@@ -12,6 +11,7 @@ internal class IndentedStringBuilder
   private bool _writeIndent = true;
 
   internal IDisposable Indentation => new IndentationScope(this);
+  internal IDisposable BracedIndentation => new BracedIndentationScope(this);
 
   internal IndentedStringBuilder(int indentSize)
   {
@@ -29,6 +29,24 @@ internal class IndentedStringBuilder
     }
 
     public void Dispose() => _sb._indent--;
+  }
+
+  private sealed class BracedIndentationScope : IDisposable
+  {
+    private readonly IndentedStringBuilder _sb;
+
+    internal BracedIndentationScope(IndentedStringBuilder sb)
+    {
+      _sb = sb;
+      _sb.WriteLine("{");
+      _sb._indent++;
+    }
+
+    public void Dispose()
+    {
+      _sb._indent--;
+      _sb.WriteLine("}");
+    }
   }
 
   private void WriteIndent() => _builder.Append(new string(' ', _indent * _indentSize));
@@ -58,13 +76,6 @@ internal class IndentedStringBuilder
   {
     var lines = s.Split('\n');
     foreach(var l in lines) WriteLine((prefix ?? string.Empty) + l);
-  }
-
-  internal void WriteIndented(Action<IndentedStringBuilder> o)
-  {
-    _indent++;
-    o(this);
-    _indent--;
   }
 
   public override string ToString()

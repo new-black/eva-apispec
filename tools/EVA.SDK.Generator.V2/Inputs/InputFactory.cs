@@ -2,15 +2,13 @@
 
 namespace EVA.SDK.Generator.V2.Inputs;
 
-internal static class InputFactory
+internal static partial class InputFactory
 {
-  private static readonly Regex _versionRegex = new(@"^[v]?(\d+.\d+.\d+)$", RegexOptions.IgnoreCase);
-
   internal static IInput GetInputFromString(string? input)
   {
     if (input is "latest" or null) return new LatestInput();
 
-    var matches = _versionRegex.Matches(input);
+    var matches = VersionRegex().Matches(input);
     if (matches.Any())
     {
       var version = matches.First().Value;
@@ -20,4 +18,7 @@ internal static class InputFactory
     if (input.StartsWith("https://") || input.StartsWith("http://")) return new HttpInput(input);
     return new FileInput(input);
   }
+
+  [GeneratedRegex("^[v]?(\\d+.\\d+.\\d+)$", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase)]
+  private static partial Regex VersionRegex();
 }

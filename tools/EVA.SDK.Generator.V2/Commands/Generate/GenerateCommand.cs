@@ -1,5 +1,4 @@
 ﻿using System.CommandLine;
-using System.Diagnostics;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.dotnet;

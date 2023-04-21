@@ -55,9 +55,9 @@ internal static class ApiDefinitionModelExtensions
       foreach (var x in reference.Shared.EnumerateAllTypeReferences()) yield return x;
     }
 
-    foreach (var arg in reference.Arguments)
+    foreach (var x in reference.Arguments.SelectMany(arg => arg.EnumerateAllTypeReferences()))
     {
-      foreach (var x in arg.EnumerateAllTypeReferences()) yield return x;
+      yield return x;
     }
   }
 
@@ -80,14 +80,13 @@ internal static class ApiDefinitionModelExtensions
     foreach (var r in spec.EnumerateAllTypeReferences())
     {
       if (!r.Name.StartsWith("_")) continue;
-      if (mappedTypeArguments.TryGetValue(r.Name, out var replaceReference))
-      {
-        // We copy the nullable, <T?> should be become <int?>
-        r.Nullable = r.Nullable || replaceReference.Nullable;
-        r.Name = replaceReference.Name;
-        r.Arguments = replaceReference.Arguments;
-        r.Shared = replaceReference.Shared;
-      }
+      if (!mappedTypeArguments.TryGetValue(r.Name, out var replaceReference)) continue;
+
+      // We copy the nullable, <T?> should be become <int?>
+      r.Nullable = r.Nullable || replaceReference.Nullable;
+      r.Name = replaceReference.Name;
+      r.Arguments = replaceReference.Arguments;
+      r.Shared = replaceReference.Shared;
     }
 
     return spec;
@@ -174,8 +173,9 @@ internal static class ApiDefinitionModelExtensions
 
   internal static TypeReference CloneAsNotNull(this TypeReference reference)
   {
-    if(!reference.Nullable) return reference;
-    return new TypeReference(reference.Name, reference.Arguments, false) { Shared = reference.Shared };
+    return !reference.Nullable
+      ? reference
+      : new TypeReference(reference.Name, reference.Arguments, false) { Shared = reference.Shared };
   }
 
   internal record PrefixGroupedErrors(List<(string Name, ErrorSpecification error)> Errors, ImmutableSortedDictionary<string, PrefixGroupedErrors> SubErrors);

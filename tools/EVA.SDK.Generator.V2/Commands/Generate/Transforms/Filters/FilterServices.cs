@@ -8,7 +8,7 @@ internal class FilterServices : ITransform
 {
   private readonly HashSet<string> _services;
 
-  public FilterServices(string[] services)
+  public FilterServices(IEnumerable<string> services)
   {
     _services = services.ToHashSet();
   }

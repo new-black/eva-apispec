@@ -2,7 +2,7 @@
 
 public class NonSuccessStatusCodeException : SdkException
 {
-  public NonSuccessStatusCodeException(HttpResponseMessage msg) : base($"Got unexpected statuscode ({msg.StatusCode}) from {msg.RequestMessage?.RequestUri}")
+  public NonSuccessStatusCodeException(HttpResponseMessage msg) : base($"Got unexpected status code ({msg.StatusCode}) from {msg.RequestMessage?.RequestUri}")
   {
 
   }

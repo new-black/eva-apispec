@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using EVA.API.Spec;
+﻿using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Helpers;
 using Microsoft.Extensions.Logging;
 
@@ -41,10 +40,13 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             output.WriteLine($"name: \"{assembly}:{service.Name}\",");
             output.WriteLine($"path: \"{service.Path}\"");
           }
+
           output.WriteLine(")");
         }
+
         output.WriteLine("}");
       }
+
       output.WriteLine("}");
       output.Write(string.Empty);
 
@@ -82,6 +84,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         {
           content = content.Replace(SwiftOptionsBinder.AnyCodableName.Default, ctx.Options.AnyCodableName);
         }
+
         await writer.WriteFileAsync("Mocks.swift", content);
       }
     }
@@ -126,31 +129,31 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     output.WriteLine($"public struct {typename}{typeArguments}: {extends} {{");
     output.WriteLine();
 
-    output.WriteIndented(output =>
+    using(output.Indentation)
     {
       output.WriteLine("public init(");
 
-      output.WriteIndented(o =>
+      using(output.Indentation)
       {
         var list = type.Properties.ToList();
         for (var i = 0; i < list.Count; i++)
         {
           var prop = list[i];
           var propDefault = GetPropDefault(prop.Value.Type);
-          o.WriteLine(
+          output.WriteLine(
             $"{prop.Key}: {GetPropTypeName(prop.Value.Type, id, ctx)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
         }
-      });
+      }
 
       output.WriteLine(") {");
 
-      output.WriteIndented(o =>
+      using(output.Indentation)
       {
         foreach (var prop in type.Properties.Keys)
         {
-          o.WriteLine($"self.{prop} = {prop}");
+          output.WriteLine($"self.{prop} = {prop}");
         }
-      });
+      }
 
       output.WriteLine("}");
       output.WriteLine();
@@ -168,14 +171,17 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         output.WriteLine($"public var {safePropertyName} : {propType}");
         output.WriteLine();
       }
-    });
+    }
 
     // Write the nested types
     foreach (var (nestedID, nestedType) in ctx.Input.Types.Where(kv => kv.Value.ParentType == id))
     {
       output.WriteLine();
 
-      output.WriteIndented(o => { WriteType(nestedType, nestedID, nestedType.TypeName, o, ctx); });
+      using(output.Indentation)
+      {
+        WriteType(nestedType, nestedID, nestedType.TypeName, output, ctx);
+      }
     }
 
     output.WriteLine("}");
@@ -184,14 +190,13 @@ internal class SwiftOutput : IOutput<SwiftOptions>
   private static void WriteNonFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
   {
     output.WriteLine($"public enum {typename}: Int, Codable {{");
-
-    output.WriteIndented(o =>
+    using (output.Indentation)
     {
       foreach (var (name, value) in type.EnumValues.OrderBy(v => v.Value.Value))
       {
-        o.WriteLine($"case {name} = {value.Value}");
+        output.WriteLine($"case {name} = {value.Value}");
       }
-    });
+    }
 
     output.WriteLine("}");
   }
@@ -199,15 +204,18 @@ internal class SwiftOutput : IOutput<SwiftOptions>
   private static void WriteFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
   {
     output.WriteLine($"public struct {typename}: OptionSet, Codable {{");
-
-    output.WriteIndented(o =>
+    using (output.Indentation)
     {
-      o.WriteLine("public let rawValue: Int");
-      o.WriteLine();
-      o.WriteLine("public init(rawValue: Int) {");
-      o.WriteIndented(o => { o.WriteLine("self.rawValue = rawValue"); });
-      o.WriteLine("}");
-      o.WriteLine();
+      output.WriteLine("public let rawValue: Int");
+      output.WriteLine();
+      output.WriteLine("public init(rawValue: Int) {");
+      using (output.Indentation)
+      {
+        output.WriteLine("self.rawValue = rawValue");
+      }
+
+      output.WriteLine("}");
+      output.WriteLine();
 
       var enumValuesWithTotal = type.EnumValues
         .Select(kv => (kv.Key, Value: kv.Value.Value + kv.Value.Extends.Select(e => type.EnumValues[e].Value).Sum()))
@@ -216,14 +224,14 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       foreach (var (name, value) in enumValuesWithTotal)
       {
         if (value == 0) continue;
-        o.WriteLine($"public static let {name} = {typename}(rawValue: {value})");
+        output.WriteLine($"public static let {name} = {typename}(rawValue: {value})");
       }
-    });
+    }
 
     output.WriteLine("}");
   }
 
-  private string GetPropTypeName(TypeReference typeReference, string? typeContext, OutputContext<SwiftOptions> ctx)
+  private static string GetPropTypeName(TypeReference typeReference, string? typeContext, OutputContext<SwiftOptions> ctx)
   {
     if (typeReference.Name == typeContext)
     {
@@ -252,7 +260,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     };
   }
 
-  private string GetTypeName(TypeReference typeReference, OutputContext<SwiftOptions> ctx)
+  private static string GetTypeName(TypeReference typeReference, OutputContext<SwiftOptions> ctx)
   {
     var n = typeReference.Nullable ? "?" : string.Empty;
 
@@ -269,9 +277,10 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     if (typeReference is { Name: ApiSpecConsts.Specials.Map })
     {
       var ta = typeReference.Arguments[1];
-      if(ctx.Options.OptimisticNullability) ta = ta.CloneAsNotNull();
+      if (ctx.Options.OptimisticNullability) ta = ta.CloneAsNotNull();
       return $"[String: {GetTypeName(ta, ctx)}]{n}";
     }
+
     if (typeReference.Name.StartsWith("_")) return $"{typeReference.Name[1..]}{n}";
 
     if (typeReference.Name.StartsWith("EVA.") && typeReference.Arguments is { Length: > 0 })

@@ -15,7 +15,7 @@ internal class RemoveOptions : INamedTransform
     var changes = ITransform.TransformResult.None;
     foreach (var typeReference in input.EnumerateAllTypeReferences())
     {
-      if (typeReference is not { Name: ApiSpecConsts.Specials.Option, Shared: { } }) continue;
+      if (typeReference is not { Name: ApiSpecConsts.Specials.Option, Shared: not null }) continue;
 
       // If the shared object does not have any objects, and does not extend any other object. Flatten this to an generic object
       if (typeReference.Shared.Name is ApiSpecConsts.Object or ApiSpecConsts.Any)

@@ -22,8 +22,8 @@ internal class ZodOutput : IOutput<ZodOptions>
       var o = new IndentedStringBuilder(2);
 
       // Write namespace
-      o.WriteLine($"export namespace {TypescriptOutput.FixNamespace(group.Assembly)} {{");
-      using (o.Indentation)
+      o.WriteLine($"export namespace {TypescriptOutput.FixNamespace(group.Assembly)}");
+      using (o.BracedIndentation)
       {
         // Preset types
         if (group.Assembly == ApiSpecConsts.WellKnown.CoreAssembly)
@@ -38,8 +38,6 @@ internal class ZodOutput : IOutput<ZodOptions>
         // Write the types
         WriteTypes(group, o, input, assemblyCtx);
       }
-
-      o.WriteLine("}");
 
       // Write the import statements
       var importsBuilder = new StringBuilder();
@@ -88,8 +86,8 @@ internal class ZodOutput : IOutput<ZodOptions>
         {
           var args = string.Join(", ", type.TypeArguments.Select(t => $"{t} extends z.ZodTypeAny"));
           var param = string.Join(", ", type.TypeArguments.Select(t => $"{t[1..]}: {t}"));
-          o.WriteLine($"export function {fixedTypeName}<{args}>({param}) {{");
-          o.WriteIndented(o =>
+          o.WriteLine($"export function {fixedTypeName}<{args}>({param})");
+          using (o.BracedIndentation)
           {
             o.Write("return ");
             if (type.Extends != null) o.Write($"{ToReference(input, type.Extends, ctx, false)}.merge(");
@@ -98,11 +96,11 @@ internal class ZodOutput : IOutput<ZodOptions>
             {
               WriteProperties(input, ctx, type, o);
             }
+
             o.Write("})");
             if (type.Extends != null) o.Write(")");
             o.WriteLine(";");
-          });
-          o.WriteLine("}");
+          }
         }
         else
         {
@@ -113,6 +111,7 @@ internal class ZodOutput : IOutput<ZodOptions>
           {
             WriteProperties(input, ctx, type, o);
           }
+
           o.Write("})");
           if (type.Extends != null) o.Write(")");
           o.WriteLine(";");
@@ -140,6 +139,7 @@ internal class ZodOutput : IOutput<ZodOptions>
           {
             WriteInterfaceProperties(input, ctx, type, o);
           }
+
           o.WriteLine("}");
 
           o.WriteLine($"export const {fixedTypeName}: z.ZodType<{fixedTypeName}Schema> = z.lazy(() => z.object({{");
@@ -147,6 +147,7 @@ internal class ZodOutput : IOutput<ZodOptions>
           {
             WriteProperties(input, ctx, type, o);
           }
+
           o.WriteLine("}));");
         }
         else
@@ -165,20 +166,20 @@ internal class ZodOutput : IOutput<ZodOptions>
     }
     else
     {
-      o.WriteLine($"export enum {fixedTypeName}Schema {{");
-      using (o.Indentation)
+      o.WriteLine($"export enum {fixedTypeName}Schema");
+      using (o.BracedIndentation)
       {
         foreach (var v in type.EnumValues)
         {
           o.WriteLine($"{v.Key} = {v.Value.Value},");
         }
       }
-      o.WriteLine("}");
+
       o.WriteLine($"export const {fixedTypeName} = z.nativeEnum({fixedTypeName}Schema);");
     }
   }
 
-  private void WriteInterfaceProperties(ApiDefinitionModel input, AssemblyContext ctx, TypeSpecification type, IndentedStringBuilder o)
+  private static void WriteInterfaceProperties(ApiDefinitionModel input, AssemblyContext ctx, TypeSpecification type, IndentedStringBuilder o)
   {
     foreach (var (propName, propSpec) in type.Properties)
     {
@@ -201,7 +202,7 @@ internal class ZodOutput : IOutput<ZodOptions>
     }
   }
 
-  private string ToInterfaceReference(ApiDefinitionModel input, PropertySpecification ps, AssemblyContext ctx, bool? overrideNullable = null)
+  private static string ToInterfaceReference(ApiDefinitionModel input, PropertySpecification ps, AssemblyContext ctx, bool? overrideNullable = null)
   {
     if (ps.Type.Name == ApiSpecConsts.String && ps.AllowedValues.Any())
     {
@@ -234,7 +235,8 @@ internal class ZodOutput : IOutput<ZodOptions>
       { Name: ApiSpecConsts.Int32 or ApiSpecConsts.Int64 or ApiSpecConsts.Int16 or ApiSpecConsts.Float32 or ApiSpecConsts.Float64 or ApiSpecConsts.Float128 } => $"number{n}",
       { Name: ApiSpecConsts.Specials.Array, Arguments.Length: 1 } => $"({ToInterfaceReference(input, typeReference.Arguments[0], ctx)})[]{n}",
       _ when typeReference.Name.StartsWith("_") => typeReference.Name[1..],
-      { Name: ApiSpecConsts.Specials.Map, Arguments.Length: 2 } => $"{{[key:{ToInterfaceReference(input, typeReference.Arguments[0], ctx, false)}]:{ToInterfaceReference(input, typeReference.Arguments[1], ctx)}}}{n}",
+      { Name: ApiSpecConsts.Specials.Map, Arguments.Length: 2 } =>
+        $"{{[key:{ToInterfaceReference(input, typeReference.Arguments[0], ctx, false)}]:{ToInterfaceReference(input, typeReference.Arguments[1], ctx)}}}{n}",
       _ => null
     };
 
@@ -256,34 +258,18 @@ internal class ZodOutput : IOutput<ZodOptions>
 
     // Apparently a type
     ctx.RegisterReferencedModule(input.Types[typeReference.Name].Assembly);
-    if (!typeReference.Arguments.Any())
-    {
-      return $"z.infer<typeof {ToReference(input, typeReference, ctx)}>{n}";
-    }
-
-    return "unknown";
+    return !typeReference.Arguments.Any() ? $"z.infer<typeof {ToReference(input, typeReference, ctx)}>{n}" : "unknown";
   }
 
-  private void WriteProperties(ApiDefinitionModel input, AssemblyContext ctx, TypeSpecification type, IndentedStringBuilder o)
+  private static void WriteProperties(ApiDefinitionModel input, AssemblyContext ctx, TypeSpecification type, IndentedStringBuilder o)
   {
     foreach (var (propName, propSpec) in type.Properties)
     {
-      if (propSpec.Type.Nullable && !propSpec.Skippable)
+      o.WriteLine((propSpec.Type.Nullable, propSpec.Skippable) switch
       {
-        o.WriteLine($"{propName}: {ToReference(input, propSpec, ctx)}.optional(),");
-      }
-      else if (propSpec.Type.Nullable && propSpec.Skippable)
-      {
-        o.WriteLine($"{propName}: {ToReference(input, propSpec, ctx)}.optional(),");
-      }
-      else if (!propSpec.Type.Nullable && !propSpec.Skippable)
-      {
-        o.WriteLine($"{propName}: {ToReference(input, propSpec, ctx)},");
-      }
-      else if (!propSpec.Type.Nullable && propSpec.Skippable)
-      {
-        o.WriteLine($"{propName}: {ToReference(input, propSpec, ctx)}.optional(),");
-      }
+        (false, false) => $"{propName}: {ToReference(input, propSpec, ctx)},",
+        _ => $"{propName}: {ToReference(input, propSpec, ctx)}.optional(),"
+      });
     }
   }
 

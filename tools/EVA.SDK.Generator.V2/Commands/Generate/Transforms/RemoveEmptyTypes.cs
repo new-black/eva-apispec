@@ -30,11 +30,10 @@ internal class RemoveEmptyTypes : INamedTransform
 
         foreach (var reference in input.EnumerateAllTypeReferences())
         {
-          if (reference.Name == id)
-          {
-            reference.Name = redirect.Name;
-            reference.Arguments = redirect.Arguments;
-          }
+          if (reference.Name != id) continue;
+
+          reference.Name = redirect.Name;
+          reference.Arguments = redirect.Arguments;
         }
 
         break;

@@ -43,7 +43,7 @@ internal class FlattenGenerics : INamedTransform
   /// <param name="toBeChecked"></param>
   /// <param name="logger"></param>
   /// <returns></returns>
-  private bool FlattenReference(TypeReference reference, Dictionary<string, TypeSpecification> availableSpecs, Stack<TypeSpecification> toBeChecked, ILogger logger)
+  private static bool FlattenReference(TypeReference reference, IDictionary<string, TypeSpecification> availableSpecs, Stack<TypeSpecification> toBeChecked, ILogger logger)
   {
     // These don't need flattening
     if (reference.Arguments.Length == 0 || reference.Name == ApiSpecConsts.Specials.Option) return false;

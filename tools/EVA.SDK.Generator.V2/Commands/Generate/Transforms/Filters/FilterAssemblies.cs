@@ -10,7 +10,7 @@ internal class FilterAssemblies : ITransform
 {
   private readonly List<(string filter, string? output)> _assemblies;
 
-  public FilterAssemblies(string[] assemblies)
+  public FilterAssemblies(IEnumerable<string> assemblies)
   {
     _assemblies = assemblies.Select(x => x.Split(':')).Select(x => (x[0],x.Skip(1).FirstOrDefault())).ToList();
   }
@@ -19,24 +19,24 @@ internal class FilterAssemblies : ITransform
   {
     var cache = new Dictionary<string, string?>();
 
-    string? Transform(string input)
+    string? SubTransform(string subInput)
     {
-      if (cache.TryGetValue(input, out var result)) return result;
+      if (cache.TryGetValue(subInput, out var result)) return result;
 
       foreach (var (filter,output) in _assemblies)
       {
-        if (!FileSystemName.MatchesSimpleExpression(filter, input)) continue;
+        if (!FileSystemName.MatchesSimpleExpression(filter, subInput)) continue;
 
-        result = output ?? input;
+        result = output ?? subInput;
         break;
       }
 
-      cache[input] = result;
+      cache[subInput] = result;
       return result;
     }
 
     // Validate the filters
-    var loggableAssemblies = input.EnumerateAllAssemblies().Select(assembly => (assembly, mappedTo: Transform(assembly))).ToList();
+    var loggableAssemblies = input.EnumerateAllAssemblies().Select(assembly => (assembly, mappedTo: SubTransform(assembly))).ToList();
 
     Console.WriteLine("\nKeeping assemblies:");
     foreach (var x in loggableAssemblies.Where(x => x.mappedTo == x.assembly))
@@ -65,7 +65,7 @@ internal class FilterAssemblies : ITransform
     var result = new List<ServiceModel>();
     foreach (var service in input.Services)
     {
-      var targetName = Transform(service.Assembly);
+      var targetName = SubTransform(service.Assembly);
       if (targetName != null)
       {
         service.Assembly = targetName;
@@ -77,7 +77,7 @@ internal class FilterAssemblies : ITransform
     // Filter the types
     foreach (var type in input.Types.Values)
     {
-      var targetName = Transform(type.Assembly);
+      var targetName = SubTransform(type.Assembly);
       if (targetName != null)
       {
         type.Assembly = targetName;
@@ -89,12 +89,11 @@ internal class FilterAssemblies : ITransform
     var result2 = new List<ErrorSpecification>();
     foreach (var error in input.Errors)
     {
-      var targetName = Transform(error.Assembly);
-      if (targetName != null)
-      {
-        error.Assembly = targetName;
-        result2.Add(error);
-      }
+      var targetName = SubTransform(error.Assembly);
+      if (targetName == null) continue;
+
+      error.Assembly = targetName;
+      result2.Add(error);
     }
     input.Errors = result2.ToImmutableArray();
 

@@ -29,7 +29,7 @@ internal class HttpInput : IInput
     if (!response.IsSuccessStatusCode) throw new NonSuccessStatusCodeException(response);
 
     var responseModel = await JsonContext.Default.EvaResponse.DeserializeAsync(await response.Content.ReadAsStreamAsync());
-    if (responseModel?.ApiDefinition == null) throw new UnparsableResponseException(_url);
+    if (responseModel?.ApiDefinition == null) throw new ResponseParsingFailedException(_url);
 
     return responseModel.ApiDefinition;
   }

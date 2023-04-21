@@ -7,7 +7,7 @@ namespace EVA.SDK.Generator.V2.Helpers;
 
 internal static class HttpHelpers
 {
-  private static readonly HttpClient _http = new()
+  private static readonly HttpClient Http = new()
   {
     DefaultRequestHeaders =
     {
@@ -17,18 +17,18 @@ internal static class HttpHelpers
 
   internal static async ValueTask<T> GetJson<T>(string url, JsonTypeInfo<T> info, ILogger logger)
   {
-    using var response = await _http.GetAsync(url);
+    using var response = await Http.GetAsync(url);
     if (!response.IsSuccessStatusCode) throw new NonSuccessStatusCodeException(response);
     await using var stream = await response.Content.ReadAsStreamAsync();
     var result = await JsonSerializer.DeserializeAsync(stream, info);
-    if (result == null) throw new UnparsableResponseException(url);
+    if (result == null) throw new ResponseParsingFailedException(url);
     logger.LogInformation("Downloaded {Size} from {Url}", StringHelpers.FormatSize(stream.Position), url);
     return result;
   }
 
   internal static async ValueTask GetToFile(string url, string path, ILogger logger)
   {
-    var response = await _http.GetStreamAsync(url);
+    var response = await Http.GetStreamAsync(url);
     await using var target = File.OpenWrite(path);
     await response.CopyToAsync(target);
     await target.FlushAsync();

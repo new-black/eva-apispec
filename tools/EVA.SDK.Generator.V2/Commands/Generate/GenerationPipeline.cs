@@ -27,8 +27,8 @@ internal static class GenerationPipeline
     new RemoveUnusedGenericArguments()
   };
 
-  private static readonly ITransform _transform1 = new FixDependencies();
-  private static readonly ITransform _transform2 = new RemoveUnusedTypes();
+  private static readonly ITransform Transform1 = new FixDependencies();
+  private static readonly ITransform Transform2 = new RemoveUnusedTypes();
 
   internal static async Task Run<T>(T opt, IOutput<T> output, ILogger logger) where T : GenerateOptions
   {
@@ -56,8 +56,8 @@ internal static class GenerationPipeline
       foreach (var transform in transforms)
       {
         var result = transform.Transform(model, opt, logger);
-        result |= _transform1.Transform(model, opt, logger);
-        result |= _transform2.Transform(model, opt, logger);
+        result |= Transform1.Transform(model, opt, logger);
+        result |= Transform2.Transform(model, opt, logger);
 
         logger.LogDebug("Transform {Transform} returned {Result}", transform.GetType().Name, result);
 

@@ -1,8 +1,8 @@
 ﻿namespace EVA.SDK.Generator.V2.Exceptions;
 
-public class UnparsableResponseException : SdkException
+public class ResponseParsingFailedException : SdkException
 {
-  public UnparsableResponseException(string url) : base($"Got an unexpected response from {url}")
+  public ResponseParsingFailedException(string url) : base($"Got an unexpected response from {url}")
   {
   }
 }

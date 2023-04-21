@@ -65,7 +65,7 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
     }
   }
 
-  private void WriteExtensions(ApiDefinitionModel input, IndentedStringBuilder o, AssemblyContext ctx, TypescriptOptions options)
+  private static void WriteExtensions(ApiDefinitionModel input, IndentedStringBuilder o, AssemblyContext ctx, TypescriptOptions options)
   {
     foreach (var (typeid, typespec) in input.Types)
     {
@@ -106,7 +106,7 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
     }
   }
 
-  private void WriteErrorGroup(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, IndentedStringBuilder o, string prefix)
+  private static void WriteErrorGroup(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, IndentedStringBuilder o, string prefix)
   {
     if (errors.Errors.Any())
     {
@@ -137,7 +137,7 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
     }
   }
 
-  private void WriteTypes(ApiDefinitionModelExtensions.GroupedApiDefinitionModel group, IndentedStringBuilder o, ApiDefinitionModel input, AssemblyContext ctx)
+  private static void WriteTypes(ApiDefinitionModelExtensions.GroupedApiDefinitionModel group, IndentedStringBuilder o, ApiDefinitionModel input, AssemblyContext ctx)
   {
     foreach (var (id, type) in group.Types)
     {
@@ -198,7 +198,7 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
     }
   }
 
-  private void WriteComment(IndentedStringBuilder o, string comment)
+  private static void WriteComment(IndentedStringBuilder o, string comment)
   {
     var c = comment.Trim();
     if (string.IsNullOrWhiteSpace(c)) return;
@@ -207,7 +207,7 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
     o.WriteLine("*/");
   }
 
-  private string ToReference(ApiDefinitionModel input, PropertySpecification ps, string propName, string typeName, AssemblyContext ctx, bool? overrideNullable = null)
+  private static string ToReference(ApiDefinitionModel input, PropertySpecification ps, string propName, string typeName, AssemblyContext ctx, bool? overrideNullable = null)
   {
     if (ps.Type.Name == ApiSpecConsts.String && ps.AllowedValues.Any())
     {
@@ -231,7 +231,7 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
     return ToReference(input, ps.Type, ctx, overrideNullable);
   }
 
-  private string ToReference(ApiDefinitionModel input, TypeReference typeReference, AssemblyContext ctx, bool? overrideNullable = null)
+  private static string ToReference(ApiDefinitionModel input, TypeReference typeReference, AssemblyContext ctx, bool? overrideNullable = null)
   {
     var nullable = overrideNullable ?? typeReference.Nullable;
     var n = nullable ? " | null" : string.Empty;
@@ -269,11 +269,9 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
     {
       return GetTypeRef(input, typeReference.Name, ctx);
     }
-    else
-    {
-      var args = typeReference.Arguments.Select(a => ToReference(input, a, ctx));
-      return $"{GetTypeRef(input, typeReference.Name, ctx)}<{string.Join(", ", args)}>";
-    }
+
+    var args = typeReference.Arguments.Select(a => ToReference(input, a, ctx));
+    return $"{GetTypeRef(input, typeReference.Name, ctx)}<{string.Join(", ", args)}>";
   }
 
   /// <summary>

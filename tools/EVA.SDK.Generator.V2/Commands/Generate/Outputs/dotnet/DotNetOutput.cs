@@ -7,7 +7,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.dotnet;
 internal class DotNetOutput : IOutput<DotNetOptions>
 {
   [Flags]
-  public enum TypeContext
+  private enum TypeContext
   {
     None = 0,
     Request = 1,
@@ -22,8 +22,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     if (!errors.Errors.Any() && !errors.SubErrors.Any()) return;
 
     o.WriteLine($"public static class {name}");
-    o.WriteLine("{");
-    using (o.Indentation)
+    using (o.BracedIndentation)
     {
       foreach (var e in errors.Errors)
       {
@@ -36,7 +35,6 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         WriteErrors(suberrors, o, prefix);
       }
     }
-    o.WriteLine("}");
   }
 
   public async Task Write(OutputContext<DotNetOptions> ctx)
@@ -61,47 +59,44 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       if (ctx.Options.JsonSerializer == "newtonsoft") sb.WriteLine("using Newtonsoft.Json.Linq;");
       sb.WriteLine();
       sb.WriteLine($"namespace {actualNamespace}");
-      sb.WriteLine("{");
-      sb.WriteIndented(o =>
+      using (sb.BracedIndentation)
       {
         if (i.Assembly == ApiSpecConsts.WellKnown.CoreAssembly)
         {
-          o.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.cs");
+          sb.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.cs");
           if (ctx.Options.JsonSerializer == "newtonsoft")
           {
-            o.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.NewtonsoftJson.cs");
+            sb.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.NewtonsoftJson.cs");
           }
         }
 
-        WriteErrors(i.Errors.GroupByPrefix(), o, "Errors");
+        WriteErrors(i.Errors.GroupByPrefix(), sb, "Errors");
 
         foreach (var service in i.Services)
         {
           var requestType = ctx.Input.Types[service.RequestTypeID];
           var responseType = ctx.Input.Types[service.ResponseTypeID];
 
-          o.WriteLine();
-          WriteRequestType(requestType, o, service, ctx, allResponseTypes);
+          sb.WriteLine();
+          WriteRequestType(requestType, sb, service, ctx, allResponseTypes);
           handledTypes.Add(service.RequestTypeID);
-          o.WriteLine();
+          sb.WriteLine();
 
           // Write response
           if (responseType.Assembly == service.Assembly && handledTypes.Add(service.ResponseTypeID))
           {
-            WriteResponseType(service.ResponseTypeID, responseType, o, ctx, allResponseTypes);
+            WriteResponseType(service.ResponseTypeID, responseType, sb, ctx, allResponseTypes);
           }
         }
 
-        WriteExtensionMethods(i.Services, ctx, o);
+        WriteExtensionMethods(i.Services, ctx, sb);
 
-        foreach (var type in i.Types)
+        foreach (var type in i.Types.Where(type => !handledTypes.Contains(type.Key) && type.Value.ParentType == null))
         {
-          if (handledTypes.Contains(type.Key) || type.Value.ParentType != null) continue;
-          o.WriteLine();
-          WriteType(type.Key, type.Value, o, ctx, allResponseTypes);
+          sb.WriteLine();
+          WriteType(type.Key, type.Value, sb, ctx, allResponseTypes);
         }
-      });
-      sb.WriteLine("}");
+      }
 
       await ctx.Writer.WriteFileAsync($"{actualNamespace}.cs", sb.ToString());
     }
@@ -110,8 +105,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
   private void WriteExtensionMethods(List<ServiceModel> services, OutputContext<DotNetOptions> ctx, IndentedStringBuilder o)
   {
     o.WriteLine("public static class EVAExtensions");
-    o.WriteLine("{");
-    using (o.Indentation)
+    using (o.BracedIndentation)
     {
       foreach (var service in services)
       {
@@ -119,7 +113,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         var reqType = GetFullName(service.RequestTypeID, ctx.Input);
 
         var requestType = ctx.Input.Types[service.RequestTypeID];
-        if(requestType.Properties.Count > 1) continue;
+        if (requestType.Properties.Count > 1) continue;
 
         o.WriteLine($"public static System.Threading.Tasks.Task<{resType}> {service.Name}<TOptions>(this EVA.SDK.Core.IEVAClient<TOptions> client,");
         using (o.Indentation)
@@ -132,8 +126,8 @@ internal class DotNetOutput : IOutput<DotNetOptions>
 
           o.WriteLine(" TOptions options = default)");
         }
-        o.WriteLine("{");
-        using (o.Indentation)
+
+        using (o.BracedIndentation)
         {
           o.WriteLine($"var request = new {reqType}");
           o.WriteLine("{");
@@ -144,14 +138,14 @@ internal class DotNetOutput : IOutput<DotNetOptions>
               o.WriteLine($"{p.Key} = {p.Key},");
             }
           }
+
           o.WriteLine("};");
 
           o.WriteLine("return client.CallService(request, options);");
         }
-        o.WriteLine("}");
+
       }
     }
-    o.WriteLine("}");
   }
 
   private void WriteType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
@@ -163,16 +157,14 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     {
       if (spec.EnumIsFlag.Value) sb.WriteLine("[Flags]");
       sb.WriteLine($"public enum {spec.TypeName}");
-      sb.WriteLine("{");
-      sb.WriteIndented(o =>
+      using (sb.BracedIndentation)
       {
         foreach (var (name, value) in spec.EnumValues)
         {
           var values = value.Value == 0L && !value.Extends.Any() ? new[] { "0" } : value.Extends.Concat(new[] { value.Value.ToString() });
-          o.WriteLine($"{name} = {string.Join(" | ", values)},");
+          sb.WriteLine($"{name} = {string.Join(" | ", values)},");
         }
-      });
-      sb.WriteLine("}");
+      }
     }
     else
     {
@@ -183,19 +175,21 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       }
 
       sb.WriteLine($"public class {typeName}{(allResponseTypes.Contains(id) ? " : EVA.SDK.Core.IResponseMessage" : string.Empty)}");
-      sb.WriteLine("{");
       var usage = (spec.Usage.Request ? TypeContext.Request : TypeContext.None) | (spec.Usage.Response ? TypeContext.Response : TypeContext.None);
-      sb.WriteIndented(o => { WriteTypeBody(id, spec, o, usage, ctx, allResponseTypes); });
-      sb.WriteLine("}");
+      using (sb.BracedIndentation)
+      {
+        WriteTypeBody(id, spec, sb, usage, ctx, allResponseTypes);
+      }
     }
   }
 
   private void WriteResponseType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
   {
     sb.WriteLine($"public class {spec.TypeName} : EVA.SDK.Core.IResponseMessage");
-    sb.WriteLine("{");
-    sb.WriteIndented(o => { WriteTypeBody(id, spec, o, TypeContext.Response, ctx, allResponseTypes); });
-    sb.WriteLine("}");
+    using(sb.BracedIndentation)
+    {
+      WriteTypeBody(id, spec, sb, TypeContext.Response, ctx, allResponseTypes);
+    }
   }
 
   private void WriteRequestType(TypeSpecification requestType, IndentedStringBuilder o, ServiceModel service, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
@@ -217,14 +211,10 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     o.WriteLine("/// </remarks>");
     o.WriteLine($"[EVA.SDK.Core.RequestMessage(\"{service.Path}\")]");
     o.WriteLine($"public class {service.Name} : EVA.SDK.Core.IResponseType<{GetFullName(service.ResponseTypeID, ctx.Input)}>");
-    o.WriteLine("{");
-
-    using (o.Indentation)
+    using (o.BracedIndentation)
     {
       WriteTypeBody(service.RequestTypeID, requestType, o, TypeContext.Request, ctx, allResponseTypes);
     }
-
-    o.WriteLine("}");
   }
 
   private void WriteTypeBody(string id, TypeSpecification spec, IndentedStringBuilder o, TypeContext context, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
@@ -267,7 +257,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     }
   }
 
-  private string GetFullPropName(TypeContext context, OutputContext<DotNetOptions> ctx, PropertySpecification prop)
+  private static string GetFullPropName(TypeContext context, OutputContext<DotNetOptions> ctx, PropertySpecification prop)
   {
     var shouldOutputCustomIDs = prop is { DataModelInformation.SupportsBackendID: true } && context.HasFlag(TypeContext.Request);
     var fullPropName = GetFullName(prop.Type, context, shouldOutputCustomIDs, ctx);
@@ -282,7 +272,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     return fullPropName;
   }
 
-  private string GetFullName(TypeReference r, TypeContext context, bool returnCustomID, OutputContext<DotNetOptions> ctx)
+  private static string GetFullName(TypeReference r, TypeContext context, bool returnCustomID, OutputContext<DotNetOptions> ctx)
   {
     var n = r.Nullable ? "?" : string.Empty;
 
@@ -302,7 +292,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       return $"long{n}";
     }
 
-    if (returnCustomID && r.Name == ApiSpecConsts.Specials.Array && r.Arguments[0] is {Name: ApiSpecConsts.Int64, Nullable: false} && ctx.Options.EnableCustomIdMode)
+    if (returnCustomID && r.Name == ApiSpecConsts.Specials.Array && r.Arguments[0] is { Name: ApiSpecConsts.Int64, Nullable: false } && ctx.Options.EnableCustomIdMode)
     {
       return $"EVA.SDK.Core.ModelIDList{n}";
     }

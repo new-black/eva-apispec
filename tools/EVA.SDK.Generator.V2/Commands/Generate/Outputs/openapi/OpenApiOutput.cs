@@ -11,7 +11,7 @@ using Microsoft.OpenApi.Writers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
 
-internal class OpenApiOutput : IOutput<OpenApiOptions>
+internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 {
   public string? OutputPattern => null;
 
@@ -28,15 +28,14 @@ internal class OpenApiOutput : IOutput<OpenApiOptions>
     };
 
     var filename = ctx.Options.Format == "yaml" ? "openapi.yaml" : "openapi.json";
-    await using (var file = ctx.Writer.WriteStreamAsync(filename))
-    {
-      await using var textWriter = new StreamWriter(file.Value);
-      IOpenApiWriter openApiWriter = ctx.Options.Format == "yaml"
-        ? new OpenApiYamlWriter(textWriter, new OpenApiWriterSettings())
-        : new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = ctx.Options.Terse });
+    await using var file = ctx.Writer.WriteStreamAsync(filename);
+    await using var textWriter = new StreamWriter(file.Value);
 
-      model.Serialize(openApiWriter, version);
-    }
+    IOpenApiWriter openApiWriter = ctx.Options.Format == "yaml"
+      ? new OpenApiYamlWriter(textWriter, new OpenApiWriterSettings())
+      : new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = ctx.Options.Terse });
+
+    model.Serialize(openApiWriter, version);
   }
 
   internal static OpenApiDocument GetModel(ApiDefinitionModel input, string host)
@@ -58,13 +57,13 @@ internal class OpenApiOutput : IOutput<OpenApiOptions>
       },
       Servers = new List<OpenApiServer>
       {
-        new OpenApiServer { Url = host }
+        new() { Url = host }
       },
       Paths = new OpenApiPaths(),
       Components = new OpenApiComponents(),
       SecurityRequirements = new List<OpenApiSecurityRequirement>
       {
-        new OpenApiSecurityRequirement
+        new()
         {
           { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "eva-auth" } }, new List<string>() }
         }
@@ -167,7 +166,7 @@ internal class OpenApiOutput : IOutput<OpenApiOptions>
     if (type.Name == ApiSpecConsts.Specials.Map)
     {
       var keyType = type.Arguments[0].Name;
-      if (keyType is ApiSpecConsts.String or ApiSpecConsts.Int64 or ApiSpecConsts.Float128 or ApiSpecConsts.Date || (char.IsUpper(keyType[0]) && input.Types[keyType].EnumIsFlag.HasValue))
+      if (keyType is ApiSpecConsts.String or ApiSpecConsts.Int64 or ApiSpecConsts.Float128 or ApiSpecConsts.Date || char.IsUpper(keyType[0]) && input.Types[keyType].EnumIsFlag.HasValue)
       {
         return new OpenApiSchema
         {
@@ -280,15 +279,16 @@ internal class OpenApiOutput : IOutput<OpenApiOptions>
     };
   }
 
-  private static readonly Regex _nameRegex = new("[^a-zA-Z0-9-._]", RegexOptions.Compiled);
-
   private static string FixName(string name)
   {
-    return _nameRegex.Replace(name, "_").Trim('_');
+    return NameRegex().Replace(name, "_").Trim('_');
   }
 
   private static string TagFromAssembly(string name)
   {
     return name.StartsWith("EVA.") ? name[4..] : name;
   }
+
+  [GeneratedRegex("[^a-zA-Z0-9-._]", RegexOptions.Compiled)]
+  private static partial Regex NameRegex();
 }

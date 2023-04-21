@@ -1,5 +1,4 @@
-﻿using EVA.API.Spec;
-using EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
+﻿using EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Writers;
@@ -17,12 +16,11 @@ internal class OpenApiAzureConnectorOutput : IOutput<OpenApiAzureConnectorOption
     var model = OpenApiOutput.GetModel(ctx.Input, ctx.Options.Host);
     AzureConnectorExtender.Extend(model, ctx.Input);
 
-    await using (var file = ctx.Writer.WriteStreamAsync("openapi.json"))
-    {
-      await using var textWriter = new StreamWriter(file.Value);
-      IOpenApiWriter writer = new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = true });
+    await using var file = ctx.Writer.WriteStreamAsync("openapi.json");
+    await using var textWriter = new StreamWriter(file.Value);
 
-      model.Serialize(writer, OpenApiSpecVersion.OpenApi2_0);
-    }
+    IOpenApiWriter writer = new OpenApiJsonWriter(textWriter, new OpenApiJsonWriterSettings { Terse = true });
+
+    model.Serialize(writer, OpenApiSpecVersion.OpenApi2_0);
   }
 }

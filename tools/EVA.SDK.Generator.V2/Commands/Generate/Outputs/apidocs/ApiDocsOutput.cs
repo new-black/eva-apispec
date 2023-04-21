@@ -2,7 +2,6 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Web;
 using EVA.API.Spec;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
@@ -27,7 +26,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     await GenerateTypesense(ctx);
   }
 
-  private async Task GenerateTypesense(OutputContext<ApiDocsOptions> ctx)
+  private static async Task GenerateTypesense(OutputContext<ApiDocsOptions> ctx)
   {
     var output = new StringBuilder();
 
@@ -38,33 +37,33 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 
       var o = new RootObject
       {
-        id = $"apidocs_{id}",
-        anchor = id,
-        content = requestType.Description,
-        content_camel = requestType.Description,
-        docusaurus_tag = "docs-default-current",
-        hierarchy = new Hierarchy { lvl0 = "Developers", lvl1 = service.Name },
-        hierarchy_lvl0 = "Developers",
-        hierarchy_lvl1 = service.Name,
-        hierarchy_camel = new[] { new Hierarchy_camel { lvl0 = "Developers", lvl1 = service.Name } },
-        hierarchy_radio = new Hierarchy_radio(),
-        hierarchy_radio_camel = new Hierarchy_radio_camel(),
-        item_priority = 75,
-        language = "en",
-        no_variables = true,
-        tags = new[] { "login", "nb", "dev" },
-        type = "content",
-        url = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
-        url_without_anchor = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
-        url_without_variables = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
-        version = new[] { "current" },
-        weight = new Weight { level = 0, page_rank = 0, position = 75 }
+        Id = $"apidocs_{id}",
+        Anchor = id,
+        Content = requestType.Description,
+        ContentCamel = requestType.Description,
+        DocusaurusTag = "docs-default-current",
+        Hierarchy = new Hierarchy { Lvl0 = "Developers", Lvl1 = service.Name },
+        HierarchyLvl0 = "Developers",
+        HierarchyLvl1 = service.Name,
+        HierarchyCamel = new[] { new HierarchyCamel { Lvl0 = "Developers", Lvl1 = service.Name } },
+        HierarchyRadio = new HierarchyRadio(),
+        HierarchyRadioCamel = new HierarchyRadioCamel(),
+        ItemPriority = 75,
+        Language = "en",
+        NoVariables = true,
+        Tags = new[] { "login", "nb", "dev" },
+        Type = "content",
+        Url = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
+        UrlWithoutAnchor = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
+        UrlWithoutVariables = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
+        Version = new[] { "current" },
+        Weight = new Weight { Level = 0, PageRank = 0, Position = 75 }
       };
 
       output.AppendLine(JsonSerializer.Serialize(o, JsonContext.Default.RootObject));
     }
 
-    ctx.Writer.WriteFileAsync("typesense.ndjson", output.ToString());
+    await ctx.Writer.WriteFileAsync("typesense.ndjson", output.ToString());
   }
 
   private static async Task GenerateService(OutputContext<ApiDocsOptions> ctx, ServiceModel service)
@@ -88,31 +87,25 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     var requestType = ctx.Input.Types[service.RequestTypeID];
     model.Description = requestType.Description;
 
-    model.Request.Properties = FillRecursiveProperties<ServiceItem.RequestPropertyItem>(ctx.Input, new TypeReference(service.RequestTypeID, ImmutableArray<TypeReference>.Empty, false), x =>
+    model.Request.Properties = FillRecursiveProperties<ServiceItem.RequestPropertyItem>(ctx.Input, new TypeReference(service.RequestTypeID, ImmutableArray<TypeReference>.Empty, false), x => new ServiceItem.RequestPropertyItem
     {
-      return new ServiceItem.RequestPropertyItem
-      {
-        Name = x.name,
-        Description = x.property.Description,
-        Type = ToTypeName(x.property.Type),
-        Properties = x.nestedProperties,
-        Recursion = x.nestedProperties is { Count: 0 },
-        EnumValues = x.enumValues
-      };
+      Name = x.name,
+      Description = x.property.Description,
+      Type = ToTypeName(x.property.Type),
+      Properties = x.nestedProperties,
+      Recursion = x.nestedProperties is { Count: 0 },
+      EnumValues = x.enumValues
     })!;
 
     // Response type
-    model.Response.Properties = FillRecursiveProperties<ServiceItem.ResponsePropertyItem>(ctx.Input, new TypeReference(service.ResponseTypeID, ImmutableArray<TypeReference>.Empty, false), x =>
+    model.Response.Properties = FillRecursiveProperties<ServiceItem.ResponsePropertyItem>(ctx.Input, new TypeReference(service.ResponseTypeID, ImmutableArray<TypeReference>.Empty, false), x => new ServiceItem.ResponsePropertyItem
     {
-      return new ServiceItem.ResponsePropertyItem()
-      {
-        Name = x.name,
-        Description = x.property.Description,
-        Type = ToTypeName(x.property.Type),
-        Properties = x.nestedProperties,
-        Recursion = x.nestedProperties is { Count: 0 },
-        EnumValues = x.enumValues
-      };
+      Name = x.name,
+      Description = x.property.Description,
+      Type = ToTypeName(x.property.Type),
+      Properties = x.nestedProperties,
+      Recursion = x.nestedProperties is { Count: 0 },
+      EnumValues = x.enumValues
     })!;
 
     await ctx.Writer.WriteFileAsync($"services/{model.Name}.json", JsonSerializer.Serialize(model, JsonContext.Indented.ServiceItem));
@@ -137,19 +130,14 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 
   private static async Task GenerateSidebar(OutputContext<ApiDocsOptions> ctx)
   {
-    var sidebar = new List<SidebarItem>();
-
-    foreach (var service in ctx.Input.Services)
+    var sidebar = ctx.Input.Services.Select(service => new SidebarItem
     {
-      sidebar.Add(new SidebarItem
-      {
-        Type = "doc",
-        Label = service.Name,
-        ClassName = "api-method post",
-        ID = $"api-reference/{service.Name}",
-        Link = $"api-reference/{service.Name}"
-      });
-    }
+      Type = "doc",
+      Label = service.Name,
+      ClassName = "api-method post",
+      ID = $"api-reference/{service.Name}",
+      Link = $"api-reference/{service.Name}"
+    }).ToList();
 
     await ctx.Writer.WriteFileAsync("sidebar.json", JsonSerializer.Serialize(sidebar.ToArray(), JsonContext.Default.SidebarItemArray));
   }
@@ -193,7 +181,6 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     long TotalValue(string name)
     {
       var value = type.EnumValues[name];
-      if (value == null) return 0;
       return value.Value + value.Extends.Sum(TotalValue);
     }
 
