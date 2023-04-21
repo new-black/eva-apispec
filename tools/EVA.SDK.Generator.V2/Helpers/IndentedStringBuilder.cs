@@ -74,12 +74,8 @@ internal class IndentedStringBuilder
 
   internal void WriteManifestResourceStream(string name)
   {
-    var assembly = Assembly.GetExecutingAssembly();
-    var resourceName = assembly.GetManifestResourceNames().First(n => n.EndsWith(name));
-    using var stream = assembly.GetManifestResourceStream(resourceName);
-    if (stream == null) return;
-    using var reader = new StreamReader(stream);
-    var content = reader.ReadToEnd();
+    var content = ManifestResourceHelpers.GetResource(name);
+    if (content == null) return;
     WriteLines(content);
   }
 }

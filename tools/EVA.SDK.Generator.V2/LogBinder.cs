@@ -17,6 +17,8 @@ public class LogBinder : BinderBase<ILogger>
       builder.AddSimpleConsole(o =>
       {
         o.IncludeScopes = true;
+        o.SingleLine = true;
+        o.TimestampFormat = "hh:mm:ss ";
       });
       builder.SetMinimumLevel(loglevel switch
       {

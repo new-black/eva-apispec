@@ -71,6 +71,20 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       await writer.WriteFileAsync($"{assembly}/{filename}.swift", output.ToString());
     }
+
+    // Write mocks
+    if (ctx.Options.IncludeMocks)
+    {
+      var content = ManifestResourceHelpers.GetResource("swift.Resources.Mocks.swift");
+      if (content != null)
+      {
+        if (ctx.Options.AnyCodableName != SwiftOptionsBinder.AnyCodableName.Default)
+        {
+          content = content.Replace(SwiftOptionsBinder.AnyCodableName.Default, ctx.Options.AnyCodableName);
+        }
+        await writer.WriteFileAsync("Mocks.swift", content);
+      }
+    }
   }
 
   private void WriteType(TypeSpecification type, string id, string typename, IndentedStringBuilder output, OutputContext<SwiftOptions> ctx)

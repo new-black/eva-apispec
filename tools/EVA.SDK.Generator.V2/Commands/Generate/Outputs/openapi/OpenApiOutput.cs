@@ -27,7 +27,8 @@ internal class OpenApiOutput : IOutput<OpenApiOptions>
       _ => OpenApiSpecVersion.OpenApi3_0
     };
 
-    await using (var file = ctx.Writer.WriteStreamAsync("openapi.json"))
+    var filename = ctx.Options.Format == "yaml" ? "openapi.yaml" : "openapi.json";
+    await using (var file = ctx.Writer.WriteStreamAsync(filename))
     {
       await using var textWriter = new StreamWriter(file.Value);
       IOpenApiWriter openApiWriter = ctx.Options.Format == "yaml"

@@ -8,6 +8,7 @@ internal class SwiftOptions : GenerateOptions
 {
   internal string AnyCodableName { get; set; } = SwiftOptionsBinder.AnyCodableName.Default;
   internal bool OptimisticNullability { get; set; } = SwiftOptionsBinder.OptimisticNullability.Default;
+  internal bool IncludeMocks { get; set; } = SwiftOptionsBinder.IncludeMocks.Default;
 }
 
 internal class SwiftOptionsBinder : BaseGenerateOptionsBinder<SwiftOptions>
@@ -22,15 +23,22 @@ internal class SwiftOptionsBinder : BaseGenerateOptionsBinder<SwiftOptions>
     description: "Handle nullability optimistically. This will PRETEND that generic arguments or array elements are never null."
   ).WithDefault(false);
 
+  internal static readonly OptionWithDefault<bool> IncludeMocks = new Option<bool>(
+    name: "--opt-include-mocks",
+    description: "Include mocks for IndirectOptional, EvaEndpoint, EvaService and EvaAnyCodable."
+  ).WithDefault(false);
+
   protected override IEnumerable<Option> GetOptions()
   {
     yield return AnyCodableName.Option;
     yield return OptimisticNullability.Option;
+    yield return IncludeMocks.Option;
   }
 
   protected override void BuildOptions(SwiftOptions options, BindingContext ctx)
   {
     options.AnyCodableName = AnyCodableName.Value(ctx);
     options.OptimisticNullability = OptimisticNullability.Value(ctx);
+    options.IncludeMocks = IncludeMocks.Value(ctx);
   }
 }
