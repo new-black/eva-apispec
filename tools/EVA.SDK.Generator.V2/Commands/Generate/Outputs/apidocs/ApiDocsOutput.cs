@@ -51,7 +51,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
         ItemPriority = 75,
         Language = "en",
         NoVariables = true,
-        Tags = new[] { "login", "nb", "dev" },
+        Tags = new[] { "login", "nb", "dev", "api" },
         Type = "content",
         Url = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
         UrlWithoutAnchor = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
