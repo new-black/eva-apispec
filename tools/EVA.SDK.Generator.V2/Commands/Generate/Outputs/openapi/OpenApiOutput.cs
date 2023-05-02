@@ -217,6 +217,42 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
             Type = "string"
           },
           Style = ParameterStyle.Simple
+        },
+        new()
+        {
+          In = ParameterLocation.Header,
+          Name = "EVA-IDs-Mode",
+          Required = false,
+          AllowEmptyValue = false,
+          Schema = new OpenApiSchema
+          {
+            Type = "string"
+          },
+          Style = ParameterStyle.Simple
+        },
+        new()
+        {
+          In = ParameterLocation.Header,
+          Name = "EVA-App-Token",
+          Required = false,
+          AllowEmptyValue = false,
+          Schema = new OpenApiSchema
+          {
+            Type = "string"
+          },
+          Style = ParameterStyle.Simple
+        },
+        new()
+        {
+          In = ParameterLocation.Header,
+          Name = "EVA-Elevation-Token",
+          Required = false,
+          AllowEmptyValue = false,
+          Schema = new OpenApiSchema
+          {
+            Type = "string"
+          },
+          Style = ParameterStyle.Simple
         }
       },
       Operations = new Dictionary<OperationType, OpenApiOperation>
