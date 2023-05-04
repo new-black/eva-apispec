@@ -1,10 +1,18 @@
 {
   "name": "UpdateSimplePrices",
-  "description": "Update the prices in the pricelist specified.\n\nThis service takes a simplified approach of the pricing tools EVA offers, but that limits the options you have available. The PriceList to update may\nonly have a single active PriceListAdjustment, and that has to be of type MANUAL_INPUT.\n\n* The pricelist is identified by the \u0060PriceListID\u0060 or the \u0060BackendSystemID\u0060 and \u0060BackendID\u0060.\n* Products can be identified by their (EVA) \u0060ID\u0060 or their \u0060BackendID\u0060",
+  "description": "Update the prices in the pricelist specified.\n\nThis service takes a simplified approach of the pricing tools EVA offers, but that limits the options you have available. The price list to update may\nonly have a single active adjustment, and that has to be of type \u0060MANUAL_INPUT\u0060.\n\n* The pricelist is identified by the \u0060PriceListID\u0060 or the \u0060BackendSystemID\u0060 and \u0060BackendID\u0060.\n* Products can be identified by their (EVA) \u0060ID\u0060.\n* Updates from this service are persisted in the background, which could take up to 15 minutes to process (unless you set \u0060ForcePriceListRecalculation\u0060 to \u0060true\u0060)",
   "method": "POST",
   "path": "/api/core/UpdateSimplePrices",
   "request": {
     "properties": [
+      {
+        "name": "ForcePriceListRecalculation",
+        "description": "Set this to \u0060true\u0060 when an immediate persistance of these prices is required. Not recommended; background recalculation is usually done within 15 minutes.",
+        "type": "bool",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
       {
         "name": "PriceListBackendID",
         "description": null,
@@ -72,7 +80,7 @@
       },
       {
         "name": "SkipPriceListRecalculation",
-        "description": "Set this to true when batching multiple price updates or when the change can wait a couple minutes, recalculation will be done within 15min",
+        "description": "Set this to \u0060true\u0060 when an immediate persistance of these prices is not needed (eg. when batching multiple calls). Background recalculation is usually done within 15 minutes.",
         "type": "bool",
         "properties": null,
         "recursion": false,
