@@ -17,6 +17,11 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
   public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "event-exports" };
 
+  private const string Parameter_Header_UserAgent = "p1";
+  private const string Parameter_Header_IdsMode = "p2";
+  private const string Parameter_Header_AppToken = "p3";
+  private const string Parameter_Header_ElevationToken = "p4";
+
   public async Task Write(OutputContext<OpenApiOptions> ctx)
   {
     var model = GetModel(ctx.Input, ctx.Options.Host);
@@ -61,6 +66,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       },
       Paths = new OpenApiPaths(),
       Components = new OpenApiComponents(),
+      Tags = input.Services.Select(s => s.Assembly).Distinct().Select(s => new OpenApiTag { Name = s, Description = s }).ToList(),
       SecurityRequirements = new List<OpenApiSecurityRequirement>
       {
         new()
@@ -78,6 +84,65 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       In = ParameterLocation.Header
     });
 
+    // Parameters
+    model.Components.Parameters.Add(Parameter_Header_UserAgent, new()
+    {
+      In = ParameterLocation.Header,
+      Name = "EVA-User-Agent",
+      Description = "The user agent that is making these calls. Don't make this specific per device/browser but per application. This should be of the form: MyFirstUserAgent/1.0.0",
+      Required = true,
+      AllowEmptyValue = false,
+      Schema = new OpenApiSchema
+      {
+        Default = new OpenApiString("eva-sdk-openapi"),
+        Type = "string"
+      },
+      Style = ParameterStyle.Simple
+    });
+    model.Components.Parameters.Add(Parameter_Header_IdsMode, new()
+    {
+      In = ParameterLocation.Header,
+      Description = "The IDs mode to run this request in. Currently only `ExternalIDs` is supported.",
+      Name = "EVA-IDs-Mode",
+      Required = false,
+      AllowEmptyValue = false,
+      Schema = new OpenApiSchema
+      {
+        Type = "string",
+        Enum = new List<IOpenApiAny>
+        {
+          new OpenApiString("ExternalIDs")
+        }
+      },
+      Style = ParameterStyle.Simple
+    });
+    model.Components.Parameters.Add(Parameter_Header_AppToken, new()
+    {
+      In = ParameterLocation.Header,
+      Name = "EVA-App-Token",
+      Description = "The app token, used for anonymously building an order",
+      Required = false,
+      AllowEmptyValue = false,
+      Schema = new OpenApiSchema
+      {
+        Type = "string"
+      },
+      Style = ParameterStyle.Simple
+    });
+    model.Components.Parameters.Add(Parameter_Header_ElevationToken, new()
+    {
+      In = ParameterLocation.Header,
+      Name = "EVA-Elevation-Token",
+      Description = "Token used for one-time elevation of a user's permissions",
+      Required = false,
+      AllowEmptyValue = false,
+      Schema = new OpenApiSchema
+      {
+        Type = "string"
+      },
+      Style = ParameterStyle.Simple
+    });
+
     // Render each service
     foreach (var service in input.Services)
     {
@@ -89,6 +154,47 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     {
       model.Components.Schemas.Add(FixName(id), ToSchema(input, type));
     }
+
+    // 400 error
+    model.Components.Schemas.Add("eva_error_400", new OpenApiSchema
+    {
+      Type = "object",
+      Required = new HashSet<string> { "Error" },
+      Properties = new Dictionary<string, OpenApiSchema>
+      {
+        {
+          "Error", new OpenApiSchema
+          {
+            Type = "object",
+            Required = new HashSet<string> { "Message", "Type", "Code", "RequestID" },
+            Properties = new Dictionary<string, OpenApiSchema>
+            {
+              { "Message", new OpenApiSchema { Type = "string" } },
+              { "Type", new OpenApiSchema { Type = "string" } },
+              { "Code", new OpenApiSchema { Type = "string" } },
+              { "RequestID", new OpenApiSchema { Type = "string" } }
+            }
+          }
+        }
+      }
+    });
+
+    model.Components.Examples.Add("eva_example_400_RequestValidationFailure", new OpenApiExample
+    {
+      Summary = "An example BadRequest response",
+      Value = new OpenApiObject
+      {
+        {
+          "Error", new OpenApiObject
+          {
+            { "Message", new OpenApiString("Validation of the request message failed: Field ABC has an invalid value for a Product") },
+            { "Type", new OpenApiString("RequestValidationFailure") },
+            { "Code", new OpenApiString("COVFEFE") },
+            { "RequestID", new OpenApiString("576b62dd71894e3281a4d84951f44e70") }
+          }
+        }
+      }
+    });
 
     return model;
   }
@@ -114,7 +220,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         return new OpenApiSchema
         {
           Type = "integer",
-          Enum = totals.Select(kv => new OpenApiInteger((int) kv.Value) as IOpenApiAny).ToList(),
+          Enum = totals.Select(kv => new OpenApiInteger((int)kv.Value) as IOpenApiAny).ToList(),
           Description = $"Possible values:\n\n{possibleValues}"
         };
       }
@@ -130,7 +236,13 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     foreach (var (name, prop) in type.Properties)
     {
       var schema = ToSchema(input, prop.Type);
-      schema.Description = prop.Description;
+      schema.Description = prop.Description ?? string.Empty;
+
+      if (prop.DataModelInformation != null)
+      {
+        schema.Description += $"\n\nThis should be an existing ID of a {prop.DataModelInformation.Name}";
+      }
+
       result.Properties.Add(name, schema);
     }
 
@@ -207,52 +319,35 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       {
         new()
         {
-          In = ParameterLocation.Header,
-          Name = "EVA-User-Agent",
-          Required = true,
-          AllowEmptyValue = false,
-          Schema = new OpenApiSchema
+          Reference = new OpenApiReference
           {
-            Default = new OpenApiString("eva-sdk-openapi"),
-            Type = "string"
-          },
-          Style = ParameterStyle.Simple
+            Type = ReferenceType.Parameter,
+            Id = Parameter_Header_UserAgent
+          }
         },
         new()
         {
-          In = ParameterLocation.Header,
-          Name = "EVA-IDs-Mode",
-          Required = false,
-          AllowEmptyValue = false,
-          Schema = new OpenApiSchema
+          Reference = new OpenApiReference
           {
-            Type = "string"
-          },
-          Style = ParameterStyle.Simple
+            Type = ReferenceType.Parameter,
+            Id = Parameter_Header_IdsMode
+          }
         },
         new()
         {
-          In = ParameterLocation.Header,
-          Name = "EVA-App-Token",
-          Required = false,
-          AllowEmptyValue = false,
-          Schema = new OpenApiSchema
+          Reference = new OpenApiReference
           {
-            Type = "string"
-          },
-          Style = ParameterStyle.Simple
+            Type = ReferenceType.Parameter,
+            Id = Parameter_Header_AppToken
+          }
         },
         new()
         {
-          In = ParameterLocation.Header,
-          Name = "EVA-Elevation-Token",
-          Required = false,
-          AllowEmptyValue = false,
-          Schema = new OpenApiSchema
+          Reference = new OpenApiReference
           {
-            Type = "string"
-          },
-          Style = ParameterStyle.Simple
+            Type = ReferenceType.Parameter,
+            Id = Parameter_Header_ElevationToken
+          }
         }
       },
       Operations = new Dictionary<OperationType, OpenApiOperation>
@@ -260,7 +355,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         {
           OperationType.Post, new OpenApiOperation
           {
-            Summary = service.RequestTypeID,
+            Summary = service.Name,
             Description = input.Types[service.RequestTypeID].Description ?? $"The {service.Name} service",
             OperationId = service.Name,
             Tags = new List<OpenApiTag> { new() { Name = TagFromAssembly(service.Assembly), Description = TagFromAssembly(service.Assembly) } },
@@ -302,7 +397,38 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
                     {
                       "application/json", new OpenApiMediaType
                       {
-                        Schema = ToSchema(service.ResponseTypeID)
+                        Schema = ToSchema(service.ResponseTypeID),
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "400", new OpenApiResponse
+                {
+                  Description = "A BadRequest response",
+                  Content = new Dictionary<string, OpenApiMediaType>
+                  {
+                    {
+                      "application/json", new OpenApiMediaType
+                      {
+                        Schema = new OpenApiSchema
+                        {
+                          Reference = new OpenApiReference
+                          {
+                            Id = "eva_error_400",
+                            Type = ReferenceType.Schema
+                          }
+                        },
+                        Examples = new Dictionary<string, OpenApiExample>
+                        {
+                          {
+                            "RequestValidationFailure", new OpenApiExample
+                            {
+                              Reference = new OpenApiReference { Type = ReferenceType.Example, Id = "eva_example_400_RequestValidationFailure" }
+                            }
+                          }
+                        }
                       }
                     }
                   }
