@@ -243,6 +243,30 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         schema.Description += $"\n\nThis should be an existing ID of a {prop.DataModelInformation.Name}";
       }
 
+      if (prop.Required is { Effective: not null } required)
+      {
+        schema.Description += $"\n\n**Required since {required.Introduced}:** {required.Comment}\n\n**Will be enforced in {required.Effective}**";
+      }
+
+      if (prop.StringLengthConstraint is {} slc)
+      {
+        schema.MinLength = slc.Min;
+        schema.MaxLength = slc.Max;
+        schema.Description += $"\n\nThis string must be between {slc.Min} (incl) and {slc.Max} (incl) characters long.";
+      }
+
+      if (prop.Deprecated is { } deprecated)
+      {
+        schema.Deprecated = true;
+        schema.Description += $"\n\n**Deprecated since {deprecated.Introduced}:** {deprecated.Comment}\n\n**Will be removed in {deprecated.Effective}**";
+      }
+
+      if (prop.AllowedValues is { Length: > 0 } allowedValues)
+      {
+        schema.Enum = allowedValues.Select<string, IOpenApiAny>(v => new OpenApiString(v)).ToList();
+        schema.Description += $"\n\nPossible values:\n\n{string.Join('\n', allowedValues.Select(v => $"* `{v}`"))}";
+      }
+
       result.Properties.Add(name, schema);
     }
 
