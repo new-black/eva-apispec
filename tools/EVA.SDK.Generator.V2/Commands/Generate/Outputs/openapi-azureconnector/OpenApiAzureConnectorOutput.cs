@@ -9,7 +9,7 @@ internal class OpenApiAzureConnectorOutput : IOutput<OpenApiAzureConnectorOption
 {
   public string? OutputPattern => null;
 
-  public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "inheritance" };
+  public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "inheritance", "datalake-exports" };
 
   public async Task Write(OutputContext<OpenApiAzureConnectorOptions> ctx)
   {

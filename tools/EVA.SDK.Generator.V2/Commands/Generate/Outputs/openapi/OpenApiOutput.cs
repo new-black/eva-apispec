@@ -143,6 +143,12 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       Style = ParameterStyle.Simple
     });
 
+    // Render each datalake endpoint
+    foreach (var dl in input.DatalakeExports)
+    {
+      model.Paths["/datalake/" + dl.Name] = ToDatalakeItem(input, dl);
+    }
+
     // Render each service
     foreach (var service in input.Services)
     {
@@ -248,7 +254,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         schema.Description += $"\n\n**Required since {required.Introduced}:** {required.Comment}\n\n**Will be enforced in {required.Effective}**";
       }
 
-      if (prop.StringLengthConstraint is {} slc)
+      if (prop.StringLengthConstraint is { } slc)
       {
         schema.MinLength = slc.Min;
         schema.MaxLength = slc.Max;
@@ -329,6 +335,49 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       {
         Id = FixName(id),
         Type = ReferenceType.Schema
+      }
+    };
+  }
+
+  private static OpenApiPathItem ToDatalakeItem(ApiDefinitionModel input, DatalakeExportTarget dl)
+  {
+    var type = input.Types[dl.DataType];
+
+    return new OpenApiPathItem
+    {
+      Summary = dl.Name,
+      Description = $"Not a real service, but the response shows the format of the {dl.Name} export.",
+      Parameters = new List<OpenApiParameter>(),
+      Operations = new Dictionary<OperationType, OpenApiOperation>
+      {
+        {
+          OperationType.Get, new OpenApiOperation
+          {
+            Summary = $"Not a real service, but the response shows the format of the {dl.Name} export.",
+            Description = $"Not a real service, but the response shows the format of the {dl.Name} export.",
+            OperationId = $"datalake_{dl.Name}",
+            Tags = new List<OpenApiTag> { new() { Name = TagFromAssembly(type.Assembly), Description = TagFromAssembly(type.Assembly) } },
+            Security = new List<OpenApiSecurityRequirement>(),
+            Responses = new OpenApiResponses
+            {
+              {
+                "200", new OpenApiResponse
+                {
+                  Description = $"The format of the {dl.Name} export.",
+                  Content = new Dictionary<string, OpenApiMediaType>
+                  {
+                    {
+                      "application/json", new OpenApiMediaType
+                      {
+                        Schema = ToSchema(dl.DataType),
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     };
   }

@@ -8,7 +8,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 {
   public string? OutputPattern => null;
 
-  public string[] ForcedRemoves => new[] { "options", "event-exports", "errors" };
+  public string[] ForcedRemoves => new[] { "options", "event-exports", "datalake-exports", "errors" };
 
   public async Task Write(OutputContext<SwiftOptions> ctx)
   {

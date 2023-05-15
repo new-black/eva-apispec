@@ -10,7 +10,7 @@ internal class ZodOutput : IOutput<ZodOptions>
 {
   public string? OutputPattern => null;
 
-  public string[] ForcedRemoves => new[] { "unused-type-params", "empty-types", "errors", "event-exports", "nested-types" };
+  public string[] ForcedRemoves => new[] { "unused-type-params", "empty-types", "errors", "event-exports", "datalake-exports", "nested-types" };
 
   public async Task Write(OutputContext<ZodOptions> ctx)
   {

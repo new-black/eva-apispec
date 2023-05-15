@@ -9,5 +9,6 @@ public class ApiDefinitionModel
   [JsonPropertyName("services")] public ImmutableArray<ServiceModel> Services { get; set; }
   [JsonPropertyName("types")] public ImmutableSortedDictionary<string, TypeSpecification> Types { get; set; } = ImmutableSortedDictionary<string, TypeSpecification>.Empty;
   [JsonPropertyName("event_targets")] public ImmutableArray<EventTarget> EventTargets { get; set; }
+  [JsonPropertyName("datalake_exports")] public ImmutableArray<DatalakeExportTarget> DatalakeExports { get; set; }
   [JsonPropertyName("errors")] public ImmutableArray<ErrorSpecification> Errors { get; set; }
 }

@@ -15,7 +15,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
   }
 
   public string OutputPattern => "EVA.*.cs";
-  public string[] ForcedRemoves => new[] { "options", "event-exports" };
+  public string[] ForcedRemoves => new[] { "options", "event-exports", "datalake-exports" };
 
   private static void WriteErrors(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, IndentedStringBuilder o, string name)
   {

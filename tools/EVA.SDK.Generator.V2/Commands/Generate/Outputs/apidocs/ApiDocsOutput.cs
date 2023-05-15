@@ -9,7 +9,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
 internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 {
   public string? OutputPattern => null;
-  public string[] ForcedRemoves => new[] { "generics", "options", "inheritance" };
+  public string[] ForcedRemoves => new[] { "generics", "options", "inheritance", "datalake-exports" };
 
   public async Task Write(OutputContext<ApiDocsOptions> ctx)
   {
