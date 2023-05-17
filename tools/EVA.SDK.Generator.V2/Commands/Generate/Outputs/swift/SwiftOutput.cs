@@ -217,9 +217,6 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       output.WriteLine("}");
       output.WriteLine();
 
-      type.EnumValues.ToTotals()
-        .OrderBy(v => v.Value);
-
       foreach (var (name, value) in type.EnumValues.ToTotals().OrderBy(v => v.Value))
       {
         if (value == 0) continue;
