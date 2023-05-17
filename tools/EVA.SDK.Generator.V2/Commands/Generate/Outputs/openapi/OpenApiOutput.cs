@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Exceptions;
@@ -15,15 +16,20 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 {
   public string? OutputPattern => null;
 
-  public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "event-exports" };
+  public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "event-exports", "inheritance" };
 
   private const string Parameter_Header_UserAgent = "p1";
   private const string Parameter_Header_IdsMode = "p2";
   private const string Parameter_Header_AppToken = "p3";
   private const string Parameter_Header_ElevationToken = "p4";
 
+  private const string Schema_Error = "eva_error_400";
+  private const string Example_400_RequestValidation = "eva_example_400_RequestValidationFailure";
+  private const string Example_403_Forbidden = "eva_example_403_Forbidden";
+
   public async Task Write(OutputContext<OpenApiOptions> ctx)
   {
+    Cleanup(ctx.Input);
     var model = GetModel(ctx.Input, ctx.Options.Host);
 
     var version = ctx.Options.Version switch
@@ -43,8 +49,31 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     model.Serialize(openApiWriter, version);
   }
 
+  internal static void Cleanup(ApiDefinitionModel input)
+  {
+    // Remove the Error field from all response messages
+    foreach (var service in input.Services)
+    {
+      var responseType = input.Types[service.ResponseTypeID];
+      responseType.Properties = responseType.Properties.Where(p => p.Key != "Error").ToImmutableSortedDictionary(x => x.Key, x => x.Value);
+    }
+  }
+
   internal static OpenApiDocument GetModel(ApiDefinitionModel input, string host)
   {
+    var server = string.IsNullOrWhiteSpace(host)
+      ? new OpenApiServer
+      {
+        Url = "https://api.{region}.{customer}.{environment}.eva-online.cloud/",
+        Variables = new Dictionary<string, OpenApiServerVariable>
+        {
+          { "region", new OpenApiServerVariable { Default = "euw" } },
+          { "customer", new OpenApiServerVariable { Default = "acme" } },
+          { "environment", new OpenApiServerVariable { Default = "test" } },
+        }
+      }
+      : new OpenApiServer { Url = host };
+
     // Base
     var model = new OpenApiDocument
     {
@@ -60,10 +89,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
           Url = new Uri("https://newblack.io/")
         }
       },
-      Servers = new List<OpenApiServer>
-      {
-        new() { Url = host }
-      },
+      Servers = new List<OpenApiServer> { server },
       Paths = new OpenApiPaths(),
       Components = new OpenApiComponents(),
       Tags = input.Services.Select(s => s.Assembly).Distinct().Select(s => new OpenApiTag { Name = s, Description = s }).ToList(),
@@ -162,7 +188,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     }
 
     // 400 error
-    model.Components.Schemas.Add("eva_error_400", new OpenApiSchema
+    model.Components.Schemas.Add(Schema_Error, new OpenApiSchema
     {
       Type = "object",
       Required = new HashSet<string> { "Error" },
@@ -185,7 +211,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       }
     });
 
-    model.Components.Examples.Add("eva_example_400_RequestValidationFailure", new OpenApiExample
+    model.Components.Examples.Add(Example_400_RequestValidation, new OpenApiExample
     {
       Summary = "An example BadRequest response",
       Value = new OpenApiObject
@@ -202,6 +228,23 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       }
     });
 
+    model.Components.Examples.Add(Example_403_Forbidden, new OpenApiExample
+    {
+      Summary = "An example Forbidden response",
+      Value = new OpenApiObject
+      {
+        {
+          "Error", new OpenApiObject
+          {
+            { "Message", new OpenApiString("You are not authorized to execute this request.") },
+            { "Type", new OpenApiString("Forbidden") },
+            { "Code", new OpenApiString("COVFEFE") },
+            { "RequestID", new OpenApiString("576b62dd71894e3281a4d84951f44e70") }
+          }
+        }
+      }
+    });
+
     return model;
   }
 
@@ -210,7 +253,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     if (type.EnumIsFlag.HasValue)
     {
       var totals = type.EnumValues.ToTotals();
-      var possibleValues = string.Join('\n', totals.Select(kv => $"* `{kv.Value}` - {kv.Key}"));
+      var possibleValues = string.Join('\n', totals.OrderBy(kv => kv.Value).Select(kv => $"* `{kv.Value}` - {kv.Key}"));
 
       if (type.EnumIsFlag is true)
       {
@@ -241,12 +284,41 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
     foreach (var (name, prop) in type.Properties)
     {
-      var schema = ToSchema(input, prop.Type);
-      schema.Description = prop.Description ?? string.Empty;
+      OpenApiSchema schema = new OpenApiSchema();
 
-      if (prop.DataModelInformation != null)
+      if (prop.DataModelInformation is { SupportsBackendID: true } dmi)
       {
-        schema.Description += $"\n\nThis should be an existing ID of a {prop.DataModelInformation.Name}";
+        var s = ToSchema(input, prop.Type);
+        s.Title = $"{dmi.Name} ID";
+
+        schema.Description = prop.Description ?? string.Empty;
+        schema.OneOf = new List<OpenApiSchema>
+        {
+          s,
+          new() { Type = "string", Title = $"{dmi.Name} BackendID", Description = "Make sure to set the `EVA-IDs-Mode` header to `ExternalIDs` when using this" },
+        };
+      }
+      else
+      {
+        schema = ToSchema(input, prop.Type);
+        schema.Description = prop.Description ?? string.Empty;
+
+        if (prop.DataModelInformation is { Name: var dmn })
+        {
+          schema.Description += $"\n\nThis is the ID of a `{dmn}`";
+        }
+
+        if (prop.StringLengthConstraint is { } slc)
+        {
+          schema.MinLength = slc.Min;
+          schema.MaxLength = slc.Max;
+          schema.Description += $"\n\nThis string must be between {slc.Min} (incl) and {slc.Max} (incl) characters long.";
+        }
+
+        if (prop.AllowedValues is { Length: > 0 } allowedValues)
+        {
+          schema.Enum = allowedValues.Select<string, IOpenApiAny>(v => new OpenApiString(v)).ToList();
+        }
       }
 
       if (prop.Required is { Effective: not null } required)
@@ -254,23 +326,10 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         schema.Description += $"\n\n**Required since {required.Introduced}:** {required.Comment}\n\n**Will be enforced in {required.Effective}**";
       }
 
-      if (prop.StringLengthConstraint is { } slc)
-      {
-        schema.MinLength = slc.Min;
-        schema.MaxLength = slc.Max;
-        schema.Description += $"\n\nThis string must be between {slc.Min} (incl) and {slc.Max} (incl) characters long.";
-      }
-
       if (prop.Deprecated is { } deprecated)
       {
         schema.Deprecated = true;
         schema.Description += $"\n\n**Deprecated since {deprecated.Introduced}:** {deprecated.Comment}\n\n**Will be removed in {deprecated.Effective}**";
-      }
-
-      if (prop.AllowedValues is { Length: > 0 } allowedValues)
-      {
-        schema.Enum = allowedValues.Select<string, IOpenApiAny>(v => new OpenApiString(v)).ToList();
-        schema.Description += $"\n\nPossible values:\n\n{string.Join('\n', allowedValues.Select(v => $"* `{v}`"))}";
       }
 
       result.Properties.Add(name, schema);
@@ -288,22 +347,38 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
   private static OpenApiSchema ToSchema(ApiDefinitionModel input, TypeReference type)
   {
+    var s = ToSchema_IgnoreNull(input, type);
+    if (type.Nullable) s.Nullable = true;
+    return s;
+  }
+
+  private static OpenApiSchema ToSchema_IgnoreNull(ApiDefinitionModel input, TypeReference type)
+  {
     if (type.Name == ApiSpecConsts.Int16) return new OpenApiSchema { Type = "integer" };
-    if (type.Name == ApiSpecConsts.Int32) return new OpenApiSchema { Type = "integer" };
-    if (type.Name == ApiSpecConsts.Int64) return new OpenApiSchema { Type = "integer" };
+    if (type.Name == ApiSpecConsts.Int32) return new OpenApiSchema { Type = "integer", Format = "int32" };
+    if (type.Name == ApiSpecConsts.Int64) return new OpenApiSchema { Type = "integer", Format = "int64" };
     if (type.Name == ApiSpecConsts.String) return new OpenApiSchema { Type = "string" };
-    if (type.Name == ApiSpecConsts.Binary) return new OpenApiSchema { Type = "string" };
+    if (type.Name == ApiSpecConsts.Binary) return new OpenApiSchema { Type = "string", Format = "byte" };
     if (type.Name == ApiSpecConsts.Bool) return new OpenApiSchema { Type = "boolean" };
     if (type.Name == ApiSpecConsts.Guid) return new OpenApiSchema { Type = "string", Format = "uuid" };
-    if (type.Name == ApiSpecConsts.Float32) return new OpenApiSchema { Type = "number" };
-    if (type.Name == ApiSpecConsts.Float64) return new OpenApiSchema { Type = "number" };
-    if (type.Name == ApiSpecConsts.Float128) return new OpenApiSchema { Type = "number" };
-    if (type.Name == ApiSpecConsts.Duration) return new OpenApiSchema { Type = "string" };
+    if (type.Name == ApiSpecConsts.Float32) return new OpenApiSchema { Type = "number", Format = "float" };
+    if (type.Name == ApiSpecConsts.Float64) return new OpenApiSchema { Type = "number", Format = "double" };
+    if (type.Name == ApiSpecConsts.Float128) return new OpenApiSchema { Type = "number", Format = "double" };
+    if (type.Name == ApiSpecConsts.Duration) return new OpenApiSchema { Type = "string", Format = "duration" };
     if (type.Name == ApiSpecConsts.Object) return new OpenApiSchema { Type = "object", AdditionalPropertiesAllowed = true };
     if (type.Name == ApiSpecConsts.Any) return new OpenApiSchema { Type = "object", AdditionalPropertiesAllowed = true };
     if (type.Name == ApiSpecConsts.Date) return new OpenApiSchema { Type = "string", Format = "date-time" };
     if (type.Name == ApiSpecConsts.Specials.Array) return new OpenApiSchema { Type = "array", Items = ToSchema(input, type.Arguments.Single()) };
-    if (type.Name == ApiSpecConsts.Specials.Option) return new OpenApiSchema { AnyOf = type.Arguments.Select(a => ToSchema(input, a)).ToList() };
+
+    if (type.Name == ApiSpecConsts.Specials.Option)
+    {
+      return new OpenApiSchema
+      {
+        AnyOf = type.Arguments
+          .Select(a => ToSchema(input, a))
+          .ToList()
+      };
+    }
 
     if (type.Name == ApiSpecConsts.Specials.Map)
     {
@@ -353,7 +428,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         {
           OperationType.Get, new OpenApiOperation
           {
-            Summary = $"Not a real service, but the response shows the format of the {dl.Name} export.",
+            Summary = $"{dl.Name} Export",
             Description = $"Not a real service, but the response shows the format of the {dl.Name} export.",
             OperationId = $"datalake_{dl.Name}",
             Tags = new List<OpenApiTag> { new() { Name = TagFromAssembly(type.Assembly), Description = TagFromAssembly(type.Assembly) } },
@@ -384,6 +459,21 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
   private static OpenApiPathItem ToPathItem(ApiDefinitionModel input, ServiceModel service)
   {
+    string MapOperationName(string s)
+    {
+      if (s.EndsWith("_Async"))
+      {
+        return $"{s[..^6]} (Async)";
+      }
+
+      if (s.EndsWith("_AsyncResult"))
+      {
+        return $"{s[..^12]} (Async result)";
+      }
+
+      return s;
+    }
+
     return new OpenApiPathItem
     {
       Summary = service.Name,
@@ -489,7 +579,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
                         {
                           Reference = new OpenApiReference
                           {
-                            Id = "eva_error_400",
+                            Id = Schema_Error,
                             Type = ReferenceType.Schema
                           }
                         },
@@ -498,7 +588,38 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
                           {
                             "RequestValidationFailure", new OpenApiExample
                             {
-                              Reference = new OpenApiReference { Type = ReferenceType.Example, Id = "eva_example_400_RequestValidationFailure" }
+                              Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_400_RequestValidation }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "403", new OpenApiResponse
+                {
+                  Description = "A Forbidden response",
+                  Content = new Dictionary<string, OpenApiMediaType>
+                  {
+                    {
+                      "application/json", new OpenApiMediaType
+                      {
+                        Schema = new OpenApiSchema
+                        {
+                          Reference = new OpenApiReference
+                          {
+                            Id = Schema_Error,
+                            Type = ReferenceType.Schema
+                          }
+                        },
+                        Examples = new Dictionary<string, OpenApiExample>
+                        {
+                          {
+                            "Forbidden", new OpenApiExample
+                            {
+                              Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_403_Forbidden }
                             }
                           }
                         }
