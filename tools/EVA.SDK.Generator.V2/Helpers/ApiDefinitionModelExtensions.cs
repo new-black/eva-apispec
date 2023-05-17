@@ -163,7 +163,7 @@ internal static class ApiDefinitionModelExtensions
     {
       if (result.TryGetValue(s, out var v)) return v;
       var spec = source[s];
-      result[s] = v = spec.Value + spec.Extends.Sum(GetVal);
+      result[s] = v = spec.Extends.Aggregate(spec.Value, (a, b) => a | GetVal(b));
       return v;
     }
 

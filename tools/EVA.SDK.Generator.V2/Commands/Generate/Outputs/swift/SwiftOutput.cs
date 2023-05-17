@@ -217,11 +217,10 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       output.WriteLine("}");
       output.WriteLine();
 
-      var enumValuesWithTotal = type.EnumValues
-        .Select(kv => (kv.Key, Value: kv.Value.Value + kv.Value.Extends.Select(e => type.EnumValues[e].Value).Sum()))
+      type.EnumValues.ToTotals()
         .OrderBy(v => v.Value);
 
-      foreach (var (name, value) in enumValuesWithTotal)
+      foreach (var (name, value) in type.EnumValues.ToTotals().OrderBy(v => v.Value))
       {
         if (value == 0) continue;
         output.WriteLine($"public static let {name} = {typename}(rawValue: {value})");

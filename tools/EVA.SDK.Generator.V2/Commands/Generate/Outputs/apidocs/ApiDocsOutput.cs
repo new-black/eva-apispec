@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using EVA.API.Spec;
+using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
 
@@ -178,13 +179,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
       return null;
     }
 
-    long TotalValue(string name)
-    {
-      var value = type.EnumValues[name];
-      return value.Value + value.Extends.Sum(TotalValue);
-    }
-
-    return type.EnumValues.ToDictionary(x => x.Key, x => TotalValue(x.Key));
+    return type.EnumValues.ToTotals();
   }
 
   private static List<TProperty>? FillRecursiveProperties<TProperty>(
