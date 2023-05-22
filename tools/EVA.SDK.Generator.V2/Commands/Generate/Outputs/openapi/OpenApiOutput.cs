@@ -176,20 +176,6 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       },
       Style = ParameterStyle.Simple
     });
-    model.Components.Parameters.Add(Parameter_Header_AsyncCallback, new()
-    {
-      In = ParameterLocation.Header,
-      Name = "EVA-Async-Callback",
-      Description = "Indicate how the caller should be notified when the asynchronous operation is complete. This is a serialized JSON object. Currently we only support `{\"email\":\"me\"}`",
-      Required = false,
-      AllowEmptyValue = false,
-      Schema = new OpenApiSchema
-      {
-        Type = "string",
-        Default = new OpenApiString("{\"email\":\"me\"}")
-      },
-      Style = ParameterStyle.Simple
-    });
 
     model.Components.Parameters.Add(Parameter_Header_AsyncCallback, new()
     {
