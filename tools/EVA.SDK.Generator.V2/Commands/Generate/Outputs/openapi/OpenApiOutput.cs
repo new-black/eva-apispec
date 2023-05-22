@@ -4,24 +4,29 @@ using System.Text.RegularExpressions;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Exceptions;
 using EVA.SDK.Generator.V2.Helpers;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Validations;
 using Microsoft.OpenApi.Writers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
 
 internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 {
+  private class State
+  {
+    internal readonly Dictionary<string, bool> SupportsBackendIDCache = new();
+  }
+
   public string? OutputPattern => null;
 
   public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "event-exports", "inheritance" };
 
   private const string Parameter_Header_UserAgent = "p1";
   private const string Parameter_Header_IdsMode = "p2";
-  private const string Parameter_Header_AppToken = "p3";
-  private const string Parameter_Header_ElevationToken = "p4";
 
   private const string Schema_Error = "eva_error_400";
   private const string Example_400_RequestValidation = "eva_example_400_RequestValidationFailure";
@@ -29,8 +34,12 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
   public async Task Write(OutputContext<OpenApiOptions> ctx)
   {
-    Cleanup(ctx.Input);
     var model = GetModel(ctx.Input, ctx.Options.Host);
+
+    foreach (var error in model.Validate(ValidationRuleSet.GetDefaultRuleSet()))
+    {
+      ctx.Logger.LogWarning("Validation error: {Error}", error.ToString());
+    }
 
     var version = ctx.Options.Version switch
     {
@@ -49,18 +58,28 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     model.Serialize(openApiWriter, version);
   }
 
-  internal static void Cleanup(ApiDefinitionModel input)
+  internal static string Cleanup(ApiDefinitionModel input)
   {
+    string? result = null;
     // Remove the Error field from all response messages
     foreach (var service in input.Services)
     {
       var responseType = input.Types[service.ResponseTypeID];
-      responseType.Properties = responseType.Properties.Where(p => p.Key != "Error").ToImmutableSortedDictionary(x => x.Key, x => x.Value);
+      if (responseType.Properties.TryGetValue("Error", out var v))
+      {
+        result = v.Type.Name;
+        responseType.Properties = responseType.Properties.Remove("Error");
+      }
     }
+
+    return result;
   }
 
-  internal static OpenApiDocument GetModel(ApiDefinitionModel input, string host)
+  internal OpenApiDocument GetModel(ApiDefinitionModel input, string host)
   {
+    var state = new State();
+    var errorObjectID = Cleanup(input);
+
     var server = string.IsNullOrWhiteSpace(host)
       ? new OpenApiServer
       {
@@ -92,7 +111,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       Servers = new List<OpenApiServer> { server },
       Paths = new OpenApiPaths(),
       Components = new OpenApiComponents(),
-      Tags = input.Services.Select(s => s.Assembly).Distinct().Select(s => new OpenApiTag { Name = s, Description = s }).ToList(),
+      Tags = input.Services.Select(s => TagFromAssembly(s.Assembly)).Distinct().Select(s => new OpenApiTag { Name = s, Description = s }).ToList(),
       SecurityRequirements = new List<OpenApiSecurityRequirement>
       {
         new()
@@ -109,13 +128,27 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       Name = "Authorization",
       In = ParameterLocation.Header
     });
+    model.Components.SecuritySchemes.Add("eva-auth-elevated", new OpenApiSecurityScheme
+    {
+      Name = "EVA-Elevation-Token",
+      In = ParameterLocation.Header,
+      Type = SecuritySchemeType.ApiKey,
+      Description = "Authenticate using an elevated token. This allows temporary access to resources that are otherwise not accessible."
+    });
+    model.Components.SecuritySchemes.Add("eva-auth-apptoken", new OpenApiSecurityScheme
+    {
+      Name = "EVA-App-Token",
+      In = ParameterLocation.Header,
+      Type = SecuritySchemeType.ApiKey,
+      Description = "Authenticate using an application token. This allows building an order as a non-logged in user."
+    });
 
     // Parameters
     model.Components.Parameters.Add(Parameter_Header_UserAgent, new()
     {
       In = ParameterLocation.Header,
       Name = "EVA-User-Agent",
-      Description = "The user agent that is making these calls. Don't make this specific per device/browser but per application. This should be of the form: MyFirstUserAgent/1.0.0",
+      Description = "The user agent that is making these calls. Don't make this specific per device/browser but per application. This should be of the form: `MyFirstUserAgent/1.0.0`",
       Required = true,
       AllowEmptyValue = false,
       Schema = new OpenApiSchema
@@ -142,32 +175,6 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       },
       Style = ParameterStyle.Simple
     });
-    model.Components.Parameters.Add(Parameter_Header_AppToken, new()
-    {
-      In = ParameterLocation.Header,
-      Name = "EVA-App-Token",
-      Description = "The app token, used for anonymously building an order",
-      Required = false,
-      AllowEmptyValue = false,
-      Schema = new OpenApiSchema
-      {
-        Type = "string"
-      },
-      Style = ParameterStyle.Simple
-    });
-    model.Components.Parameters.Add(Parameter_Header_ElevationToken, new()
-    {
-      In = ParameterLocation.Header,
-      Name = "EVA-Elevation-Token",
-      Description = "Token used for one-time elevation of a user's permissions",
-      Required = false,
-      AllowEmptyValue = false,
-      Schema = new OpenApiSchema
-      {
-        Type = "string"
-      },
-      Style = ParameterStyle.Simple
-    });
 
     // Render each datalake endpoint
     foreach (var dl in input.DatalakeExports)
@@ -178,7 +185,8 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     // Render each service
     foreach (var service in input.Services)
     {
-      model.Paths[service.Path] = ToPathItem(input, service);
+      var pathItem = ToPathItem(state, input, service);
+      model.Paths[service.Path] = pathItem;
     }
 
     // Render each type
@@ -192,23 +200,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     {
       Type = "object",
       Required = new HashSet<string> { "Error" },
-      Properties = new Dictionary<string, OpenApiSchema>
-      {
-        {
-          "Error", new OpenApiSchema
-          {
-            Type = "object",
-            Required = new HashSet<string> { "Message", "Type", "Code", "RequestID" },
-            Properties = new Dictionary<string, OpenApiSchema>
-            {
-              { "Message", new OpenApiSchema { Type = "string" } },
-              { "Type", new OpenApiSchema { Type = "string" } },
-              { "Code", new OpenApiSchema { Type = "string" } },
-              { "RequestID", new OpenApiSchema { Type = "string" } }
-            }
-          }
-        }
-      }
+      Properties = new Dictionary<string, OpenApiSchema> { { "Error", ToSchema(errorObjectID) } }
     });
 
     model.Components.Examples.Add(Example_400_RequestValidation, new OpenApiExample
@@ -284,41 +276,30 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
     foreach (var (name, prop) in type.Properties)
     {
-      OpenApiSchema schema = new OpenApiSchema();
-
+      string? dmBackendId = null;
       if (prop.DataModelInformation is { SupportsBackendID: true } dmi)
       {
-        var s = ToSchema(input, prop.Type);
-        s.Title = $"{dmi.Name} ID";
-
-        schema.Description = prop.Description ?? string.Empty;
-        schema.OneOf = new List<OpenApiSchema>
-        {
-          s,
-          new() { Type = "string", Title = $"{dmi.Name} BackendID", Description = "Make sure to set the `EVA-IDs-Mode` header to `ExternalIDs` when using this" },
-        };
+        dmBackendId = dmi.Name;
       }
-      else
+
+      var schema = ToSchema(input, prop.Type, dmBackendId);
+      schema.Description = prop.Description ?? string.Empty;
+
+      if (prop.DataModelInformation is { Name: var dmn })
       {
-        schema = ToSchema(input, prop.Type);
-        schema.Description = prop.Description ?? string.Empty;
+        schema.Description += $"\n\nThis is the ID of a `{dmn}`";
+      }
 
-        if (prop.DataModelInformation is { Name: var dmn })
-        {
-          schema.Description += $"\n\nThis is the ID of a `{dmn}`";
-        }
+      if (prop.StringLengthConstraint is { } slc)
+      {
+        schema.MinLength = slc.Min;
+        schema.MaxLength = slc.Max;
+        schema.Description += $"\n\nThis string must be between {slc.Min} (incl) and {slc.Max} (incl) characters long.";
+      }
 
-        if (prop.StringLengthConstraint is { } slc)
-        {
-          schema.MinLength = slc.Min;
-          schema.MaxLength = slc.Max;
-          schema.Description += $"\n\nThis string must be between {slc.Min} (incl) and {slc.Max} (incl) characters long.";
-        }
-
-        if (prop.AllowedValues is { Length: > 0 } allowedValues)
-        {
-          schema.Enum = allowedValues.Select<string, IOpenApiAny>(v => new OpenApiString(v)).ToList();
-        }
+      if (prop.AllowedValues is { Length: > 0 } allowedValues)
+      {
+        schema.Enum = allowedValues.Select<string, IOpenApiAny>(v => new OpenApiString(v)).ToList();
       }
 
       if (prop.Required is { Effective: not null } required)
@@ -345,15 +326,29 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     return result;
   }
 
-  private static OpenApiSchema ToSchema(ApiDefinitionModel input, TypeReference type)
+  private static OpenApiSchema ToSchema(ApiDefinitionModel input, TypeReference type, string? dmBackendID = null)
   {
-    var s = ToSchema_IgnoreNull(input, type);
+    var s = ToSchema_IgnoreNull(input, type, dmBackendID);
     if (type.Nullable) s.Nullable = true;
     return s;
   }
 
-  private static OpenApiSchema ToSchema_IgnoreNull(ApiDefinitionModel input, TypeReference type)
+  private static OpenApiSchema ToSchema_IgnoreNull(ApiDefinitionModel input, TypeReference type, string? dmBackendID)
   {
+    if (type.Name is ApiSpecConsts.Int16 or ApiSpecConsts.Int32 or ApiSpecConsts.Int64 && dmBackendID != null)
+    {
+      var s = ToSchema_IgnoreNull(input, type, null);
+      s.Title = $"{dmBackendID} ID";
+      return new OpenApiSchema
+      {
+        OneOf = new List<OpenApiSchema>
+        {
+          s,
+          new() { Type = "string", Title = $"{dmBackendID} BackendID", Description = "Make sure to set the `EVA-IDs-Mode` header to `ExternalIDs` when using this" },
+        }
+      };
+    }
+
     if (type.Name == ApiSpecConsts.Int16) return new OpenApiSchema { Type = "integer" };
     if (type.Name == ApiSpecConsts.Int32) return new OpenApiSchema { Type = "integer", Format = "int32" };
     if (type.Name == ApiSpecConsts.Int64) return new OpenApiSchema { Type = "integer", Format = "int64" };
@@ -368,7 +363,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     if (type.Name == ApiSpecConsts.Object) return new OpenApiSchema { Type = "object", AdditionalPropertiesAllowed = true };
     if (type.Name == ApiSpecConsts.Any) return new OpenApiSchema { Type = "object", AdditionalPropertiesAllowed = true };
     if (type.Name == ApiSpecConsts.Date) return new OpenApiSchema { Type = "string", Format = "date-time" };
-    if (type.Name == ApiSpecConsts.Specials.Array) return new OpenApiSchema { Type = "array", Items = ToSchema(input, type.Arguments.Single()) };
+    if (type.Name == ApiSpecConsts.Specials.Array) return new OpenApiSchema { Type = "array", Items = ToSchema(input, type.Arguments.Single(), dmBackendID) };
 
     if (type.Name == ApiSpecConsts.Specials.Option)
     {
@@ -457,96 +452,113 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     };
   }
 
-  private static OpenApiPathItem ToPathItem(ApiDefinitionModel input, ServiceModel service)
+  private static OpenApiPathItem ToPathItem(State state, ApiDefinitionModel input, ServiceModel service)
   {
-    string MapOperationName(string s)
+    string MapUserTypes(ApiSpecUserTypes t)
     {
-      if (s.EndsWith("_Async"))
+      var values = Enum.GetValues<ApiSpecUserTypes>();
+      values = values
+        .Where(v => v != ApiSpecUserTypes.None && t.HasFlag(v))
+        .ToArray();
+
+      if (values.Length == 0) return string.Empty;
+
+      var str = $"`{values[0]}`";
+      for (var i = 1; i < values.Length; i++)
       {
-        return $"{s[..^6]} (Async)";
+        str += $" or `{values[i]}`";
       }
 
-      if (s.EndsWith("_AsyncResult"))
-      {
-        return $"{s[..^12]} (Async result)";
-      }
+      return str;
+    }
 
-      return s;
+    var description = input.Types[service.RequestTypeID].Description ?? $"The {service.Name} service";
+
+    var requiresAuthentication = !service.AuthInformation.RequiredPermissions.All(p => p is { Functionality: null, Scope: null, UserTypes: null });
+    var supportsExternalID = SupportsExternalIdsMode(state, input, service.RequestTypeID);
+
+    if (requiresAuthentication)
+    {
+      description += "\n\n---";
+
+      foreach (var x in service.AuthInformation.RequiredPermissions)
+      {
+        description += "\n**Authentication:**\n\n";
+        description += x switch
+        {
+          { Functionality: null, Scope: null, UserTypes: > 0 } => $"Requires a user of type {MapUserTypes(x.UserTypes.Value)}",
+          { Functionality: not null, Scope: null, UserTypes: > 0 } => $"Requires a user of type {MapUserTypes(x.UserTypes.Value)} with functionality `{x.Functionality}`",
+          { Functionality: not null, Scope: not null, UserTypes: > 0 } => $"Requires a user of type {MapUserTypes(x.UserTypes.Value)} with functionality `{x.Functionality}:{x.Scope}`",
+          { Functionality: not null, Scope: null } => $"Requires any user with functionality `{x.Functionality}`",
+          { Functionality: not null, Scope: not null } => $"Requires any user with functionality `{x.Functionality}:{x.Scope}`",
+          { Functionality: null, Scope: null } => "This service does not require authentication",
+          _ => "> ???"
+        };
+      }
+    }
+
+    var parameters = new List<OpenApiParameter>
+    {
+      new()
+      {
+        Reference = new OpenApiReference
+        {
+          Type = ReferenceType.Parameter,
+          Id = Parameter_Header_UserAgent
+        }
+      }
+    };
+
+    if (supportsExternalID)
+    {
+      parameters.Add(new()
+      {
+        Reference = new OpenApiReference
+        {
+          Type = ReferenceType.Parameter,
+          Id = Parameter_Header_IdsMode
+        }
+      });
     }
 
     return new OpenApiPathItem
     {
       Summary = service.Name,
-      Description = input.Types[service.RequestTypeID].Description ?? $"The {service.Name} service",
-      Parameters = new List<OpenApiParameter>
-      {
-        new()
-        {
-          Reference = new OpenApiReference
-          {
-            Type = ReferenceType.Parameter,
-            Id = Parameter_Header_UserAgent
-          }
-        },
-        new()
-        {
-          Reference = new OpenApiReference
-          {
-            Type = ReferenceType.Parameter,
-            Id = Parameter_Header_IdsMode
-          }
-        },
-        new()
-        {
-          Reference = new OpenApiReference
-          {
-            Type = ReferenceType.Parameter,
-            Id = Parameter_Header_AppToken
-          }
-        },
-        new()
-        {
-          Reference = new OpenApiReference
-          {
-            Type = ReferenceType.Parameter,
-            Id = Parameter_Header_ElevationToken
-          }
-        }
-      },
+      Description = description,
+      Parameters = parameters,
       Operations = new Dictionary<OperationType, OpenApiOperation>
       {
         {
           OperationType.Post, new OpenApiOperation
           {
             Summary = service.Name,
-            Description = input.Types[service.RequestTypeID].Description ?? $"The {service.Name} service",
+            Description = description,
             OperationId = service.Name,
             Tags = new List<OpenApiTag> { new() { Name = TagFromAssembly(service.Assembly), Description = TagFromAssembly(service.Assembly) } },
-            Security = new List<OpenApiSecurityRequirement>
-            {
-              new()
+            Security = !requiresAuthentication
+              ? new List<OpenApiSecurityRequirement>()
+              : new List<OpenApiSecurityRequirement>
               {
+                new()
                 {
-                  new OpenApiSecurityScheme
                   {
-                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "eva-auth" }
-                  },
-                  ImmutableList<string>.Empty
+                    new OpenApiSecurityScheme
+                    {
+                      Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "eva-auth" }
+                    },
+                    service.AuthInformation.RequiredPermissions
+                      .Select(p => $"{p.Functionality}:{p.Scope}")
+                      .ToImmutableArray()
+                  }
                 }
-              }
-            },
+              },
             RequestBody = new OpenApiRequestBody
             {
               Description = "",
               Required = true,
               Content = new Dictionary<string, OpenApiMediaType>
               {
-                {
-                  "application/json", new OpenApiMediaType
-                  {
-                    Schema = ToSchema(service.RequestTypeID)
-                  }
-                }
+                { "application/json", new OpenApiMediaType { Schema = ToSchema(service.RequestTypeID) } }
               }
             },
             Responses = new OpenApiResponses
@@ -557,17 +569,12 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
                   Description = $"The response for a call to {service.Name}",
                   Content = new Dictionary<string, OpenApiMediaType>
                   {
-                    {
-                      "application/json", new OpenApiMediaType
-                      {
-                        Schema = ToSchema(service.ResponseTypeID),
-                      }
-                    }
+                    { "application/json", new OpenApiMediaType { Schema = ToSchema(service.ResponseTypeID), } }
                   }
                 }
               },
               {
-                "400", new OpenApiResponse
+                "4XX", new OpenApiResponse
                 {
                   Description = "A BadRequest response",
                   Content = new Dictionary<string, OpenApiMediaType>
@@ -575,53 +582,11 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
                     {
                       "application/json", new OpenApiMediaType
                       {
-                        Schema = new OpenApiSchema
-                        {
-                          Reference = new OpenApiReference
-                          {
-                            Id = Schema_Error,
-                            Type = ReferenceType.Schema
-                          }
-                        },
+                        Schema = new OpenApiSchema { Reference = new OpenApiReference { Id = Schema_Error, Type = ReferenceType.Schema } },
                         Examples = new Dictionary<string, OpenApiExample>
                         {
-                          {
-                            "RequestValidationFailure", new OpenApiExample
-                            {
-                              Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_400_RequestValidation }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                "403", new OpenApiResponse
-                {
-                  Description = "A Forbidden response",
-                  Content = new Dictionary<string, OpenApiMediaType>
-                  {
-                    {
-                      "application/json", new OpenApiMediaType
-                      {
-                        Schema = new OpenApiSchema
-                        {
-                          Reference = new OpenApiReference
-                          {
-                            Id = Schema_Error,
-                            Type = ReferenceType.Schema
-                          }
-                        },
-                        Examples = new Dictionary<string, OpenApiExample>
-                        {
-                          {
-                            "Forbidden", new OpenApiExample
-                            {
-                              Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_403_Forbidden }
-                            }
-                          }
+                          { "RequestValidationFailure", new OpenApiExample { Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_400_RequestValidation } } },
+                          { "Forbidden", new OpenApiExample { Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_403_Forbidden } } }
                         }
                       }
                     }
@@ -633,6 +598,26 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         }
       }
     };
+  }
+
+  private static bool SupportsExternalIdsMode(State state, ApiDefinitionModel input, string s)
+  {
+    if (state.SupportsBackendIDCache.TryGetValue(s, out var cached)) return cached;
+
+    var result = SupportsExternalIdsMode_Uncached(input, s, new HashSet<string>());
+    state.SupportsBackendIDCache[s] = result;
+    return result;
+  }
+
+  private static bool SupportsExternalIdsMode_Uncached(ApiDefinitionModel input, string s, HashSet<string> recursionGuard)
+  {
+    if (recursionGuard.Contains(s)) return false;
+
+    recursionGuard.Add(s);
+    var type = input.Types[s];
+    var result = type.Properties.Any(p => p.Value.DataModelInformation is { SupportsBackendID: true }) || type.TypeDependencies.Any(d => SupportsExternalIdsMode_Uncached(input, d, recursionGuard));
+    recursionGuard.Remove(s);
+    return result;
   }
 
   private static string FixName(string name)
