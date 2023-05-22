@@ -27,6 +27,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
   private const string Parameter_Header_UserAgent = "p1";
   private const string Parameter_Header_IdsMode = "p2";
+  private const string Parameter_Header_AsyncCallback = "p3";
 
   private const string Schema_Error = "eva_error_400";
   private const string Example_400_RequestValidation = "eva_example_400_RequestValidationFailure";
@@ -172,6 +173,20 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         {
           new OpenApiString("ExternalIDs")
         }
+      },
+      Style = ParameterStyle.Simple
+    });
+    model.Components.Parameters.Add(Parameter_Header_AsyncCallback, new()
+    {
+      In = ParameterLocation.Header,
+      Name = "EVA-Async-Callback",
+      Description = "Indicate how the caller should be notified when the asynchronous operation is complete. This is a serialized JSON object. Currently we only support `{\"email\":\"me\"}`",
+      Required = false,
+      AllowEmptyValue = false,
+      Schema = new OpenApiSchema
+      {
+        Type = "string",
+        Default = new OpenApiString("{\"email\":\"me\"}")
       },
       Style = ParameterStyle.Simple
     });
@@ -517,6 +532,18 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         {
           Type = ReferenceType.Parameter,
           Id = Parameter_Header_IdsMode
+        }
+      });
+    }
+
+    if (service.Name.EndsWith("_Async"))
+    {
+      parameters.Add(new()
+      {
+        Reference = new OpenApiReference
+        {
+          Type = ReferenceType.Parameter,
+          Id = Parameter_Header_AsyncCallback
         }
       });
     }
