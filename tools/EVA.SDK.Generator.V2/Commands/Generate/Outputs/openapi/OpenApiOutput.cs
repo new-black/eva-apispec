@@ -191,6 +191,21 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       Style = ParameterStyle.Simple
     });
 
+    model.Components.Parameters.Add(Parameter_Header_AsyncCallback, new()
+    {
+      In = ParameterLocation.Header,
+      Name = "EVA-Async-Callback",
+      Description = "Indicate how the caller should be notified when the asynchronous operation is complete. This is a serialized JSON object. Currently we only support the `email` property. Use `me` as a value to be notified on the emailaddress of the current user.",
+      Required = false,
+      AllowEmptyValue = false,
+      Schema = new OpenApiSchema
+      {
+        Type = "string",
+        Default = new OpenApiString("{}")
+      },
+      Style = ParameterStyle.Simple
+    });
+
     // Render each datalake endpoint
     foreach (var dl in input.DatalakeExports)
     {
