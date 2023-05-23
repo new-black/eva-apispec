@@ -112,7 +112,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       Servers = new List<OpenApiServer> { server },
       Paths = new OpenApiPaths(),
       Components = new OpenApiComponents(),
-      Tags = input.Services.Select(s => TagFromAssembly(s.Assembly)).Distinct().Select(s => new OpenApiTag { Name = s, Description = s }).ToList(),
+      Tags = input.Services.Select(s => TagFromAssembly(s.Assembly)).Concat(new[]{"DataLake"}).Distinct().Order().Select(s => new OpenApiTag { Name = s, Description = s }).ToList(),
       SecurityRequirements = new List<OpenApiSecurityRequirement>
       {
         new()

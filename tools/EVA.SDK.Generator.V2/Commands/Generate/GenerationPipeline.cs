@@ -1,4 +1,5 @@
 ﻿using System.IO.Enumeration;
+using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms.Filters;
@@ -24,7 +25,8 @@ internal static class GenerationPipeline
     new RemoveNestedTypes(),
     new RemoveOptions(),
     new RemoveSharedRequestResponseTypes(),
-    new RemoveUnusedGenericArguments()
+    new RemoveUnusedGenericArguments(),
+    new RemoveDataLakeExports()
   };
 
   private static readonly ITransform Transform1 = new FixDependencies();
