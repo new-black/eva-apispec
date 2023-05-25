@@ -267,13 +267,17 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     if (typeReference is { Name: ApiSpecConsts.Date }) return $"Date{n}";
     if (typeReference is { Name: ApiSpecConsts.Bool }) return $"Bool{n}";
     if (typeReference is { Name: ApiSpecConsts.Guid }) return $"UUID{n}";
-    if (typeReference is { Name: ApiSpecConsts.Specials.Array, Arguments: { Length: 1 } x }) return $"[{GetTypeName(x[0].CloneAsNotNull(), ctx)}]{n}";
+    if (typeReference is { Name: ApiSpecConsts.Specials.Array, Arguments: { Length: 1 } x })
+    {
+      var element = x[0];
+      if (ctx.Options.OptimisticNullability) element = element.CloneAsNotNull();
+      return $"[{GetTypeName(element, ctx)}]{n}";
+    }
     if (typeReference is { Name: ApiSpecConsts.Any or ApiSpecConsts.Object }) return $"{ctx.Options.AnyCodableName}{n}";
     if (typeReference is { Name: ApiSpecConsts.WellKnown.IProductSearchItem }) return $"[String: {ctx.Options.AnyCodableName}]{n}";
     if (typeReference is { Name: ApiSpecConsts.Specials.Map })
     {
       var ta = typeReference.Arguments[1];
-      if (ctx.Options.OptimisticNullability) ta = ta.CloneAsNotNull();
       return $"[String: {GetTypeName(ta, ctx)}]{n}";
     }
 
