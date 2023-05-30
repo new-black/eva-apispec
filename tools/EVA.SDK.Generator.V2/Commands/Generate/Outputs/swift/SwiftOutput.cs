@@ -25,31 +25,14 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       var output = new IndentedStringBuilder(4);
 
-      output.WriteLine("import Foundation");
-      output.WriteLine();
-      output.WriteLine($"public final class {filename}: EvaService<{reqName}, {resName}> {{");
-      using (output.Indentation)
+      if (ctx.Options.ServiceFormat == "struct")
       {
-        output.WriteLine("public init(endpoint: EvaEndpoint) {");
-        using (output.Indentation)
-        {
-          output.WriteLine("super.init(");
-          using (output.Indentation)
-          {
-            output.WriteLine("endpoint: endpoint,");
-            output.WriteLine($"name: \"{assembly}:{service.Name}\",");
-            output.WriteLine($"path: \"{service.Path}\"");
-          }
-
-          output.WriteLine(")");
-        }
-
-        output.WriteLine("}");
+        WriteService_Struct(output, filename, reqName, resName, assembly, service);
       }
-
-      output.WriteLine("}");
-      output.Write(string.Empty);
-
+      else
+      {
+        WriteService_Class(output, filename, reqName, resName, assembly, service);
+      }
 
       await writer.WriteFileAsync($"{assembly}/{filename}.swift", output.ToString());
     }
@@ -86,8 +69,62 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         }
 
         await writer.WriteFileAsync("Mocks.swift", content);
+
+        if (ctx.Options.ServiceFormat == "struct")
+        {
+          await writer.WriteFileAsync("Mocks.struct.swift", ManifestResourceHelpers.GetResource("swift.Resources.Mocks.struct.swift"));
+        }
+        else
+        {
+          await writer.WriteFileAsync("Mocks.class.swift", ManifestResourceHelpers.GetResource("swift.Resources.Mocks.class.swift"));
+        }
       }
     }
+  }
+
+  private static void WriteService_Class(IndentedStringBuilder output, string filename, string reqName, string resName, string assembly, ServiceModel service)
+  {
+    output.WriteLine("import Foundation");
+    output.WriteLine();
+    output.WriteLine($"public final class {filename}: EvaService<{reqName}, {resName}> {{");
+    using (output.Indentation)
+    {
+      output.WriteLine("public init(endpoint: EvaEndpoint) {");
+      using (output.Indentation)
+      {
+        output.WriteLine("super.init(");
+        using (output.Indentation)
+        {
+          output.WriteLine("endpoint: endpoint,");
+          output.WriteLine($"name: \"{assembly}:{service.Name}\",");
+          output.WriteLine($"path: \"{service.Path}\"");
+        }
+
+        output.WriteLine(")");
+      }
+
+      output.WriteLine("}");
+    }
+
+    output.WriteLine("}");
+    output.Write(string.Empty);
+  }
+
+  private static void WriteService_Struct(IndentedStringBuilder output, string filename, string reqName, string resName, string assembly, ServiceModel service)
+  {
+    output.WriteLine("import Foundation");
+    output.WriteLine();
+    output.WriteLine($"public struct {filename}: EvaService {{");
+    using (output.Indentation)
+    {
+      output.WriteLine($"public typealias Request = {reqName}");
+      output.WriteLine($"public typealias Response = {resName}");
+      output.WriteLine($"public static let name = \"{assembly}:{service.Name}\"");
+      output.WriteLine($"public static let path = \"{service.Path}\"");
+    }
+
+    output.WriteLine("}");
+    output.Write(string.Empty);
   }
 
   private void WriteType(TypeSpecification type, string id, string typename, IndentedStringBuilder output, OutputContext<SwiftOptions> ctx)

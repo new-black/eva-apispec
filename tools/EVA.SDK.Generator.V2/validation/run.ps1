@@ -5,6 +5,7 @@ dotnet run -- generate swift `
   --remove inheritance deprecated-properties deprecated-services `
   --opt-optimistic-nullability `
   --opt-include-mocks `
+  --opt-service-format struct `
   --assembly `
     EVA.Admin `
     EVA.Auditing `

@@ -9,6 +9,7 @@ internal class SwiftOptions : GenerateOptions
   internal string AnyCodableName { get; set; } = SwiftOptionsBinder.AnyCodableName.Default;
   internal bool OptimisticNullability { get; set; } = SwiftOptionsBinder.OptimisticNullability.Default;
   internal bool IncludeMocks { get; set; } = SwiftOptionsBinder.IncludeMocks.Default;
+  internal string ServiceFormat { get; set; } = SwiftOptionsBinder.ServiceFormat.Default;
 }
 
 internal class SwiftOptionsBinder : BaseGenerateOptionsBinder<SwiftOptions>
@@ -28,11 +29,17 @@ internal class SwiftOptionsBinder : BaseGenerateOptionsBinder<SwiftOptions>
     description: "Include mocks for IndirectOptional, EvaEndpoint, EvaService and EvaAnyCodable."
   ).WithDefault(false);
 
+  internal static readonly OptionWithDefault<string> ServiceFormat = new Option<string>(
+    name: "--opt-service-format",
+    description: "Format of the generated services."
+  ).FromAmong("class", "struct").WithDefault("class");
+
   protected override IEnumerable<Option> GetOptions()
   {
     yield return AnyCodableName.Option;
     yield return OptimisticNullability.Option;
     yield return IncludeMocks.Option;
+    yield return ServiceFormat.Option;
   }
 
   protected override void BuildOptions(SwiftOptions options, BindingContext ctx)
@@ -40,5 +47,6 @@ internal class SwiftOptionsBinder : BaseGenerateOptionsBinder<SwiftOptions>
     options.AnyCodableName = AnyCodableName.Value(ctx);
     options.OptimisticNullability = OptimisticNullability.Value(ctx);
     options.IncludeMocks = IncludeMocks.Value(ctx);
+    options.ServiceFormat = ServiceFormat.Value(ctx);
   }
 }
