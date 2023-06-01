@@ -1,22 +1,14 @@
 {
-  "name": "CreateZonedCycleCount",
-  "description": "Creates one cycle count for the requested Product and Organization Unit (with origin Manual)",
+  "name": "GetAsyncRequestForUser",
+  "description": "Returns a specific async request for your current user",
   "method": "POST",
-  "path": "/message/CreateZonedCycleCount",
+  "path": "/message/GetAsyncRequestForUser",
   "request": {
     "properties": [
       {
-        "name": "OrganizationUnitID",
-        "description": null,
-        "type": "int64",
-        "properties": null,
-        "recursion": false,
-        "enumValues": null
-      },
-      {
-        "name": "ProductID",
-        "description": null,
-        "type": "int64",
+        "name": "ID",
+        "description": "The ID of the async request to retrieve",
+        "type": "string",
         "properties": null,
         "recursion": false,
         "enumValues": null
@@ -25,47 +17,6 @@
   },
   "response": {
     "properties": [
-      {
-        "name": "Created",
-        "description": null,
-        "type": "EVA.Core.Services.ZonedCycleCounts.CycleCountEntry[]?",
-        "properties": [
-          {
-            "name": "OrganizationUnitID",
-            "description": null,
-            "type": "int64",
-            "properties": null,
-            "recursion": false,
-            "enumValues": null
-          },
-          {
-            "name": "ProductBackendID",
-            "description": null,
-            "type": "string",
-            "properties": null,
-            "recursion": false,
-            "enumValues": null
-          },
-          {
-            "name": "ProductID",
-            "description": null,
-            "type": "int64",
-            "properties": null,
-            "recursion": false,
-            "enumValues": null
-          },
-          {
-            "name": "ProductName",
-            "description": null,
-            "type": "string",
-            "properties": null,
-            "recursion": false,
-            "enumValues": null
-          }
-        ],
-        "recursion": false,
-        "enumValues": null
-      },
       {
         "name": "Error",
         "description": null,
@@ -141,20 +92,12 @@
         "enumValues": null
       },
       {
-        "name": "Skipped",
+        "name": "Request",
         "description": null,
-        "type": "EVA.Core.Services.ZonedCycleCounts.CycleCountEntry[]?",
+        "type": "EVA.Core.AsyncRequests.AsyncRequest",
         "properties": [
           {
-            "name": "OrganizationUnitID",
-            "description": null,
-            "type": "int64",
-            "properties": null,
-            "recursion": false,
-            "enumValues": null
-          },
-          {
-            "name": "ProductBackendID",
+            "name": "ID",
             "description": null,
             "type": "string",
             "properties": null,
@@ -162,15 +105,43 @@
             "enumValues": null
           },
           {
-            "name": "ProductID",
+            "name": "ResponseBlobID",
             "description": null,
-            "type": "int64",
+            "type": "guid",
             "properties": null,
             "recursion": false,
             "enumValues": null
           },
           {
-            "name": "ProductName",
+            "name": "ResponseType",
+            "description": null,
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Status",
+            "description": null,
+            "type": "EVA.Core.DataModels.AsyncServiceRequestStatus",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "Completed": 1,
+              "Failed": 2,
+              "InProgress": 0
+            }
+          },
+          {
+            "name": "Timestamp",
+            "description": null,
+            "type": "date",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
             "description": null,
             "type": "string",
             "properties": null,
