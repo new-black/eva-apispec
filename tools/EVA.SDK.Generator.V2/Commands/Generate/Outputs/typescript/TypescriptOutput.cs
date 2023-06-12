@@ -10,6 +10,9 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
 
   public string[] ForcedRemoves => Array.Empty<string>();
 
+  private const string AnyType = "TAnyValue";
+  private const string IEvaServiceDefinition = "IEvaServiceDefinition";
+
   public async Task Write(OutputContext<TypescriptOptions> ctx)
   {
     var (input, options, writer, _) = ctx;
@@ -18,50 +21,59 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
     {
       var assemblyCtx = new AssemblyContext(group.Assembly);
 
+      // Write the types
       var o = new IndentedStringBuilder(2);
 
       // Write the extenders
-      WriteExtensions(input, o, assemblyCtx, options);
+      if (ctx.Options.Extenders) WriteExtensions(input, o, assemblyCtx, options);
 
-      // Write namespace
-      o.WriteLine($"export namespace {FixNamespace(group.Assembly)} {{");
-      using (o.Indentation)
+      // Preset types
+      if (group.Assembly == ApiSpecConsts.WellKnown.CoreAssembly)
       {
-        // Preset types
-        if (group.Assembly == ApiSpecConsts.WellKnown.CoreAssembly)
-        {
-          o.WriteLine();
-          o.WriteLine("export type TAnyValue = string | number | boolean | Date | Array<TAnyValue> | { [key: string]: TAnyValue };");
-        }
-
-        // Write the errors
         o.WriteLine();
-        var grouped = group.Errors.GroupByPrefix();
-        WriteErrorGroup(grouped, o, "Errors");
+        o.WriteLine($"export type {AnyType} = string | number | boolean | Date | Array<{AnyType}> | {{ [key: string]: {AnyType} }};");
+        o.WriteLine($"export interface {IEvaServiceDefinition} {{ name: string; path: string; request?: unknown; response?: unknown; }}");
+      }
 
-        // Write the types
-        WriteTypes(group, o, input, assemblyCtx);
+      // Write the errors
+      o.WriteLine();
+      var grouped = group.Errors.GroupByPrefix();
+      WriteErrorGroup(grouped, o, "Errors");
 
-        // Write the extenders
+      // Write the types
+      WriteTypes(group, o, input, assemblyCtx, ctx.Options);
+
+      // Write the extenders
+      if (ctx.Options.Extenders)
+      {
         foreach (var extender in assemblyCtx.ExtendersToGenerate)
         {
           o.WriteLine($"export interface {extender} {{ }}");
         }
       }
 
-      o.WriteLine("}");
+      var assemblyName = AssemblyNameToPackageName(group.Assembly);
+      await writer.WriteFileAsync($"{assemblyName}/{assemblyName}.ts", WriteImports(assemblyCtx, options, false) + o);
 
-      // Write the import statements
-      var importsBuilder = new StringBuilder();
-      foreach (var x in assemblyCtx.ReferencedModules)
+      // Write the services
+      assemblyCtx = new AssemblyContext(group.Assembly);
+      o = new IndentedStringBuilder(2);
+      foreach (var service in group.Services)
       {
-        importsBuilder.AppendLine($"import {{ {FixNamespace(x)} }} from '{GetModuleReference(x, options.PackagePrefix)}';");
+        o.WriteLine();
+        assemblyCtx.RegisterReferencedType(ApiSpecConsts.WellKnown.CoreAssembly, IEvaServiceDefinition);
+        o.WriteLine($"export class {service.Name} implements {IEvaServiceDefinition}");
+        using (o.BracedIndentation)
+        {
+          o.WriteLine($"name = {EscapeForString(service.Name)};");
+          o.WriteLine($"path = {EscapeForString(service.Path)};");
+          o.WriteLine($"request?: {TypeNameToTypescriptTypeName(assemblyCtx, input, service.RequestTypeID)};");
+          o.WriteLine($"response?: {TypeNameToTypescriptTypeName(assemblyCtx, input, service.ResponseTypeID)};");
+        }
       }
 
-      importsBuilder.AppendLine();
-      importsBuilder.AppendLine(o.ToString());
-
-      await writer.WriteFileAsync($"{group.Assembly}.ts", importsBuilder.ToString());
+      await writer.WriteFileAsync($"{assemblyName}/{assemblyName}.services.ts", WriteImports(assemblyCtx, options, true) + o);
+      await writer.WriteFileAsync($"{assemblyName}/index.ts", $"export * from './{assemblyName}';\nexport * from './{assemblyName}.services';");
     }
   }
 
@@ -77,67 +89,79 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
         var typesInThisAssembly = propspec.Type.Arguments.Where(tr => input.Types[tr.Name].Assembly == ctx.AssemblyName).ToList();
         if (!typesInThisAssembly.Any()) continue;
 
-        ctx.RegisterReferencedModule(typespec.Assembly);
-        var extenderName = $"Extenders_{FixTypeName(input, typeid)}_{propname}";
-        o.WriteLine($"declare module '{GetModuleReference(typespec.Assembly, options.PackagePrefix)}' {{");
-        using (o.Indentation)
+        var extenderName = $"Extenders_{TypeNameToTypescriptTypeName(ctx, input, typeid, false)}_{propname}";
+        o.WriteLine($"declare module '{DeterminePackageReference(typespec.Assembly, options.PackagePrefix)}'");
+        using (o.BracedIndentation)
         {
-          o.WriteLine($"export namespace {FixNamespace(typespec.Assembly)} {{");
-          using (o.Indentation)
+          o.WriteLine($"export interface {extenderName}");
+          using (o.BracedIndentation)
           {
-            o.WriteLine($"export interface {extenderName} {{");
-            using (o.Indentation)
+            foreach (var tita in typesInThisAssembly)
             {
-              foreach (var tita in typesInThisAssembly)
-              {
-                var typeRef = GetTypeRef(input, tita.Name, null);
-                o.WriteLine($"{typeRef.Replace(".", string.Empty)}: {typeRef}{(tita.Nullable ? " | null" : string.Empty)};");
-              }
+              var typeRef = ToReference(input, tita, ctx);
+              o.WriteLine($"{typeRef.Replace(".", string.Empty)}: {typeRef}{(tita.Nullable ? " | null" : string.Empty)};");
             }
-
-            o.WriteLine("}");
           }
-
-          o.WriteLine("}");
         }
-
-        o.WriteLine("}");
+        o.WriteLine();
       }
     }
+  }
+
+  private static string WriteImports(AssemblyContext ctx, TypescriptOptions options, bool referenceSelf)
+  {
+    var o = new StringBuilder();
+    foreach (var groupedReferences in ctx.ReferencedTypes.GroupBy(t => t.assembly))
+    {
+      if (groupedReferences.Key == ctx.AssemblyName && !referenceSelf) continue;
+
+      o.AppendLine("import {");
+      foreach (var reference in groupedReferences)
+      {
+        o.AppendLine($"  {reference.type},");
+      }
+
+      var moduleReference = groupedReferences.Key == ctx.AssemblyName
+        ? $"./{AssemblyNameToPackageName(groupedReferences.Key)}"
+        : DeterminePackageReference(groupedReferences.Key, options.PackagePrefix);
+
+      o.AppendLine($"}} from '{moduleReference}';");
+      o.AppendLine();
+    }
+
+    return o.ToString();
   }
 
   private static void WriteErrorGroup(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, IndentedStringBuilder o, string prefix)
   {
-    if (errors.Errors.Any())
+    void write_error(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, string prefix)
     {
-      o.WriteLine($"export const enum {prefix} {{");
-      using (o.Indentation)
+      foreach (var error in errors.Errors)
       {
-        foreach (var error in errors.Errors)
-        {
-          WriteComment(o, error.error.MessageWithEnhancedArguments());
-          o.WriteLine($"{error.Name} = '{error.error.Name}',");
-        }
+        WriteComment(o, error.error.MessageWithEnhancedArguments());
+        o.WriteLine($"{prefix}{error.Name} = '{error.error.Name}',");
       }
 
-      o.WriteLine("}");
-    }
-    else if (errors.SubErrors.Any())
-    {
-      o.WriteLine($"export namespace {prefix} {{");
-      using (o.Indentation)
+      if (errors.SubErrors.Any())
       {
         foreach (var (groupName, e) in errors.SubErrors)
         {
-          WriteErrorGroup(e, o, groupName);
+          write_error(e, $"{prefix}{groupName}_");
         }
       }
+    }
 
-      o.WriteLine("}");
+    if (errors.Errors.Any() || errors.SubErrors.Any())
+    {
+      o.WriteLine($"export const enum {prefix}");
+      using (o.BracedIndentation)
+      {
+        write_error(errors, string.Empty);
+      }
     }
   }
 
-  private static void WriteTypes(ApiDefinitionModelExtensions.GroupedApiDefinitionModel group, IndentedStringBuilder o, ApiDefinitionModel input, AssemblyContext ctx)
+  private static void WriteTypes(ApiDefinitionModelExtensions.GroupedApiDefinitionModel group, IndentedStringBuilder o, ApiDefinitionModel input, AssemblyContext ctx, TypescriptOptions options)
   {
     foreach (var (id, type) in group.Types)
     {
@@ -145,7 +169,7 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
       {
         // We don't care about flag enums, there is no difference in TypeScript
         if (type.Description != null) WriteComment(o, type.Description);
-        o.WriteLine($"export const enum {FixTypeName(input, id)} {{");
+        o.WriteLine($"export const enum {TypeNameToTypescriptTypeName(ctx, input, id)} {{");
         using (o.Indentation)
         {
           foreach (var (name, value) in type.EnumValues.ToTotals().OrderBy(x => x.Value))
@@ -162,7 +186,7 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
         var typeArgument = type.TypeArguments.Any() ? $"<{string.Join(", ", type.TypeArguments.Select(x => x[1..]))}>" : string.Empty;
 
         if (type.Description != null) WriteComment(o, type.Description);
-        var fixedTypeName = FixTypeName(input, id);
+        var fixedTypeName = TypeNameToTypescriptTypeName(ctx, input, id);
         o.WriteLine($"export interface {fixedTypeName}{typeArgument} {{");
         using (o.Indentation)
         {
@@ -175,19 +199,19 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
 
             if (propSpec.Type.Nullable && !propSpec.Skippable)
             {
-              o.WriteLine($"{propName}?: {ToReference(input, propSpec, propName, fixedTypeName, ctx, false)};");
+              o.WriteLine($"{propName}?: {ToReference(input, propSpec, propName, fixedTypeName, ctx, options, false)};");
             }
             else if (propSpec.Type.Nullable && propSpec.Skippable)
             {
-              o.WriteLine($"{propName}: {ToReference(input, propSpec, propName, fixedTypeName, ctx)} | undefined;");
+              o.WriteLine($"{propName}: {ToReference(input, propSpec, propName, fixedTypeName, ctx, options)} | undefined;");
             }
             else if (!propSpec.Type.Nullable && !propSpec.Skippable)
             {
-              o.WriteLine($"{propName}: {ToReference(input, propSpec, propName, fixedTypeName, ctx)};");
+              o.WriteLine($"{propName}: {ToReference(input, propSpec, propName, fixedTypeName, ctx, options)};");
             }
             else if (!propSpec.Type.Nullable && propSpec.Skippable)
             {
-              o.WriteLine($"{propName}?: {ToReference(input, propSpec, propName, fixedTypeName, ctx)};");
+              o.WriteLine($"{propName}?: {ToReference(input, propSpec, propName, fixedTypeName, ctx, options)};");
             }
           }
         }
@@ -198,16 +222,9 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
     }
   }
 
-  private static void WriteComment(IndentedStringBuilder o, string comment)
-  {
-    var c = comment.Trim();
-    if (string.IsNullOrWhiteSpace(c)) return;
-    o.WriteLine("/**");
-    o.WriteLines(c, "* ");
-    o.WriteLine("*/");
-  }
 
-  private static string ToReference(ApiDefinitionModel input, PropertySpecification ps, string propName, string typeName, AssemblyContext ctx, bool? overrideNullable = null)
+
+  private static string ToReference(ApiDefinitionModel input, PropertySpecification ps, string propName, string typeName, AssemblyContext ctx, TypescriptOptions o, bool? overrideNullable = null)
   {
     if (ps.Type.Name == ApiSpecConsts.String && ps.AllowedValues.Any())
     {
@@ -219,12 +236,19 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
     {
       // Only use types from this assembly, and add an extender. This extender is patched later on.
       var typesFromCurrentAssembly = options.Where(o => input.Types[o.Name].Assembly == ctx.AssemblyName).ToList();
-      var extenderName = $"Extenders_{typeName}_{propName}";
-      var extenderRef = $"{extenderName}[keyof {extenderName}]";
-      ctx.AddExtenderToGenerate(extenderName);
       var nullable = overrideNullable ?? ps.Type.Nullable || typesFromCurrentAssembly.Any(o => o.Nullable);
 
-      var allReferences = typesFromCurrentAssembly.Select(tr => ToReference(input, tr, ctx, overrideNullable)).Concat(nullable ? new[] { "null", extenderRef } : new[] { extenderRef });
+      var extra = new List<string?>();
+      if (nullable) extra.Add("null");
+      if (o.Extenders)
+      {
+        var extenderName = $"Extenders_{typeName}_{propName}";
+        var extenderRef = $"{extenderName}[keyof {extenderName}]";
+        ctx.AddExtenderToGenerate(extenderName);
+        extra.Add(extenderRef);
+      }
+
+      var allReferences = typesFromCurrentAssembly.Select(tr => ToReference(input, tr, ctx, overrideNullable)).Concat(extra);
       return string.Join(" | ", allReferences);
     }
 
@@ -243,7 +267,8 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
       { Name: ApiSpecConsts.Int32 or ApiSpecConsts.Int64 or ApiSpecConsts.Int16 or ApiSpecConsts.Float32 or ApiSpecConsts.Float64 or ApiSpecConsts.Float128 } => $"number{n}",
       { Name: ApiSpecConsts.Specials.Array, Arguments.Length: 1 } => $"{ToReference(input, typeReference.Arguments[0], ctx)}[]{n}",
       _ when typeReference.Name.StartsWith("_") => typeReference.Name[1..],
-      { Name: ApiSpecConsts.Specials.Map, Arguments.Length: 2 } => $"{{[key:{ToReference(input, typeReference.Arguments[0], ctx, false)}]:{ToReference(input, typeReference.Arguments[1], ctx)}}}{n}",
+      // Key will always be a string
+      { Name: ApiSpecConsts.Specials.Map, Arguments.Length: 2 } => $"{{[key:string]:{ToReference(input, typeReference.Arguments[1], ctx)}}}{n}",
       _ => null
     };
 
@@ -252,56 +277,51 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
     // Object
     if (typeReference is { Name: ApiSpecConsts.Object })
     {
-      ctx.RegisterReferencedModule(ApiSpecConsts.WellKnown.CoreAssembly);
-      return ctx.AssemblyName == ApiSpecConsts.WellKnown.CoreAssembly ? $"Record<string, TAnyValue>{n}" : $"Record<string, EvaCore.TAnyValue>{n}";
+      ctx.RegisterReferencedType(ApiSpecConsts.WellKnown.CoreAssembly, AnyType);
+      return $"Record<string, {AnyType}>{n}";
     }
 
     // Any
     if (typeReference is { Name: ApiSpecConsts.Any })
     {
-      ctx.RegisterReferencedModule(ApiSpecConsts.WellKnown.CoreAssembly);
-      return ctx.AssemblyName == ApiSpecConsts.WellKnown.CoreAssembly ? $"TAnyValue{n}" : $"EvaCore.TAnyValue{n}";
+      ctx.RegisterReferencedType(ApiSpecConsts.WellKnown.CoreAssembly, AnyType);
+      return $"{AnyType}{n}";
     }
 
     // Apparently a type
-    ctx.RegisterReferencedModule(input.Types[typeReference.Name].Assembly);
     if (!typeReference.Arguments.Any())
     {
-      return GetTypeRef(input, typeReference.Name, ctx);
+      return TypeNameToTypescriptTypeName(ctx, input, typeReference.Name);
     }
 
-    var args = typeReference.Arguments.Select(a => ToReference(input, a, ctx));
-    return $"{GetTypeRef(input, typeReference.Name, ctx)}<{string.Join(", ", args)}>";
+    var args = new List<string>();
+    foreach (var a in typeReference.Arguments)
+    {
+      args.Add(ToReference(input, a, ctx));
+    }
+
+    return $"{TypeNameToTypescriptTypeName(ctx, input, typeReference.Name)}<{string.Join(", ", args)}>";
   }
 
-  /// <summary>
-  /// Make a comment kinda string-safe.
-  /// </summary>
-  /// <param name="s"></param>
-  /// <returns></returns>
+
+
+
+
+  private static void WriteComment(IndentedStringBuilder o, string comment)
+  {
+    var c = comment.Trim();
+    if (string.IsNullOrWhiteSpace(c)) return;
+    o.WriteLine("/**");
+    o.WriteLines(c, "* ");
+    o.WriteLine("*/");
+  }
+
   internal static string EscapeForString(string s)
   {
     return $"'{s.Replace("'", @"\'")}'";
   }
 
-  /// <summary>
-  /// Fixes the name of the namespace.
-  /// </summary>
-  /// <param name="s"></param>
-  /// <returns></returns>
-  internal static string FixNamespace(string s)
-  {
-    if (s.StartsWith("EVA.")) s = "Eva." + s[4..];
-    return s.Replace(".", string.Empty);
-  }
-
-  /// <summary>
-  /// Takes a type name, removes unnecessary module prefixes etc...
-  /// </summary>
-  /// <param name="input"></param>
-  /// <param name="name"></param>
-  /// <returns></returns>
-  internal static string FixTypeName(ApiDefinitionModel input, string name)
+  internal static string TypeNameToTypescriptTypeName(AssemblyContext ctx, ApiDefinitionModel input, string name, bool addReference = true)
   {
     var spec = input.Types[name];
     if (name.StartsWith(spec.Assembly + "."))
@@ -312,29 +332,21 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
     var idx = name.IndexOf('`');
     name = idx == -1 ? name : name[..idx];
 
-    return name.Replace(".", string.Empty).Replace("+", "_");
+    var result = name.Replace(".", string.Empty).Replace("+", "_");
+    if(addReference) ctx.RegisterReferencedType(spec.Assembly, result);
+    return result;
   }
 
-  /// <summary>
-  /// Gets a reference to the given type. Prefixes with the correct assembly name if not in this assembly.
-  /// </summary>
-  /// <param name="input"></param>
-  /// <param name="name"></param>
-  /// <param name="ctx"></param>
-  /// <returns></returns>
-  internal static string GetTypeRef(ApiDefinitionModel input, string name, AssemblyContext? ctx)
+  internal static string DeterminePackageReference(string assemblyName, string? packagePrefix)
   {
-    var spec = input.Types[name];
-    var assembly = spec.Assembly == ctx?.AssemblyName ? string.Empty : $"{FixNamespace(spec.Assembly)}.";
-
-    return $"{assembly}{FixTypeName(input, name)}";
+    assemblyName = AssemblyNameToPackageName(assemblyName);
+    if (packagePrefix == null) return $"../{assemblyName}";
+    return $"{packagePrefix}{assemblyName}";
   }
 
-  internal static string GetModuleReference(string s, string? packagePrefix)
+  private static string AssemblyNameToPackageName(string a)
   {
-    if (packagePrefix == null) return $"./{s}";
-
-    if (s.StartsWith("EVA.")) s = s[4..];
-    return $"{packagePrefix}{s.Replace(".", "-").ToLowerInvariant()}";
+    if (a.StartsWith("EVA.")) a = $"eva-services-{a[4..]}";
+    return a.Replace(".", "-").ToLowerInvariant();
   }
 }

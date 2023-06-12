@@ -76,6 +76,20 @@ internal static class GenerationPipeline
       if (changes == ITransform.TransformResult.None) break;
     }
 
+    // Orphaned types
+    if (opt.OrphanedTypesAssembly != null)
+    {
+      var serviceAssemblies = model.Services.Select(s => s.Assembly).ToHashSet();
+      foreach (var type in model.Types.Values)
+      {
+        if (!serviceAssemblies.Contains(type.Assembly)) type.Assembly = opt.OrphanedTypesAssembly;
+      }
+      foreach (var errors in model.Errors)
+      {
+        if (!serviceAssemblies.Contains(errors.Assembly)) errors.Assembly = opt.OrphanedTypesAssembly;
+      }
+    }
+
     // Target directory handling
     EnsureEmptyOutputFolderExists(opt, output.OutputPattern, logger);
 

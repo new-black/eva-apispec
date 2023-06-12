@@ -3,11 +3,6 @@
 public class AssemblyContext
 {
   /// <summary>
-  /// All modules that are referenced from this one.
-  /// </summary>
-  private readonly HashSet<string> _referencedModules = new();
-
-  /// <summary>
   /// The extenders that should be generated as part of this module.
   /// </summary>
   private readonly List<string> _extendersToGenerate = new();
@@ -22,13 +17,9 @@ public class AssemblyContext
     AssemblyName = assemblyName;
   }
 
-  public void RegisterReferencedModule(string assembly)
-  {
-    if(assembly != AssemblyName) _referencedModules.Add(assembly);
-  }
-
+  public void RegisterReferencedType(string assembly, string typeName) => ReferencedTypes.Add((assembly, typeName));
   public void AddExtenderToGenerate(string extenderName) => _extendersToGenerate.Add(extenderName);
 
-  public IEnumerable<string> ReferencedModules => _referencedModules;
   public IEnumerable<string> ExtendersToGenerate => _extendersToGenerate;
+  public HashSet<(string assembly, string type)> ReferencedTypes { get; } = new();
 }

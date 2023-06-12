@@ -97,19 +97,6 @@ internal class FilterAssemblies : ITransform
     }
     input.Errors = result2.ToImmutableArray();
 
-    // Orphaned types
-    if (options.OrphanedTypesAssembly != null)
-    {
-      var serviceAssemblies = input.Services.Select(s => s.Assembly).ToHashSet();
-      foreach (var type in input.Types.Values)
-      {
-        if (!serviceAssemblies.Contains(type.Assembly))
-        {
-          type.Assembly = options.OrphanedTypesAssembly;
-        }
-      }
-    }
-
     return input.Services.Length == count1 && input.Errors.Length == count2 ? ITransform.TransformResult.None : ITransform.TransformResult.Changes;
   }
 }
