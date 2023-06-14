@@ -569,15 +569,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
               {
                 new()
                 {
-                  {
-                    new OpenApiSecurityScheme
-                    {
-                      Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "eva-auth" }
-                    },
-                    service.AuthInformation.RequiredPermissions
-                      .Select(p => $"{p.Functionality}:{p.Scope}")
-                      .ToImmutableArray()
-                  }
+                  { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "eva-auth" } }, Array.Empty<string>() }
                 }
               },
             RequestBody = new OpenApiRequestBody
