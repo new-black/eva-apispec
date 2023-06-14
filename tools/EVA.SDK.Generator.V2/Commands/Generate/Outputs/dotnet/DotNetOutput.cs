@@ -317,7 +317,11 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       return $"IDictionary<long, JToken>{n}";
     }
 
-    if (r.Name == ApiSpecConsts.Specials.Map) return $"IDictionary<{GetFullName(r.Arguments[0], context, false, ctx)},{GetFullName(r.Arguments[1], context, returnCustomID, ctx)}>{n}";
+    if (r.Name == ApiSpecConsts.Specials.Map)
+    {
+      return $"IDictionary<{GetFullName(r.Arguments[0].CloneAsNotNull(), context, false, ctx)},{GetFullName(r.Arguments[1], context, returnCustomID, ctx)}>{n}";
+    }
+
     if (r.Name == ApiSpecConsts.Object) return $"JObject{n}";
     if (r.Name == ApiSpecConsts.WellKnown.IProductSearchItem) return $"JObject{n}";
     if (r.Name == ApiSpecConsts.Any) return (context & TypeContext.Request) != 0 ? $"object{n}" : $"JToken{n}";
