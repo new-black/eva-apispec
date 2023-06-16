@@ -84,6 +84,180 @@
                 "enumValues": null
               },
               {
+                "name": "CarryOut",
+                "description": null,
+                "type": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BCarryOutAvailability",
+                "properties": [
+                  {
+                    "name": "InArea",
+                    "description": "Select the organizations that are considered for carry-out based on a rectangular area defined by the top-left and bottom-right co-ordinates.",
+                    "type": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupArea",
+                    "properties": [
+                      {
+                        "name": "BottomRight",
+                        "description": null,
+                        "type": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BCoordinate",
+                        "properties": [
+                          {
+                            "name": "Latitude",
+                            "description": null,
+                            "type": "float64",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Longitude",
+                            "description": null,
+                            "type": "float64",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          }
+                        ],
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "CountryID",
+                        "description": "Limit OrganizationUnits within the area to those with the provided country. Optional.",
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "TopLeft",
+                        "description": null,
+                        "type": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BCoordinate",
+                        "properties": [
+                          {
+                            "name": "Latitude",
+                            "description": null,
+                            "type": "float64",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Longitude",
+                            "description": null,
+                            "type": "float64",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          }
+                        ],
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "InRadius",
+                    "description": "Select the organizations that are considered for carry-out based on a circular area defined by the center co-ordinate and a radius (specified in km).",
+                    "type": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupRadius",
+                    "properties": [
+                      {
+                        "name": "Center",
+                        "description": "Defaults to the coordinates of the selected OrganizationUnit when not set, but a RadiusInKm is set.",
+                        "type": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BCoordinate",
+                        "properties": [
+                          {
+                            "name": "Latitude",
+                            "description": null,
+                            "type": "float64",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          },
+                          {
+                            "name": "Longitude",
+                            "description": null,
+                            "type": "float64",
+                            "properties": null,
+                            "recursion": false,
+                            "enumValues": null
+                          }
+                        ],
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "CountryID",
+                        "description": "Limit OrganizationUnits within the radius to those with the provided country. Optional.",
+                        "type": "string",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      },
+                      {
+                        "name": "RadiusInKm",
+                        "description": null,
+                        "type": "float64",
+                        "properties": null,
+                        "recursion": false,
+                        "enumValues": null
+                      }
+                    ],
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "IncludeCarryOutOrganizationUnits",
+                    "description": "If specified as true the response will contain the pickup organizations. Which organizations are included depends on the rest of the request:\n\n- If a rectangular area is specified through \u0060InArea\u0060 it will contain the organizations within the area.\n- If the radius is specified through \u0060InRadius\u0060 it will contain the organizations within the radius of the given center co-ordinates.\n- If an explicit list of organizations is specified through \u0060OrganizationUnitIDs\u0060 then those are returned.\n\nIn all cases, whether or not all of them are returned or only those that contain stock is determined by \u0060IncludeOrganizationUnitsWithoutStock\u0060. By\ndefault only organizations with stock are returned.\n\nIf the request specifies more than one product, the organization will only be returned if *all* products have stock (unless\n\u0060IncludeOrganizationUnitsWithoutStock\u0060 is \u0060true\u0060).",
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "IncludeOrganizationUnitsWithoutStock",
+                    "description": "If specified as true then all relevant shop OrganizationUnits are returned, whether they have available stock or not.\n\nDefaults to false and only has effect if \u0060IncludeCarryOutOrganizationUnits\u0060 is set to \u0060true\u0060.",
+                    "type": "bool",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "OpeningHoursType",
+                    "description": "When the carry-out organizations are returned, this determines what returned opening-hours are returned. See each value of the enum for details.",
+                    "type": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupOrganizationUnitOpeningHoursType",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "CurrentWeek": 2,
+                      "NextSevenDays": 1,
+                      "None": 0,
+                      "Regular": 3
+                    }
+                  },
+                  {
+                    "name": "OrganizationUnitIDs",
+                    "description": "This can be optionally used to provide a list of shops for which you would like to check carry-out availability.",
+                    "type": "int64[]?",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Type",
+                    "description": null,
+                    "type": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BCarryOutTypes",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": {
+                      "CurrentShop": 1,
+                      "MostStock": 0
+                    }
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
                 "name": "Delivery",
                 "description": "Contains options that let you influence if and how delivery availability is calculated. If not specified at all then no delivery availability is\ncalculated and returned.",
                 "type": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BDeliveryAvailability",
@@ -257,7 +431,7 @@
                   {
                     "name": "OpeningHoursType",
                     "description": "When the pickup organizations are returned, this determines what returned opening-hours are returned. See each value of the enum for details.",
-                    "type": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupAvailability\u002BPickupOrganizationUnitOpeningHoursType",
+                    "type": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupOrganizationUnitOpeningHoursType",
                     "properties": null,
                     "recursion": false,
                     "enumValues": {
@@ -403,6 +577,34 @@
         "description": null,
         "type": "int32",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "ProductAvailabilityFilter",
+        "description": null,
+        "type": "EVA.Core.Products.ProductAvailabilityFilter",
+        "properties": [
+          {
+            "name": "FilterByAvailability",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": null,
+            "type": "EVA.Core.Search.ProductAvailabilityFilterTypes",
+            "properties": null,
+            "recursion": false,
+            "enumValues": {
+              "CurrentOrganizationUnit": 0,
+              "Suppliers": 1
+            }
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
@@ -801,6 +1003,14 @@
                 "enumValues": null
               },
               {
+                "name": "IsPickup",
+                "description": null,
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
                 "name": "Latitude",
                 "description": null,
                 "type": "float64",
@@ -827,7 +1037,7 @@
               {
                 "name": "OpeningHours",
                 "description": null,
-                "type": "EVA.Core.Stock.ProductAvailabilityPickupOrganizationUnit\u002BPickupOpeningHours[]?",
+                "type": "EVA.Core.Stock.ProductAvailabilityOrganizationUnit\u002BOpeningHoursInfo[]?",
                 "properties": [
                   {
                     "name": "Closed",
