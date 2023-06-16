@@ -8,7 +8,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 {
   public string? OutputPattern => null;
 
-  public string[] ForcedRemoves => new[] { "options", "event-exports", "datalake-exports", "errors" };
+  public string[] ForcedRemoves => new[] { "event-exports", "datalake-exports", "errors" };
 
   public async Task Write(OutputContext<SwiftOptions> ctx)
   {
@@ -154,16 +154,20 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       return;
     }
 
-    var extends = type.Extends == null ? "Codable" : GetTypeName(type.Extends, ctx);
+    var extends = "Codable, Equatable, Hashable, Sendable";
 
     var typeArguments = string.Empty;
     if (type.TypeArguments.Any())
     {
-      typeArguments = string.Join(", ", type.TypeArguments.Select(x => $"{x[1..]} : Codable"));
+      extends = string.Empty;
+      typeArguments = string.Join(", ", type.TypeArguments.Select(x => $"{x[1..]}"));
       typeArguments = $"<{typeArguments}>";
     }
 
-    output.WriteLine($"public struct {typename}{typeArguments}: {extends} {{");
+    var idIndex = type.Properties.ToList().FindIndex(p => p.Key == "ID");
+    extends = idIndex == -1 ? extends : $"Identifiable, {extends}";
+    extends = string.IsNullOrEmpty(extends) ? "" : $": {extends}";
+    output.WriteLine($"public struct {typename}{typeArguments}{extends} {{");
     output.WriteLine();
 
     using(output.Indentation)
@@ -178,7 +182,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           var prop = list[i];
           var propDefault = GetPropDefault(prop.Value.Type);
           output.WriteLine(
-            $"{prop.Key}: {GetPropTypeName(prop.Value.Type, id, ctx)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
+            $"{prop.Key}: {GetPropTypeName(prop.Value, prop.Key, id, ctx)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
         }
       }
 
@@ -197,7 +201,140 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       foreach (var (propName, prop) in type.Properties)
       {
-        var propType = GetPropTypeName(prop.Type, id, ctx);
+        if (prop.AllowedValues.Any())
+        {
+          output.WriteLine($"public enum {propName}Values: RawRepresentable, Codable, CaseIterable, Equatable, Hashable, Sendable {{");
+          using(output.Indentation)
+          {
+            foreach (var allowedValue in prop.AllowedValues)
+            {
+              var formatted = allowedValue.Replace(":", "_");
+              output.WriteLine($"case {formatted}");
+            }
+            output.WriteLine("case undocumented(String)");
+            output.WriteLine();
+            output.WriteLine("public init?(rawValue: String) {");
+            using(output.Indentation)
+            {
+              output.WriteLine("switch rawValue {");
+              foreach (var allowedValue in prop.AllowedValues)
+              {
+                var formatted = allowedValue.Replace(":", "_");
+                output.WriteLine($"case \"{allowedValue}\": self = .{formatted}");
+              }
+              output.WriteLine("default: self = .undocumented(rawValue)");
+              output.WriteLine("}");
+            }
+            output.WriteLine("}");
+            output.WriteLine();
+            output.WriteLine("public var rawValue: String {");
+            using(output.Indentation)
+            {
+              output.WriteLine("switch self {");
+              foreach (var allowedValue in prop.AllowedValues)
+              {
+                var formatted = allowedValue.Replace(":", "_");
+                output.WriteLine($"case .{formatted}: return \"{allowedValue}\"");
+              }
+              output.WriteLine("case let .undocumented(string): return string");
+              output.WriteLine("}");
+            }
+            output.WriteLine("}");
+            output.WriteLine();
+            output.WriteLine($"public static var allCases: [{propName}Values] {{");
+            using(output.Indentation)
+            {
+              output.WriteLine("[");
+              using(output.Indentation)
+              {
+                foreach (var allowedValue in prop.AllowedValues)
+                {
+                  var formatted = allowedValue.Replace(":", "_");
+                  output.WriteLine($".{formatted},");
+                }
+              }
+              output.WriteLine("]");
+            }
+            output.WriteLine("}");
+          }
+          output.WriteLine("}");
+          output.WriteLine();
+        }
+        if (prop.Type is { Name: ApiSpecConsts.Specials.Option, Arguments: var options })
+        {
+          output.WriteLine($"public struct {propName}Payload: Codable, Equatable, Hashable, Sendable {{");
+          using(output.Indentation)
+          {
+            foreach (var option in options)
+            {
+              var typeName = GetTypeName(option, ctx);
+              var name = option.Name.Replace("+", ".").Split(".").Last();
+              output.WriteLine($"public var {name}: {typeName}");
+            }
+            output.WriteLine();
+            output.WriteLine("public init(");
+            using(output.Indentation)
+            {
+              var list = options.ToList();
+              for (var i = 0; i < list.Count; i++)
+              {
+                var option = list[i];
+                var propDefault = GetPropDefault(option);
+                var typeName = GetTypeName(option, ctx);
+                var name = option.Name.Replace("+", ".").Split(".").Last();
+                output.WriteLine(
+                  $"{name}: {typeName}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
+              }
+            }
+            output.WriteLine(") {");
+            using(output.Indentation)
+            {
+              foreach (var option in options)
+              {
+                var name = option.Name.Replace("+", ".").Split(".").Last();
+                output.WriteLine($"self.{name} = {name}");
+              }
+            }
+            output.WriteLine("}");
+            output.WriteLine();
+            output.WriteLine("public init(from decoder: Decoder) throws {");
+            using(output.Indentation)
+            {
+              foreach (var option in options)
+              {
+                var name = option.Name.Replace("+", ".").Split(".").Last();
+                output.WriteLine($"{name} = try? .init(from: decoder)");
+              }
+            }
+            output.WriteLine("}");
+            output.WriteLine();
+            output.WriteLine("public func encode(to encoder: Encoder) throws {");
+            using(output.Indentation)
+            {
+              foreach (var option in options)
+              {
+                var name = option.Name.Replace("+", ".").Split(".").Last();
+                output.WriteLine($"try {name}?.encode(to: encoder)");
+              }
+            }
+            output.WriteLine("}");
+          }
+          output.WriteLine("}");
+          output.WriteLine();
+        }
+      }
+
+      // Identifiable requirement
+      if (idIndex != -1)
+      {
+        var idProperty = type.Properties.ToList()[idIndex];
+        output.WriteLine($"public var id: {GetPropTypeName(idProperty.Value, idProperty.Key, id, ctx)} {{ self.ID }}");
+        output.WriteLine();
+      }
+
+      foreach (var (propName, prop) in type.Properties)
+      {
+        var propType = GetPropTypeName(prop, propName, id, ctx);
         if (prop.Description != null) WriteComment(prop.Description, output);
         if (prop.Deprecated != null)
         {
@@ -221,16 +358,69 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       }
     }
 
+    if (!type.TypeArguments.Any() && type.Properties.Any())
+    {
+      WriteDecodeInit(type, output, id, ctx);
+    }
+
     output.WriteLine("}");
+
+    // Extension functions for types with argument.
+    if (type.TypeArguments.Any())
+    {
+      output.WriteLine();
+      string[] protocols = {"Codable", "Equatable", "Hashable", "Sendable"};
+      foreach (string protocol in protocols) 
+      {
+        typeArguments = string.Join(", ", type.TypeArguments.Select(x => $"{x[1..]}: {protocol}"));
+        if (protocol == "Codable")
+        {
+          output.WriteLine($"extension {typename}: {protocol} where {typeArguments} {{");
+          WriteDecodeInit(type, output, id, ctx);
+          output.WriteLine("}");
+        }
+        else
+        {
+          output.WriteLine($"extension {typename}: {protocol} where {typeArguments} {{}}");
+        }
+      }
+    }
+  }
+
+  private static void WriteDecodeInit(TypeSpecification type, IndentedStringBuilder output, string? typeContext, OutputContext<SwiftOptions> ctx)
+  {
+    // Custom decoder
+    using(output.Indentation)
+    {
+      output.WriteLine("public init(from decoder: Decoder) throws {");
+      using(output.Indentation)
+        {
+          output.WriteLine("let container = try decoder.container(keyedBy: CodingKeys.self)");
+          var list = type.Properties.ToList();
+          var dateIndex = list.FindIndex(p => p.Key == "Date");
+          var dataIndex = list.FindIndex(p => p.Key == "Data");
+          for (var i = 0; i < list.Count; i++)
+          {
+            var prop = list[i];
+            var typeName = GetPropTypeName(prop.Value, prop.Key, typeContext, ctx);
+            var typeNameWithQuestionMark = typeName.Replace("?", string.Empty);
+            typeName = typeNameWithQuestionMark == "Date" && dateIndex != -1 ? $"Foundation.{typeName}" : typeName;
+            typeName = typeNameWithQuestionMark == "Data" && dataIndex != -1 ? $"Foundation.{typeName}" : typeName;
+            output.WriteLine($"self.{prop.Key} = try{(prop.Value.Type.Nullable ? "?" : string.Empty)} container.decode({typeName}.self, forKey: .{prop.Key})");
+          }
+        }
+      output.WriteLine("}");
+    }
   }
 
   private static void WriteNonFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
   {
-    output.WriteLine($"public enum {typename}: Int, Codable {{");
+    output.WriteLine($"public enum {typename}: Int, Codable, Equatable, Hashable, Sendable {{");
     using (output.Indentation)
     {
       foreach (var (name, value) in type.EnumValues.OrderBy(v => v.Value.Value))
       {
+        name = name == "Type" ? "`Type`" : name
         output.WriteLine($"case {name} = {value.Value}");
       }
     }
@@ -240,7 +430,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   private static void WriteFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
   {
-    output.WriteLine($"public struct {typename}: OptionSet, Codable {{");
+    output.WriteLine($"public struct {typename}: OptionSet, Codable, Hashable, Sendable {{");
     using (output.Indentation)
     {
       output.WriteLine("public let rawValue: Int");
@@ -264,8 +454,13 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     output.WriteLine("}");
   }
 
-  private static string GetPropTypeName(TypeReference typeReference, string? typeContext, OutputContext<SwiftOptions> ctx)
+  private static string GetPropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx)
   {
+    var typeReference = ps.Type;
+    var n = typeReference.Nullable ? "?" : string.Empty;
+    if (ps.AllowedValues.Any()) return $"{name}Values{n}";
+    if (typeReference is { Name: ApiSpecConsts.Specials.Option }) return $"{name}Payload{n}";
+
     if (typeReference.Name == typeContext)
     {
       // IndirectOptional time!
@@ -285,19 +480,15 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   private static string GetPropDefault(TypeReference typeReference)
   {
-    return typeReference switch
-    {
-      { Name: ApiSpecConsts.String, Nullable: false } => "\"\"",
-      { Nullable: true } => "nil",
-      _ => string.Empty
-    };
+    return typeReference.Nullable ? "nil" : string.Empty;
   }
 
   private static string GetTypeName(TypeReference typeReference, OutputContext<SwiftOptions> ctx)
   {
     var n = typeReference.Nullable ? "?" : string.Empty;
 
-    if (typeReference is { Name: ApiSpecConsts.String or ApiSpecConsts.Duration or ApiSpecConsts.Binary }) return $"String{n}";
+    if (typeReference is { Name: ApiSpecConsts.String or ApiSpecConsts.Duration }) return $"String{n}";
+    if (typeReference is { Name: ApiSpecConsts.Binary }) return $"Data{n}";
     if (typeReference is { Name: ApiSpecConsts.Int16 or ApiSpecConsts.Int32 or ApiSpecConsts.Int64 }) return $"Int{n}";
     if (typeReference is { Name: ApiSpecConsts.Float128 }) return $"Decimal{n}";
     if (typeReference is { Name: ApiSpecConsts.Float64 }) return $"Double{n}";
@@ -310,12 +501,13 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       if (ctx.Options.OptimisticNullability) element = element.CloneAsNotNull();
       return $"[{GetTypeName(element, ctx)}]{n}";
     }
-    if (typeReference is { Name: ApiSpecConsts.Any or ApiSpecConsts.Object }) return $"{ctx.Options.AnyCodableName}{n}";
-    if (typeReference is { Name: ApiSpecConsts.WellKnown.IProductSearchItem }) return $"[String: {ctx.Options.AnyCodableName}]{n}";
+    if (typeReference is { Name: ApiSpecConsts.Any }) return $"{ctx.Options.AnyCodableName}{n}";
+    if (typeReference is { Name: ApiSpecConsts.WellKnown.IProductSearchItem or ApiSpecConsts.Object }) return $"[String: {ctx.Options.AnyCodableName}]{n}";
     if (typeReference is { Name: ApiSpecConsts.Specials.Map })
     {
-      var ta = typeReference.Arguments[1];
-      return $"[String: {GetTypeName(ta, ctx)}]{n}";
+      var ta0 = typeReference.Arguments[0];
+      var ta1 = typeReference.Arguments[1];
+      return $"[{GetTypeName(ta0, ctx)}: {GetTypeName(ta1, ctx)}]{n}";
     }
 
     if (typeReference.Name.StartsWith("_")) return $"{typeReference.Name[1..]}{n}";
@@ -337,6 +529,11 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       }
 
       return $"{GetTypeName(idName, ctx.Input)}{suffix}{n}";
+    }
+
+    if (typeReference.Name == "Buckaroo.Gender")
+    {
+      return "EVACoreBuckarooGender";
     }
 
     ctx.Logger.LogWarning("Type cannot be handled by this output: {Type}, outputting as \"object\"", typeReference.Name);
