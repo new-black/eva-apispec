@@ -1,0 +1,161 @@
+{
+  "typename": "CarryOutAvailability",
+  "assembly": "EVA.Core",
+  "description": null,
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "enumIsFlag": null,
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupArea",
+    "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupRadius",
+    "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupOrganizationUnitOpeningHoursType",
+    "EVA.Core.Stock.GetProductAvailabilityOptions\u002BCarryOutTypes"
+  ],
+  "extends": null,
+  "properties": {
+    "InArea": {
+      "type": {
+        "ref": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupArea",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "Select the organizations that are considered for carry-out based on a rectangular area defined by the top-left and bottom-right co-ordinates.",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "InRadius": {
+      "type": {
+        "ref": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupRadius",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "Select the organizations that are considered for carry-out based on a circular area defined by the center co-ordinate and a radius (specified in km).",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "IncludeCarryOutOrganizationUnits": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "If specified as true the response will contain the pickup organizations. Which organizations are included depends on the rest of the request:\n\n- If a rectangular area is specified through \u0060InArea\u0060 it will contain the organizations within the area.\n- If the radius is specified through \u0060InRadius\u0060 it will contain the organizations within the radius of the given center co-ordinates.\n- If an explicit list of organizations is specified through \u0060OrganizationUnitIDs\u0060 then those are returned.\n\nIn all cases, whether or not all of them are returned or only those that contain stock is determined by \u0060IncludeOrganizationUnitsWithoutStock\u0060. By\ndefault only organizations with stock are returned.\n\nIf the request specifies more than one product, the organization will only be returned if *all* products have stock (unless\n\u0060IncludeOrganizationUnitsWithoutStock\u0060 is \u0060true\u0060).",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "IncludeOrganizationUnitsWithoutStock": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "If specified as true then all relevant shop OrganizationUnits are returned, whether they have available stock or not.\n\nDefaults to false and only has effect if \u0060IncludeCarryOutOrganizationUnits\u0060 is set to \u0060true\u0060.",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "OpeningHoursType": {
+      "type": {
+        "ref": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BPickupOrganizationUnitOpeningHoursType",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "When the carry-out organizations are returned, this determines what returned opening-hours are returned. See each value of the enum for details.",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "OrganizationUnitIDs": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "shared": null,
+            "nullable": false
+          }
+        ],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "This can be optionally used to provide a list of shops for which you would like to check carry-out availability.",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": {
+        "name": "OrganizationUnit",
+        "lenient": false,
+        "supportsCustomID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "Type": {
+      "type": {
+        "ref": "EVA.Core.Stock.GetProductAvailabilityOptions\u002BCarryOutTypes",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    }
+  },
+  "enumValues": {},
+  "parent": "EVA.Core.Stock.GetProductAvailabilityOptions"
+}
