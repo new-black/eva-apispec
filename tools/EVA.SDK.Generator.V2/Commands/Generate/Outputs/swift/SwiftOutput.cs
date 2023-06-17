@@ -403,10 +403,19 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           {
             var prop = list[i];
             var typeName = GetPropTypeName(prop.Value, prop.Key, typeContext, ctx);
-            var typeNameWithQuestionMark = typeName.Replace("?", string.Empty);
-            typeName = typeNameWithQuestionMark == "Date" && dateIndex != -1 ? $"Foundation.{typeName}" : typeName;
-            typeName = typeNameWithQuestionMark == "Data" && dataIndex != -1 ? $"Foundation.{typeName}" : typeName;
-            output.WriteLine($"self.{prop.Key} = try{(prop.Value.Type.Nullable ? "?" : string.Empty)} container.decode({typeName}.self, forKey: .{prop.Key})");
+            var typeNameNotNullable = GetPropTypeName(prop.Value, prop.Key, typeContext, ctx, true);
+            typeName = typeNameNotNullable == "Date" && dateIndex != -1 ? $"Foundation.{typeName}" : typeName;
+            typeName = typeNameNotNullable == "Data" && dataIndex != -1 ? $"Foundation.{typeName}" : typeName;
+            typeNameNotNullable = typeNameNotNullable == "Date" && dateIndex != -1 ? $"Foundation.{typeNameNotNullable}" : typeNameNotNullable;
+            typeNameNotNullable = typeNameNotNullable == "Data" && dataIndex != -1 ? $"Foundation.{typeNameNotNullable}" : typeNameNotNullable;
+            if (prop.Value.Type.Nullable)
+            {
+              output.WriteLine($"self.{prop.Key} = try? container.decodeIfPresent({typeNameNotNullable}.self, forKey: .{prop.Key})");
+            }
+            else
+            {
+              output.WriteLine($"self.{prop.Key} = try container.decode({typeName}.self, forKey: .{prop.Key})");
+            }
           }
         }
       output.WriteLine("}");
@@ -420,8 +429,8 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     {
       foreach (var (name, value) in type.EnumValues.OrderBy(v => v.Value.Value))
       {
-        name = name == "Type" ? "`Type`" : name
-        output.WriteLine($"case {name} = {value.Value}");
+        var safeName = name == "Type" ? "`Type`" : name;
+        output.WriteLine($"case {safeName} = {value.Value}");
       }
     }
 
@@ -454,28 +463,28 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     output.WriteLine("}");
   }
 
-  private static string GetPropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx)
+  private static string GetPropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false)
   {
     var typeReference = ps.Type;
-    var n = typeReference.Nullable ? "?" : string.Empty;
+    var n = typeReference.Nullable && !forceNotNullable ? "?" : string.Empty;
     if (ps.AllowedValues.Any()) return $"{name}Values{n}";
     if (typeReference is { Name: ApiSpecConsts.Specials.Option }) return $"{name}Payload{n}";
 
     if (typeReference.Name == typeContext)
     {
       // IndirectOptional time!
-      if (typeReference.Nullable)
+      if (typeReference.Nullable && !forceNotNullable)
       {
         var nestedReference = typeReference.CloneAsNotNull();
-        return $"IndirectOptional<{GetTypeName(nestedReference, ctx)}>?";
+        return $"IndirectOptional<{GetTypeName(nestedReference, ctx, forceNotNullable)}>?";
       }
       else
       {
-        return $"IndirectOptional<{GetTypeName(typeReference, ctx)}>";
+        return $"IndirectOptional<{GetTypeName(typeReference, ctx, forceNotNullable)}>";
       }
     }
 
-    return GetTypeName(typeReference, ctx);
+    return GetTypeName(typeReference, ctx, forceNotNullable);
   }
 
   private static string GetPropDefault(TypeReference typeReference)
@@ -483,9 +492,9 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     return typeReference.Nullable ? "nil" : string.Empty;
   }
 
-  private static string GetTypeName(TypeReference typeReference, OutputContext<SwiftOptions> ctx)
+  private static string GetTypeName(TypeReference typeReference, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false)
   {
-    var n = typeReference.Nullable ? "?" : string.Empty;
+    var n = typeReference.Nullable && !forceNotNullable ? "?" : string.Empty;
 
     if (typeReference is { Name: ApiSpecConsts.String or ApiSpecConsts.Duration }) return $"String{n}";
     if (typeReference is { Name: ApiSpecConsts.Binary }) return $"Data{n}";
@@ -507,7 +516,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     {
       var ta0 = typeReference.Arguments[0];
       var ta1 = typeReference.Arguments[1];
-      return $"[{GetTypeName(ta0, ctx)}: {GetTypeName(ta1, ctx)}]{n}";
+      return $"[{GetTypeName(ta0, ctx, true)}: {GetTypeName(ta1, ctx, true)}]{n}";
     }
 
     if (typeReference.Name.StartsWith("_")) return $"{typeReference.Name[1..]}{n}";
