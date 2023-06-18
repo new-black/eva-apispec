@@ -262,6 +262,9 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         }
         if (prop.Type is { Name: ApiSpecConsts.Specials.Option, Arguments: var options })
         {
+          // Make this a struct instead of an enum, because the decoding may succeed for multiple types
+          // and this cannot be represented in an enum (with associated values).
+          // This method is also used in https://github.com/apple/swift-openapi-generator
           output.WriteLine($"public struct {propName}Payload: Codable, Equatable, Hashable, Sendable {{");
           using(output.Indentation)
           {
@@ -305,6 +308,23 @@ internal class SwiftOutput : IOutput<SwiftOptions>
                 var name = option.Name.Replace("+", ".").Split(".").Last();
                 output.WriteLine($"{name} = try? .init(from: decoder)");
               }
+              output.WriteLine("try DecodingError.verifyAtLeastOneSchemaIsNotNil(");
+              using(output.Indentation)
+              {
+                output.WriteLine("[");
+                using(output.Indentation)
+                {
+                  foreach (var option in options)
+                  {
+                    var name = option.Name.Replace("+", ".").Split(".").Last();
+                    output.WriteLine($"{name},");
+                  }
+                }
+                output.WriteLine("],");
+                output.WriteLine("type: Self.self,");
+                output.WriteLine("codingPath: decoder.codingPath");
+              }
+              output.WriteLine(")");
             }
             output.WriteLine("}");
             output.WriteLine();
