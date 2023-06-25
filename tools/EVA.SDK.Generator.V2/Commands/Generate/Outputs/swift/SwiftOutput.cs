@@ -203,7 +203,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       {
         if (prop.AllowedValues.Any())
         {
-          output.WriteLine($"public enum {propName}Values: RawRepresentable, Codable, CaseIterable, Equatable, Hashable, Sendable {{");
+          output.WriteLine($"public enum {propName}Values: RawRepresentable, Identifiable, Codable, CaseIterable, Equatable, Hashable, Sendable {{");
           using(output.Indentation)
           {
             foreach (var allowedValue in prop.AllowedValues)
@@ -226,6 +226,8 @@ internal class SwiftOutput : IOutput<SwiftOptions>
               output.WriteLine("}");
             }
             output.WriteLine("}");
+            output.WriteLine();
+            output.WriteLine("public var id: Self { self }");
             output.WriteLine();
             output.WriteLine("public var rawValue: String {");
             using(output.Indentation)
@@ -444,7 +446,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   private static void WriteNonFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
   {
-    output.WriteLine($"public enum {typename}: Int, Codable, Equatable, Hashable, Sendable {{");
+    output.WriteLine($"public enum {typename}: Int, Identifiable, Codable, Equatable, Hashable, Sendable {{");
     using (output.Indentation)
     {
       foreach (var (name, value) in type.EnumValues.OrderBy(v => v.Value.Value))
@@ -452,6 +454,8 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         var safeName = name == "Type" ? "`Type`" : name;
         output.WriteLine($"case {safeName} = {value.Value}");
       }
+      output.WriteLine();
+      output.WriteLine("public var id: Self { self }");
     }
 
     output.WriteLine("}");
