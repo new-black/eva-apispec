@@ -20,7 +20,16 @@ jobs:
       with:
         global-json-file: 'global.json'
     - name: Generate OpenAPI
-      run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite
+      run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite --opt-terse --opt-format json
+    - name: Upload OpenAPI
+      uses: alphadoc-io/action-update-api@v1
+      with:
+        OPENAPI_FILE: output/openapi/openapi.json
+        ORGANISATION: "newblack"
+        PROJECT_ID: "${{ secrets.AD_PROJECT }}"
+        DOCUMENT_ID: "${{ secrets.AD_DOCUMENT_BEYOND }}"
+        USERNAME: "${{ secrets.AD_USERNAME }}"
+        PASSWORD: "${{ secrets.AD_PASSWORD }}"
     - name: Generate ApiDocs
       run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate apidocs -i spec/spec.json -o output/apidocs --overwrite
     - name: Commit changes
