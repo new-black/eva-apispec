@@ -49,7 +49,8 @@ jobs:
           --region eu-west-1 \
           --auth-flow=USER_PASSWORD_AUTH \
           --auth-parameters='PASSWORD=${{ secrets.AD_PASSWORD }},USERNAME=${{ secrets.AD_USERNAME }}' \
-          --query=AuthenticationResult.IdToken)
+          --query=AuthenticationResult.IdToken
+          --no-cli-auto-prompt)
         echo "token=$ID_TOKEN" >> $GITHUB_ENV
 
     - name: Upload OpenAPI and get versionId
