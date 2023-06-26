@@ -21,6 +21,8 @@ jobs:
         global-json-file: 'global.json'
     - name: Generate OpenAPI
       run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite --opt-terse --opt-format json
+    - id: install-aws-cli
+      uses: unfor19/install-aws-cli-action@v1
     - name: Upload OpenAPI
       uses: alphadoc-io/action-update-api@v1
       with:
