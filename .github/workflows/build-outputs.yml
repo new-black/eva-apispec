@@ -12,17 +12,20 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v2
       with:
         global-json-file: 'global.json'
+    - name: Install AWS CLI
+      run: |
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sudo ./aws/install
     - name: Generate OpenAPI
       run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite --opt-terse --opt-format json
-    - id: install-aws-cli
-      uses: unfor19/install-aws-cli-action@v1
     - name: Upload OpenAPI
       uses: alphadoc-io/action-update-api@v1
       with:
