@@ -20,14 +20,8 @@ jobs:
       with:
         global-json-file: 'global.json'
     - name: Generate OpenAPI
-      run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite --assembly EVA.Core --remove inheritance empty-types nested-types
+      run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite
     - name: Generate ApiDocs
       run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate apidocs -i spec/spec.json -o output/apidocs --overwrite
     - name: Commit changes
       run: 'git add .;git config --global user.email "ruben.oost@newblack.io";git config --global user.name "Ruben Oost";git diff-index --quiet HEAD || git commit -m "Outputs for: ${{ github.event.head_commit.message }}";git push origin main'
-    - name: Upload ApiDocs Test
-      run: |
-        curl -H "X-TYPESENSE-API-KEY: ${{ secrets.TYPESENSE_DEVELOP_KEY }}" -X POST -T output/apidocs/typesense.ndjson --http1.1 "https://${{ vars.TYPESENSE_DEVELOP_CLUSTER }}/collections/${{ vars.TYPESENSE_DEVELOP_COLLECTION }}/documents/import?action=upsert"
-    - name: Upload ApiDocs Prod
-      run: |
-        curl -H "X-TYPESENSE-API-KEY: ${{ secrets.TYPESENSE_PROD_KEY }}" -X POST -T output/apidocs/typesense.ndjson --http1.1 "https://${{ vars.TYPESENSE_PROD_CLUSTER }}/collections/${{ vars.TYPESENSE_PROD_COLLECTION }}/documents/import?action=upsert"
