@@ -13,6 +13,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    env:
+      AWS_PAGER: ''
     steps:
     - uses: actions/checkout@v3
 
@@ -24,23 +26,15 @@ jobs:
       run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite --opt-terse --opt-format json
     - name: Generate ApiDocs
       run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate apidocs -i spec/spec.json -o output/apidocs --overwrite
-
     - name: Commit changes
       run: 'git add .;git config --global user.email "ruben.oost@newblack.io";git config --global user.name "Ruben Oost";git diff-index --quiet HEAD || git commit -m "Outputs for: ${{ github.event.head_commit.message }}";git push origin main'
 
-
-
-    - name: Install AWS CLI
-      run: |
-        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        unzip awscliv2.zip
-        sudo ./aws/install --update
-    - name: Convert JSON to base64
-      shell: bash
-      run: |
-        base64_file=$(base64 -w 0 output/openapi/openapi.json)
-        echo "base64=$base64_file" >> $GITHUB_ENV
-
+    # - name: Install AWS CLI
+    #   run: |
+    #     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    #     unzip awscliv2.zip
+    #     sudo ./aws/install --update
+    
     - name: Authenticate
       shell: bash
       run: |
@@ -49,23 +43,18 @@ jobs:
           --region eu-west-1 \
           --auth-flow=USER_PASSWORD_AUTH \
           --auth-parameters='PASSWORD=${{ secrets.AD_PASSWORD }},USERNAME=${{ secrets.AD_USERNAME }}' \
-          --query=AuthenticationResult.IdToken
-          --no-cli-auto-prompt)
+          --query=AuthenticationResult.IdToken)
         echo "token=$ID_TOKEN" >> $GITHUB_ENV
-
+  
     - name: Upload OpenAPI and get versionId
       shell: bash
       run: |
-        version_response=$(curl -f -s -X POST \
+        echo "{\"default\": true,\"document\": \"$(base64 -w 0 ./output/openapi/openapi.json)\",\"documentType\": \"application/json\"}" > body.json
+        version_id=$(curl -f -s -X POST \
           -H "Authorization: Bearer ${{ env.token }}" \
           -H "Content-Type: application/json" \
-          -d '{
-            "default": true,
-            "document": "${{ env.base64 }}",
-            "documentType": "application/json"
-          }' \
-          "https://newblack.alphadoc.io/v1/documents/${{ secrets.AD_DOCUMENT_BEYOND }}/versions")
-        version_id=$(echo "$version_response" | jq -r '.id')
+          --data-binary "@./body.json" \
+          "https://newblack.alphadoc.io/v1/documents/${{ secrets.AD_DOCUMENT_BEYOND }}/versions" | jq -r '.id')
         echo "versionId=$version_id" >> $GITHUB_ENV
 
     - name: Publish document
