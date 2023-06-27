@@ -513,6 +513,13 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       }
     }
 
+    if (service.Deprecated is {} deprecated)
+    {
+      description += "\n\n---";
+      description += "\n**Deprecated:**\n\n";
+      description += $"\n\n**Deprecated since {deprecated.Introduced}:** {deprecated.Comment}\n\n**Will be removed from the typings in {deprecated.Effective}**";
+    }
+
     var parameters = new List<OpenApiParameter>
     {
       new()
@@ -562,6 +569,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
             Summary = service.Name,
             Description = description,
             OperationId = service.Name,
+            Deprecated = service.Deprecated is not null,
             Tags = new List<OpenApiTag> { new() { Name = TagFromAssembly(service.Assembly), Description = TagFromAssembly(service.Assembly) } },
             Security = !requiresAuthentication
               ? new List<OpenApiSecurityRequirement>()
