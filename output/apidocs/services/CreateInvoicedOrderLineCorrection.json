@@ -1,6 +1,6 @@
 {
   "name": "CreateInvoicedOrderLineCorrection",
-  "description": "Create a correction on an already invoiced line\n\nThis can be used to refund a partial amount on a completed OrderLine, in cases where the product should still be returnable.\nIf the product is not returnable anymore, a return without retake should be created.\n\nThis will result in a new line what will be shipped and invoiced immediately.\nBased on the AutoRefund flag, the created open amount will be refunded.",
+  "description": "Create a correction on an already invoiced line.\n\nThis can be used to refund a partial amount on a completed OrderLine, in cases where the product should still be returnable.\n\nSpecify either \u0060OrderLineID\u0060 and \u0060CorrectionAmount\u0060, or \u0060Lines\u0060.\n\n- If the product is not returnable anymore, a return without retake should be created\n- This will result in a new line what will be shipped and invoiced immediately\n- Based on the AutoRefund flag, the created open amount will be refunded",
   "method": "POST",
   "path": "/message/CreateInvoicedOrderLineCorrection",
   "request": {
@@ -26,6 +26,39 @@
         "description": null,
         "type": "int64",
         "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Lines",
+        "description": null,
+        "type": "EVA.Core.Orders.CreateInvoicedOrderLineCorrection\u002BCreateInvoicedOrderLineCorrectionLine[]?",
+        "properties": [
+          {
+            "name": "CorrectionAmount",
+            "description": null,
+            "type": "float128",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "CorrectionReasonID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "OrderLineID",
+            "description": null,
+            "type": "int64",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
         "recursion": false,
         "enumValues": null
       },
