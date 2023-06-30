@@ -1,7 +1,7 @@
 {
   "typename": "CreateInvoicedOrderLineCorrection",
   "assembly": "EVA.Core",
-  "description": "Create a correction on an already invoiced line\n\nThis can be used to refund a partial amount on a completed OrderLine, in cases where the product should still be returnable.\nIf the product is not returnable anymore, a return without retake should be created.\n\nThis will result in a new line what will be shipped and invoiced immediately.\nBased on the AutoRefund flag, the created open amount will be refunded.",
+  "description": "Create a correction on an already invoiced line.\n\nThis can be used to refund a partial amount on a completed OrderLine, in cases where the product should still be returnable.\n\nSpecify either \u0060OrderLineID\u0060 and \u0060CorrectionAmount\u0060, or \u0060Lines\u0060.\n\n- If the product is not returnable anymore, a return without retake should be created\n- This will result in a new line what will be shipped and invoiced immediately\n- Based on the AutoRefund flag, the created open amount will be refunded",
   "usage": {
     "request": true,
     "response": false
@@ -9,7 +9,8 @@
   "enumIsFlag": null,
   "typeArguments": [],
   "typeDependencies": [
-    "EVA.Core.RequestMessageWithEmptyResponse"
+    "EVA.Core.RequestMessageWithEmptyResponse",
+    "EVA.Core.Orders.CreateInvoicedOrderLineCorrection\u002BCreateInvoicedOrderLineCorrectionLine"
   ],
   "extends": {
     "ref": "EVA.Core.RequestMessageWithEmptyResponse",
@@ -41,7 +42,7 @@
         "ref": "float128",
         "args": [],
         "shared": null,
-        "nullable": false
+        "nullable": true
       },
       "description": null,
       "skippable": false,
@@ -84,12 +85,37 @@
       },
       "allowedValues": []
     },
+    "Lines": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.Orders.CreateInvoicedOrderLineCorrection\u002BCreateInvoicedOrderLineCorrectionLine",
+            "args": [],
+            "shared": null,
+            "nullable": true
+          }
+        ],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
     "OrderLineID": {
       "type": {
         "ref": "int64",
         "args": [],
         "shared": null,
-        "nullable": false
+        "nullable": true
       },
       "description": null,
       "skippable": false,
