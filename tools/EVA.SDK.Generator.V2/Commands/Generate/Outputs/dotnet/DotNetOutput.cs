@@ -162,6 +162,12 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         foreach (var (name, value) in spec.EnumValues)
         {
           var values = value.Value == 0L && !value.Extends.Any() ? new[] { "0" } : value.Extends.Concat(new[] { value.Value.ToString() });
+          if (value.Description != null)
+          {
+            sb.WriteLine("/// <summary>");
+            sb.WriteLine($"/// {value.Description}");
+            sb.WriteLine("/// </summary>");
+          }
           sb.WriteLine($"{name} = {string.Join(" | ", values)},");
         }
       }
