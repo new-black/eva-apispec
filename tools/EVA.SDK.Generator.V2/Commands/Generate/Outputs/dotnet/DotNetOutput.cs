@@ -165,7 +165,10 @@ internal class DotNetOutput : IOutput<DotNetOptions>
           if (value.Description != null)
           {
             sb.WriteLine("/// <summary>");
-            sb.WriteLine($"/// {value.Description}");
+            foreach (var l in value.Description.Trim().Split('\n').Select(x => $"/// {x.Trim()}"))
+            {
+              sb.WriteLine(l);
+            }
             sb.WriteLine("/// </summary>");
           }
           sb.WriteLine($"{name} = {string.Join(" | ", values)},");
