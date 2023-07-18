@@ -49,7 +49,7 @@ jobs:
     - name: Upload OpenAPI and get versionId
       shell: bash
       run: |
-        echo "{\"default\": true,\"document\": \"$(base64 -w 0 ./output/openapi/openapi.json)\",\"documentType\": \"application/json\"}" > body.json
+        echo "{\"document\": \"$(base64 -w 0 ./output/openapi/openapi.json)\",\"documentType\": \"application/json\"}" > body.json
         version_id=$(curl -f -s -X POST \
           -H "Authorization: Bearer ${{ env.token }}" \
           -H "Content-Type: application/json" \
@@ -60,8 +60,7 @@ jobs:
     - name: Publish document
       shell: bash
       run: |
-        curl -f -s -X PATCH \
+        curl -f -s -X PUT \
           -H "Authorization: Bearer ${{ env.token }}" \
           -H "Content-Type: application/json" \
-          -d '{ "default": true }' \
-          "https://newblack.alphadoc.io/v1/documents/${{ secrets.AD_DOCUMENT_BEYOND }}/versions/${{ env.versionId }}"
+          "https://newblack.alphadoc.io/v1/documents/${{ secrets.AD_DOCUMENT_BEYOND }}/versions/${{ env.versionId }}/publish"
