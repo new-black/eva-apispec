@@ -81,18 +81,38 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     var state = new State();
     var errorObjectID = Cleanup(input);
 
-    var server = string.IsNullOrWhiteSpace(host)
-      ? new OpenApiServer
+    var servers = string.IsNullOrWhiteSpace(host)
+      ? new List<OpenApiServer>
       {
-        Url = "https://api.{region}.{customer}.{environment}.eva-online.cloud/",
-        Variables = new Dictionary<string, OpenApiServerVariable>
+        new()
         {
-          { "region", new OpenApiServerVariable { Default = "euw" } },
-          { "customer", new OpenApiServerVariable { Default = "acme" } },
-          { "environment", new OpenApiServerVariable { Default = "test" } },
+          Description = "Testing environment",
+          Url = "https://api.euw.{customer}.test.eva-online.cloud/",
+          Variables = new Dictionary<string, OpenApiServerVariable>
+          {
+            { "customer", new OpenApiServerVariable { Default = "acme" } }
+          }
+        },
+        new()
+        {
+          Description = "Acceptance environment",
+          Url = "https://api.euw.{customer}.acc.eva-online.cloud/",
+          Variables = new Dictionary<string, OpenApiServerVariable>
+          {
+            { "customer", new OpenApiServerVariable { Default = "acme" } }
+          }
+        },
+        new()
+        {
+          Description = "Production environment",
+          Url = "https://api.euw.{customer}.prod.eva-online.cloud/",
+          Variables = new Dictionary<string, OpenApiServerVariable>
+          {
+            { "customer", new OpenApiServerVariable { Default = "acme" } }
+          }
         }
       }
-      : new OpenApiServer { Url = host };
+      : new List<OpenApiServer> { new() { Url = host } };
 
     // Base
     var model = new OpenApiDocument
@@ -109,7 +129,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
           Url = new Uri("https://newblack.io/")
         }
       },
-      Servers = new List<OpenApiServer> { server },
+      Servers = servers,
       Paths = new OpenApiPaths(),
       Components = new OpenApiComponents(),
       Tags = input.Services.Select(s => TagFromAssembly(s.Assembly)).Concat(new[] { "DataLake" }).Distinct().Order().Select(s => new OpenApiTag { Name = s, Description = s }).ToList(),
