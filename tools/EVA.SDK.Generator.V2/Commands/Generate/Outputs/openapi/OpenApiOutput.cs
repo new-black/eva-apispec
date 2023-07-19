@@ -87,7 +87,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         new()
         {
           Description = "Testing environment",
-          Url = "https://api.euw.{customer}.test.eva-online.cloud/",
+          Url = "https://api.euw.{customer}.test.eva-online.cloud",
           Variables = new Dictionary<string, OpenApiServerVariable>
           {
             { "customer", new OpenApiServerVariable { Default = "acme" } }
@@ -96,7 +96,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         new()
         {
           Description = "Acceptance environment",
-          Url = "https://api.euw.{customer}.acc.eva-online.cloud/",
+          Url = "https://api.euw.{customer}.acc.eva-online.cloud",
           Variables = new Dictionary<string, OpenApiServerVariable>
           {
             { "customer", new OpenApiServerVariable { Default = "acme" } }
@@ -105,7 +105,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         new()
         {
           Description = "Production environment",
-          Url = "https://api.euw.{customer}.prod.eva-online.cloud/",
+          Url = "https://api.euw.{customer}.prod.eva-online.cloud",
           Variables = new Dictionary<string, OpenApiServerVariable>
           {
             { "customer", new OpenApiServerVariable { Default = "acme" } }
@@ -594,7 +594,16 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
               Required = true,
               Content = new Dictionary<string, OpenApiMediaType>
               {
-                ["application/json"] = new() { Schema = ToSchema(service.RequestTypeID) }
+                ["application/json"] = new()
+                {
+                  Schema = ToSchema(service.RequestTypeID),
+                  Examples = additionalExamples.TryGetValue(service.Name, out var examples)
+                    ? examples.ToDictionary(x => x.name, x => new OpenApiExample
+                    {
+                      Value = new OpenApiStringObject(x.content)
+                    })
+                    : null
+                }
               }
             },
             Responses = new OpenApiResponses
@@ -604,15 +613,9 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
                 Description = $"The response for a call to {service.Name}",
                 Content = new Dictionary<string, OpenApiMediaType>
                 {
-                  ["application/json"] = new OpenApiMediaType
+                  ["application/json"] = new()
                   {
-                    Schema = ToSchema(service.ResponseTypeID),
-                    Examples = additionalExamples.TryGetValue(service.Name, out var examples)
-                      ? examples.ToDictionary(x => x.name, x => new OpenApiExample
-                      {
-                        Value = new OpenApiStringObject(x.content)
-                      })
-                      : null
+                    Schema = ToSchema(service.ResponseTypeID)
                   }
                 }
               },
