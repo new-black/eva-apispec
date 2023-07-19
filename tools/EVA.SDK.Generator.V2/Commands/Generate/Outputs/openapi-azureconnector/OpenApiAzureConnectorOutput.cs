@@ -13,7 +13,7 @@ internal class OpenApiAzureConnectorOutput : IOutput<OpenApiAzureConnectorOption
 
   public async Task Write(OutputContext<OpenApiAzureConnectorOptions> ctx)
   {
-    var model = new OpenApiOutput().GetModel(ctx.Input, ctx.Options.Host);
+    var model = new OpenApiOutput().GetModel(ctx.Input, ctx.Options.Host, new());
     AzureConnectorExtender.Extend(model, ctx.Input);
 
     await using var file = ctx.Writer.WriteStreamAsync("openapi.json");

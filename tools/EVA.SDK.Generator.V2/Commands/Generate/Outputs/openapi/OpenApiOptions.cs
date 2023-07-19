@@ -10,6 +10,7 @@ internal class OpenApiOptions : GenerateOptions
   internal bool Terse { get; set; } = OpenApiOptionsBinder.Terse.Default;
   internal string Format { get; set; } = OpenApiOptionsBinder.Format.Default;
   internal string Host { get; set; } = OpenApiOptionsBinder.Host.Default;
+  internal string? ExamplesFolder { get; set; } = OpenApiOptionsBinder.ExamplesFolder.Default;
 }
 
 internal class OpenApiOptionsBinder : BaseGenerateOptionsBinder<OpenApiOptions>
@@ -34,12 +35,18 @@ internal class OpenApiOptionsBinder : BaseGenerateOptionsBinder<OpenApiOptions>
     description: "The host to use"
   ).WithDefault("");
 
+  internal static readonly OptionWithDefault<string?> ExamplesFolder = new Option<string?>(
+    name: "--opt-examples-folder",
+    description: "The folder to use for examples"
+  ).WithDefault(null);
+
   protected override IEnumerable<Option> GetOptions()
   {
     yield return Version.Option;
     yield return Terse.Option;
     yield return Format.Option;
     yield return Host.Option;
+    yield return ExamplesFolder.Option;
   }
 
   protected override void BuildOptions(OpenApiOptions options, BindingContext ctx)
@@ -48,5 +55,6 @@ internal class OpenApiOptionsBinder : BaseGenerateOptionsBinder<OpenApiOptions>
     options.Terse = Terse.Value(ctx);
     options.Format = Format.Value(ctx);
     options.Host = Host.Value(ctx);
+    options.ExamplesFolder = ExamplesFolder.Value(ctx);
   }
 }

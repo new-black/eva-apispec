@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Exceptions;
@@ -35,7 +34,8 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
   public async Task Write(OutputContext<OpenApiOptions> ctx)
   {
-    var model = GetModel(ctx.Input, ctx.Options.Host);
+    var additionalExamples = await LoadAdditionalExamples(ctx);
+    var model = GetModel(ctx.Input, ctx.Options.Host, additionalExamples);
 
     foreach (var error in model.Validate(ValidationRuleSet.GetDefaultRuleSet()))
     {
@@ -76,7 +76,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     return result;
   }
 
-  internal OpenApiDocument GetModel(ApiDefinitionModel input, string host)
+  internal OpenApiDocument GetModel(ApiDefinitionModel input, string host, Dictionary<string, List<(int statusCode, string name, string content)>> additionalExamples)
   {
     var state = new State();
     var errorObjectID = Cleanup(input);
@@ -112,7 +112,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       Servers = new List<OpenApiServer> { server },
       Paths = new OpenApiPaths(),
       Components = new OpenApiComponents(),
-      Tags = input.Services.Select(s => TagFromAssembly(s.Assembly)).Concat(new[]{"DataLake"}).Distinct().Order().Select(s => new OpenApiTag { Name = s, Description = s }).ToList(),
+      Tags = input.Services.Select(s => TagFromAssembly(s.Assembly)).Concat(new[] { "DataLake" }).Distinct().Order().Select(s => new OpenApiTag { Name = s, Description = s }).ToList(),
       SecurityRequirements = new List<OpenApiSecurityRequirement>
       {
         new()
@@ -181,7 +181,8 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     {
       In = ParameterLocation.Header,
       Name = "EVA-Async-Callback",
-      Description = "Indicate how the caller should be notified when the asynchronous operation is complete. This is a serialized JSON object. Currently we only support the `email` property. Use `me` as a value to be notified on the emailaddress of the current user.",
+      Description =
+        "Indicate how the caller should be notified when the asynchronous operation is complete. This is a serialized JSON object. Currently we only support the `email` property. Use `me` as a value to be notified on the emailaddress of the current user.",
       Required = false,
       AllowEmptyValue = false,
       Schema = new OpenApiSchema
@@ -201,7 +202,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     // Render each service
     foreach (var service in input.Services)
     {
-      var pathItem = ToPathItem(state, input, service);
+      var pathItem = ToPathItem(state, input, service, additionalExamples);
       model.Paths[service.Path] = pathItem;
     }
 
@@ -224,14 +225,12 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       Summary = "An example BadRequest response",
       Value = new OpenApiObject
       {
+        ["Error"] = new OpenApiObject
         {
-          "Error", new OpenApiObject
-          {
-            { "Message", new OpenApiString("Validation of the request message failed: Field ABC has an invalid value for a Product") },
-            { "Type", new OpenApiString("RequestValidationFailure") },
-            { "Code", new OpenApiString("COVFEFE") },
-            { "RequestID", new OpenApiString("576b62dd71894e3281a4d84951f44e70") }
-          }
+          ["Message"] = new OpenApiString("Validation of the request message failed: Field ABC has an invalid value for a Product"),
+          ["Type"] = new OpenApiString("RequestValidationFailure"),
+          ["Code"] = new OpenApiString("COVFEFE"),
+          ["RequestID"] = new OpenApiString("576b62dd71894e3281a4d84951f44e70")
         }
       }
     });
@@ -241,14 +240,12 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       Summary = "An example Forbidden response",
       Value = new OpenApiObject
       {
+        ["Error"] = new OpenApiObject
         {
-          "Error", new OpenApiObject
-          {
-            { "Message", new OpenApiString("You are not authorized to execute this request.") },
-            { "Type", new OpenApiString("Forbidden") },
-            { "Code", new OpenApiString("COVFEFE") },
-            { "RequestID", new OpenApiString("576b62dd71894e3281a4d84951f44e70") }
-          }
+          ["Message"] = new OpenApiString("You are not authorized to execute this request."),
+          ["Type"] = new OpenApiString("Forbidden"),
+          ["Code"] = new OpenApiString("COVFEFE"),
+          ["RequestID"] = new OpenApiString("576b62dd71894e3281a4d84951f44e70")
         }
       }
     });
@@ -436,30 +433,21 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       Parameters = new List<OpenApiParameter>(),
       Operations = new Dictionary<OperationType, OpenApiOperation>
       {
+        [OperationType.Get] = new()
         {
-          OperationType.Get, new OpenApiOperation
+          Summary = $"{dl.Name} Export",
+          Description = $"Not a real service, but the response shows the format of the {dl.Name} export.",
+          OperationId = $"datalake_{dl.Name}",
+          Tags = new List<OpenApiTag> { new() { Name = TagFromAssembly(type.Assembly), Description = TagFromAssembly(type.Assembly) } },
+          Security = new List<OpenApiSecurityRequirement>(),
+          Responses = new OpenApiResponses
           {
-            Summary = $"{dl.Name} Export",
-            Description = $"Not a real service, but the response shows the format of the {dl.Name} export.",
-            OperationId = $"datalake_{dl.Name}",
-            Tags = new List<OpenApiTag> { new() { Name = TagFromAssembly(type.Assembly), Description = TagFromAssembly(type.Assembly) } },
-            Security = new List<OpenApiSecurityRequirement>(),
-            Responses = new OpenApiResponses
+            ["200"] = new()
             {
+              Description = $"The format of the {dl.Name} export.",
+              Content = new Dictionary<string, OpenApiMediaType>
               {
-                "200", new OpenApiResponse
-                {
-                  Description = $"The format of the {dl.Name} export.",
-                  Content = new Dictionary<string, OpenApiMediaType>
-                  {
-                    {
-                      "application/json", new OpenApiMediaType
-                      {
-                        Schema = ToSchema(dl.DataType),
-                      }
-                    }
-                  }
-                }
+                ["application/json"] = new() { Schema = ToSchema(dl.DataType) }
               }
             }
           }
@@ -468,7 +456,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     };
   }
 
-  private static OpenApiPathItem ToPathItem(State state, ApiDefinitionModel input, ServiceModel service)
+  private static OpenApiPathItem ToPathItem(State state, ApiDefinitionModel input, ServiceModel service, Dictionary<string, List<(int statusCode, string name, string content)>> additionalExamples)
   {
     string MapUserTypes(ApiSpecUserTypes t)
     {
@@ -513,7 +501,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       }
     }
 
-    if (service.Deprecated is {} deprecated)
+    if (service.Deprecated is { } deprecated)
     {
       description += "\n\n---";
       description += "\n**Deprecated:**\n\n";
@@ -586,36 +574,46 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
               Required = true,
               Content = new Dictionary<string, OpenApiMediaType>
               {
-                { "application/json", new OpenApiMediaType { Schema = ToSchema(service.RequestTypeID) } }
+                ["application/json"] = new() { Schema = ToSchema(service.RequestTypeID) }
               }
             },
             Responses = new OpenApiResponses
             {
+              ["200"] = new()
               {
-                "200", new OpenApiResponse
+                Description = $"The response for a call to {service.Name}",
+                Content = new Dictionary<string, OpenApiMediaType>
                 {
-                  Description = $"The response for a call to {service.Name}",
-                  Content = new Dictionary<string, OpenApiMediaType>
+                  ["application/json"] = new OpenApiMediaType
                   {
-                    { "application/json", new OpenApiMediaType { Schema = ToSchema(service.ResponseTypeID), } }
+                    Schema = ToSchema(service.ResponseTypeID),
+                    Examples = additionalExamples.TryGetValue(service.Name, out var examples)
+                      ? examples.ToDictionary(x => x.name, x => new OpenApiExample
+                      {
+                        Value = new OpenApiStringObject(x.content)
+                      })
+                      : null
                   }
                 }
               },
+
+              ["4XX"] = new()
               {
-                "4XX", new OpenApiResponse
+                Description = "A BadRequest response",
+                Content = new Dictionary<string, OpenApiMediaType>
                 {
-                  Description = "A BadRequest response",
-                  Content = new Dictionary<string, OpenApiMediaType>
+                  ["application/json"] = new()
                   {
+                    Schema = new OpenApiSchema { Reference = new OpenApiReference { Id = Schema_Error, Type = ReferenceType.Schema } },
+                    Examples = new Dictionary<string, OpenApiExample>
                     {
-                      "application/json", new OpenApiMediaType
+                      ["RequestValidationFailure"] = new()
                       {
-                        Schema = new OpenApiSchema { Reference = new OpenApiReference { Id = Schema_Error, Type = ReferenceType.Schema } },
-                        Examples = new Dictionary<string, OpenApiExample>
-                        {
-                          { "RequestValidationFailure", new OpenApiExample { Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_400_RequestValidation } } },
-                          { "Forbidden", new OpenApiExample { Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_403_Forbidden } } }
-                        }
+                        Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_400_RequestValidation }
+                      },
+                      ["Forbidden"] = new()
+                      {
+                        Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_403_Forbidden }
                       }
                     }
                   }
@@ -626,6 +624,61 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         }
       }
     };
+  }
+
+  private static async Task<Dictionary<string, List<(int statusCode, string name, string content)>>> LoadAdditionalExamples(OutputContext<OpenApiOptions> ctx)
+  {
+    var result = new Dictionary<string, List<(int statusCode, string name, string content)>>(StringComparer.OrdinalIgnoreCase);
+
+    var dir = ctx.Options.ExamplesFolder;
+    if (dir == null) return result;
+
+    if (!Directory.Exists(dir))
+    {
+      ctx.Logger.LogError("Examples directory {Directory} does not exist", dir);
+      return result;
+    }
+
+    foreach (var exampleFile in Directory.GetFiles(dir))
+    {
+      // We have to find the service name, the description and the status code (optional)
+      // these are all delimited with an underscore
+      var fileName = Path.GetFileNameWithoutExtension(exampleFile);
+      var parts = fileName.Split('_');
+
+      if (parts.Length is < 2 or > 3)
+      {
+        ctx.Logger.LogError("Invalid example file name {FileName}", fileName);
+        continue;
+      }
+
+      var serviceName = parts[0];
+      var description = parts[1];
+      var statusCode = 200;
+
+      if (parts.Length == 3)
+      {
+        if (!int.TryParse(parts[2], out statusCode))
+        {
+          ctx.Logger.LogError("Invalid status code in example file name {FileName}", fileName);
+          continue;
+        }
+      }
+
+      ctx.Logger.LogInformation("Loading example file {FileName}", exampleFile);
+
+      var content = await File.ReadAllTextAsync(exampleFile);
+
+      if (!result.TryGetValue(serviceName, out var list))
+      {
+        list = new List<(int statusCode, string name, string content)>();
+        result.Add(serviceName, list);
+      }
+
+      list.Add((statusCode, description, content));
+    }
+
+    return result;
   }
 
   private static bool SupportsExternalIdsMode(State state, ApiDefinitionModel input, string s)
@@ -660,4 +713,24 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
   [GeneratedRegex("[^a-zA-Z0-9-._]", RegexOptions.Compiled)]
   private static partial Regex NameRegex();
+
+  /// <summary>
+  /// This is a hack, should be improved.
+  /// </summary>
+  private class OpenApiStringObject : IOpenApiPrimitive
+  {
+    private readonly string _value;
+    public AnyType AnyType => AnyType.Primitive;
+    public PrimitiveType PrimitiveType => PrimitiveType.Binary;
+
+    public OpenApiStringObject(string value)
+    {
+      _value = value;
+    }
+
+    public void Write(IOpenApiWriter writer, OpenApiSpecVersion specVersion)
+    {
+      writer.WriteRaw(_value);
+    }
+  }
 }
