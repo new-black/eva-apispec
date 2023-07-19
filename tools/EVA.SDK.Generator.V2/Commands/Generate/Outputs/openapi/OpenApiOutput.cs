@@ -675,7 +675,24 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         result.Add(serviceName, list);
       }
 
-      list.Add((statusCode, description, content));
+      // List could already contain a duplicate
+      if (list.Any(x => x.statusCode == statusCode && x.name == description))
+      {
+        ctx.Logger.LogWarning("Duplicate example file {FileName}", fileName);
+        var i = 1;
+        while (true)
+        {
+          var d = $"{description} ({i++})";
+          if (list.Any(x => x.statusCode == statusCode && x.name == d)) continue;
+
+          list.Add((statusCode, d, content));
+          break;
+        }
+      }
+      else
+      {
+        list.Add((statusCode, description, content));
+      }
     }
 
     return result;
