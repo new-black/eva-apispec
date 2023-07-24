@@ -25,14 +25,29 @@ internal class FilterAssemblies : ITransform
 
       foreach (var (filter,output) in _assemblies)
       {
-        if (!FileSystemName.MatchesSimpleExpression(filter, subInput)) continue;
-
-        result = output ?? subInput;
-        break;
+        if (filter.StartsWith("-"))
+        {
+          if (FileSystemName.MatchesSimpleExpression(filter[1..], subInput))
+          {
+            // Should be removed
+            result = null;
+            cache[subInput] = null;
+            return null;
+          }
+        }
+        else
+        {
+          if (FileSystemName.MatchesSimpleExpression(filter, subInput))
+          {
+            result = output ?? subInput;
+            cache[subInput] = result;
+            return result;
+          }
+        }
       }
 
-      cache[subInput] = result;
-      return result;
+      cache[subInput] = result ?? subInput;
+      return result ?? subInput;
     }
 
     // Validate the filters
