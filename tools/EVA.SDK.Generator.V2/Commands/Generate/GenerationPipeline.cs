@@ -52,7 +52,7 @@ internal static class GenerationPipeline
     logger.LogInformation("Running transformations: {Transforms}", string.Join(", ", transforms.Select(t => t.Name)));
     for (var i = 0; i < 10; i++)
     {
-      logger.LogDebug("\\nRunning iteration {Iteration}", i);
+      logger.LogDebug("Running iteration {Iteration}", i);
       var changes = ITransform.TransformResult.None;
 
       foreach (var transform in transforms)
@@ -139,9 +139,9 @@ internal static class GenerationPipeline
 
   private static IEnumerable<ITransform> FindFilters(GenerateOptions options)
   {
-    if (options.FilterAssemblies is { Length: > 0 })
+    if (options.FilterAssemblies is { Length: > 0 } || options.MergeSmallAssemblies != null)
     {
-      yield return new FilterAssemblies(options.FilterAssemblies);
+      yield return new FilterAssemblies(options.FilterAssemblies, options.MergeSmallAssemblies, options.MergeSmallAssembliesLimit);
     }
 
     if (options.FilterServices is { Length: > 0 })

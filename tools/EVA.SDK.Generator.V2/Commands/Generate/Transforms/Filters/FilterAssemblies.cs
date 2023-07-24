@@ -8,91 +8,77 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms.Filters;
 
 internal class FilterAssemblies : ITransform
 {
-  private readonly List<(string filter, string? output)> _assemblies;
+  private readonly string? _targetAssembly;
+  private readonly int _smallAssemblyLimit;
+  private readonly List<(string filter, string? output)> _assemblyFilters;
+  private readonly Dictionary<string, string?> _mappingCache = new();
 
-  public FilterAssemblies(IEnumerable<string> assemblies)
+  public FilterAssemblies(IEnumerable<string>? assemblies, string? targetAssembly, int smallAssemblyLimit)
   {
-    _assemblies = assemblies.Select(x => x.Split(':')).Select(x => (x[0],x.Skip(1).FirstOrDefault())).ToList();
+    _targetAssembly = targetAssembly;
+    _smallAssemblyLimit = smallAssemblyLimit;
+    _assemblyFilters = assemblies?.Select(x => x.Split(':')).Select(x => (x[0], x.Skip(1).FirstOrDefault())).ToList() ?? new List<(string, string?)>();
   }
+
+  /// <summary>
+  /// Returns `null` if it should be filtered.
+  /// </summary>
+  /// <param name="oldAssemblyName"></param>
+  /// <returns></returns>
+  string? DetermineTargetAssemblyFromFilters(string oldAssemblyName)
+  {
+    if (_mappingCache.TryGetValue(oldAssemblyName, out var result)) return result;
+
+    var hasPositiveFilter = _assemblyFilters.Any(x => !x.filter.StartsWith("-"));
+
+    foreach (var (filter, output) in _assemblyFilters)
+    {
+      if (filter.StartsWith("-"))
+      {
+        if (FileSystemName.MatchesSimpleExpression(filter[1..], oldAssemblyName))
+        {
+          // Should be removed
+          _mappingCache[oldAssemblyName] = null;
+          return null;
+        }
+      }
+      else
+      {
+        if (FileSystemName.MatchesSimpleExpression(filter, oldAssemblyName))
+        {
+          _mappingCache[oldAssemblyName] = output ?? oldAssemblyName;
+          return output ?? oldAssemblyName;
+        }
+      }
+    }
+
+    var fallbackResult = hasPositiveFilter ? null : oldAssemblyName;
+    _mappingCache[oldAssemblyName] = fallbackResult;
+    return fallbackResult;
+  }
+
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
-    var cache = new Dictionary<string, string?>();
-
-    string? SubTransform(string subInput)
-    {
-      if (cache.TryGetValue(subInput, out var result)) return result;
-
-      foreach (var (filter,output) in _assemblies)
-      {
-        if (filter.StartsWith("-"))
-        {
-          if (FileSystemName.MatchesSimpleExpression(filter[1..], subInput))
-          {
-            // Should be removed
-            result = null;
-            cache[subInput] = null;
-            return null;
-          }
-        }
-        else
-        {
-          if (FileSystemName.MatchesSimpleExpression(filter, subInput))
-          {
-            result = output ?? subInput;
-            cache[subInput] = result;
-            return result;
-          }
-        }
-      }
-
-      cache[subInput] = result ?? subInput;
-      return result ?? subInput;
-    }
-
-    // Validate the filters
-    var loggableAssemblies = input.EnumerateAllAssemblies().Select(assembly => (assembly, mappedTo: SubTransform(assembly))).ToList();
-
-    Console.WriteLine("\nKeeping assemblies:");
-    foreach (var x in loggableAssemblies.Where(x => x.mappedTo == x.assembly))
-    {
-      Console.WriteLine($"- {x.assembly}");
-    }
-
-    Console.WriteLine("\nGrouping:");
-    foreach (var x in loggableAssemblies.Where(x => x.mappedTo != null && x.mappedTo != x.assembly).GroupBy(x => x.mappedTo))
-    {
-      Console.WriteLine($"  {x.Key}");
-      foreach (var y in x)
-      {
-        Console.WriteLine($"  - {y.assembly}");
-      }
-    }
-
-    Console.WriteLine("\nRemoving:");
-    foreach (var x in loggableAssemblies.Where(x => x.mappedTo == null))
-    {
-      Console.WriteLine($"- {x.assembly}");
-    }
-
     // Filter the services
     var count1 = input.Services.Length;
     var result = new List<ServiceModel>();
     foreach (var service in input.Services)
     {
-      var targetName = SubTransform(service.Assembly);
+      var targetName = DetermineTargetAssemblyFromFilters(service.Assembly);
       if (targetName != null)
       {
         service.Assembly = targetName;
         result.Add(service);
       }
     }
+
     input.Services = result.ToImmutableArray();
 
     // Filter the types
     foreach (var type in input.Types.Values)
     {
-      var targetName = SubTransform(type.Assembly);
+      var targetName = DetermineTargetAssemblyFromFilters(type.Assembly);
       if (targetName != null)
       {
         type.Assembly = targetName;
@@ -104,14 +90,90 @@ internal class FilterAssemblies : ITransform
     var result2 = new List<ErrorSpecification>();
     foreach (var error in input.Errors)
     {
-      var targetName = SubTransform(error.Assembly);
+      var targetName = DetermineTargetAssemblyFromFilters(error.Assembly);
       if (targetName == null) continue;
 
       error.Assembly = targetName;
       result2.Add(error);
     }
+
     input.Errors = result2.ToImmutableArray();
 
+    // Apply grouping of small assemblies
+    if (_targetAssembly != null)
+    {
+      var mergedAssemblies = new HashSet<string>();
+
+      foreach (var assemblyServices in input.Services.GroupBy(s => s.Assembly))
+      {
+        if (options.MergeSmallAssembliesFilter is { } filter)
+        {
+          if (filter.StartsWith("-"))
+          {
+            if (FileSystemName.MatchesSimpleExpression(filter[1..], assemblyServices.Key))
+            {
+              continue;
+            }
+          }
+          else
+          {
+            if (!FileSystemName.MatchesSimpleExpression(filter, assemblyServices.Key))
+            {
+              continue;
+            }
+          }
+        }
+
+        // We'll never merge the EVA.DataLake assembly
+        if (assemblyServices.Key != "EVA.DataLake" && assemblyServices.Count() <= _smallAssemblyLimit)
+        {
+          mergedAssemblies.Add(assemblyServices.Key);
+          // Only for display reasons
+          _mappingCache[assemblyServices.Key] = _targetAssembly;
+        }
+      }
+
+      foreach (var service in input.Services)
+      {
+        if (mergedAssemblies.Contains(service.Assembly)) service.Assembly = _targetAssembly;
+      }
+
+      foreach (var type in input.Types.Values)
+      {
+        if (mergedAssemblies.Contains(type.Assembly)) type.Assembly = _targetAssembly;
+      }
+
+      foreach (var error in input.Errors)
+      {
+        if (mergedAssemblies.Contains(error.Assembly)) error.Assembly = _targetAssembly;
+      }
+    }
+
+    // Log output
+    LogOutput(logger);
     return input.Services.Length == count1 && input.Errors.Length == count2 ? ITransform.TransformResult.None : ITransform.TransformResult.Changes;
+  }
+
+  private void LogOutput(ILogger logger)
+  {
+    var ordered = _mappingCache.OrderBy(x => x.Key).ToList();
+
+    foreach (var x in ordered.Where(x => x.Key == x.Value))
+    {
+      logger.LogInformation("Keeping assembly: {AssemblyName}", x.Key);
+    }
+
+    foreach (var x in ordered.Where(x => x.Value != null && x.Key != x.Value).GroupBy(x => x.Value))
+    {
+      foreach (var y in x)
+      {
+        logger.LogInformation("Merging {SourceAssemblyName} into {TargetAssemblyName}", y.Key, x.Key);
+      }
+    }
+
+    foreach (var x in ordered.Where(x => x.Value == null))
+    {
+      logger.LogInformation("Removing assembly: {AssemblyName}", x.Key);
+    }
   }
 }

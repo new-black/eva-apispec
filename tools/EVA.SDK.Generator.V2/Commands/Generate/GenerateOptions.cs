@@ -12,12 +12,18 @@ public class GenerateOptions
   internal bool Overwrite { get; init; }
 
   // Filters
-  internal string[]? FilterAssemblies { get; init; }
+  internal string[]? FilterAssemblies { get; set; }
   internal string[]? FilterServices { get; init; }
 
   internal List<string>? Remove { get; set; }
 
   internal string? OrphanedTypesAssembly { get; init; }
+
+  internal string? MergeSmallAssemblies { get; init; } = BaseGenerateOptionsBinderOptions.MergeSmallAssemblies.Default;
+
+  internal int MergeSmallAssembliesLimit { get; init; } = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesLimit.Default;
+
+  internal string? MergeSmallAssembliesFilter { get; init; } = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Default;
 
   internal void EnsureRemove(string remove)
   {
@@ -52,6 +58,21 @@ internal static class BaseGenerateOptionsBinderOptions
     name: "--service",
     description: "Only output this single service. Can be specified multiple time. This is case sensitive."
   );
+
+  internal static readonly OptionWithDefault<string?> MergeSmallAssemblies = new Option<string?>(
+    name: "--merge-small-assemblies",
+    description: "Merge all assemblies with 10 (default) services or less into the given assembly. This limit is configurable using --merge-small-assemblies-limit."
+  ).WithDefault(null);
+
+  internal static readonly OptionWithDefault<int> MergeSmallAssembliesLimit = new Option<int>(
+    name: "--merge-small-assemblies-limit",
+    description: "The limit of services to merge into a single assembly. Defaults to 10."
+  ).WithDefault(10);
+
+  internal static readonly OptionWithDefault<string?> MergeSmallAssembliesFilter = new Option<string?>(
+    name: "--merge-small-assemblies-filter",
+    description: "Which assemblie are allowed to be merged due to size. Use this to exclude specific assemblies from being merged."
+  ).WithDefault(null);
 }
 
 internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : GenerateOptions, new()
@@ -66,7 +87,10 @@ internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : G
       Remove = _remove?.Value(bindingContext),
       FilterAssemblies = BaseGenerateOptionsBinderOptions.FilterAssemblies.Value(bindingContext),
       FilterServices = BaseGenerateOptionsBinderOptions.FilterServices.Value(bindingContext),
-      OrphanedTypesAssembly = BaseGenerateOptionsBinderOptions.OrphanedTypesAssembly.Value(bindingContext)
+      OrphanedTypesAssembly = BaseGenerateOptionsBinderOptions.OrphanedTypesAssembly.Value(bindingContext),
+      MergeSmallAssemblies = BaseGenerateOptionsBinderOptions.MergeSmallAssemblies.Value(bindingContext),
+      MergeSmallAssembliesLimit = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesLimit.Value(bindingContext),
+      MergeSmallAssembliesFilter = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Value(bindingContext)
     };
 
     BuildOptions(result, bindingContext);
@@ -83,6 +107,9 @@ internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : G
     yield return BaseGenerateOptionsBinderOptions.FilterAssemblies;
     yield return BaseGenerateOptionsBinderOptions.FilterServices;
     yield return BaseGenerateOptionsBinderOptions.OrphanedTypesAssembly;
+    yield return BaseGenerateOptionsBinderOptions.MergeSmallAssemblies.Option;
+    yield return BaseGenerateOptionsBinderOptions.MergeSmallAssembliesLimit.Option;
+    yield return BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Option;
 
     foreach (var opt in GetOptions()) yield return opt;
 
