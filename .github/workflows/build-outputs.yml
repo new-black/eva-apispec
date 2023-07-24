@@ -23,7 +23,7 @@ jobs:
       with:
         global-json-file: 'global.json'
     - name: Generate OpenAPI
-      run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite --opt-terse --opt-format json --opt-examples-folder "examples/"
+      run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite --opt-terse --opt-format json --opt-examples-folder "examples/" --assembly "-EVA.Global" "-EVA.ShelfManagement" "-EVA.Workforce" "-EVA.Sync"
     - name: Generate ApiDocs
       run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate apidocs -i spec/spec.json -o output/apidocs --overwrite
     - name: Commit changes
