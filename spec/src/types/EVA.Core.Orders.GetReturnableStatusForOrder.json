@@ -1,7 +1,7 @@
 {
   "typename": "GetReturnableStatusForOrder",
   "assembly": "EVA.Core",
-  "description": "Gets whether or not an Order is currently returnable.\n\nFor each OrderLine on the Order you\u0027ll get back a result that specifies whether or not it can be returned,\nhow much can be returned and which (if any) other OrderLines must be returned before the line itself can be returned\n(think of parent-child lines where you can\u0027t return a child OrderLine without also returning the parent OrderLine).\n\nIn addition, this service may return \u0060ReturnSets\u0060 which specify that \u0027if you return these OrderLines (specified by \u0060OrderLineIDs\u0060) then\nyou must *also* return these lines (specified by \u0060RequiredOrderLineIDsToReturn\u0060). For example, if you return all normal OrderLines on an Order\nthen you must also return all the free products you have received.",
+  "description": "Gets whether or not an Order is currently returnable.\n\nFor each OrderLine on the Order you\u0027ll get back a result that specifies whether or not it can be returned,\nhow much can be returned and which (if any) other OrderLines must be returned before the line itself can be returned\n(think of parent-child lines where you can\u0027t return a child OrderLine without also returning the parent OrderLine).\n\nIn addition, this service may return \u0060ReturnSets\u0060 which specify that \u0027if you return these OrderLines (specified by \u0060OrderLineIDs\u0060) then\nyou must *also* return these lines (specified by \u0060RequiredOrderLineIDsToReturn\u0060). For example, if you return all normal OrderLines on an Order\nthen you must also return all the free products you have received.\n\nFinally, specify the \u0060ReturningQuantities\u0060 parameter as an object where the key is an \u0060OrderLineID\u0060 with a (positive) \u0060Quantity\u0060 you wish to be\nreturned. The \u0060Result\u0060 can be affected in case rules have been configured to, for example, allow _returns without products_ only when the total\nreturn order amount is below a certain amount.",
   "usage": {
     "request": true,
     "response": false
@@ -59,6 +59,37 @@
         "isEvaID": true,
         "isExternalID": false
       },
+      "allowedValues": []
+    },
+    "ReturningQuantities": {
+      "type": {
+        "ref": "map",
+        "args": [
+          {
+            "ref": "int64",
+            "args": [],
+            "shared": null,
+            "nullable": false
+          },
+          {
+            "ref": "int32",
+            "args": [],
+            "shared": null,
+            "nullable": false
+          }
+        ],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     }
   },
