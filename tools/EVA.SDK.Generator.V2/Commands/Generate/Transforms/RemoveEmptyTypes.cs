@@ -12,7 +12,10 @@ internal class RemoveEmptyTypes : INamedTransform
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
-    var whitelistedIDs = input.Services.Select(s => s.RequestTypeID).Concat(input.Services.Select(s => s.ResponseTypeID)).ToHashSet();
+    var whitelistedIDs = input.Services.Select(s => s.RequestTypeID)
+      .Concat(input.Services.Select(s => s.ResponseTypeID))
+      .Concat(input.Errors.Select(e => e.DataTypeID).FilterNotNull())
+      .ToHashSet();
     var changes = ITransform.TransformResult.None;
 
     while (true)

@@ -14,7 +14,8 @@ internal class RemoveUnusedTypes : ITransform
       input.Services.Select(s => s.RequestTypeID)
         .Concat(input.Services.Select(s => s.ResponseTypeID))
         .Concat(input.EventTargets.Select(e => e.DataType).FilterNotNull())
-        .Concat(input.DatalakeExports.Select(e => e.DataType)));
+        .Concat(input.DatalakeExports.Select(e => e.DataType))
+        .Concat(input.Errors.Select(e => e.DataTypeID).FilterNotNull()));
     var allUsedTypes = new HashSet<string>();
 
     while (typesToIterate.Any())

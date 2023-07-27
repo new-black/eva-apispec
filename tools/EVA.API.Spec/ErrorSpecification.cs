@@ -24,4 +24,7 @@ public class ErrorSpecification
 
   [JsonPropertyName("arguments")]
   public ImmutableArray<ErrorSpecificationArgument> Arguments { get; set; } = ImmutableArray<ErrorSpecificationArgument>.Empty;
+
+  [JsonPropertyName("dataTypeID")]
+  public string? DataTypeID { get; set; }
 }

@@ -161,5 +161,11 @@ public static class ApiSpecHelpers
       ApplyRequest(service.RequestTypeID);
       ApplyResponse(service.ResponseTypeID);
     }
+
+    foreach (var error in apiDefinitionModel.Errors)
+    {
+      if (error.DataTypeID == null) continue;
+      ApplyResponse(error.DataTypeID);
+    }
   }
 }
