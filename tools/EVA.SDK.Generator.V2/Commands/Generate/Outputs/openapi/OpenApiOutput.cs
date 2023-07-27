@@ -349,7 +349,11 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       result.Properties.Add(name, schema);
     }
 
-    result.Required = type.Properties.Where(p => !p.Value.Type.Nullable).Select(p => p.Key).OrderBy(x => x).ToImmutableHashSet();
+    result.Required = type.Properties
+      .Where(p => p.Value is { Type.Nullable: false, Skippable: false })
+      .Select(p => p.Key)
+      .OrderBy(x => x)
+      .ToImmutableHashSet();
 
     if (type.Extends != null)
     {
