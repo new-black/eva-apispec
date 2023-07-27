@@ -330,11 +330,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         schema.Description += $"\n\nThis string must be between {slc.Min} (incl) and {slc.Max} (incl) characters long.";
       }
 
-      if (prop is { Skippable: true, Required: { CurrentValue: true } })
-      {
-        schema.Description += $"\n\nWhile this property is not required, if it is sent in the request it must have a valid value.";
-      }
-      else if (prop is { Skippable: true, Type.Nullable: true })
+      if (prop is { Skippable: true, Type.Nullable: true })
       {
         schema.Description += $"\n\nProviding a `null` value and not providing the property at all has different meanings.";
       }
@@ -354,8 +350,6 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         schema.Deprecated = true;
         schema.Description += $"\n\n**Deprecated since {deprecated.Introduced}:** {deprecated.Comment}\n\n**Will be removed in {deprecated.Effective}**";
       }
-
-      schema.Description = schema.Description.Trim();
 
       result.Properties.Add(name, schema);
     }
