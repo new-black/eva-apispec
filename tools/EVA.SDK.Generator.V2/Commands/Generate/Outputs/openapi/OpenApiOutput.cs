@@ -330,6 +330,11 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         schema.Description += $"\n\nThis string must be between {slc.Min} (incl) and {slc.Max} (incl) characters long.";
       }
 
+      if (prop is { Skippable: true, Type.Nullable: true })
+      {
+        schema.Description += $"\n\nProviding a `null` value and not providing the property at all has different meanings.";
+      }
+
       if (prop.AllowedValues is { Length: > 0 } allowedValues)
       {
         schema.Enum = allowedValues.Select<string, IOpenApiAny>(v => new OpenApiString(v)).ToList();
