@@ -432,7 +432,15 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             typeNameNotNullable = typeNameNotNullable == "Data" && dataIndex != -1 ? $"Foundation.{typeNameNotNullable}" : typeNameNotNullable;
             if (prop.Value.Type.Nullable)
             {
-              output.WriteLine($"self.{prop.Key} = try? container.decodeIfPresent({typeNameNotNullable}.self, forKey: .{prop.Key})");
+              // JSON conforms to ExpressibleByNilLiteral, therefore we do not use optionals. JSON? can be expressed by JSON with a value of .null or nil.
+              if (typeNameNotNullable == "JSON")
+              {
+                output.WriteLine($"self.{prop.Key} = (try? container.decodeIfPresent({typeNameNotNullable}.self, forKey: .{prop.Key})) ?? nil");
+              }
+              else
+              {
+                output.WriteLine($"self.{prop.Key} = try? container.decodeIfPresent({typeNameNotNullable}.self, forKey: .{prop.Key})");
+              }
             }
             else
             {
@@ -534,7 +542,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       if (ctx.Options.OptimisticNullability) element = element.CloneAsNotNull();
       return $"[{GetTypeName(element, ctx)}]{n}";
     }
-    if (typeReference is { Name: ApiSpecConsts.Any }) return $"{ctx.Options.AnyCodableName}{n}";
+    if (typeReference is { Name: ApiSpecConsts.Any }) return $"{ctx.Options.AnyCodableName}";
     if (typeReference is { Name: ApiSpecConsts.WellKnown.IProductSearchItem or ApiSpecConsts.Object }) return $"[String: {ctx.Options.AnyCodableName}]{n}";
     if (typeReference is { Name: ApiSpecConsts.Specials.Map })
     {
@@ -570,7 +578,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     }
 
     ctx.Logger.LogWarning("Type cannot be handled by this output: {Type}, outputting as \"object\"", typeReference.Name);
-    return $"{ctx.Options.AnyCodableName}{n}";
+    return $"{ctx.Options.AnyCodableName}";
   }
 
   private static string GetTypeName(string id, ApiDefinitionModel input)
