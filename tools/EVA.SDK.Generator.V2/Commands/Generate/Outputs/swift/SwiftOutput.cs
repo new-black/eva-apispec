@@ -164,6 +164,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       typeArguments = $"<{typeArguments}>";
     }
 
+    // If the property ID exists, mark the struct as Identifiable.
     var idIndex = type.Properties.ToList().FindIndex(p => p.Key == "ID");
     extends = idIndex == -1 ? extends : $"Identifiable, {extends}";
     extends = string.IsNullOrEmpty(extends) ? "" : $": {extends}";
@@ -201,6 +202,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       foreach (var (propName, prop) in type.Properties)
       {
+        // If AllowedValues is defined, encode these values in a type safe enum.
         if (prop.AllowedValues.Any())
         {
           output.WriteLine($"public enum {propName}Values: RawRepresentable, Identifiable, Codable, CaseIterable, Equatable, Hashable, Sendable {{");
