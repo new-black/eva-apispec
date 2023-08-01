@@ -1,6 +1,8 @@
 ﻿using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using EVA.API.Spec;
+using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
+using EVA.SDK.Generator.V2.Commands.Generate.Transforms.Internal;
 using EVA.SDK.Generator.V2.Exceptions;
 using EVA.SDK.Generator.V2.Helpers;
 using Microsoft.Extensions.Logging;
@@ -22,7 +24,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
   public string? OutputPattern => null;
 
-  public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "event-exports", "inheritance" };
+  public string[] ForcedTransformations => new[] { RemoveGenerics.ID, RemoveUnusedGenericArguments.ID, RemoveErrors.ID, RemoveEventExports.ID, RemoveInheritance.ID };
 
   private const string Parameter_Header_UserAgent = "p1";
   private const string Parameter_Header_IdsMode = "p2";

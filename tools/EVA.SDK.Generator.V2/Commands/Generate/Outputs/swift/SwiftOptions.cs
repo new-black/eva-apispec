@@ -17,7 +17,7 @@ internal class SwiftOptionsBinder : BaseGenerateOptionsBinder<SwiftOptions>
   internal static readonly OptionWithDefault<string> AnyCodableName = new Option<string>(
     name: "--opt-anycodable-name",
     description: "The name to use for AnyCodable"
-  ).WithDefault("EvaAnyCodable");
+  ).WithDefault("JSON");
 
   internal static readonly OptionWithDefault<bool> OptimisticNullability = new Option<bool>(
     name: "--opt-optimistic-nullability",

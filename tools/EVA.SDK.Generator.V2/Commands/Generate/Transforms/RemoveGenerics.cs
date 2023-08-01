@@ -5,10 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
-internal class FlattenGenerics : INamedTransform
+internal class RemoveGenerics : INamedTransform
 {
-  public string Name => "generics";
-  public string Description => "Flattens generic types";
+  public const string ID = "remove-generics";
+  public string Name => ID;
+  public string Description => "Removes generic types by flattening them.";
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {

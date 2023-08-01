@@ -35,14 +35,14 @@ internal static class GenerateCommand
     var output = new TOutput();
 
     var description = $"Generate {name} typings.";
-    var forcedRemoves = output.ForcedRemoves;
-    if (forcedRemoves.Any())
+    var forcedTransformations = output.ForcedTransformations;
+    if (forcedTransformations.Any())
     {
-      description += $"\n\nThese features are removed by default:\n{string.Join('\n', forcedRemoves.Select(x => $" - {x}"))}";
+      description += $" Applies the following transformations by default: {string.Join(", ", forcedTransformations)}";
     }
 
     var command = new Command(name) { Description = description, IsHidden = hidden };
-    command.AddOptions(binder.GetAllOptions(forcedRemoves));
+    command.AddOptions(binder.GetAllOptions(forcedTransformations));
 
     generateCommand.AddCommand(command);
 

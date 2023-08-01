@@ -6,7 +6,8 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 internal class RemoveEventExports : INamedTransform
 {
-  public string Name => "event-exports";
+  public const string ID = "remove-event-exports";
+  public string Name => ID;
   public string Description => "Will remove all type information regarding event exports";
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)

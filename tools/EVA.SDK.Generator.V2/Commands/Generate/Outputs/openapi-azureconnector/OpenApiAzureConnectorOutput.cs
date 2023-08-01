@@ -9,11 +9,13 @@ internal class OpenApiAzureConnectorOutput : IOutput<OpenApiAzureConnectorOption
 {
   public string? OutputPattern => null;
 
-  public string[] ForcedRemoves => new[] { "generics", "unused-type-params", "errors", "inheritance", "datalake-exports" };
+  public string[] ForcedTransformations => _openApiOutput.ForcedTransformations;
+
+  private readonly OpenApiOutput _openApiOutput = new();
 
   public async Task Write(OutputContext<OpenApiAzureConnectorOptions> ctx)
   {
-    var model = new OpenApiOutput().GetModel(ctx.Input, ctx.Options.Host, new());
+    var model = _openApiOutput.GetModel(ctx.Input, ctx.Options.Host, new());
     AzureConnectorExtender.Extend(model, ctx.Input);
 
     await using var file = ctx.Writer.WriteStreamAsync("openapi.json");

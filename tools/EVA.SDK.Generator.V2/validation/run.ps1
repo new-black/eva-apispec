@@ -6,6 +6,7 @@ dotnet run -- generate swift `
   --opt-optimistic-nullability `
   --opt-include-mocks `
   --opt-service-format struct `
+  --log-level debug `
   --assembly `
     EVA.Admin `
     EVA.Auditing `
@@ -25,6 +26,5 @@ dotnet run -- generate swift `
     EVA.Watchtower `
     EVA.Workforce 
 docker build ./validation/swift --progress plain
-
 dotnet run -- generate openapi --out ./validation/openapi/src --overwrite --opt-format json --opt-version v3 --opt-terse
 docker build ./validation/openapi --progress plain

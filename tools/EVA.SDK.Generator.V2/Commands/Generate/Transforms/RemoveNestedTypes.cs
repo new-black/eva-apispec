@@ -5,8 +5,9 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 internal class RemoveNestedTypes : INamedTransform
 {
-  public string Name => "nested-types";
-  public string Description => "Will bring nested types to to root level";
+  public const string ID = "remove-nested-types";
+  public string Name => ID;
+  public string Description => "Will remove nested types by bringing them to the root level";
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {

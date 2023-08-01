@@ -1,6 +1,7 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Binding;
 using System.Text;
+using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate;
@@ -15,7 +16,7 @@ public class GenerateOptions
   internal string[]? FilterAssemblies { get; set; }
   internal string[]? FilterServices { get; init; }
 
-  internal List<string>? Remove { get; set; }
+  internal List<string>? Transforms { get; set; }
 
   internal string? OrphanedTypesAssembly { get; init; }
 
@@ -25,10 +26,10 @@ public class GenerateOptions
 
   internal string? MergeSmallAssembliesFilter { get; init; } = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Default;
 
-  internal void EnsureRemove(string remove)
+  internal void EnsureTransform(string transform)
   {
-    Remove ??= new List<string>();
-    if (!Remove.Contains(remove)) Remove.Add(remove);
+    Transforms ??= new List<string>();
+    if (!Transforms.Contains(transform)) Transforms.Add(transform);
   }
 }
 
@@ -73,18 +74,28 @@ internal static class BaseGenerateOptionsBinderOptions
     name: "--merge-small-assemblies-filter",
     description: "Which assemblie are allowed to be merged due to size. Use this to exclude specific assemblies from being merged."
   ).WithDefault(null);
+
+  internal static readonly OptionWithDefault<List<string>> Removes = new Option<List<string>>(
+    name: "--remove",
+    description: "Shorthand for all remove-* prefixed transforms. Eg: --remove generics inheritance will map to --transform remove-generics remove-inheritance"
+  ) { AllowMultipleArgumentsPerToken = true }.WithDefault(new List<string>());
 }
 
 internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : GenerateOptions, new()
 {
+  private Option<List<string>> _transforms;
+
   protected override T GetBoundValue(BindingContext bindingContext)
   {
+    var removes = BaseGenerateOptionsBinderOptions.Removes.Value(bindingContext);
+    var transforms = _transforms.Value(bindingContext);
+
     var result = new T
     {
       Input = SharedOptions.Input.Value(bindingContext),
       OutputDirectory = BaseGenerateOptionsBinderOptions.OutputDir.Value(bindingContext) ?? string.Empty,
       Overwrite = BaseGenerateOptionsBinderOptions.Overwrite.Value(bindingContext),
-      Remove = _remove?.Value(bindingContext),
+      Transforms = (transforms ?? Enumerable.Empty<string>()).Concat(removes.Select(r => $"remove-{r}")).ToList(),
       FilterAssemblies = BaseGenerateOptionsBinderOptions.FilterAssemblies.Value(bindingContext),
       FilterServices = BaseGenerateOptionsBinderOptions.FilterServices.Value(bindingContext),
       OrphanedTypesAssembly = BaseGenerateOptionsBinderOptions.OrphanedTypesAssembly.Value(bindingContext),
@@ -97,9 +108,7 @@ internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : G
     return result;
   }
 
-  private Option<List<string>>? _remove;
-
-  public IEnumerable<Option> GetAllOptions(string[] forcedRemoves)
+  public IEnumerable<Option> GetAllOptions(string[] forcedTransformations)
   {
     yield return SharedOptions.Input;
     yield return BaseGenerateOptionsBinderOptions.OutputDir;
@@ -113,18 +122,21 @@ internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : G
 
     foreach (var opt in GetOptions()) yield return opt;
 
-    // Build the remove options
+    yield return BaseGenerateOptionsBinderOptions.Removes.Option;
+
+    // Build the transform options
     var sb = new StringBuilder();
-    sb.AppendLine("Elements to remove:");
+    sb.AppendLine("Available transformations:");
+
     foreach (var x in GenerationPipeline.Transforms)
     {
-      if (forcedRemoves.Contains(x.Name)) continue;
+      if (forcedTransformations.Contains(x.Name)) continue;
       sb.AppendLine();
       sb.AppendLine($"{x.Name}: {x.Description}");
     }
 
-    _remove = new Option<List<string>>("--remove", sb.ToString()) { AllowMultipleArgumentsPerToken = true };
-    yield return _remove;
+    _transforms = new Option<List<string>>("--transforms", sb.ToString()) { AllowMultipleArgumentsPerToken = true };
+    yield return _transforms;
   }
 
   protected abstract IEnumerable<Option> GetOptions();

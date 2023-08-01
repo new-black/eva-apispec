@@ -7,7 +7,8 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 internal class RemoveSharedRequestResponseTypes : INamedTransform
 {
-  public string Name => "shared-req-res-types";
+  public const string ID = "remove-shared-req-res-types";
+  public string Name => ID;
   public string Description => "Splits types that are used in both requests and responses into separate types";
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)

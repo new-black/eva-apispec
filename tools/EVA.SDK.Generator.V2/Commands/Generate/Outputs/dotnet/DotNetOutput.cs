@@ -1,4 +1,5 @@
 ﻿using EVA.API.Spec;
+using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 using EVA.SDK.Generator.V2.Helpers;
 using Microsoft.Extensions.Logging;
 
@@ -15,7 +16,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
   }
 
   public string OutputPattern => "EVA.*.cs";
-  public string[] ForcedRemoves => new[] { "options", "event-exports", "datalake-exports" };
+  public string[] ForcedTransformations => new[] { RemoveOptions.ID, RemoveEventExports.ID, RemoveDataLakeExports.ID };
 
   private static void WriteErrors(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, IndentedStringBuilder o, string name)
   {

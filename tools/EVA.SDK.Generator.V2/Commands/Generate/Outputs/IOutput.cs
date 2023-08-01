@@ -6,7 +6,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs;
 internal interface IOutput<T>
 {
   string? OutputPattern { get; }
-  string[] ForcedRemoves { get; }
+  string[] ForcedTransformations { get; }
   Task Write(OutputContext<T> ctx);
 }
 

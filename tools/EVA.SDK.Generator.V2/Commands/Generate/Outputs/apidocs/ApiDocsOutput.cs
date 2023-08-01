@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using EVA.API.Spec;
+using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
@@ -10,7 +11,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
 internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 {
   public string? OutputPattern => null;
-  public string[] ForcedRemoves => new[] { "generics", "options", "inheritance", "datalake-exports" };
+  public string[] ForcedTransformations => new[] { RemoveGenerics.ID, RemoveOptions.ID, RemoveInheritance.ID, RemoveDataLakeExports.ID };
 
   public async Task Write(OutputContext<ApiDocsOptions> ctx)
   {

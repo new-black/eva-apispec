@@ -15,7 +15,7 @@ internal static class GenerationPipeline
 {
   internal static readonly INamedTransform[] Transforms =
   {
-    new FlattenGenerics(),
+    new RemoveGenerics(),
     new RemoveDeprecatedProperties(),
     new RemoveDeprecatedServices(),
     new RemoveEmptyTypes(),
@@ -35,7 +35,7 @@ internal static class GenerationPipeline
   internal static async Task Run<T>(T opt, IOutput<T> output, ILogger logger) where T : GenerateOptions
   {
     // Some outputs require certain options
-    foreach (var o in output.ForcedRemoves) opt.EnsureRemove(o);
+    foreach (var o in output.ForcedTransformations) opt.EnsureTransform(o);
 
     // Find all parts of the pipeline
     var input = InputFactory.GetInputFromString(opt.Input);
@@ -152,7 +152,7 @@ internal static class GenerationPipeline
 
   private static IEnumerable<INamedTransform> FindTransforms(GenerateOptions options)
   {
-    var remove = (options.Remove ?? new List<string>()).Distinct().ToHashSet();
+    var remove = (options.Transforms ?? new List<string>()).Distinct().ToHashSet();
 
     foreach (var transform in Transforms)
     {

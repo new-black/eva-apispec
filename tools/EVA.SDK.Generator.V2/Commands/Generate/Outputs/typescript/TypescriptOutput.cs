@@ -8,7 +8,7 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
 {
   public string? OutputPattern => null;
 
-  public string[] ForcedRemoves => Array.Empty<string>();
+  public string[] ForcedTransformations => Array.Empty<string>();
 
   private const string AnyType = "TAnyValue";
   private const string IEvaServiceDefinition = "IEvaServiceDefinition";

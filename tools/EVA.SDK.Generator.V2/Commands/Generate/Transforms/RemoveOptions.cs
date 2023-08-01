@@ -7,8 +7,9 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 internal class RemoveOptions : INamedTransform
 {
-  public string Name => "options";
-  public string Description => "Removes options (properties that might contain multiple distinct types)";
+  public const string ID = "remove-options";
+  public string Name => ID;
+  public string Description => "Removes options (properties that might contain multiple distinct types). Only the shared signature will remain.";
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {

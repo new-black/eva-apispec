@@ -1,4 +1,4 @@
-FROM swift:5.8-jammy
+FROM swift:5.8.1-jammy
 
 RUN mkdir /src
 WORKDIR /src
