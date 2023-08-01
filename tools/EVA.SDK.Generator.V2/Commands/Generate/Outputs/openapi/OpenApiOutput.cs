@@ -463,10 +463,13 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
   {
     var type = input.Types[dl.DataType];
 
+    var description = $"Not a real service, but the response shows the format of the {dl.Name} export.";
+    if (dl.ExamplePath != null) description += $" This export gets written to the following path: `{dl.ExamplePath}`";
+
     return new OpenApiPathItem
     {
       Summary = dl.Name,
-      Description = $"Not a real service, but the response shows the format of the {dl.Name} export.",
+      Description = description,
       Parameters = new List<OpenApiParameter>(),
       Operations = new Dictionary<OperationType, OpenApiOperation>
       {
