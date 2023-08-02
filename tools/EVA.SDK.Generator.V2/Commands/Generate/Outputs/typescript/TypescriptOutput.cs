@@ -262,6 +262,7 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
 
     var preset = typeReference switch
     {
+      { Name: ApiSpecConsts.ID } => $"number{n}",
       { Name: ApiSpecConsts.String or ApiSpecConsts.Date or ApiSpecConsts.Binary or ApiSpecConsts.Guid or ApiSpecConsts.Duration } => $"string{n}",
       { Name: ApiSpecConsts.Bool } => $"boolean{n}",
       { Name: ApiSpecConsts.Int32 or ApiSpecConsts.Int64 or ApiSpecConsts.Int16 or ApiSpecConsts.Float32 or ApiSpecConsts.Float64 or ApiSpecConsts.Float128 } => $"number{n}",

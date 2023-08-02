@@ -288,6 +288,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
 
     if (r.Name == ApiSpecConsts.Guid) return $"System.Guid{n}";
     if (r.Name == ApiSpecConsts.String) return $"string{n}";
+    if (r.Name == ApiSpecConsts.ID) return $"long{n}";
     if (r.Name == ApiSpecConsts.Int32) return $"int{n}";
     if (r.Name == ApiSpecConsts.Int16) return $"short{n}";
     if (r.Name == ApiSpecConsts.Bool) return $"bool{n}";

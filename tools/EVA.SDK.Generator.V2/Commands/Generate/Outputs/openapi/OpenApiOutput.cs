@@ -402,6 +402,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     if (type.Name == ApiSpecConsts.Int16) return new OpenApiSchema { Type = "integer" };
     if (type.Name == ApiSpecConsts.Int32) return new OpenApiSchema { Type = "integer", Format = "int32" };
     if (type.Name == ApiSpecConsts.Int64) return new OpenApiSchema { Type = "integer", Format = "int64" };
+    if (type.Name == ApiSpecConsts.ID) return new OpenApiSchema { Type = "integer", Format = "int64" };
     if (type.Name == ApiSpecConsts.String) return new OpenApiSchema { Type = "string" };
     if (type.Name == ApiSpecConsts.Binary) return new OpenApiSchema { Type = "string", Format = "byte" };
     if (type.Name == ApiSpecConsts.Bool) return new OpenApiSchema { Type = "boolean" };

@@ -16,6 +16,7 @@ public static class ApiSpecConsts
   public const string Object = "object";
   public const string Any = "any";
   public const string Binary = "binary";
+  public const string ID = "id";
 
   public static readonly HashSet<string> AllPrimitives = new()
   {
@@ -32,7 +33,8 @@ public static class ApiSpecConsts
     Duration,
     Object,
     Any,
-    Binary
+    Binary,
+    ID
   };
 
   public static class Specials

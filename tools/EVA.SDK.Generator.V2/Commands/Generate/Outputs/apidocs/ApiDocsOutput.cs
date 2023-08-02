@@ -127,7 +127,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
       return $"{{{ToTypeName(spec.Arguments[0])}: {ToTypeName(spec.Arguments[1])}}}{n}";
     }
 
-    return spec.Name;
+    return spec.Name == ApiSpecConsts.ID ? ApiSpecConsts.Int64 : spec.Name;
   }
 
   private static async Task GenerateSidebar(OutputContext<ApiDocsOptions> ctx)

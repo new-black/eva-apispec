@@ -542,6 +542,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
     if (typeReference is { Name: ApiSpecConsts.String or ApiSpecConsts.Duration }) return $"String{n}";
     if (typeReference is { Name: ApiSpecConsts.Binary }) return $"Data{n}";
+    if (typeReference is { Name: ApiSpecConsts.ID }) return $"Int{n}";
     if (typeReference is { Name: ApiSpecConsts.Int16 or ApiSpecConsts.Int32 or ApiSpecConsts.Int64 }) return $"Int{n}";
     if (typeReference is { Name: ApiSpecConsts.Float128 }) return $"Decimal{n}";
     if (typeReference is { Name: ApiSpecConsts.Float64 }) return $"Double{n}";
