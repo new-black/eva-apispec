@@ -465,17 +465,53 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   private static void WriteNonFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
   {
-    output.WriteLine($"public enum {typename}: Int, Identifiable, Codable, Equatable, Hashable, Sendable {{");
+    output.WriteLine($"public enum {typename}: Int, CodingKeyRepresentable, Identifiable, Codable, Equatable, Hashable, Sendable {{");
     using (output.Indentation)
     {
       foreach (var (name, value) in type.EnumValues.OrderBy(v => v.Value.Value))
       {
-        var safeName = name == "Type" ? "`Type`" : name;
+        var safeName = SafePropertyNames.Contains(name) ? $"`{name}`" : name;
         output.WriteLine($"case {safeName} = {value.Value}");
       }
 
       output.WriteLine();
       output.WriteLine("public var id: Self { self }");
+      output.WriteLine();
+
+      // If this enum is used as a dictionary key, the stringValue should be used as the codingkey.
+      // We use `CodingKeyRepresentable (https://developer.apple.com/documentation/swift/codingkeyrepresentable)` for this.
+      output.WriteLine("public var stringValue: String");
+      using(output.BracedIndentation)
+      {
+        output.WriteLine("switch self");
+        using(output.BracedIndentation)
+        {
+          foreach (var (name, _) in type.EnumValues.OrderBy(v => v.Value.Value))
+          {
+            output.WriteLine($"case .{name}: return \"{name}\"");
+          }
+        }
+      }
+      output.WriteLine();
+      output.WriteLine("public var codingKey: CodingKey");
+      using(output.BracedIndentation)
+      {
+        output.WriteLine("EnumCodingKey(stringValue: stringValue)");
+      }
+      output.WriteLine();
+      output.WriteLine("public init?<T>(codingKey: T) where T: CodingKey");
+      using(output.BracedIndentation)
+      {
+        output.WriteLine("switch codingKey.stringValue");
+        using(output.BracedIndentation)
+        {
+          foreach (var (name, _) in type.EnumValues.OrderBy(v => v.Value.Value))
+          {
+            output.WriteLine($"case \"{name}\": self = .{name}");
+          }
+          output.WriteLine("default: return nil");
+        }
+      }
     }
 
     output.WriteLine("}");
