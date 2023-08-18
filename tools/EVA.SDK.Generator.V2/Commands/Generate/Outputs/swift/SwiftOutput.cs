@@ -476,6 +476,45 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       output.WriteLine();
       output.WriteLine("public var id: Self { self }");
+      output.WriteLine();
+
+      // If this enum is used as a dictionary key, the stringValue should be used as the codingkey.
+      // We use `CodingKeyRepresentable (https://developer.apple.com/documentation/swift/codingkeyrepresentable)` for this.
+      output.WriteLine("public var stringValue: String");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("switch self");
+        using (output.BracedIndentation)
+        {
+          foreach (var (name, _) in type.EnumValues.OrderBy(v => v.Value.Value))
+          {
+            output.WriteLine($"case .{name}: return \"{name}\"");
+          }
+        }
+      }
+
+      output.WriteLine();
+      output.WriteLine("public var codingKey: CodingKey");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("EnumCodingKey(stringValue: stringValue)");
+      }
+
+      output.WriteLine();
+      output.WriteLine("public init?<T>(codingKey: T) where T: CodingKey");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("switch codingKey.stringValue");
+        using (output.BracedIndentation)
+        {
+          foreach (var (name, _) in type.EnumValues.OrderBy(v => v.Value.Value))
+          {
+            output.WriteLine($"case \"{name}\": self = .{name}");
+          }
+
+          output.WriteLine("default: return nil");
+        }
+      }
     }
 
     output.WriteLine("}");
