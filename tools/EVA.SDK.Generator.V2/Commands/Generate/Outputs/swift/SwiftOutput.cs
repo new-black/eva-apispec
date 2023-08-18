@@ -465,12 +465,12 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   private static void WriteNonFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
   {
-    output.WriteLine($"public enum {typename}: Int, Identifiable, Codable, Equatable, Hashable, Sendable {{");
+    output.WriteLine($"public enum {typename}: Int, CodingKeyRepresentable, Identifiable, Codable, Equatable, Hashable, Sendable {{");
     using (output.Indentation)
     {
       foreach (var (name, value) in type.EnumValues.OrderBy(v => v.Value.Value))
       {
-        var safeName = name == "Type" ? "`Type`" : name;
+        var safeName = SafePropertyNames.Contains(name) ? $"`{name}`" : name;
         output.WriteLine($"case {safeName} = {value.Value}");
       }
 
