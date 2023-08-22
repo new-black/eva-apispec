@@ -10,7 +10,8 @@
   "typeArguments": [],
   "typeDependencies": [
     "EVA.Core.Orders.OrderSearchResultItemUser",
-    "EVA.Core.CustomFields.CustomFieldResponse"
+    "EVA.Core.DataModels.CustomFieldResponse",
+    "EVA.Core.DataModels.CustomFieldValue"
   ],
   "extends": {
     "ref": "EVA.Core.Orders.OrderSearchResultItemUser",
@@ -19,12 +20,18 @@
     "nullable": false
   },
   "properties": {
-    "CustomFields": {
+    "CustomFieldValues": {
       "type": {
-        "ref": "array",
+        "ref": "map",
         "args": [
           {
-            "ref": "EVA.Core.CustomFields.CustomFieldResponse",
+            "ref": "int64",
+            "args": [],
+            "shared": null,
+            "nullable": false
+          },
+          {
+            "ref": "EVA.Core.DataModels.CustomFieldValue",
             "args": [],
             "shared": null,
             "nullable": true
@@ -36,6 +43,35 @@
       "description": null,
       "skippable": false,
       "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "CustomFields": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.DataModels.CustomFieldResponse",
+            "args": [],
+            "shared": null,
+            "nullable": true
+          }
+        ],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": {
+        "announced": 700,
+        "active": 708,
+        "comment": "CustomFields is deprecated and will be removed in 2.0.716: Use CustomFieldValues instead.."
+      },
       "required": null,
       "requiredAllowEmpty": null,
       "minValue": null,

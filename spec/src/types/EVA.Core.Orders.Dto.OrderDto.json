@@ -22,7 +22,8 @@
     "EVA.Core.DataModels.OrderProperties",
     "EVA.Core.Orders.Dto.OrganizationUnitData",
     "EVA.Core.Orders.Dto.OrderPreferredPriceDisplayMode",
-    "EVA.Core.CustomFields.CustomFieldResponse",
+    "EVA.Core.DataModels.CustomFieldResponse",
+    "EVA.Core.DataModels.CustomFieldValueWithOptions",
     "EVA.Core.Discounts.DiscountInvalidReasons",
     "EVA.Core.Orders.Dto.PriceListModel",
     "EVA.Core.Orders.Dto.OrderBackfillInformation",
@@ -332,12 +333,18 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "CustomFieldsV2": {
+    "CustomFieldValuesWithOptions": {
       "type": {
-        "ref": "array",
+        "ref": "map",
         "args": [
           {
-            "ref": "EVA.Core.CustomFields.CustomFieldResponse",
+            "ref": "int64",
+            "args": [],
+            "shared": null,
+            "nullable": false
+          },
+          {
+            "ref": "EVA.Core.DataModels.CustomFieldValueWithOptions",
             "args": [],
             "shared": null,
             "nullable": true
@@ -349,6 +356,35 @@
       "description": null,
       "skippable": false,
       "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "CustomFieldsV2": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.DataModels.CustomFieldResponse",
+            "args": [],
+            "shared": null,
+            "nullable": true
+          }
+        ],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": {
+        "announced": 700,
+        "active": 708,
+        "comment": "CustomFieldsV2 is deprecated and will be removed in 2.0.716: Use CustomFieldValuesWithOptions instead.."
+      },
       "required": null,
       "requiredAllowEmpty": null,
       "minValue": null,
