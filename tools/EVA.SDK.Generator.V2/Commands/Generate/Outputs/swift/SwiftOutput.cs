@@ -661,7 +661,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
   {
     foreach (var line in s.Split('\n').Select(x => x.Trim('\r')))
     {
-      output.WriteLine($"// {line}");
+      output.WriteLine($"/// {line}");
     }
   }
 
