@@ -1,7 +1,14 @@
 ﻿import Foundation
 
-public indirect enum IndirectOptional<T> {
-  case none, some(T)
+@propertyWrapper
+public enum IndirectOptional<T> {
+    indirect case value(T?)
+    public init(wrappedValue: T?) {
+        fatalError()
+    }
+    public var wrappedValue: T? {
+        fatalError()
+    }
 }
 
 extension IndirectOptional: Codable where T: Codable {}

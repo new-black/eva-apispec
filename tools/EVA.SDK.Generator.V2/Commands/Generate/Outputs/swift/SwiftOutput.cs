@@ -382,7 +382,8 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         }
 
         var safePropertyName = SafePropertyNames.Contains(propName) ? $"`{propName}`" : propName;
-        output.WriteLine($"public var {safePropertyName} : {propType}");
+        var indirectOptionalPrefix = prop.Type.Name == id ? "@IndirectOptional " : string.Empty;
+        output.WriteLine($"{indirectOptionalPrefix}public var {safePropertyName} : {propType}");
         output.WriteLine();
       }
     }
@@ -553,20 +554,6 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     if (ps.AllowedValues.Any()) return $"{name}Values{n}";
     if (typeReference is { Name: ApiSpecConsts.Specials.Option }) return $"{name}Payload{n}";
 
-    if (typeReference.Name == typeContext)
-    {
-      // IndirectOptional time!
-      if (typeReference.Nullable && !forceNotNullable)
-      {
-        var nestedReference = typeReference.CloneAsNotNull();
-        return $"IndirectOptional<{GetTypeName(nestedReference, ctx, forceNotNullable)}>?";
-      }
-      else
-      {
-        return $"IndirectOptional<{GetTypeName(typeReference, ctx, forceNotNullable)}>";
-      }
-    }
-
     return GetTypeName(typeReference, ctx, forceNotNullable);
   }
 
@@ -674,7 +661,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
   {
     foreach (var line in s.Split('\n').Select(x => x.Trim('\r')))
     {
-      output.WriteLine($"// {line}");
+      output.WriteLine($"/// {line}");
     }
   }
 
