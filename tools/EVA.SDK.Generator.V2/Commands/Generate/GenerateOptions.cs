@@ -26,6 +26,8 @@ public class GenerateOptions
 
   internal string? MergeSmallAssembliesFilter { get; init; } = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Default;
 
+  internal bool UseStringIDs { get; init; } = BaseGenerateOptionsBinderOptions.UseStringIDs.Default;
+
   internal void EnsureTransform(string transform)
   {
     Transforms ??= new List<string>();
@@ -79,6 +81,11 @@ internal static class BaseGenerateOptionsBinderOptions
     name: "--remove",
     description: "Shorthand for all remove-* prefixed transforms. Eg: --remove generics inheritance will map to --transform remove-generics remove-inheritance"
   ) { AllowMultipleArgumentsPerToken = true }.WithDefault(new List<string>());
+
+  internal static readonly OptionWithDefault<bool> UseStringIDs = new Option<bool>(
+    name: "--use-string-ids",
+    description: "Use string IDs instead of longs/strings for all entities. This will become the standard in the future."
+  ).WithDefault(false);
 }
 
 internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : GenerateOptions, new()
@@ -101,7 +108,8 @@ internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : G
       OrphanedTypesAssembly = BaseGenerateOptionsBinderOptions.OrphanedTypesAssembly.Value(bindingContext),
       MergeSmallAssemblies = BaseGenerateOptionsBinderOptions.MergeSmallAssemblies.Value(bindingContext),
       MergeSmallAssembliesLimit = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesLimit.Value(bindingContext),
-      MergeSmallAssembliesFilter = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Value(bindingContext)
+      MergeSmallAssembliesFilter = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Value(bindingContext),
+      UseStringIDs = BaseGenerateOptionsBinderOptions.UseStringIDs.Value(bindingContext)
     };
 
     BuildOptions(result, bindingContext);
@@ -119,6 +127,7 @@ internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : G
     yield return BaseGenerateOptionsBinderOptions.MergeSmallAssemblies.Option;
     yield return BaseGenerateOptionsBinderOptions.MergeSmallAssembliesLimit.Option;
     yield return BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Option;
+    yield return BaseGenerateOptionsBinderOptions.UseStringIDs.Option;
 
     foreach (var opt in GetOptions()) yield return opt;
 

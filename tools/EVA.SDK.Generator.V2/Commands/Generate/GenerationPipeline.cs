@@ -48,6 +48,9 @@ internal static class GenerationPipeline
     // Run filters (once)
     foreach (var filter in filters) filter.Transform(model, opt, logger);
 
+    // Other one-off transforms
+    new UseStringIds().Transform(model, opt, logger);
+
     // Run transformations
     logger.LogInformation("Running transformations: {Transforms}", string.Join(", ", transforms.Select(t => t.Name)));
     for (var i = 0; i < 10; i++)
