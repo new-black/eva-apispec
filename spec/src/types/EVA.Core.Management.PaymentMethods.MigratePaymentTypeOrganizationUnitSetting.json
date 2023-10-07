@@ -1,0 +1,49 @@
+{
+  "typename": "MigratePaymentTypeOrganizationUnitSetting",
+  "assembly": "EVA.Core.Management",
+  "description": "Check or perform the migration for setting \u0060PaymentMethods:PaymentTypeAvailabilityByOuSetType\u0060.\n\nOmitting \u0060SaveChanges\u0060 will default to \u0060false\u0060, returning the changes it would have done, but don\u0027t actually persist them. Pass \u0060true\u0060 explicitly if you want to actually migrate (use with caution!).\n\nThe payment type property \u0060OrganizationUnitSetID\u0060 is hence-forth known as \u0027the legacy filter\u0027, where as the configured list of \u0060OrganizationUnitSetPaymentType\u0060 is called \u0027the sets\u0027 or \u0027a set\u0027.\n\nWill execute for each active payment type;\n\n- If it has no legacy filter configured, will remove any set that might be configured for this payment type\n- If it *has* a legacy filter configured;\n - This legacy filter will be removed\n - If there is no matching set configured, it will add it\n - If there is a matching set configured but it is limited (disabled for delivery etc.), those limitations will be lifted\n - If there are any other set configured, those will be removed\n\nAnd finally, the setting will be enabled on root level.\n\nThis migration will not run if the setting is already set (at any level!).",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "enumIsFlag": null,
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Management.PaymentMethods.MigratePaymentTypeOrganizationUnitSettingResponse",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      }
+    ],
+    "shared": null,
+    "nullable": false
+  },
+  "properties": {
+    "SaveChanges": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    }
+  },
+  "enumValues": {},
+  "parent": null
+}
