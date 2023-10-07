@@ -1,0 +1,112 @@
+{
+  "name": "MigratePaymentTypeOrganizationUnitSetting",
+  "description": "Check or perform the migration for setting \u0060PaymentMethods:PaymentTypeAvailabilityByOuSetType\u0060.\n\nOmitting \u0060SaveChanges\u0060 will default to \u0060false\u0060, returning the changes it would have done, but don\u0027t actually persist them. Pass \u0060true\u0060 explicitly if you want to actually migrate (use with caution!).\n\nThe payment type property \u0060OrganizationUnitSetID\u0060 is hence-forth known as \u0027the legacy filter\u0027, where as the configured list of \u0060OrganizationUnitSetPaymentType\u0060 is called \u0027the sets\u0027 or \u0027a set\u0027.\n\nWill execute for each active payment type;\n\n- If it has no legacy filter configured, will remove any set that might be configured for this payment type\n- If it *has* a legacy filter configured;\n - This legacy filter will be removed\n - If there is no matching set configured, it will add it\n - If there is a matching set configured but it is limited (disabled for delivery etc.), those limitations will be lifted\n - If there are any other set configured, those will be removed\n\nAnd finally, the setting will be enabled on root level.\n\nThis migration will not run if the setting is already set (at any level!).",
+  "method": "POST",
+  "path": "/message/MigratePaymentTypeOrganizationUnitSetting",
+  "request": {
+    "properties": [
+      {
+        "name": "SaveChanges",
+        "description": null,
+        "type": "bool",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
+  },
+  "response": {
+    "properties": [
+      {
+        "name": "Error",
+        "description": null,
+        "type": "EVA.Core.ServiceError",
+        "properties": [
+          {
+            "name": "Code",
+            "description": "A unique ID identifying this error.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Data",
+            "description": null,
+            "type": "any",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Message",
+            "description": "A human-readable message describing the error.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "RequestID",
+            "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "Type",
+            "description": "A short description of the error type.",
+            "type": "string",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Metadata",
+        "description": null,
+        "type": "EVA.Core.ResponseMessageMetadata",
+        "properties": [
+          {
+            "name": "ExternalIDs",
+            "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+            "type": "{string: {string: string}?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "IsAsyncResultAvailable",
+            "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "UnresolvedExternalIDs",
+            "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+            "type": "{string: string[]?}?",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          }
+        ],
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "Output",
+        "description": null,
+        "type": "string[]?",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
+      }
+    ]
+  }
+}
