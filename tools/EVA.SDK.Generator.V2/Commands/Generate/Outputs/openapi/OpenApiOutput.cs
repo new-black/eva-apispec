@@ -29,6 +29,8 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
   private const string Parameter_Header_UserAgent = "p1";
   private const string Parameter_Header_IdsMode = "p2";
   private const string Parameter_Header_AsyncCallback = "p3";
+  private const string Parameter_Header_OrganizationUnit = "p4";
+  private const string Parameter_Header_OrganizationUnitQuery = "p5";
 
   private const string Schema_Error = "eva_error_400";
   private const string Example_400_RequestValidation = "eva_example_400_RequestValidationFailure";
@@ -195,6 +197,34 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         {
           new OpenApiString("ExternalIDs")
         }
+      },
+      Style = ParameterStyle.Simple
+    });
+
+    model.Components.Parameters.Add(Parameter_Header_OrganizationUnit, new()
+    {
+      In = ParameterLocation.Header,
+      Description = "The ID of the organization unit to run this request in.",
+      Name = "EVA-Requested-OrganizationUnitID",
+      Required = false,
+      AllowEmptyValue = false,
+      Schema = new OpenApiSchema
+      {
+        Type = "integer"
+      },
+      Style = ParameterStyle.Simple
+    });
+
+    model.Components.Parameters.Add(Parameter_Header_OrganizationUnitQuery, new()
+    {
+      In = ParameterLocation.Header,
+      Description = "The query that selects the organization unit to run this request in.",
+      Name = "EVA-Requested-OrganizationUnit-Query",
+      Required = false,
+      AllowEmptyValue = false,
+      Schema = new OpenApiSchema
+      {
+        Type = "string"
       },
       Style = ParameterStyle.Simple
     });
@@ -557,6 +587,22 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         {
           Type = ReferenceType.Parameter,
           Id = Parameter_Header_UserAgent
+        }
+      },
+      new()
+      {
+        Reference = new OpenApiReference
+        {
+          Type = ReferenceType.Parameter,
+          Id = Parameter_Header_OrganizationUnit
+        }
+      },
+      new()
+      {
+        Reference = new OpenApiReference
+        {
+          Type = ReferenceType.Parameter,
+          Id = Parameter_Header_OrganizationUnitQuery
         }
       }
     };
