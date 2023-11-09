@@ -6,8 +6,29 @@
   "request": {
     "properties": [
       {
+        "name": "AllowUnsubscribeBy",
+        "description": "Setting this will filter subscriptions based on who can unsubscribe from it.",
+        "type": "EVA.Core.DataModels.AllowUnsubscribeByType",
+        "properties": null,
+        "recursion": false,
+        "enumValues": {
+          "Employee": 2,
+          "Subscriber": 1,
+          "All": 3,
+          "None": 0
+        }
+      },
+      {
         "name": "IncludeAvailableSubscriptions",
         "description": "Setting this to true will also include the subscriptions in the response that are available, but where the user has no Subscription status",
+        "type": "bool",
+        "properties": null,
+        "recursion": false,
+        "enumValues": null
+      },
+      {
+        "name": "IncludeHiddenSubscriptions",
+        "description": "Setting this to true will also include the subscriptions in the response that are not available to subscribe the user to anymore, such as those that are already unsubscribed and resubscription is blocked.",
         "type": "bool",
         "properties": null,
         "recursion": false,
@@ -121,6 +142,14 @@
             "enumValues": null
           },
           {
+            "name": "IsUnsubscribeAllowed",
+            "description": null,
+            "type": "bool",
+            "properties": null,
+            "recursion": false,
+            "enumValues": null
+          },
+          {
             "name": "Status",
             "description": null,
             "type": "EVA.Core.DataModels.SubscriptionStatus",
@@ -138,6 +167,19 @@
             "description": null,
             "type": "EVA.Core.Users.Subscriptions.GetUserSubscriptionsResponse\u002BSubscriptionDto",
             "properties": [
+              {
+                "name": "AllowUnsubscribeBy",
+                "description": null,
+                "type": "EVA.Core.DataModels.AllowUnsubscribeByType",
+                "properties": null,
+                "recursion": false,
+                "enumValues": {
+                  "Employee": 2,
+                  "Subscriber": 1,
+                  "All": 3,
+                  "None": 0
+                }
+              },
               {
                 "name": "BackendID",
                 "description": null,
