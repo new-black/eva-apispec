@@ -453,7 +453,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
           if (value.Type.Nullable)
           {
-            output.WriteLine($"self.{key} = try? container.decodeIfPresent({typePrefix}{typeNameNotNullable}.self, forKey: .{key})");
+            output.WriteLine($"do {{ self.{key} = try container.decodeIfPresent({typePrefix}{typeNameNotNullable}.self, forKey: .{key}) }} catch {{ decodeLog(error) }}");
           }
           else
           {
