@@ -466,18 +466,53 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   private static void WriteNonFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
   {
-    output.WriteLine($"public enum {typename}: Int, CodingKeyRepresentable, Identifiable, Codable, Equatable, Hashable, Sendable {{");
+    output.WriteLine($"public enum {typename}: RawRepresentable, CodingKeyRepresentable, Identifiable, Codable, Equatable, Hashable, Sendable {{");
     using (output.Indentation)
     {
-      foreach (var (name, value) in type.EnumValues.OrderBy(v => v.Value.Value))
+      var values = type.EnumValues.OrderBy(v => v.Value.Value);
+
+      foreach (var (name, _) in values)
       {
         var safeName = SafePropertyNames.Contains(name) ? $"`{name}`" : name;
-        output.WriteLine($"case {safeName} = {value.Value}");
+        output.WriteLine($"case {safeName}");
       }
+      output.WriteLine("/// This case is used to denote an enum case which is not documented. This might occur when the Swift SDK hasn't been updated.");
+      output.WriteLine("/// The `Int` argument denotes the rawValue. The `String?` argument denotes the possible coding key value of the undocumented case.");
+      output.WriteLine("case undocumented(Int, String? = nil)");
 
       output.WriteLine();
       output.WriteLine("public var id: Self { self }");
       output.WriteLine();
+
+      output.WriteLine("public init(rawValue: Int)");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("switch rawValue");
+        using (output.BracedIndentation)
+        {
+          foreach (var (name, value) in values)
+          {
+            output.WriteLine($"case {value.Value}: self = .{name}");
+          }
+          output.WriteLine("default: self = .undocumented(rawValue)");
+        }
+      }
+
+      output.WriteLine();
+
+      output.WriteLine("public var rawValue: Int");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("switch self");
+        using (output.BracedIndentation)
+        {
+          foreach (var (name, value) in values)
+          {
+            output.WriteLine($"case .{name}: return {value.Value}");
+          }
+          output.WriteLine("case .undocumented(let int, _): return int");
+        }
+      }
 
       // If this enum is used as a dictionary key, the stringValue should be used as the codingkey.
       // We use `CodingKeyRepresentable (https://developer.apple.com/documentation/swift/codingkeyrepresentable)` for this.
@@ -487,10 +522,11 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         output.WriteLine("switch self");
         using (output.BracedIndentation)
         {
-          foreach (var (name, _) in type.EnumValues.OrderBy(v => v.Value.Value))
+          foreach (var (name, _) in values)
           {
             output.WriteLine($"case .{name}: return \"{name}\"");
           }
+          output.WriteLine("case let .undocumented(int, string): return string ?? \"Undocumented (value: \\(int))\"");
         }
       }
 
@@ -502,18 +538,19 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       }
 
       output.WriteLine();
+      output.WriteLine("/// If the coding key is an undocumented `String`, the `.undocumented` case will be assigned to self with`rawValue = -1`.");
       output.WriteLine("public init?<T>(codingKey: T) where T: CodingKey");
       using (output.BracedIndentation)
       {
         output.WriteLine("switch codingKey.stringValue");
         using (output.BracedIndentation)
         {
-          foreach (var (name, _) in type.EnumValues.OrderBy(v => v.Value.Value))
+          foreach (var (name, _) in values)
           {
             output.WriteLine($"case \"{name}\": self = .{name}");
           }
 
-          output.WriteLine("default: return nil");
+          output.WriteLine("default: self = .undocumented(codingKey.intValue ?? -1, codingKey.stringValue)");
         }
       }
     }
