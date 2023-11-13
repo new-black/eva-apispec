@@ -128,9 +128,8 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         Title = "EVA",
         Contact = new OpenApiContact
         {
-          Email = "ruben.oost@newblack.io",
-          Name = "Ruben Oost",
-          Url = new Uri("https://newblack.io/")
+          Name = "New Black",
+          Url = new Uri("https://support.newblack.io/")
         }
       },
       Servers = servers,
