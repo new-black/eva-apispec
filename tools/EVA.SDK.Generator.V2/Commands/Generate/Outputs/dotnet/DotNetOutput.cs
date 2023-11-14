@@ -57,7 +57,13 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       sb.WriteLine("using System.Collections.Generic;");
       sb.WriteLine("using System.ComponentModel;");
       sb.WriteLine("using System.Linq;");
-      if (ctx.Options.JsonSerializer == "newtonsoft") sb.WriteLine("using Newtonsoft.Json.Linq;");
+      if (ctx.Options.JsonSerializer == "newtonsoft")
+      {
+        sb.WriteLine("using System.Reflection;");
+        sb.WriteLine("using Newtonsoft.Json;");
+        sb.WriteLine("using Newtonsoft.Json.Serialization;");
+        sb.WriteLine("using Newtonsoft.Json.Linq;");
+      }
       sb.WriteLine();
       sb.WriteLine($"namespace {actualNamespace}");
       using (sb.BracedIndentation)

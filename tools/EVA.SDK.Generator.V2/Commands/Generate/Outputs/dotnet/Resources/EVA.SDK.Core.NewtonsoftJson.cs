@@ -1,3 +1,17 @@
+public class SkipMaybePropertiesContractResolver : DefaultContractResolver
+{
+  protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+  {
+    var property = base.CreateProperty(member, memberSerialization);
+    if ((property.PropertyType?.IsGenericType ?? false) && property.PropertyType.GetGenericTypeDefinition() == typeof(Maybe<>))
+    {
+      property.ShouldSerialize = o => ((OptionalConverter.IGenericAccess)property.ValueProvider?.GetValue(o))?.IsValuePresent ?? false;
+    }
+
+    return property;
+  }
+}
+
 [Newtonsoft.Json.JsonConverter(typeof(OptionalConverter))]
 public partial struct Maybe<T> : OptionalConverter.IGenericAccess
 {
@@ -32,12 +46,6 @@ public class OptionalConverter : Newtonsoft.Json.JsonConverter
   public override void WriteJson(Newtonsoft.Json.JsonWriter writer, object value, Newtonsoft.Json.JsonSerializer serializer)
   {
     var genericAccess = (IGenericAccess)value;
-    if (!genericAccess.IsValuePresent)
-    {
-      writer.WriteUndefined();
-      return;
-    }
-
     serializer.Serialize(writer, genericAccess.Value);
   }
 
