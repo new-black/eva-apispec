@@ -140,7 +140,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     var service = ctx.Input.Services.FirstOrDefault(s => s.RequestTypeID == id);
     if (service is { Deprecated: { } deprecationInfo })
     {
-      output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(deprecationInfo.Comment ?? string.Empty)}\")");
+      output.WriteLine($"@available(*, deprecated: {deprecationInfo.Introduced}, obsoleted: {deprecationInfo.Effective}, message: \"{EscapeString(deprecationInfo.Comment ?? string.Empty)}\")");
     }
 
     if (type.EnumIsFlag.HasValue)
@@ -374,11 +374,11 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       foreach (var (propName, prop) in type.Properties)
       {
-        var propType = GetPropTypeName(prop, propName, id, ctx);
+        var propType = GetPropTypeName(prop, propName, id, ctx, false, prop.Deprecated != null);
         if (prop.Description != null) WriteComment(prop.Description, output);
         if (prop.Deprecated != null)
         {
-          output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(prop.Deprecated.Comment ?? string.Empty)}\")");
+          output.WriteLine($"@available(*, deprecated: {prop.Deprecated.Introduced}, obsoleted: {prop.Deprecated.Effective}, message: \"{EscapeString(prop.Deprecated.Comment ?? string.Empty)}\")");
         }
 
         var safePropertyName = SafePropertyNames.Contains(propName) ? $"`{propName}`" : propName;
@@ -584,14 +584,14 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     output.WriteLine("}");
   }
 
-  private static string GetPropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false)
+  private static string GetPropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false)
   {
     var typeReference = ps.Type;
-    var n = typeReference.Nullable && !forceNotNullable ? "?" : string.Empty;
+    var n = typeReference.Nullable && !forceNotNullable || forceNullable ? "?" : string.Empty;
     if (ps.AllowedValues.Any()) return $"{name}Values{n}";
     if (typeReference is { Name: ApiSpecConsts.Specials.Option }) return $"{name}Payload{n}";
 
-    return GetTypeName(typeReference, ctx, forceNotNullable);
+    return GetTypeName(typeReference, ctx, forceNotNullable, forceNullable);
   }
 
   private static string GetPropDefault(TypeReference typeReference)
@@ -599,9 +599,9 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     return typeReference.Nullable ? "nil" : string.Empty;
   }
 
-  private static string GetTypeName(TypeReference typeReference, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false)
+  private static string GetTypeName(TypeReference typeReference, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false)
   {
-    var n = typeReference.Nullable && !forceNotNullable ? "?" : string.Empty;
+    var n = typeReference.Nullable && !forceNotNullable || forceNullable ? "?" : string.Empty;
 
     if (typeReference is { Name: ApiSpecConsts.String or ApiSpecConsts.Duration }) return $"String{n}";
     if (typeReference is { Name: ApiSpecConsts.Binary }) return $"Data{n}";
