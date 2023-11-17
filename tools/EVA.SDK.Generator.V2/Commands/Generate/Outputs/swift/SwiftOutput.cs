@@ -140,7 +140,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     var service = ctx.Input.Services.FirstOrDefault(s => s.RequestTypeID == id);
     if (service is { Deprecated: { } deprecationInfo })
     {
-      output.WriteLine($"@available(*, deprecated: {deprecationInfo.Introduced}, obsoleted: {deprecationInfo.Effective}, message: \"{EscapeString(deprecationInfo.Comment ?? string.Empty)}\")");
+      output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(deprecationInfo.Comment ?? string.Empty)}\")");
     }
 
     if (type.EnumIsFlag.HasValue)
@@ -374,11 +374,11 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       foreach (var (propName, prop) in type.Properties)
       {
-        var propType = GetPropTypeName(prop, propName, id, ctx, false, prop.Deprecated != null);
+        var propType = GetPropTypeName(prop, propName, id, ctx);
         if (prop.Description != null) WriteComment(prop.Description, output);
         if (prop.Deprecated != null)
         {
-          output.WriteLine($"@available(*, deprecated: {prop.Deprecated.Introduced}, obsoleted: {prop.Deprecated.Effective}, message: \"{EscapeString(prop.Deprecated.Comment ?? string.Empty)}\")");
+          output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(prop.Deprecated.Comment ?? string.Empty)}\")");
         }
 
         var safePropertyName = SafePropertyNames.Contains(propName) ? $"`{propName}`" : propName;
@@ -453,7 +453,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
           if (value.Type.Nullable)
           {
-            output.WriteLine($"do {{ self.{key} = try container.decodeIfPresent({typePrefix}{typeNameNotNullable}.self, forKey: .{key}) }} catch {{ decodeLog(error) }}");
+            output.WriteLine($"self.{key} = try? container.decodeIfPresent({typePrefix}{typeNameNotNullable}.self, forKey: .{key})");
           }
           else
           {
@@ -466,53 +466,18 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   private static void WriteNonFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
   {
-    output.WriteLine($"public enum {typename}: RawRepresentable, CodingKeyRepresentable, Identifiable, Codable, Equatable, Hashable, Sendable {{");
+    output.WriteLine($"public enum {typename}: Int, CodingKeyRepresentable, Identifiable, Codable, Equatable, Hashable, Sendable {{");
     using (output.Indentation)
     {
-      var values = type.EnumValues.OrderBy(v => v.Value.Value);
-
-      foreach (var (name, _) in values)
+      foreach (var (name, value) in type.EnumValues.OrderBy(v => v.Value.Value))
       {
         var safeName = SafePropertyNames.Contains(name) ? $"`{name}`" : name;
-        output.WriteLine($"case {safeName}");
+        output.WriteLine($"case {safeName} = {value.Value}");
       }
-      output.WriteLine("/// This case is used to denote an enum case which is not documented. This might occur when the Swift SDK hasn't been updated.");
-      output.WriteLine("/// The `Int` argument denotes the rawValue. The `String?` argument denotes the possible coding key value of the undocumented case.");
-      output.WriteLine("case undocumented(Int, String? = nil)");
 
       output.WriteLine();
       output.WriteLine("public var id: Self { self }");
       output.WriteLine();
-
-      output.WriteLine("public init(rawValue: Int)");
-      using (output.BracedIndentation)
-      {
-        output.WriteLine("switch rawValue");
-        using (output.BracedIndentation)
-        {
-          foreach (var (name, value) in values)
-          {
-            output.WriteLine($"case {value.Value}: self = .{name}");
-          }
-          output.WriteLine("default: self = .undocumented(rawValue)");
-        }
-      }
-
-      output.WriteLine();
-
-      output.WriteLine("public var rawValue: Int");
-      using (output.BracedIndentation)
-      {
-        output.WriteLine("switch self");
-        using (output.BracedIndentation)
-        {
-          foreach (var (name, value) in values)
-          {
-            output.WriteLine($"case .{name}: return {value.Value}");
-          }
-          output.WriteLine("case .undocumented(let int, _): return int");
-        }
-      }
 
       // If this enum is used as a dictionary key, the stringValue should be used as the codingkey.
       // We use `CodingKeyRepresentable (https://developer.apple.com/documentation/swift/codingkeyrepresentable)` for this.
@@ -522,11 +487,10 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         output.WriteLine("switch self");
         using (output.BracedIndentation)
         {
-          foreach (var (name, _) in values)
+          foreach (var (name, _) in type.EnumValues.OrderBy(v => v.Value.Value))
           {
             output.WriteLine($"case .{name}: return \"{name}\"");
           }
-          output.WriteLine("case let .undocumented(int, string): return string ?? \"Undocumented (value: \\(int))\"");
         }
       }
 
@@ -538,19 +502,18 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       }
 
       output.WriteLine();
-      output.WriteLine("/// If the coding key is an undocumented `String`, the `.undocumented` case will be assigned to self with`rawValue = -1`.");
       output.WriteLine("public init?<T>(codingKey: T) where T: CodingKey");
       using (output.BracedIndentation)
       {
         output.WriteLine("switch codingKey.stringValue");
         using (output.BracedIndentation)
         {
-          foreach (var (name, _) in values)
+          foreach (var (name, _) in type.EnumValues.OrderBy(v => v.Value.Value))
           {
             output.WriteLine($"case \"{name}\": self = .{name}");
           }
 
-          output.WriteLine("default: self = .undocumented(codingKey.intValue ?? -1, codingKey.stringValue)");
+          output.WriteLine("default: return nil");
         }
       }
     }
@@ -584,14 +547,14 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     output.WriteLine("}");
   }
 
-  private static string GetPropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false)
+  private static string GetPropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false)
   {
     var typeReference = ps.Type;
-    var n = typeReference.Nullable && !forceNotNullable || forceNullable ? "?" : string.Empty;
+    var n = typeReference.Nullable && !forceNotNullable ? "?" : string.Empty;
     if (ps.AllowedValues.Any()) return $"{name}Values{n}";
     if (typeReference is { Name: ApiSpecConsts.Specials.Option }) return $"{name}Payload{n}";
 
-    return GetTypeName(typeReference, ctx, forceNotNullable, forceNullable);
+    return GetTypeName(typeReference, ctx, forceNotNullable);
   }
 
   private static string GetPropDefault(TypeReference typeReference)
@@ -599,9 +562,9 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     return typeReference.Nullable ? "nil" : string.Empty;
   }
 
-  private static string GetTypeName(TypeReference typeReference, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false)
+  private static string GetTypeName(TypeReference typeReference, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false)
   {
-    var n = typeReference.Nullable && !forceNotNullable || forceNullable ? "?" : string.Empty;
+    var n = typeReference.Nullable && !forceNotNullable ? "?" : string.Empty;
 
     if (typeReference is { Name: ApiSpecConsts.String or ApiSpecConsts.Duration }) return $"String{n}";
     if (typeReference is { Name: ApiSpecConsts.Binary }) return $"Data{n}";
