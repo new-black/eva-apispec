@@ -140,7 +140,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     var service = ctx.Input.Services.FirstOrDefault(s => s.RequestTypeID == id);
     if (service is { Deprecated: { } deprecationInfo })
     {
-      output.WriteLine($"@available(*, deprecated: {deprecationInfo.Introduced}, obsoleted: {deprecationInfo.Effective}, message: \"{EscapeString(deprecationInfo.Comment ?? string.Empty)}\")");
+      output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(deprecationInfo.Comment ?? string.Empty)} - Announced in {deprecationInfo.Introduced}, active from {deprecationInfo.Effective}.\")");
     }
 
     if (type.EnumIsFlag.HasValue)
@@ -378,7 +378,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         if (prop.Description != null) WriteComment(prop.Description, output);
         if (prop.Deprecated != null)
         {
-          output.WriteLine($"@available(*, deprecated: {prop.Deprecated.Introduced}, obsoleted: {prop.Deprecated.Effective}, message: \"{EscapeString(prop.Deprecated.Comment ?? string.Empty)}\")");
+          output.WriteLine($"@available(*, deprecated, message: \"{EscapeString(prop.Deprecated.Comment ?? string.Empty)} - Announced in {prop.Deprecated.Introduced}, active from {prop.Deprecated.Effective}.\")");
         }
 
         var safePropertyName = SafePropertyNames.Contains(propName) ? $"`{propName}`" : propName;
