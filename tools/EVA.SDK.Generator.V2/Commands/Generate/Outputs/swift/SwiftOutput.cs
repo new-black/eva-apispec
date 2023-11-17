@@ -188,7 +188,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           var prop = list[i];
           var propDefault = GetPropDefault(prop.Value.Type);
           output.WriteLine(
-            $"{prop.Key}: {GetPropTypeName(prop.Value, prop.Key, id, ctx)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
+            $"{prop.Key}: {GetPropTypeName(prop.Value, prop.Key, id, ctx, false, prop.Value.Deprecated != null)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
         }
       }
 
@@ -451,7 +451,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             typePrefix = "Foundation.";
           }
 
-          if (value.Type.Nullable)
+          if (value.Type.Nullable || value.Deprecated != null)
           {
             output.WriteLine($"do {{ self.{key} = try container.decodeIfPresent({typePrefix}{typeNameNotNullable}.self, forKey: .{key}) }} catch {{ decodeLog(error) }}");
           }
