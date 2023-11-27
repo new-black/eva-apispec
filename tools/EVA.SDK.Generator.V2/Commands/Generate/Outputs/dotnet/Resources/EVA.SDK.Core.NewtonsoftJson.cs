@@ -24,23 +24,6 @@ public partial struct Maybe<T> : OptionalConverter.IGenericAccess
   }
 }
 
-[Newtonsoft.Json.JsonConverter(typeof(OptionalConverter))]
-public partial struct MaybeModelID : OptionalConverter.IGenericAccess
-{
-  Type OptionalConverter.IGenericAccess.GenericType => _valueIsPresent && _value.IsLong ? typeof(long) : typeof(string);
-  bool OptionalConverter.IGenericAccess.IsValuePresent => _valueIsPresent;
-
-  object OptionalConverter.IGenericAccess.Value
-  {
-    set
-    {
-      _value = (ModelID)value;
-      _valueIsPresent = true;
-    }
-    get => _value;
-  }
-}
-
 public class OptionalConverter : Newtonsoft.Json.JsonConverter
 {
   public override void WriteJson(Newtonsoft.Json.JsonWriter writer, object value, Newtonsoft.Json.JsonSerializer serializer)
@@ -72,51 +55,40 @@ public class OptionalConverter : Newtonsoft.Json.JsonConverter
   }
 }
 
-[Newtonsoft.Json.JsonConverter(typeof(ModelID.Converter))]
-public partial struct ModelID
+public class DynamicDataConverter : Newtonsoft.Json.JsonConverter
 {
-  private class Converter : Newtonsoft.Json.JsonConverter
+  public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
   {
-    public override void WriteJson(Newtonsoft.Json.JsonWriter writer, object value, Newtonsoft.Json.JsonSerializer serializer)
-    {
-      var ls = (ModelID)value;
-
-      if(ls.IsLong)
-        writer.WriteValue(ls.Long);
-      else
-        writer.WriteValue(ls.String);
-    }
-
-    public override object ReadJson(Newtonsoft.Json.JsonReader reader, Type objectType, object existingValue, Newtonsoft.Json.JsonSerializer serializer)
-    {
-      if(reader.TokenType == Newtonsoft.Json.JsonToken.Integer)
-        return new ModelID((long)reader.Value);
-      if(reader.TokenType == Newtonsoft.Json.JsonToken.String)
-        return new ModelID((string)reader.Value);
-      if(reader.TokenType == Newtonsoft.Json.JsonToken.Null)
-        return new ModelID((string) null);
-
-      return existingValue;
-    }
-
-    public override bool CanConvert(Type objectType) => true;
+    serializer.Serialize(writer, (value as IDynamicData)?.Data);
   }
+
+  public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+  {
+    if(reader.TokenType is JsonToken.Null or JsonToken.Undefined) return existingValue;
+
+    existingValue ??= Activator.CreateInstance(objectType);
+    (existingValue as IDynamicData).Data = serializer.Deserialize<JObject>(reader);
+    return existingValue;
+  }
+
+  public override bool CanConvert(Type objectType) => objectType.IsConstructedGenericType && objectType.GetGenericTypeDefinition() == typeof(DynamicData<>);
 }
 
-[Newtonsoft.Json.JsonConverter(typeof(ModelIDList.Converter))]
-public partial class ModelIDList
+[Newtonsoft.Json.JsonConverter(typeof(DynamicDataConverter))]
+public partial class DynamicData<TShared>
 {
-  private class Converter : Newtonsoft.Json.JsonConverter<ModelIDList>
+  public static implicit operator DynamicData<TShared>(Newtonsoft.Json.Linq.JObject x)
   {
-    public override void WriteJson(Newtonsoft.Json.JsonWriter writer, ModelIDList value, Newtonsoft.Json.JsonSerializer serializer)
-    {
-      serializer.Serialize(writer, value._ids);
-    }
-
-    public override ModelIDList ReadJson(Newtonsoft.Json.JsonReader reader, Type objectType, ModelIDList existingValue, bool hasExistingValue, Newtonsoft.Json.JsonSerializer serializer)
-    {
-      var values = serializer.Deserialize<List<ModelID>>(reader);
-      return values == null ? null : new ModelIDList(values);
-    }
+    return x == null ? null : new DynamicData<TShared> { Data = x };
   }
+
+  public T? Value<T>(string key) => Data == null ? default(T?) : Data.Value<T>(key);
+  public virtual JToken? this[object key] => Data == null ? null : Data[key];
+
+  public JToken? GetValue(string? propertyName)
+  {
+    return Data?.GetValue(propertyName);
+  }
+
+  public bool HasValue() => Data != null && Data.Count > 0;
 }

@@ -7,6 +7,46 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.dotnet;
 
 internal class DotNetOutput : IOutput<DotNetOptions>
 {
+  private class GenerationState
+  {
+    public Dictionary<string, List<TypeReference?>> AllOptionsImplementations;
+    public ApiDefinitionModel Input;
+
+    private Dictionary<string, (string local, string full)> typeNameCache = new();
+    private HashSet<(string ns, string local)> allocatedFullTypeNames = new();
+    public HashSet<string> AllOptionsInterfaces;
+
+    public (string localName, string fullName) AllocateName(string id)
+    {
+      if (typeNameCache.TryGetValue(id, out var x)) return (x.local, x.full);
+
+      // Build the local name for the NS
+      var spec = Input.Types[id];
+      var localName = spec.TypeName.Split('`')[0];
+
+      if (spec.ParentType != null)
+      {
+        var (parentLocal, _) = AllocateName(spec.ParentType);
+        localName = $"{parentLocal}.{localName}";
+      }
+
+      var ns = FixNamespace(spec.Assembly);
+      var originalLocalName = localName;
+
+      var i = 2;
+      while (allocatedFullTypeNames.Contains((ns, localName)))
+      {
+        localName = $"{originalLocalName}{i++}";
+      }
+
+      var fullName = $"{ns}.{localName}";
+
+      typeNameCache[id] = (localName, fullName);
+      allocatedFullTypeNames.Add((ns, localName));
+      return (localName, fullName);
+    }
+  }
+
   [Flags]
   private enum TypeContext
   {
@@ -16,7 +56,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
   }
 
   public string OutputPattern => "EVA.*.cs";
-  public string[] ForcedTransformations => new[] { RemoveOptions.ID, RemoveEventExports.ID, RemoveDataLakeExports.ID };
+  public string[] ForcedTransformations => new[] { RemoveEventExports.ID, RemoveDataLakeExports.ID, RemoveInheritance.ID };
 
   private static void WriteErrors(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, IndentedStringBuilder o, string name)
   {
@@ -43,6 +83,22 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     var groupedInput = ctx.Input.GroupByAssembly();
     var allResponseTypes = ctx.Input.Services.Select(s => s.ResponseTypeID).ToHashSet();
 
+    // Some preprocessing
+    var state = new GenerationState
+    {
+      Input = ctx.Input,
+      AllOptionsImplementations = ctx.Input.EnumerateAllTypeReferences()
+        .Where(x => x.Name == ApiSpecConsts.Specials.Option)
+        .SelectMany(x => x.Arguments.Select(a => (x.Shared, a.Name)))
+        .GroupBy(x => x.Name)
+        .ToDictionary(x => x.Key, x => x.Select(y => y.Shared).ToList()),
+      AllOptionsInterfaces = ctx.Input.EnumerateAllTypeReferences()
+        .Where(x => x.Name == ApiSpecConsts.Specials.Option)
+        .Where(x => x.Shared != null)
+        .Select(x => x.Shared.Name)
+        .ToHashSet()
+    };
+
     foreach (var i in groupedInput)
     {
       var handledTypes = new HashSet<string>();
@@ -64,6 +120,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         sb.WriteLine("using Newtonsoft.Json.Serialization;");
         sb.WriteLine("using Newtonsoft.Json.Linq;");
       }
+
       sb.WriteLine();
       sb.WriteLine($"namespace {actualNamespace}");
       using (sb.BracedIndentation)
@@ -85,23 +142,23 @@ internal class DotNetOutput : IOutput<DotNetOptions>
           var responseType = ctx.Input.Types[service.ResponseTypeID];
 
           sb.WriteLine();
-          WriteRequestType(requestType, sb, service, ctx, allResponseTypes);
+          WriteRequestType(service.RequestTypeID, requestType, sb, service, ctx, allResponseTypes, state);
           handledTypes.Add(service.RequestTypeID);
           sb.WriteLine();
 
           // Write response
           if (responseType.Assembly == service.Assembly && handledTypes.Add(service.ResponseTypeID))
           {
-            WriteResponseType(service.ResponseTypeID, responseType, sb, ctx, allResponseTypes);
+            WriteResponseType(service.ResponseTypeID, responseType, sb, ctx, allResponseTypes, state);
           }
         }
 
-        WriteExtensionMethods(i.Services, ctx, sb);
+        WriteExtensionMethods(i.Services, ctx, sb, state, i.Assembly);
 
         foreach (var type in i.Types.Where(type => !handledTypes.Contains(type.Key) && type.Value.ParentType == null))
         {
           sb.WriteLine();
-          WriteType(type.Key, type.Value, sb, ctx, allResponseTypes);
+          WriteType(type.Key, type.Value, sb, ctx, allResponseTypes, state);
         }
       }
 
@@ -109,15 +166,30 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     }
   }
 
-  private void WriteExtensionMethods(List<ServiceModel> services, OutputContext<DotNetOptions> ctx, IndentedStringBuilder o)
+  private void WriteExtensionMethods(List<ServiceModel> services, OutputContext<DotNetOptions> ctx, IndentedStringBuilder o, GenerationState state, string ns)
   {
     o.WriteLine("public static class EVAExtensions");
     using (o.BracedIndentation)
     {
+      foreach (var (classID, options) in state.AllOptionsImplementations)
+      {
+        if (ctx.Input.Types[classID].Assembly != ns) continue;
+
+        var (_, fullTypeName) = state.AllocateName(classID);
+        foreach (var opt in options.Select(x => GetFullName(x.CloneAsNotNull(), TypeContext.None, ctx, state)).Distinct())
+        {
+          o.WriteLine($"public static {fullTypeName} To{ctx.Input.Types[classID].TypeName}(this EVA.SDK.Core.DynamicData<{opt}> obj)");
+          using (o.BracedIndentation)
+          {
+            o.WriteLine($"return obj.Data.ToObject<{fullTypeName}>();");
+          }
+        }
+      }
+
       foreach (var service in services)
       {
-        var resType = GetFullName(service.ResponseTypeID, ctx.Input);
-        var reqType = GetFullName(service.RequestTypeID, ctx.Input);
+        var (_, resType) = state.AllocateName(service.ResponseTypeID);
+        var (_, reqType) = state.AllocateName(service.RequestTypeID);
 
         var requestType = ctx.Input.Types[service.RequestTypeID];
         if (requestType.Properties.Count > 1) continue;
@@ -127,7 +199,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         {
           foreach (var property in requestType.Properties.OrderBy(p => p.Value.Type.Nullable ? 1 : 0))
           {
-            var propName = GetFullPropName(TypeContext.Request, ctx, property.Value);
+            var propName = GetFullPropName(TypeContext.Request, ctx, property.Value, state);
             o.WriteLine($"{propName} {property.Key}{(property.Value.Type.Nullable ? " = default" : "")},");
           }
 
@@ -150,12 +222,11 @@ internal class DotNetOutput : IOutput<DotNetOptions>
 
           o.WriteLine("return client.CallService(request, options);");
         }
-
       }
     }
   }
 
-  private void WriteType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
+  private void WriteType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes, GenerationState state)
   {
     // These types have special handling
     if (ctx.Options.UseNativeDayOfWeek && id == ApiSpecConsts.WellKnown.DayOfWeek) return;
@@ -176,39 +247,65 @@ internal class DotNetOutput : IOutput<DotNetOptions>
             {
               sb.WriteLine(l);
             }
+
             sb.WriteLine("/// </summary>");
           }
+
           sb.WriteLine($"{name} = {string.Join(" | ", values)},");
         }
       }
-    }
-    else
-    {
-      var typeName = spec.TypeName;
-      if (spec.TypeArguments.Any())
-      {
-        typeName = typeName.Split('`')[0] + $"<{string.Join(',', spec.TypeArguments.Select(x => x[1..]))}>";
-      }
 
-      sb.WriteLine($"public class {typeName}{(allResponseTypes.Contains(id) ? " : EVA.SDK.Core.IResponseMessage" : string.Empty)}");
-      var usage = (spec.Usage.Request ? TypeContext.Request : TypeContext.None) | (spec.Usage.Response ? TypeContext.Response : TypeContext.None);
-      using (sb.BracedIndentation)
-      {
-        WriteTypeBody(id, spec, sb, usage, ctx, allResponseTypes);
-      }
+      return;
+    }
+
+    var (localName, _) = state.AllocateName(id);
+    if (spec.ParentType != null)
+    {
+      localName = localName[(localName.LastIndexOf('.') + 1)..];
+    }
+    if (spec.TypeArguments.Any())
+    {
+      localName += $"<{string.Join(',', spec.TypeArguments.Select(x => x[1..]))}>";
+    }
+
+    var inheritFromDynamic = (state.AllOptionsImplementations.GetValueOrDefault(id) ?? new List<TypeReference?>())
+      .Select(x => GetFullName(x.CloneAsNotNull(), TypeContext.None, ctx, state))
+      .Distinct()
+      .ToList();
+
+    var inheritFrom = inheritFromDynamic
+      .Concat(allResponseTypes.Contains(id) ? new[] { "EVA.SDK.Core.IResponseMessage" } : Array.Empty<string>())
+      .ToList();
+
+    var isInterface = state.AllOptionsInterfaces.Contains(id);
+    sb.WriteLine($"public {(isInterface ? "interface" : "class")} {localName}{(inheritFrom.Any() ? " : " + string.Join(", ", inheritFrom) : string.Empty)}");
+    var usage = (spec.Usage.Request ? TypeContext.Request : TypeContext.None) | (spec.Usage.Response ? TypeContext.Response : TypeContext.None);
+    using (sb.BracedIndentation)
+    {
+      WriteTypeBody(id, localName, spec, sb, usage, ctx, allResponseTypes, state);
+
+      // if (isInterface)
+      // {
+      //   sb.WriteLine($"public static implicit operator EVA.SDK.Core.DynamicData<{localName}>({localName} x)");
+      //   using (sb.BracedIndentation)
+      //   {
+      //     sb.WriteLine($"return new EVA.SDK.Core.DynamicData<{localName}> {{ Data = JObject.FromObject(x) }};");
+      //   }
+      // }
     }
   }
 
-  private void WriteResponseType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
+  private void WriteResponseType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes, GenerationState state)
   {
-    sb.WriteLine($"public class {spec.TypeName} : EVA.SDK.Core.IResponseMessage");
-    using(sb.BracedIndentation)
+    var (localName, _) = state.AllocateName(id);
+    sb.WriteLine($"public class {localName} : EVA.SDK.Core.IResponseMessage");
+    using (sb.BracedIndentation)
     {
-      WriteTypeBody(id, spec, sb, TypeContext.Response, ctx, allResponseTypes);
+      WriteTypeBody(id, localName, spec, sb, TypeContext.Response, ctx, allResponseTypes, state);
     }
   }
 
-  private void WriteRequestType(TypeSpecification requestType, IndentedStringBuilder o, ServiceModel service, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
+  private void WriteRequestType(string id, TypeSpecification requestType, IndentedStringBuilder o, ServiceModel service, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes, GenerationState state)
   {
     if (requestType.Description != null)
     {
@@ -224,16 +321,19 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       if (auth.Functionality != null) o.WriteLine($"/// Required permission: {auth.Functionality} (Scope: {auth.Scope})");
     }
 
+    var (localName, _) = state.AllocateName(id);
+    var (_, fullResponseName) = state.AllocateName(service.ResponseTypeID);
+
     o.WriteLine("/// </remarks>");
     o.WriteLine($"[EVA.SDK.Core.RequestMessage(\"{service.Path}\")]");
-    o.WriteLine($"public class {service.Name} : EVA.SDK.Core.IResponseType<{GetFullName(service.ResponseTypeID, ctx.Input)}>");
+    o.WriteLine($"public class {localName} : EVA.SDK.Core.IResponseType<{fullResponseName}>");
     using (o.BracedIndentation)
     {
-      WriteTypeBody(service.RequestTypeID, requestType, o, TypeContext.Request, ctx, allResponseTypes);
+      WriteTypeBody(service.RequestTypeID, localName, requestType, o, TypeContext.Request, ctx, allResponseTypes, state);
     }
   }
 
-  private void WriteTypeBody(string id, TypeSpecification spec, IndentedStringBuilder o, TypeContext context, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes)
+  private void WriteTypeBody(string id, string className, TypeSpecification spec, IndentedStringBuilder o, TypeContext context, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes, GenerationState state)
   {
     foreach (var prop in spec.Properties)
     {
@@ -262,33 +362,42 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         o.WriteLine($"[Obsolete(@\"{prop.Value.Deprecated.Comment?.Replace("\"", "\"\"")}\")]");
       }
 
-      var fullPropName = GetFullPropName(context, ctx, prop.Value);
+      var fullPropName = GetFullPropName(context, ctx, prop.Value, state);
 
       o.WriteLine($"public {fullPropName} {prop.Key} {{ get; set; }}");
     }
 
+    // if (state.AllOptionsImplementations.TryGetValue(id, out var options))
+    // {
+    //   foreach (var x in options.Select(x => GetFullName(x.CloneAsNotNull(), TypeContext.None, ctx, state)).Distinct())
+    //   {
+    //     o.WriteLine($"public static implicit operator EVA.SDK.Core.DynamicData<{x}>({className} x)");
+    //     using (o.BracedIndentation)
+    //     {
+    //       o.WriteLine($"return new EVA.SDK.Core.DynamicData<{x}> {{ Data = JObject.FromObject(x) }};");
+    //     }
+    //   }
+    // }
+
     foreach (var ts in ctx.Input.Types.Where(t => t.Value.ParentType == id))
     {
-      WriteType(ts.Key, ts.Value, o, ctx, allResponseTypes);
+      WriteType(ts.Key, ts.Value, o, ctx, allResponseTypes, state);
     }
   }
 
-  private static string GetFullPropName(TypeContext context, OutputContext<DotNetOptions> ctx, PropertySpecification prop)
+  private static string GetFullPropName(TypeContext context, OutputContext<DotNetOptions> ctx, PropertySpecification prop, GenerationState state)
   {
-    var shouldOutputCustomIDs = prop is { DataModelInformation.SupportsBackendID: true } && context.HasFlag(TypeContext.Request);
-    var fullPropName = GetFullName(prop.Type, context, shouldOutputCustomIDs, ctx);
-    fullPropName = prop.Skippable ? $"EVA.SDK.Core.Maybe<{fullPropName}>" : fullPropName;
+    var fullPropName = GetFullName(prop.Type, context, ctx, state);
 
-    // This is very hacky, but here we go!!!!
-    if (ctx.Options.EnableCustomIdMode && shouldOutputCustomIDs && fullPropName is "EVA.SDK.Core.Maybe<EVA.SDK.Core.ModelID>" or "EVA.SDK.Core.Maybe<EVA.SDK.Core.ModelID?>")
+    if (prop.Skippable)
     {
-      fullPropName = "EVA.SDK.Core.MaybeModelID";
+      fullPropName = $"EVA.SDK.Core.Maybe<{fullPropName}>";
     }
 
     return fullPropName;
   }
 
-  private static string GetFullName(TypeReference r, TypeContext context, bool returnCustomID, OutputContext<DotNetOptions> ctx)
+  private static string GetFullName(TypeReference r, TypeContext context, OutputContext<DotNetOptions> ctx, GenerationState state)
   {
     var n = r.Nullable ? "?" : string.Empty;
 
@@ -303,21 +412,23 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     if (r.Name == ApiSpecConsts.Float64) return $"double{n}";
     if (r.Name == ApiSpecConsts.Float32) return $"float{n}";
 
-    if (r.Name == ApiSpecConsts.Int64)
+    // We'll expose the shared part of the option
+    if (r.Name == ApiSpecConsts.Specials.Option)
     {
-      if (returnCustomID && ctx.Options.EnableCustomIdMode) return $"EVA.SDK.Core.ModelID{n}";
-      return $"long{n}";
+      var name = GetFullName(r.Shared, context, ctx, state);
+      // if (!context.HasFlag(TypeContext.Response)) return name;
+      return $"EVA.SDK.Core.DynamicData<{name}>{n}";
     }
 
-    if (returnCustomID && r.Name == ApiSpecConsts.Specials.Array && r.Arguments[0] is { Name: ApiSpecConsts.Int64, Nullable: false } && ctx.Options.EnableCustomIdMode)
+    if (r.Name == ApiSpecConsts.Int64)
     {
-      return $"EVA.SDK.Core.ModelIDList{n}";
+      return $"long{n}";
     }
 
     if (r.Name == ApiSpecConsts.Specials.Array)
     {
       var type = (context & TypeContext.Request) != 0 ? "IEnumerable" : "List";
-      return $"{type}<{GetFullName(r.Arguments[0], context, returnCustomID, ctx)}>{n}";
+      return $"{type}<{GetFullName(r.Arguments[0], context, ctx, state)}>{n}";
     }
 
     if (r.Name == ApiSpecConsts.Date) return $"System.DateTime{n}";
@@ -336,7 +447,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
 
     if (r.Name == ApiSpecConsts.Specials.Map)
     {
-      return $"IDictionary<{GetFullName(r.Arguments[0].CloneAsNotNull(), context, false, ctx)},{GetFullName(r.Arguments[1], context, returnCustomID, ctx)}>{n}";
+      return $"IDictionary<{GetFullName(r.Arguments[0].CloneAsNotNull(), context, ctx, state)},{GetFullName(r.Arguments[1], context, ctx, state)}>{n}";
     }
 
     if (r.Name == ApiSpecConsts.Object) return $"JObject{n}";
@@ -347,11 +458,12 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     if (r.Name.StartsWith("EVA."))
     {
       var name = r.Name;
+      var (_, fName) = state.AllocateName(name);
 
-      if (!r.Arguments.Any()) return GetFullName(name, ctx.Input) + n;
+      if (!r.Arguments.Any()) return fName + n;
 
-      var joinedArguments = string.Join(',', r.Arguments.Select(a => GetFullName(a, context, false, ctx)));
-      return $"{FixNamespace(name[..name.IndexOf('`')])}<{joinedArguments}>{n}";
+      var joinedArguments = string.Join(',', r.Arguments.Select(a => GetFullName(a, context, ctx, state)));
+      return $"{fName}<{joinedArguments}>{n}";
     }
 
     if (r.Name.StartsWith("_"))
@@ -361,17 +473,6 @@ internal class DotNetOutput : IOutput<DotNetOptions>
 
     ctx.Logger.LogWarning("Type cannot be handled by this output: {Type}, outputting as \"object\"", r.Name);
     return "object";
-  }
-
-  private static string GetFullName(string id, ApiDefinitionModel input)
-  {
-    var type = input.Types[id];
-    if (type.ParentType != null)
-    {
-      return GetFullName(type.ParentType, input) + "." + type.TypeName;
-    }
-
-    return $"{FixNamespace(type.Assembly)}.{type.TypeName}";
   }
 
   private static string FixNamespace(string ns)
