@@ -506,7 +506,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         [OperationType.Get] = new()
         {
           Summary = $"{dl.Name} Export",
-          Description = $"Not a real service, but the response shows the format of the {dl.Name} export.",
+          Description = description,
           OperationId = $"datalake_{dl.Name}",
           Tags = new List<OpenApiTag> { new() { Name = TagFromAssembly(type.Assembly), Description = TagFromAssembly(type.Assembly) } },
           Security = new List<OpenApiSecurityRequirement>(),
