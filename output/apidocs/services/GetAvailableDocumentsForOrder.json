@@ -19,11 +19,69 @@
     "properties": [
       {
         "name": "Documents",
-        "description": "List of order document outputs available for a specific order.\nEach document contains information regarding the following categories:\n\n\u0060Receipt\u0060  - physically printing the order invoice\n\u0060Paper\u0060    - printing the order invoice on a paper printer\n\u0060Email\u0060    - sending the order invoice by email\n\u0060Digital\u0060  - providing a downloadable version of the order invoice\n\u0060Metadata\u0060 - providing information about the order invoice.\n\nThe document category contains information on whether it\u0027s available for the order\nand a reason code in case it\u0027s not available.",
+        "description": "List of order document outputs available for a specific order.\nEach document contains information regarding the following categories:\n\n\u0060Receipt\u0060           - physically printing the order invoice\n\u0060Paper\u0060             - printing the order invoice on a paper printer\n\u0060Email\u0060             - sending the order invoice by email\n\u0060Digital\u0060           - providing a downloadable version of the order invoice\n\u0060ElectronicReceipt\u0060 - providing an electronic receipt version of the order invoice\n\u0060Metadata\u0060          - providing information about the order invoice.\n\nThe document category contains information on whether it\u0027s available for the order\nand a reason code in case it\u0027s not available.",
         "type": "EVA.Core.Orders.Documents.GetAvailableDocumentsForOrderResponse\u002BOrderDocument[]?",
         "properties": [
           {
             "name": "Digital",
+            "description": null,
+            "type": "EVA.Core.Orders.Documents.GetAvailableDocumentsForOrderResponse\u002BDocumentOutput",
+            "properties": [
+              {
+                "name": "Allowed",
+                "description": "Allowed is false when this option cannot be used, true otherwise",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Preferred",
+                "description": "Indicates if this output should be preferred by the frontend. Can be used to, for example, set a checkbox or radio button by default so the user does not have to toggle it themselves",
+                "type": "bool",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "ReasonCode",
+                "description": "Optional reason code that is included if Allowed is set to false",
+                "type": "string",
+                "properties": null,
+                "recursion": false,
+                "enumValues": null
+              },
+              {
+                "name": "Stations",
+                "description": "Possbile stations where the document can be output",
+                "type": "EVA.Core.Orders.Documents.GetAvailableDocumentsForOrderResponse\u002BDocumentStation[]?",
+                "properties": [
+                  {
+                    "name": "ID",
+                    "description": "ID of the Station in EVA. Can be used directly in services",
+                    "type": "int64",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Name",
+                    "description": "Name of the station for display purposes",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              }
+            ],
+            "recursion": false,
+            "enumValues": null
+          },
+          {
+            "name": "ElectronicReceipt",
             "description": null,
             "type": "EVA.Core.Orders.Documents.GetAvailableDocumentsForOrderResponse\u002BDocumentOutput",
             "properties": [
