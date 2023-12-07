@@ -16,8 +16,33 @@
             "type": "EVA.Core.DataModels.EventExportConfigurationConfigAuthorization",
             "properties": [
               {
+                "name": "ClientCertificate",
+                "description": "Configuration for Mutual TLS (mTLS)",
+                "type": "EVA.Core.DataModels.EventExportConfigurationCertificate",
+                "properties": [
+                  {
+                    "name": "Certificate",
+                    "description": "A client certificate that can be used for mTLS. Must be X509 in PKCS12 format. Also, it must not be expired, have a private key and hae clientAuth in it\u0027s extended key usage.",
+                    "type": "binary",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  },
+                  {
+                    "name": "Password",
+                    "description": "The password that is used to encrypt the certificate.",
+                    "type": "string",
+                    "properties": null,
+                    "recursion": false,
+                    "enumValues": null
+                  }
+                ],
+                "recursion": false,
+                "enumValues": null
+              },
+              {
                 "name": "StaticBearerToken",
-                "description": "This will result in a authorization header that looks like: \u0060Authorization: Bearer TOKEN\u0060",
+                "description": "This will result in an authorization header that looks like: \u0060Authorization: Bearer TOKEN\u0060",
                 "type": "string",
                 "properties": null,
                 "recursion": false,
@@ -25,7 +50,7 @@
               },
               {
                 "name": "StaticUnschemedToken",
-                "description": "This will result in a authorization header that looks like: \u0060Authorization: TOKEN\u0060. Use this only when the other options are not sufficient.",
+                "description": "This will result in an authorization header that looks like: \u0060Authorization: TOKEN\u0060. Use this only when the other options are not sufficient.",
                 "type": "string",
                 "properties": null,
                 "recursion": false,
