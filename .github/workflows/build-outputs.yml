@@ -47,18 +47,26 @@ jobs:
     - name: Upload OpenAPI and get versionId
       shell: bash
       run: |
-        echo "{\"document\": \"$(base64 -w 0 ./output/openapi/openapi.json)\",\"documentType\": \"application/json\"}" > body.json
+        echo "{\"apiSpec\": \"$(base64 -w 0 ./output/openapi/openapi.json)\",\"apiSpecType\": \"application/json\"}" > body.json
         version_id=$(curl -f -s -X POST \
           -H "Authorization: Bearer ${{ env.token }}" \
           -H "Content-Type: application/json" \
           --data-binary "@./body.json" \
-          "https://newblack.alphadoc.io/v1/documents/${{ secrets.AD_DOCUMENT_BEYOND }}/versions" | jq -r '.id')
+          "https://newblack.alphadoc.io/v1/projectVersions/${{ secrets.PROJECT_VERSION_ID }}/apiSpecs/${{ secrets.AD_DOCUMENT_BEYOND }}/versions" | jq -r '.id')
         echo "versionId=$version_id" >> $GITHUB_ENV
 
-    - name: Publish document
+    - name: Set API specification as default
       shell: bash
       run: |
         curl -f -s -X PUT \
           -H "Authorization: Bearer ${{ env.token }}" \
           -H "Content-Type: application/json" \
-          "https://newblack.alphadoc.io/v1/documents/${{ secrets.AD_DOCUMENT_BEYOND }}/versions/${{ env.versionId }}/publish"
+          "https://newblack.alphadoc.io/v1/projectVersions/${{ secrets.PROJECT_VERSION_ID }}/apiSpecs/${{ secrets.API_SPEC_ID }}/versions/${{ env.versionId }}"
+
+    - name: Publish document
+      shell: bash
+      run: |
+        curl -f -s -X POST \
+          -H "Authorization: Bearer ${{ env.token }}" \
+          -H "Content-Type: application/json" \
+          "https://newblack.alphadoc.io/v1/projectVersions/${{ secrets.PROJECT_VERSION_ID }}/publish"
