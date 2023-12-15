@@ -1,7 +1,7 @@
 {
   "typename": "ReceiveShipment",
   "assembly": "EVA.Core",
-  "description": "Reeive a shipment.",
+  "description": "Receive a shipment.",
   "usage": {
     "request": true,
     "response": false
@@ -10,9 +10,10 @@
   "typeArguments": [],
   "typeDependencies": [
     "EVA.Core.RequestMessageWithEmptyResponse",
+    "EVA.Core.PurchaseOrders.ReceiveShipment\u002BShipmentReceipt",
+    "EVA.Core.PurchaseOrders.ReceiveShipment\u002BProductReceipt",
     "EVA.Core.Shipments.ReceiveShipmentWorkSet",
-    "EVA.Core.PurchaseOrders.ReceiveShipment\u002BLine",
-    "EVA.Core.PurchaseOrders.ReceiveShipment\u002BShipmentReceipt"
+    "EVA.Core.PurchaseOrders.ReceiveShipment\u002BLine"
   ],
   "extends": {
     "ref": "EVA.Core.RequestMessageWithEmptyResponse",
@@ -127,6 +128,31 @@
         "isEvaID": true,
         "isExternalID": false
       },
+      "allowedValues": []
+    },
+    "UndeclaredProductsReceipts": {
+      "type": {
+        "ref": "array",
+        "args": [
+          {
+            "ref": "EVA.Core.PurchaseOrders.ReceiveShipment\u002BProductReceipt",
+            "args": [],
+            "shared": null,
+            "nullable": true
+          }
+        ],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "Receipts for products that are not present in the shipment. This can only be used for products that are not declard in the shipment.",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     }
   },
