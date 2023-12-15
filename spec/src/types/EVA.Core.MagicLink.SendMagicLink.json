@@ -1,7 +1,7 @@
 {
   "typename": "SendMagicLink",
   "assembly": "EVA.Core",
-  "description": "Requests a magic login link, which will send an email to the user (if found).\n\nSubscribe to the \u0060/magicLink\u0060 SignalR hub with \u0060RequestToken\u0060 to catch the link event and use the \u0060TemporaryToken\u0060 from there to continue login.",
+  "description": "Requests a magic login link, which will send an email to the user (if found).\n\nUsing the returned \u0060RequestToken\u0060, you can either subscribe to the \u0060/magicLink\u0060 SignalR hub, or poll the \u0060CheckMagicLink\u0060 service.\n\nWhen the magic link is clicked, these return either a \u0060TemporaryToken\u0060 you can call \u0060Login\u0060 with for this user, or an \u0060APIKey\u0060 that\u0027s already valid and ready to proceed with.\n\n- The email sent contains a link that will work for 10 minutes\n- When clicked, this will generate either a \u0060TemporaryToken\u0060 that can be used to \u0060Login\u0060 with for 3 minutes, or an \u0060ApiKey\u0060 that can be used for 1 hour\n- This data is additionally exposed through \u0060CheckMagicLink\u0060 for 1 minute after clicking\n- When using a \u0060TemporaryToken\u0060 to log in with, the resulting \u0060AuthenticationToken\u0060 is valid for 1 week (or \u0060SessionDuration:MagicLink\u0060) and will refresh every time when used",
   "usage": {
     "request": true,
     "response": false
@@ -84,25 +84,13 @@
         "ref": "string",
         "args": [],
         "shared": null,
-        "nullable": false
+        "nullable": true
       },
       "description": null,
       "skippable": false,
       "deprecated": null,
-      "required": {
-        "current": true,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
-      "requiredAllowEmpty": {
-        "current": false,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
+      "required": null,
+      "requiredAllowEmpty": null,
       "minValue": null,
       "maxValue": null,
       "stringLengthConstraint": null,
