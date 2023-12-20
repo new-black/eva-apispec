@@ -32,7 +32,7 @@ jobs:
       run: |
         echo "{\"apiSpec\": \"$(base64 -w 0 ./output/openapi/openapi.json)\",\"apiSpecType\": \"application/json\"}" > body.json
         version_id=$(curl -f -s -X POST \
-          -H "Authorization: Bearer ${{ secrets.ALPHADOC_APIKEY }}" \
+          -H "X-API-KEY: ${{ secrets.ALPHADOC_APIKEY }}" \
           -H "Content-Type: application/json" \
           --data-binary "@./body.json" \
           "https://newblack.alphadoc.io/v1/projectVersions/${{ secrets.PROJECT_VERSION_ID }}/apiSpecs/${{ secrets.AD_DOCUMENT_BEYOND }}/versions" | jq -r '.id')
@@ -42,7 +42,7 @@ jobs:
       shell: bash
       run: |
         curl -f -s -X PUT \
-          -H "Authorization: Bearer ${{ secrets.ALPHADOC_APIKEY }}" \
+          -H "X-API-KEY: ${{ secrets.ALPHADOC_APIKEY }}" \
           -H "Content-Type: application/json" \
           "https://newblack.alphadoc.io/v1/projectVersions/${{ secrets.PROJECT_VERSION_ID }}/apiSpecs/${{ secrets.API_SPEC_ID }}/versions/${{ env.versionId }}"
 
@@ -50,6 +50,6 @@ jobs:
       shell: bash
       run: |
         curl -f -s -X POST \
-          -H "Authorization: Bearer ${{ secrets.ALPHADOC_APIKEY }}" \
+          -H "X-API-KEY: ${{ secrets.ALPHADOC_APIKEY }}" \
           -H "Content-Type: application/json" \
           "https://newblack.alphadoc.io/v1/projectVersions/${{ secrets.PROJECT_VERSION_ID }}/publish"
