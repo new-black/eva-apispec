@@ -28,6 +28,8 @@ public class GenerateOptions
 
   internal bool UseStringIDs { get; init; } = BaseGenerateOptionsBinderOptions.UseStringIDs.Default;
 
+  internal string Api { get; init; } = BaseGenerateOptionsBinderOptions.Api.Default;
+
   internal void EnsureTransform(string transform)
   {
     Transforms ??= new List<string>();
@@ -86,6 +88,11 @@ internal static class BaseGenerateOptionsBinderOptions
     name: "--use-string-ids",
     description: "Use string IDs instead of longs/strings for all entities. This will become the standard in the future."
   ).WithDefault(false);
+
+  internal static readonly OptionWithDefault<string> Api = new Option<string>(
+    name: "--api",
+    description: "The API to output"
+  ).WithDefault("eva");
 }
 
 internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : GenerateOptions, new()
@@ -109,7 +116,8 @@ internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : G
       MergeSmallAssemblies = BaseGenerateOptionsBinderOptions.MergeSmallAssemblies.Value(bindingContext),
       MergeSmallAssembliesLimit = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesLimit.Value(bindingContext),
       MergeSmallAssembliesFilter = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Value(bindingContext),
-      UseStringIDs = BaseGenerateOptionsBinderOptions.UseStringIDs.Value(bindingContext)
+      UseStringIDs = BaseGenerateOptionsBinderOptions.UseStringIDs.Value(bindingContext),
+      Api = BaseGenerateOptionsBinderOptions.Api.Value(bindingContext)
     };
 
     BuildOptions(result, bindingContext);
@@ -128,6 +136,7 @@ internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : G
     yield return BaseGenerateOptionsBinderOptions.MergeSmallAssembliesLimit.Option;
     yield return BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Option;
     yield return BaseGenerateOptionsBinderOptions.UseStringIDs.Option;
+    yield return BaseGenerateOptionsBinderOptions.Api.Option;
 
     foreach (var opt in GetOptions()) yield return opt;
 

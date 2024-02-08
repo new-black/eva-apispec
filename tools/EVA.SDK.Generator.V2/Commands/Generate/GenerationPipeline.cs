@@ -142,6 +142,8 @@ internal static class GenerationPipeline
 
   private static IEnumerable<ITransform> FindFilters(GenerateOptions options)
   {
+    yield return new FilterApi();
+
     if (options.FilterAssemblies is { Length: > 0 } || options.MergeSmallAssemblies != null)
     {
       yield return new FilterAssemblies(options.FilterAssemblies, options.MergeSmallAssemblies, options.MergeSmallAssembliesLimit);

@@ -39,7 +39,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
   public async Task Write(OutputContext<OpenApiOptions> ctx)
   {
     var additionalExamples = await LoadAdditionalExamples(ctx);
-    var model = GetModel(ctx.Input, ctx.Options.Host, additionalExamples);
+    var model = GetModel(ctx.Input, ctx.Options.Host, ctx.Options.Api, additionalExamples);
 
     foreach (var error in model.Validate(ValidationRuleSet.GetDefaultRuleSet()))
     {
@@ -80,45 +80,75 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     return result;
   }
 
-  internal OpenApiDocument GetModel(ApiDefinitionModel input, string host, Dictionary<string, List<(int statusCode, string name, string content)>> additionalExamples)
+  internal OpenApiDocument GetModel(
+    ApiDefinitionModel input,
+    string host,
+    string api,
+    Dictionary<string, List<(int statusCode, string name, string content)>> additionalExamples)
   {
     var state = new State();
     var errorObjectID = Cleanup(input);
 
-    var servers = string.IsNullOrWhiteSpace(host)
-      ? new List<OpenApiServer>
-      {
-        new()
+    var iseva = api == "eva";
+
+    var serverVariables = new Dictionary<string, OpenApiServerVariable>
+    {
+      { "customer", new OpenApiServerVariable { Default = "acme" } }
+    };
+
+    var servers = !string.IsNullOrWhiteSpace(host)
+      ? [new OpenApiServer { Url = host }]
+      : !iseva
+        ? [new OpenApiServer { Url = "https://my.api.com" }]
+        : new List<OpenApiServer>
         {
-          Description = "Testing environment",
-          Url = "https://api.euw.{customer}.test.eva-online.cloud",
-          Variables = new Dictionary<string, OpenApiServerVariable>
+          new()
           {
-            { "customer", new OpenApiServerVariable { Default = "acme" } }
-          }
-        },
-        new()
-        {
-          Description = "Acceptance environment",
-          Url = "https://api.euw.{customer}.acc.eva-online.cloud",
-          Variables = new Dictionary<string, OpenApiServerVariable>
+            Description = "Testing environment",
+            Url = "https://api.euw.{customer}.test.eva-online.cloud",
+            Variables = serverVariables
+          },
+          new()
           {
-            { "customer", new OpenApiServerVariable { Default = "acme" } }
-          }
-        },
-        new()
-        {
-          Description = "Production environment",
-          Url = "https://api.euw.{customer}.prod.eva-online.cloud",
-          Variables = new Dictionary<string, OpenApiServerVariable>
+            Description = "Acceptance environment",
+            Url = "https://api.euw.{customer}.acc.eva-online.cloud",
+            Variables = serverVariables
+          },
+          new()
           {
-            { "customer", new OpenApiServerVariable { Default = "acme" } }
+            Description = "Production environment",
+            Url = "https://api.euw.{customer}.prod.eva-online.cloud",
+            Variables = serverVariables
           }
-        }
-      }
-      : new List<OpenApiServer> { new() { Url = host } };
+        };
+
+    var tags = input.Services
+        .Select(s => TagFromAssembly(s.Assembly))
+        .Concat(["DataLake", "API"])
+        .Distinct()
+        .Order()
+        .Select(s => new OpenApiTag { Name = s, Description = s })
+        .ToList();
 
     // Base
+    List<OpenApiSecurityRequirement> securityRequirements =
+    [
+      new OpenApiSecurityRequirement
+      {
+        {
+          new OpenApiSecurityScheme
+          {
+            Reference = new OpenApiReference
+            {
+              Type = ReferenceType.SecurityScheme,
+              Id = iseva ? "eva-auth" : "api-auth"
+            }
+          },
+          new List<string>()
+        }
+      }
+    ];
+
     var model = new OpenApiDocument
     {
       Info = new OpenApiInfo
@@ -135,14 +165,8 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       Servers = servers,
       Paths = new OpenApiPaths(),
       Components = new OpenApiComponents(),
-      Tags = input.Services.Select(s => TagFromAssembly(s.Assembly)).Concat(new[] { "DataLake" }).Distinct().Order().Select(s => new OpenApiTag { Name = s, Description = s }).ToList(),
-      SecurityRequirements = new List<OpenApiSecurityRequirement>
-      {
-        new()
-        {
-          { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "eva-auth" } }, new List<string>() }
-        }
-      }
+      Tags = tags,
+      SecurityRequirements = securityRequirements
     };
 
     model.Components.SecuritySchemes.Add("eva-auth", new OpenApiSecurityScheme
@@ -152,20 +176,34 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       Name = "Authorization",
       In = ParameterLocation.Header
     });
-    model.Components.SecuritySchemes.Add("eva-auth-elevated", new OpenApiSecurityScheme
+
+    if (iseva)
     {
-      Name = "EVA-Elevation-Token",
-      In = ParameterLocation.Header,
-      Type = SecuritySchemeType.ApiKey,
-      Description = "Authenticate using an elevated token. This allows temporary access to resources that are otherwise not accessible."
-    });
-    model.Components.SecuritySchemes.Add("eva-auth-apptoken", new OpenApiSecurityScheme
+      model.Components.SecuritySchemes.Add("eva-auth-elevated", new OpenApiSecurityScheme
+      {
+        Name = "EVA-Elevation-Token",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Description = "Authenticate using an elevated token. This allows temporary access to resources that are otherwise not accessible."
+      });
+      model.Components.SecuritySchemes.Add("eva-auth-apptoken", new OpenApiSecurityScheme
+      {
+        Name = "EVA-App-Token",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Description = "Authenticate using an application token. This allows building an order as a non-logged in user."
+      });
+    }
+    else
     {
-      Name = "EVA-App-Token",
-      In = ParameterLocation.Header,
-      Type = SecuritySchemeType.ApiKey,
-      Description = "Authenticate using an application token. This allows building an order as a non-logged in user."
-    });
+      model.Components.SecuritySchemes.Add("api-auth", new OpenApiSecurityScheme
+      {
+        Description = "API key for external service",
+        Type = SecuritySchemeType.ApiKey,
+        Name = "Authorization",
+        In = ParameterLocation.Header
+      });
+    }
 
     // Parameters
     model.Components.Parameters.Add(Parameter_Header_UserAgent, new()
@@ -253,7 +291,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     // Render each service
     foreach (var service in input.Services)
     {
-      var pathItem = ToPathItem(state, input, service, additionalExamples);
+      var pathItem = ToPathItem(state, input, service, additionalExamples, iseva || service.Api.EndsWith("-callbacks"));
       model.Paths[service.Path] = pathItem;
     }
 
@@ -526,7 +564,12 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     };
   }
 
-  private static OpenApiPathItem ToPathItem(State state, ApiDefinitionModel input, ServiceModel service, Dictionary<string, List<(int statusCode, string name, string content)>> additionalExamples)
+  private static OpenApiPathItem ToPathItem(
+    State state,
+    ApiDefinitionModel input,
+    ServiceModel service,
+    Dictionary<string, List<(int statusCode, string name, string content)>> additionalExamples,
+    bool iseva)
   {
     string MapUserTypes(ApiSpecUserTypes t)
     {
@@ -578,33 +621,37 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       description += $"\n\n**Deprecated since {deprecated.Introduced}:** {deprecated.Comment}\n\n**Will be removed from the typings in {deprecated.Effective}**";
     }
 
-    var parameters = new List<OpenApiParameter>
-    {
-      new()
-      {
-        Reference = new OpenApiReference
+    List<OpenApiParameter> parameters = !iseva
+      ? []
+      :
+      [
+        new()
         {
-          Type = ReferenceType.Parameter,
-          Id = Parameter_Header_UserAgent
-        }
-      },
-      new()
-      {
-        Reference = new OpenApiReference
+          Reference = new OpenApiReference
+          {
+            Type = ReferenceType.Parameter,
+            Id = Parameter_Header_UserAgent
+          }
+        },
+
+        new()
         {
-          Type = ReferenceType.Parameter,
-          Id = Parameter_Header_OrganizationUnit
-        }
-      },
-      new()
-      {
-        Reference = new OpenApiReference
+          Reference = new OpenApiReference
+          {
+            Type = ReferenceType.Parameter,
+            Id = Parameter_Header_OrganizationUnit
+          }
+        },
+
+        new()
         {
-          Type = ReferenceType.Parameter,
-          Id = Parameter_Header_OrganizationUnitQuery
+          Reference = new OpenApiReference
+          {
+            Type = ReferenceType.Parameter,
+            Id = Parameter_Header_OrganizationUnitQuery
+          }
         }
-      }
-    };
+      ];
 
     if (supportsExternalID)
     {
@@ -630,7 +677,11 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       });
     }
 
-    return new OpenApiPathItem
+    var openApiTags = iseva
+      ? new List<OpenApiTag> { new() { Name = TagFromAssembly(service.Assembly), Description = TagFromAssembly(service.Assembly) } }
+      : new List<OpenApiTag> { new() { Name = "API" } };
+
+    var result = new OpenApiPathItem
     {
       Summary = service.Name,
       Description = description,
@@ -644,14 +695,24 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
             Description = description,
             OperationId = service.Name,
             Deprecated = service.Deprecated is not null,
-            Tags = new List<OpenApiTag> { new() { Name = TagFromAssembly(service.Assembly), Description = TagFromAssembly(service.Assembly) } },
+            Tags = openApiTags,
             Security = !requiresAuthentication
               ? new List<OpenApiSecurityRequirement>()
               : new List<OpenApiSecurityRequirement>
               {
                 new()
                 {
-                  { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "eva-auth" } }, Array.Empty<string>() }
+                  {
+                    new OpenApiSecurityScheme
+                    {
+                      Reference = new OpenApiReference
+                      {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = iseva ? "eva-auth" : "api-auth"
+                      }
+                    },
+                    Array.Empty<string>()
+                  }
                 }
               },
             RequestBody = new OpenApiRequestBody
@@ -663,7 +724,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
                 ["application/json"] = new()
                 {
                   Schema = ToSchema(service.RequestTypeID),
-                  Examples = additionalExamples.TryGetValue(service.Name, out var examples)
+                  Examples = iseva && additionalExamples.TryGetValue(service.Name, out var examples)
                     ? examples.ToDictionary(x => x.name, x => new OpenApiExample
                     {
                       Value = new OpenApiStringObject(x.content)
@@ -684,35 +745,40 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
                     Schema = ToSchema(service.ResponseTypeID)
                   }
                 }
-              },
-
-              ["4XX"] = new()
-              {
-                Description = "A BadRequest response",
-                Content = new Dictionary<string, OpenApiMediaType>
-                {
-                  ["application/json"] = new()
-                  {
-                    Schema = new OpenApiSchema { Reference = new OpenApiReference { Id = Schema_Error, Type = ReferenceType.Schema } },
-                    Examples = new Dictionary<string, OpenApiExample>
-                    {
-                      ["RequestValidationFailure"] = new()
-                      {
-                        Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_400_RequestValidation }
-                      },
-                      ["Forbidden"] = new()
-                      {
-                        Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_403_Forbidden }
-                      }
-                    }
-                  }
-                }
               }
             }
           }
         }
       }
     };
+
+    if (iseva)
+    {
+      result.Operations.First().Value.Responses["4XX"] = new()
+      {
+        Description = "A BadRequest response",
+        Content = new Dictionary<string, OpenApiMediaType>
+        {
+          ["application/json"] = new()
+          {
+            Schema = new OpenApiSchema { Reference = new OpenApiReference { Id = Schema_Error, Type = ReferenceType.Schema } },
+            Examples = new Dictionary<string, OpenApiExample>
+            {
+              ["RequestValidationFailure"] = new()
+              {
+                Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_400_RequestValidation }
+              },
+              ["Forbidden"] = new()
+              {
+                Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_403_Forbidden }
+              }
+            }
+          }
+        }
+      };
+    }
+
+    return result;
   }
 
   private static async Task<Dictionary<string, List<(int statusCode, string name, string content)>>> LoadAdditionalExamples(OutputContext<OpenApiOptions> ctx)
