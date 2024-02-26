@@ -130,7 +130,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     output.Write(string.Empty);
   }
 
-  private void WriteType(TypeSpecification type, string id, string typename, IndentedStringBuilder output, OutputContext<SwiftOptions> ctx)
+  private void WriteType(TypeSpecification type, string id, string typename, IndentedStringBuilder output, OutputContext<SwiftOptions> ctx, bool isNested = false)
   {
     if (type.Description != null)
     {
@@ -389,13 +389,14 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     }
 
     // Write the nested types
-    foreach (var (nestedID, nestedType) in ctx.Input.Types.Where(kv => kv.Value.ParentType == id))
+    var nestedTypes = ctx.Input.Types.Where(kv => kv.Value.ParentType == id);
+    foreach (var (nestedID, nestedType) in nestedTypes)
     {
       output.WriteLine();
 
       using (output.Indentation)
       {
-        WriteType(nestedType, nestedID, nestedType.TypeName, output, ctx);
+        WriteType(nestedType, nestedID, TypeName(nestedID, nestedType.TypeName, ctx.Input), output, ctx, true);
       }
     }
 
@@ -407,6 +408,25 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     output.WriteLine("}");
 
     // Extension functions for types with argument.
+    if (!isNested)
+    {
+      WriteExtensions(type, typename, typeArguments, id, output, ctx);
+    }
+    
+    foreach (var (nestedID, nestedType) in nestedTypes)
+    {
+      WriteExtensions(nestedType, $"{typename}.{TypeName(nestedID, nestedType.TypeName, ctx.Input)}", typeArguments, nestedID, output, ctx);
+    }
+  }
+
+  private string TypeName(string id, string typename, ApiDefinitionModel input)
+  {
+    return id == "EVA.Core.Stock.GetStockLabelSettingsForLabelResponse+InheritedValue`1" ? GetTypeName(id, input) : typename;
+  }
+
+  private void WriteExtensions(TypeSpecification type, string typename, string currentTypeArguments, string id, IndentedStringBuilder output, OutputContext<SwiftOptions> ctx)
+  {
+    var typeArguments = currentTypeArguments;
     if (type.TypeArguments.Any())
     {
       output.WriteLine();
