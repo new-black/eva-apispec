@@ -351,7 +351,11 @@ internal class SwiftOutput : IOutput<SwiftOptions>
                 var name = option.Name.Replace("+", ".").Split(".").Last();
                 output.WriteLine($"try {name}?.encode(to: encoder)");
               }
-              output.WriteLine($"try json.encode(to: encoder)");
+              output.WriteLine($"if json != .null");
+              using (output.BracedIndentation)
+              {
+                output.WriteLine($"try json.encode(to: encoder)");
+              }
             }
           }
 
