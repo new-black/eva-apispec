@@ -284,7 +284,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           output.WriteLine($"public struct {propName}Payload: Codable, Equatable, Hashable, Sendable {{");
           using (output.Indentation)
           {
-            output.WriteLine("public var json: JSON");
+            output.WriteLine("public var properties: [String: JSON]");
             foreach (var option in options)
             {
               var typeName = GetTypeName(option, ctx);
@@ -296,7 +296,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             output.WriteLine("public init(");
             using (output.Indentation)
             {
-              output.WriteLine("json: JSON = .null,");
+              output.WriteLine("properties: [String: JSON] = [:],");
               var list = options.ToList();
               for (var i = 0; i < list.Count; i++)
               {
@@ -312,7 +312,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             output.WriteLine(")");
             using (output.BracedIndentation)
             {
-              output.WriteLine("self.json = json");
+              output.WriteLine("self.properties = properties");
               foreach (var option in options)
               {
                 var name = option.Name.Replace("+", ".").Split(".").Last();
@@ -324,17 +324,17 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             output.WriteLine("public init(from decoder: Decoder) throws");
             using (output.BracedIndentation)
             {
-              output.WriteLine("json = try .init(from: decoder)");
+              output.WriteLine("properties = try .init(from: decoder)");
               foreach (var option in options)
               {
                 var name = option.Name.Replace("+", ".").Split(".").Last();
                 output.WriteLine($"{name} = try? .init(from: decoder)");
               }
 
-              output.WriteLine("try DecodingError.verifyJSON(");
+              output.WriteLine("try DecodingError.verifyAnySchema(");
               using (output.Indentation)
               {
-                output.WriteLine("json,");
+                output.WriteLine("properties,");
                 output.WriteLine("type: Self.self,");
                 output.WriteLine("codingPath: decoder.codingPath");
               }
@@ -346,7 +346,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             output.WriteLine("public func encode(to encoder: Encoder) throws");
             using (output.BracedIndentation)
             {
-              output.WriteLine($"try json.encode(to: encoder)");
+              output.WriteLine($"try properties.encode(to: encoder)");
               foreach (var option in options)
               {
                 var name = option.Name.Replace("+", ".").Split(".").Last();
