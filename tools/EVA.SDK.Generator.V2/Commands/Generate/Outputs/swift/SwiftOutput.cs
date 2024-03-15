@@ -346,15 +346,11 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             output.WriteLine("public func encode(to encoder: Encoder) throws");
             using (output.BracedIndentation)
             {
+              output.WriteLine($"try json.encode(to: encoder)");
               foreach (var option in options)
               {
                 var name = option.Name.Replace("+", ".").Split(".").Last();
                 output.WriteLine($"try {name}?.encode(to: encoder)");
-              }
-              output.WriteLine($"if json != .null");
-              using (output.BracedIndentation)
-              {
-                output.WriteLine($"try json.encode(to: encoder)");
               }
             }
           }
