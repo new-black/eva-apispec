@@ -53,7 +53,7 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
       }
 
       var assemblyName = AssemblyNameToPackageName(group.Assembly);
-      await writer.WriteFileAsync($"{assemblyName}/{assemblyName}.ts", WriteImports(assemblyCtx, options, false) + o);
+      await writer.WriteFileAsync($"{assemblyName}/src/{assemblyName}.ts", WriteImports(assemblyCtx, options, false) + o);
 
       // Write the services
       assemblyCtx = new AssemblyContext(group.Assembly);
@@ -72,8 +72,8 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
         }
       }
 
-      await writer.WriteFileAsync($"{assemblyName}/{assemblyName}.services.ts", WriteImports(assemblyCtx, options, true) + o);
-      await writer.WriteFileAsync($"{assemblyName}/index.ts", $"export * from './{assemblyName}';\nexport * from './{assemblyName}.services';");
+      await writer.WriteFileAsync($"{assemblyName}/src/{assemblyName}.services.ts", WriteImports(assemblyCtx, options, true) + o);
+      await writer.WriteFileAsync($"{assemblyName}/src/index.ts", $"export * from './{assemblyName}.js';\nexport * from './{assemblyName}.services.js';");
     }
   }
 
@@ -122,7 +122,7 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
       }
 
       var moduleReference = groupedReferences.Key == ctx.AssemblyName
-        ? $"./{AssemblyNameToPackageName(groupedReferences.Key)}"
+        ? $"./{AssemblyNameToPackageName(groupedReferences.Key)}.js"
         : DeterminePackageReference(groupedReferences.Key, options.PackagePrefix);
 
       o.AppendLine($"}} from '{moduleReference}';");
@@ -342,7 +342,8 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
   {
     assemblyName = AssemblyNameToPackageName(assemblyName);
     if (packagePrefix == null) return $"../{assemblyName}";
-    return $"{packagePrefix}{assemblyName}";
+    var trimmedPrefix = packagePrefix.TrimStart('\\');
+    return $"{trimmedPrefix}{assemblyName}";
   }
 
   private static string AssemblyNameToPackageName(string a)
