@@ -399,6 +399,12 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         schema.Description += $"\n\nThis string must be between {slc.Min} (incl) and {slc.Max} (incl) characters long.";
       }
 
+      if (prop.StringRegexConstraint is { } src)
+      {
+        schema.Pattern = src.Regex;
+        schema.Description += $"\n\nThis string must be formatted like `{src.Regex}`.";
+      }
+
       if (prop is { Skippable: true, Required: { CurrentValue: true } })
       {
         schema.Description += $"\n\nWhile this property is not required, if it is sent in the request it must have a valid value.";

@@ -19,6 +19,7 @@ public class PropertySpecification
   [JsonPropertyName("minValue")] public TimedValue<double?>? MinValue { get; set; }
   [JsonPropertyName("maxValue")] public TimedValue<double?>? MaxValue { get; set; }
   [JsonPropertyName("stringLengthConstraint")] public StringLengthConstraint? StringLengthConstraint { get; set; }
+  [JsonPropertyName("stringRegexConstraint")] public StringRegexConstraint? StringRegexConstraint { get; set; }
   [JsonPropertyName("datamodel")] public DataModelInformation? DataModelInformation { get; set; }
   [JsonPropertyName("allowedValues")] public ImmutableArray<string> AllowedValues { get; set; } = ImmutableArray<string>.Empty;
 }
