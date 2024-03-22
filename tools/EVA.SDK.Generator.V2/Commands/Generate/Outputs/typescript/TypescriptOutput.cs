@@ -1,10 +1,11 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.typescript;
 
-internal class TypescriptOutput : IOutput<TypescriptOptions>
+internal partial class TypescriptOutput : IOutput<TypescriptOptions>
 {
   public string? OutputPattern => null;
 
@@ -349,6 +350,24 @@ internal class TypescriptOutput : IOutput<TypescriptOptions>
   private static string AssemblyNameToPackageName(string a)
   {
     if (a.StartsWith("EVA.")) a = $"eva-services-{a[4..]}";
-    return a.Replace(".", "-").ToLowerInvariant();
+    var result = a.Replace(".", "-");
+
+    var parts = result.Split('-');
+
+    // We always lowercase the first letter of each part
+    // If the part contains an uppercase letter, we replace it with a '-' and lowercase it
+    for (var i = 0; i < parts.Length; i++)
+    {
+      var part = parts[i];
+      if (part.Length == 0) continue;
+      parts[i] = part[0].ToString().ToLower() + _pascalCaseToKebabCaseRegex.Replace(part[1..], "-$1").ToLower();
+    }
+
+    return string.Join("-", parts);
   }
+
+  private static readonly Regex _pascalCaseToKebabCaseRegex = PascalCaseToKebabCaseRegex();
+
+  [GeneratedRegex(@"([A-Z])", RegexOptions.Compiled)]
+  private static partial Regex PascalCaseToKebabCaseRegex();
 }
