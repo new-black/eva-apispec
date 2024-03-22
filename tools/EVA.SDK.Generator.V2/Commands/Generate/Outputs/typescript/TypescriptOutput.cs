@@ -360,6 +360,22 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
     {
       var part = parts[i];
       if (part.Length == 0) continue;
+
+      // if part is totally uppercase, we just lowercase it
+      if (part.ToUpperInvariant() == part)
+      {
+        parts[i] = part.ToLower();
+        continue;
+      }
+
+      // If part ends with upper case letters, we lowercase all of these
+      var numUpperCaseLettersAtEnd = part.Reverse().TakeWhile(char.IsUpper).Count();
+      if (numUpperCaseLettersAtEnd > 0)
+      {
+        part = part[..^numUpperCaseLettersAtEnd] + part[^numUpperCaseLettersAtEnd..].ToLower();
+      }
+
+      // Camel-case to kebab-case
       parts[i] = part[0].ToString().ToLower() + _pascalCaseToKebabCaseRegex.Replace(part[1..], "-$1").ToLower();
     }
 

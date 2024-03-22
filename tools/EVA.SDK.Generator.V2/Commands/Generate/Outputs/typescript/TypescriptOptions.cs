@@ -31,7 +31,7 @@ internal class TypescriptOptionsBinder : BaseGenerateOptionsBinder<TypescriptOpt
   protected override void BuildOptions(TypescriptOptions options, BindingContext ctx)
   {
     var prefix = PackagePrefix.Value(ctx);
-    if (prefix.StartsWith(@"\\")) prefix = $"@{prefix[2..]}";
+    if (prefix != null && prefix.StartsWith(@"\\")) prefix = $"@{prefix[2..]}";
     options.PackagePrefix = prefix;
 
     options.Extenders = Extenders.Value(ctx);
