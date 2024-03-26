@@ -185,10 +185,11 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       else
       {
         var typeArgument = type.TypeArguments.Any() ? $"<{string.Join(", ", type.TypeArguments.Select(x => x[1..]))}>" : string.Empty;
+        var basetype = type.Extends == null ? string.Empty : $" extends {ToReference(input, type.Extends, ctx)}";
 
         if (type.Description != null) WriteComment(o, type.Description);
         var fixedTypeName = TypeNameToTypescriptTypeName(ctx, input, id);
-        o.WriteLine($"export interface {fixedTypeName}{typeArgument} {{");
+        o.WriteLine($"export interface {fixedTypeName}{typeArgument}{basetype} {{");
         using (o.Indentation)
         {
           foreach (var (propName, propSpec) in type.Properties)
@@ -249,7 +250,8 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
         extra.Add(extenderRef);
       }
 
-      var allReferences = typesFromCurrentAssembly.Select(tr => ToReference(input, tr, ctx, overrideNullable)).Concat(extra);
+      var allReferences = (typesFromCurrentAssembly.Any() ? typesFromCurrentAssembly :[ps.Type.Shared])
+        .Select(tr => ToReference(input, tr, ctx, overrideNullable)).Concat(extra);
       return string.Join(" | ", allReferences);
     }
 
@@ -325,18 +327,38 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
 
   internal static string TypeNameToTypescriptTypeName(AssemblyContext ctx, ApiDefinitionModel input, string name, bool addReference = true)
   {
-    var spec = input.Types[name];
-    if (name.StartsWith(spec.Assembly + "."))
+    // For service types
     {
-      name = name[(spec.Assembly.Length + 1)..];
+      if (input.Services.Any(s => s.RequestTypeID == name || s.ResponseTypeID == name))
+      {
+        var spec = input.Types[name];
+
+        var idx = name.IndexOf('`');
+        name = idx == -1 ? name : name[..idx];
+
+        idx = name.LastIndexOf('.');
+        name = idx == -1 ? name : name[(idx + 1)..];
+
+        ctx.RegisterReferencedType(spec.Assembly, name);
+        return name;
+      }
     }
 
-    var idx = name.IndexOf('`');
-    name = idx == -1 ? name : name[..idx];
+    // Other types
+    {
+      var spec = input.Types[name];
+      if (name.StartsWith(spec.Assembly + "."))
+      {
+        name = name[(spec.Assembly.Length + 1)..];
+      }
 
-    var result = name.Replace(".", string.Empty).Replace("+", "_");
-    if(addReference) ctx.RegisterReferencedType(spec.Assembly, result);
-    return result;
+      var idx = name.IndexOf('`');
+      name = idx == -1 ? name : name[..idx];
+
+      var result = name.Replace(".", string.Empty).Replace("+", "_");
+      if (addReference) ctx.RegisterReferencedType(spec.Assembly, result);
+      return result;
+    }
   }
 
   internal static string DeterminePackageReference(string assemblyName, string? packagePrefix)
