@@ -34,6 +34,8 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
         o.WriteLine();
         o.WriteLine($"export type {AnyType} = string | number | boolean | Date | Array<{AnyType}> | {{ [key: string]: {AnyType} }};");
         o.WriteLine($"export interface {IEvaServiceDefinition} {{ name: string; path: string; request?: unknown; response?: unknown; }}");
+        o.WriteLine("export function createServiceDefinition<SVC extends IEvaServiceDefinition>(service: new () => SVC): SVC { return new service(); }");
+        o.WriteLine($"export const EVA_API_VERSION = {ctx.Input.ApiVersion};");
       }
 
       // Write the errors
@@ -63,7 +65,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       {
         o.WriteLine();
         assemblyCtx.RegisterReferencedType(ApiSpecConsts.WellKnown.CoreAssembly, IEvaServiceDefinition);
-        o.WriteLine($"export class {service.Name} implements {IEvaServiceDefinition}");
+        o.WriteLine($"export class Svc{service.Name} implements {IEvaServiceDefinition}");
         using (o.BracedIndentation)
         {
           o.WriteLine($"name = {EscapeForString(service.Name)};");
@@ -249,7 +251,8 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
         extra.Add(extenderRef);
       }
 
-      var allReferences = typesFromCurrentAssembly.Select(tr => ToReference(input, tr, ctx, overrideNullable)).Concat(extra);
+      var allReferences = (typesFromCurrentAssembly.Any() ? typesFromCurrentAssembly :[ps.Type.Shared])
+        .Select(tr => ToReference(input, tr, ctx, overrideNullable)).Concat(extra);
       return string.Join(" | ", allReferences);
     }
 
@@ -325,18 +328,37 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
 
   internal static string TypeNameToTypescriptTypeName(AssemblyContext ctx, ApiDefinitionModel input, string name, bool addReference = true)
   {
-    var spec = input.Types[name];
-    if (name.StartsWith(spec.Assembly + "."))
+    // For service types
     {
-      name = name[(spec.Assembly.Length + 1)..];
+      if (input.Services.Any(s => s.RequestTypeID == name || s.ResponseTypeID == name))
+      {
+        var idx = name.IndexOf('`');
+        var spec = input.Types[name];
+        name = idx == -1 ? name : name[..idx];
+
+        idx = name.LastIndexOf('.');
+        name = idx == -1 ? name : name[(idx + 1)..];
+
+        ctx.RegisterReferencedType(spec.Assembly, name);
+        return name;
+      }
     }
 
-    var idx = name.IndexOf('`');
-    name = idx == -1 ? name : name[..idx];
+    // Other types
+    {
+      var spec = input.Types[name];
+      if (name.StartsWith(spec.Assembly + "."))
+      {
+        name = name[(spec.Assembly.Length + 1)..];
+      }
 
-    var result = name.Replace(".", string.Empty).Replace("+", "_");
-    if(addReference) ctx.RegisterReferencedType(spec.Assembly, result);
-    return result;
+      var idx = name.IndexOf('`');
+      name = idx == -1 ? name : name[..idx];
+
+      var result = name.Replace(".", string.Empty).Replace("+", "_");
+      if (addReference) ctx.RegisterReferencedType(spec.Assembly, result);
+      return result;
+    }
   }
 
   internal static string DeterminePackageReference(string assemblyName, string? packagePrefix)
