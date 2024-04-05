@@ -182,6 +182,17 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
         o.WriteLine("}");
         o.WriteLine();
       }
+      else if (id == ApiSpecConsts.WellKnown.IProductSearchItem)
+      {
+        var fixedTypeName = TypeNameToTypescriptTypeName(ctx, input, id);
+        o.WriteLine($"export interface {fixedTypeName} extends Record<string, {AnyType} | null> {{");
+        using (o.Indentation)
+        {
+
+        }
+        o.WriteLine("}");
+        o.WriteLine();
+      }
       else
       {
         var typeArgument = type.TypeArguments.Any() ? $"<{string.Join(", ", type.TypeArguments.Select(x => x[1..]))}>" : string.Empty;
@@ -269,7 +280,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       { Name: ApiSpecConsts.String or ApiSpecConsts.Date or ApiSpecConsts.Binary or ApiSpecConsts.Guid or ApiSpecConsts.Duration } => $"string{n}",
       { Name: ApiSpecConsts.Bool } => $"boolean{n}",
       { Name: ApiSpecConsts.Int32 or ApiSpecConsts.Int64 or ApiSpecConsts.Int16 or ApiSpecConsts.Float32 or ApiSpecConsts.Float64 or ApiSpecConsts.Float128 } => $"number{n}",
-      { Name: ApiSpecConsts.Specials.Array, Arguments.Length: 1 } => $"{ToReference(input, typeReference.Arguments[0], ctx)}[]{n}",
+      { Name: ApiSpecConsts.Specials.Array, Arguments.Length: 1 } => $"{ToReference(input, typeReference.Arguments[0], ctx, false)}[]{n}",
       _ when typeReference.Name.StartsWith("_") => typeReference.Name[1..],
       // Key will always be a string
       { Name: ApiSpecConsts.Specials.Map, Arguments.Length: 2 } => $"{{[key:string]:{ToReference(input, typeReference.Arguments[1], ctx)}}}{n}",
@@ -320,12 +331,12 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
     o.WriteLine("*/");
   }
 
-  internal static string EscapeForString(string s)
+  private static string EscapeForString(string s)
   {
     return $"'{s.Replace("'", @"\'")}'";
   }
 
-  internal static string TypeNameToTypescriptTypeName(AssemblyContext ctx, ApiDefinitionModel input, string name, bool addReference = true)
+  private static string TypeNameToTypescriptTypeName(AssemblyContext ctx, ApiDefinitionModel input, string name, bool addReference = true)
   {
     // For service types
     {
@@ -361,7 +372,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
     }
   }
 
-  internal static string DeterminePackageReference(string assemblyName, string? packagePrefix)
+  private static string DeterminePackageReference(string assemblyName, string? packagePrefix)
   {
     assemblyName = AssemblyNameToPackageName(assemblyName);
     if (packagePrefix == null) return $"../{assemblyName}";
