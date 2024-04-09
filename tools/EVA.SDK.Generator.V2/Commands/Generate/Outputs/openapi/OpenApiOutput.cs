@@ -19,7 +19,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 {
   private class State
   {
-    internal readonly Dictionary<string, bool> SupportsBackendIDCache = new();
+    internal readonly Dictionary<string, (bool backendID, bool systemID)> SupportsBackendIDCache = new();
   }
 
   public string? OutputPattern => null;
@@ -28,6 +28,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
   private const string Parameter_Header_UserAgent = "p1";
   private const string Parameter_Header_IdsMode = "p2";
+  private const string Parameter_Header_IdsModeSystem = "p6";
   private const string Parameter_Header_AsyncCallback = "p3";
   private const string Parameter_Header_OrganizationUnit = "p4";
   private const string Parameter_Header_OrganizationUnitQuery = "p5";
@@ -234,6 +235,19 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         {
           new OpenApiString("ExternalIDs")
         }
+      },
+      Style = ParameterStyle.Simple
+    });
+    model.Components.Parameters.Add(Parameter_Header_IdsModeSystem, new()
+    {
+      In = ParameterLocation.Header,
+      Description = "The ID of the backend system that is used to resolve the IDs.",
+      Name = "EVA-IDs-BackendSystemID",
+      Required = false,
+      AllowEmptyValue = false,
+      Schema = new OpenApiSchema
+      {
+        Type = "string"
       },
       Style = ParameterStyle.Simple
     });
@@ -659,7 +673,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         }
       ];
 
-    if (supportsExternalID)
+    if (supportsExternalID.backendID)
     {
       parameters.Add(new()
       {
@@ -667,6 +681,18 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         {
           Type = ReferenceType.Parameter,
           Id = Parameter_Header_IdsMode
+        }
+      });
+    }
+
+    if (supportsExternalID.systemID)
+    {
+      parameters.Add(new()
+      {
+        Reference = new OpenApiReference
+        {
+          Type = ReferenceType.Parameter,
+          Id = Parameter_Header_IdsModeSystem
         }
       });
     }
@@ -859,7 +885,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     return result;
   }
 
-  private static bool SupportsExternalIdsMode(State state, ApiDefinitionModel input, string s)
+  private static (bool backendID, bool systemID) SupportsExternalIdsMode(State state, ApiDefinitionModel input, string s)
   {
     if (state.SupportsBackendIDCache.TryGetValue(s, out var cached)) return cached;
 
@@ -868,15 +894,22 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     return result;
   }
 
-  private static bool SupportsExternalIdsMode_Uncached(ApiDefinitionModel input, string s, HashSet<string> recursionGuard)
+  private static (bool backendID, bool systemID) SupportsExternalIdsMode_Uncached(ApiDefinitionModel input, string s, HashSet<string> recursionGuard)
   {
-    if (recursionGuard.Contains(s)) return false;
+    if (!recursionGuard.Add(s)) return (false, false);
 
-    recursionGuard.Add(s);
     var type = input.Types[s];
-    var result = type.Properties.Any(p => p.Value.DataModelInformation is { SupportsBackendID: true }) || type.TypeDependencies.Any(d => SupportsExternalIdsMode_Uncached(input, d, recursionGuard));
+
+    var backendID = type.Properties.Any(p =>
+      p.Value.DataModelInformation is { SupportsBackendID: true })
+                    || type.TypeDependencies.Any(d => SupportsExternalIdsMode_Uncached(input, d, recursionGuard).backendID);
+
+    var systemID = type.Properties.Any(p =>
+                      p.Value.DataModelInformation is { SupportsSystemID: true })
+                    || type.TypeDependencies.Any(d => SupportsExternalIdsMode_Uncached(input, d, recursionGuard).systemID);
+
     recursionGuard.Remove(s);
-    return result;
+    return (backendID, systemID);
   }
 
   private static string FixName(string name)
