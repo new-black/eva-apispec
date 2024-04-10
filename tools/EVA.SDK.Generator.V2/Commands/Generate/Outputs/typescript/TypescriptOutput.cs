@@ -34,6 +34,8 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
         o.WriteLine();
         o.WriteLine($"export type {AnyType} = string | number | boolean | Date | Array<{AnyType}> | {{ [key: string]: {AnyType} }};");
         o.WriteLine($"export interface {IEvaServiceDefinition} {{ name: string; path: string; request?: unknown; response?: unknown; }}");
+        o.WriteLine("export function createServiceDefinition<SVC extends IEvaServiceDefinition>(service: new () => SVC): SVC { return new service(); }");
+        o.WriteLine($"export const EVA_API_VERSION = {ctx.Input.ApiVersion};");
       }
 
       // Write the errors
@@ -63,7 +65,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       {
         o.WriteLine();
         assemblyCtx.RegisterReferencedType(ApiSpecConsts.WellKnown.CoreAssembly, IEvaServiceDefinition);
-        o.WriteLine($"export class {service.Name} implements {IEvaServiceDefinition}");
+        o.WriteLine($"export class Svc{service.Name} implements {IEvaServiceDefinition}");
         using (o.BracedIndentation)
         {
           o.WriteLine($"name = {EscapeForString(service.Name)};");
@@ -283,7 +285,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       { Name: ApiSpecConsts.Specials.Array, Arguments.Length: 1 } => $"{ToReference(input, typeReference.Arguments[0], ctx, false)}[]{n}",
       _ when typeReference.Name.StartsWith("_") => typeReference.Name[1..],
       // Key will always be a string
-      { Name: ApiSpecConsts.Specials.Map, Arguments.Length: 2 } => $"{{[key:string]:{ToReference(input, typeReference.Arguments[1], ctx)}}}{n}",
+      { Name: ApiSpecConsts.Specials.Map, Arguments.Length: 2 } => $"Record<string,{ToReference(input, typeReference.Arguments[1], ctx)}>{n}",
       _ => null
     };
 
