@@ -223,7 +223,8 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
             else if (!propSpec.Type.Nullable && !propSpec.Skippable)
             {
               // "primitive values" are always optional because they have a default value that is not `null`
-              if (propSpec.Type.Name is ApiSpecConsts.Bool or ApiSpecConsts.Int32 or ApiSpecConsts.Int64)
+              // we only want to do this in request-only types
+              if (type.Usage is { Request: true, Response: false } && propSpec.Type.Name is ApiSpecConsts.Bool or ApiSpecConsts.Int32 or ApiSpecConsts.Int64)
               {
                 o.WriteLine($"{propName}?: {ToReference(input, propSpec, propName, fixedTypeName, ctx, options)};");
               }
