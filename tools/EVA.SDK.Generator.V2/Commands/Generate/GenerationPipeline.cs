@@ -49,7 +49,14 @@ internal static class GenerationPipeline
     foreach (var filter in filters) filter.Transform(model, opt, logger);
 
     // Other one-off transforms
-    new UseStringIds().Transform(model, opt, logger);
+    if (opt.UseOptimisticStringIDs)
+    {
+      new UseStringIds(UseStringIDsMode.Optimistic).Transform(model, opt, logger);
+    }
+    else if (opt.UseStringIDs)
+    {
+      new UseStringIds(UseStringIDsMode.Default).Transform(model, opt, logger);
+    }
 
     // Run transformations
     logger.LogInformation("Running transformations: {Transforms}", string.Join(", ", transforms.Select(t => t.Name)));
@@ -87,6 +94,7 @@ internal static class GenerationPipeline
       {
         if (!serviceAssemblies.Contains(type.Assembly)) type.Assembly = opt.OrphanedTypesAssembly;
       }
+
       foreach (var errors in model.Errors)
       {
         if (!serviceAssemblies.Contains(errors.Assembly)) errors.Assembly = opt.OrphanedTypesAssembly;

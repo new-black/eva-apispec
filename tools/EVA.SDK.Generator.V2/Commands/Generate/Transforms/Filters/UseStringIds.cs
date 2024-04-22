@@ -1,27 +1,36 @@
 ﻿using System.Collections.Immutable;
 using EVA.API.Spec;
+using EVA.SDK.Generator.V2.Helpers;
 using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 internal class UseStringIds : ITransform
 {
+  private readonly UseStringIDsMode _mode;
+
+  public UseStringIds(UseStringIDsMode mode)
+  {
+    _mode = mode;
+  }
+
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
     var changes = ITransform.TransformResult.None;
-
-    if (!options.UseStringIDs) return changes;
 
     foreach (var type in input.Types.Values)
     {
       foreach (var property in type.Properties.Values)
       {
-        if (property.DataModelInformation != null)
+        if (_mode == UseStringIDsMode.Optimistic || property.DataModelInformation != null)
         {
-          if (property.Type.Name != ApiSpecConsts.String)
+          foreach (var reference in property.Type.EnumerateAllTypeReferences())
           {
-            property.Type = new TypeReference(ApiSpecConsts.String, ImmutableArray<TypeReference>.Empty, property.Type.Nullable);
-            changes = ITransform.TransformResult.Changes;
+            if (reference.Name == ApiSpecConsts.Int64)
+            {
+              reference.Name = ApiSpecConsts.String;
+              changes = ITransform.TransformResult.Changes;
+            }
           }
         }
       }
@@ -29,4 +38,10 @@ internal class UseStringIds : ITransform
 
     return changes;
   }
+}
+
+internal enum UseStringIDsMode
+{
+  Default,
+  Optimistic
 }

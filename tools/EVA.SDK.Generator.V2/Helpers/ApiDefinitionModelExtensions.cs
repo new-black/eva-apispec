@@ -46,7 +46,7 @@ internal static class ApiDefinitionModelExtensions
     }
   }
 
-  private static IEnumerable<TypeReference> EnumerateAllTypeReferences(this TypeReference reference)
+  internal static IEnumerable<TypeReference> EnumerateAllTypeReferences(this TypeReference reference)
   {
     yield return reference;
 
