@@ -7,7 +7,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.swift;
 
 internal class SwiftOutput : IOutput<SwiftOptions>
 {
-  private static readonly string[] SafePropertyNames = { "Type" };
+  private static readonly string[] SafePropertyNames = { "Type", "Protocol" };
 
   public string? OutputPattern => null;
 
