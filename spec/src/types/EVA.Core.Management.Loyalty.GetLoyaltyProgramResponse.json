@@ -10,7 +10,13 @@
   "typeArguments": [],
   "typeDependencies": [
     "EVA.Core.ResponseMessage",
-    "EVA.Core.DataModels.LoyaltyProgramUsageTypes"
+    "EVA.Core.DataModels.LoyaltyProgramOptions",
+    "EVA.Core.DataModels.LoyaltyProgramStatus",
+    "EVA.Core.DataModels.LoyaltyProgramUsageTypes",
+    "EVA.Core.DataModels.LoyaltyPointUsageOptions",
+    "EVA.Core.DataModels.ResubscribeHandlingType",
+    "EVA.Core.DataModels.AllowUnsubscribeByType",
+    "EVA.Core.DataModels.LoyaltyProgramDeactivationReasons"
   ],
   "extends": {
     "ref": "EVA.Core.ResponseMessage",
@@ -19,9 +25,161 @@
     "nullable": false
   },
   "properties": {
+    "AllowUnsubscribeBy": {
+      "type": {
+        "ref": "EVA.Core.DataModels.AllowUnsubscribeByType",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "ApplyManuallyOnly": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": "When true, the loyalty program will not automatically be applied to the order when a customer is attached and all conditions are met.\nWhen false, the loyalty program will automatically be applied if all conditions are met.",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "AutoSubscribeCustomer": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": "When true, if a non anonymous customer is attached to the order they will be automatically subscribed on finishing the order.\nWhen false, the customer will not be subscribed.\n\nThis is ignore when\u0060RequiresSubscribedCustomer\u0060 or \u0060RequiresSubscriptionValidation\u0060 is set to true.",
+      "skippable": false,
+      "deprecated": null,
+      "required": {
+        "current": true,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "requiredAllowEmpty": {
+        "current": false,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
     "BackendID": {
       "type": {
         "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "Budget": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "BudgetCurrencyID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": {
+        "name": "Currency",
+        "lenient": false,
+        "supportsCustomID": false,
+        "supportsSystemID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "BudgetRemaining": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "BudgetUsagePercentage": {
+      "type": {
+        "ref": "int32",
         "args": [],
         "shared": null,
         "nullable": true
@@ -57,9 +215,9 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "Handler": {
+    "DeactivateWhenBudgetIsReached": {
       "type": {
-        "ref": "string",
+        "ref": "bool",
         "args": [],
         "shared": null,
         "nullable": false
@@ -67,20 +225,84 @@
       "description": null,
       "skippable": false,
       "deprecated": null,
-      "required": {
-        "current": true,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "DeactivationReason": {
+      "type": {
+        "ref": "EVA.Core.DataModels.LoyaltyProgramDeactivationReasons",
+        "args": [],
+        "shared": null,
+        "nullable": false
       },
-      "requiredAllowEmpty": {
-        "current": false,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "Description": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
       },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "EndDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "Handler": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
       "minValue": null,
       "maxValue": null,
       "stringLengthConstraint": null,
@@ -93,7 +315,7 @@
         "ref": "int64",
         "args": [],
         "shared": null,
-        "nullable": false
+        "nullable": true
       },
       "description": null,
       "skippable": false,
@@ -114,9 +336,73 @@
       },
       "allowedValues": []
     },
+    "LoyaltyPointUsageOptions": {
+      "type": {
+        "ref": "EVA.Core.DataModels.LoyaltyPointUsageOptions",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "LoyaltyProgramGroupID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": {
+        "name": "LoyaltyProgramGroup",
+        "lenient": false,
+        "supportsCustomID": false,
+        "supportsSystemID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
     "Name": {
       "type": {
         "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "Options": {
+      "type": {
+        "ref": "EVA.Core.DataModels.LoyaltyProgramOptions",
         "args": [],
         "shared": null,
         "nullable": false
@@ -124,20 +410,8 @@
       "description": null,
       "skippable": false,
       "deprecated": null,
-      "required": {
-        "current": true,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
-      "requiredAllowEmpty": {
-        "current": false,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
+      "required": null,
+      "requiredAllowEmpty": null,
       "minValue": null,
       "maxValue": null,
       "stringLengthConstraint": null,
@@ -221,14 +495,33 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "UsageType": {
+    "ReloadPolicy": {
       "type": {
-        "ref": "EVA.Core.DataModels.LoyaltyProgramUsageTypes",
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "RequireCustomer": {
+      "type": {
+        "ref": "bool",
         "args": [],
         "shared": null,
         "nullable": false
       },
-      "description": null,
+      "description": "When true, the loyalty program will only be applied when a customer is attached to the order.\n\nWhen false, the loyalty program can be attached to the order even if there is no customer attached.",
       "skippable": false,
       "deprecated": null,
       "required": {
@@ -245,6 +538,281 @@
         "active": null,
         "comment": null
       },
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "RequireManualUserIdentifier": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "RequiresSubscribedCustomer": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": "When true, the loyalty program will only be applied when a customer is attached to the order that is already subscribed to the loyalty program.\nAlso, this will make the \u0060RequireCustomer\u0060 automatically true and \u0060AutoSubscribeCustomer\u0060 false.\n\nWhen false, the loyalty program can be attached to the order if a customer is attached that isn\u0027t already subscribed to the loyalty program.",
+      "skippable": false,
+      "deprecated": null,
+      "required": {
+        "current": true,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "requiredAllowEmpty": {
+        "current": false,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "RequiresSubscriptionValidation": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": "When true, the order will require that the attached customer on the order will be validated by providing the UserIdentifier in the \u0060AttachBenefitProgramToOrder\u0060 service.\nAlso, this will make the \u0060RequireCustomer\u0060 and \u0060RequiresSubscribedCustomer\u0060 automatically true and \u0060AutoSubscribeCustomer\u0060 false.\n\nWhen false, this validation isn\u0027t required.",
+      "skippable": false,
+      "deprecated": null,
+      "required": {
+        "current": true,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "requiredAllowEmpty": {
+        "current": false,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "ResubscribeHandling": {
+      "type": {
+        "ref": "EVA.Core.DataModels.ResubscribeHandlingType",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "StartDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "Status": {
+      "type": {
+        "ref": "EVA.Core.DataModels.LoyaltyProgramStatus",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "UsageType": {
+      "type": {
+        "ref": "EVA.Core.DataModels.LoyaltyProgramUsageTypes",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": {
+        "announced": 723,
+        "active": 739,
+        "comment": "UsageType is deprecated and will be removed in 2.0.755: Replaced by \u0060LoyaltyPointUsageOptions\u0060.."
+      },
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "UsedBudget": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "UserBudget": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "UserIdentifierPrefix": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "UserIdentifierStartNumber": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "UserIdentifierSuffix": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "UserMaximumUsage": {
+      "type": {
+        "ref": "int32",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
       "minValue": null,
       "maxValue": null,
       "stringLengthConstraint": null,
