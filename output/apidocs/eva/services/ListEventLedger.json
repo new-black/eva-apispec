@@ -1,0 +1,2728 @@
+{
+  "name": "ListEventLedger",
+  "method": "POST",
+  "path": "/message/ListEventLedger",
+  "description": "This service lets you query the EventLedger for auditing purposes.\n\nThe request provides a PageConfig (of type ScrollablePageConfig) that lets you filter on the given properties in the EventLedger.\nPaging is done by providing the request with the \u0060NextResultToken\u0060 that you got back from the previous request.\nAs this method of paging is forward-only, you can\u0027t go back to a previous page unless you store the token or the results,\nand the total number of results is unknown, only whether or not there are more results (determined by if the NextResultToken is null).\n\nThe response contains the whole EventLedger document.\n\nPossible filters:\n\n- Types: A list of strings that refer to the \u0060Type\u0060 field that is in every document.\n- OrderID: Only return documents that contain a reference to the given OrderID\n- OrganizationUnitID: Only return documents that were created by someone logged into the given OrganizationUnitID. It\u0027s recommended that this filter is always used, due to performance reasons.\n- DeviceID: Filters on documents that have a reference to the given device, usually associated with a payment or a print command.\n- FromDate: Only return documents newer than this date. It\u0027s recommended that this filter is always used, due to performance reasons.\n- ToDate: Only return documents older than this date. It\u0027s recommended that this filter is always used, due to performance reasons.\n- UserIDs: Only return documents created by these users. The IDs for this can be gotten by first doing a user search.\n- FirstName: Filter on documents created by users whose first name starts with this. Achieves the same as filtering on UserIDs, but with one step less. However, due to privacy reasons, this information isn\u0027t stored for customers.\n- FullName: Filter on documents created by users whose full name starts with this. Achieves the same as filtering on UserIDs, but with one step less. However, due to privacy reasons, this information isn\u0027t stored for customers.\n- EmailAddress: Filter on documents created by users whose email starts with this. Achieves the same as filtering on UserIDs, but with one step less. However, due to privacy reasons, this information isn\u0027t stored for customers.",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "CURL",
+      "sample": "# Coming soon\n# Very soon...",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "F",
+  "types": {
+    "B": [
+      {
+        "name": "PageConfig",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "Query",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Filter",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NextResultToken",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "DeviceID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EmailAddress",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FinancialPeriodIDs",
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FirstName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FromDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FullName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IDs",
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OnlyAuditedDocuments",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderIDs",
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ToDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Types",
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserIDs",
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "EqualTo",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GreaterThan",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LessThan",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "Result",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "Code",
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "ExternalIDs",
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "NextResultToken",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Page",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "PreviousResultToken",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Attachments",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "Auditing",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "AuthenticationResponse",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "BackendType",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BlobID",
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CashCorrection",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "CashDeposit",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Q",
+        "one_of": null
+      },
+      {
+        "name": "CashExpense",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "CashMovement",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "U",
+        "one_of": null
+      },
+      {
+        "name": "CreationTime",
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CurrentUser",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "V",
+        "one_of": null
+      },
+      {
+        "name": "DailyTotals",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "Z",
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Device",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BA",
+        "one_of": null
+      },
+      {
+        "name": "Discount",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BD",
+        "one_of": null
+      },
+      {
+        "name": "ExecutionContext",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BF",
+        "one_of": null
+      },
+      {
+        "name": "FinancialPeriod",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BG",
+        "one_of": null
+      },
+      {
+        "name": "FinancialPeriodAudit",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BH",
+        "one_of": null
+      },
+      {
+        "name": "FinancialReportingPeriod",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BI",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Invoice",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BK",
+        "one_of": null
+      },
+      {
+        "name": "IpAddress",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MessageTemplate",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BM",
+        "one_of": null
+      },
+      {
+        "name": "Order",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BN",
+        "one_of": null
+      },
+      {
+        "name": "OrderLines",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BQ",
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnit",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "W",
+        "one_of": null
+      },
+      {
+        "name": "OverrideCreationTime",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PartitionKey",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTransaction",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BR",
+        "one_of": null
+      },
+      {
+        "name": "PriceCorrection",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BU",
+        "one_of": null
+      },
+      {
+        "name": "Role",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BV",
+        "one_of": null
+      },
+      {
+        "name": "Station",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BW",
+        "one_of": null
+      },
+      {
+        "name": "TenantID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TerminalReport",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BX",
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "User",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "CH",
+        "one_of": null
+      },
+      {
+        "name": "UserTask",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "CI",
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "BlobID",
+        "description": "",
+        "type": "guid",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Category",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MimeType",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [
+      {
+        "name": "ChainID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CumulativeTotalTaxes",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "KeyBlobID",
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PreviousSequenceNumber",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PreviousSignature",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SequenceNumber",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Signature",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Version",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "Result",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      }
+    ],
+    "N": [],
+    "O": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreatedByID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DeviceID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FinancialPeriodID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Reason",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "P",
+        "one_of": null
+      },
+      {
+        "name": "Remark",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "P": [
+      {
+        "name": "BackendID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "Q": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Details",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "R",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Number",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SignatureBlobID",
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Status",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "R": [
+      {
+        "name": "BankNotes",
+        "description": "",
+        "type": "map[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Coins",
+        "description": "",
+        "type": "map[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "S": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BlobID",
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SignatureBlobID",
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxCodeID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxRate",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "T",
+        "one_of": null
+      }
+    ],
+    "T": [
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "U": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DestinationDeviceID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FinancialPeriodID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTypeID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SourceDeviceID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "V": [
+      {
+        "name": "ApplicationID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EmailAddress",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FirstName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FullName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LanguageID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnit",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "W",
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StationID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TimeZone",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "Y",
+        "one_of": null
+      }
+    ],
+    "W": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "X",
+        "one_of": null
+      }
+    ],
+    "X": [],
+    "Y": [],
+    "Z": [
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Details",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ExpectedTotal",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ExternalTotal",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BA": [
+      {
+        "name": "EcrID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GlobalID",
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HardwareID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IpAddress",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OpenCashDrawerReason",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BB",
+        "one_of": null
+      },
+      {
+        "name": "ProxyID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StationID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BC",
+        "one_of": null
+      }
+    ],
+    "BB": [
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BC": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IDs",
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Names",
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BD": [
+      {
+        "name": "ActionData",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ActionType",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Trigger",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "BE",
+        "one_of": null
+      }
+    ],
+    "BE": [],
+    "BF": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserAgent",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Version",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BG": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BH": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BI": [
+      {
+        "name": "EndDate",
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartDate",
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "BJ",
+        "one_of": null
+      }
+    ],
+    "BJ": [],
+    "BK": [
+      {
+        "name": "FiscalID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "InvoiceData",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BL",
+        "one_of": null
+      },
+      {
+        "name": "InvoiceNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReferencedInvoiceID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BL": [
+      {
+        "name": "Data",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BM": [
+      {
+        "name": "CountryID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DestinationID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LanguageID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BN": [
+      {
+        "name": "CurrencyID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Customer",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BO",
+        "one_of": null
+      },
+      {
+        "name": "HasReturns",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsCompleted",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsInvoiced",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsPaid",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsShipped",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "BP",
+        "one_of": null
+      }
+    ],
+    "BO": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BP": [],
+    "BQ": [
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QuantityInvoiced",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QuantityShipped",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxRate",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalQuantityToShip",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnitPrice",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BR": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AmountToRefund",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaidAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentMethod",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RefundedAmount",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Status",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "BS",
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BT",
+        "one_of": null
+      }
+    ],
+    "BS": [],
+    "BT": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BU": [
+      {
+        "name": "NewValue",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OldValue",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderLineID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BV": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BW": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BX": [
+      {
+        "name": "CashDepositsTotalAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CashDrawerOpenings",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Change",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ClosingAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Company",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BY",
+        "one_of": null
+      },
+      {
+        "name": "CopyReceiptsPrinted",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreditTaxes",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "CB",
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Date",
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DebitTaxes",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "CB",
+        "one_of": null
+      },
+      {
+        "name": "DiscountCount",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GrandTotal",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GrandTotalCash",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GrandTotalNet",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GrandTotalReturns",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Number",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OpeningAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Payments",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "CC",
+        "one_of": null
+      },
+      {
+        "name": "PaymentsPerUser",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "CE",
+        "one_of": null
+      },
+      {
+        "name": "ProductGroups",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "CF",
+        "one_of": null
+      },
+      {
+        "name": "ReceiptsPrinted",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnCount",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Supplier",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BY",
+        "one_of": null
+      },
+      {
+        "name": "Taxes",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "CB",
+        "one_of": null
+      },
+      {
+        "name": "TotalCopyReceiptsAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalDiscounts",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalReturnsAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "CG",
+        "one_of": null
+      }
+    ],
+    "BY": [
+      {
+        "name": "Address",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BZ",
+        "one_of": null
+      },
+      {
+        "name": "AuditingFields",
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AuditingSystemID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BIC",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BankAccount",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFields",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Email",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EntityType",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EstablishmentNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IndustryCode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsBusinessToBusiness",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsShop",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsWebShop",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PhoneNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RegistrationCountryID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RegistrationNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SocialCapital",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SystemID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxCountryRegion",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxOfficeNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxRegistrationNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "WasteDisposalNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Website",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BZ": [
+      {
+        "name": "Address1",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Address2",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Addressee",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "City",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Country",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Number",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PostalCode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Region",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "State",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "CA",
+        "one_of": null
+      }
+    ],
+    "CA": [],
+    "CB": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Base",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Code",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Rate",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CC": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Count",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "CD",
+        "one_of": null
+      }
+    ],
+    "CD": [
+      {
+        "name": "Code",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CE": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Count",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EmployeeNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CF": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Code",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Count",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CG": [],
+    "CH": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CI": [
+      {
+        "name": "CompletionTime",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartTime",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "CJ",
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CJ": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ]
+  }
+}

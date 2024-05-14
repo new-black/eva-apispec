@@ -1,0 +1,200 @@
+{
+  "name": "GetAvailableVisibilityGroups",
+  "method": "POST",
+  "path": "/message/GetAvailableVisibilityGroups",
+  "description": "Get all visibility groups that the current user can see.",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "CURL",
+      "sample": "# Coming soon\n# Very soon...",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "C",
+  "types": {
+    "B": [],
+    "C": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "OrderVisibilityGroups",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitVisibilityGroups",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "UserVisibilityGroups",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Code",
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "ExternalIDs",
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "AllowCustomerStandardAccounts",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ]
+  }
+}

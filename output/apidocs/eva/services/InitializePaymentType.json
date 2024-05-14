@@ -1,0 +1,2019 @@
+{
+  "name": "InitializePaymentType",
+  "method": "POST",
+  "path": "/message/InitializePaymentType",
+  "description": "Set up a payment type",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "CURL",
+      "sample": "# Coming soon\n# Very soon...",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "BQ",
+  "types": {
+    "B": [
+      {
+        "name": "PaymentTypeID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Properties",
+        "description": "",
+        "type": "one-of[object] | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": [
+          {
+            "name": "EmptyPaymentRequestProperties",
+            "properties_id": "D"
+          },
+          {
+            "name": "CustomPaymentMethodRequestProperties",
+            "properties_id": "E"
+          },
+          {
+            "name": "GiftCardPaymentMethodRequestProperties",
+            "properties_id": "G"
+          },
+          {
+            "name": "AdyenPosSdkPaymentMethodRequestProperties",
+            "properties_id": "I"
+          },
+          {
+            "name": "AdyenCheckoutSDKPaymentMethodRequestProperties",
+            "properties_id": "J"
+          },
+          {
+            "name": "AdyenCheckoutAPIPaymentMethodRequestProperties",
+            "properties_id": "L"
+          },
+          {
+            "name": "AdyenDropInPaymentMethodRequestProperties",
+            "properties_id": "S"
+          },
+          {
+            "name": "BuckarooPaymentMethodPayData",
+            "properties_id": "T"
+          },
+          {
+            "name": "UserCardPaymentMethodRequestProperties",
+            "properties_id": "Y"
+          },
+          {
+            "name": "RemboursPaymentMethodRequestProperties",
+            "properties_id": "Z"
+          },
+          {
+            "name": "ManualPaymentMethodRequestProperties",
+            "properties_id": "BA"
+          },
+          {
+            "name": "LoyaltyPaymentMethodRequestProperties",
+            "properties_id": "BB"
+          },
+          {
+            "name": "LoyaltyProgramPaymentMethodRequestProperties",
+            "properties_id": "BC"
+          },
+          {
+            "name": "APIGiftCardPaymentMethodRequestProperties",
+            "properties_id": "BD"
+          },
+          {
+            "name": "EVAPayPaymentMethodRequestProperties",
+            "properties_id": "BE"
+          },
+          {
+            "name": "CashPaymentMethodRequestProperties",
+            "properties_id": "BG"
+          },
+          {
+            "name": "LinePayRequest",
+            "properties_id": "BH"
+          },
+          {
+            "name": "MolliePaymentMethodRequestProperties",
+            "properties_id": "BI"
+          },
+          {
+            "name": "MultiSafepayPaymentMethodRequestProperties",
+            "properties_id": "BJ"
+          },
+          {
+            "name": "SaferpayPaymentMethodRequestProperties",
+            "properties_id": "BK"
+          },
+          {
+            "name": "StripePaymentMethodRequestProperties",
+            "properties_id": "BL"
+          },
+          {
+            "name": "UnionPayBSCPaymentMethodRequestProperties",
+            "properties_id": "BM"
+          },
+          {
+            "name": "EPayPaymentMethodRequestProperties",
+            "properties_id": "BN"
+          },
+          {
+            "name": "FashionchequePaymentMethodRequestProperties",
+            "properties_id": "BO"
+          },
+          {
+            "name": "IntersolvePaymentMethodRequestProperties",
+            "properties_id": "BP"
+          }
+        ]
+      }
+    ],
+    "C": [],
+    "D": [],
+    "E": [
+      {
+        "name": "IsConfirmed",
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Values",
+        "description": "",
+        "type": "map[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "ArrayValues",
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "CardNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CardPayments",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "Pin",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CardNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Pin",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "SetupToken",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "Channel",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "EmailAddress",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ExcludeLineItems",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MerchantAccount",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Origin",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Recurring",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SdkVersion",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Token",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [],
+    "L": [
+      {
+        "name": "ApplePayData",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "Channel",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "GatewayID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "BillingAddress",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      },
+      {
+        "name": "ShippingAddress",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      },
+      {
+        "name": "Token",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "N": [
+      {
+        "name": "AddressLines",
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AdministrativeArea",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EmailAddress",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FamilyName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GivenName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Locality",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PhoneNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PostalCode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SubAdministrativeArea",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SubLocality",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "O": [
+      {
+        "name": "AdditionalData",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "P",
+        "one_of": null
+      },
+      {
+        "name": "BrowserInfo",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Q",
+        "one_of": null
+      },
+      {
+        "name": "PaymentMethod",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "R",
+        "one_of": null
+      },
+      {
+        "name": "ShopperEmail",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShopperIP",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShopperLocale",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "P": [],
+    "Q": [
+      {
+        "name": "AcceptHeader",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ColorDepth",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "JavaEnabled",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "JavaScriptEnabled",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Language",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ScreenHeight",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ScreenWidth",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TimeZoneOffset",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserAgent",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "R": [],
+    "S": [
+      {
+        "name": "Channel",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "EmailAddress",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "T": [
+      {
+        "name": "Accept",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AddressesDiffer",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Articles",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "U",
+        "one_of": null
+      },
+      {
+        "name": "B2B",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BillingBirthDate",
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BillingCity",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BillingCountry",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BillingEmail",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BillingGender",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "W",
+        "one_of": null
+      },
+      {
+        "name": "BillingHouseNumber",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BillingInitials",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BillingLanguage",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BillingLastName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BillingPhoneNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BillingPostalCode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BillingStreet",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BillingTitle",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BuyerEmail",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CompanyCOCRegistration",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CompanyName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CostCentre",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerCountry",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerEmail",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerFirstName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerGender",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "X",
+        "one_of": null
+      },
+      {
+        "name": "CustomerLastName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateDue",
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Department",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EstablishmentNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ExpirationDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FashionChequeCardNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GatewayID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IntersolveCardnumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IntersolvePIN",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Issuer",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MerchantSendsEmail",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PageStyle",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentMethodsAllowed",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SendMail",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingBirthDate",
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingCity",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingCosts",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingCountryCode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingEmail",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingGender",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "W",
+        "one_of": null
+      },
+      {
+        "name": "ShippingHouseNumber",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingInitials",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingLanguage",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingLastName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingPhoneNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingPostalCode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingStreet",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingTitle",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "VatNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "U": [
+      {
+        "name": "ArticleDescription",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ArticleId",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ArticleQuantity",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ArticleUnitprice",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ArticleVatcategory",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "V",
+        "one_of": null
+      }
+    ],
+    "V": [],
+    "W": [],
+    "X": [],
+    "Y": [
+      {
+        "name": "CardAmount",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserCardID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "Z": [
+      {
+        "name": "BackendID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Carrier",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Reference",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BA": [
+      {
+        "name": "IBAN",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Reference",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BB": [
+      {
+        "name": "Points",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BC": [],
+    "BD": [
+      {
+        "name": "CardNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Pin",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BE": [
+      {
+        "name": "DisplayOnTerminal",
+        "description": "If the current station terminal should be instructed to show this QR code, too.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnUrl",
+        "description": "ReturnUrl where the customer should be redirected to after the payment.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SendEmail",
+        "description": "If an email with payment information should be sent.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SendEmailTo",
+        "description": "When \u0060SendEmail\u0060 is true, but \u0060SendEmailTo\u0060 is omitted, a fallback to the Order.Customer.EmailAddress is attempted.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TOTPData",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BF",
+        "one_of": null
+      }
+    ],
+    "BF": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Token",
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BG": [
+      {
+        "name": "AmountGiven",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StationID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BH": [
+      {
+        "name": "OneTimeKey",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BI": [
+      {
+        "name": "GatewayID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Issuer",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Locale",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BJ": [
+      {
+        "name": "GatewayID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QrSize",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BK": [
+      {
+        "name": "ReturnUrlFail",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnUrlSuccess",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BL": [
+      {
+        "name": "ReturnUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BM": [
+      {
+        "name": "QRCode",
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BN": [
+      {
+        "name": "CardNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Pin",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BO": [
+      {
+        "name": "CardNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Pin",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BP": [
+      {
+        "name": "CardNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Pin",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BQ": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BR",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BS",
+        "one_of": null
+      },
+      {
+        "name": "Properties",
+        "description": "",
+        "type": "one-of[object] | null",
+        "required": false,
+        "properties_id": "BT",
+        "one_of": [
+          {
+            "name": "AdyenPosSdkPaymentMethodResultProperties",
+            "properties_id": "BU"
+          },
+          {
+            "name": "AdyenCheckoutSDKPaymentMethodResultProperties",
+            "properties_id": "BV"
+          },
+          {
+            "name": "AdyenCheckoutAPIPaymentMethodResultProperties",
+            "properties_id": "BW"
+          },
+          {
+            "name": "AdyenDropInPaymentMethodResultProperties",
+            "properties_id": "BY"
+          },
+          {
+            "name": "BuckarooPaymentMethodPayResult",
+            "properties_id": "BZ"
+          },
+          {
+            "name": "GiftCardRefundPaymentMethodResultProperties",
+            "properties_id": "CA"
+          },
+          {
+            "name": "EVAPayPaymentMethodResultProperties",
+            "properties_id": "CB"
+          },
+          {
+            "name": "CashPaymentMethodResultProperties",
+            "properties_id": "CC"
+          },
+          {
+            "name": "MolliePaymentMethodResultProperties",
+            "properties_id": "CD"
+          },
+          {
+            "name": "MultiSafepayPaymentMethodResultProperties",
+            "properties_id": "CE"
+          },
+          {
+            "name": "SaferpayPaymentMethodResponseProperties",
+            "properties_id": "CF"
+          },
+          {
+            "name": "StripePaymentMethodResultProperties",
+            "properties_id": "CG"
+          },
+          {
+            "name": "UnionPayCSBPaymentMethodResultProperties",
+            "properties_id": "CH"
+          },
+          {
+            "name": "IntersolvePaymentMethodResultProperties",
+            "properties_id": "CI"
+          }
+        ]
+      }
+    ],
+    "BR": [
+      {
+        "name": "Code",
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BS": [
+      {
+        "name": "ExternalIDs",
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BT": [],
+    "BU": [
+      {
+        "name": "InstallationID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentReference",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SdkData",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SessionUniqueKey",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BV": [
+      {
+        "name": "Data",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RedirectUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BW": [
+      {
+        "name": "ApplePayData",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BX",
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DonationAvailable",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QrCode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RedirectUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BX": [
+      {
+        "name": "AuthenticationToken",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Success",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BY": [
+      {
+        "name": "SessionData",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SessionID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BZ": [
+      {
+        "name": "AccountHolderCity",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AccountHolderCountry",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AccountHolderName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BIC",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BankAccount",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IBAN",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PayLink",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentReference",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RedirectUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CA": [
+      {
+        "name": "OrderLineCreated",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CB": [
+      {
+        "name": "Url",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CC": [
+      {
+        "name": "RawReturnAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnAmounts",
+        "description": "",
+        "type": "array[float] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RoundedReturnAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CD": [
+      {
+        "name": "RedirectUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CE": [
+      {
+        "name": "MSPPaymentID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QrUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RedirectUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CF": [
+      {
+        "name": "RedirectUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CG": [
+      {
+        "name": "ClientSecret",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CH": [
+      {
+        "name": "QRCode",
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "CI": [
+      {
+        "name": "Success",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ]
+  }
+}
