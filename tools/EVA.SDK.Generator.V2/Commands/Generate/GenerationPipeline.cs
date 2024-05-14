@@ -46,7 +46,16 @@ internal static class GenerationPipeline
     var model = await input.Read(logger);
 
     // Run filters (once)
-    foreach (var filter in filters) filter.Transform(model, opt, logger);
+    foreach (var filter in filters)
+    {
+      filter.Transform(model, opt, logger);
+    }
+
+    if (filters.Count > 0)
+    {
+      Transform1.Transform(model, opt, logger);
+      Transform2.Transform(model, opt, logger);
+    }
 
     // Other one-off transforms
     if (opt.UseOptimisticStringIDs)

@@ -6,7 +6,7 @@ internal class EvaSpecOutput : IOutput<EvaSpecOptions>
 {
   public string? OutputPattern => null;
 
-  public string[] ForcedTransformations => Array.Empty<string>();
+  public string[] ForcedTransformations => [];
 
   public async Task Write(OutputContext<EvaSpecOptions> ctx)
   {

@@ -14,9 +14,8 @@ namespace EVA.SDK.Generator.V2;
 [JsonSerializable(typeof(TypeSpecification))]
 [JsonSerializable(typeof(HttpInput.EvaResponse))]
 [JsonSerializable(typeof(UpdateCommand.LatestResponse))]
-[JsonSerializable(typeof(SidebarItem[]))]
-[JsonSerializable(typeof(ServiceItem))]
-[JsonSerializable(typeof(RootObject))]
+[JsonSerializable(typeof(ServiceIndex))]
+[JsonSerializable(typeof(SingleService))]
 internal partial class JsonContext : JsonSerializerContext
 {
   internal static JsonContext Indented { get; } = new(new JsonSerializerOptions { WriteIndented = true });

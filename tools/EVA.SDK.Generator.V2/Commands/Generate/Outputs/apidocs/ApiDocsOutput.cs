@@ -1,291 +1,301 @@
 ﻿using System.Collections.Immutable;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
-using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
 
 internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 {
+  private class State
+  {
+    internal readonly Dictionary<string, (bool backendID, bool systemID)> SupportsBackendIDCache = new();
+    internal readonly Dictionary<string, string> TypeMapping = new();
+    internal int nextID = 1;
+
+    internal void ResetForService()
+    {
+      TypeMapping.Clear();
+      nextID = 1;
+    }
+  }
+
   public string? OutputPattern => null;
-  public string[] ForcedTransformations => new[] { RemoveGenerics.ID, RemoveOptions.ID, RemoveInheritance.ID, RemoveDataLakeExports.ID };
+  public string[] ForcedTransformations => [RemoveGenerics.ID, RemoveInheritance.ID, RemoveDataLakeExports.ID, RemoveEventExports.ID, RemoveErrors.ID];
 
   public async Task Write(OutputContext<ApiDocsOptions> ctx)
   {
-    // List of all services
+    var state = new State();
+
     await GenerateSidebar(ctx);
 
-    // Generate each service
     foreach (var service in ctx.Input.Services)
     {
-      await GenerateService(ctx, service);
+      state.ResetForService();
+      await GenerateService(state, service, ctx);
     }
-
-    // Generate typesense output
-    await GenerateTypesense(ctx);
-  }
-
-  private static async Task GenerateTypesense(OutputContext<ApiDocsOptions> ctx)
-  {
-    var output = new StringBuilder();
-
-    foreach (var service in ctx.Input.Services)
-    {
-      var requestType = ctx.Input.Types[service.RequestTypeID];
-      var id = service.Name.ToLowerInvariant();
-
-      var o = new RootObject
-      {
-        Id = $"apidocs_{id}",
-        Anchor = id,
-        Content = requestType.Description,
-        ContentCamel = requestType.Description,
-        DocusaurusTag = "docs-default-current",
-        Hierarchy = new Hierarchy { Lvl0 = "Developers", Lvl1 = service.Name },
-        HierarchyLvl0 = "Developers",
-        HierarchyLvl1 = service.Name,
-        HierarchyCamel = new[] { new HierarchyCamel { Lvl0 = "Developers", Lvl1 = service.Name } },
-        HierarchyRadio = new HierarchyRadio(),
-        HierarchyRadioCamel = new HierarchyRadioCamel(),
-        ItemPriority = 75,
-        Language = "en",
-        NoVariables = true,
-        Tags = new[] { "login", "nb", "dev", "api" },
-        Type = "content",
-        Url = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
-        UrlWithoutAnchor = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
-        UrlWithoutVariables = $"https://docs.newblack.io/documentation/api-reference/{service.Name}",
-        Version = new[] { "current" },
-        Weight = new Weight { Level = 0, PageRank = 0, Position = 75 }
-      };
-
-      output.AppendLine(JsonSerializer.Serialize(o, JsonContext.Default.RootObject));
-    }
-
-    await ctx.Writer.WriteFileAsync("typesense.ndjson", output.ToString());
-  }
-
-  private static async Task GenerateService(OutputContext<ApiDocsOptions> ctx, ServiceModel service)
-  {
-    var model = new ServiceItem
-    {
-      Name = service.Name,
-      Method = "POST",
-      Path = service.Path,
-      Request = new ServiceItem.RequestItem
-      {
-        Properties = new List<ServiceItem.RequestPropertyItem>()
-      },
-      Response = new ServiceItem.ResponseItem
-      {
-        Properties = new List<ServiceItem.ResponsePropertyItem>()
-      }
-    };
-
-    // Request type
-    var requestType = ctx.Input.Types[service.RequestTypeID];
-    model.Description = requestType.Description;
-
-    model.Request.Properties = FillRecursiveProperties<ServiceItem.RequestPropertyItem>(ctx.Input, new TypeReference(service.RequestTypeID, ImmutableArray<TypeReference>.Empty, false), x => new ServiceItem.RequestPropertyItem
-    {
-      Name = x.name,
-      Description = x.property.Description,
-      Type = ToTypeName(x.property.Type),
-      Properties = x.nestedProperties,
-      Recursion = x.nestedProperties is { Count: 0 },
-      EnumValues = x.enumValues
-    })!;
-
-    // Response type
-    model.Response.Properties = FillRecursiveProperties<ServiceItem.ResponsePropertyItem>(ctx.Input, new TypeReference(service.ResponseTypeID, ImmutableArray<TypeReference>.Empty, false), x => new ServiceItem.ResponsePropertyItem
-    {
-      Name = x.name,
-      Description = x.property.Description,
-      Type = ToTypeName(x.property.Type),
-      Properties = x.nestedProperties,
-      Recursion = x.nestedProperties is { Count: 0 },
-      EnumValues = x.enumValues
-    })!;
-
-    await ctx.Writer.WriteFileAsync($"services/{model.Name}.json", JsonSerializer.Serialize(model, JsonContext.Indented.ServiceItem));
-  }
-
-  private static string ToTypeName(TypeReference spec)
-  {
-    var n = spec.Nullable ? "?" : "";
-
-    if (spec.Name == ApiSpecConsts.Specials.Array)
-    {
-      return $"{ToTypeName(spec.Arguments[0])}[]{n}";
-    }
-
-    if (spec.Name == ApiSpecConsts.Specials.Map)
-    {
-      return $"{{{ToTypeName(spec.Arguments[0])}: {ToTypeName(spec.Arguments[1])}}}{n}";
-    }
-
-    return spec.Name == ApiSpecConsts.ID ? ApiSpecConsts.Int64 : spec.Name;
   }
 
   private static async Task GenerateSidebar(OutputContext<ApiDocsOptions> ctx)
   {
-    var sidebar = ctx.Input.Services.Select(service => new SidebarItem
-    {
-      Type = "doc",
-      Label = service.Name,
-      ClassName = "api-method post",
-      ID = $"api-reference/{service.Name}",
-      Link = $"api-reference/{service.Name}"
-    }).ToList();
+    var entries = ctx.Input.Services
+      .Select(service => new ServiceIndex.Entry
+      {
+        Name = service.Name,
+        Method = service.Method ?? "POST"
+      })
+      .OrderBy(x => x.Name).ToImmutableArray();
 
-    await ctx.Writer.WriteFileAsync("sidebar.json", JsonSerializer.Serialize(sidebar.ToArray(), JsonContext.Default.SidebarItemArray));
+    var sidebar = new ServiceIndex
+    {
+      Entries = entries
+    };
+
+    await ctx.Writer.WriteFileAsync("eva/index.json", JsonSerializer.Serialize(sidebar, JsonContext.Default.ServiceIndex));
   }
 
-  private static Dictionary<string, long>? GetEnumValues(ApiDefinitionModel input, TypeReference? typeReference)
+  private static async Task GenerateService(State state, ServiceModel service, OutputContext<ApiDocsOptions> ctx)
   {
-    if (typeReference == null) return null;
-
-    var propTypeName = typeReference.Name;
-
-    // Arrays, we just recurse
-    if (propTypeName == ApiSpecConsts.Specials.Array)
+    var result = new SingleService
     {
-      return GetEnumValues(input, typeReference.Arguments[0]);
+      Name = service.Name,
+      Path = service.Path,
+      Method = service.Method ?? "POST",
+      Types = new Dictionary<string, List<TypeInfo>>()
+    };
+
+    var requestType = ctx.Input.Types[service.RequestTypeID];
+    var supportsExternalID = SupportsExternalIdsMode(state, ctx.Input, service.RequestTypeID);
+
+    result.Description = requestType.Description ?? $"The {service.Name} service";
+
+    if (service.Deprecated is { } deprecated)
+    {
+      result.Deprecation = $"\n\n**Deprecated since {deprecated.Introduced}:** {deprecated.Comment}\n\n**Will be removed from the typings in {deprecated.Effective}**";
     }
 
-    // Option, we only expose the shared properties
-    if (propTypeName == ApiSpecConsts.Specials.Option)
+    result.RequestTypeID = BuildTypeInfo(state, result.Types, ctx, service.RequestTypeID);
+    result.ResponseTypeID = BuildTypeInfo(state, result.Types, ctx, service.ResponseTypeID);
+
+    // Headers
+    result.Headers =
+    [
+      new Header
+      {
+        Name = "EVA-User-Agent",
+        Type = "string",
+        Description = "The user agent that is making these calls. Don't make this specific per device/browser but per application. This should be of the form: `MyFirstUserAgent/1.0.0`",
+        DefaultValue = null,
+        Required = true
+      },
+      new Header
+      {
+        Name = "EVA-Requested-OrganizationUnitID",
+        Type = "integer",
+        Description = "The ID of the organization unit to run this request in.",
+        DefaultValue = null,
+        Required = false
+      },
+      new Header
+      {
+        Name = "EVA-Requested-OrganizationUnit-Query",
+        Type = "string",
+        Description = "The query that selects the organization unit to run this request in.",
+        DefaultValue = null,
+        Required = false
+      }
+    ];
+
+    if (supportsExternalID.backendID)
     {
-      return GetEnumValues(input, typeReference.Shared);
+      result.Headers.Add(new Header
+      {
+        Name = "EVA-IDs-Mode",
+        Type = "string",
+        Description = "The IDs mode to run this request in. Currently only `ExternalIDs` is supported.",
+        DefaultValue = null,
+        Required = false
+      });
     }
 
-    // Primitives don't have properties
-    if (ApiSpecConsts.AllPrimitives.Contains(propTypeName))
+    if (supportsExternalID.systemID)
     {
-      return null;
+      result.Headers.Add(new Header
+      {
+        Name = "EVA-IDs-BackendSystemID",
+        Type = "string",
+        Description = "The ID of the backend system that is used to resolve the IDs.",
+        DefaultValue = null,
+        Required = false
+      });
     }
 
-    // TODO: Maps don't have properties (for now)
-    if (propTypeName == ApiSpecConsts.Specials.Map)
-    {
-      return null;
-    }
+    // Request samples
+    result.RequestSamples =
+    [
+      new RequestSample
+      {
+        Name = "CURL",
+        Sample = "# Coming soon\n# Very soon...",
+        Syntax = "bash"
+      }
+    ];
 
-    var type = input.Types[propTypeName];
-    if (type.EnumIsFlag == null)
-    {
-      return null;
-    }
+    // Response samples
+    result.ResponseSamples =
+    [
+      new ResponseSample
+      {
+        Name = "200",
+        Sample = "{}"
+      },
+      new ResponseSample
+      {
+        Name = "400",
+        Sample =
+          "{\n  \"Error\": {\n    \"Code\": \"COVFEFE\",\n    \"Type\": \"RequestValidationFailure\",\n    \"Message\": \"Validation of the request message failed: Field ABC has an invalid value for a Product.\",\n    \"RequestID\": \"576b62dd71894e3281a4d84951f44e70\"\n  }\n}"
+      },
+      new ResponseSample
+      {
+        Name = "403",
+        Sample =
+          "{\n  \"Error\": {\n    \"Code\": \"COVFEFE\",\n    \"Type\": \"Forbidden\",\n    \"Message\": \"You are not authorized to execute this request.\",\n    \"RequestID\": \"576b62dd71894e3281a4d84951f44e70\"\n  }\n}"
+      }
+    ];
 
-    return type.EnumValues.ToTotals();
+    await ctx.Writer.WriteFileAsync($"eva/services/{service.Name}.json", JsonSerializer.Serialize(result, JsonContext.Indented.SingleService));
   }
 
-  private static List<TProperty>? FillRecursiveProperties<TProperty>(
-    ApiDefinitionModel input,
-    TypeReference? typeReference,
-    Func<(string name, PropertySpecification property, List<TProperty>? nestedProperties, Dictionary<string, long>? enumValues), TProperty> propertyBuilder,
-    Stack<string>? recursionGuard = null)
+  private static string BuildTypeInfo(State state, Dictionary<string, List<TypeInfo>> types, OutputContext<ApiDocsOptions> ctx, string typeID)
   {
-    if (typeReference == null) return null;
-
-    var propTypeName = typeReference.Name;
-
-    // Arrays, we just recurse
-    if (propTypeName == ApiSpecConsts.Specials.Array)
+    if (state.TypeMapping.TryGetValue(typeID, out var mapped))
     {
-      return FillRecursiveProperties(input, typeReference.Arguments[0], propertyBuilder, recursionGuard);
+      return mapped;
     }
 
-    // Option, we only expose the shared properties
-    if (propTypeName == ApiSpecConsts.Specials.Option)
+    var id = ToBase26(state.nextID++);
+    state.TypeMapping[typeID] = id;
+
+    var result = types[id] = [];
+    var type = ctx.Input.Types[typeID];
+
+    foreach (var (propname, prop) in type.Properties)
     {
-      return FillRecursiveProperties(input, typeReference.Shared, propertyBuilder, recursionGuard);
+      var ti = new TypeInfo
+      {
+        Name = propname,
+        Required = prop.Required?.CurrentValue ?? false,
+        Type = "unknown",
+        Description = prop.Description ?? string.Empty
+      };
+
+      (ti.Type, ti.PropertiesID, var options) = ToType(state, types, ctx, prop.Type);
+      ti.OneOf = options?.ToArray();
+      result.Add(ti);
     }
 
-    // Primitives don't have properties
-    if (ApiSpecConsts.AllPrimitives.Contains(propTypeName))
-    {
-      return null;
-    }
-
-    // TODO: Maps don't have properties (for now)
-    if (propTypeName == ApiSpecConsts.Specials.Map)
-    {
-      return null;
-    }
-
-    var type = input.Types[propTypeName];
-    var properties = new List<TProperty>();
-
-    recursionGuard ??= new Stack<string>();
-    if (recursionGuard.Contains(propTypeName)) return properties;
-    recursionGuard.Push(propTypeName);
-
-    foreach (var (propName, propValue) in type.Properties)
-    {
-      // Figure out the nested properties for the type
-      var nestedProperties = FillRecursiveProperties(input, propValue.Type, propertyBuilder, recursionGuard);
-
-      // Figure out the enum values for the type
-      var enumValues = GetEnumValues(input, propValue.Type);
-
-      var property = propertyBuilder((propName, propValue, nestedProperties, enumValues));
-      properties.Add(property);
-    }
-
-    recursionGuard.Pop();
-    return properties.Count == 0 ? null : properties;
-  }
-}
-
-internal class SidebarItem
-{
-  [JsonPropertyName("type")] public string Type { get; set; }
-  [JsonPropertyName("id")] public string ID { get; set; }
-  [JsonPropertyName("link")] public string Link { get; set; }
-  [JsonPropertyName("label")] public string Label { get; set; }
-  [JsonPropertyName("className")] public string ClassName { get; set; }
-}
-
-internal class ServiceItem
-{
-  [JsonPropertyName("name")] public string Name { get; set; }
-  [JsonPropertyName("description")] public string? Description { get; set; }
-  [JsonPropertyName("method")] public string Method { get; set; }
-  [JsonPropertyName("path")] public string Path { get; set; }
-  [JsonPropertyName("request")] public RequestItem Request { get; set; }
-  [JsonPropertyName("response")] public ResponseItem Response { get; set; }
-
-  public class RequestItem
-  {
-    [JsonPropertyName("properties")] public List<RequestPropertyItem> Properties { get; set; }
+    return id;
   }
 
-  public class ResponseItem
+  private static (string type, string? properties, List<OneOf>? oneof) ToType(State state, Dictionary<string, List<TypeInfo>> types, OutputContext<ApiDocsOptions> ctx, TypeReference type,
+    bool? forceNullable = null)
   {
-    [JsonPropertyName("properties")] public List<ResponsePropertyItem> Properties { get; set; }
+    string? properties = null;
+    List<OneOf>? oneof = null;
+
+    var result = type.Name switch
+    {
+      ApiSpecConsts.Bool => "boolean",
+      ApiSpecConsts.Int16 or ApiSpecConsts.Int32 or ApiSpecConsts.Int64 => "integer",
+      ApiSpecConsts.Float32 or ApiSpecConsts.Float64 or ApiSpecConsts.Float128 => "float",
+      ApiSpecConsts.Guid => "guid",
+      ApiSpecConsts.Date => "datetime",
+      ApiSpecConsts.String => "string",
+      ApiSpecConsts.Binary => "binary",
+      ApiSpecConsts.Any => "any",
+      ApiSpecConsts.Duration => "duration",
+      ApiSpecConsts.Object => "object",
+      _ => null
+    };
+
+    if (type.Name is ApiSpecConsts.Specials.Map)
+    {
+      var (s1, s2, _) = ToType(state, types, ctx, type.Arguments[1], false);
+
+      result = $"map[{s1}]";
+      properties = s2;
+    }
+    else if (type.Name is ApiSpecConsts.Specials.Option)
+    {
+      var (s1, s2, _) = ToType(state, types, ctx, type.Shared!, false);
+
+      result = $"one-of[{s1}]";
+      properties = s2;
+
+      oneof = new List<OneOf>();
+      foreach (var x in type.Arguments)
+      {
+        var (_, x2, _) = ToType(state, types, ctx, x, false);
+        oneof.Add(new OneOf { Name = x.Name[(x.Name.LastIndexOf('.') + 1)..], PropertiesID = x2 });
+      }
+    }
+    else if (type.Name is ApiSpecConsts.Specials.Array)
+    {
+      var (s1, s2, _) = ToType(state, types, ctx, type.Arguments[0], false);
+
+      result = $"array[{s1}]";
+      properties = s2;
+    }
+    else if (result == null)
+    {
+      result = "object";
+      properties = BuildTypeInfo(state, types, ctx, type.Name);
+    }
+
+    if (forceNullable is true || !forceNullable.HasValue && type.Nullable)
+    {
+      result += " | null";
+    }
+
+    return (result, properties, oneof);
   }
 
-  public class RequestPropertyItem
+  private static string ToBase26(int x)
   {
-    [JsonPropertyName("name")] public string Name { get; set; }
-    [JsonPropertyName("description")] public string? Description { get; set; }
-    [JsonPropertyName("type")] public string Type { get; set; }
-    [JsonPropertyName("properties")] public List<RequestPropertyItem>? Properties { get; set; }
-    [JsonPropertyName("recursion")] public bool Recursion { get; set; }
-    [JsonPropertyName("enumValues")] public Dictionary<string, long>? EnumValues { get; set; }
+    var result = string.Empty;
+    while (x > 0)
+    {
+      result = (char)('A' + x % 26) + result;
+      x /= 26;
+    }
+
+    return result;
   }
 
-  public class ResponsePropertyItem
+  private static (bool backendID, bool systemID) SupportsExternalIdsMode(State state, ApiDefinitionModel input, string s)
   {
-    [JsonPropertyName("name")] public string Name { get; set; }
-    [JsonPropertyName("description")] public string? Description { get; set; }
-    [JsonPropertyName("type")] public string Type { get; set; }
-    [JsonPropertyName("properties")] public List<ResponsePropertyItem>? Properties { get; set; }
-    [JsonPropertyName("recursion")] public bool Recursion { get; set; }
-    [JsonPropertyName("enumValues")] public Dictionary<string, long>? EnumValues { get; set; }
+    if (state.SupportsBackendIDCache.TryGetValue(s, out var cached)) return cached;
+
+    var result = SupportsExternalIdsMode_Uncached(input, s, new HashSet<string>());
+    state.SupportsBackendIDCache[s] = result;
+    return result;
+  }
+
+  private static (bool backendID, bool systemID) SupportsExternalIdsMode_Uncached(ApiDefinitionModel input, string s, HashSet<string> recursionGuard)
+  {
+    if (!recursionGuard.Add(s)) return (false, false);
+
+    var type = input.Types[s];
+
+    var backendID = type.Properties.Any(p =>
+                      p.Value.DataModelInformation is { SupportsBackendID: true })
+                    || type.TypeDependencies.Any(d => SupportsExternalIdsMode_Uncached(input, d, recursionGuard).backendID);
+
+    var systemID = type.Properties.Any(p =>
+                     p.Value.DataModelInformation is { SupportsSystemID: true })
+                   || type.TypeDependencies.Any(d => SupportsExternalIdsMode_Uncached(input, d, recursionGuard).systemID);
+
+    recursionGuard.Remove(s);
+    return (backendID, systemID);
   }
 }
