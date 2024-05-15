@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/CompleteStockReservationTask",
   "description": "Complete a StockReservation task that has been started with the StartStockReservation(2) service\n\nThe service should be called with a line for each orderline that should be reserved. It is not required anymore to send a line for each item on a line.\n\nProvide each line with an OrderLineID and a QuantityTo(Cancel/Reserve/Order).",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,50 +59,6 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
-    "B": [
-      {
-        "name": "PrintReceipt",
-        "description": "Should we print a receipt? Default true",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StationID",
-        "description": "Station to print the receipt on",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Task",
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "Lines",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "UserTaskID",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "D": [
       {
         "name": "ForceComplete",
@@ -144,21 +101,47 @@
         "one_of": null
       }
     ],
-    "E": [
+    "C": [
       {
-        "name": "Error",
+        "name": "Lines",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "D",
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "UserTaskID",
         "description": "",
-        "type": "object | null",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "PrintReceipt",
+        "description": "Should we print a receipt? Default true",
+        "type": "boolean | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StationID",
+        "description": "Station to print the receipt on",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Task",
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -227,6 +210,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

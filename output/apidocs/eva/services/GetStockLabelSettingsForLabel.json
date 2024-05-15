@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/GetStockLabelSettingsForLabel",
   "description": "Returns all organizationunits with the configured setting for a single stocklabel.\n\nEvery organizationunit that has any setting set for the stocklabel will be returned.\nIf an organizationunit has no setting for a specific feature, it will inherit the setting from it\u2019s parent, this is indicated by the \u0060IsInherited\u0060 property.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060StockLabels:Manage\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,32 +59,6 @@
         "type": "integer",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "StockLabelSettings",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "F",
         "one_of": null
       }
     ],
@@ -150,6 +125,24 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "IsInherited",
+        "description": "Whether this value is inherited from a parent organization unit.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "description": "",
+        "type": "boolean | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -229,21 +222,29 @@
         "one_of": null
       }
     ],
-    "G": [
+    "C": [
       {
-        "name": "IsInherited",
-        "description": "Whether this value is inherited from a parent organization unit.",
-        "type": "boolean",
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "D",
         "one_of": null
       },
       {
-        "name": "Value",
+        "name": "Metadata",
         "description": "",
-        "type": "boolean | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "StockLabelSettings",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

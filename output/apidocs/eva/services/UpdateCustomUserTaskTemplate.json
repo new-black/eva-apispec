@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/UpdateCustomUserTaskTemplate",
   "description": "Updates a template for custom user tasks. If a property is not provided, it will be set to null.",
+  "auth_description": "Requires any user with functionality \u0060CustomUserTaskTemplates:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,6 +59,50 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
+    "D": [
+      {
+        "name": "CustomFieldID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsRequired",
+        "description": "If the field is required, a value MUST be set when completing the task.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "DefaultDeadlineMinutes",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DefaultPriority",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Fields",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "Description",
@@ -105,68 +150,6 @@
         "type": "integer",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "DefaultDeadlineMinutes",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DefaultPriority",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Fields",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "CustomFieldID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsRequired",
-        "description": "If the field is required, a value MUST be set when completing the task.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
         "one_of": null
       }
     ],
@@ -235,6 +218,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

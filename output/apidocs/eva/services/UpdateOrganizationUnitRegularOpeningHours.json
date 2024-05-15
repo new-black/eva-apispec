@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/UpdateOrganizationUnitRegularOpeningHours",
   "description": "Update the regular openinghours for an OrganizationUnit\n\nThis service accepts a request like this:\n\u0060\u0060\u0060\n{\n  \u0022OrganizationUnitID\u0022: 123, // required\n  \u0022TypeID\u0022: 2, // required, OpeningHoursType\n  \u0022Sunday\u0022: {\n    \u0022IsClosed\u0022: false, // required\n    \u0022StartTime\u0022: \u002210:00:00\u0022, // optional\n    \u0022EndTime\u0022: \u002218:00:00\u0022, // optional\n    \u0022Description\u0022: \u0022Repairs closed\u0022// optional\n  }, // required\n  \u0022Monday\u0022: ..., //required\n  \u0022Tuesday\u0022: ..., //required\n  \u0022Wednesday\u0022: ..., //required\n  \u0022Thursday\u0022: ..., //required\n  \u0022Friday\u0022: ..., //required\n  \u0022Saturday\u0022: ..., //required\n  }\n\u0060\u0060\u0060\nAll days are required, days can be closed and contain a description\n\nTo manage non-regular OpeningHours the existing CreateOrganizationUnitOpeningHours, UpdateOrganizationUnitOpeningHours, DeleteOrganizationUnitOpeningHours can be used.\nThey have a TypeID property on the OpeningHours object to specify the OpeningHoursType.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060OrganizationUnitOpeningHours:Manage\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,6 +59,50 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
+    "D": [
+      {
+        "name": "EndTime",
+        "description": "",
+        "type": "duration",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartTime",
+        "description": "",
+        "type": "duration",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsClosed",
+        "description": "",
+        "type": "boolean",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TimeSlots",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "Friday",
@@ -132,68 +177,6 @@
         "one_of": null
       }
     ],
-    "C": [
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsClosed",
-        "description": "",
-        "type": "boolean",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TimeSlots",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "EndTime",
-        "description": "",
-        "type": "duration",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StartTime",
-        "description": "",
-        "type": "duration",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      }
-    ],
     "F": [
       {
         "name": "Code",
@@ -259,6 +242,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

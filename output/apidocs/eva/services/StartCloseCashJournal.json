@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/StartCloseCashJournal",
   "description": "Initiates the closing of a cash journal. This does not yet mutate anything, but returns all the details you need about a cash journal to be able to close it.\n\nThis consists of:\n\n- The information about the device and station\n- Which expenses and deposits were made from this device.\n- What payments were made.\n- What the \u0060ExpectedClosingAmount\u0060 is, which is a summary of the previous journal\u0027s closing amount plus all transactions.\n- Possible pending cash deposits on this device",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060CashJournals:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -77,64 +78,350 @@
         "one_of": null
       }
     ],
-    "C": [
+    "F": [
       {
-        "name": "CashJournalDetails",
+        "name": "BankNotes",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "S",
-        "one_of": null
-      },
-      {
-        "name": "ExpectedClosingAmount",
-        "description": "",
-        "type": "float",
+        "type": "map[integer] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "MaximalAllowedDeviation",
+        "name": "Coins",
         "description": "",
-        "type": "float",
+        "type": "map[integer] | null",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "T",
-        "one_of": null
-      },
-      {
-        "name": "MinimalAllowedDeviation",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PendingCashDeposits",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "U",
         "one_of": null
       }
     ],
+    "G": [],
+    "E": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreationTime",
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Denominations",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      }
+    ],
+    "I": [],
+    "H": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CashTransactionLedger",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Remark",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CashTransactionLedger",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Number",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IDs",
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Names",
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Station",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      }
+    ],
+    "O": [
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "N": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BlobID",
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreationTime",
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxCode",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "O",
+        "one_of": null
+      }
+    ],
+    "Q": [],
+    "P": [
+      {
+        "name": "CashJournalMethod",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "Q",
+        "one_of": null
+      },
+      {
+        "name": "Code",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "R": [],
     "D": [
       {
         "name": "CashTransactions",
@@ -281,350 +568,6 @@
         "one_of": null
       }
     ],
-    "E": [
-      {
-        "name": "Amount",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CreationTime",
-        "description": "",
-        "type": "datetime",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Denominations",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      }
-    ],
-    "F": [
-      {
-        "name": "BankNotes",
-        "description": "",
-        "type": "map[integer] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Coins",
-        "description": "",
-        "type": "map[integer] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "G": [],
-    "H": [
-      {
-        "name": "Amount",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CashTransactionLedger",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Remark",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "I",
-        "one_of": null
-      }
-    ],
-    "I": [],
-    "J": [
-      {
-        "name": "Amount",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CashTransactionLedger",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Number",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "K": [
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Station",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "M",
-        "one_of": null
-      }
-    ],
-    "L": [
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "M": [
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IDs",
-        "description": "",
-        "type": "array[integer] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Names",
-        "description": "",
-        "type": "array[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "N": [
-      {
-        "name": "Amount",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BlobID",
-        "description": "",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CreationTime",
-        "description": "",
-        "type": "datetime",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TaxCode",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "O",
-        "one_of": null
-      }
-    ],
-    "O": [
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "P": [
-      {
-        "name": "CashJournalMethod",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "Q",
-        "one_of": null
-      },
-      {
-        "name": "Code",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "Q": [],
-    "R": [],
     "S": [
       {
         "name": "Code",
@@ -716,6 +659,64 @@
         "type": "string | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "CashJournalDetails",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "ExpectedClosingAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximalAllowedDeviation",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "T",
+        "one_of": null
+      },
+      {
+        "name": "MinimalAllowedDeviation",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PendingCashDeposits",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "U",
         "one_of": null
       }
     ]

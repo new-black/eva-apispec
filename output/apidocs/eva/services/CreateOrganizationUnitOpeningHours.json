@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/CreateOrganizationUnitOpeningHours",
   "description": "Create new OpeningHours for OrganizationUnits\n\nMultiple items can be created in a single request. Also multiple OrganizationUnits are allowed.\n\nIt\u0027s not allowed to create multiple items for a single day on the same store. This is checked for Day based openinghours and Date based openinghours.\n\nOpeninghours wit a Date component override the openinghours on Day level. They are called SpecialOpeningHours most of the time.\n\nTo close a store on a regular day, just don\u0027t create an openinghour for that day (or delete it).\nTo close a store on a specific date, create an openinghour with StartTime=null, EndTime=null",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060OrganizationUnitOpeningHours:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,16 +59,7 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
-    "B": [
-      {
-        "name": "OpeningHours",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
+    "D": [],
     "C": [
       {
         "name": "Date",
@@ -166,22 +158,13 @@
         "one_of": null
       }
     ],
-    "D": [],
-    "E": [
+    "B": [
       {
-        "name": "Error",
+        "name": "OpeningHours",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -250,6 +233,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ResetFinancialEvents",
   "description": "This service resets processed financial events back to unprocessed,\nwhich means all associated financial ledgers are deleted.\n\nOnly financial events of periods that have not been fully processed (for example exported to an external ERP system)\ncan be reset.\n\nAs this can be a time consuming service, the request is handled in the background and upon completion a mail\nis sent to the caller of this service with the results.\n\nThe scope of which events to reset can be limited by specifying a \u0060Filter\u0060 in the request. Only the events\nthat match the filter will be reset.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060FinancialEvents:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,16 +66,7 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
-    "B": [
-      {
-        "name": "Filter",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
+    "D": [],
     "C": [
       {
         "name": "FinancialPeriodID",
@@ -149,22 +141,13 @@
         "one_of": null
       }
     ],
-    "D": [],
-    "E": [
+    "B": [
       {
-        "name": "Error",
+        "name": "Filter",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -233,6 +216,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

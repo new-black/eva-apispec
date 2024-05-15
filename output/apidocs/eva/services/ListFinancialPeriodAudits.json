@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ListFinancialPeriodAudits",
   "description": "Lists all \u0060Financial Period Audit\u0060 with their possible BlobID\u0027s for audition purposes.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Audits:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -51,16 +52,41 @@
   "request_type_id": "B",
   "response_type_id": "F",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "PageConfig",
+        "name": "FiscalMonth",
         "description": "",
-        "type": "object | null",
+        "type": "integer | null",
         "required": false,
-        "properties_id": "C",
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FiscalYear",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitIDs",
+        "description": "The user can see only the audit files for these organization units in case of limited visibility",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
+    "E": [],
     "C": [
       {
         "name": "Filter",
@@ -103,64 +129,13 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "FiscalMonth",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "FiscalYear",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitIDs",
-        "description": "The user can see only the audit files for these organization units in case of limited visibility",
-        "type": "array[integer] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [],
-    "F": [
-      {
-        "name": "Error",
+        "name": "PageConfig",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "Result",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "I",
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -232,88 +207,33 @@
         "one_of": null
       }
     ],
-    "I": [
+    "K": [
       {
-        "name": "CurrentPage",
+        "name": "BlobID",
         "description": "",
-        "type": "integer",
+        "type": "guid",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Filters",
+        "name": "CreationTime",
         "description": "",
-        "type": "map[string] | null",
+        "type": "datetime",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Limit",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NumberOfPages",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Offset",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Page",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "PageConfig",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "SortDirection",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "SortProperty",
+        "name": "Type",
         "description": "",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
-      },
-      {
-        "name": "Total",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
       }
     ],
+    "L": [],
     "J": [
       {
         "name": "BlobID",
@@ -444,33 +364,6 @@
         "one_of": null
       }
     ],
-    "K": [
-      {
-        "name": "BlobID",
-        "description": "",
-        "type": "guid",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CreationTime",
-        "description": "",
-        "type": "datetime",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "L": [],
     "M": [
       {
         "name": "Filter",
@@ -510,6 +403,114 @@
         "type": "integer | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "CurrentPage",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberOfPages",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Offset",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Page",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "PageConfig",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Total",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "Result",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
         "one_of": null
       }
     ]

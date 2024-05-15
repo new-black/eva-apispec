@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/SupplierUpdatePurchaseOrder",
   "description": "The SupplierUpdatePurchaseOrder service",
+  "auth_description": "Requires any user with functionality \u0060ThirdPartyCreatePurchaseOrder:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,40 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
-    "B": [
-      {
-        "name": "BackendID",
-        "description": "Identifier of the order from the 3rd party",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BackendSystemID",
-        "description": "Identifier of the 3rd party system that created the order",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Lines",
-        "description": "Contents of the purchase order.\nNote: Only one key property can be used to identify the product. When different properties are used, the request will be invalid.\nThis will become redundant when ProductID is the only property left.",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "ShipToOrganizationUnitID",
-        "description": "OrganizationUnit that will be receiving the purchase order shipment(s).",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "BackendReference",
@@ -149,21 +116,37 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
+        "name": "BackendID",
+        "description": "Identifier of the order from the 3rd party",
+        "type": "string | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
+        "name": "BackendSystemID",
+        "description": "Identifier of the 3rd party system that created the order",
+        "type": "string | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Lines",
+        "description": "Contents of the purchase order.\nNote: Only one key property can be used to identify the product. When different properties are used, the request will be invalid.\nThis will become redundant when ProductID is the only property left.",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "ShipToOrganizationUnitID",
+        "description": "OrganizationUnit that will be receiving the purchase order shipment(s).",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -232,6 +215,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

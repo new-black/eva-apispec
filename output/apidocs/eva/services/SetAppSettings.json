@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/SetAppSettings",
   "description": "Set multiple AppSettings at once\n\n- OrganizationUnitID defaults to the root OrganizationUnit\n- Name is required\n\nValues for a specific App wil only be returned in the ApplicationConfiguration if the requesting UserAgent matches {App}/*",
+  "auth_description": "Requires any user with functionality \u0060AppSettings:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,32 +59,6 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
-    "B": [
-      {
-        "name": "OrganizationUnitID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitSetID",
-        "description": "Setting are not stored on sets, the set is evaluated when this service is called, and the setting is applied to all OrganizationUnits in the set.",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Settings",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "App",
@@ -110,21 +85,29 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Error",
+        "name": "OrganizationUnitID",
         "description": "",
-        "type": "object | null",
+        "type": "integer | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
+        "name": "OrganizationUnitSetID",
+        "description": "Setting are not stored on sets, the set is evaluated when this service is called, and the setting is applied to all OrganizationUnits in the set.",
+        "type": "integer | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Settings",
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -193,6 +176,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

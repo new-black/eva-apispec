@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ExemptOrderFromTax",
   "description": "Marks the provided Order or OrderLine as exempt from tax, with specified code and reason.\n\nWhen exempting the Order, this also marks all current OrderLines of the Order that haven\u0027t been invoiced yet as tax-exempt. All future\nOrderLines created on this Order will then also automatically be made tax-exempt.\n\nCalling this service is irreversible; once the Order is marked as tax exempt, it cannot be undone and can only be worked around by creating a new Order.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ExemptOrderFromTax:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -107,24 +108,6 @@
         "one_of": null
       }
     ],
-    "C": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      }
-    ],
     "D": [
       {
         "name": "Code",
@@ -190,6 +173,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
         "one_of": null
       }
     ]

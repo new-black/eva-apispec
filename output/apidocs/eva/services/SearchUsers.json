@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/SearchUsers",
   "description": "Execute a search through the users\n\nFiltering is possible on all kinds of properties. By default the search results will be restricted to users in the current country.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,6 +66,51 @@
   "request_type_id": "B",
   "response_type_id": "G",
   "types": {
+    "D": [],
+    "C": [
+      {
+        "name": "Filter",
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [],
+    "F": [],
     "B": [
       {
         "name": "AssignedEmployeeID",
@@ -251,77 +297,6 @@
         "one_of": null
       }
     ],
-    "C": [
-      {
-        "name": "Filter",
-        "description": "",
-        "type": "map[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Limit",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SortDirection",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "SortProperty",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Start",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "D": [],
-    "E": [],
-    "F": [],
-    "G": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "I",
-        "one_of": null
-      },
-      {
-        "name": "Result",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "J",
-        "one_of": null
-      }
-    ],
     "H": [
       {
         "name": "Code",
@@ -390,73 +365,10 @@
         "one_of": null
       }
     ],
-    "J": [
+    "L": [],
+    "M": [
       {
-        "name": "CurrentPage",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Filters",
-        "description": "",
-        "type": "map[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Limit",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NumberOfPages",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Offset",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Page",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      },
-      {
-        "name": "PageConfig",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "SortDirection",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "SortProperty",
+        "name": "Address1",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -464,9 +376,121 @@
         "one_of": null
       },
       {
-        "name": "Total",
+        "name": "Address2",
         "description": "",
-        "type": "integer",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "City",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "description": "ISO 3166-1",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "District",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EmailAddress",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FirstName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HouseNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Latitude",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Longitude",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PhoneNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Region",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "State",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Subdistrict",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ZipCode",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -666,10 +690,73 @@
         "one_of": null
       }
     ],
-    "L": [],
-    "M": [
+    "J": [
       {
-        "name": "Address1",
+        "name": "CurrentPage",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberOfPages",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Offset",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Page",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "PageConfig",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -677,123 +764,37 @@
         "one_of": null
       },
       {
-        "name": "Address2",
+        "name": "Total",
         "description": "",
-        "type": "string | null",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
-      },
+      }
+    ],
+    "G": [
       {
-        "name": "City",
+        "name": "Error",
         "description": "",
-        "type": "string | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "H",
         "one_of": null
       },
       {
-        "name": "CountryID",
-        "description": "ISO 3166-1",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
         "one_of": null
       },
       {
-        "name": "District",
+        "name": "Result",
         "description": "",
-        "type": "string | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "EmailAddress",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "FirstName",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "HouseNumber",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LastName",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Latitude",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Longitude",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PhoneNumber",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Region",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "State",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Subdistrict",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ZipCode",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "J",
         "one_of": null
       }
     ]

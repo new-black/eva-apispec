@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/PushSalesOrder",
   "description": "Creates an order with all specified data, places it, and raises all follow-up events.\n\nWhenever the order already exists with the same BackendSystemID/BackendID combination, nothing will be modified.",
+  "auth_description": "Requires a user of type \u0060Api\u0060 with functionality \u0060PushSalesOrder:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,216 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "BA",
   "types": {
-    "B": [
-      {
-        "name": "BackendID",
-        "description": "A unique identifier for the order, within the context of given \u0060BackendSystemID\u0060",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BackendSystemID",
-        "description": "A code, free of choice for the calling 3rd party application creating the order",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BackfillInformation",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "BillingAddress",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Coupons",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "CurrencyID",
-        "description": "ISO code of the currency of the order",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CustomData",
-        "description": "",
-        "type": "map[any] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CustomFields",
-        "description": "",
-        "type": "map[any] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Customer",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "DisableEventExports",
-        "description": "Enabling this will try to suppress as many eventexports as possible that might result from this call.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Discounts",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "I",
-        "one_of": null
-      },
-      {
-        "name": "FulfillmentMethod",
-        "description": "How this order is fulfilled, this can be overridden on line level. Default to Delivery or Pickup (when a PickupOrganizationUnit is defined)",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "Lines",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "K",
-        "one_of": null
-      },
-      {
-        "name": "LoyaltyProgramBackendID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Options",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "U",
-        "one_of": null
-      },
-      {
-        "name": "Payments",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "V",
-        "one_of": null
-      },
-      {
-        "name": "PickupAddress",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "PickupOrganizationUnitBackendID",
-        "description": "Identifier for the shop where the order will be picked up, if any (\u0060OrganizationUnit.BackendID\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Properties",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "X",
-        "one_of": null
-      },
-      {
-        "name": "Remark",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ReturnToSupplierReason",
-        "description": "The reason for this ReturnToSupplier order, used in combination with Properties.ReturnToSupplier. Required for ReturnToSupplier orders",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ShipToOrganizationUnitBackendID",
-        "description": "Identifier for the shop where the order will be shipped to, if any (\u0060OrganizationUnit.BackendID\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Shipments",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "Y",
-        "one_of": null
-      },
-      {
-        "name": "ShippingAddress",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "ShippingInformation",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "Z",
-        "one_of": null
-      },
-      {
-        "name": "SoldFromOrganizationUnitBackendID",
-        "description": "Identifier for the (web)shop that made the sale (\u0060OrganizationUnit.BackendID\u0060)",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "OriginalCreationDate",
@@ -426,6 +217,41 @@
       },
       {
         "name": "DiscountBackendID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [],
+    "H": [
+      {
+        "name": "FiscalID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RegistrationNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "VatNumber",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -595,41 +421,6 @@
         "one_of": null
       }
     ],
-    "G": [],
-    "H": [
-      {
-        "name": "FiscalID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RegistrationNumber",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "VatNumber",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "I": [
       {
         "name": "Amount",
@@ -673,6 +464,591 @@
       }
     ],
     "J": [],
+    "N": [
+      {
+        "name": "ArrayValues",
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "ArrayValues",
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFieldID",
+        "description": "Identifier for the custom field",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "P": [
+      {
+        "name": "BackgroundColor",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CloudinaryImagePublicID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CloudinaryVideoPublicID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ForegroundColor",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageBlobID",
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageHeight",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageWidth",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LongDescription",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "VideoBlobID",
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "VideoUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "O": [
+      {
+        "name": "DeliverySchedule",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "From",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FromEmailAddress",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PhoneNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Text",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Theme",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "P",
+        "one_of": null
+      },
+      {
+        "name": "To",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ToEmailAddress",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UpdateUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "Q": [
+      {
+        "name": "CloudinaryImageID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CloudinaryImageMimeType",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CloudinaryVideoID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CloudinaryVideoMimeType",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "R": [
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "S": [
+      {
+        "name": "BackendID",
+        "description": "Identifier of the shipment line",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentBackendID",
+        "description": "Identifier of the shipment, must exist in the Order.Shipments",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentDate",
+        "description": "Date when this shipment line was shipped, will fall-back to the Shipment.ShipmentDate",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "T": [],
+    "L": [
+      {
+        "name": "Amount",
+        "description": "Price of a single unit, before discounts, based on the SoldFromOrganizationUnit settings this should be in or ex tax. See service documentation.",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "description": "ID of the order line from the 3rd party",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomData",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFields",
+        "description": "Optional additional custom fields",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "CustomID",
+        "description": "Article number of the product from the 3rd party",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Discounts",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "FulfillmentMethod",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "GiftcardData",
+        "description": "Used for passing in the data for a digital giftcard.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "GiftcardMedia",
+        "description": "Used for passing in the media information for a digital giftcard.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Q",
+        "one_of": null
+      },
+      {
+        "name": "IsFinalSale",
+        "description": "Marks the line as a final sale line, making it non returnable.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginalAmount",
+        "description": "Original price of a single unit, before discounts, based on the SoldFromOrganizationUnit settings this should be in or ex tax. See service documentation.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentLineIdentifier",
+        "description": "Used for passing the identifier used to identify this line at the payment provider. This is required for payments that need capture on line level like Klarna.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PreferredFulfillmentOrganizationUnitBackendID",
+        "description": "Allows you to specify a preferred organization for doing the physical fulfillment of the OrderLine.\nDepending on your order orchestration configuration this can be a hard filter or merely a preference.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductRequirements",
+        "description": "Product requirements",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "R",
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestedDeliveryDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumber",
+        "description": "Used for passing in the serial number of, for example, a gift card. This is used to support refunding and other operations on the gift card.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Shipments",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "TaxAmount",
+        "description": "When known the exact TaxAmount can be specified. Used when tax calculations are done by an external party like Avatax.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxExemptionCode",
+        "description": "A code identifying the tax exemption.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxExemptionReason",
+        "description": "A longer description with the justification for the tax exemption.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxRate",
+        "description": "When no tax rate is provided, the taxrate will be based on what is known in Eva. When no rate can be determined, an error will be thrown.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxRateCategory",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "T",
+        "one_of": null
+      }
+    ],
     "K": [
       {
         "name": "Amount",
@@ -891,591 +1267,6 @@
         "one_of": null
       }
     ],
-    "L": [
-      {
-        "name": "Amount",
-        "description": "Price of a single unit, before discounts, based on the SoldFromOrganizationUnit settings this should be in or ex tax. See service documentation.",
-        "type": "float",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BackendID",
-        "description": "ID of the order line from the 3rd party",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CustomData",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CustomFields",
-        "description": "Optional additional custom fields",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "CustomID",
-        "description": "Article number of the product from the 3rd party",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Discounts",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "I",
-        "one_of": null
-      },
-      {
-        "name": "FulfillmentMethod",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "GiftcardData",
-        "description": "Used for passing in the data for a digital giftcard.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "O",
-        "one_of": null
-      },
-      {
-        "name": "GiftcardMedia",
-        "description": "Used for passing in the media information for a digital giftcard.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "Q",
-        "one_of": null
-      },
-      {
-        "name": "IsFinalSale",
-        "description": "Marks the line as a final sale line, making it non returnable.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OriginalAmount",
-        "description": "Original price of a single unit, before discounts, based on the SoldFromOrganizationUnit settings this should be in or ex tax. See service documentation.",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PaymentLineIdentifier",
-        "description": "Used for passing the identifier used to identify this line at the payment provider. This is required for payments that need capture on line level like Klarna.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PreferredFulfillmentOrganizationUnitBackendID",
-        "description": "Allows you to specify a preferred organization for doing the physical fulfillment of the OrderLine.\nDepending on your order orchestration configuration this can be a hard filter or merely a preference.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductRequirements",
-        "description": "Product requirements",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "R",
-        "one_of": null
-      },
-      {
-        "name": "Quantity",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RequestedDeliveryDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SerialNumber",
-        "description": "Used for passing in the serial number of, for example, a gift card. This is used to support refunding and other operations on the gift card.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Shipments",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "S",
-        "one_of": null
-      },
-      {
-        "name": "TaxAmount",
-        "description": "When known the exact TaxAmount can be specified. Used when tax calculations are done by an external party like Avatax.",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TaxExemptionCode",
-        "description": "A code identifying the tax exemption.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TaxExemptionReason",
-        "description": "A longer description with the justification for the tax exemption.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TaxRate",
-        "description": "When no tax rate is provided, the taxrate will be based on what is known in Eva. When no rate can be determined, an error will be thrown.",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TaxRateCategory",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "T",
-        "one_of": null
-      }
-    ],
-    "M": [
-      {
-        "name": "ArrayValues",
-        "description": "Used for multiple values",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "N",
-        "one_of": null
-      },
-      {
-        "name": "BlobValue",
-        "description": "Used for datatype Blob",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BoolValue",
-        "description": "Used for datatype Bool",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CustomFieldID",
-        "description": "Identifier for the custom field",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DateTimeValue",
-        "description": "Used for datatype DateTime and Date",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NumberValue",
-        "description": "Used for datatype Integer and Decimal",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StringValue",
-        "description": "Used for datatype String, Text and Enum",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "N": [
-      {
-        "name": "ArrayValues",
-        "description": "Used for multiple values",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "N",
-        "one_of": null
-      },
-      {
-        "name": "BlobValue",
-        "description": "Used for datatype Blob",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BoolValue",
-        "description": "Used for datatype Bool",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DateTimeValue",
-        "description": "Used for datatype DateTime and Date",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NumberValue",
-        "description": "Used for datatype Integer and Decimal",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StringValue",
-        "description": "Used for datatype String, Text and Enum",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "O": [
-      {
-        "name": "DeliverySchedule",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "From",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "FromEmailAddress",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PhoneNumber",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Text",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Theme",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "P",
-        "one_of": null
-      },
-      {
-        "name": "To",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ToEmailAddress",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UpdateUrl",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "P": [
-      {
-        "name": "BackgroundColor",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CloudinaryImagePublicID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CloudinaryVideoPublicID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ForegroundColor",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ImageBlobID",
-        "description": "",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ImageHeight",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ImageUrl",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ImageWidth",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LongDescription",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "VideoBlobID",
-        "description": "",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "VideoUrl",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "Q": [
-      {
-        "name": "CloudinaryImageID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CloudinaryImageMimeType",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CloudinaryVideoID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CloudinaryVideoMimeType",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "R": [
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Value",
-        "description": "",
-        "type": "any | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "S": [
-      {
-        "name": "BackendID",
-        "description": "Identifier of the shipment line",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Quantity",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ShipmentBackendID",
-        "description": "Identifier of the shipment, must exist in the Order.Shipments",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ShipmentDate",
-        "description": "Date when this shipment line was shipped, will fall-back to the Shipment.ShipmentDate",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "T": [],
     "U": [
       {
         "name": "AllowPartialFulfillment",
@@ -1502,6 +1293,7 @@
         "one_of": null
       }
     ],
+    "W": [],
     "V": [
       {
         "name": "Amount",
@@ -1576,7 +1368,6 @@
         "one_of": null
       }
     ],
-    "W": [],
     "X": [
       {
         "name": "IsInterbranch",
@@ -1687,45 +1478,213 @@
         "one_of": null
       }
     ],
-    "BA": [
+    "B": [
       {
-        "name": "AlreadyExists",
+        "name": "BackendID",
+        "description": "A unique identifier for the order, within the context of given \u0060BackendSystemID\u0060",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendSystemID",
+        "description": "A code, free of choice for the calling 3rd party application creating the order",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackfillInformation",
         "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "BillingAddress",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Coupons",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "description": "ISO code of the currency of the order",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomData",
+        "description": "",
+        "type": "map[any] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFields",
+        "description": "",
+        "type": "map[any] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Customer",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "DisableEventExports",
+        "description": "Enabling this will try to suppress as many eventexports as possible that might result from this call.",
         "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "CustomerID",
+        "name": "Discounts",
         "description": "",
-        "type": "integer | null",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "FulfillmentMethod",
+        "description": "How this order is fulfilled, this can be overridden on line level. Default to Delivery or Pickup (when a PickupOrganizationUnit is defined)",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "Lines",
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "LoyaltyProgramBackendID",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Error",
+        "name": "Options",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BB",
+        "properties_id": "U",
         "one_of": null
       },
       {
-        "name": "ID",
+        "name": "Payments",
         "description": "",
-        "type": "integer",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "V",
+        "one_of": null
+      },
+      {
+        "name": "PickupAddress",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "PickupOrganizationUnitBackendID",
+        "description": "Identifier for the shop where the order will be picked up, if any (\u0060OrganizationUnit.BackendID\u0060",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "Properties",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BC",
+        "properties_id": "X",
+        "one_of": null
+      },
+      {
+        "name": "Remark",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnToSupplierReason",
+        "description": "The reason for this ReturnToSupplier order, used in combination with Properties.ReturnToSupplier. Required for ReturnToSupplier orders",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipToOrganizationUnitBackendID",
+        "description": "Identifier for the shop where the order will be shipped to, if any (\u0060OrganizationUnit.BackendID\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Shipments",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "Y",
+        "one_of": null
+      },
+      {
+        "name": "ShippingAddress",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "ShippingInformation",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Z",
+        "one_of": null
+      },
+      {
+        "name": "SoldFromOrganizationUnitBackendID",
+        "description": "Identifier for the (web)shop that made the sale (\u0060OrganizationUnit.BackendID\u0060)",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -1794,6 +1753,48 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BA": [
+      {
+        "name": "AlreadyExists",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BB",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BC",
         "one_of": null
       }
     ]

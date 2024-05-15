@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/UpdateStock",
   "description": "Updates the Sellable stock of the given products for specified \u0060OrganizationUnitID\u0060, or when omitted, your current organization unit.\n\nSpecify the new, absolute quantities as values in the \u0060Products\u0060 list. Products that are not mentioned will not be modified.",
+  "auth_description": "Requires any user with functionality \u0060MassStockUpdate:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,24 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
-    "B": [
-      {
-        "name": "OrganizationUnitID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Products",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "ID",
@@ -101,21 +84,21 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Error",
+        "name": "OrganizationUnitID",
         "description": "",
-        "type": "object | null",
+        "type": "integer | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "Products",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -184,6 +167,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

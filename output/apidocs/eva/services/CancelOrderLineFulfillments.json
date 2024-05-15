@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/CancelOrderLineFulfillments",
   "description": "Cancels the OrderFulfillmentLines for the given OrderID and provided OrderLineIDs.\nIt will cancel all not already cancelled OrderFulfillmentLines for the orderlines.\nThis will cause them to be re-routed and possible be fulfilled through another supplier or method.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060OrderFulfillments:Delete\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,6 +66,24 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
+    "C": [
+      {
+        "name": "OrderLineID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QuantityToCancel",
+        "description": "The part of the OrderLine that couldn\u0027t be fulfilled. Can be left null if you want to cancel the entire fulfillment.\nIf a value is specified and splitting fulfillment lines is not enabled (so setting \u0060OrderFulfillment:AllowPartialCancellation\u0060 is false or not defined) an error will be returned.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "Lines",
@@ -88,42 +107,6 @@
         "type": "integer | null",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "OrderLineID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "QuantityToCancel",
-        "description": "The part of the OrderLine that couldn\u0027t be fulfilled. Can be left null if you want to cancel the entire fulfillment.\nIf a value is specified and splitting fulfillment lines is not enabled (so setting \u0060OrderFulfillment:AllowPartialCancellation\u0060 is false or not defined) an error will be returned.",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
         "one_of": null
       }
     ],
@@ -192,6 +175,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

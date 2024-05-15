@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/GetOrderSummary",
   "description": "Returns a summarized version of the order with less details than \u0060GetOrder\u0060. This service should be used to expose\nless data to the frontend, also this variant to retrieve the order can be used when authenticated via the \u0060GetTemporaryTokenForOrder\u0060\nservice. Where \u0060GetOrder\u0060 is not accessible.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -83,151 +84,11 @@
         "one_of": null
       }
     ],
-    "C": [
+    "G": [
       {
-        "name": "Amounts",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "BillingAddress",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      },
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Lines",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "N",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "Z",
-        "one_of": null
-      },
-      {
-        "name": "ShippingAddress",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "CurrencyID",
+        "name": "Description",
         "description": "",
         "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Discounts",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Open",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "OpenAmountIsZero",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Paid",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "I",
-        "one_of": null
-      },
-      {
-        "name": "Taxes",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "Total",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      },
-      {
-        "name": "Types",
-        "description": "",
-        "type": "map[object] | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      },
-      {
-        "name": "UnroundedTotal",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      }
-    ],
-    "E": [
-      {
-        "name": "PerDiscount",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "TotalDiscountAmount",
-        "description": "",
-        "type": "float",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -259,11 +120,19 @@
         "one_of": null
       }
     ],
-    "G": [
+    "E": [
       {
-        "name": "Description",
+        "name": "PerDiscount",
         "description": "",
-        "type": "string | null",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "TotalDiscountAmount",
+        "description": "",
+        "type": "float",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -381,6 +250,80 @@
         "one_of": null
       }
     ],
+    "D": [
+      {
+        "name": "CurrencyID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Discounts",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Open",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "OpenAmountIsZero",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Paid",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "Taxes",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "Total",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "Types",
+        "description": "",
+        "type": "map[object] | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "UnroundedTotal",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      }
+    ],
     "L": [
       {
         "name": "Address1",
@@ -465,9 +408,9 @@
         "one_of": null
       }
     ],
-    "N": [
+    "P": [
       {
-        "name": "Description",
+        "name": "Name",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -475,9 +418,285 @@
         "one_of": null
       },
       {
-        "name": "DiscountAmount",
+        "name": "ProductID",
         "description": "",
-        "type": "float",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "R": [
+      {
+        "name": "Blob",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Sequence",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Url",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "S": [
+      {
+        "name": "Blob",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Url",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "Q": [
+      {
+        "name": "Gallery",
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageCount",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Media",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "R",
+        "one_of": null
+      },
+      {
+        "name": "PrimaryImage",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "Swatches",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "R",
+        "one_of": null
+      }
+    ],
+    "V": [
+      {
+        "name": "ArrayValues",
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "V",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "U": [
+      {
+        "name": "DefaultCustomFieldValue",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "V",
+        "one_of": null
+      },
+      {
+        "name": "DefaultValue",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsEditable",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsRequired",
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumLength",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumValue",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumLength",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumValue",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "T": [
+      {
+        "name": "Data",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DataType",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -491,7 +710,7 @@
         "one_of": null
       },
       {
-        "name": "IsPlaced",
+        "name": "IsArray",
         "description": "",
         "type": "boolean",
         "required": false,
@@ -499,86 +718,40 @@
         "one_of": null
       },
       {
-        "name": "NetTotalAmountInTax",
+        "name": "IsRequired",
         "description": "",
-        "type": "float",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "OriginalTotalAmountInTax",
+        "name": "Name",
         "description": "",
-        "type": "float | null",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ParentID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Product",
+        "name": "Options",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "O",
+        "properties_id": "U",
         "one_of": null
       },
       {
-        "name": "ProductID",
+        "name": "OrderType",
         "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "QuantityCancelled",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "QuantityExported",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "QuantityOrdered",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "Y",
-        "one_of": null
-      },
-      {
-        "name": "UnitPriceInTax",
-        "description": "",
-        "type": "float",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
+    "W": [],
+    "X": [],
     "O": [
       {
         "name": "BackendID",
@@ -885,169 +1058,82 @@
         "one_of": null
       }
     ],
-    "P": [
+    "Y": [],
+    "N": [
       {
-        "name": "Name",
+        "name": "Description",
         "description": "",
         "type": "string | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DiscountAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsPlaced",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NetTotalAmountInTax",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginalTotalAmountInTax",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ParentID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Product",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "O",
         "one_of": null
       },
       {
         "name": "ProductID",
         "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "Q": [
-      {
-        "name": "Gallery",
-        "description": "",
-        "type": "array[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ImageCount",
-        "description": "",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Media",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "R",
-        "one_of": null
-      },
-      {
-        "name": "PrimaryImage",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "S",
-        "one_of": null
-      },
-      {
-        "name": "Swatches",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "R",
-        "one_of": null
-      }
-    ],
-    "R": [
-      {
-        "name": "Blob",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Sequence",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Url",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "S": [
-      {
-        "name": "Blob",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Url",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "T": [
-      {
-        "name": "Data",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DataType",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
+        "name": "QuantityCancelled",
         "description": "",
         "type": "integer",
         "required": false,
@@ -1055,181 +1141,38 @@
         "one_of": null
       },
       {
-        "name": "IsArray",
+        "name": "QuantityExported",
         "description": "",
-        "type": "boolean",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "IsRequired",
+        "name": "QuantityOrdered",
         "description": "",
-        "type": "boolean",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Name",
+        "name": "Type",
         "description": "",
-        "type": "string | null",
+        "type": "object",
         "required": false,
-        "properties_id": null,
+        "properties_id": "Y",
         "one_of": null
       },
       {
-        "name": "Options",
+        "name": "UnitPriceInTax",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "U",
-        "one_of": null
-      },
-      {
-        "name": "OrderType",
-        "description": "",
-        "type": "string | null",
+        "type": "float",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "U": [
-      {
-        "name": "DefaultCustomFieldValue",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "V",
-        "one_of": null
-      },
-      {
-        "name": "DefaultValue",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsEditable",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsRequired",
-        "description": "",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MaximumDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MaximumLength",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MaximumValue",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MinimumDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MinimumLength",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MinimumValue",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "V": [
-      {
-        "name": "ArrayValues",
-        "description": "Used for multiple values",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "V",
-        "one_of": null
-      },
-      {
-        "name": "BlobValue",
-        "description": "Used for datatype Blob",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BoolValue",
-        "description": "Used for datatype Bool",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DateTimeValue",
-        "description": "Used for datatype DateTime and Date",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NumberValue",
-        "description": "Used for datatype Integer and Decimal",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StringValue",
-        "description": "Used for datatype String, Text and Enum",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "W": [],
-    "X": [],
-    "Y": [],
     "Z": [
       {
         "name": "ExternalIDs",
@@ -1253,6 +1196,64 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Amounts",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "BillingAddress",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Lines",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Z",
+        "one_of": null
+      },
+      {
+        "name": "ShippingAddress",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
         "one_of": null
       }
     ]

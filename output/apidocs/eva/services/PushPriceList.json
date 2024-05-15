@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/PushPriceList",
   "description": "A service that allows to manage the entirety of a price list.",
+  "auth_description": "Requires any user with functionality \u0060Pricing:Manage\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,104 +59,7 @@
   "request_type_id": "B",
   "response_type_id": "M",
   "types": {
-    "B": [
-      {
-        "name": "ActiveForOrganizationUnits",
-        "description": "The organization units that use this pricelist. If left empty will leave the current configuration unchanged. If specified, will replace the current configuration.",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "Components",
-        "description": "The list of components that make up the pricelist. If left empty this will leave the current configuration unchanged. If specified only the components present will be modified. Components must be explictly deleted.",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "CurrencyID",
-        "description": "The currency for the pricelist. Must be present for the creation of a pricelist but can be left empty in subsequent calls.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "The unique identifier for this pricelist.",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsActive",
-        "description": "Whether or not the pricelist is active.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LowProductCountOption",
-        "description": "The PushPriceList service is optimized for updating a pricelist in its entirety, so for many products at once when using a PriceEntry component. When using few products or even single products this service can perform unnecessary work. It\u0027s always recommended to\nuse this service in a large batch manner but if that\u0027s not possible you can specify your intent by using either LowProductCountOption = Auto or Optimize. Effectively this service will simply store the new price entries and return.\nThe updated prices won\u0027t become effective until the next calculation round, which happens every 15 minutes. The threshold for \u0027low product count\u0027 is set at 100 products.",
-        "type": "object",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "The name of the pricelist. Must be present for the creation of a pricelist but can be left empty in subsequent calls.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RecalculateEffectivePrices",
-        "description": "Whether or not to immediately recalculate the effective prices after processing the changes. Otherwise, the prices are automatically recalculated every 15 minutes. Until such a recalculation has been performed, the old price will remain active.\nDefaults to false, only specify as true if you cannot wait for the normal recalculation cycle.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SpecifiedPricesIncludeTax",
-        "description": "If set to true then all prices specified on this price list will be interpreted as already VAT-included. If set to false then all prices will be interpreted as VAT-excluded. If not specified then the default value is true.\n\nSo if a price entry of 90 EUR is added to this pricelist with SpecifiedPricesIncludeTax = true (or not specified) then the price will be interpreted as 90 EUR already including VAT.\nIf SpecifiedPricesIncludeTax = false then the price will be interpreted as 90 EUR excluding VAT so that will be added on top for any orders created with this price.",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SystemID",
-        "description": "A string that identifies the system that was used to call this service. In combination with the ID of the pricelist, this is what uniquely identifies the pricelist in EVA.\nThe SystemID must be the same for every call, if it\u0027s different from a previous call then a new pricelist will be created.",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TimeZone",
-        "description": "The timezone that will be used to interpret activation times for prices.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "WaitForCompletion",
-        "description": "If specified as true, the call to PushPriceList will not return until all uploaded prices have been stored and all prices have been recalculated. Normally this process runs in the background.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
+    "D": [],
     "C": [
       {
         "name": "Delete",
@@ -198,7 +102,128 @@
         "one_of": null
       }
     ],
-    "D": [],
+    "F": [
+      {
+        "name": "ExcludeProductsInFilter",
+        "description": "If true, all products except the matching ones will have their prices copied. If false, only the matching ones will have their prices copied.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PriceListID",
+        "description": "The ID of the pricelist to copy prices from.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductSearchTemplateID",
+        "description": "The ID of the ProductSearchTemplate to use to filter the products to copy. If left empty all products will be copied.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [],
+    "G": [
+      {
+        "name": "ExcludeProductsInFilter",
+        "description": "If true, all products except the matching ones will have their prices copied. If false, only the matching ones will have their prices copied.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FactorValue",
+        "description": "The value of the markup/markdown. If Type is Amount, this is the amount to add to the price.\nIf Type is Percentage, this is the amount that the Price will be multiplied by.\n\nA 10% markup should be specified as 1.10, a 25% discount should be specified as 0.75.",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductSearchTemplateID",
+        "description": "The ID of the ProductSearchTemplate to use to filter the products to copy. If left empty all products will be copied.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "The type of markup/markdown. Either absolute amount or a percentage. Determines how FactorValue will be interpreted.",
+        "type": "object",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "EndDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Price",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "BlobID",
+        "description": "The blob that refers to the price entry data that was previously uploaded to a Blob in EVA. If left empty the inline data will be used.\n\nThe data in the blob must be in the following format:\n\n[\n    {\n      \u0022ProductID\u0022: \u0022\u003CProductID\u003E\u0022,\n      \u0022Price\u0022: \u003CPrice\u003E\n    },\n    ...\n]",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Prices",
+        "description": "The inline data that will be used to create the price entries. If left empty the blob will be used.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      }
+    ],
+    "K": [],
     "E": [
       {
         "name": "CopyPricesFromOtherPriceListData",
@@ -297,158 +322,100 @@
         "one_of": null
       }
     ],
-    "F": [
+    "L": [],
+    "B": [
       {
-        "name": "ExcludeProductsInFilter",
-        "description": "If true, all products except the matching ones will have their prices copied. If false, only the matching ones will have their prices copied.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PriceListID",
-        "description": "The ID of the pricelist to copy prices from.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductSearchTemplateID",
-        "description": "The ID of the ProductSearchTemplate to use to filter the products to copy. If left empty all products will be copied.",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "G": [
-      {
-        "name": "ExcludeProductsInFilter",
-        "description": "If true, all products except the matching ones will have their prices copied. If false, only the matching ones will have their prices copied.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "FactorValue",
-        "description": "The value of the markup/markdown. If Type is Amount, this is the amount to add to the price.\nIf Type is Percentage, this is the amount that the Price will be multiplied by.\n\nA 10% markup should be specified as 1.10, a 25% discount should be specified as 0.75.",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductSearchTemplateID",
-        "description": "The ID of the ProductSearchTemplate to use to filter the products to copy. If left empty all products will be copied.",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "The type of markup/markdown. Either absolute amount or a percentage. Determines how FactorValue will be interpreted.",
-        "type": "object",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      }
-    ],
-    "H": [],
-    "I": [
-      {
-        "name": "BlobID",
-        "description": "The blob that refers to the price entry data that was previously uploaded to a Blob in EVA. If left empty the inline data will be used.\n\nThe data in the blob must be in the following format:\n\n[\n    {\n      \u0022ProductID\u0022: \u0022\u003CProductID\u003E\u0022,\n      \u0022Price\u0022: \u003CPrice\u003E\n    },\n    ...\n]",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Prices",
-        "description": "The inline data that will be used to create the price entries. If left empty the blob will be used.",
+        "name": "ActiveForOrganizationUnits",
+        "description": "The organization units that use this pricelist. If left empty will leave the current configuration unchanged. If specified, will replace the current configuration.",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "J",
+        "properties_id": "C",
         "one_of": null
-      }
-    ],
-    "J": [
+      },
       {
-        "name": "EndDate",
-        "description": "",
-        "type": "datetime | null",
+        "name": "Components",
+        "description": "The list of components that make up the pricelist. If left empty this will leave the current configuration unchanged. If specified only the components present will be modified. Components must be explictly deleted.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "description": "The currency for the pricelist. Must be present for the creation of a pricelist but can be left empty in subsequent calls.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
         "name": "ID",
-        "description": "",
+        "description": "The unique identifier for this pricelist.",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsActive",
+        "description": "Whether or not the pricelist is active.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LowProductCountOption",
+        "description": "The PushPriceList service is optimized for updating a pricelist in its entirety, so for many products at once when using a PriceEntry component. When using few products or even single products this service can perform unnecessary work. It\u0027s always recommended to\nuse this service in a large batch manner but if that\u0027s not possible you can specify your intent by using either LowProductCountOption = Auto or Optimize. Effectively this service will simply store the new price entries and return.\nThe updated prices won\u0027t become effective until the next calculation round, which happens every 15 minutes. The threshold for \u0027low product count\u0027 is set at 100 products.",
+        "type": "object",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "The name of the pricelist. Must be present for the creation of a pricelist but can be left empty in subsequent calls.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Price",
-        "description": "",
-        "type": "float | null",
+        "name": "RecalculateEffectivePrices",
+        "description": "Whether or not to immediately recalculate the effective prices after processing the changes. Otherwise, the prices are automatically recalculated every 15 minutes. Until such a recalculation has been performed, the old price will remain active.\nDefaults to false, only specify as true if you cannot wait for the normal recalculation cycle.",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ProductID",
-        "description": "",
+        "name": "SpecifiedPricesIncludeTax",
+        "description": "If set to true then all prices specified on this price list will be interpreted as already VAT-included. If set to false then all prices will be interpreted as VAT-excluded. If not specified then the default value is true.\n\nSo if a price entry of 90 EUR is added to this pricelist with SpecifiedPricesIncludeTax = true (or not specified) then the price will be interpreted as 90 EUR already including VAT.\nIf SpecifiedPricesIncludeTax = false then the price will be interpreted as 90 EUR excluding VAT so that will be added on top for any orders created with this price.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SystemID",
+        "description": "A string that identifies the system that was used to call this service. In combination with the ID of the pricelist, this is what uniquely identifies the pricelist in EVA.\nThe SystemID must be the same for every call, if it\u0027s different from a previous call then a new pricelist will be created.",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TimeZone",
+        "description": "The timezone that will be used to interpret activation times for prices.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "StartDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "K": [],
-    "L": [],
-    "M": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "N",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "O",
-        "one_of": null
-      },
-      {
-        "name": "PriceListID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UnknownProducts",
-        "description": "Returns unknown products that could not be processed. Only supported with low product counts.",
-        "type": "array[string] | null",
+        "name": "WaitForCompletion",
+        "description": "If specified as true, the call to PushPriceList will not return until all uploaded prices have been stored and all prices have been recalculated. Normally this process runs in the background.",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -517,6 +484,40 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "PriceListID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnknownProducts",
+        "description": "Returns unknown products that could not be processed. Only supported with low product counts.",
+        "type": "array[string] | null",
         "required": false,
         "properties_id": null,
         "one_of": null

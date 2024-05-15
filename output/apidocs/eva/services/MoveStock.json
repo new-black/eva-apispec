@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/MoveStock",
   "description": "Books a set of Movements.\n\nA Movement should have a \u0060ProductID\u0060 to identify the product, an \u0060OrganizationUnitID\u0060 to identify the stock keeping\norganization, a \u0060SourceStockLabelID\u0060 and \u0060DestinationStockLabelID\u0060 (see \u0060GetEnumValues\u0060 with type \u0060StockLabel\u0060) and (of course) a \u0060Quantity\u0060\nto actually book.\n\nSupply a \u0060BackendSystemID\u0060 on the request and \u0060BackendID\u0060\u0027s on the Movements to make the request idempotent.\n\nOptionally supports a \u0060StockMutationReasonID\u0060 and \u0060Remark\u0060 for each Movement.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060MoveStock:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,24 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
-    "B": [
-      {
-        "name": "BackendSystemID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Movements",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "BackendID",
@@ -157,21 +140,21 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Error",
+        "name": "BackendSystemID",
         "description": "",
-        "type": "object | null",
+        "type": "string | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "Movements",
         "description": "",
-        "type": "object | null",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -240,6 +223,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

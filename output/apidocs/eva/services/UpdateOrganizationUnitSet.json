@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/UpdateOrganizationUnitSet",
   "description": "Updates an OrganizationUnitSet.\n\n  Optionally a definition can be provided, which defines a set of filters.\n  Any \u0060OrganizationUnit\u0060 that matches the filters are automatically part of the set.\n\n  To remove a definition from a set, pass it as \u0060null\u0060 or as an empty object to this service. If you don\u0027t want to override\n  it, pass the definition you got back from the \u0060GetOrganizationUnitSet\u0060 service.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060OrganizationUnitSets:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,6 +59,59 @@
   "request_type_id": "B",
   "response_type_id": "F",
   "types": {
+    "D": [
+      {
+        "name": "Negate",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Values",
+        "description": "",
+        "type": "array[string]",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [],
+    "C": [
+      {
+        "name": "CountryFilter",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "IsEmpty",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LanguageFilter",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "TypeFilter",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "BackendID",
@@ -105,77 +159,6 @@
         "type": "integer | null",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "CountryFilter",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "IsEmpty",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LanguageFilter",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "TypeFilter",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "Negate",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Values",
-        "description": "",
-        "type": "array[string]",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [],
-    "F": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
         "one_of": null
       }
     ],
@@ -244,6 +227,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
         "one_of": null
       }
     ]

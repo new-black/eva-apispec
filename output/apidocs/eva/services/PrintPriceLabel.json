@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/PrintPriceLabel",
   "description": "The PrintPriceLabel service",
+  "auth_description": "Requires any user with functionality \u0060PriceLabels:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,6 +66,24 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
+    "C": [
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "Products",
@@ -86,50 +105,6 @@
         "name": "UserTaskID",
         "description": "",
         "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "ProductID",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Quantity",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Success",
-        "description": "",
-        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -198,6 +173,32 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Success",
+        "description": "",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null

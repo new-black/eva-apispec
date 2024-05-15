@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ListProductGiftCards",
   "description": "List the ProductGiftCards\n\n\u0060ProductGiftCard\u0060: an item that describes the giftcard properties of a product with type GiftCard",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ProductGiftCards:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,16 +66,33 @@
   "request_type_id": "B",
   "response_type_id": "F",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "PageConfig",
+        "name": "GiftCardConfigurationID",
         "description": "",
-        "type": "object | null",
+        "type": "integer | null",
         "required": false,
-        "properties_id": "C",
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
+    "E": [],
     "C": [
       {
         "name": "Filter",
@@ -117,56 +135,13 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "GiftCardConfigurationID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [],
-    "F": [
-      {
-        "name": "Error",
+        "name": "PageConfig",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "Result",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "I",
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -233,6 +208,107 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [],
+    "J": [
+      {
+        "name": "CommunicationOptions",
+        "description": "Communication options for digital giftcards",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "GiftCardConfigurationID",
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GiftCardConfigurationName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsDigital",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [
+      {
+        "name": "Filter",
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "description": "",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -320,104 +396,29 @@
         "one_of": null
       }
     ],
-    "J": [
+    "F": [
       {
-        "name": "CommunicationOptions",
-        "description": "Communication options for digital giftcards",
+        "name": "Error",
+        "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "K",
+        "properties_id": "G",
         "one_of": null
       },
       {
-        "name": "GiftCardConfigurationID",
+        "name": "Metadata",
         "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
         "one_of": null
       },
       {
-        "name": "GiftCardConfigurationName",
+        "name": "Result",
         "description": "",
-        "type": "string | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsDigital",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductName",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "K": [],
-    "L": [
-      {
-        "name": "Filter",
-        "description": "",
-        "type": "map[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Limit",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SortDirection",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "SortProperty",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Start",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "I",
         "one_of": null
       }
     ]

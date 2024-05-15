@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/CommitOrderLines",
   "description": "This service allows you to manually commit the stock for the given OrderLineIDs.\nThe response contains whether or not the commitment was successful, per OrderLine.\n\nCommitment can be unsucessful for two reasons:\n\n- No commitment is necessary. This is because it\u0027s an OrderLine that can\u0027t be committed, for example one without a stock product, or because the order type doesn\u0027t allow commitments.\n- Insufficient stock. This service only allows creating a commitment when there\u0027s sufficient available stock. Use the MoveCommitments or UncommitOrderLines services to create available stock.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Commitments:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,6 +66,7 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
+    "C": [],
     "B": [
       {
         "name": "CommitmentStatus",
@@ -88,33 +90,6 @@
         "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [],
-    "D": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Results",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "G",
         "one_of": null
       }
     ],
@@ -209,6 +184,32 @@
         "type": "integer | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Results",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

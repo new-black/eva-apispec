@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ImportReplenishmentProducts",
   "description": "Imports a simple set of ReplenishmentProducts, creating new records and updating existing records.\n\nDoes not support \u0060StartDate\u0060 and \u0060EndDate\u0060, and as such will error when existing records have these set.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Replenishments:Create, Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,16 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
-    "B": [
-      {
-        "name": "Products",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "MaximumQuantity",
@@ -117,21 +108,13 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Error",
+        "name": "Products",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -200,6 +183,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

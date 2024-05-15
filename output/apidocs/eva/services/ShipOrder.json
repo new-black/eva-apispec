@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ShipOrder",
   "description": "Ships the specified order. When Lines are specified, only those lines will be shipped.\n\nShipping of Lines includes:\n- Activating giftcards\n- Mutating the stock of the products\n- Potentially invoicing of the lines\n- Validating requirements",
+  "auth_description": "Requires any user with functionality \u0060ConfirmShipment:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,48 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
-    "B": [
-      {
-        "name": "FinalShipment",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Force",
-        "description": "Use with caution.\nSet this to true if you want to skip requirements that would otherwise cause validation errors. Like shipping delivery lines, which you usually don\u0027t want from a shop.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Lines",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ShippedFromOrganizationUnitID",
-        "description": "The OrganizationUnit the shipment was physically shipped from.",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "OrderLineID",
@@ -149,43 +108,43 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Error",
+        "name": "FinalShipment",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Messages",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "ShipmentIDs",
-        "description": "",
-        "type": "array[integer] | null",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ShippedOrderLineIDs",
+        "name": "Force",
+        "description": "Use with caution.\nSet this to true if you want to skip requirements that would otherwise cause validation errors. Like shipping delivery lines, which you usually don\u0027t want from a shop.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Lines",
         "description": "",
-        "type": "array[integer] | null",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippedFromOrganizationUnitID",
+        "description": "The OrganizationUnit the shipment was physically shipped from.",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -272,6 +231,48 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Messages",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "ShipmentIDs",
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippedOrderLineIDs",
+        "description": "",
+        "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
         "one_of": null

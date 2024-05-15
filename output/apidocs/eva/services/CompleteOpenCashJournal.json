@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/CompleteOpenCashJournal",
   "description": "Completes the opening of a cash journal. After this service has been called, it\u0027s possible to make cash transactions on this device.\n\nThis service expects a list of the coins and notes that were counted.\n\nWhen the opening amount is different from last period\u0027s closing amount, it\u0027s required that a correction is provided for this difference\nin \u0060OpeningDeviationCorrection\u0060. This simply consists of a description and an amount.\n\nFor cash journals that either do not use or ignore cash journals, most properties will automatically be set to the expected amounts. Should you\nwant to enforce validation, regardless, specify the \u0060ForceValidation\u0060 as \u0060true\u0060.\n\nPending cash deposits need to be accounted for as well - supply their \u0060ID\u0060s as \u0060PendingCashDeposits\u0060. Do not add the \u0060Amount\u0060 of cash deposits\nto the \u0060TotalAmount\u0060, as the user cannot usually verify the cash deposit content.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060CashJournals:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -51,6 +52,32 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
+    "C": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReasonID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "BankNotes",
@@ -125,50 +152,6 @@
         "one_of": null
       }
     ],
-    "C": [
-      {
-        "name": "Amount",
-        "description": "",
-        "type": "float",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ReasonID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      }
-    ],
     "E": [
       {
         "name": "Code",
@@ -234,6 +217,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/CreateStockAllocationRule",
   "description": "Creates a StockAllocationRule for the SupplierOrganizationUnitID and OrganizationUnitID.\n\n- If \u0060ProductID\u0060 is left null, this is a \u0027catch-all\u0027 rule, meaning that the rule applies to all products (but it can still be overriden by a rule with a specific \u0060ProductID\u0060).\nOnly a reservation can be a catch-all rule, a limitation must specify a \u0060ProductID\u0060 or a \u0060ProductSearchTemplateID\u0060.\n- \u0060RefillPeriodInDays\u0060 is ignored when the Type is not a \u0060Limitation\u0060, as only a \u0060Limitation\u0060 can be refilled.\n- If \u0060ValueType\u0060 is \u0060Percentage\u0060, then \u0060Value\u0060 must be between 0 and 100.\n- \u0060OrganizationUnitSupplierID\u0060 is a reference to a supplier relationship between OrganizationUnits, not to an OrganizationUnit.\nThis is for example the supplier relationship between a warehouse and a store. Available OrganizationUnitSuppliers can be found through \u0060ListOrganizationUnitSuppliers\u0060.\n- When left empty, OrganizationUnitID defaults to the OrganizationUnitID on the OrganizationUnitSupplier. So if the supplier relationship is between a warehouse and a store, this will\ndefault to the store. When specified, the OrganizationUnitID *must* be one that the supplier of the relationship *directly* supplies to.\nFor example, if a supplier relationship exists between a warehouse and a country OrganizationUnit then you *can\u0027t* specify a store that falls\nunder that country OrganizationUnit. In that case, you should create a StockAllocationRule between the country and the store,\nnot between the warehouse and the store.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060StockAllocationRules:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,6 +59,8 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
+    "C": [],
+    "D": [],
     "B": [
       {
         "name": "EndDate",
@@ -148,34 +151,6 @@
         "one_of": null
       }
     ],
-    "C": [],
-    "D": [],
-    "E": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      }
-    ],
     "F": [
       {
         "name": "Code",
@@ -241,6 +216,32 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/PushReturnOrder",
   "description": "Creates a returnorder with all specified data\n\nIt is required to send the identifier for the ReturnOrder of the external system by providing a BackendSystemID and a BackendID.\n\nA return is based of an OriginalOrder. This order can be identifier by the OriginalBackendID or the OriginalOrderID. One of those is required.\n\nIf the stock is already received, set the \u0060AlreadyReceived\u0060 to true. This will ship the order immediately.\n\nIf the stock is already received and the open amount should be refunded directly, set \u0060AutoRefund\u0060 to true.\n\nThe Lines have to be identified by the original line, this should be done by providing the OriginalBackendID or the OriginalOrderLineID.\nIf those are not available the CustomID of the product can be set, but matching based on that is not advised.",
+  "auth_description": "Requires any user with functionality \u0060PushReturnOrder:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,6 +66,98 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
+    "C": [
+      {
+        "name": "CustomID",
+        "description": "Article number of the product from the 3rd party",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginalBackendID",
+        "description": "ID of the original orderline from the 3rd party",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginalOrderLineID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "description": "Quantity that has been returned, positive",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Remark",
+        "description": "Remark describing something return related",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnReasonID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxAmount",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxRate",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnitPrice",
+        "description": "",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "AlreadyReceived",
@@ -179,132 +272,6 @@
         "one_of": null
       }
     ],
-    "C": [
-      {
-        "name": "CustomID",
-        "description": "Article number of the product from the 3rd party",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OriginalBackendID",
-        "description": "ID of the original orderline from the 3rd party",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OriginalOrderLineID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Quantity",
-        "description": "Quantity that has been returned, positive",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Remark",
-        "description": "Remark describing something return related",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ReturnReasonID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TaxAmount",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TaxRate",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UnitPrice",
-        "description": "",
-        "type": "float",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [
-      {
-        "name": "AlreadyExists",
-        "description": "If the order with the specified BackendID already existed",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      }
-    ],
     "F": [
       {
         "name": "Code",
@@ -370,6 +337,40 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "AlreadyExists",
+        "description": "If the order with the specified BackendID already existed",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

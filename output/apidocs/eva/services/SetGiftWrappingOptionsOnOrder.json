@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/SetGiftWrappingOptionsOnOrder",
   "description": "Set the GiftWrapping options on an Order.\n\nThere are 4 options:\n\n - Wrap the complete order: set \u0060WrapOrder\u0060 to \u0060true\u0060\n - Wrap the complete order individually: set \u0060WrapIndividually\u0060 to \u0060true\u0060\n - Wrap parts of the order: set \u0060GiftWraps\u0060 with a set of wraps\n - Wrap nothing: set everything to \u0060null\u0060\n\nA \u0060GiftWrap\u0060 consists out of an optional \u0060Message\u0060 (could be printed on a card), an optional \u0060GreetingCardProductID\u0060 and a set of \u0060WrapLines\u0060. A\n\u0060WrapLine\u0060 has an \u0060OrderLineID\u0060 and a \u0060Quantity\u0060.\n\nIf a \u0060GreetingCardProductID\u0060 and/or \u0060Message\u0060 is desired when the order should be completely wrapped, or without any giftwrapping at all, set these\nproperties on root level. In all other cases they should be set on the \u0060GiftWraps\u0060.",
+  "auth_description": "This service does not require authentication.",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,6 +66,50 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
+    "D": [
+      {
+        "name": "OrderLineID",
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "GreetingCardProductID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Lines",
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "GiftWraps",
@@ -112,68 +157,6 @@
         "type": "boolean",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "GreetingCardProductID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Lines",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Message",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "OrderLineID",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Quantity",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
         "one_of": null
       }
     ],
@@ -242,6 +225,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

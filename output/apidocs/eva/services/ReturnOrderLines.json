@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ReturnOrderLines",
   "description": "The ReturnOrderLines service",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ReturnOrder:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,56 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
-    "B": [
-      {
-        "name": "CreateInOriginalOrganizationUnit",
-        "description": "Attach the order to the same OrganizationUnit as the returned order",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LineActionType",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "Lines",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StockOrganizationUnitID",
-        "description": "When the stock should be returned to a specific OrganizationUnit.\n\nThe available OrganizationUnits are returned from the GetReturnableStatusForOrder.StockOrganizationUnits",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TargetOrderID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [],
     "D": [
       {
@@ -174,27 +125,51 @@
         "one_of": null
       }
     ],
-    "E": [
+    "B": [
       {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
+        "name": "CreateInOriginalOrganizationUnit",
+        "description": "Attach the order to the same OrganizationUnit as the returned order",
+        "type": "boolean",
         "required": false,
-        "properties_id": "F",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "LineActionType",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "Lines",
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "D",
         "one_of": null
       },
       {
         "name": "OrderID",
         "description": "",
-        "type": "integer",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StockOrganizationUnitID",
+        "description": "When the stock should be returned to a specific OrganizationUnit.\n\nThe available OrganizationUnits are returned from the GetReturnableStatusForOrder.StockOrganizationUnits",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TargetOrderID",
+        "description": "",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -263,6 +238,32 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "description": "",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null

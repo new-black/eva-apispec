@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ImportProducts",
   "description": "This service lets you create and update a set of products and their content.\n\nThe set is products is hierarchical in nature. For example, if you have a shirt that comes in 3 colors and 5 sizes per color, you would normally define a root product that then contains the 3 color products\nand each color product would contain the 5 different sizes, which would be the SKU. How you define the hierarchy is up to you, it\u0027s also fine to have the 3 color products as root products and only have them\ncontain the SKUs, or to forego a hierarchy entirely and just create the SKUs, but creating the root and color products is useful for search and frontend purposes.\n\nAn example request of a hierarchy:\n\n\u0060\u0060\u0060\n{\n  \u0022ID\u0022: \u0022special_shirt\u0022,\n  \u0022Name\u0022: \u0022Special Shirt\u0022,\n  \u0022TaxCode\u0022: \u0022High\u0022,\n  \u0022Variations\u0022: {\n    \u0022Property\u0022: \u0022color_code\u0022,\n    \u0022LogicalLevel\u0022: \u0022color\u0022,\n    \u0022Products\u0022: [\n      {\n        \u0022ID\u0022: \u0022special_shirt_blue\u0022,\n        \u0022Name\u0022: \u0022Special Shirt - Blue\u0022,\n        \u0022VariationValues\u0022: [\n          {\n            \u0022LanguageID\u0022: null,\n            \u0022Value\u0022: \u0022BLUE\u0022\n          }\n        ],\n        \u0022Variations\u0022: {\n          \u0022Property\u0022: \u0022size_code\u0022,\n          \u0022LogicalLevel\u0022: \u0022size\u0022,\n          \u0022Products\u0022: [\n            {\n              \u0022ID\u0022: \u0022sku_special_shirt_blue_xl\u0022,\n              \u0022VariationValues\u0022: [\n                {\n                  \u0022LanguageID\u0022: null,\n                  \u0022Value\u0022: \u0022XL\u0022\n                }\n              ]\n            }\n          ]\n        }\n      }\n    ]\n  }\n}\n\u0060\u0060\u0060",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ImportProducts:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -51,80 +52,8 @@
   "request_type_id": "B",
   "response_type_id": "T",
   "types": {
-    "B": [
-      {
-        "name": "CustomPropertyTypes",
-        "description": "Custom properties used in product content can be defined by specifying their definition in this collection.",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "DownloadImagesInBackground",
-        "description": "When not specified, or explicitly specified as \u0060false\u0060, images will be downloaded while you wait and may cause this service to run for a long time. Defaults to \u0060true\u0060.",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ImageBlobCategory",
-        "description": "A string that identifies the category in which the ProductImages will be stored. It\u0027s optional, when not provided the SystemID will be used instead.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LayerName",
-        "description": "The layer on which the content will be stored. Defaults to \u0027ImportProducts-Base\u0027. If you want to store the content on a different layer, you can specify it here. If the content also\nspecifies a language/country this will be combined with the provided layer name to create a layer name like \u0027\u003Cname\u003E \u003Clanguage\u003E \u003Ccountry\u003E\u0027, so the provided LayerName is not necessarily the absolute\nvalue that is used for the layer, only if you leave LanguageID/CountryID as null on the content.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Products",
-        "description": "The list of products to create or update. If a product does not exist it\u0027s created and if a product with the same ID and SystemID already exists it is updated.",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "RootLogicalLevel",
-        "description": "The LogicalLevel that will be assigned to the root level of a product hierarcy. If not specified a default value is used.\n\nSee ProductVariation.LogicalLevel for more information.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SystemID",
-        "description": "A string that identifies the system that was used to call this service. In combination with a product\u0027s ID, this is what uniquely identifies the product in EVA.\nThe SystemID must be the same for every call, if it\u0027s different from a previous call then new products will be created.",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "Determines the behavior of this service.",
-        "type": "object",
-        "required": false,
-        "properties_id": "S",
-        "one_of": null
-      },
-      {
-        "name": "WaitForProductComposition",
-        "description": "By default this service only blocks for the time that it takes to store the requested modifications. After that time, some processing still needs to happen before the product is fully ready and searchable, but this happens in the background.\nIf this parameter is specified as true then this service blocks for the full duration that it takes to complete the full process.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
+    "D": [],
+    "E": [],
     "C": [
       {
         "name": "CategoryID",
@@ -175,8 +104,492 @@
         "one_of": null
       }
     ],
-    "D": [],
-    "E": [],
+    "H": [
+      {
+        "name": "DeliveryOnly",
+        "description": "The product won\u0027t be available for endless aisle pickup from shop.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DisableBackorder",
+        "description": "The product won\u0027t be orderable if there is no available stock.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DisableDelivery",
+        "description": "The product will be unavailable for delivery.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DisablePickup",
+        "description": "The product won\u0027t be available from a shop at all.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NonSellable",
+        "description": "Indicates the product isn\u0027t sellable.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PreRelease",
+        "description": "The product will be unavailable until the pre-order date.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UseUp",
+        "description": "Indicates the product won\u0027t be back in store and all current stock is all there is going to be.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "AssortmentCode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductStatus",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "StartDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "ID",
+        "description": "The unique identifier for the image. Optional, if null then an ID is generated based on the hash of the ImageUrl",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageData",
+        "description": "The raw image data. Only required if ImageUrl is left empty.",
+        "type": "binary | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageUrl",
+        "description": "Where can the image be downloaded? Required unless ImageData is provided.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsPrimaryImage",
+        "description": "If an image is specified as IsPrimaryImage = true then it will be used as the primary image on the product.\nIf there is for some reason multiple images for a product that have IsPrimaryImage set to true then the last image that have this set will become the actual primary image.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LocationType",
+        "description": "How the image should be stored. Usually empty.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MimeType",
+        "description": "The image mime type. Optional, if null then the mime type will be guessed by the ImageUrl",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "The human readable name of the image. Optional, if null then the name will be the ID of the image.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Sequence",
+        "description": "The sequence number of the image, can be used to determine the display order of images and will be used to determine the primary image of the product.\n\nSmaller numbers mean a higher priority.\n\nBy default this will be null and the sequence of the images will be determined by their ordering in the Images array.\n\nThe number provided here does not necessarily translate to the actual sequence number stored in EVA, only the relative order will be used. Given the sequence 1, 2, 4, 7 the actual sequence stored in EVA\nwill be 0, 1, 2, 3.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "PropertyName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "CountryID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomContent",
+        "description": "",
+        "type": "map[any] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Images",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "LanguageID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LongDescription",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MarketingDescription",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PublicationStatuses",
+        "description": "The publication status determines the visibility of the product. A product generally won\u0027t be visible to non-employee users unless it has publication status \u0027public\u0027.",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShortDescription",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Tags",
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UniqueSellingPointBlobIDs",
+        "description": "",
+        "type": "array[guid] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UniqueSellingPointTexts",
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "XDimension",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "YDimension",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      }
+    ],
+    "M": [],
+    "N": [],
+    "L": [
+      {
+        "name": "BackendID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DataType",
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "EnumValues",
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Handler",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsArray",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsRequired",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderType",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      }
+    ],
+    "O": [
+      {
+        "name": "AllowCustomPricing",
+        "description": "Indicates if custom pricing on the product is allowed.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BundleProduct",
+        "description": "Indicates the product is of a bundle type.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GiftCard",
+        "description": "A giftcard product.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Insurance",
+        "description": "Indicates if the product is an insurance product.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Service",
+        "description": "A non-physical product that represents a service of some sort.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Stock",
+        "description": "A normal stock-keeping product. This will be the default if not specified.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "P": [
+      {
+        "name": "Barcode",
+        "description": "The barcode of the product. Must be unique.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "description": "The quantity of the product (in the given unit of measure) that the barcode represents.",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnitOfMeasureName",
+        "description": "The name of the unit of measure to use for this barcode. If not specified, \u0027Each\u0027 will be used. Must be created beforehand.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "Q": [
+      {
+        "name": "CountryID",
+        "description": "Can be left null if the variation value isn\u0027t culture dependent.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LanguageID",
+        "description": "Can be left null if the variation value isn\u0027t culture dependent.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "R": [
+      {
+        "name": "LogicalLevel",
+        "description": "The LogicalLevel of a product defines the \u0027level\u0027 on which the product can be thought to sit in the hierarchy.\n\nFor example, the various different colors of a shirt can be thought to have LogicalLevel = \u0027color\u0027 and the actual SKU might have LogicalLevel = \u0027size\u0027 or \u0027sku\u0027.\n\nYou are free to use any value, but it\u0027s recommended to keep this consistent between all products, or at least between products of the same kind, as it\u0027s a useful way to\nstructure a frontend by for example filtering on the color level and only show sizes when navigating to the product detail.",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Products",
+        "description": "The actual variations of the product on the specified LogicalLevel.",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Property",
+        "description": "The property on which the product hierarchy varies. For example \u0027size\u0027 or \u0027color\u0027.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "F": [
       {
         "name": "Assortments",
@@ -387,538 +800,76 @@
         "one_of": null
       }
     ],
-    "G": [
+    "S": [],
+    "B": [
       {
-        "name": "AssortmentCode",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "EndDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductStatus",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "StartDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "H": [
-      {
-        "name": "DeliveryOnly",
-        "description": "The product won\u0027t be available for endless aisle pickup from shop.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DisableBackorder",
-        "description": "The product won\u0027t be orderable if there is no available stock.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DisableDelivery",
-        "description": "The product will be unavailable for delivery.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DisablePickup",
-        "description": "The product won\u0027t be available from a shop at all.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NonSellable",
-        "description": "Indicates the product isn\u0027t sellable.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PreRelease",
-        "description": "The product will be unavailable until the pre-order date.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UseUp",
-        "description": "Indicates the product won\u0027t be back in store and all current stock is all there is going to be.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "I": [
-      {
-        "name": "CountryID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CustomContent",
-        "description": "",
-        "type": "map[any] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Images",
-        "description": "",
+        "name": "CustomPropertyTypes",
+        "description": "Custom properties used in product content can be defined by specifying their definition in this collection.",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "J",
+        "properties_id": "C",
         "one_of": null
       },
       {
-        "name": "LanguageID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LongDescription",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MarketingDescription",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PublicationStatuses",
-        "description": "The publication status determines the visibility of the product. A product generally won\u0027t be visible to non-employee users unless it has publication status \u0027public\u0027.",
-        "type": "array[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ShortDescription",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Tags",
-        "description": "",
-        "type": "array[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UniqueSellingPointBlobIDs",
-        "description": "",
-        "type": "array[guid] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UniqueSellingPointTexts",
-        "description": "",
-        "type": "array[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "XDimension",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      },
-      {
-        "name": "YDimension",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      }
-    ],
-    "J": [
-      {
-        "name": "ID",
-        "description": "The unique identifier for the image. Optional, if null then an ID is generated based on the hash of the ImageUrl",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ImageData",
-        "description": "The raw image data. Only required if ImageUrl is left empty.",
-        "type": "binary | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ImageUrl",
-        "description": "Where can the image be downloaded? Required unless ImageData is provided.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsPrimaryImage",
-        "description": "If an image is specified as IsPrimaryImage = true then it will be used as the primary image on the product.\nIf there is for some reason multiple images for a product that have IsPrimaryImage set to true then the last image that have this set will become the actual primary image.",
+        "name": "DownloadImagesInBackground",
+        "description": "When not specified, or explicitly specified as \u0060false\u0060, images will be downloaded while you wait and may cause this service to run for a long time. Defaults to \u0060true\u0060.",
         "type": "boolean | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "LocationType",
-        "description": "How the image should be stored. Usually empty.",
+        "name": "ImageBlobCategory",
+        "description": "A string that identifies the category in which the ProductImages will be stored. It\u0027s optional, when not provided the SystemID will be used instead.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "MimeType",
-        "description": "The image mime type. Optional, if null then the mime type will be guessed by the ImageUrl",
+        "name": "LayerName",
+        "description": "The layer on which the content will be stored. Defaults to \u0027ImportProducts-Base\u0027. If you want to store the content on a different layer, you can specify it here. If the content also\nspecifies a language/country this will be combined with the provided layer name to create a layer name like \u0027\u003Cname\u003E \u003Clanguage\u003E \u003Ccountry\u003E\u0027, so the provided LayerName is not necessarily the absolute\nvalue that is used for the layer, only if you leave LanguageID/CountryID as null on the content.",
         "type": "string | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "The human readable name of the image. Optional, if null then the name will be the ID of the image.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Sequence",
-        "description": "The sequence number of the image, can be used to determine the display order of images and will be used to determine the primary image of the product.\n\nSmaller numbers mean a higher priority.\n\nBy default this will be null and the sequence of the images will be determined by their ordering in the Images array.\n\nThe number provided here does not necessarily translate to the actual sequence number stored in EVA, only the relative order will be used. Given the sequence 1, 2, 4, 7 the actual sequence stored in EVA\nwill be 0, 1, 2, 3.",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "K": [
-      {
-        "name": "PropertyName",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Value",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "L": [
-      {
-        "name": "BackendID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DataType",
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "EnumValues",
-        "description": "",
-        "type": "map[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Handler",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsArray",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsRequired",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderType",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "N",
-        "one_of": null
-      }
-    ],
-    "M": [],
-    "N": [],
-    "O": [
-      {
-        "name": "AllowCustomPricing",
-        "description": "Indicates if custom pricing on the product is allowed.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BundleProduct",
-        "description": "Indicates the product is of a bundle type.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "GiftCard",
-        "description": "A giftcard product.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Insurance",
-        "description": "Indicates if the product is an insurance product.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Service",
-        "description": "A non-physical product that represents a service of some sort.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Stock",
-        "description": "A normal stock-keeping product. This will be the default if not specified.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "P": [
-      {
-        "name": "Barcode",
-        "description": "The barcode of the product. Must be unique.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Quantity",
-        "description": "The quantity of the product (in the given unit of measure) that the barcode represents.",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UnitOfMeasureName",
-        "description": "The name of the unit of measure to use for this barcode. If not specified, \u0027Each\u0027 will be used. Must be created beforehand.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "Q": [
-      {
-        "name": "CountryID",
-        "description": "Can be left null if the variation value isn\u0027t culture dependent.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LanguageID",
-        "description": "Can be left null if the variation value isn\u0027t culture dependent.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Value",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "R": [
-      {
-        "name": "LogicalLevel",
-        "description": "The LogicalLevel of a product defines the \u0027level\u0027 on which the product can be thought to sit in the hierarchy.\n\nFor example, the various different colors of a shirt can be thought to have LogicalLevel = \u0027color\u0027 and the actual SKU might have LogicalLevel = \u0027size\u0027 or \u0027sku\u0027.\n\nYou are free to use any value, but it\u0027s recommended to keep this consistent between all products, or at least between products of the same kind, as it\u0027s a useful way to\nstructure a frontend by for example filtering on the color level and only show sizes when navigating to the product detail.",
-        "type": "string",
-        "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
         "name": "Products",
-        "description": "The actual variations of the product on the specified LogicalLevel.",
+        "description": "The list of products to create or update. If a product does not exist it\u0027s created and if a product with the same ID and SystemID already exists it is updated.",
         "type": "array[object]",
         "required": true,
         "properties_id": "F",
         "one_of": null
       },
       {
-        "name": "Property",
-        "description": "The property on which the product hierarchy varies. For example \u0027size\u0027 or \u0027color\u0027.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "S": [],
-    "T": [
-      {
-        "name": "CreatedProductIDs",
-        "description": "The EVA IDs of the products that were newly created by this call.",
-        "type": "array[integer] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "U",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "V",
-        "one_of": null
-      },
-      {
-        "name": "PreviewResult",
-        "description": "If the Type of the request was PreviewOnly this property will contain the product structure that would be generated.",
+        "name": "RootLogicalLevel",
+        "description": "The LogicalLevel that will be assigned to the root level of a product hierarcy. If not specified a default value is used.\n\nSee ProductVariation.LogicalLevel for more information.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ProductMap",
-        "description": "Contains an entry for every product mapping the input string ID to its internal EVA integer ID.",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "W",
+        "name": "SystemID",
+        "description": "A string that identifies the system that was used to call this service. In combination with a product\u0027s ID, this is what uniquely identifies the product in EVA.\nThe SystemID must be the same for every call, if it\u0027s different from a previous call then new products will be created.",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "UpdatedProductIDs",
-        "description": "The EVA IDs of the products were touched by this call.",
-        "type": "array[integer] | null",
+        "name": "Type",
+        "description": "Determines the behavior of this service.",
+        "type": "object",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "WaitForProductComposition",
+        "description": "By default this service only blocks for the time that it takes to store the requested modifications. After that time, some processing still needs to happen before the product is fully ready and searchable, but this happens in the background.\nIf this parameter is specified as true then this service blocks for the full duration that it takes to complete the full process.",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -1005,6 +956,56 @@
         "name": "ID",
         "description": "",
         "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "T": [
+      {
+        "name": "CreatedProductIDs",
+        "description": "The EVA IDs of the products that were newly created by this call.",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "U",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "V",
+        "one_of": null
+      },
+      {
+        "name": "PreviewResult",
+        "description": "If the Type of the request was PreviewOnly this property will contain the product structure that would be generated.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductMap",
+        "description": "Contains an entry for every product mapping the input string ID to its internal EVA integer ID.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "W",
+        "one_of": null
+      },
+      {
+        "name": "UpdatedProductIDs",
+        "description": "The EVA IDs of the products were touched by this call.",
+        "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
         "one_of": null

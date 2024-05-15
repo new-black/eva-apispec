@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/UpdateDevice",
   "description": "Updates a device",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Infrastructure:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,109 +59,6 @@
   "request_type_id": "B",
   "response_type_id": "K",
   "types": {
-    "B": [
-      {
-        "name": "Address",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "AssemblyName",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BackendID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Data",
-        "description": "",
-        "type": "one-of[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": [
-          {
-            "name": "ThermalPrinterDeviceTypeData",
-            "properties_id": "D"
-          },
-          {
-            "name": "FiscalThermalPrinterDeviceTypeData",
-            "properties_id": "E"
-          },
-          {
-            "name": "PinDeviceTypeData",
-            "properties_id": "F"
-          },
-          {
-            "name": "SafeDeviceTypeData",
-            "properties_id": "G"
-          },
-          {
-            "name": "WatchtowerDeviceTypeData",
-            "properties_id": "H"
-          }
-        ]
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PrinterTypeID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StationID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TypeID",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [],
     "D": [
       {
@@ -218,56 +116,7 @@
         "one_of": null
       }
     ],
-    "H": [
-      {
-        "name": "HardwareID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LastConfigUpdate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LiveGuardApiKey",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MenderID",
-        "description": "",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StatusData",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "I",
-        "one_of": null
-      },
-      {
-        "name": "Virtual",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
+    "J": [],
     "I": [
       {
         "name": "CatalogTaskLastRun",
@@ -422,22 +271,156 @@
         "one_of": null
       }
     ],
-    "J": [],
-    "K": [
+    "H": [
       {
-        "name": "Error",
+        "name": "HardwareID",
         "description": "",
-        "type": "object | null",
+        "type": "string | null",
         "required": false,
-        "properties_id": "L",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "LastConfigUpdate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LiveGuardApiKey",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MenderID",
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StatusData",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "M",
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "Virtual",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "Address",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AssemblyName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "description": "",
+        "type": "one-of[object] | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": [
+          {
+            "name": "ThermalPrinterDeviceTypeData",
+            "properties_id": "D"
+          },
+          {
+            "name": "FiscalThermalPrinterDeviceTypeData",
+            "properties_id": "E"
+          },
+          {
+            "name": "PinDeviceTypeData",
+            "properties_id": "F"
+          },
+          {
+            "name": "SafeDeviceTypeData",
+            "properties_id": "G"
+          },
+          {
+            "name": "WatchtowerDeviceTypeData",
+            "properties_id": "H"
+          }
+        ]
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PrinterTypeID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StationID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TypeID",
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -506,6 +489,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
         "one_of": null
       }
     ]

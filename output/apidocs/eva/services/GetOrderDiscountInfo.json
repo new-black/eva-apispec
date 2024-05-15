@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/GetOrderDiscountInfo",
   "description": "This services returns info about the discounts on the given order",
+  "auth_description": "This service does not require authentication.",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -75,37 +76,81 @@
         "one_of": null
       }
     ],
-    "C": [
+    "E": [
       {
-        "name": "Discounts",
+        "name": "Code",
         "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DiscountOrderLineID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "OrderLineID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DiscountOrderLineID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Lines",
+        "description": "If the manual discount is applied to a subset of lines, this will contain those lines. If empty, the discount is applied to the order.",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "G",
         "one_of": null
       },
       {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
+        "name": "Reason",
+        "description": "Reason for the manual discount",
+        "type": "string | null",
         "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "I",
-        "one_of": null
-      },
-      {
-        "name": "OrderLineDiscounts",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "J",
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -207,84 +252,6 @@
         "one_of": null
       }
     ],
-    "E": [
-      {
-        "name": "Code",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DiscountOrderLineID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "F": [
-      {
-        "name": "Amount",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DiscountOrderLineID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Lines",
-        "description": "If the manual discount is applied to a subset of lines, this will contain those lines. If empty, the discount is applied to the order.",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "Reason",
-        "description": "Reason for the manual discount",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "G": [
-      {
-        "name": "OrderLineID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Quantity",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "H": [
       {
         "name": "Code",
@@ -353,6 +320,24 @@
         "one_of": null
       }
     ],
+    "K": [
+      {
+        "name": "DiscountAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DiscountID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "J": [
       {
         "name": "Details",
@@ -371,21 +356,37 @@
         "one_of": null
       }
     ],
-    "K": [
+    "C": [
       {
-        "name": "DiscountAmount",
+        "name": "Discounts",
         "description": "",
-        "type": "float",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "D",
         "one_of": null
       },
       {
-        "name": "DiscountID",
+        "name": "Error",
         "description": "",
-        "type": "integer",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "OrderLineDiscounts",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
         "one_of": null
       }
     ]

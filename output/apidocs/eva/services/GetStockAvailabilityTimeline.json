@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/GetStockAvailabilityTimeline",
   "description": "Returns the expected availability timeline for the provided \u0060ProductIDs\u0060, from the perspective of the provided \u0060OrganizationUnitID\u0060 (optional, defaults to the user\u0027s current OrganizationUnitID).\n\nThe timeline is ordered chronologically and includes all events that are relevant to the availability of the requested products, including events that happen on the suppliers of the requested OrganizationUnit (such as PurchaseOrder receipts).\n\nAdditionally, a \u0060FromDate\u0060 (inclusive) and \u0060ToDate\u0060 (exclusive) can be used to filter the response by date and a \u0060Type\u0060 can be provided to only return timeline items of a certain type.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,6 +66,7 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
+    "C": [],
     "B": [
       {
         "name": "FromDate",
@@ -104,33 +106,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "C",
-        "one_of": null
-      }
-    ],
-    "C": [],
-    "D": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "TimelineItems",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "G",
         "one_of": null
       }
     ],
@@ -313,6 +288,32 @@
         "type": "object",
         "required": false,
         "properties_id": "C",
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "TimelineItems",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

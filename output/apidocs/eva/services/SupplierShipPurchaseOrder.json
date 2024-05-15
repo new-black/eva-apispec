@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/SupplierShipPurchaseOrder",
   "description": "Ships a Purchase Order with specified lines. Supply either \u0060ID\u0060 or a \u0060BackendID\u0060/\u0060BackendSystemID\u0060 combination to\nidentify the order.\n\nIf you wish to receive on behalf of a different organization, identify that organization by specifying a\n\u0060ShipToOrganizationUnitBackendID\u0060. Should this organization reside in a different cluster, this call will be proxied\nto that cluster for you.",
+  "auth_description": "Requires any user with functionality \u0060ThirdPartyShipPurchaseOrder:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,98 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "F",
   "types": {
-    "B": [
-      {
-        "name": "BackendID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BackendSystemID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Confirmations",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ShipToOrganizationUnitBackendID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "BackendID",
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CustomFieldsByBackendID",
-        "description": "",
-        "type": "map[object] | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "ExpectedDeliveryDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Lines",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "TrackingCode",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TrackingLink",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "D": [
       {
         "name": "ArrayValues",
@@ -241,21 +150,95 @@
         "one_of": null
       }
     ],
-    "F": [
+    "C": [
       {
-        "name": "Error",
+        "name": "BackendID",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "CustomFieldsByBackendID",
         "description": "",
-        "type": "object | null",
+        "type": "map[object] | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "ExpectedDeliveryDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Lines",
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "TrackingCode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TrackingLink",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "BackendID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendSystemID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Confirmations",
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipToOrganizationUnitBackendID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -324,6 +307,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
         "one_of": null
       }
     ]

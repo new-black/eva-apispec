@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/CreateTaxRate",
   "description": "Creates a tax rate.\n\n* \u0060CountryID\u0060 is a foreign key to the Countries table, which uses the ISO 3166-2 standard as ID\n* \u0060CountrySubdivisionID\u0060 is a foreign key to the CountrySubdivisions table, which uses the ISO 3166-2 standard as ID\n* \u0060TaxCodeID\u0060 is a foreign key to the TaxCodes table, which can be listed using the \u0060ListTaxCodes\u0060 service\n\nPercentages are a human readable formatted result of a fraction - applications use a \u0060Rate\u0060 instead as an actual result of fraction to maintain\nprecision and integrity. If you wish to set a 21% tax percentage, that means a 1.21 tax rate. Setting a rate of 1.00 implies a 0% tax percentage,\nand setting to 2.00 would mean a rediculous 100% tax percentage, doubling prices. You can probably tell that a \u0060Rate\u0060 of 2.00 here is much more\nreadable than a 100% increase, but hey; nobody\u0027s forcing you to stick to percentages. At least - we\u0027re not!\n\nOh, and you can set a tax rate of 0.00, which would mean it will be fully sponsored by the government and will be free to purchase. The services\nblock anything lower than 0.00 and higher than 2.00 for sanity reasons. Will recap when governments gone mad.\n\n:key: The combination of \u0060CountryID\u0060, \u0060CountrySubdivision\u0060 and \u0060TaxCodeID\u0060 is unique and will be enforced by EVA.\n\n:point_right: \u0060StartDate\u0060 and \u0060EndDate\u0060 are optional, and can be used to transition from one rate to a next when it changes. Both these dates\nare inclusive, meaning you\u0027d want to set the \u0060EndDate\u0060 of the expiring tax rate to 2018-12-31 and the \u0060StartDate\u0060 of the new tax rate to\n2019-01-01 (for example).",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060TaxRates:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -51,6 +52,7 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
+    "C": [],
     "B": [
       {
         "name": "Category",
@@ -106,33 +108,6 @@
         "type": "integer",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [],
-    "D": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
         "one_of": null
       }
     ],
@@ -201,6 +176,32 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ListAdyenCheckoutGateways",
   "description": "Retrieve all gateways supported by the current configuration of Adyen, matched with the existing payment types in EVA. \u0060ID\u0060 is it\u0027s unique\nidentifier, \u0060Name\u0060 is something that you can show the customer.\n\nIt is required to supply an \u0060OrderID\u0060 or, the \u0060CurrencyID\u0060 and \u0060Amount\u0060.\nWhen no amount is given, the open amount of the order we be used.\nIt is recommended to specify the \u0060Channel\u0060:\n- Web: 1\n- iOS: 2\n- Android: 3\n\nRecommended way of calling this service is with only an \u0060OrderID\u0060 and \u0060Channel\u0060.\n\n* If present, the \u0060Details\u0060 list will show a list of properties that this gateway supports. Every detail is identied with the \u0060Key\u0060, and to support\ntyped inputs, the \u0060Type\u0060 is also given. If the \u0060Type\u0060 is \u0060select\u0060, one of the items inside the \u0060Items\u0060 list needs to be chosen. Here, again, the\n\u0060ID\u0060 is it\u0027s unique identifier, and the \u0060Name\u0060 is something you can show the customer.\n* If present, the \u0060Brands\u0060 list will show a list of supported brands within this payment method, e.g. to list creditcards (mc, visa, amex, ...).\n\nWhen creating the payment, use the \u0060ID\u0060 of the gateway as \u0060GatewayID\u0060. Fill the payment properties \u0060Details\u0060 with the properties specific to the\ngateway, as indicated by this response\u0027s \u0060Details\u0060 list.",
+  "auth_description": "This service does not require authentication.",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,6 +66,7 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
+    "C": [],
     "B": [
       {
         "name": "Amount",
@@ -96,33 +98,6 @@
         "type": "integer | null",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [],
-    "D": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Gateways",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
         "one_of": null
       }
     ],
@@ -162,6 +137,24 @@
       {
         "name": "Type",
         "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -210,24 +203,6 @@
         "one_of": null
       }
     ],
-    "G": [
-      {
-        "name": "ID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "H": [
       {
         "name": "ExternalIDs",
@@ -251,6 +226,32 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Gateways",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
         "one_of": null
       }
     ]

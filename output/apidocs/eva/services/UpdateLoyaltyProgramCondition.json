@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/UpdateLoyaltyProgramCondition",
   "description": "Update an existing LoyaltyProgramCondition",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LoyaltyPrograms:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -51,154 +52,11 @@
   "request_type_id": "B",
   "response_type_id": "BO",
   "types": {
-    "B": [
-      {
-        "name": "Data",
-        "description": "",
-        "type": "one-of[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": [
-          {
-            "name": "CouponOriginatingOrderOrganizationUnitConditionData",
-            "properties_id": "D"
-          },
-          {
-            "name": "CouponValidityConditionData",
-            "properties_id": "E"
-          },
-          {
-            "name": "CustomerAgeConditionData",
-            "properties_id": "H"
-          },
-          {
-            "name": "CustomerConditionData",
-            "properties_id": "I"
-          },
-          {
-            "name": "LoyaltyPointsConditionData",
-            "properties_id": "L"
-          },
-          {
-            "name": "MaximumUsePerUserConditionData",
-            "properties_id": "M"
-          },
-          {
-            "name": "OldUserFieldConditionData",
-            "properties_id": "N"
-          },
-          {
-            "name": "OrderAmountConditionData",
-            "properties_id": "Q"
-          },
-          {
-            "name": "OrderCustomFieldConditionData",
-            "properties_id": "R"
-          },
-          {
-            "name": "OrderLineCustomFieldConditionData",
-            "properties_id": "X"
-          },
-          {
-            "name": "OrderPropertiesConditionData",
-            "properties_id": "Y"
-          },
-          {
-            "name": "OrderTypeConditionData",
-            "properties_id": "BA"
-          },
-          {
-            "name": "OrganizationUnitConditionData",
-            "properties_id": "BC"
-          },
-          {
-            "name": "OrganizationUnitTypeConditionData",
-            "properties_id": "BD"
-          },
-          {
-            "name": "ProductConditionData",
-            "properties_id": "BF"
-          },
-          {
-            "name": "ProductRequirementConditionData",
-            "properties_id": "BH"
-          },
-          {
-            "name": "StockLabelConditionData",
-            "properties_id": "BI"
-          },
-          {
-            "name": "UserCustomFieldConditionData",
-            "properties_id": "BJ"
-          },
-          {
-            "name": "UserRoleConditionData",
-            "properties_id": "BK"
-          },
-          {
-            "name": "UserTypeConditionData",
-            "properties_id": "BL"
-          },
-          {
-            "name": "EmptyConditionData",
-            "properties_id": "BN"
-          }
-        ]
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [],
     "D": [],
-    "E": [
+    "G": [
       {
-        "name": "DaysValid",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OriginatingOrderProductsToDetermineRequestedDate",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "UsableAfterXDays",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UsableFrom",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UsableTill",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UseCouponFirstUsageDateForDaysValid",
+        "name": "ExactMatch",
         "description": "",
         "type": "boolean",
         "required": false,
@@ -206,7 +64,7 @@
         "one_of": null
       },
       {
-        "name": "UseFurthestDate",
+        "name": "Exclude",
         "description": "",
         "type": "boolean",
         "required": false,
@@ -214,9 +72,33 @@
         "one_of": null
       },
       {
-        "name": "UseRequestedDateOnOriginatingOrder",
+        "name": "From",
         "description": "",
-        "type": "boolean",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PropertyName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "To",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Values",
+        "description": "",
+        "type": "array[any] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -328,9 +210,49 @@
         "one_of": null
       }
     ],
-    "G": [
+    "E": [
       {
-        "name": "ExactMatch",
+        "name": "DaysValid",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginatingOrderProductsToDetermineRequestedDate",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "UsableAfterXDays",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UsableFrom",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UsableTill",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UseCouponFirstUsageDateForDaysValid",
         "description": "",
         "type": "boolean",
         "required": false,
@@ -338,7 +260,7 @@
         "one_of": null
       },
       {
-        "name": "Exclude",
+        "name": "UseFurthestDate",
         "description": "",
         "type": "boolean",
         "required": false,
@@ -346,33 +268,9 @@
         "one_of": null
       },
       {
-        "name": "From",
+        "name": "UseRequestedDateOnOriginatingOrder",
         "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PropertyName",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "To",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Values",
-        "description": "",
-        "type": "array[any] | null",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -399,6 +297,25 @@
         "name": "MinimumAge",
         "description": "",
         "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [],
+    "J": [
+      {
+        "name": "Operator",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -470,25 +387,6 @@
         "one_of": null
       }
     ],
-    "J": [
-      {
-        "name": "Operator",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      },
-      {
-        "name": "Value",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "K": [],
     "L": [
       {
         "name": "LoyaltyProgramID",
@@ -517,6 +415,25 @@
         "one_of": null
       }
     ],
+    "O": [
+      {
+        "name": "UserFieldId",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserFieldValue",
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "P": [],
     "N": [
       {
         "name": "Conditions",
@@ -543,25 +460,6 @@
         "one_of": null
       }
     ],
-    "O": [
-      {
-        "name": "UserFieldId",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserFieldValue",
-        "description": "",
-        "type": "any | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "P": [],
     "Q": [
       {
         "name": "ExcludedProducts",
@@ -593,58 +491,6 @@
         "type": "float | null",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "R": [
-      {
-        "name": "Conditions",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "S",
-        "one_of": null
-      },
-      {
-        "name": "FilterType",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "V",
-        "one_of": null
-      },
-      {
-        "name": "Filters",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "W",
-        "one_of": null
-      }
-    ],
-    "S": [
-      {
-        "name": "CustomFieldId",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CustomFieldValue",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "T",
-        "one_of": null
-      },
-      {
-        "name": "Operator",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "U",
         "one_of": null
       }
     ],
@@ -699,8 +545,60 @@
       }
     ],
     "U": [],
+    "S": [
+      {
+        "name": "CustomFieldId",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFieldValue",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "T",
+        "one_of": null
+      },
+      {
+        "name": "Operator",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "U",
+        "one_of": null
+      }
+    ],
     "V": [],
     "W": [
+      {
+        "name": "Conditions",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "FilterType",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "V",
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "W",
+        "one_of": null
+      }
+    ],
+    "R": [
       {
         "name": "Conditions",
         "description": "",
@@ -752,6 +650,7 @@
         "one_of": null
       }
     ],
+    "Z": [],
     "Y": [
       {
         "name": "IsExcludingCondition",
@@ -778,7 +677,7 @@
         "one_of": null
       }
     ],
-    "Z": [],
+    "BB": [],
     "BA": [
       {
         "name": "OrderType",
@@ -789,7 +688,6 @@
         "one_of": null
       }
     ],
-    "BB": [],
     "BC": [
       {
         "name": "IsExcludingCondition",
@@ -808,6 +706,7 @@
         "one_of": null
       }
     ],
+    "BE": [],
     "BD": [
       {
         "name": "IsExcludingCondition",
@@ -826,7 +725,7 @@
         "one_of": null
       }
     ],
-    "BE": [],
+    "BG": [],
     "BF": [
       {
         "name": "IdenticalProductsOnly",
@@ -861,7 +760,6 @@
         "one_of": null
       }
     ],
-    "BG": [],
     "BH": [
       {
         "name": "ProductRequirementID",
@@ -950,6 +848,7 @@
         "one_of": null
       }
     ],
+    "BM": [],
     "BL": [
       {
         "name": "IsExcludingCondition",
@@ -968,23 +867,107 @@
         "one_of": null
       }
     ],
-    "BM": [],
     "BN": [],
-    "BO": [
+    "B": [
       {
-        "name": "Error",
+        "name": "Data",
         "description": "",
-        "type": "object | null",
+        "type": "one-of[object] | null",
         "required": false,
-        "properties_id": "BP",
-        "one_of": null
+        "properties_id": "C",
+        "one_of": [
+          {
+            "name": "CouponOriginatingOrderOrganizationUnitConditionData",
+            "properties_id": "D"
+          },
+          {
+            "name": "CouponValidityConditionData",
+            "properties_id": "E"
+          },
+          {
+            "name": "CustomerAgeConditionData",
+            "properties_id": "H"
+          },
+          {
+            "name": "CustomerConditionData",
+            "properties_id": "I"
+          },
+          {
+            "name": "LoyaltyPointsConditionData",
+            "properties_id": "L"
+          },
+          {
+            "name": "MaximumUsePerUserConditionData",
+            "properties_id": "M"
+          },
+          {
+            "name": "OldUserFieldConditionData",
+            "properties_id": "N"
+          },
+          {
+            "name": "OrderAmountConditionData",
+            "properties_id": "Q"
+          },
+          {
+            "name": "OrderCustomFieldConditionData",
+            "properties_id": "R"
+          },
+          {
+            "name": "OrderLineCustomFieldConditionData",
+            "properties_id": "X"
+          },
+          {
+            "name": "OrderPropertiesConditionData",
+            "properties_id": "Y"
+          },
+          {
+            "name": "OrderTypeConditionData",
+            "properties_id": "BA"
+          },
+          {
+            "name": "OrganizationUnitConditionData",
+            "properties_id": "BC"
+          },
+          {
+            "name": "OrganizationUnitTypeConditionData",
+            "properties_id": "BD"
+          },
+          {
+            "name": "ProductConditionData",
+            "properties_id": "BF"
+          },
+          {
+            "name": "ProductRequirementConditionData",
+            "properties_id": "BH"
+          },
+          {
+            "name": "StockLabelConditionData",
+            "properties_id": "BI"
+          },
+          {
+            "name": "UserCustomFieldConditionData",
+            "properties_id": "BJ"
+          },
+          {
+            "name": "UserRoleConditionData",
+            "properties_id": "BK"
+          },
+          {
+            "name": "UserTypeConditionData",
+            "properties_id": "BL"
+          },
+          {
+            "name": "EmptyConditionData",
+            "properties_id": "BN"
+          }
+        ]
       },
       {
-        "name": "Metadata",
+        "name": "ID",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "BQ",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -1053,6 +1036,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BO": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BP",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BQ",
         "one_of": null
       }
     ]

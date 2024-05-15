@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/GetProductAvailability",
   "description": "This service returns information about product availability.",
+  "auth_description": "This service does not require authentication.",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,90 +66,7 @@
   "request_type_id": "B",
   "response_type_id": "R",
   "types": {
-    "B": [
-      {
-        "name": "Options",
-        "description": "Contains options that let you influence the availability calculation.",
-        "type": "object",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitID",
-        "description": "By default the availability is calculated from the perspective of your current OrganizationUnit, which determines which warehouse(s) stock is sourced\nfrom, among other things. You can override the default with an OrganizationUnitID of your choosing and calculate availability from that\nOrganizationUnit\u0027s perspective.",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Products",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "Q",
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "Bundles",
-        "description": "Contains options that allow you to influence how bundle availability is calculated.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "CarryOut",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Delivery",
-        "description": "Contains options that let you influence if and how delivery availability is calculated. If not specified at all then no delivery availability is\ncalculated and returned.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      },
-      {
-        "name": "IncludeRelatedStockReplacingProducts",
-        "description": "If set to true then the availability of related stock replacing products is returned.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Pickup",
-        "description": "Contains options that let you influence if and how pickup availability is calculated. If not specified at all then no pickup availability is\ncalculated and returned.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "ProductAvailabilityDetails",
-        "description": "In addition to the normal data, additional detailed information can be returned for the provided OrganizationUnits and Products.\n\nThis information includes the entire supplier hierarchy for each OrganizationUnit, telling you where stock originates from, where it\u0027s currently committed.\n\nAlso includes information about expected future stock and allocation assignments.\n\nProviding this field as an empty object is interpreted as a request to include this information for all organizations and products.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "P",
-        "one_of": null
-      },
-      {
-        "name": "QuantityAvailable",
-        "description": "If set to true then the QuantityAvailable is returned. By default this information is only accessible to Employee-type users.",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
+    "E": [],
     "D": [
       {
         "name": "AvailabilityCalculationMethod",
@@ -167,7 +85,78 @@
         "one_of": null
       }
     ],
-    "E": [],
+    "H": [
+      {
+        "name": "Latitude",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Longitude",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "BottomRight",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "description": "Limit OrganizationUnits within the area to those with the provided country. Optional.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TopLeft",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "Center",
+        "description": "Defaults to the coordinates of the selected OrganizationUnit when not set, but a RadiusInKm is set.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "description": "Limit OrganizationUnits within the radius to those with the provided country. Optional.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RadiusInKm",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [],
+    "K": [],
     "F": [
       {
         "name": "InArea",
@@ -226,78 +215,6 @@
         "one_of": null
       }
     ],
-    "G": [
-      {
-        "name": "BottomRight",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "CountryID",
-        "description": "Limit OrganizationUnits within the area to those with the provided country. Optional.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TopLeft",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      }
-    ],
-    "H": [
-      {
-        "name": "Latitude",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Longitude",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "I": [
-      {
-        "name": "Center",
-        "description": "Defaults to the coordinates of the selected OrganizationUnit when not set, but a RadiusInKm is set.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "CountryID",
-        "description": "Limit OrganizationUnits within the radius to those with the provided country. Optional.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RadiusInKm",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "J": [],
-    "K": [],
     "L": [
       {
         "name": "AvailabilityDate",
@@ -308,6 +225,8 @@
         "one_of": null
       }
     ],
+    "N": [],
+    "O": [],
     "M": [
       {
         "name": "AvailabilityDate",
@@ -382,8 +301,6 @@
         "one_of": null
       }
     ],
-    "N": [],
-    "O": [],
     "P": [
       {
         "name": "IncludeSuppliers",
@@ -405,6 +322,64 @@
         "name": "ProductIDs",
         "description": "",
         "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Bundles",
+        "description": "Contains options that allow you to influence how bundle availability is calculated.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "CarryOut",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Delivery",
+        "description": "Contains options that let you influence if and how delivery availability is calculated. If not specified at all then no delivery availability is\ncalculated and returned.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "IncludeRelatedStockReplacingProducts",
+        "description": "If set to true then the availability of related stock replacing products is returned.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Pickup",
+        "description": "Contains options that let you influence if and how pickup availability is calculated. If not specified at all then no pickup availability is\ncalculated and returned.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "ProductAvailabilityDetails",
+        "description": "In addition to the normal data, additional detailed information can be returned for the provided OrganizationUnits and Products.\n\nThis information includes the entire supplier hierarchy for each OrganizationUnit, telling you where stock originates from, where it\u0027s currently committed.\n\nAlso includes information about expected future stock and allocation assignments.\n\nProviding this field as an empty object is interpreted as a request to include this information for all organizations and products.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "P",
+        "one_of": null
+      },
+      {
+        "name": "QuantityAvailable",
+        "description": "If set to true then the QuantityAvailable is returned. By default this information is only accessible to Employee-type users.",
+        "type": "boolean | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -444,149 +419,19 @@
         "one_of": null
       }
     ],
-    "R": [
+    "B": [
       {
-        "name": "CarryOutOrganizationUnits",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "S",
+        "name": "Options",
+        "description": "Contains options that let you influence the availability calculation.",
+        "type": "object",
+        "required": true,
+        "properties_id": "C",
         "one_of": null
       },
       {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "Y",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "Z",
-        "one_of": null
-      },
-      {
-        "name": "PickupOrganizationUnits",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "BA",
-        "one_of": null
-      },
-      {
-        "name": "Products",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "BC",
-        "one_of": null
-      }
-    ],
-    "S": [
-      {
-        "name": "Address",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "T",
-        "one_of": null
-      },
-      {
-        "name": "BackendID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DistanceInKm",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "EmailAddress",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "HasStock",
-        "description": "HasStock will be true if the OrganizationUnit has stock for *all* requested products.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsPickup",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Latitude",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Longitude",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OpeningHours",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "U",
-        "one_of": null
-      },
-      {
-        "name": "PhoneNumber",
-        "description": "",
-        "type": "string | null",
+        "name": "OrganizationUnitID",
+        "description": "By default the availability is calculated from the perspective of your current OrganizationUnit, which determines which warehouse(s) stock is sourced\nfrom, among other things. You can override the default with an OrganizationUnitID of your choosing and calculate availability from that\nOrganizationUnit\u0027s perspective.",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -594,33 +439,9 @@
       {
         "name": "Products",
         "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "W",
-        "one_of": null
-      },
-      {
-        "name": "Status",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "X",
-        "one_of": null
-      },
-      {
-        "name": "TimeZone",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "N",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "Q",
         "one_of": null
       }
     ],
@@ -762,6 +583,7 @@
         "one_of": null
       }
     ],
+    "V": [],
     "U": [
       {
         "name": "Closed",
@@ -804,7 +626,6 @@
         "one_of": null
       }
     ],
-    "V": [],
     "W": [
       {
         "name": "ProductID",
@@ -824,6 +645,144 @@
       }
     ],
     "X": [],
+    "S": [
+      {
+        "name": "Address",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "T",
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DistanceInKm",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EmailAddress",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasStock",
+        "description": "HasStock will be true if the OrganizationUnit has stock for *all* requested products.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsPickup",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Latitude",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Longitude",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OpeningHours",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "U",
+        "one_of": null
+      },
+      {
+        "name": "PhoneNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Products",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "W",
+        "one_of": null
+      },
+      {
+        "name": "Status",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "X",
+        "one_of": null
+      },
+      {
+        "name": "TimeZone",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      }
+    ],
     "Y": [
       {
         "name": "Code",
@@ -887,6 +846,32 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BB": [
+      {
+        "name": "AvailabilityDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QuantityAvailable",
+        "description": "",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -1030,75 +1015,59 @@
         "one_of": null
       }
     ],
-    "BB": [
+    "BE": [
       {
-        "name": "AvailabilityDate",
-        "description": "",
-        "type": "datetime | null",
+        "name": "ExpectedOnStockDate",
+        "description": "The date on which the stock is expected to be received.",
+        "type": "datetime",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ProductID",
-        "description": "",
+        "name": "OrderID",
+        "description": "The OrderID that the expected stock is expected to be received on.",
         "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "QuantityAvailable",
-        "description": "",
+        "name": "Quantity",
+        "description": "The quantity that is expected to be received.",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QuantityCommitted",
+        "description": "How much of this expected stock is already spoken for by orders.",
         "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "BC": [
+    "BF": [
       {
-        "name": "AvailabilityDetails",
+        "name": "BackendID",
         "description": "",
-        "type": "array[object] | null",
+        "type": "string | null",
         "required": false,
-        "properties_id": "BD",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "BundleInformation",
-        "description": "Contains the lines and option that this bundle consists of (if the product is a bundle product).",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "BH",
-        "one_of": null
-      },
-      {
-        "name": "CarryOut",
+        "name": "Description",
         "description": "",
-        "type": "object | null",
+        "type": "string | null",
         "required": false,
-        "properties_id": "BK",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Delivery",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "BL",
-        "one_of": null
-      },
-      {
-        "name": "Pickup",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "BM",
-        "one_of": null
-      },
-      {
-        "name": "ProductID",
+        "name": "ID",
         "description": "",
         "type": "integer",
         "required": false,
@@ -1106,19 +1075,37 @@
         "one_of": null
       },
       {
-        "name": "ProductStatus",
+        "name": "Name",
         "description": "",
-        "type": "object",
+        "type": "string | null",
         "required": false,
-        "properties_id": "BN",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "StockReplacementInformation",
+        "name": "Type",
         "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      }
+    ],
+    "BG": [
+      {
+        "name": "Quantity",
+        "description": "The quantity that is reserved, so this is the quantity that is not available to our organization",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReservedForOrganizationUnit",
+        "description": "The organization unit for which the stock is reserved.",
         "type": "object | null",
         "required": false,
-        "properties_id": "BO",
+        "properties_id": "BF",
         "one_of": null
       }
     ],
@@ -1252,110 +1239,7 @@
         "one_of": null
       }
     ],
-    "BE": [
-      {
-        "name": "ExpectedOnStockDate",
-        "description": "The date on which the stock is expected to be received.",
-        "type": "datetime",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "description": "The OrderID that the expected stock is expected to be received on.",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Quantity",
-        "description": "The quantity that is expected to be received.",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "QuantityCommitted",
-        "description": "How much of this expected stock is already spoken for by orders.",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BF": [
-      {
-        "name": "BackendID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "N",
-        "one_of": null
-      }
-    ],
-    "BG": [
-      {
-        "name": "Quantity",
-        "description": "The quantity that is reserved, so this is the quantity that is not available to our organization",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ReservedForOrganizationUnit",
-        "description": "The organization unit for which the stock is reserved.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "BF",
-        "one_of": null
-      }
-    ],
-    "BH": [
-      {
-        "name": "Lines",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "BI",
-        "one_of": null
-      }
-    ],
+    "BJ": [],
     "BI": [
       {
         "name": "DefaultProductID",
@@ -1406,7 +1290,16 @@
         "one_of": null
       }
     ],
-    "BJ": [],
+    "BH": [
+      {
+        "name": "Lines",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BI",
+        "one_of": null
+      }
+    ],
     "BK": [
       {
         "name": "HasStock",
@@ -1510,6 +1403,16 @@
       }
     ],
     "BN": [],
+    "BP": [
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "BO": [
       {
         "name": "StockReplacementProducts",
@@ -1520,13 +1423,111 @@
         "one_of": null
       }
     ],
-    "BP": [
+    "BC": [
+      {
+        "name": "AvailabilityDetails",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BD",
+        "one_of": null
+      },
+      {
+        "name": "BundleInformation",
+        "description": "Contains the lines and option that this bundle consists of (if the product is a bundle product).",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BH",
+        "one_of": null
+      },
+      {
+        "name": "CarryOut",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BK",
+        "one_of": null
+      },
+      {
+        "name": "Delivery",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BL",
+        "one_of": null
+      },
+      {
+        "name": "Pickup",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BM",
+        "one_of": null
+      },
       {
         "name": "ProductID",
         "description": "",
         "type": "integer",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductStatus",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "BN",
+        "one_of": null
+      },
+      {
+        "name": "StockReplacementInformation",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BO",
+        "one_of": null
+      }
+    ],
+    "R": [
+      {
+        "name": "CarryOutOrganizationUnits",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Y",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Z",
+        "one_of": null
+      },
+      {
+        "name": "PickupOrganizationUnits",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BA",
+        "one_of": null
+      },
+      {
+        "name": "Products",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BC",
         "one_of": null
       }
     ]

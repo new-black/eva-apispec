@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ListProductPriceLedger",
   "description": "List the pricechanges\n\nIt is required to supply some OrganizationUnitIDs or some ProductIDs in the PageConfig filter.",
+  "auth_description": "Requires any user with functionality \u0060Pricing:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -51,58 +52,6 @@
   "request_type_id": "B",
   "response_type_id": "F",
   "types": {
-    "B": [
-      {
-        "name": "PageConfig",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "Filter",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Limit",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SortDirection",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "SortProperty",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Start",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "D": [
       {
         "name": "FromDate",
@@ -146,29 +95,55 @@
       }
     ],
     "E": [],
-    "F": [
+    "C": [
       {
-        "name": "Error",
+        "name": "Filter",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "D",
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "Limit",
         "description": "",
-        "type": "object | null",
+        "type": "integer | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Result",
+        "name": "SortDirection",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "PageConfig",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "I",
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -235,88 +210,6 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "I": [
-      {
-        "name": "CurrentPage",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Filters",
-        "description": "",
-        "type": "map[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Limit",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NumberOfPages",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Offset",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Page",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "PageConfig",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      },
-      {
-        "name": "SortDirection",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "SortProperty",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Total",
-        "description": "",
-        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -443,6 +336,114 @@
         "type": "integer | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "CurrentPage",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberOfPages",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Offset",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Page",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "PageConfig",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Total",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "Result",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
         "one_of": null
       }
     ]

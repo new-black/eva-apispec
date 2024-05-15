@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ProcessPrintTasks",
   "description": "Processes the print tasks for each required ID.\n\nThis service does not throws an expeption in the case of mulptiple user task ids, but the output will be a dictionary containing\nan Error (EVA.Framework.Error) for every print task that encounters an issue. The UserTaskID will be the key in that specific Dictionary.\n\nIn the case of a single user task id, the service will behave exactly as the depracated ProcessPrintTask service did, throwing the encountered exception.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060PrintTask:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -66,32 +67,6 @@
         "type": "array[integer]",
         "required": true,
         "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "FailedUserTasks",
-        "description": "",
-        "type": "map[object] | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
         "one_of": null
       }
     ],
@@ -210,6 +185,32 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "FailedUserTasks",
+        "description": "",
+        "type": "map[object] | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/PrefigureDiscounts",
   "description": "List the discounts that potentially could be activated.\nIf a \u0060ProductIDs\u0060, \u0060ProductSearchID\u0060 or \u0060ProductSearch\u0060 is set, the service will check if the resulting products are a eligible to one or more discounts. If an \u0060OrderID\u0060 is provided, the context of the given order is taken into account, that can include user specific discounts, order OU specific discount, etc.\n\nBe aware that:\n- If \u0060ProductIDs\u0060 is given, \u0060ProductSearchID\u0060 and \u0060ProductSearch\u0060 are ignored\n- If \u0060ProductSearchID\u0060 is given, \u0060ProductIDs\u0060 and \u0060ProductSearch\u0060 are ignored\n- If \u0060ProductSearch\u0060 is given, \u0060ProductIDs\u0060 and \u0060ProductSearchID\u0060 are ignored",
+  "auth_description": "This service does not require authentication.",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,154 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "Z",
   "types": {
-    "B": [
-      {
-        "name": "OrderID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductIDs",
-        "description": "",
-        "type": "array[integer] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductSearch",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "ProductSearchID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "AggregationOptions",
-        "description": "",
-        "type": "map[object] | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "AggregationState",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Explain",
-        "description": "If Explain is set to true the response will contain an explanation of how the search was performed. This is ignored if you do not have the ProductSearchExplanations functionality.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Filters",
-        "description": "",
-        "type": "map[object] | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "IncludedFields",
-        "description": "",
-        "type": "array[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Options",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Page",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PageSize",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductAvailabilityFilter",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "U",
-        "one_of": null
-      },
-      {
-        "name": "ProductSearchTemplateID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Query",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SearchStrategyCode",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Sort",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "W",
-        "one_of": null
-      },
-      {
-        "name": "UserTypeOverride",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "Y",
-        "one_of": null
-      }
-    ],
     "D": [
       {
         "name": "AggregationOptions",
@@ -345,98 +198,7 @@
         "one_of": null
       }
     ],
-    "F": [
-      {
-        "name": "AvailabilityOptions",
-        "description": "If something is defined in these options, the GetProductAvailability results will be added to the response",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "IncludePrefigureDiscounts",
-        "description": "Include the results of a PrefigureDiscounts call in the result",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IncludeProductRelations",
-        "description": "Include the product relations",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "description": "Order to use for additional options",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "G": [
-      {
-        "name": "Bundles",
-        "description": "Contains options that allow you to influence how bundle availability is calculated.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "CarryOut",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "Delivery",
-        "description": "Contains options that let you influence if and how delivery availability is calculated. If not specified at all then no delivery availability is\ncalculated and returned.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "P",
-        "one_of": null
-      },
-      {
-        "name": "IncludeRelatedStockReplacingProducts",
-        "description": "If set to true then the availability of related stock replacing products is returned.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Pickup",
-        "description": "Contains options that let you influence if and how pickup availability is calculated. If not specified at all then no pickup availability is\ncalculated and returned.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "Q",
-        "one_of": null
-      },
-      {
-        "name": "ProductAvailabilityDetails",
-        "description": "In addition to the normal data, additional detailed information can be returned for the provided OrganizationUnits and Products.\n\nThis information includes the entire supplier hierarchy for each OrganizationUnit, telling you where stock originates from, where it\u0027s currently committed.\n\nAlso includes information about expected future stock and allocation assignments.\n\nProviding this field as an empty object is interpreted as a request to include this information for all organizations and products.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "T",
-        "one_of": null
-      },
-      {
-        "name": "QuantityAvailable",
-        "description": "If set to true then the QuantityAvailable is returned. By default this information is only accessible to Employee-type users.",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
+    "I": [],
     "H": [
       {
         "name": "AvailabilityCalculationMethod",
@@ -455,7 +217,78 @@
         "one_of": null
       }
     ],
-    "I": [],
+    "L": [
+      {
+        "name": "Latitude",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Longitude",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "BottomRight",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "description": "Limit OrganizationUnits within the area to those with the provided country. Optional.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TopLeft",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "Center",
+        "description": "Defaults to the coordinates of the selected OrganizationUnit when not set, but a RadiusInKm is set.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "description": "Limit OrganizationUnits within the radius to those with the provided country. Optional.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RadiusInKm",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "N": [],
+    "O": [],
     "J": [
       {
         "name": "InArea",
@@ -514,78 +347,6 @@
         "one_of": null
       }
     ],
-    "K": [
-      {
-        "name": "BottomRight",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      },
-      {
-        "name": "CountryID",
-        "description": "Limit OrganizationUnits within the area to those with the provided country. Optional.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TopLeft",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      }
-    ],
-    "L": [
-      {
-        "name": "Latitude",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Longitude",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "M": [
-      {
-        "name": "Center",
-        "description": "Defaults to the coordinates of the selected OrganizationUnit when not set, but a RadiusInKm is set.",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      },
-      {
-        "name": "CountryID",
-        "description": "Limit OrganizationUnits within the radius to those with the provided country. Optional.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RadiusInKm",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "N": [],
-    "O": [],
     "P": [
       {
         "name": "AvailabilityDate",
@@ -596,6 +357,8 @@
         "one_of": null
       }
     ],
+    "R": [],
+    "S": [],
     "Q": [
       {
         "name": "AvailabilityDate",
@@ -670,8 +433,6 @@
         "one_of": null
       }
     ],
-    "R": [],
-    "S": [],
     "T": [
       {
         "name": "IncludeSuppliers",
@@ -698,6 +459,99 @@
         "one_of": null
       }
     ],
+    "G": [
+      {
+        "name": "Bundles",
+        "description": "Contains options that allow you to influence how bundle availability is calculated.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "CarryOut",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "Delivery",
+        "description": "Contains options that let you influence if and how delivery availability is calculated. If not specified at all then no delivery availability is\ncalculated and returned.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "P",
+        "one_of": null
+      },
+      {
+        "name": "IncludeRelatedStockReplacingProducts",
+        "description": "If set to true then the availability of related stock replacing products is returned.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Pickup",
+        "description": "Contains options that let you influence if and how pickup availability is calculated. If not specified at all then no pickup availability is\ncalculated and returned.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Q",
+        "one_of": null
+      },
+      {
+        "name": "ProductAvailabilityDetails",
+        "description": "In addition to the normal data, additional detailed information can be returned for the provided OrganizationUnits and Products.\n\nThis information includes the entire supplier hierarchy for each OrganizationUnit, telling you where stock originates from, where it\u0027s currently committed.\n\nAlso includes information about expected future stock and allocation assignments.\n\nProviding this field as an empty object is interpreted as a request to include this information for all organizations and products.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "T",
+        "one_of": null
+      },
+      {
+        "name": "QuantityAvailable",
+        "description": "If set to true then the QuantityAvailable is returned. By default this information is only accessible to Employee-type users.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "AvailabilityOptions",
+        "description": "If something is defined in these options, the GetProductAvailability results will be added to the response",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "IncludePrefigureDiscounts",
+        "description": "Include the results of a PrefigureDiscounts call in the result",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IncludeProductRelations",
+        "description": "Include the product relations",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "description": "Order to use for additional options",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "V": [],
     "U": [
       {
         "name": "FilterByAvailability",
@@ -716,7 +570,7 @@
         "one_of": null
       }
     ],
-    "V": [],
+    "X": [],
     "W": [
       {
         "name": "Direction",
@@ -735,31 +589,152 @@
         "one_of": null
       }
     ],
-    "X": [],
     "Y": [],
-    "Z": [
+    "C": [
       {
-        "name": "Error",
+        "name": "AggregationOptions",
         "description": "",
-        "type": "object | null",
+        "type": "map[object] | null",
         "required": false,
-        "properties_id": "BA",
+        "properties_id": "D",
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "AggregationState",
         "description": "",
-        "type": "object | null",
+        "type": "string | null",
         "required": false,
-        "properties_id": "BB",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Results",
+        "name": "Explain",
+        "description": "If Explain is set to true the response will contain an explanation of how the search was performed. This is ignored if you do not have the ProductSearchExplanations functionality.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "description": "",
+        "type": "map[object] | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "IncludedFields",
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Options",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Page",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PageSize",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductAvailabilityFilter",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "U",
+        "one_of": null
+      },
+      {
+        "name": "ProductSearchTemplateID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Query",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SearchStrategyCode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Sort",
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "BC",
+        "properties_id": "W",
+        "one_of": null
+      },
+      {
+        "name": "UserTypeOverride",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Y",
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "OrderID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductIDs",
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductSearch",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "ProductSearchID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -831,6 +806,683 @@
         "one_of": null
       }
     ],
+    "BG": [
+      {
+        "name": "ArrayValues",
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BG",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BF": [
+      {
+        "name": "CurrentValue",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BG",
+        "one_of": null
+      },
+      {
+        "name": "CurrentValuePresent",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFieldId",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ExpectedValue",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BG",
+        "one_of": null
+      },
+      {
+        "name": "Matches",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BH": [],
+    "BE": [
+      {
+        "name": "ConditionResults",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BF",
+        "one_of": null
+      },
+      {
+        "name": "FilterResults",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BE",
+        "one_of": null
+      },
+      {
+        "name": "FilterType",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "BH",
+        "one_of": null
+      },
+      {
+        "name": "Matches",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BJ": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BK": [
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BM": [
+      {
+        "name": "ExactMatch",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Exclude",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "From",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PropertyName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "To",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Values",
+        "description": "",
+        "type": "array[any] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BL": [
+      {
+        "name": "CountryID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DiscountableQuantityOfProducts",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BM",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsDiscountableProductSet",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LanguageID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PersonalizedPromotionID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductIDs",
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductSearchID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequiredProductAmount",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequiredQuantityOfProducts",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UseLoyaltyProgramProducts",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BI": [
+      {
+        "name": "ProductAmountMissing",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BJ",
+        "one_of": null
+      },
+      {
+        "name": "ProductAmountMissingForNextTier",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BJ",
+        "one_of": null
+      },
+      {
+        "name": "ProductQuantityMissing",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BK",
+        "one_of": null
+      },
+      {
+        "name": "ProductQuantityMissingForNextTier",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BK",
+        "one_of": null
+      },
+      {
+        "name": "ProductSet",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BL",
+        "one_of": null
+      },
+      {
+        "name": "SetAmountMissing",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SetAmountMissingForNextTier",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SetQuantityMissing",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SetQuantityMissingForNextTier",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BD": [
+      {
+        "name": "CustomerFilterResult",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BE",
+        "one_of": null
+      },
+      {
+        "name": "LoyaltyPointsMissing",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LoyaltyPointsMissingForNextTier",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumLoyaltyPointsRequired",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderAmountMissing",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderAmountMissingForNextTier",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductSetResults",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BI",
+        "one_of": null
+      },
+      {
+        "name": "RequirementsMet",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequiresCustomer",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequiresCustomerCustomData",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequiresLoyaltyPoints",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequiresMinimumAmount",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TypeName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BN": [],
+    "BO": [
+      {
+        "name": "Code",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DiscountID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ValidFrom",
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ValidTill",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BQ": [
+      {
+        "name": "DefaultCustomFieldValue",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BG",
+        "one_of": null
+      },
+      {
+        "name": "DefaultValue",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsEditable",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsRequired",
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumLength",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumValue",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumLength",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumValue",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BP": [
+      {
+        "name": "Options",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BQ",
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BG",
+        "one_of": null
+      }
+    ],
+    "BR": [
+      {
+        "name": "IsLocked",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LocksAfterFirstUsage",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PersonalizedPromotionID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequiresSelection",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BS": [],
     "BC": [
       {
         "name": "ActionData",
@@ -1089,682 +1741,31 @@
         "one_of": null
       }
     ],
-    "BD": [
+    "Z": [
       {
-        "name": "CustomerFilterResult",
+        "name": "Error",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BE",
+        "properties_id": "BA",
         "one_of": null
       },
       {
-        "name": "LoyaltyPointsMissing",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LoyaltyPointsMissingForNextTier",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MinimumLoyaltyPointsRequired",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderAmountMissing",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderAmountMissingForNextTier",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductSetResults",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "BI",
-        "one_of": null
-      },
-      {
-        "name": "RequirementsMet",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RequiresCustomer",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RequiresCustomerCustomData",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RequiresLoyaltyPoints",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RequiresMinimumAmount",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TypeName",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BE": [
-      {
-        "name": "ConditionResults",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "BF",
-        "one_of": null
-      },
-      {
-        "name": "FilterResults",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "BE",
-        "one_of": null
-      },
-      {
-        "name": "FilterType",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "BH",
-        "one_of": null
-      },
-      {
-        "name": "Matches",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BF": [
-      {
-        "name": "CurrentValue",
+        "name": "Metadata",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BG",
+        "properties_id": "BB",
         "one_of": null
       },
       {
-        "name": "CurrentValuePresent",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CustomFieldId",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ExpectedValue",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "BG",
-        "one_of": null
-      },
-      {
-        "name": "Matches",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BG": [
-      {
-        "name": "ArrayValues",
-        "description": "Used for multiple values",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "BG",
-        "one_of": null
-      },
-      {
-        "name": "BlobValue",
-        "description": "Used for datatype Blob",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BoolValue",
-        "description": "Used for datatype Bool",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DateTimeValue",
-        "description": "Used for datatype DateTime and Date",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NumberValue",
-        "description": "Used for datatype Integer and Decimal",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StringValue",
-        "description": "Used for datatype String, Text and Enum",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BH": [],
-    "BI": [
-      {
-        "name": "ProductAmountMissing",
+        "name": "Results",
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "BJ",
-        "one_of": null
-      },
-      {
-        "name": "ProductAmountMissingForNextTier",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "BJ",
-        "one_of": null
-      },
-      {
-        "name": "ProductQuantityMissing",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "BK",
-        "one_of": null
-      },
-      {
-        "name": "ProductQuantityMissingForNextTier",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "BK",
-        "one_of": null
-      },
-      {
-        "name": "ProductSet",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "BL",
-        "one_of": null
-      },
-      {
-        "name": "SetAmountMissing",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SetAmountMissingForNextTier",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SetQuantityMissing",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SetQuantityMissingForNextTier",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "BC",
         "one_of": null
       }
-    ],
-    "BJ": [
-      {
-        "name": "Amount",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BK": [
-      {
-        "name": "ProductID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Quantity",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BL": [
-      {
-        "name": "CountryID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DiscountableQuantityOfProducts",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Filters",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "BM",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsDiscountableProductSet",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LanguageID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PersonalizedPromotionID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductIDs",
-        "description": "",
-        "type": "array[integer] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductSearchID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RequiredProductAmount",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RequiredQuantityOfProducts",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UseLoyaltyProgramProducts",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BM": [
-      {
-        "name": "ExactMatch",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Exclude",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "From",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PropertyName",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "To",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Values",
-        "description": "",
-        "type": "array[any] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BN": [],
-    "BO": [
-      {
-        "name": "Code",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DiscountID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ValidFrom",
-        "description": "",
-        "type": "datetime",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ValidTill",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BP": [
-      {
-        "name": "Options",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "BQ",
-        "one_of": null
-      },
-      {
-        "name": "Value",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "BG",
-        "one_of": null
-      }
-    ],
-    "BQ": [
-      {
-        "name": "DefaultCustomFieldValue",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "BG",
-        "one_of": null
-      },
-      {
-        "name": "DefaultValue",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsEditable",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsRequired",
-        "description": "",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MaximumDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MaximumLength",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MaximumValue",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MinimumDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MinimumLength",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MinimumValue",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BR": [
-      {
-        "name": "IsLocked",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LocksAfterFirstUsage",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PersonalizedPromotionID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RequiresSelection",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BS": []
+    ]
   }
 }

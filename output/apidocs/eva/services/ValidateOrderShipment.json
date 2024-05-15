@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ValidateOrderShipment",
   "description": "Validates if a (part of an) Order can be shipped in the current state.\n\nReturns if it is valid (\u0060IsValid\u0060) and if not, how much still needs to be paid (\u0060OpenAmountForShipment\u0060).",
+  "auth_description": "This service does not require authentication.",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,24 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
-    "B": [
-      {
-        "name": "Lines",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "OrderLineID",
@@ -101,43 +84,19 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Error",
+        "name": "Lines",
         "description": "",
-        "type": "object | null",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "C",
         "one_of": null
       },
       {
-        "name": "IsValid",
+        "name": "OrderID",
         "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "OpenAmountForShipment",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PaidAmount",
-        "description": "",
-        "type": "float",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -206,6 +165,48 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "IsValid",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "OpenAmountForShipment",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaidAmount",
+        "description": "",
+        "type": "float",
         "required": false,
         "properties_id": null,
         "one_of": null

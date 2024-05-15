@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ListSerialNumberRegistrations",
   "description": "List serial number registrations for a serial number.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060SerialNumbers:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -51,16 +52,17 @@
   "request_type_id": "B",
   "response_type_id": "F",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "PageConfig",
+        "name": "SerialNumber",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "C",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
         "one_of": null
       }
     ],
+    "E": [],
     "C": [
       {
         "name": "Filter",
@@ -103,40 +105,13 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "SerialNumber",
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [],
-    "F": [
-      {
-        "name": "Error",
+        "name": "PageConfig",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "Result",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "I",
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -203,6 +178,117 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [],
+    "J": [
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Reason",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "SerialNumberHandler",
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumberHandlerID",
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Status",
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "L",
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "Filter",
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "description": "",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -290,114 +376,29 @@
         "one_of": null
       }
     ],
-    "J": [
+    "F": [
       {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Reason",
+        "name": "Error",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "K",
+        "properties_id": "G",
         "one_of": null
       },
       {
-        "name": "SerialNumberHandler",
+        "name": "Metadata",
         "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SerialNumberHandlerID",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Status",
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "L",
-        "one_of": null
-      }
-    ],
-    "K": [
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "H",
         "one_of": null
       },
       {
-        "name": "ID",
+        "name": "Result",
         "description": "",
-        "type": "integer",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "L": [],
-    "M": [
-      {
-        "name": "Filter",
-        "description": "",
-        "type": "map[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Limit",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SortDirection",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "SortProperty",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Start",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "I",
         "one_of": null
       }
     ]

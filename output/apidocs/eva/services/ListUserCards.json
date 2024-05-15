@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ListUserCards",
   "description": "Lists all user cards, with their number, type and linked user (full) name.\nUsing the \u0060PageConfig\u0060, you can filter on \u0060Barcode\u0060, \u0060TypeID\u0060, \u0060FullName\u0060 and/or \u0060UserName\u0060.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ListUserCards:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,16 +66,41 @@
   "request_type_id": "B",
   "response_type_id": "F",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "PageConfig",
+        "name": "Barcode",
         "description": "",
-        "type": "object | null",
+        "type": "string | null",
         "required": false,
-        "properties_id": "C",
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TypeID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "User",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
+    "E": [],
     "C": [
       {
         "name": "Filter",
@@ -117,64 +143,13 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Barcode",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TypeID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "User",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [],
-    "F": [
-      {
-        "name": "Error",
+        "name": "PageConfig",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "Result",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "I",
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -241,6 +216,117 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [],
+    "K": [
+      {
+        "name": "AmountType",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "Barcode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "UserFullName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "Filter",
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "description": "",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -328,114 +414,29 @@
         "one_of": null
       }
     ],
-    "J": [
+    "F": [
       {
-        "name": "Barcode",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
+        "name": "Error",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "K",
+        "properties_id": "G",
         "one_of": null
       },
       {
-        "name": "UserFullName",
+        "name": "Metadata",
         "description": "",
-        "type": "string | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "K": [
-      {
-        "name": "AmountType",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "L",
+        "properties_id": "H",
         "one_of": null
       },
       {
-        "name": "Description",
+        "name": "Result",
         "description": "",
-        "type": "string | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "L": [],
-    "M": [
-      {
-        "name": "Filter",
-        "description": "",
-        "type": "map[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Limit",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SortDirection",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "SortProperty",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Start",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "I",
         "one_of": null
       }
     ]

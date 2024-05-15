@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/CreateProductBundle",
   "description": "This service creates a ProductBundle for the given BundleProductID.\n\nThe request body object contains three parameters:\n\n- BackendID: Optional. Can be filled in with the identifier of this bundle by which it is known in another system.\n- BundleProductID: Required. This should refer to an EVA product with type \u0060BundleProduct\u0060.\n- Type: Required. This specifies the type of bundle: discount or configurable. The type can not be changed after the bundle has been created.\n- Lines: Optional. These specify the \u0060ProductBundle\u0060\u0027s lines. If left empty or null at creation, these can be filled in by calling \u0060UpdateProductBundle\u0060. When specified, a line consists of the following:\n    - BackendID: Optional. If the bundle exists in another system, this can refer to it.\n    - Options: A list of available options for this line from which can be chosen. Only contains a ProductID for now, which may refer to a normal sellable product, a product with Type \u0060ConfigurableProduct\u0060 or a \u0060BundleProduct\u0060 (which would create bundles of bundles).\n    - DefaultProductID: Optional, but required if there are multiple options or if the line option is a Configurable product. The DefaultProductID cannot be a \u0060ConfigurableProduct\u0060 or a \u0060BundleProduct\u0060.\n    - IsRequired: Is this line an optional part of the bundle or not?",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ProductBundles:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,17 +66,17 @@
   "request_type_id": "B",
   "response_type_id": "G",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "BackendID",
+        "name": "AdditionalProductID",
         "description": "",
-        "type": "string | null",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "BundleProductID",
+        "name": "AdditionalProductQuantity",
         "description": "",
         "type": "integer",
         "required": false,
@@ -83,22 +84,31 @@
         "one_of": null
       },
       {
-        "name": "Lines",
+        "name": "ExcludesProductIDs",
         "description": "",
-        "type": "array[object] | null",
+        "type": "array[integer] | null",
         "required": false,
-        "properties_id": "C",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Type",
+        "name": "ProductID",
         "description": "",
-        "type": "object",
+        "type": "integer",
         "required": false,
-        "properties_id": "F",
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
+    "E": [],
     "C": [
       {
         "name": "BackendID",
@@ -149,61 +159,18 @@
         "one_of": null
       }
     ],
-    "D": [
-      {
-        "name": "AdditionalProductID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "AdditionalProductQuantity",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ExcludesProductIDs",
-        "description": "",
-        "type": "array[integer] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Quantity",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [],
     "F": [],
-    "G": [
+    "B": [
       {
-        "name": "Error",
+        "name": "BackendID",
         "description": "",
-        "type": "object | null",
+        "type": "string | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ID",
+        "name": "BundleProductID",
         "description": "",
         "type": "integer",
         "required": false,
@@ -211,11 +178,19 @@
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "Lines",
         "description": "",
-        "type": "object | null",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": "I",
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ],
@@ -284,6 +259,32 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
         "one_of": null
       }
     ]

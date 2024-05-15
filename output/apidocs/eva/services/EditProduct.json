@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/EditProduct",
   "description": "Modifies given product by its \u0060ID\u0060 for a specific \u0060RevisionID\u0060.\n\nThe \u0060Edits\u0060 is a list of \u0060ProductEdit\u0060 objects, that defines some \u0060Content\u0060 and the \u0060LanguageID\u0060, \u0060CountryID\u0060 and  \u0060LayerID\u0060 it applies to. The \u0060Content\u0060 is a Json object with key-value pairs that holds\nproduct information. The keys are simple strings, but the value can be a scalar value (like an int or string), an array of scalar values or an array of objects.\n\nA \u0060Revision\u0060 is a versioning container in which one or more product modifications are buffered. The changes to the product do not apply directly, but instead are stored in this \u0060Revision\u0060 until it is\nready to be published. Also see the \u0060CreateRevision\u0060 and \u0060ApplyRevision\u0060 services. When omitted, a new \u0027quick\u0027 \u0060Revision\u0060 is created and used here.\n\nA \u0060Layer\u0060 is a hierarchical solution to building product data. Every layer has its own \u0060Level\u0060, where the bottom layers will be overwritten by higher layers for colliding properties. A \u0060Layer\u0060 has a\n\u0060Revision\u0060. Also see the \u0060CreateLayer\u0060 service. When omitted, a new \u0027quick\u0027 \u0060Layer\u0060 is created and used here.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Product:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,32 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
-    "B": [
-      {
-        "name": "Edits",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RevisionID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "Content",
@@ -125,21 +100,29 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Error",
+        "name": "Edits",
         "description": "",
-        "type": "object | null",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "C",
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "ID",
         "description": "",
-        "type": "object | null",
+        "type": "integer",
         "required": false,
-        "properties_id": "F",
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RevisionID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -208,6 +191,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

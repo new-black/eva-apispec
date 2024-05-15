@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/CustomerListCaseInteractions",
   "description": "Service for customers to list case interactions",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,25 +59,17 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "CaseID",
+        "name": "ID",
         "description": "",
-        "type": "integer",
-        "required": true,
+        "type": "integer | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "InitialPageConfig",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "PageToken",
+        "name": "Text",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -102,63 +95,29 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "ID",
+        "name": "CaseID",
         "description": "",
-        "type": "integer | null",
-        "required": false,
+        "type": "integer",
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Text",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [
-      {
-        "name": "Error",
+        "name": "InitialPageConfig",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "C",
         "one_of": null
       },
       {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "NextPageToken",
+        "name": "PageToken",
         "description": "",
         "type": "string | null",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PreviousPageToken",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Results",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "H",
         "one_of": null
       }
     ],
@@ -230,6 +189,33 @@
         "one_of": null
       }
     ],
+    "I": [
+      {
+        "name": "FirstName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FullName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [],
     "H": [
       {
         "name": "CanBeModified",
@@ -304,9 +290,25 @@
         "one_of": null
       }
     ],
-    "I": [
+    "E": [
       {
-        "name": "FirstName",
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "NextPageToken",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -314,7 +316,7 @@
         "one_of": null
       },
       {
-        "name": "FullName",
+        "name": "PreviousPageToken",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -322,14 +324,13 @@
         "one_of": null
       },
       {
-        "name": "LastName",
+        "name": "Results",
         "description": "",
-        "type": "string | null",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "H",
         "one_of": null
       }
-    ],
-    "J": []
+    ]
   }
 }

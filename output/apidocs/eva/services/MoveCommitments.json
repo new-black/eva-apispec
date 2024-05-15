@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/MoveCommitments",
   "description": "This service allows you to move stock commitments from one OrderLine (\u0060SourceOrderLineID\u0060) to another OrderLine (\u0060DestinationOrderLineID\u0060).\n\n- If the Source and Destination do not share the same ProductID, a \u0060CannotMoveCommitment\u0060 error is returned.\n- If the Source does not have a commitment, a \u0060CannotMoveCommitment\u0060 error is returned.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Commitments:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,16 +59,6 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
-    "B": [
-      {
-        "name": "Movements",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "DestinationOrderLineID",
@@ -86,21 +77,13 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Error",
+        "name": "Movements",
         "description": "",
-        "type": "object | null",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -169,6 +152,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

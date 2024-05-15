@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ListStock",
   "description": "Returns a paginated list of all stock, optionally filtered.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Stock:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,42 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
-    "B": [
-      {
-        "name": "InitialPageConfig",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "PageToken",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "Filter",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Limit",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "D": [
       {
         "name": "OrganizationUnitIDs",
@@ -127,45 +92,39 @@
         "one_of": null
       }
     ],
-    "E": [
+    "C": [
       {
-        "name": "Error",
+        "name": "Filter",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "D",
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "Limit",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "InitialPageConfig",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "C",
         "one_of": null
       },
       {
-        "name": "NextPageToken",
+        "name": "PageToken",
         "description": "",
         "type": "string | null",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PreviousPageToken",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Results",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "H",
         "one_of": null
       }
     ],
@@ -237,48 +196,7 @@
         "one_of": null
       }
     ],
-    "H": [
-      {
-        "name": "OrganizationUnit",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "I",
-        "one_of": null
-      },
-      {
-        "name": "Product",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      },
-      {
-        "name": "QuantityCommitted",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "QuantityOnHand",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StockLabel",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      }
-    ],
+    "J": [],
     "I": [
       {
         "name": "BackendID",
@@ -313,7 +231,6 @@
         "one_of": null
       }
     ],
-    "J": [],
     "K": [
       {
         "name": "BackendID",
@@ -363,6 +280,90 @@
         "type": "string | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "OrganizationUnit",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "Product",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "QuantityCommitted",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QuantityOnHand",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StockLabel",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "NextPageToken",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PreviousPageToken",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Results",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
         "one_of": null
       }
     ]

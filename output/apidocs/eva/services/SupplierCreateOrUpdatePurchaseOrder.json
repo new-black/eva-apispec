@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/SupplierCreateOrUpdatePurchaseOrder",
   "description": "Creates a purchase order (or updates it if it already exists).\n\nWhen the order already exists, only the lines can be updated (see \u0060SupplierUpdatePurchaseOrder\u0060) - other properties will be ignored.\n\n:lightbulb: Using \u0060SupplierCreateOrder\u0060 and \u0060SupplierUpdatePurchaseOrder\u0060 is preferred.",
+  "auth_description": "Requires any user with functionality \u0060ThirdPartyCreatePurchaseOrder:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,6 +66,56 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
+    "C": [
+      {
+        "name": "BackendReference",
+        "description": "The BackendReference of the line to create. Note that multiple lines with the same product are merged into a single line so the chosen BackendReference is arbitrary.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "description": "The currency of the unit price. If not supplied, the order\u0027s currency will be used. The UnitPrice will be converted to the order\u0027s currency. If no exchangerate is available, the UnitPrice will be ignored and the price is fetched from an available pricelist.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ExpectedDeliveryDate",
+        "description": "Date that the supplier expects to deliver this orderline. If you supply multiple lines with the same ProductID, we only take the latest date.",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "description": "Identifier of the product",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "description": "Quantity that is expected to be shipped",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnitPrice",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "BackendID",
@@ -147,98 +198,6 @@
         "one_of": null
       }
     ],
-    "C": [
-      {
-        "name": "BackendReference",
-        "description": "The BackendReference of the line to create. Note that multiple lines with the same product are merged into a single line so the chosen BackendReference is arbitrary.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CurrencyID",
-        "description": "The currency of the unit price. If not supplied, the order\u0027s currency will be used. The UnitPrice will be converted to the order\u0027s currency. If no exchangerate is available, the UnitPrice will be ignored and the price is fetched from an available pricelist.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ExpectedDeliveryDate",
-        "description": "Date that the supplier expects to deliver this orderline. If you supply multiple lines with the same ProductID, we only take the latest date.",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductID",
-        "description": "Identifier of the product",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Quantity",
-        "description": "Quantity that is expected to be shipped",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UnitPrice",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsCreated",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsUpdated",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      }
-    ],
     "E": [
       {
         "name": "Code",
@@ -304,6 +263,48 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsCreated",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsUpdated",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

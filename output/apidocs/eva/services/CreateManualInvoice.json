@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/CreateManualInvoice",
   "description": "Creates an order with a manually issued invoice. This will insert a committed Invoice with a custom sequencing number and additional\n\u0060InvoiceManualData\u0060. It will be fully paid with a custom payment type.\n\nThe specified Order will be paid, placed, shipped and completed, but without any additional side effects like stock ledgers or commitments.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Invoices:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,56 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
-    "B": [
-      {
-        "name": "Customer",
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "InvoiceDate",
-        "description": "",
-        "type": "datetime",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Lines",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Number",
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitID",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Series",
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "Address1",
@@ -215,28 +166,52 @@
         "one_of": null
       }
     ],
-    "E": [
+    "B": [
       {
-        "name": "Error",
+        "name": "Customer",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
+        "type": "object",
+        "required": true,
+        "properties_id": "C",
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "InvoiceDate",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
+        "type": "datetime",
+        "required": true,
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "OrderID",
+        "name": "Lines",
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Number",
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
         "description": "",
         "type": "integer",
-        "required": false,
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Series",
+        "description": "",
+        "type": "string",
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
@@ -304,6 +279,32 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "description": "",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null

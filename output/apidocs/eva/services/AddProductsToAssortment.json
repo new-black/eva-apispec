@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/AddProductsToAssortment",
   "description": "Adds or updates the given products to the assortment.\n\nWhen the given products are all root products, the request will automaticly update all childeren.\nBut if the list is a mixed product list, all updates will be applied according to the given information.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Assortments:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,32 +66,7 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
-    "B": [
-      {
-        "name": "AssortmentID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Products",
-        "description": "Specific product IDs that will be added to the assortment.",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "UpdateOnly",
-        "description": "Only update products that are already part of the assortment",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
+    "D": [],
     "C": [
       {
         "name": "EndDate",
@@ -149,22 +125,29 @@
         "one_of": null
       }
     ],
-    "D": [],
-    "E": [
+    "B": [
       {
-        "name": "Error",
+        "name": "AssortmentID",
         "description": "",
-        "type": "object | null",
+        "type": "integer",
         "required": false,
-        "properties_id": "F",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
+        "name": "Products",
+        "description": "Specific product IDs that will be added to the assortment.",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "UpdateOnly",
+        "description": "Only update products that are already part of the assortment",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -233,6 +216,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

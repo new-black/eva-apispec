@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ListRoles",
   "description": "List all roles.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Roles:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,55 +59,22 @@
   "request_type_id": "B",
   "response_type_id": "H",
   "types": {
-    "B": [
+    "F": [],
+    "E": [
       {
-        "name": "PageConfig",
+        "name": "Functionality",
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Scope",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "Filter",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Limit",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SortDirection",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "SortProperty",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Start",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "F",
         "one_of": null
       }
     ],
@@ -168,49 +136,56 @@
         "one_of": null
       }
     ],
-    "E": [
+    "G": [],
+    "C": [
       {
-        "name": "Functionality",
+        "name": "Filter",
         "description": "",
-        "type": "string",
-        "required": true,
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Scope",
+        "name": "SortDirection",
         "description": "",
-        "type": "object | null",
+        "type": "object",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
-    "F": [],
-    "G": [],
-    "H": [
+    "B": [
       {
-        "name": "Error",
+        "name": "PageConfig",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "I",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "Result",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "K",
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -277,6 +252,99 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [],
+    "L": [
+      {
+        "name": "Code",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DeactivateUserAfterInactiveDays",
+        "description": "If this is set, any users that have not logged in after said days will get disabled",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsSystemDefined",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserType",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      }
+    ],
+    "N": [
+      {
+        "name": "Filter",
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "description": "",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -364,96 +432,29 @@
         "one_of": null
       }
     ],
-    "L": [
+    "H": [
       {
-        "name": "Code",
+        "name": "Error",
         "description": "",
-        "type": "string | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "I",
         "one_of": null
       },
       {
-        "name": "DeactivateUserAfterInactiveDays",
-        "description": "If this is set, any users that have not logged in after said days will get disabled",
-        "type": "integer | null",
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "J",
         "one_of": null
       },
       {
-        "name": "ID",
+        "name": "Result",
         "description": "",
-        "type": "integer",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsSystemDefined",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserType",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "M",
-        "one_of": null
-      }
-    ],
-    "M": [],
-    "N": [
-      {
-        "name": "Filter",
-        "description": "",
-        "type": "map[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Limit",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SortDirection",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "SortProperty",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Start",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "K",
         "one_of": null
       }
     ]

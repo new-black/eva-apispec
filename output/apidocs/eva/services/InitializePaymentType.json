@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/InitializePaymentType",
   "description": "Set up a payment type",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -51,145 +52,8 @@
   "request_type_id": "B",
   "response_type_id": "BQ",
   "types": {
-    "B": [
-      {
-        "name": "PaymentTypeID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Properties",
-        "description": "",
-        "type": "one-of[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": [
-          {
-            "name": "EmptyPaymentRequestProperties",
-            "properties_id": "D"
-          },
-          {
-            "name": "CustomPaymentMethodRequestProperties",
-            "properties_id": "E"
-          },
-          {
-            "name": "GiftCardPaymentMethodRequestProperties",
-            "properties_id": "G"
-          },
-          {
-            "name": "AdyenPosSdkPaymentMethodRequestProperties",
-            "properties_id": "I"
-          },
-          {
-            "name": "AdyenCheckoutSDKPaymentMethodRequestProperties",
-            "properties_id": "J"
-          },
-          {
-            "name": "AdyenCheckoutAPIPaymentMethodRequestProperties",
-            "properties_id": "L"
-          },
-          {
-            "name": "AdyenDropInPaymentMethodRequestProperties",
-            "properties_id": "S"
-          },
-          {
-            "name": "BuckarooPaymentMethodPayData",
-            "properties_id": "T"
-          },
-          {
-            "name": "UserCardPaymentMethodRequestProperties",
-            "properties_id": "Y"
-          },
-          {
-            "name": "RemboursPaymentMethodRequestProperties",
-            "properties_id": "Z"
-          },
-          {
-            "name": "ManualPaymentMethodRequestProperties",
-            "properties_id": "BA"
-          },
-          {
-            "name": "LoyaltyPaymentMethodRequestProperties",
-            "properties_id": "BB"
-          },
-          {
-            "name": "LoyaltyProgramPaymentMethodRequestProperties",
-            "properties_id": "BC"
-          },
-          {
-            "name": "APIGiftCardPaymentMethodRequestProperties",
-            "properties_id": "BD"
-          },
-          {
-            "name": "EVAPayPaymentMethodRequestProperties",
-            "properties_id": "BE"
-          },
-          {
-            "name": "CashPaymentMethodRequestProperties",
-            "properties_id": "BG"
-          },
-          {
-            "name": "LinePayRequest",
-            "properties_id": "BH"
-          },
-          {
-            "name": "MolliePaymentMethodRequestProperties",
-            "properties_id": "BI"
-          },
-          {
-            "name": "MultiSafepayPaymentMethodRequestProperties",
-            "properties_id": "BJ"
-          },
-          {
-            "name": "SaferpayPaymentMethodRequestProperties",
-            "properties_id": "BK"
-          },
-          {
-            "name": "StripePaymentMethodRequestProperties",
-            "properties_id": "BL"
-          },
-          {
-            "name": "UnionPayBSCPaymentMethodRequestProperties",
-            "properties_id": "BM"
-          },
-          {
-            "name": "EPayPaymentMethodRequestProperties",
-            "properties_id": "BN"
-          },
-          {
-            "name": "FashionchequePaymentMethodRequestProperties",
-            "properties_id": "BO"
-          },
-          {
-            "name": "IntersolvePaymentMethodRequestProperties",
-            "properties_id": "BP"
-          }
-        ]
-      }
-    ],
     "C": [],
     "D": [],
-    "E": [
-      {
-        "name": "IsConfirmed",
-        "description": "",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Values",
-        "description": "",
-        "type": "map[object] | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      }
-    ],
     "F": [
       {
         "name": "ArrayValues",
@@ -240,29 +104,21 @@
         "one_of": null
       }
     ],
-    "G": [
+    "E": [
       {
-        "name": "CardNumber",
+        "name": "IsConfirmed",
         "description": "",
-        "type": "string | null",
+        "type": "boolean | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "CardPayments",
+        "name": "Values",
         "description": "",
-        "type": "array[object] | null",
+        "type": "map[object] | null",
         "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "Pin",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "F",
         "one_of": null
       }
     ],
@@ -292,6 +148,32 @@
         "one_of": null
       }
     ],
+    "G": [
+      {
+        "name": "CardNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CardPayments",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "Pin",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "I": [
       {
         "name": "SetupToken",
@@ -302,6 +184,7 @@
         "one_of": null
       }
     ],
+    "K": [],
     "J": [
       {
         "name": "Channel",
@@ -365,75 +248,6 @@
         "type": "string | null",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Token",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "K": [],
-    "L": [
-      {
-        "name": "ApplePayData",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "Channel",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      },
-      {
-        "name": "Data",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "O",
-        "one_of": null
-      },
-      {
-        "name": "GatewayID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ReturnUrl",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "M": [
-      {
-        "name": "BillingAddress",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "N",
-        "one_of": null
-      },
-      {
-        "name": "ShippingAddress",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "N",
         "one_of": null
       },
       {
@@ -535,49 +349,25 @@
         "one_of": null
       }
     ],
-    "O": [
+    "M": [
       {
-        "name": "AdditionalData",
+        "name": "BillingAddress",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "P",
+        "properties_id": "N",
         "one_of": null
       },
       {
-        "name": "BrowserInfo",
+        "name": "ShippingAddress",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "Q",
+        "properties_id": "N",
         "one_of": null
       },
       {
-        "name": "PaymentMethod",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "R",
-        "one_of": null
-      },
-      {
-        "name": "ShopperEmail",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ShopperIP",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ShopperLocale",
+        "name": "Token",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -661,6 +451,98 @@
       }
     ],
     "R": [],
+    "O": [
+      {
+        "name": "AdditionalData",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "P",
+        "one_of": null
+      },
+      {
+        "name": "BrowserInfo",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Q",
+        "one_of": null
+      },
+      {
+        "name": "PaymentMethod",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "R",
+        "one_of": null
+      },
+      {
+        "name": "ShopperEmail",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShopperIP",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShopperLocale",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [
+      {
+        "name": "ApplePayData",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "Channel",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "GatewayID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnUrl",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "S": [
       {
         "name": "Channel",
@@ -687,6 +569,51 @@
         "one_of": null
       }
     ],
+    "V": [],
+    "U": [
+      {
+        "name": "ArticleDescription",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ArticleId",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ArticleQuantity",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ArticleUnitprice",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ArticleVatcategory",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "V",
+        "one_of": null
+      }
+    ],
+    "W": [],
+    "X": [],
     "T": [
       {
         "name": "Accept",
@@ -1137,51 +1064,6 @@
         "one_of": null
       }
     ],
-    "U": [
-      {
-        "name": "ArticleDescription",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ArticleId",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ArticleQuantity",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ArticleUnitprice",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ArticleVatcategory",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "V",
-        "one_of": null
-      }
-    ],
-    "V": [],
-    "W": [],
-    "X": [],
     "Y": [
       {
         "name": "CardAmount",
@@ -1273,6 +1155,32 @@
         "one_of": null
       }
     ],
+    "BF": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Token",
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "BE": [
       {
         "name": "DisplayOnTerminal",
@@ -1312,32 +1220,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "BF",
-        "one_of": null
-      }
-    ],
-    "BF": [
-      {
-        "name": "Amount",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Token",
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
         "one_of": null
       }
     ],
@@ -1521,21 +1403,13 @@
         "one_of": null
       }
     ],
-    "BQ": [
+    "B": [
       {
-        "name": "Error",
+        "name": "PaymentTypeID",
         "description": "",
-        "type": "object | null",
+        "type": "integer",
         "required": false,
-        "properties_id": "BR",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "BS",
+        "properties_id": null,
         "one_of": null
       },
       {
@@ -1543,63 +1417,107 @@
         "description": "",
         "type": "one-of[object] | null",
         "required": false,
-        "properties_id": "BT",
+        "properties_id": "C",
         "one_of": [
           {
-            "name": "AdyenPosSdkPaymentMethodResultProperties",
-            "properties_id": "BU"
+            "name": "EmptyPaymentRequestProperties",
+            "properties_id": "D"
           },
           {
-            "name": "AdyenCheckoutSDKPaymentMethodResultProperties",
-            "properties_id": "BV"
+            "name": "CustomPaymentMethodRequestProperties",
+            "properties_id": "E"
           },
           {
-            "name": "AdyenCheckoutAPIPaymentMethodResultProperties",
-            "properties_id": "BW"
+            "name": "GiftCardPaymentMethodRequestProperties",
+            "properties_id": "G"
           },
           {
-            "name": "AdyenDropInPaymentMethodResultProperties",
-            "properties_id": "BY"
+            "name": "AdyenPosSdkPaymentMethodRequestProperties",
+            "properties_id": "I"
           },
           {
-            "name": "BuckarooPaymentMethodPayResult",
-            "properties_id": "BZ"
+            "name": "AdyenCheckoutSDKPaymentMethodRequestProperties",
+            "properties_id": "J"
           },
           {
-            "name": "GiftCardRefundPaymentMethodResultProperties",
-            "properties_id": "CA"
+            "name": "AdyenCheckoutAPIPaymentMethodRequestProperties",
+            "properties_id": "L"
           },
           {
-            "name": "EVAPayPaymentMethodResultProperties",
-            "properties_id": "CB"
+            "name": "AdyenDropInPaymentMethodRequestProperties",
+            "properties_id": "S"
           },
           {
-            "name": "CashPaymentMethodResultProperties",
-            "properties_id": "CC"
+            "name": "BuckarooPaymentMethodPayData",
+            "properties_id": "T"
           },
           {
-            "name": "MolliePaymentMethodResultProperties",
-            "properties_id": "CD"
+            "name": "UserCardPaymentMethodRequestProperties",
+            "properties_id": "Y"
           },
           {
-            "name": "MultiSafepayPaymentMethodResultProperties",
-            "properties_id": "CE"
+            "name": "RemboursPaymentMethodRequestProperties",
+            "properties_id": "Z"
           },
           {
-            "name": "SaferpayPaymentMethodResponseProperties",
-            "properties_id": "CF"
+            "name": "ManualPaymentMethodRequestProperties",
+            "properties_id": "BA"
           },
           {
-            "name": "StripePaymentMethodResultProperties",
-            "properties_id": "CG"
+            "name": "LoyaltyPaymentMethodRequestProperties",
+            "properties_id": "BB"
           },
           {
-            "name": "UnionPayCSBPaymentMethodResultProperties",
-            "properties_id": "CH"
+            "name": "LoyaltyProgramPaymentMethodRequestProperties",
+            "properties_id": "BC"
           },
           {
-            "name": "IntersolvePaymentMethodResultProperties",
-            "properties_id": "CI"
+            "name": "APIGiftCardPaymentMethodRequestProperties",
+            "properties_id": "BD"
+          },
+          {
+            "name": "EVAPayPaymentMethodRequestProperties",
+            "properties_id": "BE"
+          },
+          {
+            "name": "CashPaymentMethodRequestProperties",
+            "properties_id": "BG"
+          },
+          {
+            "name": "LinePayRequest",
+            "properties_id": "BH"
+          },
+          {
+            "name": "MolliePaymentMethodRequestProperties",
+            "properties_id": "BI"
+          },
+          {
+            "name": "MultiSafepayPaymentMethodRequestProperties",
+            "properties_id": "BJ"
+          },
+          {
+            "name": "SaferpayPaymentMethodRequestProperties",
+            "properties_id": "BK"
+          },
+          {
+            "name": "StripePaymentMethodRequestProperties",
+            "properties_id": "BL"
+          },
+          {
+            "name": "UnionPayBSCPaymentMethodRequestProperties",
+            "properties_id": "BM"
+          },
+          {
+            "name": "EPayPaymentMethodRequestProperties",
+            "properties_id": "BN"
+          },
+          {
+            "name": "FashionchequePaymentMethodRequestProperties",
+            "properties_id": "BO"
+          },
+          {
+            "name": "IntersolvePaymentMethodRequestProperties",
+            "properties_id": "BP"
           }
         ]
       }
@@ -1725,6 +1643,32 @@
         "one_of": null
       }
     ],
+    "BX": [
+      {
+        "name": "AuthenticationToken",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Success",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "BW": [
       {
         "name": "ApplePayData",
@@ -1762,32 +1706,6 @@
         "name": "RedirectUrl",
         "description": "",
         "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "BX": [
-      {
-        "name": "AuthenticationToken",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Success",
-        "description": "",
-        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -2013,6 +1931,89 @@
         "required": false,
         "properties_id": null,
         "one_of": null
+      }
+    ],
+    "BQ": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BR",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BS",
+        "one_of": null
+      },
+      {
+        "name": "Properties",
+        "description": "",
+        "type": "one-of[object] | null",
+        "required": false,
+        "properties_id": "BT",
+        "one_of": [
+          {
+            "name": "AdyenPosSdkPaymentMethodResultProperties",
+            "properties_id": "BU"
+          },
+          {
+            "name": "AdyenCheckoutSDKPaymentMethodResultProperties",
+            "properties_id": "BV"
+          },
+          {
+            "name": "AdyenCheckoutAPIPaymentMethodResultProperties",
+            "properties_id": "BW"
+          },
+          {
+            "name": "AdyenDropInPaymentMethodResultProperties",
+            "properties_id": "BY"
+          },
+          {
+            "name": "BuckarooPaymentMethodPayResult",
+            "properties_id": "BZ"
+          },
+          {
+            "name": "GiftCardRefundPaymentMethodResultProperties",
+            "properties_id": "CA"
+          },
+          {
+            "name": "EVAPayPaymentMethodResultProperties",
+            "properties_id": "CB"
+          },
+          {
+            "name": "CashPaymentMethodResultProperties",
+            "properties_id": "CC"
+          },
+          {
+            "name": "MolliePaymentMethodResultProperties",
+            "properties_id": "CD"
+          },
+          {
+            "name": "MultiSafepayPaymentMethodResultProperties",
+            "properties_id": "CE"
+          },
+          {
+            "name": "SaferpayPaymentMethodResponseProperties",
+            "properties_id": "CF"
+          },
+          {
+            "name": "StripePaymentMethodResultProperties",
+            "properties_id": "CG"
+          },
+          {
+            "name": "UnionPayCSBPaymentMethodResultProperties",
+            "properties_id": "CH"
+          },
+          {
+            "name": "IntersolvePaymentMethodResultProperties",
+            "properties_id": "CI"
+          }
+        ]
       }
     ]
   }

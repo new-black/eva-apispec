@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ReceiveShipment",
   "description": "Receive a shipment.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ReceiveShipments:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,45 +66,13 @@
   "request_type_id": "B",
   "response_type_id": "G",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "CompleteShipment",
-        "description": "",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Lines",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "Receipts",
-        "description": "The receipts to create. If left null, it\u0027s assumed you wish to receive the entire shipment. If left empty, it\u0027s assumed you wish to receive nothing.",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "ShipmentID",
+        "name": "QuantityReceived",
         "description": "",
         "type": "integer",
         "required": true,
         "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UndeclaredProductsReceipts",
-        "description": "Receipts for products that are not present in the shipment. This can only be used for products that are not declard in the shipment.",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "F",
         "one_of": null
       }
     ],
@@ -122,16 +91,6 @@
         "type": "array[object] | null",
         "required": false,
         "properties_id": "D",
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "QuantityReceived",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
         "one_of": null
       }
     ],
@@ -171,21 +130,45 @@
         "one_of": null
       }
     ],
-    "G": [
+    "B": [
       {
-        "name": "Error",
+        "name": "CompleteShipment",
         "description": "",
-        "type": "object | null",
+        "type": "boolean | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "Lines",
         "description": "",
-        "type": "object | null",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": "I",
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "Receipts",
+        "description": "The receipts to create. If left null, it\u0027s assumed you wish to receive the entire shipment. If left empty, it\u0027s assumed you wish to receive nothing.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "ShipmentID",
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UndeclaredProductsReceipts",
+        "description": "Receipts for products that are not present in the shipment. This can only be used for products that are not declard in the shipment.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ],
@@ -254,6 +237,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
         "one_of": null
       }
     ]

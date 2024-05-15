@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/UpdateProductBundle",
   "description": "This service is largely the same as CreateProductBundle.\nThe model passed into the request body is considered to be the entire bundle configuration.\nAny lines that are currently present but not present in the update model are removed from the bundle.\nThe only parameter that is different is that the model requires an ID to be set for the root object and its lines, which you get back from the \u0060GetProductBundle\u0060 and \u0060ListProductBundles\u0060 services.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ProductBundles:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -51,32 +52,49 @@
   "request_type_id": "B",
   "response_type_id": "F",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "BackendID",
+        "name": "AdditionalProductID",
         "description": "",
-        "type": "string | null",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ID",
+        "name": "AdditionalProductQuantity",
         "description": "",
         "type": "integer",
-        "required": true,
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Lines",
+        "name": "ExcludesProductIDs",
         "description": "",
-        "type": "array[object] | null",
+        "type": "array[integer] | null",
         "required": false,
-        "properties_id": "C",
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
+    "E": [],
     "C": [
       {
         "name": "BackendID",
@@ -135,64 +153,29 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "AdditionalProductID",
+        "name": "BackendID",
         "description": "",
-        "type": "integer | null",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "AdditionalProductQuantity",
+        "name": "ID",
         "description": "",
         "type": "integer",
-        "required": false,
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ExcludesProductIDs",
+        "name": "Lines",
         "description": "",
-        "type": "array[integer] | null",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Quantity",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [],
-    "F": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -261,6 +244,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
         "one_of": null
       }
     ]

@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/SetUserRoles",
   "description": "Update the Roles for an User. The roles provided will replace any existing roles on this user!\n\nWhen an empty list is provided all roles will be removed.\n\nThe UserType defines as which UserType the User will act when logging in. For employees this wil normally be UserTypes.Employee (1)",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060UserRoles:Manage\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,24 +66,7 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
-    "B": [
-      {
-        "name": "Roles",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "UserID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
+    "D": [],
     "C": [
       {
         "name": "EndDate",
@@ -125,22 +109,21 @@
         "one_of": null
       }
     ],
-    "D": [],
-    "E": [
+    "B": [
       {
-        "name": "Error",
+        "name": "Roles",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "UserID",
         "description": "",
-        "type": "object | null",
+        "type": "integer",
         "required": false,
-        "properties_id": "G",
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -209,6 +192,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

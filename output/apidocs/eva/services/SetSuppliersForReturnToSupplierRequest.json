@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/SetSuppliersForReturnToSupplierRequest",
   "description": "Set the suppliers for OrganizationUnit where this could not be automatically determined\n\nTo view the available suppliers, sue the ValidateReturnToSupplierRequest service.\n\nThe SupplierOrganizationUnitID is nullable, if it is set to \u0060null\u0060, the OrganizationUnit will be skipped when generating the orders.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ReturnToSupplierRequests:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,24 +59,6 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
-    "B": [
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Suppliers",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "OrganizationUnitID",
@@ -94,21 +77,21 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Error",
+        "name": "ID",
         "description": "",
-        "type": "object | null",
+        "type": "integer",
         "required": false,
-        "properties_id": "E",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "Suppliers",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -177,6 +160,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

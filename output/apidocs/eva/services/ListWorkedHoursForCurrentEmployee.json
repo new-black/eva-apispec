@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ListWorkedHoursForCurrentEmployee",
   "description": "List the WorkedHours for the current user",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -52,32 +53,6 @@
   "response_type_id": "C",
   "types": {
     "B": [],
-    "C": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "WorkedHours",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      }
-    ],
     "D": [
       {
         "name": "Code",
@@ -146,43 +121,67 @@
         "one_of": null
       }
     ],
-    "F": [
+    "H": [
       {
-        "name": "ClockInDateTime",
+        "name": "Address1",
         "description": "",
-        "type": "datetime",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ClockInTime",
+        "name": "Address2",
         "description": "",
-        "type": "duration",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ClockOutDateTime",
+        "name": "City",
         "description": "",
-        "type": "datetime | null",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ClockOutTime",
+        "name": "CountryID",
+        "description": "ISO 3166-1",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "District",
         "description": "",
-        "type": "duration | null",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Date",
+        "name": "EmailAddress",
         "description": "",
-        "type": "datetime",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FirstName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HouseNumber",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -196,7 +195,139 @@
         "one_of": null
       },
       {
-        "name": "IsExported",
+        "name": "LastName",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Latitude",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Longitude",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PhoneNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Region",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "State",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Subdistrict",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ZipCode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "ArrayValues",
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "DefaultCustomFieldValue",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "DefaultValue",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsEditable",
         "description": "",
         "type": "boolean",
         "required": false,
@@ -204,11 +335,312 @@
         "one_of": null
       },
       {
-        "name": "OrganizationUnit",
+        "name": "IsRequired",
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumLength",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumValue",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumLength",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumValue",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "Options",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      }
+    ],
+    "N": [
+      {
+        "name": "EndTime",
+        "description": "",
+        "type": "duration",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartTime",
+        "description": "",
+        "type": "duration",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsClosed",
+        "description": "",
+        "type": "boolean",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TimeSlots",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      }
+    ],
+    "O": [
+      {
+        "name": "Date",
+        "description": "",
+        "type": "datetime",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsClosed",
+        "description": "",
+        "type": "boolean",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TimeSlots",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      }
+    ],
+    "L": [
+      {
+        "name": "Friday",
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "Monday",
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "Saturday",
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "SpecialOpeningHours",
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "Sunday",
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "Thursday",
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "Tuesday",
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "TypeBackendID",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TypeID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TypeName",
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Wednesday",
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "M",
+        "one_of": null
+      }
+    ],
+    "Q": [],
+    "P": [
+      {
+        "name": "Date",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DayOfWeek",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Q",
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndTime",
+        "description": "",
+        "type": "duration | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsActive",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsClosed",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsSpecial",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       },
       {
@@ -220,22 +652,40 @@
         "one_of": null
       },
       {
-        "name": "User",
-        "description": "",
-        "type": "object | null",
+        "name": "OrganizationUnitName",
+        "description": "Only set when returned outside OrganizationUnit context",
+        "type": "string | null",
         "required": false,
-        "properties_id": "T",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "UserID",
+        "name": "StartTime",
+        "description": "",
+        "type": "duration | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TypeID",
         "description": "",
         "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TypeName",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
+    "R": [],
+    "S": [],
     "G": [
       {
         "name": "Address",
@@ -430,9 +880,10 @@
         "one_of": null
       }
     ],
-    "H": [
+    "U": [],
+    "V": [
       {
-        "name": "Address1",
+        "name": "AccountHolderName",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -440,7 +891,7 @@
         "one_of": null
       },
       {
-        "name": "Address2",
+        "name": "BIC",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -448,7 +899,7 @@
         "one_of": null
       },
       {
-        "name": "City",
+        "name": "ContactEmailAddress",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -456,15 +907,7 @@
         "one_of": null
       },
       {
-        "name": "CountryID",
-        "description": "ISO 3166-1",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "District",
+        "name": "ContactPhoneNumber",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -472,7 +915,15 @@
         "one_of": null
       },
       {
-        "name": "EmailAddress",
+        "name": "EstablishedDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FiscalID",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -480,15 +931,7 @@
         "one_of": null
       },
       {
-        "name": "FirstName",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "HouseNumber",
+        "name": "IBAN",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -504,99 +947,15 @@
         "one_of": null
       },
       {
-        "name": "LastName",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Latitude",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Longitude",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PhoneNumber",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Region",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "State",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Subdistrict",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ZipCode",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "I": [
-      {
-        "name": "Options",
+        "name": "InvoiceAddress",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "J",
+        "properties_id": "H",
         "one_of": null
       },
       {
-        "name": "Value",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      }
-    ],
-    "J": [
-      {
-        "name": "DefaultCustomFieldValue",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      },
-      {
-        "name": "DefaultValue",
+        "name": "InvoiceEmailAddress",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -604,179 +963,15 @@
         "one_of": null
       },
       {
-        "name": "IsEditable",
+        "name": "LogoID",
         "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsRequired",
-        "description": "",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MaximumDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MaximumLength",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MaximumValue",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MinimumDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MinimumLength",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MinimumValue",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "K": [
-      {
-        "name": "ArrayValues",
-        "description": "Used for multiple values",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      },
-      {
-        "name": "BlobValue",
-        "description": "Used for datatype Blob",
         "type": "guid | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "BoolValue",
-        "description": "Used for datatype Bool",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DateTimeValue",
-        "description": "Used for datatype DateTime and Date",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NumberValue",
-        "description": "Used for datatype Integer and Decimal",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StringValue",
-        "description": "Used for datatype String, Text and Enum",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "L": [
-      {
-        "name": "Friday",
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "Monday",
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "Saturday",
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "SpecialOpeningHours",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "O",
-        "one_of": null
-      },
-      {
-        "name": "Sunday",
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "Thursday",
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "Tuesday",
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "TypeBackendID",
+        "name": "Name",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -784,33 +979,7 @@
         "one_of": null
       },
       {
-        "name": "TypeID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TypeName",
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Wednesday",
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "M",
-        "one_of": null
-      }
-    ],
-    "M": [
-      {
-        "name": "Description",
+        "name": "RegistrationCity",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -818,51 +987,7 @@
         "one_of": null
       },
       {
-        "name": "IsClosed",
-        "description": "",
-        "type": "boolean",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TimeSlots",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "N",
-        "one_of": null
-      }
-    ],
-    "N": [
-      {
-        "name": "EndTime",
-        "description": "",
-        "type": "duration",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StartTime",
-        "description": "",
-        "type": "duration",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "O": [
-      {
-        "name": "Date",
-        "description": "",
-        "type": "datetime",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
+        "name": "RegistrationCountryID",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -870,131 +995,31 @@
         "one_of": null
       },
       {
-        "name": "IsClosed",
+        "name": "RegistrationNumber",
         "description": "",
-        "type": "boolean",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TimeSlots",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "N",
-        "one_of": null
-      }
-    ],
-    "P": [
-      {
-        "name": "Date",
-        "description": "",
-        "type": "datetime | null",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "DayOfWeek",
+        "name": "VatNumber",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "VisitorsAddress",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "Q",
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "EndTime",
-        "description": "",
-        "type": "duration | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsActive",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsClosed",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsSpecial",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitName",
-        "description": "Only set when returned outside OrganizationUnit context",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StartTime",
-        "description": "",
-        "type": "duration | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TypeID",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TypeName",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "H",
         "one_of": null
       }
     ],
-    "Q": [],
-    "R": [],
-    "S": [],
+    "W": [],
     "T": [
       {
         "name": "AccountType",
@@ -1301,42 +1326,25 @@
         "one_of": null
       }
     ],
-    "U": [],
-    "V": [
+    "F": [
       {
-        "name": "AccountHolderName",
+        "name": "ClockInDateTime",
         "description": "",
-        "type": "string | null",
+        "type": "datetime",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "BIC",
+        "name": "ClockInTime",
         "description": "",
-        "type": "string | null",
+        "type": "duration",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ContactEmailAddress",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ContactPhoneNumber",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "EstablishedDate",
+        "name": "ClockOutDateTime",
         "description": "",
         "type": "datetime | null",
         "required": false,
@@ -1344,17 +1352,17 @@
         "one_of": null
       },
       {
-        "name": "FiscalID",
+        "name": "ClockOutTime",
         "description": "",
-        "type": "string | null",
+        "type": "duration | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "IBAN",
+        "name": "Date",
         "description": "",
-        "type": "string | null",
+        "type": "datetime",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -1368,78 +1376,71 @@
         "one_of": null
       },
       {
-        "name": "InvoiceAddress",
+        "name": "IsExported",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnit",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "G",
         "one_of": null
       },
       {
-        "name": "InvoiceEmailAddress",
+        "name": "OrganizationUnitID",
         "description": "",
-        "type": "string | null",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "LogoID",
-        "description": "",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RegistrationCity",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RegistrationCountryID",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RegistrationNumber",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "VatNumber",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "VisitorsAddress",
+        "name": "User",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "T",
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
-    "W": []
+    "C": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "WorkedHours",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      }
+    ]
   }
 }

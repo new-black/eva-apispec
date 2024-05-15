@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/UploadStockAllocationRulesExcel",
   "description": "A service to upload an Excel containing StockAllocationRules that should be created or updated according to the values specified in the sheet.\n\nAn example Excel file containing the expected structure can be retrieved by calling the \u0060DownloadStockAllocationRulesExcel\u0060 service. Important to note however\nis that the first column (\u0027C/U/D\u0027 which stands for Create/Update/Delete) will be empty in the Excel file returned by \u0060DownloadStockAllocationRulesExcel\u0060, but to update\nor create a record the first column must have a value according to what you want to do with it. To create a row, the first column must contain \u0027C\u0027, to update it must contain \u0027U\u0027 (and the ID column must have a value pointing to the correct record)\nand to delete it it must contain \u0027D\u0027.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060StockAllocationRules:Manage\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,24 +59,6 @@
         "type": "binary",
         "required": true,
         "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
         "one_of": null
       }
     ],
@@ -144,6 +127,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
         "one_of": null
       }
     ]

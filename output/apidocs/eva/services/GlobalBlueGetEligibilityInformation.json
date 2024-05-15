@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/GlobalBlueGetEligibilityInformation",
   "description": "Fetch the eligibility information for the current order.\n\nWhen no BillingAddress is available on the Order, the country of residence has to be provided in the CountryCode field.\n\nIf the response TaxFreeAvailble is true, the user can proceed with calling the GlobalBlueStartTaxFree service.\n\nIf the response is false, tax free is not available. This can be due to several reasons:\n- CountryEligibility == false: the selected CountryOfResidence is not eligible for TaxFree\n- Amounts.AmountBelowMinimum: the total amount of the order is not enough to qualify for tax free, it should be at least Amounts.MinAmount\n- Amounts.AmountOverMaximum: the total amount of the order is to much to qualify for tax free, it should be lower than Amounts.MaxAmount",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -78,48 +79,6 @@
         "name": "OrderID",
         "description": "",
         "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "Amounts",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "CountryEligibility",
-        "description": "Is the provided country eligible for a taxfree form",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "TaxFreeAvailable",
-        "description": "Is this order eligible for a taxfree form",
-        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -222,6 +181,48 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Amounts",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "CountryEligibility",
+        "description": "Is the provided country eligible for a taxfree form",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "TaxFreeAvailable",
+        "description": "Is this order eligible for a taxfree form",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null

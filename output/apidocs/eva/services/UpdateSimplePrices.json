@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/UpdateSimplePrices",
   "description": "Update the prices in the pricelist specified.\n\nThis service takes a simplified approach of the pricing tools EVA offers, but that limits the options you have available. The price list to update may\nonly have a single active adjustment, and that has to be of type \u0060MANUAL_INPUT\u0060.\n\n* The pricelist is identified by the \u0060PriceListID\u0060 or the \u0060BackendSystemID\u0060 and \u0060BackendID\u0060.\n* Products can be identified by their (EVA) \u0060ID\u0060.\n* Updates from this service are persisted in the background, which could take up to 15 minutes to process (unless you set \u0060ForcePriceListRecalculation\u0060 to \u0060true\u0060)",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060UpdateSimplePrices:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,6 +66,24 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
+    "C": [
+      {
+        "name": "NewPrice",
+        "description": "Leave empty to delete the price for this product",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "ForcePriceListRecalculation",
@@ -104,42 +123,6 @@
         "type": "array[object]",
         "required": true,
         "properties_id": "C",
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "NewPrice",
-        "description": "Leave empty to delete the price for this product",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
         "one_of": null
       }
     ],
@@ -208,6 +191,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

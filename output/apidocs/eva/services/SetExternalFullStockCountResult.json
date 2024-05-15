@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/SetExternalFullStockCountResult",
   "description": "Set the external full stock count result.\nThe service accepts partial or full result lists.\nThe service requires a ActualCompletionTime. There can only be one completion time. The value will be updated with every service call.\n\nCountResults must either have ProductID (preferred) or ProductBarcode.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060SetExternalFullStockCountResult:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,40 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
-    "B": [
-      {
-        "name": "CountCompletionTime",
-        "description": "",
-        "type": "datetime",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CountResults",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "FullStockCountID",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsDeltaBatch",
-        "description": "When this property is true, the results will processed as a partial part. Matching values will be updated, new values will be added and existing values no present in the CountResults will be left as is.\n      When this property is false, the result will be processed as a full set. Matching values will be updated, new values will be added and existing values no present in the CountResults will be removed.",
-        "type": "boolean",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "CountedQuantity",
@@ -141,21 +108,37 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Error",
+        "name": "CountCompletionTime",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
+        "type": "datetime",
+        "required": true,
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "CountResults",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "FullStockCountID",
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsDeltaBatch",
+        "description": "When this property is true, the results will processed as a partial part. Matching values will be updated, new values will be added and existing values no present in the CountResults will be left as is.\n      When this property is false, the result will be processed as a full set. Matching values will be updated, new values will be added and existing values no present in the CountResults will be removed.",
+        "type": "boolean",
+        "required": true,
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -224,6 +207,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

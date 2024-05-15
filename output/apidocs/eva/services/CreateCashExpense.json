@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/CreateCashExpense",
   "description": "Creates a cash expense.\n\nThis service expects:\n- \u0060DeviceID\u0060, which is the cash device the money was used from.\n- \u0060TypeID\u0060 which is one of the available expense types.\n- An \u0060Amount\u0060, which is the amount of cash that was taken from or added to the device.\nThe amount should always be positive, but the semantics of the amount depends on the AmountType of the ExpenseType:\nif ExpenseType.AmountType = Expense, then the amount is booked as an expense, if it\u0027s Income then it\u0027s booked as income. Either way, it should be a positive number.\n- A \u0060TaxCodeID\u0060, which refers to one of the available tax codes.\n- A \u0060Description\u0060, which is the reason for this expense (for example: \u0027lunch\u0027).\n- A \u0060BlobID\u0060, which contains an image of the receipt.\n- A \u0060SignatureBlobID\u0060, which contains an image of the signature",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060CashExpenses:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -109,24 +110,6 @@
         "one_of": null
       }
     ],
-    "C": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      }
-    ],
     "D": [
       {
         "name": "Code",
@@ -192,6 +175,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
         "one_of": null
       }
     ]

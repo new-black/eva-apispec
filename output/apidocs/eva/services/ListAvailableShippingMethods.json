@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ListAvailableShippingMethods",
   "description": "Returns a set of all the shipping methods that can be used for the given order. Use \u0060SetShippingMethod\u0060 to update the shipping method on the order.",
+  "auth_description": "This service does not require authentication.",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -83,29 +84,92 @@
         "one_of": null
       }
     ],
-    "C": [
+    "E": [
       {
-        "name": "AvailableShippingMethods",
+        "name": "Code",
         "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "Costs",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaxAmount",
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinAmount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Amount",
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Ranges",
+        "description": "The ranges of the shipping costs based on the order amount. Empty if shipping costs are determined using scripting or no ranges are known for the shipping method.\nThe ranges are non-overlapping, gapless and sorted by the minimum amount (ascending). The first range has a minimum amount of 0. The last range has a maximum amount of null.",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "G",
+        "one_of": null
+      }
+    ],
+    "H": [],
+    "I": [
+      {
+        "name": "OrderLineID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Error",
+        "name": "RequestedDate",
         "description": "",
-        "type": "object | null",
+        "type": "datetime | null",
         "required": false,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "K",
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -207,95 +271,6 @@
         "one_of": null
       }
     ],
-    "E": [
-      {
-        "name": "Code",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "F": [
-      {
-        "name": "Amount",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Ranges",
-        "description": "The ranges of the shipping costs based on the order amount. Empty if shipping costs are determined using scripting or no ranges are known for the shipping method.\nThe ranges are non-overlapping, gapless and sorted by the minimum amount (ascending). The first range has a minimum amount of 0. The last range has a maximum amount of null.",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      }
-    ],
-    "G": [
-      {
-        "name": "Costs",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MaxAmount",
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MinAmount",
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "H": [],
-    "I": [
-      {
-        "name": "OrderLineID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RequestedDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "J": [
       {
         "name": "Code",
@@ -361,6 +336,32 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "AvailableShippingMethods",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
         "one_of": null
       }
     ]

@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/CreateEventExportConfiguration",
   "description": "Create event export configurations (HTTPS only).\n\nEvent Export Configurations allow you to configure specific endpoints (webhooks) for EventTargets and EventTypes.\nNot setting EventTarget \u0026 EventType will configure the endpoint for all targets and types.\nSet AuthenticationHeaderType and AuthenticationHeaderValue if you want to configure some sort of authentication.",
+  "auth_description": "Requires any user with functionality \u0060EventExportConfiguration:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,40 +59,71 @@
   "request_type_id": "B",
   "response_type_id": "K",
   "types": {
-    "B": [
+    "E": [
       {
-        "name": "Config",
-        "description": "Additional configuration for the endpoint.",
-        "type": "object",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "Endpoint",
-        "description": "The endpoint to send the events to. This must be a valid HTTPS endpoint.",
-        "type": "string",
-        "required": true,
+        "name": "Certificate",
+        "description": "A client certificate that can be used for mTLS. Must be X509 in PKCS12 format. Also, it must not be expired, have a private key and hae clientAuth in it\u0027s extended key usage.",
+        "type": "binary | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Name",
-        "description": "A name to identify the configuration.",
-        "type": "string",
-        "required": true,
+        "name": "Password",
+        "description": "The password that is used to encrypt the certificate.",
+        "type": "string | null",
+        "required": false,
         "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Status",
-        "description": "The status of the configuration.",
-        "type": "object",
-        "required": true,
-        "properties_id": "J",
         "one_of": null
       }
     ],
+    "D": [
+      {
+        "name": "ClientCertificate",
+        "description": "Configuration for Mutual TLS (mTLS)",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "StaticBearerToken",
+        "description": "This will result in an authorization header that looks like: \u0060Authorization: Bearer TOKEN\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StaticUnschemedToken",
+        "description": "This will result in an authorization header that looks like: \u0060Authorization: TOKEN\u0060. Use this only when the other options are not sufficient.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [],
+    "F": [
+      {
+        "name": "EventType",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TargetID",
+        "description": "",
+        "type": "object",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      }
+    ],
+    "H": [],
+    "I": [],
     "C": [
       {
         "name": "Authorization",
@@ -182,95 +214,38 @@
         "one_of": null
       }
     ],
-    "D": [
-      {
-        "name": "ClientCertificate",
-        "description": "Configuration for Mutual TLS (mTLS)",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "StaticBearerToken",
-        "description": "This will result in an authorization header that looks like: \u0060Authorization: Bearer TOKEN\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StaticUnschemedToken",
-        "description": "This will result in an authorization header that looks like: \u0060Authorization: TOKEN\u0060. Use this only when the other options are not sufficient.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [
-      {
-        "name": "Certificate",
-        "description": "A client certificate that can be used for mTLS. Must be X509 in PKCS12 format. Also, it must not be expired, have a private key and hae clientAuth in it\u0027s extended key usage.",
-        "type": "binary | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Password",
-        "description": "The password that is used to encrypt the certificate.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "F": [
-      {
-        "name": "EventType",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TargetID",
-        "description": "",
-        "type": "object",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      }
-    ],
-    "G": [],
-    "H": [],
-    "I": [],
     "J": [],
-    "K": [
+    "B": [
       {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
+        "name": "Config",
+        "description": "Additional configuration for the endpoint.",
+        "type": "object",
+        "required": true,
+        "properties_id": "C",
         "one_of": null
       },
       {
-        "name": "ID",
-        "description": "",
-        "type": "integer",
-        "required": false,
+        "name": "Endpoint",
+        "description": "The endpoint to send the events to. This must be a valid HTTPS endpoint.",
+        "type": "string",
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "M",
+        "name": "Name",
+        "description": "A name to identify the configuration.",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Status",
+        "description": "The status of the configuration.",
+        "type": "object",
+        "required": true,
+        "properties_id": "J",
         "one_of": null
       }
     ],
@@ -339,6 +314,32 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
         "one_of": null
       }
     ]

@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/PushUserBoughtProduct",
   "description": "Push user bought product.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,17 +66,9 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "BoughtProducts",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "RegistrationBackendSystemID",
+        "name": "BackendID",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -83,9 +76,33 @@
         "one_of": null
       },
       {
-        "name": "UserID",
+        "name": "OrderID",
         "description": "",
-        "type": "integer",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderLineID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PurchaseDate",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PurchasedQuantity",
+        "description": "",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -149,9 +166,17 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "BackendID",
+        "name": "BoughtProducts",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "RegistrationBackendSystemID",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -159,53 +184,11 @@
         "one_of": null
       },
       {
-        "name": "OrderID",
+        "name": "UserID",
         "description": "",
-        "type": "integer | null",
+        "type": "integer",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderLineID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PurchaseDate",
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PurchasedQuantity",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
         "one_of": null
       }
     ],
@@ -274,6 +257,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

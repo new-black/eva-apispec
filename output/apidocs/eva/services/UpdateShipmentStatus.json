@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/UpdateShipmentStatus",
   "description": "Updates the shipment status, creating ledger entries on shipment level.\n\nWill be processed as a whole; a single failing line in \u0060Lines\u0060 will prevent all other updates in a single call from persisting.",
+  "auth_description": "Requires any user with functionality \u0060Shipments:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,16 +66,7 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
-    "B": [
-      {
-        "name": "Lines",
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
+    "D": [],
     "C": [
       {
         "name": "Date",
@@ -117,22 +109,13 @@
         "one_of": null
       }
     ],
-    "D": [],
-    "E": [
+    "B": [
       {
-        "name": "Error",
+        "name": "Lines",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -201,6 +184,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]

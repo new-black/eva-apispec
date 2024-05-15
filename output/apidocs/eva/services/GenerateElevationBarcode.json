@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/GenerateElevationBarcode",
   "description": "Generates an elevation barcode for user elevation, which can be scanned by a manager with sufficient rights to elevate the user\u0027s rights.\n\nThe returned \u0060Barcode\u0060 you should show for a manager to scan, preferably as QR code through our \u0060/barcode\u0060 endpoint.\n\nThe returned \u0060RequestToken\u0060 is our little secret, which you will use to subscribe to the \u0060/elevationBarcode\u0060 SignalR hub to listen for scan events. Once a successful\nscan event was triggered, this original \u0060RequestToken\u0060 is then \u0027confirmed\u0027 and you can use it directly as elevation header for your original call. Keep it safe!\n\n:bulb: Optionally supply the \u0060OrganizationUnitID\u0060, \u0060Functionality\u0060 and \u0060Scope\u0060 of your original request, so we can check the manager rights directly from the scan\non his/her device. Omitting these here will fall back to the default security enforced from the user attempting to use the (confirmed) elevation token, which just gives\na nasty 403 on the employee\u0027s device.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -58,6 +59,7 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
+    "C": [],
     "B": [
       {
         "name": "Functionality",
@@ -81,41 +83,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "C",
-        "one_of": null
-      }
-    ],
-    "C": [],
-    "D": [
-      {
-        "name": "Barcode",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "RequestToken",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       }
     ],
@@ -182,6 +149,40 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Barcode",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "RequestToken",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null

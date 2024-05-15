@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/GetAvailableDocumentsForOrder",
   "description": "Returns a list of available outputs for an order by taking an \u0060OrderID\u0060.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -75,29 +76,55 @@
         "one_of": null
       }
     ],
-    "C": [
+    "F": [
       {
-        "name": "Documents",
-        "description": "List of order document outputs available for a specific order.\nEach document contains information regarding the following categories:\n\n\u0060Receipt\u0060           - physically printing the order invoice\n\u0060Paper\u0060             - printing the order invoice on a paper printer\n\u0060Email\u0060             - sending the order invoice by email\n\u0060Digital\u0060           - providing a downloadable version of the order invoice\n\u0060ElectronicReceipt\u0060 - providing an electronic receipt version of the order invoice\n\u0060Metadata\u0060          - providing information about the order invoice.\n\nThe document category contains information on whether it\u0027s available for the order\nand a reason code in case it\u0027s not available.",
+        "name": "ID",
+        "description": "ID of the Station in EVA. Can be used directly in services",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "description": "Name of the station for display purposes",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Allowed",
+        "description": "Allowed is false when this option cannot be used, true otherwise",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Preferred",
+        "description": "Indicates if this output should be preferred by the frontend. Can be used to, for example, set a checkbox or radio button by default so the user does not have to toggle it themselves",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReasonCode",
+        "description": "Optional reason code that is included if Allowed is set to false",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Stations",
+        "description": "Possbile stations where the document can be output",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
+        "properties_id": "F",
         "one_of": null
       }
     ],
@@ -153,58 +180,6 @@
       {
         "name": "Type",
         "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [
-      {
-        "name": "Allowed",
-        "description": "Allowed is false when this option cannot be used, true otherwise",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Preferred",
-        "description": "Indicates if this output should be preferred by the frontend. Can be used to, for example, set a checkbox or radio button by default so the user does not have to toggle it themselves",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ReasonCode",
-        "description": "Optional reason code that is included if Allowed is set to false",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Stations",
-        "description": "Possbile stations where the document can be output",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      }
-    ],
-    "F": [
-      {
-        "name": "ID",
-        "description": "ID of the Station in EVA. Can be used directly in services",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "description": "Name of the station for display purposes",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -276,6 +251,32 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Documents",
+        "description": "List of order document outputs available for a specific order.\nEach document contains information regarding the following categories:\n\n\u0060Receipt\u0060           - physically printing the order invoice\n\u0060Paper\u0060             - printing the order invoice on a paper printer\n\u0060Email\u0060             - sending the order invoice by email\n\u0060Digital\u0060           - providing a downloadable version of the order invoice\n\u0060ElectronicReceipt\u0060 - providing an electronic receipt version of the order invoice\n\u0060Metadata\u0060          - providing information about the order invoice.\n\nThe document category contains information on whether it\u0027s available for the order\nand a reason code in case it\u0027s not available.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
         "one_of": null
       }
     ]

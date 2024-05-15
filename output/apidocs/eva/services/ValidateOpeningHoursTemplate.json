@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ValidateOpeningHoursTemplate",
   "description": "Validate an OpeningHoursTemplate",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -51,6 +52,50 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
+    "D": [
+      {
+        "name": "EndTime",
+        "description": "",
+        "type": "duration",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartTime",
+        "description": "",
+        "type": "duration",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "DayOpeningTimes",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsClosed",
+        "description": "",
+        "type": "boolean",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "Friday",
@@ -114,84 +159,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "C",
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "DayOpeningTimes",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsClosed",
-        "description": "",
-        "type": "boolean",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "EndTime",
-        "description": "",
-        "type": "duration",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StartTime",
-        "description": "",
-        "type": "duration",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "Successful",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ValidationErrors",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "H",
         "one_of": null
       }
     ],
@@ -310,6 +277,40 @@
         "type": "string | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Successful",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ValidationErrors",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
         "one_of": null
       }
     ]

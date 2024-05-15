@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/SetCaseRelatedData",
   "description": "Set case related data.\nYou can provide an OrderID (optional)\nYou can provide an ExternalOrderID (optional)\nYou can provide further details by setting RelatedItems. These can either\n- contain a OrderLineID (can only be provided if OrderID is also provided. The ProductID of the orderline will copied to the ProductID of the RelatedItem)\n- contain a ProductID\n- a SerialNumber (is settable whether you provided a OrderLineID or ProductID)\n- a IsWarranty indicator (is settable when there\u0027s an associated ProductID or the orderline contains a product)",
+  "auth_description": "Requires any user with functionality \u0060Cases:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,48 +66,6 @@
   "request_type_id": "B",
   "response_type_id": "D",
   "types": {
-    "B": [
-      {
-        "name": "CaseID",
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ExternalOrderIdentifier",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OverwriteCaseCustomerWithCustomerOfOrder",
-        "description": "Overwrite case customer with the customer bound to the order.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RelatedItems",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "IsWarranty",
@@ -157,21 +116,45 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
       {
-        "name": "Error",
+        "name": "CaseID",
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "ExternalOrderIdentifier",
         "description": "",
-        "type": "object | null",
+        "type": "string | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OverwriteCaseCustomerWithCustomerOfOrder",
+        "description": "Overwrite case customer with the customer bound to the order.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RelatedItems",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "C",
         "one_of": null
       }
     ],
@@ -240,6 +223,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]

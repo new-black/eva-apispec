@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ProcessStockMutationFile",
   "description": "Processes a (delta)stock mutation file.\n\nExpected format of the file is JSON with the following markup:\n\n\u0060\u0060\u0060\n[\n  {\n    \u0022ProductID\u0022: [Optional, int],\n    \u0022ProductBackendID\u0022: [Optional, string],\n    \u0022QuantityOnHand\u0022: [Required, int, value \u003E= 0],\n    \u0022StockMutationReasonID\u0022: [Optional, int],\n    \u0022Remark\u0022: [Optional, string]\n  },\n  ...\n]\n\u0060\u0060\u0060\n\nMutation will only be processed for valid ProductIDs or ProductBackendIDs. In case ProductID and ProductBackendID are provided,\nProductBackendID will be selected as the search parameter.",
+  "auth_description": "Requires any user with functionality \u0060MassStockUpdate:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -116,24 +117,6 @@
         "one_of": null
       }
     ],
-    "C": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      }
-    ],
     "D": [
       {
         "name": "Code",
@@ -199,6 +182,24 @@
         "type": "map[array[string]] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
         "one_of": null
       }
     ]

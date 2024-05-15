@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/AddBundleProductToOrder",
   "description": "The normal \u0060AddProductToOrder\u0060 cannot be used for adding a Product with type \u0060BundleProduct\u0060 to an order. Instead, \u0060AddBundleProductToOrder\u0060 must be\nused. In addition to the \u0060BundleProductID\u0060, this service accepts an optional \u0060LineSelection\u0060, which represents the bundle\u0027s configuration in terms of\nwhich products you\u0027ve chosen.\n\nThe \u0060LineSelection\u0060 data structure contains a \u0060SelectedProductID\u0060, which must refer to a ProductID that is a valid option for this bundle, according\nto what \u0060GetBundleProductDetails\u0060 returns.\n\nIf no \u0060LineSelection\u0060 is provided then the default products of the bundle are added to the Order.",
+  "auth_description": "This service does not require authentication.",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -65,6 +66,33 @@
   "request_type_id": "B",
   "response_type_id": "E",
   "types": {
+    "C": [],
+    "D": [
+      {
+        "name": "LineSelection",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "ProductBundleLineID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SelectedProductID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "BundleProductID",
@@ -102,67 +130,6 @@
         "name": "ParentOrderLineID",
         "description": "If specified the new bundle OrderLine becomes a child of the specified OrderLine.",
         "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [],
-    "D": [
-      {
-        "name": "LineSelection",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "ProductBundleLineID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SelectedProductID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [
-      {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderLineID",
-        "description": "Created or updated OrderLineID",
-        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -231,6 +198,40 @@
         "name": "UnresolvedExternalIDs",
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderLineID",
+        "description": "Created or updated OrderLineID",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null

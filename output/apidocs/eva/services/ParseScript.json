@@ -3,6 +3,7 @@
   "method": "POST",
   "path": "/message/ParseScript",
   "description": "Parses a script for validation and auto-completion.\n\nCan be used as the user types their script, for that purpose use these parameters:\n- Type: Fast, doing Full performs a full compilation of the script which can take longer. Using Full can be done before the user hits the Save button, or for example every 10th keystroke or so.\n\nUse IncludeCompletionSuggestions if you want to display auto-completion suggestions to the user.\n\nYou can verify the entire script and get completion results by passing in the full script as the Source and only the text until the user\u0027s cursor in the CompletionSource.\n\nA list of the available dialects can be retrieved by calling GetScriptDialects.",
+  "auth_description": "Requires any user with functionality \u0060Scripts:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -51,72 +52,6 @@
   "request_type_id": "B",
   "response_type_id": "J",
   "types": {
-    "B": [
-      {
-        "name": "AvailableVariablesRequest",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "CompletionRequest",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Dialect",
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DocumentationRequest",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
-        "one_of": null
-      },
-      {
-        "name": "IncludeStructure",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Source",
-        "description": "The script to parse.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SourceTokens",
-        "description": "The script to parse, in token format as returned by ParseScript when IncludeStructure is passed in as \u0060true\u0060.",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "I",
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "Column",
@@ -135,21 +70,63 @@
         "one_of": null
       }
     ],
-    "D": [
+    "G": [
       {
-        "name": "Source",
-        "description": "The script that you want to have auto-completion suggestions for.\nThis can be different than the full Source as you only want to provide completion suggestions at the current cursor position,\nso you can provide the full source for validation purposes and provide the script up to the cursor position for auto-completion suggestions.",
+        "name": "Column",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Line",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Text",
+        "description": "",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "SourceTokens",
+        "name": "Type",
         "description": "",
-        "type": "array[object] | null",
+        "type": "string | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Count",
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsReadOnly",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Item",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ],
@@ -227,63 +204,21 @@
         "one_of": null
       }
     ],
-    "F": [
+    "D": [
       {
-        "name": "Count",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsReadOnly",
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Item",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      }
-    ],
-    "G": [
-      {
-        "name": "Column",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Line",
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Text",
-        "description": "",
+        "name": "Source",
+        "description": "The script that you want to have auto-completion suggestions for.\nThis can be different than the full Source as you only want to provide completion suggestions at the current cursor position,\nso you can provide the full source for validation purposes and provide the script up to the cursor position for auto-completion suggestions.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Type",
+        "name": "SourceTokens",
         "description": "",
-        "type": "string | null",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "E",
         "one_of": null
       }
     ],
@@ -306,17 +241,25 @@
       }
     ],
     "I": [],
-    "J": [
+    "B": [
       {
-        "name": "AvailableVariables",
+        "name": "AvailableVariablesRequest",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "K",
+        "properties_id": "C",
         "one_of": null
       },
       {
-        "name": "CSharpSource",
+        "name": "CompletionRequest",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Dialect",
         "description": "",
         "type": "string | null",
         "required": false,
@@ -324,39 +267,15 @@
         "one_of": null
       },
       {
-        "name": "CompletionSuggestions",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "M",
-        "one_of": null
-      },
-      {
-        "name": "Documentation",
+        "name": "DocumentationRequest",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "O",
+        "properties_id": "H",
         "one_of": null
       },
       {
-        "name": "Error",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "P",
-        "one_of": null
-      },
-      {
-        "name": "Errors",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "Q",
-        "one_of": null
-      },
-      {
-        "name": "HasErrors",
+        "name": "IncludeStructure",
         "description": "",
         "type": "boolean",
         "required": false,
@@ -364,45 +283,27 @@
         "one_of": null
       },
       {
-        "name": "HasWarnings",
-        "description": "",
-        "type": "boolean",
+        "name": "Source",
+        "description": "The script to parse.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Metadata",
-        "description": "",
-        "type": "object | null",
+        "name": "SourceTokens",
+        "description": "The script to parse, in token format as returned by ParseScript when IncludeStructure is passed in as \u0060true\u0060.",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": "R",
+        "properties_id": "E",
         "one_of": null
       },
       {
-        "name": "Structure",
+        "name": "Type",
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "S",
-        "one_of": null
-      },
-      {
-        "name": "Warnings",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "U",
-        "one_of": null
-      }
-    ],
-    "K": [
-      {
-        "name": "Variables",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "L",
+        "properties_id": "I",
         "one_of": null
       }
     ],
@@ -432,6 +333,17 @@
         "one_of": null
       }
     ],
+    "K": [
+      {
+        "name": "Variables",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      }
+    ],
+    "N": [],
     "M": [
       {
         "name": "Category",
@@ -474,7 +386,6 @@
         "one_of": null
       }
     ],
-    "N": [],
     "O": [
       {
         "name": "Component",
@@ -603,24 +514,6 @@
         "one_of": null
       }
     ],
-    "S": [
-      {
-        "name": "RootNode",
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "T",
-        "one_of": null
-      },
-      {
-        "name": "Tokens",
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      }
-    ],
     "T": [
       {
         "name": "Children",
@@ -671,6 +564,24 @@
         "one_of": null
       }
     ],
+    "S": [
+      {
+        "name": "RootNode",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "T",
+        "one_of": null
+      },
+      {
+        "name": "Tokens",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      }
+    ],
     "U": [
       {
         "name": "Message",
@@ -702,6 +613,96 @@
         "type": "integer",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "AvailableVariables",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "CSharpSource",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CompletionSuggestions",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "Documentation",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "P",
+        "one_of": null
+      },
+      {
+        "name": "Errors",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "Q",
+        "one_of": null
+      },
+      {
+        "name": "HasErrors",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasWarnings",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "R",
+        "one_of": null
+      },
+      {
+        "name": "Structure",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "Warnings",
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "U",
         "one_of": null
       }
     ]
