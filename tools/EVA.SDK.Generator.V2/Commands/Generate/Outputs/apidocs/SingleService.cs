@@ -16,14 +16,17 @@ public class SingleService
   [JsonPropertyName("description")]
   public string Description { get; set; }
 
+  [JsonPropertyName("auth_description")]
+  public string? AuthDescription { get; set; }
+
   [JsonPropertyName("headers")]
   public List<Header> Headers { get; set; }
 
   [JsonPropertyName("request_samples")]
-  public RequestSample[] RequestSamples { get; set; }
+  public List<RequestSample> RequestSamples { get; set; }
 
   [JsonPropertyName("response_samples")]
-  public ResponseSample[] ResponseSamples { get; set; }
+  public List<ResponseSample> ResponseSamples { get; set; }
 
   [JsonPropertyName("deprecation_notice")]
   public string? Deprecation { get; set; }
