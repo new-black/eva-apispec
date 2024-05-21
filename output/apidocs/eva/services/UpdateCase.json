@@ -3,7 +3,7 @@
   "method": "POST",
   "path": "/message/UpdateCase",
   "description": "Update an existing case.",
-  "auth_description": "Requires any user with functionality \u0060Cases:Edit\u0060",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Cases:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -176,6 +176,14 @@
     ],
     "B": [
       {
+        "name": "AssignedOrganizationUnitID",
+        "description": "OU the case is assigned to. When set this will influence visibility.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "BackendID",
         "description": "",
         "type": "string | null",
@@ -225,7 +233,7 @@
       },
       {
         "name": "OriginatingOrganizationUnitID",
-        "description": "",
+        "description": "Can only be set once. Can be updated when not set on create.",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
