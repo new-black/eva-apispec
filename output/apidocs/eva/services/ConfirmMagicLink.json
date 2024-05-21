@@ -1,8 +1,8 @@
 {
-  "name": "SendMagicLink",
+  "name": "ConfirmMagicLink",
   "method": "POST",
-  "path": "/message/SendMagicLink",
-  "description": "Requests a magic login link, which will send an email to the user (if found).\n\n- Setting \u0060MagicLink:Enabled\u0060 must be enabled (default)\n- When using a \u0060RedirectUrl\u0060, configure setting \u0060MagicLink:RedirectDomains\u0060 to whitelist supported redirect hosts (recommended!)\n\nUsing the returned \u0060RequestToken\u0060, you can either subscribe to the \u0060/magicLink\u0060 SignalR hub, or poll the \u0060CheckMagicLink\u0060 service. As soon as the emailed magic link is clicked, that hub and service\nwill return either a \u0060TemporaryToken\u0060 you can call \u0060Login\u0060 with for this user, or an \u0060APIKey\u0060 that\u0027s already valid and ready to proceed with.\n\n- The email sent contains a link that will work for 10 minutes\n- When clicked, this will generate either a \u0060TemporaryToken\u0060 that can be used to \u0060Login\u0060 with for 3 minutes, or an \u0060ApiKey\u0060 that can be used for 1 hour\n- This data is additionally exposed through \u0060CheckMagicLink\u0060 for 1 minute after clicking\n- When using a \u0060TemporaryToken\u0060 to log in with, the resulting \u0060AuthenticationToken\u0060 is valid for 1 week (or \u0060SessionDuration:MagicLink\u0060) and will refresh every time when used\n\nFinally, when specifying \u0060IncludeManualCode\u0060, the email sent will also contain a short code for the user to _manually_ input into your application - call \u0060ConfirmMagicLink\u0060 with both the \u0060RequestToken\u0060\nand that \u0060ManualCode\u0060 to obtain either the \u0060TemporaryToken\u0060 or \u0060ApiKey\u0060 like above, when valid.",
+  "path": "/message/ConfirmMagicLink",
+  "description": "Confirms a magic login by \u0060ManualCode\u0060. Throttled.",
   "auth_description": "This service does not require authentication.",
   "headers": [
     {
@@ -23,20 +23,6 @@
       "name": "EVA-Requested-OrganizationUnit-Query",
       "type": "string",
       "description": "The query that selects the organization unit to run this request in.",
-      "required": false,
-      "default": null
-    },
-    {
-      "name": "EVA-IDs-Mode",
-      "type": "string",
-      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
-      "required": false,
-      "default": null
-    },
-    {
-      "name": "EVA-IDs-BackendSystemID",
-      "type": "string",
-      "description": "The ID of the backend system that is used to resolve the IDs.",
       "required": false,
       "default": null
     }
@@ -68,7 +54,7 @@
   "types": {
     "B": [
       {
-        "name": "EmailAddress",
+        "name": "ManualCode",
         "description": "",
         "type": "string",
         "required": true,
@@ -76,26 +62,10 @@
         "one_of": null
       },
       {
-        "name": "IncludeManualCode",
+        "name": "RequestToken",
         "description": "",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RedirectUrl",
-        "description": "",
-        "type": "string | null",
-        "required": false,
+        "type": "string",
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
@@ -170,6 +140,14 @@
     ],
     "C": [
       {
+        "name": "ApiKey",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Error",
         "description": "",
         "type": "object | null",
@@ -186,10 +164,10 @@
         "one_of": null
       },
       {
-        "name": "RequestToken",
+        "name": "TemporaryToken",
         "description": "",
-        "type": "string",
-        "required": true,
+        "type": "string | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       }
