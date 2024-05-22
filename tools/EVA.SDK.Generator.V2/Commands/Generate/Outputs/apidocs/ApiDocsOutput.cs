@@ -2,6 +2,7 @@
 using System.Text.Json;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
+using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
 
@@ -32,6 +33,8 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
         var state = new State();
 
         await GenerateSidebar(ctx);
+        var content = ManifestResourceHelpers.GetResource("apidocs.Resources.index.md") ?? string.Empty;
+        await ctx.Writer.WriteFileAsync("index.md", content.Replace("__VERSION__", $"2.0.{ctx.Input.ApiVersion}"));
 
         foreach (var service in ctx.Input.Services)
         {
