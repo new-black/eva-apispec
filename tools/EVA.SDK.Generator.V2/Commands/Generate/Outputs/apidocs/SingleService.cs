@@ -86,6 +86,9 @@ public class TypeInfo
   [JsonPropertyName("name")]
   public string Name { get; set; }
 
+  [JsonPropertyName("deprecation_notice")]
+  public string? Deprecation { get; set; }
+
   [JsonPropertyName("description")]
   public string Description { get; set; }
 

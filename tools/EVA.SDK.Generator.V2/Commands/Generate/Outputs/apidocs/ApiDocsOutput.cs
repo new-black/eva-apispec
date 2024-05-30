@@ -241,9 +241,52 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
                 Description = prop.Description ?? string.Empty
             };
 
-            (ti.Type, ti.PropertiesID, var options) = ToType(state, types, ctx, prop.Type);
+            (ti.Type, ti.PropertiesID, var options, var extraDescription) = ToType(state, types, ctx, prop.Type);
+            if(extraDescription != null) ti.Description += "\n" + extraDescription;
             ti.OneOf = options?.ToArray();
             result.Add(ti);
+
+            if (prop.DataModelInformation is { Name: var dmn })
+            {
+              ti.Description += $"\n\nThis is the ID of a `{dmn}`";
+            }
+
+            if (prop.StringLengthConstraint is { } slc)
+            {
+              ti.Description += $"\n\nThis string must be between {slc.Min} (incl) and {slc.Max} (incl) characters long.";
+            }
+
+            if (prop.StringRegexConstraint is { } src)
+            {
+              ti.Description += $"\n\nThis string must be formatted like `{src.Regex}`.";
+            }
+
+            if (prop is { Skippable: true, Required: { CurrentValue: true } })
+            {
+              ti.Description += $"\n\nWhile this property is not required, if it is sent in the request it must have a valid value.";
+            }
+            else if (prop is { Skippable: true, Type.Nullable: true })
+            {
+              ti.Description += $"\n\nProviding a `null` value and not providing the property at all has different meanings.";
+            }
+
+            if (prop.AllowedValues is { Length: > 0 } allowedValues)
+            {
+              ti.Description += $"\n\nPossible values:\n\n{string.Join('\n', allowedValues.Select(v => $"* `{v}`"))}";
+            }
+
+            if (prop.Required is { Effective: not null } required)
+            {
+              ti.Description += $"\n\n**Required since {required.Introduced}:** {required.Comment}\n\n**Will be enforced in {required.Effective}**";
+            }
+
+            if (prop.Deprecated is { } deprecated)
+            {
+              ti.Deprecation = $"\n\n**Deprecated since {deprecated.Introduced}:** {deprecated.Comment}\n\n**Will be removed in {deprecated.Effective}**";
+              ti.Description += $"\n\n**Deprecated since {deprecated.Introduced}:** {deprecated.Comment}\n\n**Will be removed in {deprecated.Effective}**";
+            }
+
+            ti.Description = ti.Description.Trim();
         }
 
         types[id] = result;
@@ -251,11 +294,12 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
         return id;
     }
 
-    private static (string type, string? properties, List<OneOf>? oneof) ToType(State state, Dictionary<string, List<TypeInfo>> types, OutputContext<ApiDocsOptions> ctx, TypeReference type,
+    private static (string type, string? properties, List<OneOf>? oneof, string? description) ToType(State state, Dictionary<string, List<TypeInfo>> types, OutputContext<ApiDocsOptions> ctx, TypeReference type,
         bool? forceNullable = null)
     {
         string? properties = null;
         List<OneOf>? oneof = null;
+        string? description = null;
 
         var result = type.Name switch
         {
@@ -274,36 +318,60 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 
         if (type.Name == ApiSpecConsts.Specials.Map)
         {
-            var (s1, s2, _) = ToType(state, types, ctx, type.Arguments[1], false);
+            var (s1, s2, _, s3) = ToType(state, types, ctx, type.Arguments[1], false);
 
             result = $"map[{s1}]";
             properties = s2;
+            description = s3;
         }
         else if (type.Name == ApiSpecConsts.Specials.Option)
         {
-            var (s1, s2, _) = ToType(state, types, ctx, type.Shared!, false);
+            var (s1, s2, _, s3) = ToType(state, types, ctx, type.Shared!, false);
 
             result = $"one-of[{s1}]";
             properties = s2;
+            description = s3;
 
             oneof = new List<OneOf>();
             foreach (var x in type.Arguments)
             {
-                var (_, x2, _) = ToType(state, types, ctx, x, false);
+                var (_, x2, _, _) = ToType(state, types, ctx, x, false);
                 oneof.Add(new OneOf { Name = x.Name[(x.Name.LastIndexOf('.') + 1)..], PropertiesID = x2 });
             }
         }
         else if (type.Name == ApiSpecConsts.Specials.Array)
         {
-            var (s1, s2, _) = ToType(state, types, ctx, type.Arguments[0], false);
+            var (s1, s2, _, s3) = ToType(state, types, ctx, type.Arguments[0], false);
 
             result = $"array[{s1}]";
             properties = s2;
+            description = s3;
         }
         else if (result == null)
         {
+          var targetType = ctx.Input.Types[type.Name];
+          if (targetType.EnumIsFlag is {} enumIsFlag)
+          {
+
+            var totals = targetType.EnumValues.ToTotals();
+            var possibleValues = string.Join('\n', totals.OrderBy(kv => kv.Value).Select(kv => $"* `{kv.Value}` - {kv.Key}"));
+
+            if (enumIsFlag)
+            {
+              result = "integer";
+              description = $"Flags enum, combine any of the below values:\n\n{possibleValues}";
+            }
+            else
+            {
+              result = "integer";
+              description = $"Possible values:\n\n{possibleValues}";
+            }
+          }
+          else
+          {
             result = "object";
             properties = BuildTypeInfo(state, types, ctx, type.Name);
+          }
         }
 
         if (forceNullable is true || !forceNullable.HasValue && type.Nullable)
@@ -311,7 +379,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
             result += " | null";
         }
 
-        return (result, properties, oneof);
+        return (result, properties, oneof, description);
     }
 
     private static string ToBase26(int x)
