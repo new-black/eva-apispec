@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 using EVA.SDK.Generator.V2.Helpers;
@@ -85,9 +86,9 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 
         result.Headers = GetHeaders(supportsExternalID);
 
-        result.RequestSamples = GetRequestSamples();
+        result.RequestSamples = GetRequestSamples(ctx, service.RequestTypeID, service.Name);
 
-        result.ResponseSamples = GetResponseSamples();
+        result.ResponseSamples = GetResponseSamples(ctx, service.ResponseTypeID);
 
         await ctx.Writer.WriteFileAsync($"eva/services/{service.Name}.json", JsonSerializer.Serialize(result, JsonContext.Indented.SingleService));
     }
@@ -183,27 +184,44 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
         return headers;
     }
 
-    private static List<RequestSample> GetRequestSamples()
+    private static List<RequestSample> GetRequestSamples(OutputContext<ApiDocsOptions> ctx, string serviceRequestType, string serviceName)
     {
-        return new List<RequestSample>
+      var sample = BuildMinimalSample(ctx, serviceRequestType, new Stack<string>());
+      var sampleStr = sample.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
+
+      return new List<RequestSample>
+      {
+        new RequestSample
         {
-            new RequestSample
-            {
-                Name = "CURL",
-                Sample = "# Coming soon\n# Very soon...",
-                Syntax = "bash"
-            }
-        };
+          Name = "JSON",
+          Sample = sample.ToJsonString(new JsonSerializerOptions { WriteIndented = true }),
+          Syntax = "json"
+        },
+        new RequestSample
+        {
+          Name = "CURL",
+          Sample = $"""
+                   curl -H "Content-Type: application/json" \
+                     -H "EVA-User-Agent: MyFirstUserAgent/1.0.0" \
+                     -H "Authorization: Bearer <token>" \
+                     --data '{sampleStr}' \
+                     https://euw.acme.test.eva-online.cloud/message/{serviceName}
+                   """,
+          Syntax = "bash"
+        }
+      };
     }
 
-    private static List<ResponseSample> GetResponseSamples()
+    private static List<ResponseSample> GetResponseSamples(OutputContext<ApiDocsOptions> ctx, string serviceRequestType)
     {
+        var sample = BuildMinimalSample(ctx, serviceRequestType, new Stack<string>());
+
         return new List<ResponseSample>
         {
             new ResponseSample
             {
                 Name = "200",
-                Sample = "{}"
+                Sample = sample.ToJsonString(new JsonSerializerOptions { WriteIndented = true })
             },
             new ResponseSample
             {
@@ -216,6 +234,129 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
                 Sample = "{\n  \"Error\": {\n    \"Code\": \"COVFEFE\",\n    \"Type\": \"Forbidden\",\n    \"Message\": \"You are not authorized to execute this request.\",\n    \"RequestID\": \"576b62dd71894e3281a4d84951f44e70\"\n  }\n}"
             }
         };
+    }
+
+    private static JsonNode BuildMinimalSample(OutputContext<ApiDocsOptions> ctx, string typeID, Stack<string> recursionGuard)
+    {
+      var type = ctx.Input.Types[typeID];
+
+      // Enums
+      if (type.EnumIsFlag.HasValue)
+      {
+        // We'll just choose the first one
+        return type.EnumValues.FirstOrDefault(x => x.Value.Value != 0).Value?.Value ?? 0;
+      }
+
+      // Object
+      var result = new JsonObject();
+
+      if (recursionGuard.Contains(typeID))
+      {
+        return new JsonObject
+        {
+          ["re"] = "cursion"
+        };
+      }
+      recursionGuard.Push(typeID);
+
+      foreach (var property in type.Properties)
+      {
+        result[property.Key] = BuildMinimalSample(ctx, property.Value, property.Value.Type, recursionGuard);
+      }
+
+      recursionGuard.Pop();
+
+      return result;
+    }
+
+    private static JsonNode BuildMinimalSample(OutputContext<ApiDocsOptions> ctx, PropertySpecification spec, TypeReference type, Stack<string> recursionGuard)
+    {
+      if (type.Name is ApiSpecConsts.Bool)
+      {
+        return true;
+      }
+
+      if (type.Name is ApiSpecConsts.Int16 or ApiSpecConsts.Int32 or ApiSpecConsts.Int64)
+      {
+        return 123;
+      }
+
+      if (type.Name is ApiSpecConsts.Float32 or ApiSpecConsts.Float64 or ApiSpecConsts.Float128)
+      {
+        return 123.456f;
+      }
+
+      if (type.Name is ApiSpecConsts.Guid)
+      {
+        return Guid.NewGuid().ToString();
+      }
+
+      if (type.Name is ApiSpecConsts.Date)
+      {
+        return DateTime.UtcNow.ToString("yyyy-MM-dd");
+      }
+
+      if (type.Name is ApiSpecConsts.Duration)
+      {
+        return TimeSpan.FromHours(1).ToString();
+      }
+
+      if (type.Name is ApiSpecConsts.Any)
+      {
+        return "any valid json value";
+      }
+
+      if (type.Name is ApiSpecConsts.String)
+      {
+        if (spec.AllowedValues.Any())
+        {
+          return spec.AllowedValues.First();
+        }
+
+        var val = "string";
+        if (spec.StringLengthConstraint is { Max: < 6 })
+        {
+          return val[..spec.StringLengthConstraint.Max];
+        }
+
+        return val;
+      }
+
+      if (type.Name is ApiSpecConsts.Binary)
+      {
+        return "base64 encoded binary data";
+      }
+
+      if (type.Name is ApiSpecConsts.Specials.Map)
+      {
+        var result = new JsonObject();
+        result["key"] = BuildMinimalSample(ctx, spec, type.Arguments[1], recursionGuard);
+        return result;
+      }
+
+      if (type.Name is ApiSpecConsts.Specials.Option)
+      {
+        return BuildMinimalSample(ctx, spec, type.Arguments[0], recursionGuard);
+      }
+
+      if (type.Name is ApiSpecConsts.Specials.Array)
+      {
+        return new JsonArray { BuildMinimalSample(ctx, spec, type.Arguments[0], recursionGuard) };
+      }
+
+      if (type.Name is ApiSpecConsts.Object)
+      {
+        var result = new JsonObject();
+        result["key"] = "any valid json value";
+        return result;
+      }
+
+      if (type.Name is { } typeName)
+      {
+        return BuildMinimalSample(ctx, typeName, recursionGuard);
+      }
+
+      return "unknown";
     }
 
     private static string BuildTypeInfo(State state, Dictionary<string, List<TypeInfo>> types, OutputContext<ApiDocsOptions> ctx, string typeID)
