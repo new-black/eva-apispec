@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Key\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123\n}",
+      "sample": "{\n  \u0022Key\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022Value\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Key\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UnsetSetting",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Key\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022Value\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UnsetSetting",
       "syntax": "bash"
     }
   ],
@@ -78,7 +78,25 @@
         "name": "OrganizationUnitID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrganizationUnit\u0060",
-        "type": "integer",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitSetID",
+        "deprecation_notice": null,
+        "description": "Setting are not stored on sets, the set is evaluated when this service is called, and the unsetting is applied to all OrganizationUnits in the set.\n\nThis is the ID of a \u0060OrganizationUnitSet\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "deprecation_notice": null,
+        "description": "When a Value is given, the setting will only be removed when the Value matches.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
