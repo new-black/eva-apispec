@@ -1,0 +1,109 @@
+{
+  "typename": "FetchUserFromExternalProvider",
+  "assembly": "EVA.Core",
+  "description": "Fetches the user by its BackendID from the configured external provider. This service is usually used in combination with a call to SearchUsers. This service will create a user in EVA based on the details returned by the external provider if we don\u0027t already have a user with the same BackendID. Passing in the OrderID will attach the (created) user to the given order directly as well.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "enumIsFlag": null,
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Users.GetUserResponse",
+    "EVA.Core.DataModels.UserAccountType"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Users.GetUserResponse",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      }
+    ],
+    "shared": null,
+    "nullable": false
+  },
+  "properties": {
+    "AccountType": {
+      "type": {
+        "ref": "EVA.Core.DataModels.UserAccountType",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "Is this a Standard/Basic/Incognito account?",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "BackendID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": "BackendID that is returned from the \u0060SearchUsers\u0060 with the source set to external",
+      "skippable": false,
+      "deprecated": null,
+      "required": {
+        "current": true,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "requiredAllowEmpty": {
+        "current": false,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "OrderID": {
+      "type": {
+        "ref": "int64",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "Identifier for the order to automatically attach the new customer to (see \u0060AttachToOrder\u0060 parameter).",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": {
+        "name": "Order",
+        "lenient": false,
+        "supportsCustomID": true,
+        "supportsSystemID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    }
+  },
+  "enumValues": {},
+  "parent": null
+}
