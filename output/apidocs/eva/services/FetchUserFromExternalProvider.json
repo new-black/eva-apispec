@@ -1,8 +1,8 @@
 {
-  "name": "GetOrganizationUnitDetailed",
+  "name": "FetchUserFromExternalProvider",
   "method": "POST",
-  "path": "/message/GetOrganizationUnitDetailed",
-  "description": "Retrieve detailed organization unit information.",
+  "path": "/message/FetchUserFromExternalProvider",
+  "description": "Fetches the user by its BackendID from the configured external provider. This service is usually used in combination with a call to SearchUsers. This service will create a user in EVA based on the details returned by the external provider if we don\u0027t already have a user with the same BackendID. Passing in the OrderID will attach the (created) user to the given order directly as well.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -32,24 +32,31 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ID\u0022: 123\n}",
+      "sample": "{\n  \u0022AccountType\u0022: 1,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022OrderID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetOrganizationUnitDetailed",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AccountType\u0022: 1,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/FetchUserFromExternalProvider",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Address\u0022: {\n    \u0022Address1\u0022: \u0022string\u0022,\n    \u0022Address2\u0022: \u0022string\u0022,\n    \u0022City\u0022: \u0022string\u0022,\n    \u0022CountryID\u0022: \u0022string\u0022,\n    \u0022District\u0022: \u0022string\u0022,\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022HouseNumber\u0022: \u0022string\u0022,\n    \u0022ID\u0022: 123,\n    \u0022LastName\u0022: \u0022string\u0022,\n    \u0022Latitude\u0022: 123.456,\n    \u0022Longitude\u0022: 123.456,\n    \u0022PhoneNumber\u0022: \u0022string\u0022,\n    \u0022Region\u0022: \u0022string\u0022,\n    \u0022State\u0022: \u0022string\u0022,\n    \u0022Subdistrict\u0022: \u0022string\u0022,\n    \u0022ZipCode\u0022: \u0022string\u0022\n  },\n  \u0022AddressID\u0022: 123,\n  \u0022BIC\u0022: \u0022string\u0022,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendRelationID\u0022: \u0022string\u0022,\n  \u0022BankAccount\u0022: \u0022string\u0022,\n  \u0022CompanyID\u0022: 123,\n  \u0022CompanyName\u0022: \u0022string\u0022,\n  \u0022CountryID\u0022: \u0022string\u0022,\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022CustomFieldValuesWithOptions\u0022: {\n    \u0022key\u0022: {\n      \u0022Options\u0022: {\n        \u0022DefaultCustomFieldValue\u0022: {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022re\u0022: \u0022cursion\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u002217f84f28-de7e-4574-88d6-6a84619ae0fa\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022DateTimeValue\u0022: \u00222024-06-17\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        },\n        \u0022DefaultValue\u0022: \u0022string\u0022,\n        \u0022IsEditable\u0022: true,\n        \u0022IsRequired\u0022: true,\n        \u0022MaximumDate\u0022: \u00222024-06-17\u0022,\n        \u0022MaximumLength\u0022: 123,\n        \u0022MaximumValue\u0022: 123.456,\n        \u0022MinimumDate\u0022: \u00222024-06-17\u0022,\n        \u0022MinimumLength\u0022: 123,\n        \u0022MinimumValue\u0022: 123.456\n      },\n      \u0022Value\u0022: {\n        \u0022ArrayValues\u0022: [\n          {\n            \u0022re\u0022: \u0022cursion\u0022\n          }\n        ],\n        \u0022BlobValue\u0022: \u0022a55a0b10-f0d1-479b-ba1b-8ac50cce061b\u0022,\n        \u0022BoolValue\u0022: true,\n        \u0022DateTimeValue\u0022: \u00222024-06-17\u0022,\n        \u0022NumberValue\u0022: 123.456,\n        \u0022StringValue\u0022: \u0022string\u0022\n      }\n    }\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022EmailAddress\u0022: \u0022string\u0022,\n  \u0022EstablishmentNumber\u0022: \u0022string\u0022,\n  \u0022ExtendedOpeningHours\u0022: [\n    {\n      \u0022Friday\u0022: {\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022IsClosed\u0022: true,\n        \u0022TimeSlots\u0022: [\n          {\n            \u0022EndTime\u0022: \u002201:00:00\u0022,\n            \u0022StartTime\u0022: \u002201:00:00\u0022\n          }\n        ]\n      },\n      \u0022Monday\u0022: {\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022IsClosed\u0022: true,\n        \u0022TimeSlots\u0022: [\n          {\n            \u0022EndTime\u0022: \u002201:00:00\u0022,\n            \u0022StartTime\u0022: \u002201:00:00\u0022\n          }\n        ]\n      },\n      \u0022Saturday\u0022: {\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022IsClosed\u0022: true,\n        \u0022TimeSlots\u0022: [\n          {\n            \u0022EndTime\u0022: \u002201:00:00\u0022,\n            \u0022StartTime\u0022: \u002201:00:00\u0022\n          }\n        ]\n      },\n      \u0022SpecialOpeningHours\u0022: [\n        {\n          \u0022Date\u0022: \u00222024-06-17\u0022,\n          \u0022Description\u0022: \u0022string\u0022,\n          \u0022IsClosed\u0022: true,\n          \u0022TimeSlots\u0022: [\n            {\n              \u0022EndTime\u0022: \u002201:00:00\u0022,\n              \u0022StartTime\u0022: \u002201:00:00\u0022\n            }\n          ]\n        }\n      ],\n      \u0022Sunday\u0022: {\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022IsClosed\u0022: true,\n        \u0022TimeSlots\u0022: [\n          {\n            \u0022EndTime\u0022: \u002201:00:00\u0022,\n            \u0022StartTime\u0022: \u002201:00:00\u0022\n          }\n        ]\n      },\n      \u0022Thursday\u0022: {\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022IsClosed\u0022: true,\n        \u0022TimeSlots\u0022: [\n          {\n            \u0022EndTime\u0022: \u002201:00:00\u0022,\n            \u0022StartTime\u0022: \u002201:00:00\u0022\n          }\n        ]\n      },\n      \u0022Tuesday\u0022: {\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022IsClosed\u0022: true,\n        \u0022TimeSlots\u0022: [\n          {\n            \u0022EndTime\u0022: \u002201:00:00\u0022,\n            \u0022StartTime\u0022: \u002201:00:00\u0022\n          }\n        ]\n      },\n      \u0022TypeBackendID\u0022: \u0022string\u0022,\n      \u0022TypeID\u0022: 123,\n      \u0022TypeName\u0022: \u0022string\u0022,\n      \u0022Wednesday\u0022: {\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022IsClosed\u0022: true,\n        \u0022TimeSlots\u0022: [\n          {\n            \u0022EndTime\u0022: \u002201:00:00\u0022,\n            \u0022StartTime\u0022: \u002201:00:00\u0022\n          }\n        ]\n      }\n    }\n  ],\n  \u0022ID\u0022: 123,\n  \u0022Latitude\u0022: 123.456,\n  \u0022Longitude\u0022: 123.456,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OpeningHours\u0022: [\n    {\n      \u0022Date\u0022: \u00222024-06-17\u0022,\n      \u0022DayOfWeek\u0022: 5,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022EndTime\u0022: \u002201:00:00\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsActive\u0022: true,\n      \u0022IsClosed\u0022: true,\n      \u0022IsSpecial\u0022: true,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022StartTime\u0022: \u002201:00:00\u0022,\n      \u0022TypeID\u0022: 123,\n      \u0022TypeName\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022ParentID\u0022: 123,\n  \u0022ParentName\u0022: \u0022string\u0022,\n  \u0022PhoneNumber\u0022: \u0022string\u0022,\n  \u0022RegisterCashLimit\u0022: 123.456,\n  \u0022SafeCashLimit\u0022: 123.456,\n  \u0022Status\u0022: 2,\n  \u0022Subnet\u0022: \u0022string\u0022,\n  \u0022TimeZone\u0022: \u0022string\u0022,\n  \u0022Type\u0022: 4096,\n  \u0022VisibilityGroupID\u0022: 123,\n  \u0022VisibilityGroupName\u0022: \u0022string\u0022,\n  \u0022Website\u0022: \u0022string\u0022\n}"
+      "sample": "{\n  \u0022AccountType\u0022: 1,\n  \u0022AllowPasswordLogin\u0022: true,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendRelationID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022BankAccount\u0022: \u0022string\u0022,\n  \u0022Company\u0022: {\n    \u0022AccountHolderName\u0022: \u0022string\u0022,\n    \u0022BIC\u0022: \u0022string\u0022,\n    \u0022ContactEmailAddress\u0022: \u0022string\u0022,\n    \u0022ContactPhoneNumber\u0022: \u0022string\u0022,\n    \u0022EstablishedDate\u0022: \u00222024-06-17\u0022,\n    \u0022FiscalID\u0022: \u0022string\u0022,\n    \u0022IBAN\u0022: \u0022string\u0022,\n    \u0022ID\u0022: 123,\n    \u0022InvoiceAddress\u0022: {\n      \u0022Address1\u0022: \u0022string\u0022,\n      \u0022Address2\u0022: \u0022string\u0022,\n      \u0022City\u0022: \u0022string\u0022,\n      \u0022CountryID\u0022: \u0022string\u0022,\n      \u0022District\u0022: \u0022string\u0022,\n      \u0022EmailAddress\u0022: \u0022string\u0022,\n      \u0022FirstName\u0022: \u0022string\u0022,\n      \u0022HouseNumber\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022LastName\u0022: \u0022string\u0022,\n      \u0022Latitude\u0022: 123.456,\n      \u0022Longitude\u0022: 123.456,\n      \u0022PhoneNumber\u0022: \u0022string\u0022,\n      \u0022Region\u0022: \u0022string\u0022,\n      \u0022State\u0022: \u0022string\u0022,\n      \u0022Subdistrict\u0022: \u0022string\u0022,\n      \u0022ZipCode\u0022: \u0022string\u0022\n    },\n    \u0022InvoiceEmailAddress\u0022: \u0022string\u0022,\n    \u0022LogoID\u0022: \u0022dfe81776-8552-44b4-aa01-1b451d106bef\u0022,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022RegistrationCity\u0022: \u0022string\u0022,\n    \u0022RegistrationCountryID\u0022: \u0022string\u0022,\n    \u0022RegistrationNumber\u0022: \u0022string\u0022,\n    \u0022VatNumber\u0022: \u0022string\u0022,\n    \u0022VisitorsAddress\u0022: {\n      \u0022Address1\u0022: \u0022string\u0022,\n      \u0022Address2\u0022: \u0022string\u0022,\n      \u0022City\u0022: \u0022string\u0022,\n      \u0022CountryID\u0022: \u0022string\u0022,\n      \u0022District\u0022: \u0022string\u0022,\n      \u0022EmailAddress\u0022: \u0022string\u0022,\n      \u0022FirstName\u0022: \u0022string\u0022,\n      \u0022HouseNumber\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022LastName\u0022: \u0022string\u0022,\n      \u0022Latitude\u0022: 123.456,\n      \u0022Longitude\u0022: 123.456,\n      \u0022PhoneNumber\u0022: \u0022string\u0022,\n      \u0022Region\u0022: \u0022string\u0022,\n      \u0022State\u0022: \u0022string\u0022,\n      \u0022Subdistrict\u0022: \u0022string\u0022,\n      \u0022ZipCode\u0022: \u0022string\u0022\n    }\n  },\n  \u0022CountryID\u0022: \u0022string\u0022,\n  \u0022CreatedByFullName\u0022: \u0022string\u0022,\n  \u0022CreatedByID\u0022: 123,\n  \u0022CreationTime\u0022: \u00222024-06-17\u0022,\n  \u0022CustomFieldValuesWithOptions\u0022: {\n    \u0022key\u0022: {\n      \u0022Options\u0022: {\n        \u0022DefaultCustomFieldValue\u0022: {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022re\u0022: \u0022cursion\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u002204463c08-ad48-450e-9f09-be3a52864949\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022DateTimeValue\u0022: \u00222024-06-17\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        },\n        \u0022DefaultValue\u0022: \u0022string\u0022,\n        \u0022IsEditable\u0022: true,\n        \u0022IsRequired\u0022: true,\n        \u0022MaximumDate\u0022: \u00222024-06-17\u0022,\n        \u0022MaximumLength\u0022: 123,\n        \u0022MaximumValue\u0022: 123.456,\n        \u0022MinimumDate\u0022: \u00222024-06-17\u0022,\n        \u0022MinimumLength\u0022: 123,\n        \u0022MinimumValue\u0022: 123.456\n      },\n      \u0022Value\u0022: {\n        \u0022ArrayValues\u0022: [\n          {\n            \u0022re\u0022: \u0022cursion\u0022\n          }\n        ],\n        \u0022BlobValue\u0022: \u00227dafe32f-5cdc-4194-9604-2f2aa066370e\u0022,\n        \u0022BoolValue\u0022: true,\n        \u0022DateTimeValue\u0022: \u00222024-06-17\u0022,\n        \u0022NumberValue\u0022: 123.456,\n        \u0022StringValue\u0022: \u0022string\u0022\n      }\n    }\n  },\n  \u0022CustomID\u0022: \u0022string\u0022,\n  \u0022Data\u0022: {\n    \u0022key\u0022: \u0022string\u0022\n  },\n  \u0022DateOfBirth\u0022: \u00222024-06-17\u0022,\n  \u0022DeactivationDate\u0022: \u00222024-06-17\u0022,\n  \u0022EmailAddress\u0022: \u0022string\u0022,\n  \u0022EmailAddressValidated\u0022: true,\n  \u0022FirstName\u0022: \u0022string\u0022,\n  \u0022FiscalID\u0022: \u0022string\u0022,\n  \u0022FullName\u0022: \u0022string\u0022,\n  \u0022Gender\u0022: \u0022string\u0022,\n  \u0022GravatarHash\u0022: \u0022string\u0022,\n  \u0022HasOpenCases\u0022: true,\n  \u0022ID\u0022: 123,\n  \u0022Initials\u0022: \u0022string\u0022,\n  \u0022IsDeactivated\u0022: true,\n  \u0022IsDebtor\u0022: true,\n  \u0022IsDeleted\u0022: true,\n  \u0022IsIncognito\u0022: true,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022LastModificationTime\u0022: \u00222024-06-17\u0022,\n  \u0022LastModifiedByID\u0022: 123,\n  \u0022LastName\u0022: \u0022string\u0022,\n  \u0022LastSuccessfulLogin\u0022: \u00222024-06-17\u0022,\n  \u0022ModifiedByFullName\u0022: \u0022string\u0022,\n  \u0022Nickname\u0022: \u0022string\u0022,\n  \u0022PhoneNumber\u0022: \u0022string\u0022,\n  \u0022PlaceOfBirth\u0022: \u0022string\u0022,\n  \u0022PreferredStoreID\u0022: 123,\n  \u0022PricingGroupID\u0022: \u0022string\u0022,\n  \u0022Salutation\u0022: \u0022string\u0022,\n  \u0022SingleSignOnID\u0022: \u0022string\u0022,\n  \u0022SingleSignOnOnly\u0022: true,\n  \u0022SocialSecurityNumber\u0022: \u0022string\u0022,\n  \u0022TimeZone\u0022: \u0022string\u0022,\n  \u0022Title\u0022: \u0022string\u0022,\n  \u0022Type\u0022: 4,\n  \u0022VisibilityGroupID\u0022: 123,\n  \u0022VisibilityGroupName\u0022: \u0022string\u0022\n}"
     },
     {
       "name": "400",
@@ -66,16 +73,34 @@
   "types": {
     "B": [
       {
-        "name": "ID",
+        "name": "AccountType",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
-        "type": "integer",
+        "description": "Is this a Standard/Basic/Incognito account?\nPossible values:\n\n* \u00600\u0060 - Standard\n* \u00601\u0060 - Basic\n* \u00602\u0060 - Incognito",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "BackendID that is returned from the \u0060SearchUsers\u0060 with the source set to external",
+        "type": "string",
         "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "Identifier for the order to automatically attach the new customer to (see \u0060AttachToOrder\u0060 parameter).\n\nThis is the ID of a \u0060Order\u0060",
+        "type": "integer | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "D": [
+    "E": [
       {
         "name": "Address1",
         "deprecation_notice": null,
@@ -230,14 +255,169 @@
         "one_of": null
       }
     ],
-    "G": [
+    "D": [
+      {
+        "name": "AccountHolderName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BIC",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ContactEmailAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ContactPhoneNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EstablishedDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FiscalID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IBAN",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "InvoiceAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "InvoiceEmailAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LogoID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RegistrationCity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RegistrationCountryID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RegistrationNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "VatNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "VisitorsAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      }
+    ],
+    "H": [
       {
         "name": "ArrayValues",
         "deprecation_notice": null,
         "description": "Used for multiple values",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "H",
         "one_of": null
       },
       {
@@ -286,14 +466,14 @@
         "one_of": null
       }
     ],
-    "F": [
+    "G": [
       {
         "name": "DefaultCustomFieldValue",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "H",
         "one_of": null
       },
       {
@@ -378,14 +558,14 @@
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "Options",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "G",
         "one_of": null
       },
       {
@@ -394,11 +574,11 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "H",
         "one_of": null
       }
     ],
-    "H": [
+    "I": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -445,195 +625,7 @@
         "one_of": null
       }
     ],
-    "K": [
-      {
-        "name": "EndTime",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "duration",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StartTime",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "duration",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "J": [
-      {
-        "name": "Description",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsClosed",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TimeSlots",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      }
-    ],
-    "L": [
-      {
-        "name": "Date",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsClosed",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TimeSlots",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      }
-    ],
-    "I": [
-      {
-        "name": "Friday",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "Monday",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "Saturday",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "SpecialOpeningHours",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "L",
-        "one_of": null
-      },
-      {
-        "name": "Sunday",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "Thursday",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "Tuesday",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "J",
-        "one_of": null
-      },
-      {
-        "name": "TypeBackendID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TypeID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OpeningHoursType\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TypeName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Wednesday",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "J",
-        "one_of": null
-      }
-    ],
-    "M": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -662,149 +654,21 @@
         "one_of": null
       }
     ],
-    "N": [
-      {
-        "name": "Date",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DayOfWeek",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Sunday\n* \u00601\u0060 - Monday\n* \u00602\u0060 - Tuesday\n* \u00603\u0060 - Wednesday\n* \u00604\u0060 - Thursday\n* \u00605\u0060 - Friday\n* \u00606\u0060 - Saturday",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "EndTime",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "duration | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OpeningHours\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsActive",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsClosed",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsSpecial",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitName",
-        "deprecation_notice": null,
-        "description": "Only set when returned outside OrganizationUnit context",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StartTime",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "duration | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TypeID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OpeningHoursType\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TypeName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
-        "name": "Address",
+        "name": "AccountType",
         "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "AddressID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Address\u0060",
-        "type": "integer | null",
+        "description": "Possible values:\n\n* \u00600\u0060 - Standard\n* \u00601\u0060 - Basic\n* \u00602\u0060 - Incognito",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "BIC",
+        "name": "AllowPasswordLogin",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -828,6 +692,15 @@
         "one_of": null
       },
       {
+        "name": "BackendSystemID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "BankAccount",
         "deprecation_notice": null,
         "description": "",
@@ -837,21 +710,12 @@
         "one_of": null
       },
       {
-        "name": "CompanyID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Company\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CompanyName",
+        "name": "Company",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "D",
         "one_of": null
       },
       {
@@ -864,10 +728,28 @@
         "one_of": null
       },
       {
-        "name": "CurrencyID",
+        "name": "CreatedByFullName",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Currency\u0060",
+        "description": "",
         "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreatedByID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreationTime",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -878,14 +760,41 @@
         "description": "",
         "type": "map[object] | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "F",
         "one_of": null
       },
       {
-        "name": "Description",
+        "name": "CustomID",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateOfBirth",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DeactivationDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -900,16 +809,25 @@
         "one_of": null
       },
       {
+        "name": "EmailAddressValidated",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "I",
         "one_of": null
       },
       {
-        "name": "EstablishmentNumber",
+        "name": "FirstName",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -918,37 +836,145 @@
         "one_of": null
       },
       {
-        "name": "ExtendedOpeningHours",
+        "name": "FiscalID",
         "deprecation_notice": null,
         "description": "",
-        "type": "array[object] | null",
+        "type": "string | null",
         "required": false,
-        "properties_id": "I",
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FullName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Gender",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GravatarHash",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasOpenCases",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       },
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "description": "This is the ID of a \u0060User\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Latitude",
+        "name": "Initials",
         "deprecation_notice": null,
         "description": "",
-        "type": "float | null",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Longitude",
+        "name": "IsDeactivated",
         "deprecation_notice": null,
         "description": "",
-        "type": "float | null",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsDebtor",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsDeleted",
+        "deprecation_notice": "\n\n**Deprecated since 737:** IsDeleted is deprecated and will be removed in 2.0.769: All users in the response are not deleted.\n\n**Will be removed in 753**",
+        "description": "**Deprecated since 737:** IsDeleted is deprecated and will be removed in 2.0.769: All users in the response are not deleted.\n\n**Will be removed in 753**",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsIncognito",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LanguageID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastModificationTime",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastModifiedByID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastSuccessfulLogin",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -959,11 +985,11 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "M",
+        "properties_id": "J",
         "one_of": null
       },
       {
-        "name": "Name",
+        "name": "ModifiedByFullName",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -972,25 +998,7 @@
         "one_of": null
       },
       {
-        "name": "OpeningHours",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "N",
-        "one_of": null
-      },
-      {
-        "name": "ParentID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ParentName",
+        "name": "Nickname",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -1008,34 +1016,61 @@
         "one_of": null
       },
       {
-        "name": "RegisterCashLimit",
+        "name": "PlaceOfBirth",
         "deprecation_notice": null,
         "description": "",
-        "type": "float | null",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "SafeCashLimit",
+        "name": "PreferredStoreID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PricingGroupID",
         "deprecation_notice": null,
         "description": "",
-        "type": "float | null",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Status",
+        "name": "Salutation",
         "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - Default\n* \u00601\u0060 - Open\n* \u00602\u0060 - Closed\n* \u00604\u0060 - OpeningSoon\n* \u00608\u0060 - TemporarilyClosed\n* \u006016\u0060 - Sale\n* \u006032\u0060 - Hidden",
-        "type": "integer",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Subnet",
+        "name": "SingleSignOnID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SingleSignOnOnly",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SocialSecurityNumber",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -1053,9 +1088,18 @@
         "one_of": null
       },
       {
+        "name": "Title",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Type",
         "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Shop\n* \u00602\u0060 - WebShop\n* \u00604\u0060 - Container\n* \u00608\u0060 - Pickup\n* \u006016\u0060 - Warehouse\n* \u006036\u0060 - Country\n* \u006064\u0060 - Franchise\n* \u0060128\u0060 - EVA\n* \u0060256\u0060 - TestOrganizationUnit\n* \u0060512\u0060 - DisableLogin\n* \u00601024\u0060 - Supplier\n* \u00601024\u0060 - ExternalSupplier\n* \u00603072\u0060 - Consignment\n* \u00604096\u0060 - B2b\n* \u00608196\u0060 - Region\n* \u006016384\u0060 - ReturnsPortal\n* \u006032768\u0060 - Restitution\n* \u006065536\u0060 - RepairCenter",
+        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Employee\n* \u00602\u0060 - Customer\n* \u00604\u0060 - Anonymous\n* \u00608\u0060 - Business\n* \u006017\u0060 - System\n* \u006064\u0060 - Debtor\n* \u0060256\u0060 - LimitedTrust\n* \u0060512\u0060 - Tester\n* \u00601024\u0060 - RemovedByRequest\n* \u00602048\u0060 - Api\n* \u00604096\u0060 - Impersonated",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -1065,7 +1109,7 @@
         "name": "VisibilityGroupID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060VisibilityGroup\u0060",
-        "type": "integer | null",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -1074,17 +1118,8 @@
         "name": "VisibilityGroupName",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Website",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
+        "type": "string",
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
