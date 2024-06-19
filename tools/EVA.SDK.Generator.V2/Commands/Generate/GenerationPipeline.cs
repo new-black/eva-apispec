@@ -114,7 +114,7 @@ internal static class GenerationPipeline
     EnsureEmptyOutputFolderExists(opt, output.OutputPattern, logger);
 
     // Output
-    var writer = new OutputWriter(opt.OutputDirectory);
+    var writer = new OutputWriter(opt.OutputDirectory, logger);
     await output.Write(new OutputContext<T>(model, opt, writer, logger));
     logger.LogInformation("{WriterReport}", writer.ToReport());
   }

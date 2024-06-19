@@ -1,17 +1,20 @@
 ﻿using System.Text;
 using EVA.SDK.Generator.V2.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs;
 
 internal class OutputWriter
 {
   private readonly string _directory;
+  private readonly ILogger _logger;
 
-  private readonly List<(string name, long size)> _writtenFiles = new();
+  private readonly Dictionary<string, long> _writtenFiles = new();
 
-  internal OutputWriter(string directory)
+  internal OutputWriter(string directory, ILogger logger)
   {
     _directory = directory;
+    _logger = logger;
   }
 
   private static void EnsureDirectoryExists(string file)
@@ -21,21 +24,45 @@ internal class OutputWriter
     if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
   }
 
+  private string FixFileName(string file)
+  {
+    if (!_writtenFiles.ContainsKey(file))
+    {
+      return file;
+    }
+
+    // Find an alternative name
+    var suffix = 1;
+    while (true)
+    {
+      var newfile = Path.Combine(Path.GetDirectoryName(file) ?? throw new InvalidOperationException(), Path.GetFileNameWithoutExtension(file) + $".{suffix++}" + Path.GetExtension(file));
+      if (!_writtenFiles.ContainsKey(newfile))
+      {
+        _logger.LogError("Duplicate file, renamed {File} -> {File2}", file, newfile);
+        return newfile;
+      }
+    }
+  }
+
   internal async Task WriteFileAsync(string file, string content)
   {
+    file = FixFileName(file);
+
     var path = Path.Combine(_directory, file);
     EnsureDirectoryExists(path);
     await File.WriteAllTextAsync(path, content);
-    _writtenFiles.Add((file, new FileInfo(path).Length));
+    _writtenFiles.Add(file, new FileInfo(path).Length);
   }
 
   internal DisposableCallback<Stream> WriteStreamAsync(string file)
   {
+    file = FixFileName(file);
+
     var path = Path.Combine(_directory, file);
     EnsureDirectoryExists(path);
     return new DisposableCallback<Stream>(File.OpenWrite(path), () =>
     {
-      _writtenFiles.Add((file, new FileInfo(path).Length));
+      _writtenFiles.Add(file, new FileInfo(path).Length);
     });
   }
 
@@ -43,11 +70,14 @@ internal class OutputWriter
   {
     var sb = new StringBuilder();
 
-    var totalSize = _writtenFiles.Sum(x => x.size);
+    var totalSize = _writtenFiles.Values.Sum();
     sb.Append("Wrote ").Append(_writtenFiles.Count).Append(" files with total size of ").Append(StringHelpers.FormatSize(totalSize));
     if (_writtenFiles.Count is <= 1 or > 40) return sb.ToString();
 
-    var records = _writtenFiles.Select(f => (f.name, sizeStr:StringHelpers.FormatSize(f.size), f.size)).OrderByDescending(x => x.size).ToList();
+    var records = _writtenFiles
+      .Select(f => (name: f.Key, sizeStr: StringHelpers.FormatSize(f.Value), size: f.Value))
+      .OrderByDescending(x => x.size)
+      .ToList();
     var sizeColumnWidth = records.Max(x => x.sizeStr.Length);
 
     sb.AppendLine(":");

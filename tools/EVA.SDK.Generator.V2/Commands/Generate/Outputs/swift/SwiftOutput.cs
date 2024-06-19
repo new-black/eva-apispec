@@ -384,7 +384,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     }
 
     // Write the nested types
-    var nestedTypes = ctx.Input.Types.Where(kv => kv.Value.ParentType == id);
+    var nestedTypes = ctx.Input.Types.Where(kv => kv.Value.ParentType == id).ToList();
     foreach (var (nestedID, nestedType) in nestedTypes)
     {
       output.WriteLine();
