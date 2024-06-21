@@ -1,9 +1,9 @@
 {
-  "name": "GetPrivacyDataRequestByID",
+  "name": "GetOrderLoyaltyProgramPaymentTypes",
   "method": "POST",
-  "path": "/message/GetPrivacyDataRequestByID",
-  "description": "The GetPrivacyDataRequestByID service",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/GetOrderLoyaltyProgramPaymentTypes",
+  "description": "Get the available loyalty program payment methods for the given order.",
+  "auth_description": "This service does not require authentication.",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,24 +25,38 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ID\u0022: 123\n}",
+      "sample": "{\n  \u0022OrderID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetPrivacyDataRequestByID",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetOrderLoyaltyProgramPaymentTypes",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022BlobID\u0022: \u00223c535e2e-09ca-4a18-9af2-c84aa6d55459\u0022,\n  \u0022GenerationTime\u0022: \u00222024-06-21\u0022,\n  \u0022ID\u0022: 123,\n  \u0022Status\u0022: 3,\n  \u0022Url\u0022: \u0022string\u0022,\n  \u0022UserFullName\u0022: \u0022string\u0022,\n  \u0022UserID\u0022: 123\n}"
+      "sample": "{\n  \u0022Options\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022PaymentTypeID\u0022: 123,\n      \u0022PaymentTypeName\u0022: \u0022string\u0022,\n      \u0022Required\u0022: true,\n      \u0022Sequence\u0022: 123\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -59,11 +73,11 @@
   "types": {
     "B": [
       {
-        "name": "ID",
+        "name": "OrderID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060DataRequest\u0060",
+        "description": "This is the ID of a \u0060Order\u0060",
         "type": "integer",
-        "required": false,
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
@@ -144,30 +158,12 @@
         "one_of": null
       }
     ],
-    "C": [
+    "F": [
       {
-        "name": "BlobID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Blob\u0060",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Error",
+        "name": "BackendID",
         "deprecation_notice": null,
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "GenerationTime",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -175,10 +171,57 @@
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060DataRequest\u0060",
+        "description": "This is the ID of a \u0060LoyaltyProgramPaymentType\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTypeID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060PaymentType\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTypeName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Required",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Sequence",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
         "one_of": null
       },
       {
@@ -191,39 +234,12 @@
         "one_of": null
       },
       {
-        "name": "Status",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Requested\n* \u00601\u0060 - Processing\n* \u00602\u0060 - Ready\n* \u00603\u0060 - Expired",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Url",
+        "name": "Options",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserFullName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "F",
         "one_of": null
       }
     ]

@@ -1,9 +1,9 @@
 {
-  "name": "DetachLoyaltyProgramProductLimitationFromPaymentType",
+  "name": "SetOrderLoyaltyProgramPaymentTypes",
   "method": "POST",
-  "path": "/message/DetachLoyaltyProgramProductLimitationFromPaymentType",
-  "description": "Detach a product limitation from a payment type.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LoyaltyPrograms:Edit\u0060",
+  "path": "/message/SetOrderLoyaltyProgramPaymentTypes",
+  "description": "Set the loyalty program payment types for the order.",
+  "auth_description": "This service does not require authentication.",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,17 +25,31 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022LoyaltyProgramPaymentTypeID\u0022: 123,\n  \u0022LoyaltyProgramProductLimitationID\u0022: 123\n}",
+      "sample": "{\n  \u0022OrderID\u0022: 123,\n  \u0022SelectedLoyaltyProgramPaymentTypes\u0022: [\n    123\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022LoyaltyProgramPaymentTypeID\u0022: 123,\n  \u0022LoyaltyProgramProductLimitationID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DetachLoyaltyProgramProductLimitationFromPaymentType",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123,\n  \u0022SelectedLoyaltyProgramPaymentTypes\u0022: [\n    123\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SetOrderLoyaltyProgramPaymentTypes",
       "syntax": "bash"
     }
   ],
@@ -59,19 +73,19 @@
   "types": {
     "B": [
       {
-        "name": "LoyaltyProgramPaymentTypeID",
+        "name": "OrderID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramPaymentType\u0060",
+        "description": "This is the ID of a \u0060Order\u0060",
         "type": "integer",
         "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "LoyaltyProgramProductLimitationID",
+        "name": "SelectedLoyaltyProgramPaymentTypes",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramProductLimitation\u0060",
-        "type": "integer",
+        "description": "This is the ID of a \u0060LoyaltyProgramPaymentType\u0060",
+        "type": "array[integer]",
         "required": true,
         "properties_id": null,
         "one_of": null

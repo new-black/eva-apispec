@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Budget\u0022: 123.456,\n  \u0022BudgetRemaining\u0022: 123.456,\n  \u0022BudgetUsagePercentage\u0022: 123,\n  \u0022ExcludeFromProgramBudget\u0022: true,\n  \u0022ID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022MaximumAmountPerOrder\u0022: 123.456,\n  \u0022MaximumPercentageOfUserBudgetPerOrder\u0022: 123,\n  \u0022PaymentTypeID\u0022: 123,\n  \u0022PaymentTypeName\u0022: \u0022string\u0022,\n  \u0022Required\u0022: true,\n  \u0022Sequence\u0022: 123,\n  \u0022TaxHandling\u0022: 1,\n  \u0022UsedBudget\u0022: 123.456,\n  \u0022UserBudget\u0022: 123.456,\n  \u0022UserBudgetDeduction\u0022: 2,\n  \u0022UserMaximumUsage\u0022: 123\n}"
+      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Budget\u0022: 123.456,\n  \u0022BudgetRemaining\u0022: 123.456,\n  \u0022BudgetUsagePercentage\u0022: 123,\n  \u0022ExcludeFromProgramBudget\u0022: true,\n  \u0022ID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022MaximumAmountPerOrder\u0022: 123.456,\n  \u0022MaximumPercentageOfUserBudgetPerOrder\u0022: 123,\n  \u0022PaymentTypeID\u0022: 123,\n  \u0022PaymentTypeName\u0022: \u0022string\u0022,\n  \u0022ProductLimitation\u0022: {\n    \u0022Filters\u0022: {\n      \u0022key\u0022: {\n        \u0022ExactMatch\u0022: true,\n        \u0022From\u0022: \u0022string\u0022,\n        \u0022IncludeMissing\u0022: true,\n        \u0022Negation\u0022: true,\n        \u0022To\u0022: \u0022string\u0022,\n        \u0022Values\u0022: [\n          \u0022any valid json value\u0022\n        ]\n      }\n    },\n    \u0022OverallQuantityLimitPerOrder\u0022: 123,\n    \u0022OverallQuantityLimitPerUser\u0022: 123,\n    \u0022ProductIDs\u0022: [\n      123\n    ],\n    \u0022ProductSearchID\u0022: 123,\n    \u0022QuantityLimitPerOrder\u0022: 123,\n    \u0022QuantityLimitPerUser\u0022: 123\n  },\n  \u0022Required\u0022: true,\n  \u0022Sequence\u0022: 123,\n  \u0022TaxHandling\u0022: 1,\n  \u0022UsedBudget\u0022: 123.456,\n  \u0022UserBudget\u0022: 123.456,\n  \u0022UserBudgetDeduction\u0022: 2,\n  \u0022UserMaximumUsage\u0022: 123\n}"
     },
     {
       "name": "400",
@@ -139,6 +139,127 @@
         "deprecation_notice": null,
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "ExactMatch",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "From",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IncludeMissing",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Negation",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "To",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Values",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[any] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Filters",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[object] | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "OverallQuantityLimitPerOrder",
+        "deprecation_notice": null,
+        "description": "The quantity limit over the entire product limitation product set per order.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OverallQuantityLimitPerUser",
+        "deprecation_notice": null,
+        "description": "The quantity limit over the entire product limitation product set per user.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductSearchID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ProductSearchTemplate\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QuantityLimitPerOrder",
+        "deprecation_notice": null,
+        "description": "The quantity limit per product within the product limitation product set per order.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QuantityLimitPerUser",
+        "deprecation_notice": null,
+        "description": "The quantity limit per product within the product limitation product set per user.",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -260,6 +381,15 @@
         "type": "string | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductLimitation",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       },
       {

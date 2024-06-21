@@ -1,9 +1,9 @@
 {
-  "name": "AttachLoyaltyProgramProductLimitationToPaymentType",
+  "name": "PushLoyaltyProgram_AsyncResult",
   "method": "POST",
-  "path": "/message/AttachLoyaltyProgramProductLimitationToPaymentType",
-  "description": "Attach a product limitation to a payment type.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LoyaltyPrograms:Edit\u0060",
+  "path": "/async-result/PushLoyaltyProgram",
+  "description": "The PushLoyaltyProgram_AsyncResult service",
+  "auth_description": "Requires a user of type \u0060Api\u0060 with functionality \u0060PushLoyaltyProgram:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022LoyaltyProgramPaymentTypeID\u0022: 123,\n  \u0022LoyaltyProgramProductLimitationID\u0022: 123\n}",
+      "sample": "{\n  \u0022JobID\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022LoyaltyProgramPaymentTypeID\u0022: 123,\n  \u0022LoyaltyProgramProductLimitationID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AttachLoyaltyProgramProductLimitationToPaymentType",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022JobID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/PushLoyaltyProgram_AsyncResult",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022Metadata\u0022: {\n    \u0022IsAsyncResultAvailable\u0022: true\n  },\n  \u0022SubscriptionID\u0022: 123\n}"
     },
     {
       "name": "400",
@@ -59,20 +59,11 @@
   "types": {
     "B": [
       {
-        "name": "LoyaltyProgramPaymentTypeID",
+        "name": "JobID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramPaymentType\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LoyaltyProgramProductLimitationID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramProductLimitation\u0060",
-        "type": "integer",
-        "required": true,
+        "description": "",
+        "type": "string | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       }
@@ -164,12 +155,30 @@
         "one_of": null
       },
       {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "SubscriptionID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Subscription\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ]
