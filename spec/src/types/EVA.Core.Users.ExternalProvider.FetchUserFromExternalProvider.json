@@ -10,14 +10,14 @@
   "typeArguments": [],
   "typeDependencies": [
     "EVA.Core.RequestMessage\u00601",
-    "EVA.Core.Users.GetUserResponse",
+    "EVA.Core.Users.ExternalProvider.FetchUserFromExternalProviderResponse",
     "EVA.Core.DataModels.UserAccountType"
   ],
   "extends": {
     "ref": "EVA.Core.RequestMessage\u00601",
     "args": [
       {
-        "ref": "EVA.Core.Users.GetUserResponse",
+        "ref": "EVA.Core.Users.ExternalProvider.FetchUserFromExternalProviderResponse",
         "args": [],
         "shared": null,
         "nullable": true
@@ -34,7 +34,7 @@
         "shared": null,
         "nullable": true
       },
-      "description": "Is this a Standard/Basic/Incognito account?",
+      "description": "The AccountType for the new customer",
       "skippable": false,
       "deprecated": null,
       "required": null,
@@ -77,6 +77,25 @@
       "datamodel": null,
       "allowedValues": []
     },
+    "CreateIfNotExists": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": "If the fetched user doesn\u0027t exist in EVA, it will be created if this is set to true.",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
     "OrderID": {
       "type": {
         "ref": "int64",
@@ -84,7 +103,7 @@
         "shared": null,
         "nullable": true
       },
-      "description": "Identifier for the order to automatically attach the new customer to (see \u0060AttachToOrder\u0060 parameter).",
+      "description": "Identifier for the order to automatically attach the new customer to.",
       "skippable": false,
       "deprecated": null,
       "required": null,
