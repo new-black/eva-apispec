@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022CreatedBy\u0022: {\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022FullName\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022\n  },\n  \u0022CreatedByID\u0022: 123,\n  \u0022CreationTime\u0022: \u00222024-06-27\u0022,\n  \u0022ID\u0022: 123,\n  \u0022LastModifiedBy\u0022: {\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022FullName\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022\n  },\n  \u0022LastModifiedByID\u0022: 123,\n  \u0022OrderID\u0022: 123,\n  \u0022OriginalUserInteractionID\u0022: 123,\n  \u0022Subject\u0022: \u0022string\u0022,\n  \u0022Text\u0022: \u0022string\u0022,\n  \u0022Type\u0022: 1,\n  \u0022User\u0022: {\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022FullName\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022\n  },\n  \u0022UserID\u0022: 123,\n  \u0022UserTaskID\u0022: 123\n}"
+      "sample": "{\n  \u0022CreatedBy\u0022: {\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022FullName\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022\n  },\n  \u0022CreatedByID\u0022: 123,\n  \u0022CreationTime\u0022: \u00222024-06-27\u0022,\n  \u0022ID\u0022: 123,\n  \u0022InteractionType\u0022: 3,\n  \u0022LastModifiedBy\u0022: {\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022FullName\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022\n  },\n  \u0022LastModifiedByID\u0022: 123,\n  \u0022OrderID\u0022: 123,\n  \u0022OriginalUserInteractionID\u0022: 123,\n  \u0022Subject\u0022: \u0022string\u0022,\n  \u0022Text\u0022: \u0022string\u0022,\n  \u0022Type\u0022: 1,\n  \u0022User\u0022: {\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022FullName\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022\n  },\n  \u0022UserID\u0022: 123,\n  \u0022UserTaskID\u0022: 123\n}"
     },
     {
       "name": "400",
@@ -61,7 +61,7 @@
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserInteraction\u0060",
+        "description": "This is the ID of a \u0060Interaction\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -222,7 +222,16 @@
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserInteraction\u0060",
+        "description": "This is the ID of a \u0060Interaction\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "InteractionType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Communication\n* \u00600\u0060 - PublicNote\n* \u00601\u0060 - Note\n* \u00601\u0060 - PrivateNote\n* \u00602\u0060 - Ledger\n* \u00603\u0060 - Email",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -267,7 +276,7 @@
       {
         "name": "OriginalUserInteractionID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserInteraction\u0060",
+        "description": "This is the ID of a \u0060Interaction\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -293,8 +302,8 @@
       },
       {
         "name": "Type",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Manual\n* \u00601\u0060 - Communication",
+        "deprecation_notice": "\n\n**Deprecated since 744:** Type is deprecated and will be removed in 2.0.776: Use InteractionType instead.\n\n**Will be removed in 760**",
+        "description": "Possible values:\n\n* \u00600\u0060 - Manual\n* \u00601\u0060 - Communication\n\n**Deprecated since 744:** Type is deprecated and will be removed in 2.0.776: Use InteractionType instead.\n\n**Will be removed in 760**",
         "type": "integer",
         "required": false,
         "properties_id": null,

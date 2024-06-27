@@ -37,19 +37,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022CaseID\u0022: 123,\n  \u0022IncludeRepairInteractions\u0022: true,\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022InteractionType\u0022: 2,\n      \u0022Text\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022CaseID\u0022: 123,\n  \u0022IncludeRepairInteractions\u0022: true,\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022InteractionType\u0022: 3,\n      \u0022Text\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CaseID\u0022: 123,\n  \u0022IncludeRepairInteractions\u0022: true,\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022InteractionType\u0022: 2,\n      \u0022Text\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListCaseInteractions",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CaseID\u0022: 123,\n  \u0022IncludeRepairInteractions\u0022: true,\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022InteractionType\u0022: 3,\n      \u0022Text\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListCaseInteractions",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CanBeMutated\u0022: true,\n      \u0022CreatedBy\u0022: {\n        \u0022CreatedByID\u0022: 123,\n        \u0022FirstName\u0022: \u0022string\u0022,\n        \u0022FullName\u0022: \u0022string\u0022,\n        \u0022LastName\u0022: \u0022string\u0022\n      },\n      \u0022CreationTime\u0022: \u00222024-06-27\u0022,\n      \u0022ID\u0022: 123,\n      \u0022InteractionType\u0022: 2,\n      \u0022LastModificationTime\u0022: \u00222024-06-27\u0022,\n      \u0022RepairID\u0022: 123,\n      \u0022Text\u0022: \u0022string\u0022\n    }\n  ]\n}"
+      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CanBeMutated\u0022: true,\n      \u0022CreatedBy\u0022: {\n        \u0022CreatedByID\u0022: 123,\n        \u0022FirstName\u0022: \u0022string\u0022,\n        \u0022FullName\u0022: \u0022string\u0022,\n        \u0022LastName\u0022: \u0022string\u0022\n      },\n      \u0022CreationTime\u0022: \u00222024-06-27\u0022,\n      \u0022ID\u0022: 123,\n      \u0022InteractionType\u0022: 3,\n      \u0022LastModificationTime\u0022: \u00222024-06-27\u0022,\n      \u0022RepairID\u0022: 123,\n      \u0022Text\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -68,7 +68,7 @@
       {
         "name": "InteractionType",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Communication\n* \u00601\u0060 - Note\n* \u00602\u0060 - Ledger",
+        "description": "Possible values:\n\n* \u00600\u0060 - Communication\n* \u00600\u0060 - PublicNote\n* \u00601\u0060 - Note\n* \u00601\u0060 - PrivateNote\n* \u00602\u0060 - Ledger\n* \u00603\u0060 - Email",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -305,7 +305,7 @@
       {
         "name": "InteractionType",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Communication\n* \u00601\u0060 - Note\n* \u00602\u0060 - Ledger",
+        "description": "Possible values:\n\n* \u00600\u0060 - Communication\n* \u00600\u0060 - PublicNote\n* \u00601\u0060 - Note\n* \u00601\u0060 - PrivateNote\n* \u00602\u0060 - Ledger\n* \u00603\u0060 - Email",
         "type": "integer",
         "required": false,
         "properties_id": null,
