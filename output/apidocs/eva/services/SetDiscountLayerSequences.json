@@ -1,9 +1,9 @@
 {
-  "name": "DownloadCouponExcelTemplate",
+  "name": "SetDiscountLayerSequences",
   "method": "POST",
-  "path": "/message/DownloadCouponExcelTemplate",
-  "description": "Download template to upload an excel with coupons.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060DiscountCoupons:Manage\u0060",
+  "path": "/message/SetDiscountLayerSequences",
+  "description": "Takes in all discount layers and sets their sequences. All layers except the system layer are required.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060DiscountLayers:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{}",
+      "sample": "{\n  \u0022Layers\u0022: [\n    123\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DownloadCouponExcelTemplate",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Layers\u0022: [\n    123\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SetDiscountLayerSequences",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ResourceInfo\u0022: {\n    \u0022BlobID\u0022: \u0022fb45e35f-2777-4220-8782-15520ca1ffd6\u0022,\n    \u0022Url\u0022: \u0022string\u0022\n  }\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -57,7 +57,17 @@
   "request_type_id": "B",
   "response_type_id": "C",
   "types": {
-    "B": [],
+    "B": [
+      {
+        "name": "Layers",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060DiscountLayer\u0060",
+        "type": "array[integer]",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "D": [
       {
         "name": "Code",
@@ -134,26 +144,6 @@
         "one_of": null
       }
     ],
-    "F": [
-      {
-        "name": "BlobID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Url",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "Error",
@@ -171,15 +161,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "ResourceInfo",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
         "one_of": null
       }
     ]
