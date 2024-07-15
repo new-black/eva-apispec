@@ -1,9 +1,9 @@
 {
-  "name": "UploadCouponExcel_Async",
+  "name": "AddLoyaltyProgramRequiredCustomField",
   "method": "POST",
-  "path": "/async-message/UploadCouponExcel",
-  "description": "The UploadCouponExcel_Async service",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060DiscountCoupons:Manage\u0060",
+  "path": "/message/AddLoyaltyProgramRequiredCustomField",
+  "description": "Add a custom field requirement to the loyalty program. NOTE THAT a custom field can only be set once as a requirement.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LoyaltyPrograms:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,24 +25,31 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobID\u0022: \u0022b0895f79-805d-4327-a5bb-7e4d0b754e05\u0022,\n  \u0022DiscountID\u0022: 123\n}",
+      "sample": "{\n  \u0022CustomFieldID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u0022b0895f79-805d-4327-a5bb-7e4d0b754e05\u0022,\n  \u0022DiscountID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UploadCouponExcel_Async",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CustomFieldID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AddLoyaltyProgramRequiredCustomField",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022JobID\u0022: \u0022string\u0022\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -59,18 +66,18 @@
   "types": {
     "B": [
       {
-        "name": "BlobID",
+        "name": "CustomFieldID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Blob\u0060",
-        "type": "guid | null",
-        "required": false,
+        "description": "This is the ID of a \u0060CustomField\u0060",
+        "type": "integer",
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "DiscountID",
+        "name": "LoyaltyProgramID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Discount\u0060",
+        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
         "type": "integer",
         "required": true,
         "properties_id": null,
@@ -161,15 +168,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "JobID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       },
       {
