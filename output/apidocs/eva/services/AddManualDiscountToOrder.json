@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022DiscountAmount\u0022: 123.456,\n  \u0022DiscountID\u0022: 123,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ],\n  \u0022Reason\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022CustomFields\u0022: [\n    {\n      \u0022ArrayValues\u0022: [\n        {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022re\u0022: \u0022cursion\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u00222681ac4f-7a8e-42a9-9a5a-c28d47c742e8\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022DateTimeValue\u0022: \u00222024-07-15\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022BlobValue\u0022: \u002203dc1b5c-4d2f-41ce-afcb-b4aeb1339f11\u0022,\n      \u0022BoolValue\u0022: true,\n      \u0022CustomFieldID\u0022: 123,\n      \u0022DateTimeValue\u0022: \u00222024-07-15\u0022,\n      \u0022NumberValue\u0022: 123.456,\n      \u0022StringValue\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022DiscountAmount\u0022: 123.456,\n  \u0022DiscountID\u0022: 123,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ],\n  \u0022Reason\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022DiscountAmount\u0022: 123.456,\n  \u0022DiscountID\u0022: 123,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ],\n  \u0022Reason\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AddManualDiscountToOrder",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CustomFields\u0022: [\n    {\n      \u0022ArrayValues\u0022: [\n        {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022re\u0022: \u0022cursion\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u00222681ac4f-7a8e-42a9-9a5a-c28d47c742e8\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022DateTimeValue\u0022: \u00222024-07-15\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022BlobValue\u0022: \u002203dc1b5c-4d2f-41ce-afcb-b4aeb1339f11\u0022,\n      \u0022BoolValue\u0022: true,\n      \u0022CustomFieldID\u0022: 123,\n      \u0022DateTimeValue\u0022: \u00222024-07-15\u0022,\n      \u0022NumberValue\u0022: 123.456,\n      \u0022StringValue\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022DiscountAmount\u0022: 123.456,\n  \u0022DiscountID\u0022: 123,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ],\n  \u0022Reason\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AddManualDiscountToOrder",
       "syntax": "bash"
     }
   ],
@@ -69,9 +69,130 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "D",
+  "response_type_id": "F",
   "types": {
+    "D": [
+      {
+        "name": "ArrayValues",
+        "deprecation_notice": null,
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "C": [
+      {
+        "name": "ArrayValues",
+        "deprecation_notice": null,
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFieldID",
+        "deprecation_notice": null,
+        "description": "Identifier for the custom field\n\nThis is the ID of a \u0060CustomField\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
       {
         "name": "OrderLineID",
         "deprecation_notice": null,
@@ -92,6 +213,15 @@
       }
     ],
     "B": [
+      {
+        "name": "CustomFields",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
       {
         "name": "DiscountAmount",
         "deprecation_notice": null,
@@ -125,7 +255,7 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "C",
+        "properties_id": "E",
         "one_of": null
       },
       {
@@ -138,7 +268,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "G": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -185,7 +315,7 @@
         "one_of": null
       }
     ],
-    "F": [
+    "H": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -214,7 +344,7 @@
         "one_of": null
       }
     ],
-    "D": [
+    "F": [
       {
         "name": "DiscountID",
         "deprecation_notice": null,
@@ -239,7 +369,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "G",
         "one_of": null
       },
       {
@@ -248,7 +378,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "H",
         "one_of": null
       },
       {
