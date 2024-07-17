@@ -1,6 +1,7 @@
 ﻿public interface IResponseMessage
 {
   public ServiceError? Error { get; }
+  public ResponseMessageMetadata? Metadata { get; }
 }
 
 public interface IResponseType<out TResponse> where TResponse : IResponseMessage
