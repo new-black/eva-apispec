@@ -1,9 +1,9 @@
 {
-  "name": "UploadCouponExcel_Async",
+  "name": "PushDiscountCoupons",
   "method": "POST",
-  "path": "/async-message/UploadCouponExcel",
-  "description": "The UploadCouponExcel_Async service",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060DiscountCoupons:Manage\u0060",
+  "path": "/message/PushDiscountCoupons",
+  "description": "Push a DiscountCoupon",
+  "auth_description": "Requires a user of type \u0060Api\u0060 with functionality \u0060PushDiscountCoupons:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobID\u0022: \u0022bff15203-e8d3-4ec5-b431-9edd5727051f\u0022,\n  \u0022DiscountID\u0022: 123\n}",
+      "sample": "{\n  \u0022Coupons\u0022: [\n    {\n      \u0022CouponCode\u0022: \u0022string\u0022,\n      \u0022IsActive\u0022: true,\n      \u0022MaximumUsage\u0022: 123,\n      \u0022OrderID\u0022: \u0022string\u0022,\n      \u0022UserID\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022DiscountID\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u0022bff15203-e8d3-4ec5-b431-9edd5727051f\u0022,\n  \u0022DiscountID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UploadCouponExcel_Async",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Coupons\u0022: [\n    {\n      \u0022CouponCode\u0022: \u0022string\u0022,\n      \u0022IsActive\u0022: true,\n      \u0022MaximumUsage\u0022: 123,\n      \u0022OrderID\u0022: \u0022string\u0022,\n      \u0022UserID\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022DiscountID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/PushDiscountCoupons",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022JobID\u0022: \u0022string\u0022\n}"
+      "sample": "{\n  \u0022CreatedCoupons\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022IsDuplicateCoupon\u0022: true\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -55,29 +55,96 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "D",
   "types": {
-    "B": [
+    "C": [
       {
-        "name": "BlobID",
+        "name": "CouponCode",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Blob\u0060",
-        "type": "guid | null",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsActive",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumUsage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "Coupons",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "C",
         "one_of": null
       },
       {
         "name": "DiscountID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060Discount\u0060",
-        "type": "integer",
-        "required": true,
+        "type": "string | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "D": [
+    "E": [
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060DiscountCoupon\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsDuplicateCoupon",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -124,7 +191,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "G": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -153,23 +220,23 @@
         "one_of": null
       }
     ],
-    "C": [
+    "D": [
+      {
+        "name": "CreatedCoupons",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "JobID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "F",
         "one_of": null
       },
       {
@@ -178,7 +245,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "G",
         "one_of": null
       }
     ]
