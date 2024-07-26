@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{}",
+      "sample": "{\n  \u0022OpeningImpedimentTypesToIgnore\u0022: [\n    \u0022string\u0022\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/OpenFinancialPeriod",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OpeningImpedimentTypesToIgnore\u0022: [\n    \u0022string\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/OpenFinancialPeriod",
       "syntax": "bash"
     }
   ],
@@ -57,7 +57,17 @@
   "request_type_id": "B",
   "response_type_id": "C",
   "types": {
-    "B": [],
+    "B": [
+      {
+        "name": "OpeningImpedimentTypesToIgnore",
+        "deprecation_notice": null,
+        "description": "If there is an impediment to opening the period and it allows being ignored then passing the name of the impediment type in this collection will not block opening the period on that impediment. Also see \u0060GetFinancialPeriodOpeningImpediments\u0060.",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "D": [
       {
         "name": "Code",
