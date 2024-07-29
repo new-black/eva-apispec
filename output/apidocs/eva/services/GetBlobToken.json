@@ -1,9 +1,9 @@
 {
-  "name": "GetCFDConfiguration",
+  "name": "GetBlobToken",
   "method": "POST",
-  "path": "/message/GetCFDConfiguration",
-  "description": "Get the configuration required to set up a CustomerFacingDisplay.",
-  "auth_description": "This service does not require authentication.",
+  "path": "/message/GetBlobToken",
+  "description": "Retrieve a \u0060BlobToken\u0060 used to authenticate for a \u0060/blob\u0060 download, including a full \u0060Url\u0060 for convenience.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022GlobalID\u0022: \u00227f4964a4-42a3-4a3e-aedc-915e17821fee\u0022\n}",
+      "sample": "{\n  \u0022Guid\u0022: \u0022a3c9e7a2-3d97-40d2-a24b-e5cabf4573d6\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022GlobalID\u0022: \u00227f4964a4-42a3-4a3e-aedc-915e17821fee\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetCFDConfiguration",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Guid\u0022: \u0022a3c9e7a2-3d97-40d2-a24b-e5cabf4573d6\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetBlobToken",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022CloudEndpoint\u0022: \u0022string\u0022,\n  \u0022CountryID\u0022: \u0022st\u0022,\n  \u0022GlobalID\u0022: \u00220f6fe980-5640-4a8f-9fff-ba02c1a2822a\u0022,\n  \u0022ID\u0022: 123,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022LiveGuardEndpoint\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022StationID\u0022: 123\n}"
+      "sample": "{\n  \u0022BlobToken\u0022: \u0022string\u0022,\n  \u0022Url\u0022: \u0022string\u0022\n}"
     },
     {
       "name": "400",
@@ -59,7 +59,7 @@
   "types": {
     "B": [
       {
-        "name": "GlobalID",
+        "name": "Guid",
         "deprecation_notice": null,
         "description": "",
         "type": "guid",
@@ -146,20 +146,11 @@
     ],
     "C": [
       {
-        "name": "CloudEndpoint",
+        "name": "BlobToken",
         "deprecation_notice": null,
         "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CountryID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Country\u0060\n\nThis string must be between 2 (incl) and 2 (incl) characters long.",
-        "type": "string",
-        "required": true,
+        "type": "string | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
@@ -173,42 +164,6 @@
         "one_of": null
       },
       {
-        "name": "GlobalID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Device\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LanguageID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Language\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LiveGuardEndpoint",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
@@ -218,19 +173,10 @@
         "one_of": null
       },
       {
-        "name": "OrganizationUnitID",
+        "name": "Url",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StationID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Station\u0060",
-        "type": "integer | null",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null

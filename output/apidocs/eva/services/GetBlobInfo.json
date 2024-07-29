@@ -2,7 +2,7 @@
   "name": "GetBlobInfo",
   "method": "POST",
   "path": "/message/GetBlobInfo",
-  "description": "The GetBlobInfo service",
+  "description": "Get information about a blob, either by \u0060Guid\u0060 or by \u0060Category\u0060 and \u0060OriginalName\u0060.",
   "auth_description": "This service does not require authentication.",
   "headers": [
     {
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022Guid\u0022: \u00222067bbeb-280b-4bdd-b839-dd54fb960de3\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022Guid\u0022: \u0022329238f6-143b-4cb5-8712-7aaa47be059a\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022Guid\u0022: \u00222067bbeb-280b-4bdd-b839-dd54fb960de3\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetBlobInfo",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022Guid\u0022: \u0022329238f6-143b-4cb5-8712-7aaa47be059a\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetBlobInfo",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022ExpireDate\u0022: \u00222024-07-29\u0022,\n  \u0022Guid\u0022: \u0022d690809d-58a3-4d5b-8fa7-be6691d3eda9\u0022,\n  \u0022LastModificationTimeUtc\u0022: \u00222024-07-29\u0022,\n  \u0022MimeType\u0022: \u0022string\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022,\n  \u0022Size\u0022: 123,\n  \u0022Url\u0022: \u0022string\u0022\n}"
+      "sample": "{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022ExpireDate\u0022: \u00222024-07-29\u0022,\n  \u0022Guid\u0022: \u0022a7f0b112-2af3-445c-8a8f-718500870d2a\u0022,\n  \u0022LastModificationTimeUtc\u0022: \u00222024-07-29\u0022,\n  \u0022MimeType\u0022: \u0022string\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022,\n  \u0022Size\u0022: 123,\n  \u0022Url\u0022: \u0022string\u0022\n}"
     },
     {
       "name": "400",
@@ -71,7 +71,7 @@
         "name": "Guid",
         "deprecation_notice": null,
         "description": "",
-        "type": "guid",
+        "type": "guid | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -238,7 +238,7 @@
       {
         "name": "Size",
         "deprecation_notice": null,
-        "description": "",
+        "description": "In bytes",
         "type": "integer",
         "required": false,
         "properties_id": null,
