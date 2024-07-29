@@ -1,0 +1,248 @@
+{
+  "typename": "PushLoyaltyProgramGroup",
+  "assembly": "EVA.Core.Management",
+  "description": "Push a LoyaltyProgramGroup.\nIf it doesn\u0027t exist it will be created, otherwise is will be updated.\n\nATTENTION!\nWhen the currency is changed, the budget usages will be reset to 0!\n\nATTENTION!\nWhen a change to Status, StartDate, EndDate or Currency leads to the group being deactivated, all related loyalty programs will also be deactivated.\nWhen a change to Status, StartDate, EndDate or Currency leads to the group being reactivated, all related loyalty programs will also be reactivated when the option ReactivateProgramsWhenPossible is set to true. Otherwise all deactivated programs need to be manually reactivated.\n\nATTENTION!\nWhen the budget is lowered below the current used budget and the \u0060DeactivateWhenBudgetIsReached\u0060 is set to true, all related programs will be deactivated.\nWhen the budget is cleared or raised above the current used budget, or \u0060DeactivateWhenBudgetIsReached\u0060 is set to false, and the \u0060ReactivateProgramsWhenPossible\u0060 is set to true, all programs that were deactivate by the group budget will be reactivated when possible.",
+  "usage": {
+    "request": true,
+    "response": false
+  },
+  "enumIsFlag": null,
+  "typeArguments": [],
+  "typeDependencies": [
+    "EVA.Core.RequestMessage\u00601",
+    "EVA.Core.Management.Loyalty.PushLoyaltyProgramGroupResponse",
+    "EVA.Core.DataModels.LoyaltyProgramStatus"
+  ],
+  "extends": {
+    "ref": "EVA.Core.RequestMessage\u00601",
+    "args": [
+      {
+        "ref": "EVA.Core.Management.Loyalty.PushLoyaltyProgramGroupResponse",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      }
+    ],
+    "shared": null,
+    "nullable": false
+  },
+  "properties": {
+    "Budget": {
+      "type": {
+        "ref": "float128",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": {
+        "current": 0,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "BudgetCurrencyID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": {
+        "name": "Currency",
+        "lenient": false,
+        "supportsCustomID": false,
+        "supportsSystemID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
+      "allowedValues": []
+    },
+    "DeactivateWhenBudgetIsReached": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "EndDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "ID": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": {
+        "current": true,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "requiredAllowEmpty": {
+        "current": false,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": {
+        "name": "LoyaltyProgramGroup",
+        "lenient": false,
+        "supportsCustomID": false,
+        "supportsSystemID": false,
+        "isEvaID": false,
+        "isExternalID": true
+      },
+      "allowedValues": []
+    },
+    "Name": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": {
+        "current": true,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "requiredAllowEmpty": {
+        "current": false,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "StartDate": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "Status": {
+      "type": {
+        "ref": "EVA.Core.DataModels.LoyaltyProgramStatus",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "TaxExemptionCode": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    }
+  },
+  "enumValues": {},
+  "parent": null
+}
