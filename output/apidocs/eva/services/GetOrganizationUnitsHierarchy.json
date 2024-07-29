@@ -1,8 +1,8 @@
 {
-  "name": "ProduceShipmentDocuments",
+  "name": "GetOrganizationUnitsHierarchy",
   "method": "POST",
-  "path": "/message/ProduceShipmentDocuments",
-  "description": "Generate shipment document for an order or shipment.\n\nIt is required to supply an \u0060OrderID\u0060 or a \u0060ShipmentID\u0060.\n\nWhen using an \u0060OrderID\u0060 it is also required to set the \u0060LinesToShip\u0060.\n\nWhen a \u0060StationID\u0060 is supplied the documents will be printed, if not, the service will return urls for downloading the documents.",
+  "path": "/message/GetOrganizationUnitsHierarchy",
+  "description": "Returns the full hierarchy of organization units, starting from the root and then containing a nested list of child OU\u0027s.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -32,31 +32,24 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-BackendSystemID",
-      "type": "string",
-      "description": "The ID of the backend system that is used to resolve the IDs.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022LinesToShip\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022QuantityToShip\u0022: 123\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022ShipmentID\u0022: 123,\n  \u0022StationID\u0022: 123\n}",
+      "sample": "{\n  \u0022Functionality\u0022: \u0022string\u0022,\n  \u0022FunctionalityScope\u0022: 1,\n  \u0022OrganizationUnitID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022LinesToShip\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022QuantityToShip\u0022: 123\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022ShipmentID\u0022: 123,\n  \u0022StationID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ProduceShipmentDocuments",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Functionality\u0022: \u0022string\u0022,\n  \u0022FunctionalityScope\u0022: 1,\n  \u0022OrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetOrganizationUnitsHierarchy",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ShipmentDocuments\u0022: [\n    {\n      \u0022Category\u0022: \u0022string\u0022,\n      \u0022ExpireDate\u0022: \u00222024-07-29\u0022,\n      \u0022ID\u0022: \u00224876e878-56db-472f-a88f-a4cb761304f1\u0022,\n      \u0022LocationType\u0022: \u0022string\u0022,\n      \u0022MimeType\u0022: \u0022string\u0022,\n      \u0022OriginalName\u0022: \u0022string\u0022,\n      \u0022Type\u0022: \u0022string\u0022,\n      \u0022Url\u0022: \u0022string\u0022\n    }\n  ]\n}"
+      "sample": "{\n  \u0022OrganizationUnits\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022Children\u0022: [\n        {\n          \u0022re\u0022: \u0022cursion\u0022\n        }\n      ],\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -69,67 +62,38 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "D",
+  "response_type_id": "C",
   "types": {
-    "C": [
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrderLine\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "QuantityToShip",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "B": [
       {
-        "name": "LinesToShip",
+        "name": "Functionality",
         "deprecation_notice": null,
-        "description": "Required when passing an \u0060OrderID\u0060.",
-        "type": "array[object] | null",
+        "description": "",
+        "type": "string | null",
         "required": false,
-        "properties_id": "C",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "OrderID",
+        "name": "FunctionalityScope",
         "deprecation_notice": null,
-        "description": "Required when omitting \u0060ShipmentID\u0060.\n\nThis is the ID of a \u0060Order\u0060",
+        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Create\n* \u00602\u0060 - Edit\n* \u00604\u0060 - Delete\n* \u00608\u0060 - View\n* \u006031\u0060 - Manage\n* \u006032\u0060 - Settings\n* \u006064\u0060 - Scripting\n* \u0060127\u0060 - All",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ShipmentID",
+        "name": "OrganizationUnitID",
         "deprecation_notice": null,
-        "description": "Required when omitting \u0060OrderID\u0060.\n\nThis is the ID of a \u0060Shipment\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StationID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Station\u0060",
-        "type": "integer | null",
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "E": [
+    "D": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -176,7 +140,7 @@
         "one_of": null
       }
     ],
-    "F": [
+    "E": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -205,72 +169,36 @@
         "one_of": null
       }
     ],
-    "G": [
+    "F": [
       {
-        "name": "Category",
+        "name": "BackendID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ExpireDate",
+        "name": "Children",
         "deprecation_notice": null,
         "description": "",
-        "type": "datetime | null",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "F",
         "one_of": null
       },
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "LocationType",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MimeType",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OriginalName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Url",
+        "name": "Name",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -279,14 +207,14 @@
         "one_of": null
       }
     ],
-    "D": [
+    "C": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "D",
         "one_of": null
       },
       {
@@ -295,16 +223,16 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "E",
         "one_of": null
       },
       {
-        "name": "ShipmentDocuments",
+        "name": "OrganizationUnits",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "F",
         "one_of": null
       }
     ]
