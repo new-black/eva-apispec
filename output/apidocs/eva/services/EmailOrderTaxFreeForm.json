@@ -1,9 +1,9 @@
 {
-  "name": "WatchtowerGetDeviceByHardwareID",
+  "name": "EmailOrderTaxFreeForm",
   "method": "POST",
-  "path": "/message/WatchtowerGetDeviceByHardwareID",
-  "description": "Try to find the device by the HardwareID in mender\n\nReturns the DeviceID if already existing in EVA\nReturns the MenderID if found in mender or already stored in EVA",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LiveGuard:None\u0060",
+  "path": "/message/EmailOrderTaxFreeForm",
+  "description": "This service is used to retrieve the TaxFreeForms associated with an order \u0026 send them to the specified email address.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,24 +25,38 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022HardwareID\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022EmailAddress\u0022: \u0022string\u0022,\n  \u0022OrderID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022HardwareID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/WatchtowerGetDeviceByHardwareID",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022EmailAddress\u0022: \u0022string\u0022,\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/EmailOrderTaxFreeForm",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022DeviceID\u0022: 123,\n  \u0022MenderID\u0022: \u0022d0d0ec98-24f6-4f85-b0a4-108ffaade59e\u0022\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -59,10 +73,19 @@
   "types": {
     "B": [
       {
-        "name": "HardwareID",
+        "name": "EmailAddress",
         "deprecation_notice": null,
         "description": "",
-        "type": "string",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
         "required": true,
         "properties_id": null,
         "one_of": null
@@ -146,30 +169,12 @@
     ],
     "C": [
       {
-        "name": "DeviceID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Device\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "MenderID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       },
       {
