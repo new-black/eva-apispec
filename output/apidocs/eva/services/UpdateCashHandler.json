@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BankNotes\u0022: [\n    123.456\n  ],\n  \u0022Coins\u0022: [\n    123.456\n  ],\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022RoundingFactor\u0022: 123.456\n}",
+      "sample": "{\n  \u0022BankNotes\u0022: [\n    123.456\n  ],\n  \u0022Coins\u0022: [\n    123.456\n  ],\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022MaxAmountPerOrder\u0022: 123.456,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022RoundingFactor\u0022: 123.456\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BankNotes\u0022: [\n    123.456\n  ],\n  \u0022Coins\u0022: [\n    123.456\n  ],\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022RoundingFactor\u0022: 123.456\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateCashHandler",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BankNotes\u0022: [\n    123.456\n  ],\n  \u0022Coins\u0022: [\n    123.456\n  ],\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022MaxAmountPerOrder\u0022: 123.456,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022RoundingFactor\u0022: 123.456\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateCashHandler",
       "syntax": "bash"
     }
   ],
@@ -61,7 +61,7 @@
       {
         "name": "BankNotes",
         "deprecation_notice": null,
-        "description": "",
+        "description": "While this property is not required, if it is sent in the request it must have a valid value.",
         "type": "array[float]",
         "required": true,
         "properties_id": null,
@@ -70,7 +70,7 @@
       {
         "name": "Coins",
         "deprecation_notice": null,
-        "description": "",
+        "description": "While this property is not required, if it is sent in the request it must have a valid value.",
         "type": "array[float]",
         "required": true,
         "properties_id": null,
@@ -79,7 +79,7 @@
       {
         "name": "CurrencyID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Currency\u0060",
+        "description": "This is the ID of a \u0060Currency\u0060\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
         "type": "string",
         "required": true,
         "properties_id": null,
@@ -95,9 +95,18 @@
         "one_of": null
       },
       {
+        "name": "MaxAmountPerOrder",
+        "deprecation_notice": null,
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Name",
         "deprecation_notice": null,
-        "description": "",
+        "description": "While this property is not required, if it is sent in the request it must have a valid value.",
         "type": "string",
         "required": true,
         "properties_id": null,
