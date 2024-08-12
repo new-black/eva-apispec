@@ -761,7 +761,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
                     {
                       Value = new OpenApiStringObject(x.content)
                     })
-                    : null
+                    : []
                 }
               }
             },
