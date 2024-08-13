@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Filters\u0022: {\n    \u0022Handler\u0022: \u0022string\u0022,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022OrganizationUnitSetID\u0022: 123,\n    \u0022Status\u0022: true\n  },\n  \u0022IncludeInactive\u0022: true\n}",
+      "sample": "{\n  \u0022Filters\u0022: {\n    \u0022Handler\u0022: \u0022string\u0022,\n    \u0022IsActive\u0022: true,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022OrganizationUnitSetID\u0022: 123,\n    \u0022Status\u0022: true\n  },\n  \u0022IncludeInactive\u0022: true\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Filters\u0022: {\n    \u0022Handler\u0022: \u0022string\u0022,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022OrganizationUnitSetID\u0022: 123,\n    \u0022Status\u0022: true\n  },\n  \u0022IncludeInactive\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetCheckoutOptions",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Filters\u0022: {\n    \u0022Handler\u0022: \u0022string\u0022,\n    \u0022IsActive\u0022: true,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022OrganizationUnitSetID\u0022: 123,\n    \u0022Status\u0022: true\n  },\n  \u0022IncludeInactive\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetCheckoutOptions",
       "syntax": "bash"
     }
   ],
@@ -75,6 +75,15 @@
         "one_of": null
       },
       {
+        "name": "IsActive",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Name",
         "deprecation_notice": null,
         "description": "",
@@ -94,8 +103,8 @@
       },
       {
         "name": "Status",
-        "deprecation_notice": null,
-        "description": "",
+        "deprecation_notice": "\n\n**Deprecated since 750:** Status is deprecated and will be removed in 2.0.758: Please use IsActive..\n\n**Will be removed in 754**",
+        "description": "**Deprecated since 750:** Status is deprecated and will be removed in 2.0.758: Please use IsActive..\n\n**Will be removed in 754**",
         "type": "boolean | null",
         "required": false,
         "properties_id": null,
