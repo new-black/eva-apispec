@@ -1,9 +1,9 @@
 {
-  "name": "GetCurrentUserIdentificationInfo",
+  "name": "GetAssemblyNamesForDeviceTypes",
   "method": "POST",
-  "path": "/message/GetCurrentUserIdentificationInfo",
-  "description": "Return identification info for the current employee.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
+  "path": "/message/GetAssemblyNamesForDeviceTypes",
+  "description": "Returns the available assembly names for the device types. Can optionally filter by device types.",
+  "auth_description": "Requires any user with functionality \u0060Infrastructure:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{}",
+      "sample": "{\n  \u0022DeviceTypes\u0022: [\n    \u0022string\u0022\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetCurrentUserIdentificationInfo",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022DeviceTypes\u0022: [\n    \u0022string\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetAssemblyNamesForDeviceTypes",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022HasPin\u0022: true,\n  \u0022ResetDate\u0022: \u00222024-08-21\u0022\n}"
+      "sample": "{\n  \u0022Result\u0022: [\n    {\n      \u0022AssemblyName\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022DeviceType\u0022: {\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022ID\u0022: 123,\n        \u0022Name\u0022: \u0022string\u0022\n      }\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -57,7 +57,17 @@
   "request_type_id": "B",
   "response_type_id": "C",
   "types": {
-    "B": [],
+    "B": [
+      {
+        "name": "DeviceTypes",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "D": [
       {
         "name": "Code",
@@ -134,6 +144,55 @@
         "one_of": null
       }
     ],
+    "G": [
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "Usually an internal \u0026 unchangable code - for display, use \u0060Description\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "AssemblyName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DeviceType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      }
+    ],
     "C": [
       {
         "name": "Error",
@@ -142,15 +201,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "HasPin",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       },
       {
@@ -163,12 +213,12 @@
         "one_of": null
       },
       {
-        "name": "ResetDate",
+        "name": "Result",
         "deprecation_notice": null,
         "description": "",
-        "type": "datetime | null",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "F",
         "one_of": null
       }
     ]
