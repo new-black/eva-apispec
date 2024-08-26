@@ -1,9 +1,9 @@
 {
-  "name": "GetLoyaltyProgramGroup",
+  "name": "UpdateSubscriptionUserIdentifier",
   "method": "POST",
-  "path": "/message/GetLoyaltyProgramGroup",
-  "description": "Get a LoyaltyProgramGroup",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LoyaltyProgramGroups:View\u0060",
+  "path": "/message/UpdateSubscriptionUserIdentifier",
+  "description": "Update the user identifier on a user subscription",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -32,24 +32,31 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ID\u0022: 123\n}",
+      "sample": "{\n  \u0022SubscriptionID\u0022: 123,\n  \u0022UserID\u0022: 123,\n  \u0022UserIdentifier\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetLoyaltyProgramGroup",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022SubscriptionID\u0022: 123,\n  \u0022UserID\u0022: 123,\n  \u0022UserIdentifier\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateSubscriptionUserIdentifier",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Budget\u0022: 123.456,\n  \u0022BudgetCurrencyID\u0022: \u0022string\u0022,\n  \u0022BudgetRemaining\u0022: 123.456,\n  \u0022BudgetUsagePercentage\u0022: 123,\n  \u0022DeactivateWhenBudgetIsReached\u0022: true,\n  \u0022DeactivationReason\u0022: 4,\n  \u0022EndDate\u0022: \u00222024-08-26\u0022,\n  \u0022ID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022StartDate\u0022: \u00222024-08-26\u0022,\n  \u0022Status\u0022: 1,\n  \u0022TaxExemptionCode\u0022: \u0022string\u0022,\n  \u0022UsedBudget\u0022: 123.456\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -66,10 +73,28 @@
   "types": {
     "B": [
       {
-        "name": "ID",
+        "name": "SubscriptionID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramGroup\u0060",
+        "description": "This is the ID of a \u0060Subscription\u0060",
         "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserIdentifier",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
         "required": true,
         "properties_id": null,
         "one_of": null
@@ -153,78 +178,6 @@
     ],
     "C": [
       {
-        "name": "BackendID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Budget",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BudgetCurrencyID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Currency\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BudgetRemaining",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BudgetUsagePercentage",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DeactivateWhenBudgetIsReached",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DeactivationReason",
-        "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - ManuallyDeactivated\n* \u00602\u0060 - TimeFrame\n* \u00604\u0060 - BudgetReached",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "EndDate",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
@@ -234,66 +187,12 @@
         "one_of": null
       },
       {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramGroup\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StartDate",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Status",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Inactive\n* \u00601\u0060 - Active",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TaxExemptionCode",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UsedBudget",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       }
     ]

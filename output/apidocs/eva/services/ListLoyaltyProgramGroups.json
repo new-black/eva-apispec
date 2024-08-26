@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022DeactivationReason\u0022: 8,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022Status\u0022: 2\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022DeactivationReason\u0022: 4,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022Status\u0022: 1\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022DeactivationReason\u0022: 8,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022Status\u0022: 2\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListLoyaltyProgramGroups",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022DeactivationReason\u0022: 4,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022Status\u0022: 1\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListLoyaltyProgramGroups",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022BudgetCurrencyID\u0022: \u0022string\u0022,\n      \u0022DeactivationReason\u0022: 8,\n      \u0022EndDate\u0022: \u00222024-08-26\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022StartDate\u0022: \u00222024-08-26\u0022,\n      \u0022Status\u0022: 2,\n      \u0022TaxExemptionCode\u0022: \u0022string\u0022\n    }\n  ]\n}"
+      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022BudgetCurrencyID\u0022: \u0022string\u0022,\n      \u0022DeactivationReason\u0022: 4,\n      \u0022EndDate\u0022: \u00222024-08-26\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022StartDate\u0022: \u00222024-08-26\u0022,\n      \u0022Status\u0022: 1,\n      \u0022TaxExemptionCode\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -70,7 +70,7 @@
       {
         "name": "DeactivationReason",
         "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Inactive\n* \u00602\u0060 - Suspended\n* \u00604\u0060 - TimeFrame\n* \u00608\u0060 - BudgetReached",
+        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - ManuallyDeactivated\n* \u00602\u0060 - TimeFrame\n* \u00604\u0060 - BudgetReached",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -88,7 +88,7 @@
       {
         "name": "Status",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Inactive\n* \u00601\u0060 - Suspended\n* \u00602\u0060 - Active",
+        "description": "Possible values:\n\n* \u00600\u0060 - Inactive\n* \u00601\u0060 - Active",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -233,7 +233,7 @@
       {
         "name": "DeactivationReason",
         "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Inactive\n* \u00602\u0060 - Suspended\n* \u00604\u0060 - TimeFrame\n* \u00608\u0060 - BudgetReached",
+        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - ManuallyDeactivated\n* \u00602\u0060 - TimeFrame\n* \u00604\u0060 - BudgetReached",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -278,7 +278,7 @@
       {
         "name": "Status",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Inactive\n* \u00601\u0060 - Suspended\n* \u00602\u0060 - Active",
+        "description": "Possible values:\n\n* \u00600\u0060 - Inactive\n* \u00601\u0060 - Active",
         "type": "integer",
         "required": false,
         "properties_id": null,
