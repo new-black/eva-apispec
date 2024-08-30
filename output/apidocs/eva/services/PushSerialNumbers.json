@@ -1,9 +1,9 @@
 {
-  "name": "GetBlobInfo",
+  "name": "PushSerialNumbers",
   "method": "POST",
-  "path": "/message/GetBlobInfo",
-  "description": "Get information about a blob, either by \u0060Guid\u0060 or by \u0060Category\u0060 and \u0060OriginalName\u0060.",
-  "auth_description": "This service does not require authentication.",
+  "path": "/message/PushSerialNumbers",
+  "description": "Push multiple serial numbers",
+  "auth_description": "Requires a user of type \u0060Api\u0060 with functionality \u0060SerialNumbers:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,24 +25,38 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022Guid\u0022: \u00222527d69d-0c18-4e32-b23c-54546b43a41b\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022SerialNumbers\u0022: [\n    {\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123\n    }\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022Guid\u0022: \u00222527d69d-0c18-4e32-b23c-54546b43a41b\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetBlobInfo",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022SerialNumbers\u0022: [\n    {\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/PushSerialNumbers",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022ExpireDate\u0022: \u00222024-08-30\u0022,\n  \u0022Guid\u0022: \u00223c53cc24-523c-4bb6-ae74-ff77b87f2139\u0022,\n  \u0022LastModificationTimeUtc\u0022: \u00222024-08-30\u0022,\n  \u0022MimeType\u0022: \u0022string\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022,\n  \u0022Size\u0022: 123,\n  \u0022Url\u0022: \u0022string\u0022\n}"
+      "sample": "{\n  \u0022SerialNumbers\u0022: {\n    \u0022key\u0022: 123\n  }\n}"
     },
     {
       "name": "400",
@@ -55,38 +69,58 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "D",
   "types": {
-    "B": [
+    "C": [
       {
-        "name": "Category",
+        "name": "OrganizationUnitID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Guid",
+        "name": "ProductID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "guid | null",
-        "required": false,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer",
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "OriginalName",
+        "name": "SerialNumber",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StockLabelID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060StockLabel\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
+      {
+        "name": "SerialNumbers",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
+        "one_of": null
+      }
+    ],
+    "E": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -133,7 +167,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -162,54 +196,9 @@
         "one_of": null
       }
     ],
-    "C": [
-      {
-        "name": "Category",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
+    "D": [
       {
         "name": "Error",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "ExpireDate",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Guid",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LastModificationTimeUtc",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
@@ -218,37 +207,19 @@
         "one_of": null
       },
       {
-        "name": "MimeType",
+        "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "F",
         "one_of": null
       },
       {
-        "name": "OriginalName",
+        "name": "SerialNumbers",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Size",
-        "deprecation_notice": null,
-        "description": "In bytes",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Url",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
+        "type": "map[integer] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
