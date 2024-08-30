@@ -1,7 +1,7 @@
 {
   "typename": "SearchOrders",
   "assembly": "EVA.Core",
-  "description": "Search for any type of orders by providing the filter details properties\nImportant search criterias are: OrganizationUnitID, CurrentOrganizationUnitType, OrderID, CustomerID(ClientContext.Type), IsPaid.\nOrderID and IsPaid are going to be replaced by OrderIDs (and array of IDs) and PaymentStatus (an enum).\n\nTo include the custom fields of the customer, the property \u0060AdditionalOrderDataOptions.CustomerCustomFields\u0060 can be set to \u0060true\u0060.\n\nE.g. request:\n{\n  \u0022OrderIDs\u0022: [\n    \u0022orderID1\u0022,\n    \u0022orderID2\u0022\n  ],\n  \u0022PaymentStatus\u0022: \u0022PaymentStatus\u0022,\n  \u0022IsShipped\u0022: \u0022isShipped\u0022\n}\n\n\nPayment status options:\n    NotPaid = 0,\n    Paid = 1,\n    Partial = 2",
+  "description": "Search for any type of orders by providing the filter details properties\nImportant search criterias are: OrganizationUnitID, CurrentOrganizationUnitType, OrderIDs, CustomerID(ClientContext.Type), PaymentStatus.\n\nWhen no StartTime is provided this will be defaulted to 3 months ago. The only exception is when specific OrderIDs are provided, then it\u0027s allowed to not specify a Date.\n\nTo include the custom fields of the customer, the property \u0060AdditionalOrderDataOptions.CustomerCustomFields\u0060 can be set to \u0060true\u0060.\n\nE.g. request:\n{\n  \u0022OrderIDs\u0022: [\n    \u0022orderID1\u0022,\n    \u0022orderID2\u0022\n  ],\n  \u0022PaymentStatus\u0022: \u0022PaymentStatus\u0022,\n  \u0022IsShipped\u0022: \u0022isShipped\u0022\n}\n\n\nPayment status options:\n    NotPaid = 0,\n    Paid = 1,\n    Partial = 2",
   "usage": {
     "request": true,
     "response": false
@@ -2252,7 +2252,7 @@
         "shared": null,
         "nullable": true
       },
-      "description": null,
+      "description": "The StartTime will be defaulted to 3 months ago if not provided and OrderIDs are not provided.",
       "skippable": false,
       "deprecated": null,
       "required": {
