@@ -1,8 +1,8 @@
 {
-  "name": "WatchtowerGetDeviceByHardwareID",
+  "name": "ToggleLockStatusForWatchtowerDevice",
   "method": "POST",
-  "path": "/message/WatchtowerGetDeviceByHardwareID",
-  "description": "Try to find the device by the HardwareID in mender\n\nReturns the DeviceID if already existing in EVA\nReturns the MenderID if found in mender or already stored in EVA",
+  "path": "/message/ToggleLockStatusForWatchtowerDevice",
+  "description": "Update the lock status of a watchtower device.\n\nThis can only be done when the device is online",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LiveGuard:None\u0060",
   "headers": [
     {
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022HardwareID\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022DeviceID\u0022: 123,\n  \u0022IsLocked\u0022: true\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022HardwareID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/WatchtowerGetDeviceByHardwareID",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022DeviceID\u0022: 123,\n  \u0022IsLocked\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ToggleLockStatusForWatchtowerDevice",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022DeviceID\u0022: 123,\n  \u0022MenderID\u0022: \u00228fe074a3-b3fc-4a44-af7e-22f8bf333815\u0022\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -59,10 +59,19 @@
   "types": {
     "B": [
       {
-        "name": "HardwareID",
+        "name": "DeviceID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Device\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsLocked",
         "deprecation_notice": null,
         "description": "",
-        "type": "string",
+        "type": "boolean",
         "required": true,
         "properties_id": null,
         "one_of": null
@@ -146,30 +155,12 @@
     ],
     "C": [
       {
-        "name": "DeviceID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Device\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "MenderID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       },
       {
