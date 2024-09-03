@@ -224,12 +224,12 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
             {
               // "primitive values" are always optional because they have a default value that is not `null`
               // we only want to do this in request-only types
-              if (type.Usage is { Request: true, Response: false }
+              if (type.Usage is { Request: true }
                   && propSpec.Type.Name is ApiSpecConsts.Bool or ApiSpecConsts.Int32 or ApiSpecConsts.Int64)
               {
                 o.WriteLine($"{propName}?: {ToReference(input, propSpec, propName, fixedTypeName, ctx, options)};");
               }
-              else if (type.Usage is { Request: true, Response: false }
+              else if (type.Usage is { Request: true }
                        && input.Types.TryGetValue(propSpec.Type.Name , out var typeSpec)
                        && typeSpec.EnumValues.Count > 0)
               {
