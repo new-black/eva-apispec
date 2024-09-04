@@ -1,9 +1,9 @@
 {
-  "name": "SubmitInquiry",
+  "name": "CheckProductSearchTemplate",
   "method": "POST",
-  "path": "/message/SubmitInquiry",
-  "description": "Submit an inquiry",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/CheckProductSearchTemplate",
+  "description": "Returns the product count within the persisted product search template\nWhen product id is given, it wil checks if a product is part of the persisted product search template result.\nNOTE THAT after product search template creation/update if can take a few minutes for the result to be updated.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ProductSearches:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Feedback\u0022: \u0022string\u0022,\n  \u0022InquiryID\u0022: 123,\n  \u0022Items\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022Value\u0022: {\n        \u0022ArrayValues\u0022: [\n          {\n            \u0022re\u0022: \u0022cursion\u0022\n          }\n        ],\n        \u0022BlobValue\u0022: \u002257c60b88-3acf-4750-a849-412d481235fa\u0022,\n        \u0022BoolValue\u0022: true,\n        \u0022DateTimeValue\u0022: \u00222024-09-04\u0022,\n        \u0022NumberValue\u0022: 123.456,\n        \u0022StringValue\u0022: \u0022string\u0022\n      }\n    }\n  ],\n  \u0022Score\u0022: 123,\n  \u0022UserID\u0022: 123\n}",
+      "sample": "{\n  \u0022ProductID\u0022: 123,\n  \u0022ProductSearchTemplateID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Feedback\u0022: \u0022string\u0022,\n  \u0022InquiryID\u0022: 123,\n  \u0022Items\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022Value\u0022: {\n        \u0022ArrayValues\u0022: [\n          {\n            \u0022re\u0022: \u0022cursion\u0022\n          }\n        ],\n        \u0022BlobValue\u0022: \u002257c60b88-3acf-4750-a849-412d481235fa\u0022,\n        \u0022BoolValue\u0022: true,\n        \u0022DateTimeValue\u0022: \u00222024-09-04\u0022,\n        \u0022NumberValue\u0022: 123.456,\n        \u0022StringValue\u0022: \u0022string\u0022\n      }\n    }\n  ],\n  \u0022Score\u0022: 123,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SubmitInquiry",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ProductID\u0022: 123,\n  \u0022ProductSearchTemplateID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CheckProductSearchTemplate",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022IsPresent\u0022: true,\n  \u0022ResultCount\u0022: 123\n}"
     },
     {
       "name": "400",
@@ -69,132 +69,29 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "E",
+  "response_type_id": "C",
   "types": {
-    "D": [
-      {
-        "name": "ArrayValues",
-        "deprecation_notice": null,
-        "description": "Used for multiple values",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "BlobValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype Blob",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BoolValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype Bool",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DateTimeValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype DateTime and Date",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NumberValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype Integer and Decimal",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StringValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype String, Text and Enum",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060InquiryItem\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Value",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "D",
-        "one_of": null
-      }
-    ],
     "B": [
       {
-        "name": "Feedback",
+        "name": "ProductID",
         "deprecation_notice": null,
-        "description": "This string must be between 1 (incl) and 200 (incl) characters long.",
-        "type": "string | null",
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "InquiryID",
+        "name": "ProductSearchTemplateID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Inquiry\u0060",
+        "description": "This is the ID of a \u0060ProductSearchTemplate\u0060",
         "type": "integer",
         "required": true,
         "properties_id": null,
         "one_of": null
-      },
-      {
-        "name": "Items",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "Score",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
       }
     ],
-    "F": [
+    "D": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -241,7 +138,7 @@
         "one_of": null
       }
     ],
-    "G": [
+    "E": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -270,14 +167,23 @@
         "one_of": null
       }
     ],
-    "E": [
+    "C": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "IsPresent",
+        "deprecation_notice": null,
+        "description": "Will return true/false is the given product is present. If no product is given it will return null",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       },
       {
@@ -286,7 +192,16 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "ResultCount",
+        "deprecation_notice": null,
+        "description": "Total count of products withing the product search template result.",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ]
