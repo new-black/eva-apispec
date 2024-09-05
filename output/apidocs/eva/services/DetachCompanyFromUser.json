@@ -3,7 +3,7 @@
   "method": "POST",
   "path": "/message/DetachCompanyFromUser",
   "description": "The DetachCompanyFromUser service",
-  "auth_description": "This service does not require authentication.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -23,6 +23,20 @@
       "name": "EVA-Requested-OrganizationUnit-Query",
       "type": "string",
       "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
       "required": false,
       "default": null
     }
@@ -61,7 +75,7 @@
       {
         "name": "UserID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "This is the ID of a \u0060User\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
