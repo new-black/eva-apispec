@@ -1,7 +1,7 @@
 {
   "typename": "CreateInvoicedOrderLineCorrection",
   "assembly": "EVA.Core",
-  "description": "Create a correction on an already invoiced line.\n\nThis can be used to refund a partial amount on a completed OrderLine, in cases where the product should still be returnable.\n\nSpecify either \u0060OrderLineID\u0060 and \u0060CorrectionAmount\u0060, or \u0060Lines\u0060.\n\n- If the product is not returnable anymore, a return without retake should be created\n- This will result in a new line what will be shipped and invoiced immediately\n- Based on the AutoRefund flag, the created open amount will be refunded",
+  "description": "Create a correction on an already invoiced line.\n\nThis can be used to refund a partial amount on a completed OrderLine, in cases where the product should still be returnable.\n\nSpecify either \u0060OrderLineID\u0060 and \u0060CorrectionAmount\u0060, or \u0060Lines\u0060.\n\n- If the product is not returnable anymore, a return without retake should be created\n- This will result in a new line that will be invoiced immediately and shipped by default (AutoProcess.Ship is the default variant).\n- If the shipping isn\u0027t desired, use AutoProcess.None;\n- If a refund is desired, use AutoProcess.ShipAndRefund.",
   "usage": {
     "request": true,
     "response": false
@@ -10,6 +10,7 @@
   "typeArguments": [],
   "typeDependencies": [
     "EVA.Core.RequestMessageWithEmptyResponse",
+    "EVA.Core.Orders.AutoProcess",
     "EVA.Core.Orders.CreateInvoicedOrderLineCorrection\u002BCreateInvoicedOrderLineCorrectionLine"
   ],
   "extends": {
@@ -19,6 +20,25 @@
     "nullable": false
   },
   "properties": {
+    "AutoProcess": {
+      "type": {
+        "ref": "EVA.Core.Orders.AutoProcess",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
     "AutoRefund": {
       "type": {
         "ref": "bool",
@@ -28,7 +48,11 @@
       },
       "description": null,
       "skippable": false,
-      "deprecated": null,
+      "deprecated": {
+        "announced": 754,
+        "active": 770,
+        "comment": "AutoRefund is deprecated and will be removed in 2.0.786: Please use AutoProcess.ShipAndRefund."
+      },
       "required": null,
       "requiredAllowEmpty": null,
       "minValue": null,
