@@ -2,7 +2,7 @@
   "name": "CreateInvoicedOrderLineCorrection",
   "method": "POST",
   "path": "/message/CreateInvoicedOrderLineCorrection",
-  "description": "Create a correction on an already invoiced line.\n\nThis can be used to refund a partial amount on a completed OrderLine, in cases where the product should still be returnable.\n\nSpecify either \u0060OrderLineID\u0060 and \u0060CorrectionAmount\u0060, or \u0060Lines\u0060.\n\n- If the product is not returnable anymore, a return without retake should be created\n- This will result in a new line what will be shipped and invoiced immediately\n- Based on the AutoRefund flag, the created open amount will be refunded",
+  "description": "Create a correction on an already invoiced line.\n\nThis can be used to refund a partial amount on a completed OrderLine, in cases where the product should still be returnable.\n\nSpecify either \u0060OrderLineID\u0060 and \u0060CorrectionAmount\u0060, or \u0060Lines\u0060.\n\n- If the product is not returnable anymore, a return without retake should be created\n- This will result in a new line that will be invoiced immediately and shipped by default (AutoProcess.Ship is the default variant).\n- If the shipping isn\u0027t desired, use AutoProcess.None;\n- If a refund is desired, use AutoProcess.ShipAndRefund.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060InvoicedOrderLinePriceCorrection:None\u0060",
   "headers": [
     {
@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022AutoRefund\u0022: true,\n  \u0022CorrectionAmount\u0022: 123.456,\n  \u0022CorrectionReasonID\u0022: 123,\n  \u0022Lines\u0022: [\n    {\n      \u0022CorrectionAmount\u0022: 123.456,\n      \u0022CorrectionReasonID\u0022: 123,\n      \u0022OrderLineID\u0022: 123\n    }\n  ],\n  \u0022OrderLineID\u0022: 123\n}",
+      "sample": "{\n  \u0022AutoProcess\u0022: 2,\n  \u0022AutoRefund\u0022: true,\n  \u0022CorrectionAmount\u0022: 123.456,\n  \u0022CorrectionReasonID\u0022: 123,\n  \u0022Lines\u0022: [\n    {\n      \u0022CorrectionAmount\u0022: 123.456,\n      \u0022CorrectionReasonID\u0022: 123,\n      \u0022OrderLineID\u0022: 123\n    }\n  ],\n  \u0022OrderLineID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AutoRefund\u0022: true,\n  \u0022CorrectionAmount\u0022: 123.456,\n  \u0022CorrectionReasonID\u0022: 123,\n  \u0022Lines\u0022: [\n    {\n      \u0022CorrectionAmount\u0022: 123.456,\n      \u0022CorrectionReasonID\u0022: 123,\n      \u0022OrderLineID\u0022: 123\n    }\n  ],\n  \u0022OrderLineID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateInvoicedOrderLineCorrection",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AutoProcess\u0022: 2,\n  \u0022AutoRefund\u0022: true,\n  \u0022CorrectionAmount\u0022: 123.456,\n  \u0022CorrectionReasonID\u0022: 123,\n  \u0022Lines\u0022: [\n    {\n      \u0022CorrectionAmount\u0022: 123.456,\n      \u0022CorrectionReasonID\u0022: 123,\n      \u0022OrderLineID\u0022: 123\n    }\n  ],\n  \u0022OrderLineID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateInvoicedOrderLineCorrection",
       "syntax": "bash"
     }
   ],
@@ -95,9 +95,18 @@
     ],
     "B": [
       {
-        "name": "AutoRefund",
+        "name": "AutoProcess",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Possible values:\n\n* \u00600\u0060 - Ship\n* \u00601\u0060 - ShipAndRefund\n* \u00602\u0060 - None",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AutoRefund",
+        "deprecation_notice": "\n\n**Deprecated since 754:** AutoRefund is deprecated and will be removed in 2.0.786: Please use AutoProcess.ShipAndRefund.\n\n**Will be removed in 770**",
+        "description": "**Deprecated since 754:** AutoRefund is deprecated and will be removed in 2.0.786: Please use AutoProcess.ShipAndRefund.\n\n**Will be removed in 770**",
         "type": "boolean",
         "required": false,
         "properties_id": null,
