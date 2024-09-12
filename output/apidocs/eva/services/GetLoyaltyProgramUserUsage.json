@@ -1,8 +1,8 @@
 {
-  "name": "SetCustomUserData",
+  "name": "GetLoyaltyProgramUserUsage",
   "method": "POST",
-  "path": "/message/SetCustomUserData",
-  "description": "Update user custom data",
+  "path": "/message/GetLoyaltyProgramUserUsage",
+  "description": "Get the loyalty program user usage",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022CustomFields\u0022: [\n    {\n      \u0022ArrayValues\u0022: [\n        {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022re\u0022: \u0022cursion\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u0022244726c5-0f42-4972-8db1-f4389fbcb35f\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022DateTimeValue\u0022: \u00222024-09-12\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022BlobValue\u0022: \u002256b555f7-88f6-44de-830f-e330d5da3e3a\u0022,\n      \u0022BoolValue\u0022: true,\n      \u0022CustomFieldID\u0022: 123,\n      \u0022DateTimeValue\u0022: \u00222024-09-12\u0022,\n      \u0022NumberValue\u0022: 123.456,\n      \u0022StringValue\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022ID\u0022: 123\n}",
+      "sample": "{\n  \u0022IncludedProductProperties\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022UserID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CustomFields\u0022: [\n    {\n      \u0022ArrayValues\u0022: [\n        {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022re\u0022: \u0022cursion\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u0022244726c5-0f42-4972-8db1-f4389fbcb35f\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022DateTimeValue\u0022: \u00222024-09-12\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022BlobValue\u0022: \u002256b555f7-88f6-44de-830f-e330d5da3e3a\u0022,\n      \u0022BoolValue\u0022: true,\n      \u0022CustomFieldID\u0022: 123,\n      \u0022DateTimeValue\u0022: \u00222024-09-12\u0022,\n      \u0022NumberValue\u0022: 123.456,\n      \u0022StringValue\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SetCustomUserData",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022IncludedProductProperties\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetLoyaltyProgramUserUsage",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022PaymentUsages\u0022: [\n    {\n      \u0022AmountUsage\u0022: 123.456,\n      \u0022LoyaltyProgramPaymentTypeID\u0022: 123,\n      \u0022ProductUsage\u0022: [\n        {\n          \u0022ConsumedQuantity\u0022: 123,\n          \u0022PrimaryImage\u0022: {\n            \u0022Blob\u0022: \u0022string\u0022,\n            \u0022Name\u0022: \u0022string\u0022,\n            \u0022Type\u0022: \u0022string\u0022,\n            \u0022Url\u0022: \u0022string\u0022\n          },\n          \u0022ProductBackendID\u0022: \u0022string\u0022,\n          \u0022ProductID\u0022: 123,\n          \u0022ProductName\u0022: \u0022string\u0022\n        }\n      ]\n    }\n  ],\n  \u0022ProductUsages\u0022: [\n    {\n      \u0022ConsumedQuantity\u0022: 123,\n      \u0022PrimaryImage\u0022: {\n        \u0022Blob\u0022: \u0022string\u0022,\n        \u0022Name\u0022: \u0022string\u0022,\n        \u0022Type\u0022: \u0022string\u0022,\n        \u0022Url\u0022: \u0022string\u0022\n      },\n      \u0022ProductBackendID\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022ProductName\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -69,150 +69,38 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "E",
+  "response_type_id": "C",
   "types": {
-    "D": [
-      {
-        "name": "ArrayValues",
-        "deprecation_notice": null,
-        "description": "Used for multiple values",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "BlobValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype Blob",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BoolValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype Bool",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DateTimeValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype DateTime and Date",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NumberValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype Integer and Decimal",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StringValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype String, Text and Enum",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "C": [
-      {
-        "name": "ArrayValues",
-        "deprecation_notice": null,
-        "description": "Used for multiple values",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "BlobValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype Blob",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BoolValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype Bool",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CustomFieldID",
-        "deprecation_notice": null,
-        "description": "Identifier for the custom field\n\nThis is the ID of a \u0060CustomField\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DateTimeValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype DateTime and Date",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NumberValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype Integer and Decimal",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StringValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype String, Text and Enum",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "B": [
       {
-        "name": "CustomFields",
+        "name": "IncludedProductProperties",
         "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
+        "description": "This is the ID of a \u0060ProductPropertyType\u0060",
+        "type": "array[string] | null",
         "required": false,
-        "properties_id": "C",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ID",
+        "name": "LoyaltyProgramID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
+        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
         "type": "integer",
         "required": true,
         "properties_id": null,
         "one_of": null
+      },
+      {
+        "name": "UserID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
       }
     ],
-    "F": [
+    "D": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -259,7 +147,7 @@
         "one_of": null
       }
     ],
-    "G": [
+    "E": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -288,14 +176,128 @@
         "one_of": null
       }
     ],
-    "E": [
+    "H": [
+      {
+        "name": "Blob",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Url",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "ConsumedQuantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PrimaryImage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "ProductBackendID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "AmountUsage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LoyaltyProgramPaymentTypeID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060LoyaltyProgramPaymentType\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductUsage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      }
+    ],
+    "C": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "D",
         "one_of": null
       },
       {
@@ -303,6 +305,24 @@
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "PaymentUsages",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "ProductUsages",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
         "required": false,
         "properties_id": "G",
         "one_of": null
