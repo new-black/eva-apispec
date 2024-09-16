@@ -13,6 +13,7 @@
     "EVA.Core.Management.Cases.PushCaseResponse",
     "EVA.Core.Management.Cases.PushCase\u002BPushCaseAssignee",
     "EVA.Core.Management.Cases.PushCase\u002BPushCaseRelatedItems",
+    "EVA.Core.Management.Cases.PushCase\u002BPushCaseTopic",
     "EVA.Core.Management.Cases.PushCase\u002BPushCaseCustomer",
     "EVA.Core.Management.Cases.PushCase\u002BPushCaseInteraction",
     "EVA.Core.DataModels.CasePriority"
@@ -131,6 +132,37 @@
       "deprecated": null,
       "required": null,
       "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "CaseTopic": {
+      "type": {
+        "ref": "EVA.Core.Management.Cases.PushCase\u002BPushCaseTopic",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "The topic that this case is a part of. If a BackendID is provided and a CaseTopic exists with that ID, that CaseTopic is used, no matter what Name or ParentBackendID are passed and if they match.\n  If no CaseTopic exists with the given BackendID, but one does exist with the given Name and ParentBackendID, that CaseTopic is used instead, disregarding what BackendID was passed in the request.\n  If none of these conditions are met, a new CaseTopic is created.",
+      "skippable": false,
+      "deprecated": null,
+      "required": {
+        "current": false,
+        "new": true,
+        "announced": 754,
+        "active": 770,
+        "comment": "Field CaseTopic is required and will be enforced as such in 2.0.786."
+      },
+      "requiredAllowEmpty": {
+        "current": null,
+        "new": false,
+        "announced": 754,
+        "active": 770,
+        "comment": "Field CaseTopic is required and will be enforced as such in 2.0.786."
+      },
       "minValue": null,
       "maxValue": null,
       "stringLengthConstraint": null,
@@ -468,25 +500,17 @@
         "ref": "string",
         "args": [],
         "shared": null,
-        "nullable": false
+        "nullable": true
       },
       "description": null,
       "skippable": false,
-      "deprecated": null,
-      "required": {
-        "current": true,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
+      "deprecated": {
+        "announced": 754,
+        "active": 770,
+        "comment": "Topic is deprecated and will be removed in 2.0.786: The topic should now be passed into CaseTopic."
       },
-      "requiredAllowEmpty": {
-        "current": false,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
+      "required": null,
+      "requiredAllowEmpty": null,
       "minValue": null,
       "maxValue": null,
       "stringLengthConstraint": null,
