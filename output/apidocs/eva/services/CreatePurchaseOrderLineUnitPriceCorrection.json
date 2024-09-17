@@ -1,9 +1,9 @@
 {
-  "name": "CustomerRemoveCaseInteractionBlob",
+  "name": "CreatePurchaseOrderLineUnitPriceCorrection",
   "method": "POST",
-  "path": "/message/CustomerRemoveCaseInteractionBlob",
-  "description": "Service for customers to remove a blob from a case interaction.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/CreatePurchaseOrderLineUnitPriceCorrection",
+  "description": "Create a price correction on the purchase order line.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060OrderLinePriceCorrection:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,24 +25,31 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobID\u0022: \u002248a645c5-e762-4225-a986-34bee91632ca\u0022,\n  \u0022InteractionID\u0022: 123\n}",
+      "sample": "{\n  \u0022PurchaseOrderLineID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u002248a645c5-e762-4225-a986-34bee91632ca\u0022,\n  \u0022InteractionID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CustomerRemoveCaseInteractionBlob",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PurchaseOrderLineID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreatePurchaseOrderLineUnitPriceCorrection",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022CorrectionPurchaseOrderLineID\u0022: 123\n}"
     },
     {
       "name": "400",
@@ -59,19 +66,19 @@
   "types": {
     "B": [
       {
-        "name": "BlobID",
+        "name": "PurchaseOrderLineID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "InteractionID",
+        "name": "UnitPrice",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Interaction\u0060",
-        "type": "integer",
+        "description": "",
+        "type": "float",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -154,6 +161,15 @@
       }
     ],
     "C": [
+      {
+        "name": "CorrectionPurchaseOrderLineID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "Error",
         "deprecation_notice": null,
