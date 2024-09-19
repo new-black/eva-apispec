@@ -68,9 +68,9 @@
       {
         "name": "Certificate",
         "deprecation_notice": null,
-        "description": "A client certificate that can be used for mTLS. Must be X509 in PKCS12 format. Also, it must not be expired, have a private key and hae clientAuth in it\u0027s extended key usage.",
-        "type": "binary | null",
-        "required": false,
+        "description": "A client certificate that can be used for mTLS. Must be X509 in PKCS12 format. Also, it must not be expired, have a private key and have clientAuth in it\u0027s extended key usage.",
+        "type": "binary",
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
@@ -128,7 +128,7 @@
         "deprecation_notice": null,
         "description": "Possible values:\n\n* \u00601\u0060 - Order\n* \u00602\u0060 - Shipment\n* \u00603\u0060 - PaymentTransaction\n* \u00604\u0060 - Customer\n* \u00605\u0060 - Invoice\n* \u00606\u0060 - StockMutation\n* \u00607\u0060 - OrganizationUnit\n* \u00608\u0060 - FinancialPeriod\n* \u00609\u0060 - FinancialPeriodAudit\n* \u006010\u0060 - OrderFulfillmentLine\n* \u006011\u0060 - System\n* \u006012\u0060 - UserTasks\n* \u006013\u0060 - CashCorrection\n* \u006014\u0060 - CashDeposit\n* \u006015\u0060 - CashExpense\n* \u006016\u0060 - CashMovement\n* \u006017\u0060 - RecurringTask\n* \u006018\u0060 - OrderFulfillment\n* \u006019\u0060 - Coupon\n* \u006020\u0060 - ProductAvailability\n* \u006021\u0060 - Repairs\n* \u006022\u0060 - StockNotification\n* \u006023\u0060 - SerialNumber\n* \u006024\u0060 - LoyaltyProgram\n* \u006025\u0060 - Cases\n* \u006026\u0060 - Wishlist",
         "type": "integer",
-        "required": false,
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
@@ -137,7 +137,7 @@
       {
         "name": "Authorization",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Authorization configuration used when calling this endpoint.\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "object | null",
         "required": false,
         "properties_id": "D",
@@ -146,7 +146,7 @@
       {
         "name": "ExcludeOrganizationUnitSets",
         "deprecation_notice": null,
-        "description": "Exclude certain organization unit sets. If not set, no organization units will be excluded.\n\nThis is the ID of a \u0060OrganizationUnitSet\u0060",
+        "description": "Exclude certain organization unit sets. If not set, no organization units will be excluded.\n\nThis is the ID of a \u0060OrganizationUnitSet\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
@@ -155,7 +155,7 @@
       {
         "name": "ExcludeOrganizationUnits",
         "deprecation_notice": null,
-        "description": "Exclude certain organization units. If not set, no organization units will be excluded.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "description": "Exclude certain organization units. If not set, no organization units will be excluded.\n\nThis is the ID of a \u0060OrganizationUnit\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
@@ -164,7 +164,7 @@
       {
         "name": "ExcludedMessageTypes",
         "deprecation_notice": null,
-        "description": "Exclude certain message types. If not set, no message types will be excluded.",
+        "description": "Exclude certain message types. If not set, no message types will be excluded.\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "array[object] | null",
         "required": false,
         "properties_id": "F",
@@ -173,7 +173,7 @@
       {
         "name": "IncludeOrganizationUnitSets",
         "deprecation_notice": null,
-        "description": "Filter for certain organization unit sets. If not set, all organization units will be sent.\n\nThis is the ID of a \u0060OrganizationUnitSet\u0060",
+        "description": "Filter for certain organization unit sets. If not set, all organization units will be sent.\n\nThis is the ID of a \u0060OrganizationUnitSet\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
@@ -182,7 +182,7 @@
       {
         "name": "IncludeOrganizationUnits",
         "deprecation_notice": null,
-        "description": "Filter for certain organization units. If not set, all organization units will be sent.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "description": "Filter for certain organization units. If not set, all organization units will be sent.\n\nThis is the ID of a \u0060OrganizationUnit\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
@@ -191,7 +191,7 @@
       {
         "name": "MessageTypes",
         "deprecation_notice": null,
-        "description": "Filter for certain message types. If not set, all message types will be sent.",
+        "description": "Filter for certain message types. If not set, all message types will be sent.\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "array[object] | null",
         "required": false,
         "properties_id": "F",
@@ -200,7 +200,7 @@
       {
         "name": "Protocol",
         "deprecation_notice": null,
-        "description": "The protocol to use when sending the data. If not set, the best available version of HTTP will be used.\nPossible values:\n\n* \u00600\u0060 - HTTP_ANY\n* \u00601\u0060 - HTTP_1_1",
+        "description": "The protocol to use when sending the data. If not set, the best available version of HTTP will be used.\nPossible values:\n\n* \u00600\u0060 - HTTP_ANY\n* \u00601\u0060 - HTTP_1_1\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -209,7 +209,7 @@
       {
         "name": "ResponseMode",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Normal\n* \u00601\u0060 - Loose",
+        "description": "Defines what kind of response EVA requires from this endpoint.\nPossible values:\n\n* \u00600\u0060 - Normal\n* \u00601\u0060 - Loose\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -218,7 +218,7 @@
       {
         "name": "ScriptID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Script\u0060",
+        "description": "The protocol to use when sending the data. If not set, the best available version of HTTP will be used.\n\nThis is the ID of a \u0060Script\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -227,7 +227,7 @@
       {
         "name": "TimeoutSeconds",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Timeout after which event exports are cancelled. Defaults to 5 seconds. Not recommended to change.\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -238,7 +238,7 @@
       {
         "name": "Config",
         "deprecation_notice": null,
-        "description": "",
+        "description": "While this property is not required, if it is sent in the request it must have a valid value.",
         "type": "object",
         "required": true,
         "properties_id": "C",
@@ -247,7 +247,7 @@
       {
         "name": "Endpoint",
         "deprecation_notice": null,
-        "description": "",
+        "description": "While this property is not required, if it is sent in the request it must have a valid value.",
         "type": "string",
         "required": true,
         "properties_id": null,
@@ -265,7 +265,7 @@
       {
         "name": "Name",
         "deprecation_notice": null,
-        "description": "",
+        "description": "While this property is not required, if it is sent in the request it must have a valid value.",
         "type": "string",
         "required": true,
         "properties_id": null,
@@ -274,7 +274,7 @@
       {
         "name": "Status",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00601\u0060 - Enabled\n* \u00602\u0060 - Disabled\n* \u00603\u0060 - Error\n* \u00604\u0060 - Done",
+        "description": "Possible values:\n\n* \u00601\u0060 - Enabled\n* \u00602\u0060 - Disabled\n* \u00603\u0060 - Error\n* \u00604\u0060 - Done\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
         "type": "integer",
         "required": true,
         "properties_id": null,
