@@ -396,7 +396,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
             var ti = new TypeInfo
             {
                 Name = propname,
-                Required = prop.Required?.CurrentValue ?? false,
+                Required = !prop.Skippable && (prop.Required?.CurrentValue ?? false),
                 Type = "unknown",
                 Description = prop.Description ?? string.Empty
             };
