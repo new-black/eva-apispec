@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Blobs\u0022: [\n    {\n      \u0022BlobID\u0022: \u00228e01f15c-d86e-4c0b-9f32-1a6541135489\u0022,\n      \u0022Path\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022ZipName\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022Blobs\u0022: [\n    {\n      \u0022BlobID\u0022: \u0022fb699edd-02ec-4087-940f-55bc5a77a631\u0022,\n      \u0022BlobUrl\u0022: \u0022string\u0022,\n      \u0022Path\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022ZipName\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Blobs\u0022: [\n    {\n      \u0022BlobID\u0022: \u00228e01f15c-d86e-4c0b-9f32-1a6541135489\u0022,\n      \u0022Path\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022ZipName\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ZipBlobs",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Blobs\u0022: [\n    {\n      \u0022BlobID\u0022: \u0022fb699edd-02ec-4087-940f-55bc5a77a631\u0022,\n      \u0022BlobUrl\u0022: \u0022string\u0022,\n      \u0022Path\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022ZipName\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ZipBlobs",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ResourceInfo\u0022: {\n    \u0022BlobID\u0022: \u002225fb5f38-4830-4305-bad3-ffedc39c7906\u0022,\n    \u0022Url\u0022: \u0022string\u0022\n  }\n}"
+      "sample": "{\n  \u0022ResourceInfo\u0022: {\n    \u0022BlobID\u0022: \u0022ced527c7-172b-462a-b122-87f47423c548\u0022,\n    \u0022Url\u0022: \u0022string\u0022\n  }\n}"
     },
     {
       "name": "400",
@@ -61,16 +61,25 @@
       {
         "name": "BlobID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Blob\u0060",
-        "type": "guid",
-        "required": true,
+        "description": "Can be used for standard blobs - for secure blobs, use \u0060BlobUrl\u0060 instead.\n\nThis is the ID of a \u0060Blob\u0060",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BlobUrl",
+        "deprecation_notice": null,
+        "description": "Can be used for both standard- and secured blobs - must match environment assets URL.",
+        "type": "string | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
         "name": "Path",
         "deprecation_notice": null,
-        "description": "Path of the file in the resulting zip. This includes the filename. If not set the original name of the file is taken. If there is no original name, a random guid is generated.",
+        "description": "Path of the file in the resulting zip, including filename - when not set, files are set to root using their original blob name or else a random UUID.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -81,7 +90,7 @@
       {
         "name": "Blobs",
         "deprecation_notice": null,
-        "description": "",
+        "description": "List of blobs to be included in the zip file.",
         "type": "array[object]",
         "required": true,
         "properties_id": "C",
@@ -90,7 +99,7 @@
       {
         "name": "ZipName",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Name of the generated zip file, will default to \u0027download.zip\u0027 if not specified.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
