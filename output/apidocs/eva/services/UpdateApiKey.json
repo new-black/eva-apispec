@@ -1,9 +1,9 @@
 {
-  "name": "ReprintThermalPrintResult",
+  "name": "UpdateApiKey",
   "method": "POST",
-  "path": "/message/ReprintThermalPrintResult",
-  "description": "Reprints the results of a previous thermal print job to a specified station.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
+  "path": "/message/UpdateApiKey",
+  "description": "Update an exisiting API key\n\nAll other properties need a new key to be created as these would influence the token authorization.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ApiKeys:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobID\u0022: \u002223ce928b-21ec-44f3-a11e-d131c83d9226\u0022,\n  \u0022StationID\u0022: 123\n}",
+      "sample": "{\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u002223ce928b-21ec-44f3-a11e-d131c83d9226\u0022,\n  \u0022StationID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ReprintThermalPrintResult",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateApiKey",
       "syntax": "bash"
     }
   ],
@@ -59,20 +59,20 @@
   "types": {
     "B": [
       {
-        "name": "BlobID",
+        "name": "Description",
         "deprecation_notice": null,
-        "description": "The blob that contains the result of the thermal print job. If an incorrect blob is specified, an error will be returned.",
-        "type": "guid",
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "StationID",
+        "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Station\u0060",
-        "type": "integer | null",
-        "required": false,
+        "description": "This is the ID of a \u0060ApiKey\u0060",
+        "type": "integer",
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
