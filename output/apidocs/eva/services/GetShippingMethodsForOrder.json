@@ -56,7 +56,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ShippingMethods\u0022: [\n    {\n      \u0022AppliesToOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022Carrier\u0022: {\n        \u0022Code\u0022: \u0022string\u0022,\n        \u0022ID\u0022: 123,\n        \u0022Name\u0022: \u0022string\u0022\n      },\n      \u0022CarrierID\u0022: 123,\n      \u0022Code\u0022: \u0022string\u0022,\n      \u0022Costs\u0022: {\n        \u0022Amount\u0022: 123.456,\n        \u0022Ranges\u0022: [\n          {\n            \u0022Costs\u0022: 123.456,\n            \u0022MaxAmount\u0022: 123.456,\n            \u0022MinAmount\u0022: 123.456\n          }\n        ]\n      },\n      \u0022DeliveryType\u0022: 1,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022PaymentHandledByCarrier\u0022: true,\n      \u0022Priority\u0022: 123,\n      \u0022RequestedDeliveryDates\u0022: [\n        {\n          \u0022OrderLineID\u0022: 123,\n          \u0022RequestedDate\u0022: \u00222024-10-02\u0022\n        }\n      ]\n    }\n  ]\n}"
+      "sample": "{\n  \u0022ShippingMethods\u0022: [\n    {\n      \u0022AppliesToOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022Carrier\u0022: {\n        \u0022Code\u0022: \u0022string\u0022,\n        \u0022ID\u0022: 123,\n        \u0022Name\u0022: \u0022string\u0022\n      },\n      \u0022CarrierID\u0022: 123,\n      \u0022Code\u0022: \u0022string\u0022,\n      \u0022Costs\u0022: {\n        \u0022Amount\u0022: 123.456,\n        \u0022Ranges\u0022: [\n          {\n            \u0022Costs\u0022: 123.456,\n            \u0022MaxAmount\u0022: 123.456,\n            \u0022MinAmount\u0022: 123.456\n          }\n        ]\n      },\n      \u0022CustomFieldValues\u0022: {\n        \u0022key\u0022: {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022re\u0022: \u0022cursion\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u0022dadda6c4-b7b6-4b50-8184-1d75419826b3\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022DateTimeValue\u0022: \u00222024-10-02\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        }\n      },\n      \u0022DeliveryType\u0022: 1,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022PaymentHandledByCarrier\u0022: true,\n      \u0022Priority\u0022: 123,\n      \u0022RequestedDeliveryDates\u0022: [\n        {\n          \u0022OrderLineID\u0022: 123,\n          \u0022RequestedDate\u0022: \u00222024-10-02\u0022\n        }\n      ]\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -238,6 +238,62 @@
     ],
     "J": [
       {
+        "name": "ArrayValues",
+        "deprecation_notice": null,
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
         "name": "OrderLineID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrderLine\u0060",
@@ -303,6 +359,15 @@
         "one_of": null
       },
       {
+        "name": "CustomFieldValues",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
         "name": "DeliveryType",
         "deprecation_notice": null,
         "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Default\n* \u00602\u0060 - ShipFromStore\n* \u00604\u0060 - Interbranch",
@@ -362,7 +427,7 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "J",
+        "properties_id": "K",
         "one_of": null
       }
     ],
