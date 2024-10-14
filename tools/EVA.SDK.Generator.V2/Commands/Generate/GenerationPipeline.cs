@@ -58,13 +58,9 @@ internal static class GenerationPipeline
     }
 
     // Other one-off transforms
-    if (opt.UseOptimisticStringIDs)
+    if (opt.UseStringIDs)
     {
-      new UseStringIds(UseStringIDsMode.Optimistic).Transform(model, opt, logger);
-    }
-    else if (opt.UseStringIDs)
-    {
-      new UseStringIds(UseStringIDsMode.Default).Transform(model, opt, logger);
+      new UseStringIds().Transform(model, opt, logger);
     }
 
     // Run transformations

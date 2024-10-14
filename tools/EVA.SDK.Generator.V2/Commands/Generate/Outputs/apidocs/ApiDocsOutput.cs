@@ -295,7 +295,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
         return true;
       }
 
-      if (type.Name is ApiSpecConsts.Int16 or ApiSpecConsts.Int32 or ApiSpecConsts.Int64)
+      if (type.Name is ApiSpecConsts.Int16 or ApiSpecConsts.Int32 or ApiSpecConsts.Int64 or ApiSpecConsts.ID)
       {
         return 123;
       }

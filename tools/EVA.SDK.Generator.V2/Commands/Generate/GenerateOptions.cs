@@ -28,8 +28,6 @@ public class GenerateOptions
 
   internal bool UseStringIDs { get; init; } = BaseGenerateOptionsBinderOptions.UseStringIDs.Default;
 
-  internal bool UseOptimisticStringIDs { get; init; } = BaseGenerateOptionsBinderOptions.UseOptimisticStringIDs.Default;
-
   internal string Api { get; init; } = BaseGenerateOptionsBinderOptions.Api.Default;
 
   internal void EnsureTransform(string transform)
@@ -91,11 +89,6 @@ internal static class BaseGenerateOptionsBinderOptions
     description: "Use string IDs instead of longs/strings for all entities. This will become the standard in the future."
   ).WithDefault(false);
 
-  internal static readonly OptionWithDefault<bool> UseOptimisticStringIDs = new Option<bool>(
-    name: "--use-optimistic-string-ids",
-    description: "Use string IDs instead of longs/strings for all entities as much as possible. This is temporarily until this matches the --use-string-ids mode. This will override --use-string-ids."
-  ).WithDefault(false);
-
   internal static readonly OptionWithDefault<string> Api = new Option<string>(
     name: "--api",
     description: "The API to output"
@@ -124,7 +117,6 @@ internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : G
       MergeSmallAssembliesLimit = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesLimit.Value(bindingContext),
       MergeSmallAssembliesFilter = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Value(bindingContext),
       UseStringIDs = BaseGenerateOptionsBinderOptions.UseStringIDs.Value(bindingContext),
-      UseOptimisticStringIDs = BaseGenerateOptionsBinderOptions.UseOptimisticStringIDs.Value(bindingContext),
       Api = BaseGenerateOptionsBinderOptions.Api.Value(bindingContext)
     };
 
@@ -144,7 +136,6 @@ internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : G
     yield return BaseGenerateOptionsBinderOptions.MergeSmallAssembliesLimit.Option;
     yield return BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Option;
     yield return BaseGenerateOptionsBinderOptions.UseStringIDs.Option;
-    yield return BaseGenerateOptionsBinderOptions.UseOptimisticStringIDs.Option;
     yield return BaseGenerateOptionsBinderOptions.Api.Option;
 
     foreach (var opt in GetOptions()) yield return opt;
