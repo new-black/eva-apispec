@@ -1,0 +1,424 @@
+{
+  "name": "GetReturnableStatusForOrder",
+  "method": "POST",
+  "path": "/message/GetReturnableStatusForOrder",
+  "description": "Gets whether or not an Order is currently returnable.\n\nFor each OrderLine on the Order you\u0027ll get back a result that specifies whether or not it can be returned,\nhow much can be returned and which (if any) other OrderLines must be returned before the line itself can be returned\n(think of parent-child lines where you can\u0027t return a child OrderLine without also returning the parent OrderLine).\n\nIn addition, this service may return \u0060ReturnSets\u0060 which specify that \u0027if you return these OrderLines (specified by \u0060OrderLineIDs\u0060) then\nyou must *also* return these lines (specified by \u0060RequiredOrderLineIDsToReturn\u0060). For example, if you return all normal OrderLines on an Order\nthen you must also return all the free products you have received.\n\nFinally, specify the \u0060ReturningQuantities\u0060 parameter as an object where the key is an \u0060OrderLineID\u0060 with a (positive) \u0060Quantity\u0060 you wish to be\nreturned. The \u0060Result\u0060 can be affected in case rules have been configured to, for example, allow _returns without products_ only when the total\nreturn order amount is below a certain amount.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "JSON",
+      "sample": "{\n  \u0022HideCancelledLines\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022RequireLoginFunctionality\u0022: true,\n  \u0022ReturningQuantities\u0022: {\n    \u0022key\u0022: 123\n  }\n}",
+      "syntax": "json"
+    },
+    {
+      "name": "CURL",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022HideCancelledLines\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022RequireLoginFunctionality\u0022: true,\n  \u0022ReturningQuantities\u0022: {\n    \u0022key\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetReturnableStatusForOrder",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{\n  \u0022RequiresSpecialInStoreReturn\u0022: true,\n  \u0022Result\u0022: [\n    {\n      \u0022IsReturnable\u0022: true,\n      \u0022MustBeReturnedWithOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022OrderLineID\u0022: 123,\n      \u0022OrderLineType\u0022: 1,\n      \u0022OverrideFunctionality\u0022: {\n        \u0022Functionality\u0022: \u0022string\u0022,\n        \u0022Scope\u0022: 1\n      },\n      \u0022Reason\u0022: \u0022string\u0022,\n      \u0022ReasonCode\u0022: \u0022string\u0022,\n      \u0022ReturnWithoutProducts\u0022: 2,\n      \u0022ReturnableAmount\u0022: 123.456,\n      \u0022ReturnableQuantity\u0022: 123,\n      \u0022SerialNumberConfigurationID\u0022: 123,\n      \u0022SerialNumberRequired\u0022: true\n    }\n  ],\n  \u0022ReturnSets\u0022: [\n    {\n      \u0022OrderLineIDs\u0022: [\n        123\n      ],\n      \u0022RequiredOrderLineIDsToReturn\u0022: [\n        123\n      ]\n    }\n  ],\n  \u0022StockOrganizationUnits\u0022: [\n    {\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022Reason\u0022: 3\n    }\n  ]\n}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "C",
+  "types": {
+    "B": [
+      {
+        "name": "HideCancelledLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireLoginFunctionality",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturningQuantities",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "map[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Code",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "ExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "deprecation_notice": null,
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "Functionality",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Scope",
+        "deprecation_notice": null,
+        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Create\n* \u00602\u0060 - Edit\n* \u00604\u0060 - Delete\n* \u00608\u0060 - View\n* \u006031\u0060 - Manage\n* \u006032\u0060 - Settings\n* \u006064\u0060 - Scripting\n* \u0060127\u0060 - All",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "IsReturnable",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MustBeReturnedWithOrderLineIDs",
+        "deprecation_notice": null,
+        "description": "When present, this OrderLine can only be returned when the OrderLines specified in this collection are also being returned.\n\nThis is the ID of a \u0060OrderLine\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderLineID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderLineType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - NormalProduct\n* \u00601\u0060 - Discount\n* \u00602\u0060 - ExtraCosts\n* \u00605\u0060 - ShippingCosts\n* \u00606\u0060 - ReturnCosts\n* \u00607\u0060 - PriceCorrection\n* \u00608\u0060 - Service\n* \u00609\u0060 - GiftWrappingCosts\n* \u006010\u0060 - DownPayment",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OverrideFunctionality",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Reason",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReasonCode",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnWithoutProducts",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - ReturnWithoutProducts\n* \u00602\u0060 - ReturnWithProducts",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnableAmount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnableQuantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumberConfigurationID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060SerialNumberConfiguration\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumberRequired",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "OrderLineIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequiredOrderLineIDsToReturn",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Reason",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - CurrentOrganizationUnit\n* \u00601\u0060 - ShipFromOrganizationUnit\n* \u00602\u0060 - SupplierOrganizationUnit\n* \u00603\u0060 - ReturnOrganizationUnit\n* \u00604\u0060 - SoldFromOrganizationUnit",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "RequiresSpecialInStoreReturn",
+        "deprecation_notice": null,
+        "description": "Indicates whether the order needs to use the special return procedure for in-store returns. This is done using the \u0060CreateInStoreReturn\u0060 service.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Result",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "ReturnSets",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "StockOrganizationUnits",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "I",
+        "one_of": null
+      }
+    ]
+  }
+}

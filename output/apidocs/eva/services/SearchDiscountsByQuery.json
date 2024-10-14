@@ -1,0 +1,844 @@
+{
+  "name": "SearchDiscountsByQuery",
+  "method": "POST",
+  "path": "/message/SearchDiscountsByQuery",
+  "description": "Searches the Discounts with the given filter and returns a paged response.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Discounts:View\u0060",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "JSON",
+      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022ActiveRange\u0022: {\n        \u0022EndDate\u0022: \u00222024-10-11\u0022,\n        \u0022StartDate\u0022: \u00222024-10-11\u0022\n      },\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CouponCode\u0022: \u0022string\u0022,\n      \u0022CreatedBy\u0022: \u0022string\u0022,\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022DeactivationReasons\u0022: [\n        8\n      ],\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022DiscountCampaignID\u0022: 123,\n      \u0022DiscountTemplateID\u0022: 123,\n      \u0022DiscountTriggerIDs\u0022: [\n        4\n      ],\n      \u0022HasRestitutionOrganizationUnit\u0022: true,\n      \u0022ID\u0022: 123,\n      \u0022LayerID\u0022: 123,\n      \u0022OrderType\u0022: 1,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022RestitutionOrganizationUnitID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}",
+      "syntax": "json"
+    },
+    {
+      "name": "CURL",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022ActiveRange\u0022: {\n        \u0022EndDate\u0022: \u00222024-10-11\u0022,\n        \u0022StartDate\u0022: \u00222024-10-11\u0022\n      },\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CouponCode\u0022: \u0022string\u0022,\n      \u0022CreatedBy\u0022: \u0022string\u0022,\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022DeactivationReasons\u0022: [\n        8\n      ],\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022DiscountCampaignID\u0022: 123,\n      \u0022DiscountTemplateID\u0022: 123,\n      \u0022DiscountTriggerIDs\u0022: [\n        4\n      ],\n      \u0022HasRestitutionOrganizationUnit\u0022: true,\n      \u0022ID\u0022: 123,\n      \u0022LayerID\u0022: 123,\n      \u0022OrderType\u0022: 1,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022RestitutionOrganizationUnitID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SearchDiscountsByQuery",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{\n  \u0022Result\u0022: {\n    \u0022CurrentPage\u0022: 123,\n    \u0022Filters\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022NumberOfPages\u0022: 123,\n    \u0022Offset\u0022: 123,\n    \u0022Page\u0022: [\n      {\n        \u0022BackendID\u0022: \u0022string\u0022,\n        \u0022Budget\u0022: 123.456,\n        \u0022BudgetAvailable\u0022: 123.456,\n        \u0022BudgetProgress\u0022: 123,\n        \u0022CampaignID\u0022: 123,\n        \u0022CouponsGeneratedByOtherDiscount\u0022: true,\n        \u0022CreatedByFullName\u0022: \u0022string\u0022,\n        \u0022CreatedByID\u0022: 123,\n        \u0022CurrencyID\u0022: \u0022string\u0022,\n        \u0022CustomUserUsageLimitFieldID\u0022: 123,\n        \u0022DeactivateWhenBudgetReached\u0022: true,\n        \u0022DeactivationReasons\u0022: 8,\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022DiscountOrderType\u0022: 2,\n        \u0022Enabled\u0022: true,\n        \u0022EndDate\u0022: \u00222024-10-11\u0022,\n        \u0022GeneratedFromTemplate\u0022: true,\n        \u0022ID\u0022: 123,\n        \u0022ImageBlobID\u0022: \u0022aba8950a-b651-43a7-ae08-78099e99d8d6\u0022,\n        \u0022LayerID\u0022: 123,\n        \u0022LayerName\u0022: \u0022string\u0022,\n        \u0022LoyaltyProgramID\u0022: 123,\n        \u0022MaximumUsage\u0022: 123,\n        \u0022OrganizationUnitSetDescription\u0022: \u0022string\u0022,\n        \u0022OrganizationUnitSetID\u0022: 123,\n        \u0022OrganizationUnitSetName\u0022: \u0022string\u0022,\n        \u0022OrganizationUnitSetType\u0022: 2,\n        \u0022RestitutionOrganizationUnitID\u0022: 123,\n        \u0022StartDate\u0022: \u00222024-10-11\u0022,\n        \u0022TotalDiscountGiven\u0022: 123.456,\n        \u0022UsageCount\u0022: 123,\n        \u0022UserUsageLimit\u0022: 123.456,\n        \u0022UserUsageReloadStrategy\u0022: \u0022string\u0022\n      }\n    ],\n    \u0022PageConfig\u0022: {\n      \u0022Filter\u0022: {\n        \u0022key\u0022: \u0022string\u0022\n      },\n      \u0022Limit\u0022: 123,\n      \u0022SortDirection\u0022: 1,\n      \u0022SortProperty\u0022: \u0022string\u0022,\n      \u0022Start\u0022: 123\n    },\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Total\u0022: 123\n  }\n}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "F",
+  "types": {
+    "E": [
+      {
+        "name": "EndDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "ActiveRange",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CouponCode",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreatedBy",
+        "deprecation_notice": null,
+        "description": "The name of the user who created the discount",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Currency\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DeactivationReasons",
+        "deprecation_notice": null,
+        "description": "You can filter discounts based on their deactivation reason.The array is interpreted as an \u0027or\u0027 value list\nTo get discounts with a specific deactivation reason, only provide the deactivation reason you want. For example:\n- providing an empty value will return all discounts\n- providing \u0060None\u0060 (0) will return discounts that are active.\n- providing \u0060Unverified\u0060 (1) will return discounts that are inactive because they are unverified.\n- providing \u0060Unverified\u0060 (1) and \u0060DisabledByUser\u0060 (2) will return discounts that are inactive because they are either unverified OR disabled by user.\n- providing \u0060Unverified\u0060 (1) and \u0060DisabledByUser\u0060 (2) as a combined flag (3) will return discounts that are inactive because they are unverified AND disabled by user.\nFlags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Unverified\n* \u00602\u0060 - DisabledByUser\n* \u00604\u0060 - ByDiscountUsage\n* \u00608\u0060 - ByDiscountBudget\n* \u006016\u0060 - ByDiscountTimeFrame\n* \u006032\u0060 - ByDiscountCampaignBudget\n* \u006064\u0060 - ByDiscountCampaignTimeFrame",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DiscountCampaignID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060DiscountCampaign\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DiscountTemplateID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060DiscountTemplate\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DiscountTriggerIDs",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u0060-1\u0060 - SystemManaged\n* \u00600\u0060 - Automatic\n* \u00601\u0060 - Manual\n* \u00602\u0060 - Coupon\n* \u00604\u0060 - Bundles\n* \u00605\u0060 - Loyalty",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasRestitutionOrganizationUnit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Discount\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LayerID",
+        "deprecation_notice": null,
+        "description": "The discount layer\n\nThis is the ID of a \u0060DiscountLayer\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Sales\n* \u00601\u0060 - Purchase",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitSetID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RestitutionOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "PageConfig",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "Code",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "ExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "deprecation_notice": null,
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Budget",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BudgetAvailable",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BudgetProgress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CampaignID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060DiscountCampaign\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CouponsGeneratedByOtherDiscount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreatedByFullName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreatedByID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomUserUsageLimitFieldID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060CustomField\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DeactivateWhenBudgetReached",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DeactivationReasons",
+        "deprecation_notice": null,
+        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Unverified\n* \u00602\u0060 - DisabledByUser\n* \u00604\u0060 - ByDiscountUsage\n* \u00608\u0060 - ByDiscountBudget\n* \u006016\u0060 - ByDiscountTimeFrame\n* \u006032\u0060 - ByDiscountCampaignBudget\n* \u006064\u0060 - ByDiscountCampaignTimeFrame",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DiscountOrderType",
+        "deprecation_notice": null,
+        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Sales\n* \u00602\u0060 - Purchase\n* \u00603\u0060 - All",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Enabled",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GeneratedFromTemplate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Discount\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageBlobID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LayerID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060DiscountLayer\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LayerName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LoyaltyProgramID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumUsage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitSetDescription",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitSetID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitSetName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitSetType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - System\n* \u00601\u0060 - Custom\n* \u00602\u0060 - AdHoc",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RestitutionOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalDiscountGiven",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UsageCount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserUsageLimit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserUsageReloadStrategy",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "CurrentPage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberOfPages",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Offset",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Page",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "PageConfig",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Total",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "Result",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      }
+    ]
+  }
+}

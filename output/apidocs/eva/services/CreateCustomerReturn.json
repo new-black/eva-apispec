@@ -1,0 +1,429 @@
+{
+  "name": "CreateCustomerReturn",
+  "method": "POST",
+  "path": "/message/CreateCustomerReturn",
+  "description": "Create a return order from an existing sales order (\u0060OrderID\u0060).\n\nWhen a \u0060TargetOrderID\u0060 has been specified, newly created lines are added to that specific order. When omitted, the lines are either added to the\nexisting, original order (in case that is still permitted) or a new order is created automatically.\n\nReturns information on the (newly created?) return order.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060 with functionality \u0060ReturnOrder:None\u0060",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "JSON",
+      "sample": "{\n  \u0022AmountToRefund\u0022: 123.456,\n  \u0022AutoRefund\u0022: true,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022CreateInOriginalOrganizationUnit\u0022: true,\n  \u0022Lines\u0022: [\n    {\n      \u0022CustomFields\u0022: {\n        \u0022key\u0022: {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022re\u0022: \u0022cursion\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u0022c6770d5e-0750-489b-bbe3-4241ee40bfb0\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022DateTimeValue\u0022: \u00222024-10-11\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        }\n      },\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022RefundCorrectionReasonID\u0022: 123,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022ReturnReasonID\u0022: 123,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123,\n      \u0022UnitAmountToRefund\u0022: 123.456\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022RefundCorrectionReasonID\u0022: 123,\n  \u0022ReturnWithoutProducts\u0022: true,\n  \u0022SecurityCode\u0022: \u0022string\u0022,\n  \u0022StockOrganizationUnitID\u0022: 123,\n  \u0022TargetOrderID\u0022: 123\n}",
+      "syntax": "json"
+    },
+    {
+      "name": "CURL",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AmountToRefund\u0022: 123.456,\n  \u0022AutoRefund\u0022: true,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022CreateInOriginalOrganizationUnit\u0022: true,\n  \u0022Lines\u0022: [\n    {\n      \u0022CustomFields\u0022: {\n        \u0022key\u0022: {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022re\u0022: \u0022cursion\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u0022c6770d5e-0750-489b-bbe3-4241ee40bfb0\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022DateTimeValue\u0022: \u00222024-10-11\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        }\n      },\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022RefundCorrectionReasonID\u0022: 123,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022ReturnReasonID\u0022: 123,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123,\n      \u0022UnitAmountToRefund\u0022: 123.456\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022RefundCorrectionReasonID\u0022: 123,\n  \u0022ReturnWithoutProducts\u0022: true,\n  \u0022SecurityCode\u0022: \u0022string\u0022,\n  \u0022StockOrganizationUnitID\u0022: 123,\n  \u0022TargetOrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateCustomerReturn",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{\n  \u0022OrderID\u0022: 123\n}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "E",
+  "types": {
+    "D": [
+      {
+        "name": "ArrayValues",
+        "deprecation_notice": null,
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "CustomFields",
+        "deprecation_notice": null,
+        "description": "The custom fields to store on the orderline. The key of the dictionary should be the name of the custom field.",
+        "type": "map[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "OrderLineID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RefundCorrectionReasonID",
+        "deprecation_notice": null,
+        "description": "When not the whole amount is refunded, a reason for this correction can be set. This will only have an affect if \u0060UnitAmountToRefund\u0060 is lower than the total amount of this return line.\n\nThis is the ID of a \u0060RefundCorrectionReason\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Remark",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnReasonID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ReturnReason\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StockLabelID",
+        "deprecation_notice": null,
+        "description": "Return it to the given stocklabel. This is only available for employees.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnitAmountToRefund",
+        "deprecation_notice": null,
+        "description": "When a ReturnWithoutProducts is done, but not the full amount should be refunded, a different amount can be provided - cannot exceed the worth of the returned products",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "AmountToRefund",
+        "deprecation_notice": null,
+        "description": "When a ReturnWithoutProducts is done, but not the full amount should be refunded, a different amount can be provided - cannot exceed the worth of the returned products",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AutoRefund",
+        "deprecation_notice": null,
+        "description": "Determines if the order will be auto-refunded or not. This value, when specified, will take precedence over CRM:Refund:AutoRefundOnReturn.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "Optional, attached to a possible newly created (return) order - requires \u0060BackendSystemID\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendSystemID",
+        "deprecation_notice": null,
+        "description": "Optional, attached to a possible newly created (return) order - requires \u0060BackendID\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreateInOriginalOrganizationUnit",
+        "deprecation_notice": null,
+        "description": "Attach the order to the same OrganizationUnit as the returned order",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Lines",
+        "deprecation_notice": null,
+        "description": "Lines to return",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RefundCorrectionReasonID",
+        "deprecation_notice": null,
+        "description": "When not the whole amount is refunded, a reason for this correction can be set. This will only have an affect if \u0060AmountToRefund\u0060 is lower than the total amount of this return.\n\nThis is the ID of a \u0060RefundCorrectionReason\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnWithoutProducts",
+        "deprecation_notice": null,
+        "description": "The products will not be returned, so the return order will be shipped immediately and the stock will be corrected",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SecurityCode",
+        "deprecation_notice": null,
+        "description": "User is allowed to create return order when a valid security code is provided. The user has to have the ReturnWithoutSecurityCode role when omitted. \u0060CRM:Return:RequiresOrderSecurityCode\u0060 needs to be enabled.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StockOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "When the stock should be returned to a specific OrganizationUnit (see \u0060GetReturnableStatusForOrder.StockOrganizationUnits\u0060)\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TargetOrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Code",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "ExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "deprecation_notice": null,
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ]
+  }
+}

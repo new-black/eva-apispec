@@ -1,0 +1,772 @@
+{
+  "name": "ListAddressBook",
+  "method": "POST",
+  "path": "/message/ListAddressBook",
+  "description": "Service for retrieving a list of \u0060AddressBook\u0060",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "JSON",
+      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022AddressID\u0022: 123,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CountryIDs\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022DefaultBillingAddress\u0022: true,\n      \u0022DefaultPickupAddress\u0022: true,\n      \u0022DefaultShippingAddress\u0022: true,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022UserID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}",
+      "syntax": "json"
+    },
+    {
+      "name": "CURL",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022AddressID\u0022: 123,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CountryIDs\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022DefaultBillingAddress\u0022: true,\n      \u0022DefaultPickupAddress\u0022: true,\n      \u0022DefaultShippingAddress\u0022: true,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022UserID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListAddressBook",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{\n  \u0022Result\u0022: {\n    \u0022CurrentPage\u0022: 123,\n    \u0022Filters\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022NumberOfPages\u0022: 123,\n    \u0022Offset\u0022: 123,\n    \u0022Page\u0022: [\n      {\n        \u0022Address\u0022: {\n          \u0022Address1\u0022: \u0022string\u0022,\n          \u0022Address2\u0022: \u0022string\u0022,\n          \u0022City\u0022: \u0022string\u0022,\n          \u0022CountryID\u0022: \u0022string\u0022,\n          \u0022CountrySubdivisionID\u0022: \u0022string\u0022,\n          \u0022District\u0022: \u0022string\u0022,\n          \u0022EmailAddress\u0022: \u0022string\u0022,\n          \u0022FirstName\u0022: \u0022string\u0022,\n          \u0022HouseNumber\u0022: \u0022string\u0022,\n          \u0022ID\u0022: 123,\n          \u0022LastName\u0022: \u0022string\u0022,\n          \u0022Latitude\u0022: 123.456,\n          \u0022Longitude\u0022: 123.456,\n          \u0022PhoneNumber\u0022: \u0022string\u0022,\n          \u0022Region\u0022: \u0022string\u0022,\n          \u0022Remark\u0022: \u0022string\u0022,\n          \u0022State\u0022: \u0022string\u0022,\n          \u0022Subdistrict\u0022: \u0022string\u0022,\n          \u0022ZipCode\u0022: \u0022string\u0022\n        },\n        \u0022BackendID\u0022: \u0022string\u0022,\n        \u0022CreatedBy\u0022: {\n          \u0022FirstName\u0022: \u0022string\u0022,\n          \u0022FullName\u0022: \u0022string\u0022,\n          \u0022ID\u0022: 123,\n          \u0022LastName\u0022: \u0022string\u0022\n        },\n        \u0022CreationTime\u0022: \u00222024-10-11\u0022,\n        \u0022DefaultBillingAddress\u0022: true,\n        \u0022DefaultPickupAddress\u0022: true,\n        \u0022DefaultShippingAddress\u0022: true,\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022ID\u0022: 123,\n        \u0022LastModificationTime\u0022: \u00222024-10-11\u0022,\n        \u0022LastModifiedBy\u0022: {\n          \u0022FirstName\u0022: \u0022string\u0022,\n          \u0022FullName\u0022: \u0022string\u0022,\n          \u0022ID\u0022: 123,\n          \u0022LastName\u0022: \u0022string\u0022\n        }\n      }\n    ],\n    \u0022PageConfig\u0022: {\n      \u0022Filter\u0022: {\n        \u0022key\u0022: \u0022string\u0022\n      },\n      \u0022Limit\u0022: 123,\n      \u0022SortDirection\u0022: 1,\n      \u0022SortProperty\u0022: \u0022string\u0022,\n      \u0022Start\u0022: 123\n    },\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Total\u0022: 123\n  }\n}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "E",
+  "types": {
+    "D": [
+      {
+        "name": "AddressID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Address\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060AddressBook\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CountryIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Country\u0060",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DefaultBillingAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DefaultPickupAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DefaultShippingAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060AddressBook\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "PageConfig",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Code",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "ExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "deprecation_notice": null,
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "Address1",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 100 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Address2",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 100 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "City",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 100 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "deprecation_notice": null,
+        "description": "ISO 3166-1\n\nThis is the ID of a \u0060Country\u0060",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CountrySubdivisionID",
+        "deprecation_notice": null,
+        "description": "ISO 3166-2\n\nThis is the ID of a \u0060CountrySubdivision\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "District",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 50 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EmailAddress",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 100 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FirstName",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 100 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HouseNumber",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 100 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Address\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastName",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 100 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Latitude",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Longitude",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PhoneNumber",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 30 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Region",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 50 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Remark",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 1024 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "State",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 64 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Subdistrict",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 50 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ZipCode",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 20 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "FirstName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FullName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "Address",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060AddressBook\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreatedBy",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "CreationTime",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DefaultBillingAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DefaultPickupAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DefaultShippingAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060AddressBook\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastModificationTime",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastModifiedBy",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      }
+    ],
+    "L": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "CurrentPage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberOfPages",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Offset",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Page",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "PageConfig",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Total",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Result",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      }
+    ]
+  }
+}
