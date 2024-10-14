@@ -363,7 +363,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       // Identifiable requirement
       if (type.Properties.TryGetValue("ID", out var idProperty))
       {
-        output.WriteLine($"public var id: {GetPropTypeName(idProperty, "ID", id, ctx)} {{ self.ID }}");
+        output.WriteLine($"public var id: {GetPropTypeName(idProperty, "ID", id, ctx, false, idProperty.Deprecated != null)} {{ self.ID }}");
         output.WriteLine();
       }
 
