@@ -481,7 +481,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   private static void WriteNonFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
   {
-    output.WriteLine($"public enum {typename}: RawRepresentable, CodingKeyRepresentable, Identifiable, Codable, Equatable, Hashable, Sendable {{");
+    output.WriteLine($"public enum {typename}: RawRepresentable, CodingKeyRepresentable, Identifiable, CaseIterable, Codable, Equatable, Hashable, Sendable {{");
     using (output.Indentation)
     {
       var values = type.EnumValues.OrderBy(v => v.Value.Value);
@@ -497,6 +497,19 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       output.WriteLine();
       output.WriteLine("public var id: Self { self }");
+      output.WriteLine();
+
+      output.WriteLine($"public static var allCases: [{typename}]");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("[");
+        foreach (var (name, _) in values)
+        {
+          var safeName = SafePropertyNames.Contains(name) ? $"`{name}`" : name;
+          output.WriteLine($".{safeName},");
+        }
+        output.WriteLine("]");
+      }
       output.WriteLine();
 
       output.WriteLine("public init(rawValue: Int)");
