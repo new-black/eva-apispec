@@ -1,9 +1,9 @@
 {
-  "name": "DownloadCouponExcel_AsyncResult",
+  "name": "RebalanceLoyaltyPointsForUsers_AsyncResult",
   "method": "POST",
-  "path": "/async-result/DownloadCouponExcel",
-  "description": "The DownloadCouponExcel_AsyncResult service",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060DiscountCoupons:Manage\u0060",
+  "path": "/async-result/RebalanceLoyaltyPointsForUsers",
+  "description": "The RebalanceLoyaltyPointsForUsers_AsyncResult service",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060RebalanceLoyaltyPoints:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -35,14 +35,14 @@
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022JobID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DownloadCouponExcel_AsyncResult",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022JobID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/RebalanceLoyaltyPointsForUsers_AsyncResult",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Metadata\u0022: {\n    \u0022IsAsyncResultAvailable\u0022: true\n  },\n  \u0022ResourceInfo\u0022: {\n    \u0022BlobID\u0022: \u0022877267ab-51ff-46c8-8e82-30e7fc0bce02\u0022,\n    \u0022Url\u0022: \u0022string\u0022\n  }\n}"
+      "sample": "{\n  \u0022FailedToAdjustUsers\u0022: [\n    {\n      \u0022AdjustmentType\u0022: 2,\n      \u0022ErrorIdentifier\u0022: \u0022string\u0022,\n      \u0022KeepPendingPoints\u0022: true,\n      \u0022Points\u0022: 123,\n      \u0022UserID\u0022: 123\n    }\n  ],\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022Metadata\u0022: {\n    \u0022IsAsyncResultAvailable\u0022: true\n  },\n  \u0022SuccessfullyAdjustedUsers\u0022: [\n    {\n      \u0022NewLoyaltyPointBalance\u0022: 123,\n      \u0022UserID\u0022: 123\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -117,6 +117,53 @@
     ],
     "E": [
       {
+        "name": "AdjustmentType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Deposit\n* \u00601\u0060 - Withdraw\n* \u00602\u0060 - Rebalance",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ErrorIdentifier",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "KeepPendingPoints",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Points",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
         "name": "ExternalIDs",
         "deprecation_notice": null,
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
@@ -144,21 +191,21 @@
         "one_of": null
       }
     ],
-    "F": [
+    "G": [
       {
-        "name": "BlobID",
+        "name": "NewLoyaltyPointBalance",
         "deprecation_notice": null,
         "description": "",
-        "type": "guid",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Url",
+        "name": "UserID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -175,21 +222,39 @@
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "FailedToAdjustUsers",
         "deprecation_notice": null,
         "description": "",
-        "type": "object | null",
+        "type": "array[object] | null",
         "required": false,
         "properties_id": "E",
         "one_of": null
       },
       {
-        "name": "ResourceInfo",
+        "name": "LoyaltyProgramID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "SuccessfullyAdjustedUsers",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]
