@@ -464,7 +464,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
         var result = type.Name switch
         {
             ApiSpecConsts.Bool => "boolean",
-            ApiSpecConsts.Int16 or ApiSpecConsts.Int32 or ApiSpecConsts.Int64 => "integer",
+            ApiSpecConsts.Int16 or ApiSpecConsts.Int32 or ApiSpecConsts.Int64 or ApiSpecConsts.ID => "integer",
             ApiSpecConsts.Float32 or ApiSpecConsts.Float64 or ApiSpecConsts.Float128 => "float",
             ApiSpecConsts.Guid => "guid",
             ApiSpecConsts.Date => "datetime",

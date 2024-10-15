@@ -363,7 +363,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       // Identifiable requirement
       if (type.Properties.TryGetValue("ID", out var idProperty))
       {
-        output.WriteLine($"public var id: {GetPropTypeName(idProperty, "ID", id, ctx)} {{ self.ID }}");
+        output.WriteLine($"public var id: {GetPropTypeName(idProperty, "ID", id, ctx, false, idProperty.Deprecated != null)} {{ self.ID }}");
         output.WriteLine();
       }
 
@@ -481,7 +481,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   private static void WriteNonFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
   {
-    output.WriteLine($"public enum {typename}: RawRepresentable, CodingKeyRepresentable, Identifiable, Codable, Equatable, Hashable, Sendable {{");
+    output.WriteLine($"public enum {typename}: RawRepresentable, CodingKeyRepresentable, Identifiable, CaseIterable, Codable, Equatable, Hashable, Sendable {{");
     using (output.Indentation)
     {
       var values = type.EnumValues.OrderBy(v => v.Value.Value);
@@ -497,6 +497,19 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       output.WriteLine();
       output.WriteLine("public var id: Self { self }");
+      output.WriteLine();
+
+      output.WriteLine($"public static var allCases: [{typename}]");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("[");
+        foreach (var (name, _) in values)
+        {
+          var safeName = SafePropertyNames.Contains(name) ? $"`{name}`" : name;
+          output.WriteLine($".{safeName},");
+        }
+        output.WriteLine("]");
+      }
       output.WriteLine();
 
       output.WriteLine("public init(rawValue: Int)");
@@ -624,6 +637,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     if (typeReference is { Name: ApiSpecConsts.Int16 or ApiSpecConsts.Int32 or ApiSpecConsts.Int64 }) return $"Int{n}";
     if (typeReference is { Name: ApiSpecConsts.Float128 }) return $"Decimal{n}";
     if (typeReference is { Name: ApiSpecConsts.Float64 }) return $"Double{n}";
+    if (typeReference is { Name: ApiSpecConsts.Float32 }) return $"Float{n}";
     if (typeReference is { Name: ApiSpecConsts.Date }) return $"Date{n}";
     if (typeReference is { Name: ApiSpecConsts.Bool }) return $"Bool{n}";
     if (typeReference is { Name: ApiSpecConsts.Guid }) return $"UUID{n}";
