@@ -1,9 +1,9 @@
 {
-  "name": "GetAsyncRequestForUser",
+  "name": "PushCompanies_AsyncResult",
   "method": "POST",
-  "path": "/message/GetAsyncRequestForUser",
-  "description": "Returns a specific async request for your current user",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
+  "path": "/async-result/PushCompanies",
+  "description": "The PushCompanies_AsyncResult service",
+  "auth_description": "Requires a user of type \u0060Api\u0060 with functionality \u0060PushCompany:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ID\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022JobID\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetAsyncRequestForUser",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022JobID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/PushCompanies_AsyncResult",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Request\u0022: {\n    \u0022ID\u0022: \u0022string\u0022,\n    \u0022ResponseBlobID\u0022: \u002219348ab4-3b5b-4669-8f47-00a9161a2f5c\u0022,\n    \u0022ResponseBlobUrl\u0022: \u0022string\u0022,\n    \u0022ResponseType\u0022: \u0022string\u0022,\n    \u0022Status\u0022: 1,\n    \u0022Timestamp\u0022: \u00222024-10-18\u0022,\n    \u0022Type\u0022: \u0022string\u0022\n  }\n}"
+      "sample": "{\n  \u0022FailedToAdjustCompanies\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022ErrorIdentifier\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022Metadata\u0022: {\n    \u0022IsAsyncResultAvailable\u0022: true\n  },\n  \u0022SuccessfullyAdjustedCompanies\u0022: [\n    {\n      \u0022ID\u0022: 123\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -59,11 +59,11 @@
   "types": {
     "B": [
       {
-        "name": "ID",
+        "name": "JobID",
         "deprecation_notice": null,
-        "description": "The ID of the async request to retrieve",
-        "type": "string",
-        "required": true,
+        "description": "",
+        "type": "string | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       }
@@ -117,6 +117,26 @@
     ],
     "E": [
       {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Company\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ErrorIdentifier",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
         "name": "ExternalIDs",
         "deprecation_notice": null,
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
@@ -144,66 +164,12 @@
         "one_of": null
       }
     ],
-    "F": [
+    "G": [
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ResponseBlobID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Blob\u0060",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ResponseBlobUrl",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ResponseType",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Status",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - InProgress\n* \u00601\u0060 - Completed\n* \u00602\u0060 - Failed",
+        "description": "This is the ID of a \u0060Company\u0060",
         "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Timestamp",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -220,21 +186,30 @@
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "FailedToAdjustCompanies",
         "deprecation_notice": null,
         "description": "",
-        "type": "object | null",
+        "type": "array[object] | null",
         "required": false,
         "properties_id": "E",
         "one_of": null
       },
       {
-        "name": "Request",
+        "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "SuccessfullyAdjustedCompanies",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]
