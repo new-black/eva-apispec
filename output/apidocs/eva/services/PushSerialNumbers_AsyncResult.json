@@ -1,9 +1,9 @@
 {
-  "name": "StoreBlob",
+  "name": "PushSerialNumbers_AsyncResult",
   "method": "POST",
-  "path": "/message/StoreBlob",
-  "description": "Creates a new blob and stores \u0060Data\u0060 to it.\n\nThe combination of \u0060Category\u0060 and \u0060OriginalName\u0060 must be unique, as the \u0060GetBlobInfoService\u0060 allows retrieval based on these values. Internally, a fresh and unique \u0060Guid\u0060 is\ngenerated and returned from this request. The response also contains the full \u0060Url\u0060 by which this blob can be accessed (which will contain aforementioned \u0060Guid\u0060).\n\n- [x] The \u0060MimeType\u0060 is required, a few suggestions would be \u0060application/pdf\u0060, \u0060text/csv\u0060 or \u0060application/json\u0060 - but you probably already know this.\n- [x] The \u0060ExpireDate\u0060 is the date at which the given blob should expire. Leave this empty to *suggest* to keep it forever. We will bag it and get rid of it when the time is right. :hocho:\n\nWhen retrieving the blob, it will be returned to you using the \u0060MimeType\u0060 as \u0060ContentType\u0060 header and a proper \u0060Expires\u0060 header.\n\n*NOTE*: leaving \u0060OriginalName\u0060 empty means EVA treats this file as a temporary one and it\u0027ll be removed after a set period. Which can be manipulated through the setting \u0060Blobs:DefaultLifeTime\u0060\nwhich is the default expire time for these kinds of blobs in minutes.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/async-result/PushSerialNumbers",
+  "description": "The PushSerialNumbers_AsyncResult service",
+  "auth_description": "Requires a user of type \u0060Api\u0060 with functionality \u0060SerialNumbers:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022Data\u0022: \u0022base64 encoded binary data\u0022,\n  \u0022ExpireDate\u0022: \u00222024-10-22\u0022,\n  \u0022MimeType\u0022: \u0022string\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022JobID\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022Data\u0022: \u0022base64 encoded binary data\u0022,\n  \u0022ExpireDate\u0022: \u00222024-10-22\u0022,\n  \u0022MimeType\u0022: \u0022string\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/StoreBlob",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022JobID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/PushSerialNumbers_AsyncResult",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Guid\u0022: \u0022ae63c80b-ad5b-4a95-8bc3-958b3f1568f0\u0022,\n  \u0022Url\u0022: \u0022string\u0022\n}"
+      "sample": "{\n  \u0022Errors\u0022: {\n    \u0022key\u0022: \u0022string\u0022\n  },\n  \u0022Metadata\u0022: {\n    \u0022IsAsyncResultAvailable\u0022: true\n  },\n  \u0022SerialNumbers\u0022: {\n    \u0022key\u0022: 123\n  }\n}"
     },
     {
       "name": "400",
@@ -59,43 +59,7 @@
   "types": {
     "B": [
       {
-        "name": "Category",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Data",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "binary",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ExpireDate",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MimeType",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OriginalName",
+        "name": "JobID",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -191,10 +155,10 @@
         "one_of": null
       },
       {
-        "name": "Guid",
+        "name": "Errors",
         "deprecation_notice": null,
         "description": "",
-        "type": "guid",
+        "type": "map[string] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -209,10 +173,10 @@
         "one_of": null
       },
       {
-        "name": "Url",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
+        "name": "SerialNumbers",
+        "deprecation_notice": "\n\n**Deprecated since 761:** SerialNumbers is deprecated and will be removed in 2.0.793: Does no longer match the nature of this call, use \u0060Errors\u0060 instead. Will always be empty after version 2.0.793!.\n\n**Will be removed in 777**",
+        "description": "Only populated for synchronous requests.\n\n**Deprecated since 761:** SerialNumbers is deprecated and will be removed in 2.0.793: Does no longer match the nature of this call, use \u0060Errors\u0060 instead. Will always be empty after version 2.0.793!.\n\n**Will be removed in 777**",
+        "type": "map[integer] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
