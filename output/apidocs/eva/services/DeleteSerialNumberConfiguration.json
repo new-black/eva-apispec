@@ -1,9 +1,9 @@
 {
-  "name": "GetFinancialPeriodExportDocuments",
+  "name": "DeleteSerialNumberConfiguration",
   "method": "POST",
-  "path": "/message/GetFinancialPeriodExportDocuments",
-  "description": "The GetFinancialPeriodExportDocuments service",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060FinancialPeriodExports:View\u0060",
+  "path": "/message/DeleteSerialNumberConfiguration",
+  "description": "Deletes an existing Serial Number Configuration by it\u0027s \u0060ID\u0060 if this is not linked to any existing Serial Number Product.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060SerialNumbers:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -35,14 +35,14 @@
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetFinancialPeriodExportDocuments",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DeleteSerialNumberConfiguration",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022RequestDocuments\u0022: [\n    {\n      \u0022CreationTime\u0022: \u00222024-10-23\u0022,\n      \u0022Document\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022ResponseDocuments\u0022: [\n    {\n      \u0022CreationTime\u0022: \u00222024-10-23\u0022,\n      \u0022Document\u0022: \u0022string\u0022\n    }\n  ]\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -61,7 +61,7 @@
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060FinancialPeriodExport\u0060",
+        "description": "This is the ID of a \u0060SerialNumberConfiguration\u0060",
         "type": "integer",
         "required": true,
         "properties_id": null,
@@ -144,26 +144,6 @@
         "one_of": null
       }
     ],
-    "F": [
-      {
-        "name": "CreationTime",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Document",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "Error",
@@ -181,24 +161,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "RequestDocuments",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "ResponseDocuments",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "F",
         "one_of": null
       }
     ]
