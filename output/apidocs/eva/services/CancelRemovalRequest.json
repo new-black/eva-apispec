@@ -1,9 +1,9 @@
 {
-  "name": "DownloadMonitorResult",
+  "name": "CancelRemovalRequest",
   "method": "POST",
-  "path": "/message/DownloadMonitorResult",
-  "description": "Download the last monitor results as excel",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Monitors:View\u0060",
+  "path": "/message/CancelRemovalRequest",
+  "description": "Cancels a pending removal request. Can only be called by the user of the removal request themselves.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022MonitorID\u0022: 123\n}",
+      "sample": "{\n  \u0022ID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022MonitorID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DownloadMonitorResult",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CancelRemovalRequest",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ResourceInfo\u0022: {\n    \u0022BlobID\u0022: \u0022cc7db60c-ddad-41c3-98f0-92d4c5f4fab9\u0022,\n    \u0022Url\u0022: \u0022string\u0022\n  }\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -59,9 +59,9 @@
   "types": {
     "B": [
       {
-        "name": "MonitorID",
+        "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Monitor\u0060",
+        "description": "This is the ID of a \u0060RemovalRequest\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -144,26 +144,6 @@
         "one_of": null
       }
     ],
-    "F": [
-      {
-        "name": "BlobID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Url",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "Error",
@@ -181,15 +161,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "ResourceInfo",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
         "one_of": null
       }
     ]
