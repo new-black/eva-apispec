@@ -1,9 +1,9 @@
 {
-  "name": "CompleteSecondChanceProductRegistration",
+  "name": "GetFieldValidatorsForEntity",
   "method": "POST",
-  "path": "/message/CompleteSecondChanceProductRegistration",
-  "description": "The CompleteSecondChanceProductRegistration service",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060FullStockCount:Edit\u0060",
+  "path": "/message/GetFieldValidatorsForEntity",
+  "description": "Get all entity field validators for given entity",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Images\u0022: [\n    \u0022dd7ebe14-6e2a-4973-a922-290dedafd8ab\u0022\n  ],\n  \u0022NotReturnable\u0022: true,\n  \u0022Price\u0022: 123.456,\n  \u0022ProductName\u0022: \u0022string\u0022,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022UserTaskID\u0022: 123\n}",
+      "sample": "{\n  \u0022EntityType\u0022: 1\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Images\u0022: [\n    \u0022dd7ebe14-6e2a-4973-a922-290dedafd8ab\u0022\n  ],\n  \u0022NotReturnable\u0022: true,\n  \u0022Price\u0022: 123.456,\n  \u0022ProductName\u0022: \u0022string\u0022,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022UserTaskID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CompleteSecondChanceProductRegistration",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022EntityType\u0022: 1\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetFieldValidatorsForEntity",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Barcode\u0022: \u0022string\u0022,\n  \u0022ProductID\u0022: 123\n}"
+      "sample": "{\n  \u0022Validators\u0022: [\n    {\n      \u0022EntityFieldName\u0022: \u0022string\u0022,\n      \u0022ValidatorData\u0022: {\n        \u0022Required\u0022: true\n      },\n      \u0022ValidatorType\u0022: 1\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -59,63 +59,9 @@
   "types": {
     "B": [
       {
-        "name": "Description",
+        "name": "EntityType",
         "deprecation_notice": null,
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Images",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[guid] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NotReturnable",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Price",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "float",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SerialNumber",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserTaskID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserTask\u0060",
+        "description": "Possible values:\n\n* \u00601\u0060 - PriceList\n* \u00602\u0060 - PriceListAdjustment",
         "type": "integer",
         "required": true,
         "properties_id": null,
@@ -198,9 +144,39 @@
         "one_of": null
       }
     ],
-    "C": [
+    "G": [],
+    "H": [
       {
-        "name": "Barcode",
+        "name": "Required",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "MaxLength",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinLength",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RegexPattern",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -208,6 +184,55 @@
         "properties_id": null,
         "one_of": null
       },
+      {
+        "name": "RequiredLength",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "EntityFieldName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ValidatorData",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "one-of[object] | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": [
+          {
+            "name": "DefaultEntityFieldValidator",
+            "properties_id": "H"
+          },
+          {
+            "name": "StringEntityFieldValidator",
+            "properties_id": "I"
+          }
+        ]
+      },
+      {
+        "name": "ValidatorType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - DefaultValidator\n* \u00601\u0060 - StringValidator",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
       {
         "name": "Error",
         "deprecation_notice": null,
@@ -227,12 +252,12 @@
         "one_of": null
       },
       {
-        "name": "ProductID",
+        "name": "Validators",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Product\u0060",
-        "type": "integer",
+        "description": "",
+        "type": "array[object] | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "F",
         "one_of": null
       }
     ]
