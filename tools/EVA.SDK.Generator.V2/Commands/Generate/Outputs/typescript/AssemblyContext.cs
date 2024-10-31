@@ -12,13 +12,22 @@ public class AssemblyContext
   /// </summary>
   public string AssemblyName { get; }
 
-  public AssemblyContext(string assemblyName)
+  public HashSet<string> Dependencies { get; set; }
+
+  public AssemblyContext(string assemblyName, HashSet<string> dependencies)
   {
     AssemblyName = assemblyName;
+    Dependencies = dependencies;
   }
 
   public void RegisterReferencedType(string assembly, string typeName) => ReferencedTypes.Add((assembly, typeName));
   public void AddExtenderToGenerate(string extenderName) => _extendersToGenerate.Add(extenderName);
+
+  public void ResetReferences()
+  {
+    _extendersToGenerate.Clear();
+    ReferencedTypes.Clear();
+  }
 
   public IEnumerable<string> ExtendersToGenerate => _extendersToGenerate;
   public HashSet<(string assembly, string type)> ReferencedTypes { get; } = new();

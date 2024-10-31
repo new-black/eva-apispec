@@ -18,15 +18,30 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
   {
     var (input, options, writer, _) = ctx;
 
+    var assemblyDependencies = BuildAssemblyDependencies(input);
+
     foreach (var group in input.GroupByAssembly())
     {
-      var assemblyCtx = new AssemblyContext(group.Assembly);
-
-      // Write the types
-      var o = new IndentedStringBuilder(2);
+      var assemblyName = AssemblyNameToPackageName(group.Assembly);
+      var assemblyCtx = new AssemblyContext(group.Assembly, assemblyDependencies.GetValueOrDefault(group.Assembly, []));
 
       // Write the extenders
-      if (ctx.Options.Extenders) WriteExtensions(input, o, assemblyCtx, options);
+      var hasExtensions = false;
+      if (ctx.Options.Extenders)
+      {
+        var eo = new IndentedStringBuilder(2);
+        WriteExtensions(input, assemblyDependencies, eo, assemblyCtx, options);
+
+        var content = eo.ToString();
+        if (!string.IsNullOrWhiteSpace(content))
+        {
+          hasExtensions = true;
+          await writer.WriteFileAsync($"{assemblyName}/src/{assemblyName}.ext.d.ts", WriteImports(assemblyCtx, options, true) + content);
+          assemblyCtx.ResetReferences();
+        }
+      }
+
+      var o = new IndentedStringBuilder(2);
 
       // Preset types
       if (group.Assembly == ApiSpecConsts.WellKnown.CoreAssembly)
@@ -55,11 +70,11 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
         }
       }
 
-      var assemblyName = AssemblyNameToPackageName(group.Assembly);
+      // We reset the assembly context so we don't get all the references
       await writer.WriteFileAsync($"{assemblyName}/src/{assemblyName}.ts", WriteImports(assemblyCtx, options, false) + o);
+      assemblyCtx.ResetReferences();
 
       // Write the services
-      assemblyCtx = new AssemblyContext(group.Assembly);
       o = new IndentedStringBuilder(2);
       foreach (var service in group.Services)
       {
@@ -76,11 +91,13 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       }
 
       await writer.WriteFileAsync($"{assemblyName}/src/{assemblyName}.services.ts", WriteImports(assemblyCtx, options, true) + o);
+
+      // Write the index file
       await writer.WriteFileAsync($"{assemblyName}/src/index.ts", $"export * from './{assemblyName}.js';\nexport * from './{assemblyName}.services.js';");
     }
   }
 
-  private static void WriteExtensions(ApiDefinitionModel input, IndentedStringBuilder o, AssemblyContext ctx, TypescriptOptions options)
+  private static void WriteExtensions(ApiDefinitionModel input, Dictionary<string, HashSet<string>> assemblyDependencies, IndentedStringBuilder o, AssemblyContext ctx, TypescriptOptions options)
   {
     foreach (var (typeid, typespec) in input.Types)
     {
@@ -92,6 +109,12 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
         var typesInThisAssembly = propspec.Type.Arguments.Where(tr => input.Types[tr.Name].Assembly == ctx.AssemblyName).ToList();
         if (!typesInThisAssembly.Any()) continue;
 
+        if (assemblyDependencies.TryGetValue(typespec.Assembly, out var dependencies) && dependencies.Contains(ctx.AssemblyName))
+        {
+          // We don't need an extender for this relation because there is a regular dependency to fix this
+          continue;
+        }
+
         var extenderName = $"Extenders_{TypeNameToTypescriptTypeName(ctx, input, typeid, false)}_{propname}";
         o.WriteLine($"declare module '{DeterminePackageReference(typespec.Assembly, options.PackagePrefix)}'");
         using (o.BracedIndentation)
@@ -101,8 +124,8 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
           {
             foreach (var tita in typesInThisAssembly)
             {
-              var typeRef = ToReference(input, tita, ctx);
-              o.WriteLine($"{typeRef.Replace(".", string.Empty)}: {typeRef}{(tita.Nullable ? " | null" : string.Empty)};");
+              var typeRef = ToReference(input, tita, ctx, false);
+              o.WriteLine($"{typeRef.Replace(".", string.Empty)}: {typeRef};");
             }
           }
         }
@@ -267,8 +290,13 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
     if (ps.Type is { Name: ApiSpecConsts.Specials.Option, Arguments: var options })
     {
       // Only use types from this assembly, and add an extender. This extender is patched later on.
-      var typesFromCurrentAssembly = options.Where(o => input.Types[o.Name].Assembly == ctx.AssemblyName).ToList();
-      var nullable = overrideNullable ?? ps.Type.Nullable || typesFromCurrentAssembly.Any(o => o.Nullable);
+      var referencableTypes = options.Where(o =>
+      {
+        var typeAssembly = input.Types[o.Name].Assembly;
+        return typeAssembly == ctx.AssemblyName || ctx.Dependencies.Contains(typeAssembly);
+      }).ToList();
+
+      var nullable = overrideNullable ?? ps.Type.Nullable || referencableTypes.Any(o => o.Nullable);
 
       var extra = new List<string?>();
       if (nullable) extra.Add("null");
@@ -280,7 +308,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
         extra.Add(extenderRef);
       }
 
-      var allReferences = (typesFromCurrentAssembly.Any() ? typesFromCurrentAssembly :[ps.Type.Shared])
+      var allReferences = (referencableTypes.Any() ? referencableTypes : [ps.Type.Shared])
         .Select(tr => ToReference(input, tr, ctx, overrideNullable)).Concat(extra);
       return string.Join(" | ", allReferences);
     }
@@ -337,10 +365,6 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
     return $"{TypeNameToTypescriptTypeName(ctx, input, typeReference.Name)}<{string.Join(", ", args)}>";
   }
 
-
-
-
-
   private static void WriteComment(IndentedStringBuilder o, string comment)
   {
     var c = comment.Trim();
@@ -369,7 +393,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
         idx = name.LastIndexOf('.');
         name = idx == -1 ? name : name[(idx + 1)..];
 
-        ctx.RegisterReferencedType(spec.Assembly, name);
+        if (addReference) ctx.RegisterReferencedType(spec.Assembly, name);
         return name;
       }
     }
@@ -438,4 +462,50 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
 
   [GeneratedRegex(@"([A-Z])", RegexOptions.Compiled)]
   private static partial Regex PascalCaseToKebabCaseRegex();
+
+  private static Dictionary<string, HashSet<string>> BuildAssemblyDependencies(ApiDefinitionModel input)
+  {
+    var result = new Dictionary<string, HashSet<string>>();
+
+    foreach (var (_, type) in input.Types)
+    {
+      foreach (var dependency in type.EnumerateAllTypeDependencies(ApiDefinitionModelExtensions.EnumerationOptions.SkipOptions))
+      {
+        var dependencyType = input.Types[dependency];
+        if (dependencyType.Assembly == type.Assembly) continue;
+
+        if (!result.TryGetValue(type.Assembly, out var dependencies))
+        {
+          dependencies = new HashSet<string>();
+          result[type.Assembly] = dependencies;
+        }
+
+        dependencies.Add(dependencyType.Assembly);
+      }
+    }
+
+    // Make sure all transient dependencies are in there as well
+    var hasChanges = false;
+    while (hasChanges)
+    {
+      hasChanges = false;
+      foreach (var (assembly, dependencies) in result)
+      {
+        foreach (var dependency in dependencies.ToArray())
+        {
+          if (!result.TryGetValue(dependency, out var dependentDependencies)) continue;
+
+          foreach (var dependentDependency in dependentDependencies)
+          {
+            if (dependencies.Add(dependentDependency))
+            {
+              hasChanges = true;
+            }
+          }
+        }
+      }
+    }
+
+    return result;
+  }
 }

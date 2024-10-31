@@ -8,6 +8,14 @@ namespace EVA.SDK.Generator.V2.Helpers;
 /// </summary>
 internal static class ApiDefinitionModelExtensions
 {
+  [Flags]
+  internal enum EnumerationOptions
+  {
+    None = 0,
+    SkipOptions = 1,
+    SkipParent = 2
+  }
+
   /// <summary>
   /// Enumerates through all TypeReferences that are in the model.
   /// </summary>
@@ -33,31 +41,43 @@ internal static class ApiDefinitionModelExtensions
     return serviceAssemblies.Concat(typeAssemblies).Distinct().OrderBy(x => x).ToList();
   }
 
-  internal static IEnumerable<TypeReference> EnumerateAllTypeReferences(this TypeSpecification type)
+  internal static IEnumerable<TypeReference> EnumerateAllTypeReferences(this TypeSpecification type, EnumerationOptions options = EnumerationOptions.None)
   {
     if (type.Extends != null)
     {
-      foreach (var x in type.Extends.EnumerateAllTypeReferences()) yield return x;
+      foreach (var x in type.Extends.EnumerateAllTypeReferences(options)) yield return x;
     }
 
     foreach (var (_, prop) in type.Properties)
     {
-      foreach (var x in prop.Type.EnumerateAllTypeReferences()) yield return x;
+      foreach (var x in prop.Type.EnumerateAllTypeReferences(options)) yield return x;
     }
   }
 
-  internal static IEnumerable<TypeReference> EnumerateAllTypeReferences(this TypeReference reference)
+  internal static IEnumerable<string> EnumerateAllTypeDependencies(this TypeSpecification type, EnumerationOptions options = EnumerationOptions.None)
+  {
+    return type.EnumerateAllTypeReferences(options)
+      .Select(r => r.Name)
+      .Concat(type.ParentType == null || options.HasFlag(EnumerationOptions.SkipParent) ? Array.Empty<string>() : [type.ParentType])
+      .Distinct()
+      .Where(n => char.IsUpper(n[0]));
+  }
+
+  internal static IEnumerable<TypeReference> EnumerateAllTypeReferences(this TypeReference reference, EnumerationOptions options = EnumerationOptions.None)
   {
     yield return reference;
 
     if (reference.Shared != null)
     {
-      foreach (var x in reference.Shared.EnumerateAllTypeReferences()) yield return x;
+      foreach (var x in reference.Shared.EnumerateAllTypeReferences(options)) yield return x;
     }
 
-    foreach (var x in reference.Arguments.SelectMany(arg => arg.EnumerateAllTypeReferences()))
+    if (!options.HasFlag(EnumerationOptions.SkipOptions) || reference.Name != ApiSpecConsts.Specials.Option)
     {
-      yield return x;
+      foreach (var x in reference.Arguments.SelectMany(arg => arg.EnumerateAllTypeReferences(options)))
+      {
+        yield return x;
+      }
     }
   }
 
