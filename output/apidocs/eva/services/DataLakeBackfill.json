@@ -2,7 +2,7 @@
   "name": "DataLakeBackfill",
   "method": "POST",
   "path": "/message/DataLakeBackfill",
-  "description": "Manually re-export specific DataLake documents.\n\nThese types are currently supported;\n\n* \u0060FinancialPeriods\u0060 = 1\n* \u0060Orders\u0060 = 2\n* \u0060Invoices\u0060 = 3\n* \u0060Users\u0060 = 4\n* \u0060Discounts\u0060 = 5\n* \u0060UserBatches\u0060 = 6 (can only be used with \u0060From\u0060 and \u0060To\u0060)\n* \u0060Cases\u0060 = 7\n\nSpecify either a single \u0060ID\u0060, a list of \u0060IDs\u0060, or a datetime range \u0060From\u0060 and \u0060To\u0060 (inclusive).\n\nAs mandatory safety feature, specify the \u0060MaxNumberOfDocuments\u0060 you\u0027d like to run this for. When the amount of documents through above\nselection exceeds this number, this service will export NOTHING and return to you an error with the amount of documents it prevented you\nfrom exporting, so you can adjust your selection or expand your max.\n\n:warning: Triggering large amounts of data may impact system performance!\n\n:point_right: The \u0060ID\u0060 you are returned can be used in subsequent services \u0060DataLakeBackfillStatus\u0060 and \u0060DataLakeBackfillCancel\u0060.",
+  "description": "Manually re-export specific DataLake documents.\n\nThese types are currently supported;\n\n* \u0060FinancialPeriods\u0060 = 1\n* \u0060Orders\u0060 = 2\n* \u0060Invoices\u0060 = 3\n* \u0060Users\u0060 = 4\n* \u0060Discounts\u0060 = 5\n* \u0060UserBatches\u0060 = 6 (can only be used with \u0060From\u0060 and \u0060To\u0060)\n* \u0060Cases\u0060 = 7\n* \u0060Shipments\u0060 = 8\n* \u0060ZonedCycleCounts\u0060 = 9\n* \u0060UserTasks\u0060 = 10\n* \u0060StockMutations\u0060 = 11\n\nSpecify either a single \u0060ID\u0060, a list of \u0060IDs\u0060, or a datetime range \u0060From\u0060 and \u0060To\u0060 (inclusive).\n\nAs mandatory safety feature, specify the \u0060MaxNumberOfDocuments\u0060 you\u0027d like to run this for. When the amount of documents through above\nselection exceeds this number, this service will export NOTHING and return to you an error with the amount of documents it prevented you\nfrom exporting, so you can adjust your selection or expand your max.\n\n:warning: Triggering large amounts of data may impact system performance!\n\n:point_right: The \u0060ID\u0060 you are returned can be used in subsequent services \u0060DataLakeBackfillStatus\u0060 and \u0060DataLakeBackfillCancel\u0060.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060DataLakeBackfill:None\u0060",
   "headers": [
     {
@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ID\u0022: \u00228ecdd505-f3a4-422a-b982-b606a784853c\u0022\n}"
+      "sample": "{\n  \u0022ID\u0022: \u002263cdeaff-e2c1-43d6-93b4-50c22e08fd96\u0022\n}"
     },
     {
       "name": "400",
@@ -106,7 +106,7 @@
       {
         "name": "Type",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00601\u0060 - FinancialPeriods\n* \u00602\u0060 - Orders\n* \u00603\u0060 - Invoices\n* \u00604\u0060 - Users\n* \u00605\u0060 - Discounts\n* \u00606\u0060 - UserBatches\n* \u00607\u0060 - Cases",
+        "description": "Possible values:\n\n* \u00601\u0060 - FinancialPeriods\n* \u00602\u0060 - Orders\n* \u00603\u0060 - Invoices\n* \u00604\u0060 - Users\n* \u00605\u0060 - Discounts\n* \u00606\u0060 - UserBatches\n* \u00607\u0060 - Cases\n* \u00608\u0060 - Shipments\n* \u00609\u0060 - ZonedCycleCounts\n* \u006010\u0060 - UserTasks\n* \u006011\u0060 - StockMutations",
         "type": "integer",
         "required": true,
         "properties_id": null,
