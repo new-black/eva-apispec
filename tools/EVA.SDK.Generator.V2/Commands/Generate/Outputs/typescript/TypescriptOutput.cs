@@ -36,7 +36,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
         if (!string.IsNullOrWhiteSpace(content))
         {
           hasExtensions = true;
-          await writer.WriteFileAsync($"{assemblyName}/src/{assemblyName}.ext.d.ts", WriteImports(assemblyCtx, options, true) + content);
+          await writer.WriteFileAsync($"{assemblyName}/src/{assemblyName}.ext.ts", WriteImports(assemblyCtx, options, true) + content);
           assemblyCtx.ResetReferences();
         }
       }
@@ -92,13 +92,22 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
 
       await writer.WriteFileAsync($"{assemblyName}/src/{assemblyName}.services.ts", WriteImports(assemblyCtx, options, true) + o);
 
+      var indexContent = $"export * from './{assemblyName}.js';\nexport * from './{assemblyName}.services.js';";
+      if (hasExtensions)
+      {
+        indexContent += $"\nexport * from './{assemblyName}.ext.js';";
+      }
+
       // Write the index file
-      await writer.WriteFileAsync($"{assemblyName}/src/index.ts", $"export * from './{assemblyName}.js';\nexport * from './{assemblyName}.services.js';");
+      await writer.WriteFileAsync($"{assemblyName}/src/index.ts", indexContent);
     }
   }
 
   private static void WriteExtensions(ApiDefinitionModel input, Dictionary<string, HashSet<string>> assemblyDependencies, IndentedStringBuilder o, AssemblyContext ctx, TypescriptOptions options)
   {
+    var ocontent = new IndentedStringBuilder(2);
+    var touchedPackages = new HashSet<string>();
+
     foreach (var (typeid, typespec) in input.Types)
     {
       if (typespec.Assembly == ctx.AssemblyName) continue;
@@ -116,22 +125,31 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
         }
 
         var extenderName = $"Extenders_{TypeNameToTypescriptTypeName(ctx, input, typeid, false)}_{propname}";
-        o.WriteLine($"declare module '{DeterminePackageReference(typespec.Assembly, options.PackagePrefix)}'");
-        using (o.BracedIndentation)
+        var packageName = DeterminePackageReference(typespec.Assembly, options.PackagePrefix);
+        touchedPackages.Add(packageName);
+        ocontent.WriteLine($"declare module '{packageName}'");
+        using (ocontent.BracedIndentation)
         {
-          o.WriteLine($"export interface {extenderName}");
-          using (o.BracedIndentation)
+          ocontent.WriteLine($"export interface {extenderName}");
+          using (ocontent.BracedIndentation)
           {
             foreach (var tita in typesInThisAssembly)
             {
               var typeRef = ToReference(input, tita, ctx, false);
-              o.WriteLine($"{typeRef.Replace(".", string.Empty)}: {typeRef};");
+              ocontent.WriteLine($"{typeRef.Replace(".", string.Empty)}: {typeRef};");
             }
           }
         }
-        o.WriteLine();
+        ocontent.WriteLine();
       }
     }
+
+    foreach(var package in touchedPackages)
+    {
+      o.WriteLine($"import '{package}';");
+    }
+    o.WriteLine();
+    o.Write(ocontent.ToString());
   }
 
   private static string WriteImports(AssemblyContext ctx, TypescriptOptions options, bool referenceSelf)
