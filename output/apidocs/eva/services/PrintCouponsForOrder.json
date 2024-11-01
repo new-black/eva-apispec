@@ -1,9 +1,9 @@
 {
-  "name": "DeleteCaseBlob",
+  "name": "PrintCouponsForOrder",
   "method": "POST",
-  "path": "/message/DeleteCaseBlob",
-  "description": "Detaches and deletes a blob from a case.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Cases:Edit\u0060",
+  "path": "/message/PrintCouponsForOrder",
+  "description": "This is service is used only for printing couopons.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -32,17 +32,24 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobID\u0022: \u00229129ae76-c46a-4ecd-9e66-f46338cec482\u0022,\n  \u0022CaseID\u0022: 123\n}",
+      "sample": "{\n  \u0022OrderID\u0022: 123,\n  \u0022StationID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u00229129ae76-c46a-4ecd-9e66-f46338cec482\u0022,\n  \u0022CaseID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DeleteCaseBlob",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123,\n  \u0022StationID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/PrintCouponsForOrder",
       "syntax": "bash"
     }
   ],
@@ -66,20 +73,20 @@
   "types": {
     "B": [
       {
-        "name": "BlobID",
+        "name": "OrderID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
-        "required": false,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "CaseID",
+        "name": "StationID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Case\u0060",
+        "description": "This is the ID of a \u0060Station\u0060",
         "type": "integer",
-        "required": false,
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
