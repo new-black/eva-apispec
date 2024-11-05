@@ -11,7 +11,7 @@ public enum ApiSpecUserTypes
   System = 16 | Employee,
   // 32
   Debtor = 64,
-  LimitedTrust = 256,
+  // LimitedTrust = 256,
   Tester = 512,
   RemovedByRequest = 1024,
   Api = 2048
