@@ -2,7 +2,7 @@
   "name": "ListEmployeeDatas",
   "method": "POST",
   "path": "/message/ListEmployeeDatas",
-  "description": "List the EmployeeData",
+  "description": "List a users employee data.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060EmployeeData:View\u0060",
   "headers": [
     {
@@ -25,17 +25,31 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}",
+      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022EmployeeNumber\u0022: \u0022string\u0022,\n      \u0022UserID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListEmployeeDatas",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022EmployeeNumber\u0022: \u0022string\u0022,\n      \u0022UserID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListEmployeeDatas",
       "syntax": "bash"
     }
   ],
@@ -53,18 +67,38 @@
       "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
     }
   ],
-  "deprecation_notice": null,
+  "deprecation_notice": "\n\n**Deprecated since 763:** No longer supported, either use \u0060GetEmployeeData\u0060 (when you know the \u0060UserID\u0060) or \u0060SearchUsers\u0060.\n\n**Will be removed from the typings in 779**",
   "request_type_id": "B",
-  "response_type_id": "D",
+  "response_type_id": "E",
   "types": {
+    "D": [
+      {
+        "name": "EmployeeNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "C": [
       {
         "name": "Filter",
         "deprecation_notice": null,
         "description": "",
-        "type": "map[string] | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "D",
         "one_of": null
       },
       {
@@ -115,7 +149,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -162,7 +196,7 @@
         "one_of": null
       }
     ],
-    "F": [
+    "G": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -191,7 +225,7 @@
         "one_of": null
       }
     ],
-    "H": [
+    "I": [
       {
         "name": "EmployeeNumber",
         "deprecation_notice": null,
@@ -212,9 +246,9 @@
       },
       {
         "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060EmployeeData\u0060",
-        "type": "integer",
+        "deprecation_notice": "\n\n**Deprecated since 763:** ID is deprecated and will be removed in 2.0.795: No longer returned..\n\n**Will be removed in 779**",
+        "description": "This is the ID of a \u0060UserData\u0060\n\n**Deprecated since 763:** ID is deprecated and will be removed in 2.0.795: No longer returned..\n\n**Will be removed in 779**",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -287,12 +321,59 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060User\u0060",
         "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "G": [
+    "H": [
       {
         "name": "CurrentPage",
         "deprecation_notice": null,
@@ -344,7 +425,7 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "I",
         "one_of": null
       },
       {
@@ -353,7 +434,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "C",
+        "properties_id": "J",
         "one_of": null
       },
       {
@@ -384,18 +465,9 @@
         "one_of": null
       }
     ],
-    "D": [
+    "E": [
       {
         "name": "Error",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
@@ -404,12 +476,21 @@
         "one_of": null
       },
       {
-        "name": "Result",
+        "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Result",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
         "one_of": null
       }
     ]
