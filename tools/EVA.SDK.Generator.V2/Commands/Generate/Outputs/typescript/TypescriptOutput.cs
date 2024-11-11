@@ -66,7 +66,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       {
         foreach (var extender in assemblyCtx.ExtendersToGenerate)
         {
-          o.WriteLine($"export interface {extender} {{ }}");
+          o.WriteLine($"export interface {extender}<ID_TYPE> {{ }}");
         }
       }
 
@@ -80,13 +80,14 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       {
         o.WriteLine();
         assemblyCtx.RegisterReferencedType(ApiSpecConsts.WellKnown.CoreAssembly, IEvaServiceDefinition);
-        o.WriteLine($"export class Svc{service.Name} implements {IEvaServiceDefinition}");
+        var flexIDSuffix = options.FlexibleIDs ? "<ID_TYPE>" : string.Empty;
+        o.WriteLine($"export class Svc{service.Name}{(options.FlexibleIDs ? "<ID_TYPE = string>" : string.Empty)} implements {IEvaServiceDefinition}");
         using (o.BracedIndentation)
         {
           o.WriteLine($"name = {EscapeForString(service.Name)};");
           o.WriteLine($"path = {EscapeForString(service.Path)};");
-          o.WriteLine($"request?: {TypeNameToTypescriptTypeName(assemblyCtx, input, service.RequestTypeID)};");
-          o.WriteLine($"response?: {TypeNameToTypescriptTypeName(assemblyCtx, input, service.ResponseTypeID)};");
+          o.WriteLine($"request?: {TypeNameToTypescriptTypeName(assemblyCtx, input, service.RequestTypeID)}{flexIDSuffix};");
+          o.WriteLine($"response?: {TypeNameToTypescriptTypeName(assemblyCtx, input, service.ResponseTypeID)}{flexIDSuffix};");
         }
       }
 
@@ -105,6 +106,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
 
   private static void WriteExtensions(ApiDefinitionModel input, Dictionary<string, HashSet<string>> assemblyDependencies, IndentedStringBuilder o, AssemblyContext ctx, TypescriptOptions options)
   {
+    var flexIDSuffix = options.FlexibleIDs ? "<ID_TYPE>" : string.Empty;
     var ocontent = new IndentedStringBuilder(2);
     var touchedPackages = new HashSet<string>();
 
@@ -130,13 +132,13 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
         ocontent.WriteLine($"declare module '{packageName}'");
         using (ocontent.BracedIndentation)
         {
-          ocontent.WriteLine($"export interface {extenderName}");
+          ocontent.WriteLine($"export interface {extenderName}{flexIDSuffix}");
           using (ocontent.BracedIndentation)
           {
             foreach (var tita in typesInThisAssembly)
             {
-              var typeRef = ToReference(input, tita, ctx, false);
-              ocontent.WriteLine($"{typeRef.Replace(".", string.Empty)}: {typeRef};");
+              var typeRef = ToReference(input, tita, ctx, options, false);
+              ocontent.WriteLine($"{typeRef.Replace(".", string.Empty).Replace(", ID_TYPE>", string.Empty).Replace("<ID_TYPE>", string.Empty)}: {typeRef};");
             }
           }
         }
@@ -228,7 +230,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       else if (id == ApiSpecConsts.WellKnown.IProductSearchItem)
       {
         var fixedTypeName = TypeNameToTypescriptTypeName(ctx, input, id);
-        o.WriteLine($"export interface {fixedTypeName} extends Record<string, {AnyType} | null> {{");
+        o.WriteLine($"export interface {fixedTypeName}<ID_TYPE> extends Record<string, {AnyType} | null> {{");
         using (o.Indentation)
         {
 
@@ -238,8 +240,11 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       }
       else
       {
-        var typeArgument = type.TypeArguments.Any() ? $"<{string.Join(", ", type.TypeArguments.Select(x => x[1..]))}>" : string.Empty;
-        var basetype = type.Extends == null ? string.Empty : $" extends {ToReference(input, type.Extends, ctx)}";
+        var typeArgument =
+          options.FlexibleIDs
+            ? (type.TypeArguments.Any() ? $"<{string.Join(", ", type.TypeArguments.Select(x => x[1..]))}, ID_TYPE = string>" : "<ID_TYPE = string>")
+            : (type.TypeArguments.Any() ? $"<{string.Join(", ", type.TypeArguments.Select(x => x[1..]))}>" : string.Empty);
+        var basetype = type.Extends == null ? string.Empty : $" extends {ToReference(input, type.Extends, ctx, options)}";
 
         if (type.Description != null) WriteComment(o, type.Description);
         var fixedTypeName = TypeNameToTypescriptTypeName(ctx, input, id);
@@ -301,13 +306,14 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
   {
     if (ps.Type.Name == ApiSpecConsts.String && ps.AllowedValues.Any())
     {
-      return string.Join(" | ", ps.AllowedValues.Select(EscapeForString).Concat(overrideNullable ?? ps.Type.Nullable ? new[] { "null" } : Array.Empty<string>()));
+      return string.Join(" | ", ps.AllowedValues.Select(EscapeForString).Concat(overrideNullable ?? ps.Type.Nullable ? ["null"] : []));
     }
 
     // Option
     if (ps.Type is { Name: ApiSpecConsts.Specials.Option, Arguments: var options })
     {
       // Only use types from this assembly, and add an extender. This extender is patched later on.
+      var flexIDSuffix = o.FlexibleIDs ? "<ID_TYPE>" : string.Empty;
       var referencableTypes = options.Where(o =>
       {
         var typeAssembly = input.Types[o.Name].Assembly;
@@ -321,34 +327,34 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       if (o.Extenders)
       {
         var extenderName = $"Extenders_{typeName}_{propName}";
-        var extenderRef = $"{extenderName}[keyof {extenderName}]";
+        var extenderRef = $"{extenderName}{flexIDSuffix}[keyof {extenderName}{flexIDSuffix}]";
         ctx.AddExtenderToGenerate(extenderName);
         extra.Add(extenderRef);
       }
 
-      var allReferences = (referencableTypes.Any() ? referencableTypes : [ps.Type.Shared])
-        .Select(tr => ToReference(input, tr, ctx, overrideNullable)).Concat(extra);
+      var allReferences = (referencableTypes.Any() ? referencableTypes : [ps.Type.Shared!])
+        .Select(tr => ToReference(input, tr, ctx, o, overrideNullable)).Concat(extra);
       return string.Join(" | ", allReferences);
     }
 
-    return ToReference(input, ps.Type, ctx, overrideNullable);
+    return ToReference(input, ps.Type, ctx, o, overrideNullable);
   }
 
-  private static string ToReference(ApiDefinitionModel input, TypeReference typeReference, AssemblyContext ctx, bool? overrideNullable = null)
+  private static string ToReference(ApiDefinitionModel input, TypeReference typeReference, AssemblyContext ctx, TypescriptOptions options, bool? overrideNullable = null)
   {
     var nullable = overrideNullable ?? typeReference.Nullable;
     var n = nullable ? " | null" : string.Empty;
 
     var preset = typeReference switch
     {
-      { Name: ApiSpecConsts.ID } => $"number{n}",
+      { Name: ApiSpecConsts.ID } => options.FlexibleIDs ? $"T_ID{n}" : $"number{n}",
       { Name: ApiSpecConsts.String or ApiSpecConsts.Date or ApiSpecConsts.Binary or ApiSpecConsts.Guid or ApiSpecConsts.Duration } => $"string{n}",
       { Name: ApiSpecConsts.Bool } => $"boolean{n}",
       { Name: ApiSpecConsts.Int32 or ApiSpecConsts.Int64 or ApiSpecConsts.Int16 or ApiSpecConsts.Float32 or ApiSpecConsts.Float64 or ApiSpecConsts.Float128 } => $"number{n}",
-      { Name: ApiSpecConsts.Specials.Array, Arguments.Length: 1 } => $"{ToReference(input, typeReference.Arguments[0], ctx, false)}[]{n}",
+      { Name: ApiSpecConsts.Specials.Array, Arguments.Length: 1 } => $"{ToReference(input, typeReference.Arguments[0], ctx, options, false)}[]{n}",
       _ when typeReference.Name.StartsWith("_") => typeReference.Name[1..],
       // Key will always be a string
-      { Name: ApiSpecConsts.Specials.Map, Arguments.Length: 2 } => $"Record<string,{ToReference(input, typeReference.Arguments[1], ctx)}>{n}",
+      { Name: ApiSpecConsts.Specials.Map, Arguments.Length: 2 } => $"Record<string,{ToReference(input, typeReference.Arguments[1], ctx, options)}>{n}",
       _ => null
     };
 
@@ -371,16 +377,23 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
     // Apparently a type
     if (!typeReference.Arguments.Any())
     {
-      return TypeNameToTypescriptTypeName(ctx, input, typeReference.Name);
+      if (input.Types.GetValueOrDefault(typeReference.Name)?.EnumIsFlag.HasValue ?? true)
+      {
+        return TypeNameToTypescriptTypeName(ctx, input, typeReference.Name);
+      }
+      else
+      {
+        return TypeNameToTypescriptTypeName(ctx, input, typeReference.Name) + (options.FlexibleIDs ? "<ID_TYPE>" : string.Empty);
+      }
     }
 
     var args = new List<string>();
     foreach (var a in typeReference.Arguments)
     {
-      args.Add(ToReference(input, a, ctx));
+      args.Add(ToReference(input, a, ctx, options));
     }
 
-    return $"{TypeNameToTypescriptTypeName(ctx, input, typeReference.Name)}<{string.Join(", ", args)}>";
+    return $"{TypeNameToTypescriptTypeName(ctx, input, typeReference.Name)}<{string.Join(", ", args)}{(options.FlexibleIDs ? ", ID_TYPE" : "")}>";
   }
 
   private static void WriteComment(IndentedStringBuilder o, string comment)
