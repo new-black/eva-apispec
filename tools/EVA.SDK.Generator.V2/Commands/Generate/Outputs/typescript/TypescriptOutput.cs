@@ -230,7 +230,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       else if (id == ApiSpecConsts.WellKnown.IProductSearchItem)
       {
         var fixedTypeName = TypeNameToTypescriptTypeName(ctx, input, id);
-        o.WriteLine($"export interface {fixedTypeName}<ID_TYPE> extends Record<string, {AnyType} | null> {{");
+        o.WriteLine($"export interface {fixedTypeName}{(options.FlexibleIDs ? "<ID_TYPE>" : string.Empty)} extends Record<string, {AnyType} | null> {{");
         using (o.Indentation)
         {
 
