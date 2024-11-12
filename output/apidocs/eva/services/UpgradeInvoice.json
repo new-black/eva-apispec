@@ -1,8 +1,8 @@
 {
-  "name": "DeleteBlob",
+  "name": "UpgradeInvoice",
   "method": "POST",
-  "path": "/message/DeleteBlob",
-  "description": "Deletes a blob by its ID (represented by a GUID).\nIf the blob does not exist an error of type \u0060EntityNotFound\u0060 is returned.",
+  "path": "/message/UpgradeInvoice",
+  "description": "Service to validate and upgrade tickets to invoices based on order details.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -25,24 +25,38 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobID\u0022: \u0022e937ab30-0a3a-48b2-b787-bf7ae12cff71\u0022\n}",
+      "sample": "{\n  \u0022OrderID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u0022e937ab30-0a3a-48b2-b787-bf7ae12cff71\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DeleteBlob",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpgradeInvoice",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022InvoiceIDs\u0022: [\n    123\n  ],\n  \u0022ValidationErrors\u0022: [\n    {\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Parameter\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -59,11 +73,11 @@
   "types": {
     "B": [
       {
-        "name": "BlobID",
+        "name": "OrderID",
         "deprecation_notice": null,
-        "description": "The ID of the blob to delete.\n\nThis is the ID of a \u0060Blob\u0060",
-        "type": "guid",
-        "required": false,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
@@ -144,6 +158,26 @@
         "one_of": null
       }
     ],
+    "F": [
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Parameter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "C": [
       {
         "name": "Error",
@@ -155,12 +189,30 @@
         "one_of": null
       },
       {
+        "name": "InvoiceIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Invoice\u0060",
+        "type": "array[integer]",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "ValidationErrors",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "F",
         "one_of": null
       }
     ]
