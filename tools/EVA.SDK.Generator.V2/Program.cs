@@ -39,10 +39,12 @@ public static class Program
       catch (SdkException ex)
       {
         logger.LogError("An error occurred: {Message}", ex.Message);
+        ctx.ExitCode = 1;
       }
       catch (Exception ex)
       {
         logger.LogError(ex, "An unexpected error occurred");
+        ctx.ExitCode = 1;
       }
     });
     builder.UseDefaults();

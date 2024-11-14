@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
@@ -515,16 +516,13 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
     if (type.Name == ApiSpecConsts.Specials.Map)
     {
-      var keyType = type.Arguments[0].Name;
-      if (keyType is ApiSpecConsts.String or ApiSpecConsts.Int64 or ApiSpecConsts.Float128 or ApiSpecConsts.Date || char.IsUpper(keyType[0]) && input.Types[keyType].EnumIsFlag.HasValue)
+      // We can't really make a map with certain key types work, but this is the best we can do regardless of the key type
+      return new OpenApiSchema
       {
-        return new OpenApiSchema
-        {
-          Type = "object",
-          AdditionalPropertiesAllowed = true,
-          AdditionalProperties = ToSchema(input, type.Arguments[1])
-        };
-      }
+        Type = "object",
+        AdditionalPropertiesAllowed = true,
+        AdditionalProperties = ToSchema(input, type.Arguments[1])
+      };
     }
 
     if (!type.Name.StartsWith("_") && !type.Arguments.Any())
