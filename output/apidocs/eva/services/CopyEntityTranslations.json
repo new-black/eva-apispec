@@ -1,9 +1,9 @@
 {
-  "name": "DownloadCycleCountSample",
+  "name": "CopyEntityTranslations",
   "method": "POST",
-  "path": "/message/DownloadCycleCountSample",
-  "description": "Download an Excel sample which can be filled with cycle count info. The populated excel can be uploaded through the \u0060UploadCycleCountExcel\u0060 service.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060UploadCycleCounts:None\u0060",
+  "path": "/message/CopyEntityTranslations",
+  "description": "Copies EntityTranslations from one entity to another. Replaces any existing translations of the target entity.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Translations:Create, Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{}",
+      "sample": "{\n  \u0022CountryID\u0022: \u0022string\u0022,\n  \u0022EntityType\u0022: \u0022string\u0022,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022SourceEntityID\u0022: \u0022string\u0022,\n  \u0022TargetEntityID\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DownloadCycleCountSample",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CountryID\u0022: \u0022string\u0022,\n  \u0022EntityType\u0022: \u0022string\u0022,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022SourceEntityID\u0022: \u0022string\u0022,\n  \u0022TargetEntityID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CopyEntityTranslations",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ResourceInfo\u0022: {\n    \u0022BlobID\u0022: \u002278f3ced1-9d95-4965-8484-18dcad71de3d\u0022,\n    \u0022Url\u0022: \u0022string\u0022\n  }\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -57,7 +57,53 @@
   "request_type_id": "B",
   "response_type_id": "C",
   "types": {
-    "B": [],
+    "B": [
+      {
+        "name": "CountryID",
+        "deprecation_notice": null,
+        "description": "When provided, will only copy the translations for the given country.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EntityType",
+        "deprecation_notice": null,
+        "description": "The name of the object you are translating, in case of a Discount this would be \u0027Discount\u0027",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LanguageID",
+        "deprecation_notice": null,
+        "description": "When provided, will only copy the translations for the given language.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SourceEntityID",
+        "deprecation_notice": null,
+        "description": "The Identifier of the object you are translating from, in case of a Discount this would be the DiscountID",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TargetEntityID",
+        "deprecation_notice": null,
+        "description": "The Identifier of the object you are translating to, in case of a Discount this would be the DiscountID",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "D": [
       {
         "name": "Code",
@@ -134,26 +180,6 @@
         "one_of": null
       }
     ],
-    "F": [
-      {
-        "name": "BlobID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Url",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "Error",
@@ -171,15 +197,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "ResourceInfo",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
         "one_of": null
       }
     ]
