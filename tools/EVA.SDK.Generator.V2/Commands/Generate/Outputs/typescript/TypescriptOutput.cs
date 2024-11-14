@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Helpers;
@@ -347,7 +348,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
 
     var preset = typeReference switch
     {
-      { Name: ApiSpecConsts.ID } => options.FlexibleIDs ? $"T_ID{n}" : $"number{n}",
+      { Name: ApiSpecConsts.ID } => options.FlexibleIDs ? $"ID_TYPE{n}" : $"number{n}",
       { Name: ApiSpecConsts.String or ApiSpecConsts.Date or ApiSpecConsts.Binary or ApiSpecConsts.Guid or ApiSpecConsts.Duration } => $"string{n}",
       { Name: ApiSpecConsts.Bool } => $"boolean{n}",
       { Name: ApiSpecConsts.Int32 or ApiSpecConsts.Int64 or ApiSpecConsts.Int16 or ApiSpecConsts.Float32 or ApiSpecConsts.Float64 or ApiSpecConsts.Float128 } => $"number{n}",
