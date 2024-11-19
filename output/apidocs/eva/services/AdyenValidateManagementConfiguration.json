@@ -1,9 +1,9 @@
 {
-  "name": "DownloadUserInteractionCommunicationAttachment",
+  "name": "AdyenValidateManagementConfiguration",
   "method": "POST",
-  "path": "/message/DownloadUserInteractionCommunicationAttachment",
-  "description": "Prepare an attachment of an UserInteraction to be downloaded, will return an url that is valid for 5min.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060UserInteractions:View\u0060",
+  "path": "/message/AdyenValidateManagementConfiguration",
+  "description": "Validate the Adyen management api configuration.\n\nReturns a list of messages that contains information about the configuration.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022AttachmentID\u0022: \u0022abef3a4b-5377-4142-9557-8282c18bd636\u0022,\n  \u0022ID\u0022: 123\n}",
+      "sample": "{}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AttachmentID\u0022: \u0022abef3a4b-5377-4142-9557-8282c18bd636\u0022,\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DownloadUserInteractionCommunicationAttachment",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AdyenValidateManagementConfiguration",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ResourceInfo\u0022: {\n    \u0022BlobID\u0022: \u00221e47a923-e7a6-4830-ba2e-e7db67683279\u0022,\n    \u0022Url\u0022: \u0022string\u0022\n  }\n}"
+      "sample": "{\n  \u0022IsValid\u0022: true,\n  \u0022Messages\u0022: [\n    {\n      \u0022Error\u0022: true,\n      \u0022Message\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -57,26 +57,7 @@
   "request_type_id": "B",
   "response_type_id": "C",
   "types": {
-    "B": [
-      {
-        "name": "AttachmentID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Interaction\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
+    "B": [],
     "D": [
       {
         "name": "Code",
@@ -126,6 +107,26 @@
     ],
     "E": [
       {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
         "name": "ExternalIDs",
         "deprecation_notice": null,
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
@@ -153,26 +154,6 @@
         "one_of": null
       }
     ],
-    "F": [
-      {
-        "name": "BlobID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Url",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "Error",
@@ -184,16 +165,25 @@
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "IsValid",
         "deprecation_notice": null,
         "description": "",
-        "type": "object | null",
+        "type": "boolean",
         "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Messages",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
         "properties_id": "E",
         "one_of": null
       },
       {
-        "name": "ResourceInfo",
+        "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
