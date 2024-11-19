@@ -1,9 +1,9 @@
 {
-  "name": "CustomerAddBlobToCaseInteraction",
+  "name": "GetTaxProvider",
   "method": "POST",
-  "path": "/message/CustomerAddBlobToCaseInteraction",
-  "description": "Service for customers to add a blob to a case interacion.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/GetTaxProvider",
+  "description": "Get a tax provider by ID.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060TaxProviders:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobID\u0022: \u0022b4470702-37a2-426f-9ed8-63f8a231a4bc\u0022,\n  \u0022InteractionID\u0022: 123\n}",
+      "sample": "{\n  \u0022ID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u0022b4470702-37a2-426f-9ed8-63f8a231a4bc\u0022,\n  \u0022InteractionID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CustomerAddBlobToCaseInteraction",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetTaxProvider",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022TaxProvider\u0022: {\n    \u0022BackendID\u0022: \u0022string\u0022,\n    \u0022Configuration\u0022: {\n      \u0022key\u0022: \u0022any valid json value\u0022\n    },\n    \u0022Description\u0022: \u0022string\u0022,\n    \u0022ID\u0022: 123,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022Type\u0022: \u0022AVATAX\u0022\n  }\n}"
     },
     {
       "name": "400",
@@ -59,20 +59,11 @@
   "types": {
     "B": [
       {
-        "name": "BlobID",
+        "name": "ID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "InteractionID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Interaction\u0060",
+        "description": "This is the ID of a \u0060TaxProvider\u0060",
         "type": "integer",
-        "required": false,
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
@@ -153,6 +144,62 @@
         "one_of": null
       }
     ],
+    "F": [
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Configuration",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060TaxProvider\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u0060AVATAX\u0060\n* \u0060VERTEX\u0060",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "C": [
       {
         "name": "Error",
@@ -170,6 +217,15 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "TaxProvider",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]
