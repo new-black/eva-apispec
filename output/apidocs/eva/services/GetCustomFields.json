@@ -37,19 +37,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022TypeID\u0022: 123\n}",
+      "sample": "{\n  \u0022DataTypes\u0022: [\n    8\n  ],\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022TypeID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022TypeID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetCustomFields",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022DataTypes\u0022: [\n    8\n  ],\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022TypeID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetCustomFields",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022CustomFieldOptions\u0022: {\n    \u0022key\u0022: {\n      \u0022DefaultCustomFieldValue\u0022: {\n        \u0022ArrayValues\u0022: [\n          {\n            \u0022re\u0022: \u0022cursion\u0022\n          }\n        ],\n        \u0022BlobValue\u0022: \u002210bda586-dca6-49e9-95bf-b47eee6593d2\u0022,\n        \u0022BoolValue\u0022: true,\n        \u0022DateTimeValue\u0022: \u00222024-11-25\u0022,\n        \u0022NumberValue\u0022: 123.456,\n        \u0022StringValue\u0022: \u0022string\u0022\n      },\n      \u0022DefaultValue\u0022: \u0022string\u0022,\n      \u0022IsEditable\u0022: true,\n      \u0022IsRequired\u0022: true,\n      \u0022MaximumDate\u0022: \u00222024-11-25\u0022,\n      \u0022MaximumLength\u0022: 123,\n      \u0022MaximumValue\u0022: 123.456,\n      \u0022MinimumDate\u0022: \u00222024-11-25\u0022,\n      \u0022MinimumLength\u0022: 123,\n      \u0022MinimumValue\u0022: 123.456\n    }\n  }\n}"
+      "sample": "{\n  \u0022CustomFieldOptions\u0022: {\n    \u0022key\u0022: {\n      \u0022DefaultCustomFieldValue\u0022: {\n        \u0022ArrayValues\u0022: [\n          {\n            \u0022re\u0022: \u0022cursion\u0022\n          }\n        ],\n        \u0022BlobValue\u0022: \u0022f4dc35e4-063c-4ac0-a76a-4c41ad2dc38d\u0022,\n        \u0022BoolValue\u0022: true,\n        \u0022DateTimeValue\u0022: \u00222024-11-25\u0022,\n        \u0022NumberValue\u0022: 123.456,\n        \u0022StringValue\u0022: \u0022string\u0022\n      },\n      \u0022DefaultValue\u0022: \u0022string\u0022,\n      \u0022IsEditable\u0022: true,\n      \u0022IsRequired\u0022: true,\n      \u0022MaximumDate\u0022: \u00222024-11-25\u0022,\n      \u0022MaximumLength\u0022: 123,\n      \u0022MaximumValue\u0022: 123.456,\n      \u0022MinimumDate\u0022: \u00222024-11-25\u0022,\n      \u0022MinimumLength\u0022: 123,\n      \u0022MinimumValue\u0022: 123.456\n    }\n  }\n}"
     },
     {
       "name": "400",
@@ -66,9 +66,27 @@
   "types": {
     "B": [
       {
+        "name": "DataTypes",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - String\n* \u00601\u0060 - Bool\n* \u00602\u0060 - Integer\n* \u00603\u0060 - Decimal\n* \u00604\u0060 - Enum\n* \u00605\u0060 - Text\n* \u00606\u0060 - DateTime\n* \u00607\u0060 - Date\n* \u00608\u0060 - Blob",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "OrganizationUnitID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitSetID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
