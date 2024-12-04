@@ -2,7 +2,7 @@
   "name": "ShipPurchaseOrder",
   "method": "POST",
   "path": "/message/ShipPurchaseOrder",
-  "description": "The ShipPurchaseOrder service",
+  "description": "Creates a shipment for given purchase order lines and ships it!",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060PurchaseOrders:Manage\u0060",
   "headers": [
     {
@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Lines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022QuantityToShip\u0022: 123\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022ShipmentDate\u0022: \u00222024-12-04\u0022,\n  \u0022ShippedFromOrganizationUnitID\u0022: 123,\n  \u0022TrackingCode\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Lines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022QuantityToShip\u0022: 123,\n      \u0022SerialNumbers\u0022: [\n        \u0022string\u0022\n      ]\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022ShipmentDate\u0022: \u00222024-12-04\u0022,\n  \u0022ShippedFromOrganizationUnitID\u0022: 123,\n  \u0022TrackingCode\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Lines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022QuantityToShip\u0022: 123\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022ShipmentDate\u0022: \u00222024-12-04\u0022,\n  \u0022ShippedFromOrganizationUnitID\u0022: 123,\n  \u0022TrackingCode\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ShipPurchaseOrder",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Lines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022QuantityToShip\u0022: 123,\n      \u0022SerialNumbers\u0022: [\n        \u0022string\u0022\n      ]\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022ShipmentDate\u0022: \u00222024-12-04\u0022,\n  \u0022ShippedFromOrganizationUnitID\u0022: 123,\n  \u0022TrackingCode\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ShipPurchaseOrder",
       "syntax": "bash"
     }
   ],
@@ -77,7 +77,7 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrderLine\u0060",
         "type": "integer",
-        "required": false,
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
@@ -86,6 +86,15 @@
         "deprecation_notice": null,
         "description": "",
         "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumbers",
+        "deprecation_notice": null,
+        "description": "Serial numbers for the items being shipped.",
+        "type": "array[string] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -105,8 +114,8 @@
         "name": "Lines",
         "deprecation_notice": null,
         "description": "",
-        "type": "array[object] | null",
-        "required": false,
+        "type": "array[object]",
+        "required": true,
         "properties_id": "C",
         "one_of": null
       },
@@ -115,7 +124,7 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060Order\u0060",
         "type": "integer",
-        "required": false,
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
@@ -123,7 +132,7 @@
         "name": "ShipmentDate",
         "deprecation_notice": null,
         "description": "",
-        "type": "datetime",
+        "type": "datetime | null",
         "required": false,
         "properties_id": null,
         "one_of": null
