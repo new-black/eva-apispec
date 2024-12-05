@@ -1,9 +1,9 @@
 {
-  "name": "StoreBlob",
+  "name": "DuplicateMessageTemplate",
   "method": "POST",
-  "path": "/message/StoreBlob",
-  "description": "Creates a new blob and stores \u0060Data\u0060 to it.\n\nThe combination of \u0060Category\u0060 and \u0060OriginalName\u0060 must be unique, as the \u0060GetBlobInfoService\u0060 allows retrieval based on these values. Internally, a fresh and unique \u0060Guid\u0060 is\ngenerated and returned from this request. The response also contains the full \u0060Url\u0060 by which this blob can be accessed (which will contain aforementioned \u0060Guid\u0060).\n\n- [x] The \u0060MimeType\u0060 is required, a few suggestions would be \u0060application/pdf\u0060, \u0060text/csv\u0060 or \u0060application/json\u0060 - but you probably already know this.\n- [x] The \u0060ExpireDate\u0060 is the date at which the given blob should expire. Leave this empty to *suggest* to keep it forever. We will bag it and get rid of it when the time is right. :hocho:\n\nWhen retrieving the blob, it will be returned to you using the \u0060MimeType\u0060 as \u0060ContentType\u0060 header and a proper \u0060Expires\u0060 header.\n\n*NOTE*: leaving \u0060OriginalName\u0060 empty means EVA treats this file as a temporary one and it\u0027ll be removed after a set period. Which can be manipulated through the setting \u0060Blobs:DefaultLifeTime\u0060\nwhich is the default expire time for these kinds of blobs in minutes.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/DuplicateMessageTemplate",
+  "description": "Duplicate an existing MessageTemplate",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060MessageTemplates:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,24 +25,31 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022Data\u0022: \u0022base64 encoded binary data\u0022,\n  \u0022ExpireDate\u0022: \u00222024-12-05\u0022,\n  \u0022MimeType\u0022: \u0022string\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022Layout\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Category\u0022: \u0022string\u0022,\n  \u0022Data\u0022: \u0022base64 encoded binary data\u0022,\n  \u0022ExpireDate\u0022: \u00222024-12-05\u0022,\n  \u0022MimeType\u0022: \u0022string\u0022,\n  \u0022OriginalName\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/StoreBlob",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123,\n  \u0022Layout\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DuplicateMessageTemplate",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Guid\u0022: \u002271f2ab34-6950-4dd0-baea-9016d61c1e31\u0022,\n  \u0022Url\u0022: \u0022string\u0022\n}"
+      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022Type\u0022: 3\n}"
     },
     {
       "name": "400",
@@ -59,46 +66,28 @@
   "types": {
     "B": [
       {
-        "name": "Category",
+        "name": "ID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Data",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "binary",
+        "description": "This is the ID of a \u0060MessageTemplate\u0060",
+        "type": "integer",
         "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ExpireDate",
+        "name": "Layout",
         "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MimeType",
-        "deprecation_notice": null,
-        "description": "",
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "OriginalName",
+        "name": "OrganizationUnitID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -191,10 +180,10 @@
         "one_of": null
       },
       {
-        "name": "Guid",
+        "name": "ID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
+        "description": "This is the ID of a \u0060MessageTemplate\u0060",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -209,10 +198,10 @@
         "one_of": null
       },
       {
-        "name": "Url",
+        "name": "Type",
         "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
+        "description": "Possible values:\n\n* \u00601\u0060 - Template\n* \u00602\u0060 - Partial\n* \u00603\u0060 - Layout",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
