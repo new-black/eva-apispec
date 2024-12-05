@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Handlers\u0022: [\n    \u0022string\u0022\n  ]\n}"
+      "sample": "{\n  \u0022Handlers\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022HandlersDetails\u0022: [\n    {\n      \u0022AllowRequestConfirmation\u0022: true,\n      \u0022Name\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -107,6 +107,26 @@
     ],
     "E": [
       {
+        "name": "AllowRequestConfirmation",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
         "name": "ExternalIDs",
         "deprecation_notice": null,
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
@@ -146,11 +166,20 @@
       },
       {
         "name": "Handlers",
-        "deprecation_notice": null,
-        "description": "",
+        "deprecation_notice": "\n\n**Deprecated since 767:** Handlers is deprecated and will be removed in 2.0.799: Use HandlersDetails instead..\n\n**Will be removed in 783**",
+        "description": "**Deprecated since 767:** Handlers is deprecated and will be removed in 2.0.799: Use HandlersDetails instead..\n\n**Will be removed in 783**",
         "type": "array[string]",
         "required": true,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HandlersDetails",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "E",
         "one_of": null
       },
       {
@@ -159,7 +188,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "F",
         "one_of": null
       }
     ]
