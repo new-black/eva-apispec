@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Blobs\u0022: [\n    \u00220dd8de30-42b6-4561-bef9-9d3750c94d21\u0022\n  ]\n}",
+      "sample": "{\n  \u0022BlobUrls\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Blobs\u0022: [\n    \u00226665222a-df0e-48b7-a71f-0221ccd3c51f\u0022\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Blobs\u0022: [\n    \u00220dd8de30-42b6-4561-bef9-9d3750c94d21\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/MergePdfBlobs",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobUrls\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Blobs\u0022: [\n    \u00226665222a-df0e-48b7-a71f-0221ccd3c51f\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/MergePdfBlobs",
       "syntax": "bash"
     }
   ],
@@ -59,11 +59,20 @@
   "types": {
     "B": [
       {
+        "name": "BlobUrls",
+        "deprecation_notice": null,
+        "description": "Can be used for both standard- and secured blobs - must match environment assets URL. Limited to 100 entries.",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Blobs",
         "deprecation_notice": null,
-        "description": "A list of blob IDs. Max 100.",
-        "type": "array[guid]",
-        "required": true,
+        "description": "Can be used for standard blobs - for secure blobs, use \u0060BlobUrls\u0060 instead. Limited to 100 entries.\n\nThis is the ID of a \u0060Blob\u0060",
+        "type": "array[guid] | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       }

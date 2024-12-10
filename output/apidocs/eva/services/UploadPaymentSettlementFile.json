@@ -2,7 +2,7 @@
   "name": "UploadPaymentSettlementFile",
   "method": "POST",
   "path": "/message/UploadPaymentSettlementFile",
-  "description": "Upload a new settlement file\n\nThe settelements in the file will be imported and booked into financialevents to allow processing in cookbook.\n\nIt is required to supply the Handler to use. Available handlers can be fetched with the GetAvailablePaymentSettlementFileHandlers service.\n\nFor Settlement records that don\u0027t have a matching PaymentTransaction in EVA there will be financial events generated. The OrganizationUnit where this should happen can be defined with the OrganizationUnitID property.",
+  "description": "Upload a new settlement file.\n\n- The settlements in the file will be imported and booked into financial events to allow processing in cookbook\n- It is required to supply the \u0060Handler\u0060 to use (available handlers can be fetched with the \u0060GetAvailablePaymentSettlementFileHandlers\u0060 service)\n- For settlement records that don\u0027t have a matching \u0060PaymentTransaction\u0060 in EVA there will be financial events generated (which will happen for supplied \u0060OrganizationUnitID\u0060)",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060PaymentSettlements:Create\u0060",
   "headers": [
     {
@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobID\u0022: \u0022c74998f8-c950-4dc2-b968-977d3e70d89a\u0022,\n  \u0022Handler\u0022: \u0022string\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123\n}",
+      "sample": "{\n  \u0022BlobID\u0022: \u0022b4be28f1-bbbd-4813-95b2-df9928f79637\u0022,\n  \u0022BlobUrl\u0022: \u0022string\u0022,\n  \u0022Handler\u0022: \u0022string\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u0022c74998f8-c950-4dc2-b968-977d3e70d89a\u0022,\n  \u0022Handler\u0022: \u0022string\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UploadPaymentSettlementFile",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u0022b4be28f1-bbbd-4813-95b2-df9928f79637\u0022,\n  \u0022BlobUrl\u0022: \u0022string\u0022,\n  \u0022Handler\u0022: \u0022string\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UploadPaymentSettlementFile",
       "syntax": "bash"
     }
   ],
@@ -68,9 +68,18 @@
       {
         "name": "BlobID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Blob\u0060",
-        "type": "guid",
-        "required": true,
+        "description": "Can be used for standard blobs - for secure blobs, use \u0060BlobUrl\u0060 instead.\n\nThis is the ID of a \u0060Blob\u0060",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BlobUrl",
+        "deprecation_notice": null,
+        "description": "Can be used for both standard- and secured blobs - must match environment assets URL.",
+        "type": "string | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },

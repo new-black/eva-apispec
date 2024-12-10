@@ -2,7 +2,7 @@
   "name": "Print",
   "method": "POST",
   "path": "/message/Print",
-  "description": "Pushes a blob (by \u0060BlobID\u0060) to a device of specified \u0060Type\u0060 on given \u0060StationID\u0060.",
+  "description": "Pushes a blob (by \u0060BlobID\u0060 or \u0060BlobUrl\u0060) to a device of specified \u0060Type\u0060 on given \u0060StationID\u0060.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060PrintBlobs:None\u0060",
   "headers": [
     {
@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobID\u0022: \u00222d3ba8a2-17fa-4517-a670-a44f2da618e1\u0022,\n  \u0022StationID\u0022: 123,\n  \u0022Type\u0022: 1\n}",
+      "sample": "{\n  \u0022BlobID\u0022: \u00223da8d1f2-3326-45b0-bde1-257d5df32e27\u0022,\n  \u0022BlobUrl\u0022: \u0022string\u0022,\n  \u0022StationID\u0022: 123,\n  \u0022Type\u0022: 1\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u00222d3ba8a2-17fa-4517-a670-a44f2da618e1\u0022,\n  \u0022StationID\u0022: 123,\n  \u0022Type\u0022: 1\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/Print",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u00223da8d1f2-3326-45b0-bde1-257d5df32e27\u0022,\n  \u0022BlobUrl\u0022: \u0022string\u0022,\n  \u0022StationID\u0022: 123,\n  \u0022Type\u0022: 1\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/Print",
       "syntax": "bash"
     }
   ],
@@ -61,9 +61,18 @@
       {
         "name": "BlobID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
-        "required": true,
+        "description": "Can be used for standard blobs - for secure blobs, use \u0060BlobUrl\u0060 instead.\n\nThis is the ID of a \u0060Blob\u0060",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BlobUrl",
+        "deprecation_notice": null,
+        "description": "Can be used for both standard- and secured blobs - must match environment assets URL.",
+        "type": "string | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },

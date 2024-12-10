@@ -2,7 +2,7 @@
   "name": "DeleteBlob",
   "method": "POST",
   "path": "/message/DeleteBlob",
-  "description": "Deletes a blob by its ID (represented by a GUID).\nIf the blob does not exist an error of type \u0060EntityNotFound\u0060 is returned.",
+  "description": "Deletes specified blob, either by \u0060BlobID\u0060 or \u0060BlobUrl\u0060.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobID\u0022: \u0022075c8b89-ba39-4d0b-b860-b76d53da0ca0\u0022\n}",
+      "sample": "{\n  \u0022BlobID\u0022: \u0022fbffb81b-ed06-49ba-a933-fe882a29386e\u0022,\n  \u0022BlobUrl\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u0022075c8b89-ba39-4d0b-b860-b76d53da0ca0\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DeleteBlob",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u0022fbffb81b-ed06-49ba-a933-fe882a29386e\u0022,\n  \u0022BlobUrl\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DeleteBlob",
       "syntax": "bash"
     }
   ],
@@ -61,8 +61,17 @@
       {
         "name": "BlobID",
         "deprecation_notice": null,
-        "description": "The ID of the blob to delete.\n\nThis is the ID of a \u0060Blob\u0060",
-        "type": "guid",
+        "description": "Can be used for standard blobs - for secure blobs, use \u0060BlobUrl\u0060 instead.\n\nThis is the ID of a \u0060Blob\u0060",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BlobUrl",
+        "deprecation_notice": null,
+        "description": "Can be used for both standard- and secured blobs - must match environment assets URL.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
