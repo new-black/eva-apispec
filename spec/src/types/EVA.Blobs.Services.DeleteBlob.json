@@ -1,7 +1,7 @@
 {
   "typename": "DeleteBlob",
   "assembly": "EVA.Blobs",
-  "description": "Deletes a blob by its ID (represented by a GUID).\nIf the blob does not exist an error of type \u0060EntityNotFound\u0060 is returned.",
+  "description": "Deletes specified blob, either by \u0060BlobID\u0060 or \u0060BlobUrl\u0060.",
   "usage": {
     "request": true,
     "response": false
@@ -23,9 +23,9 @@
         "ref": "guid",
         "args": [],
         "shared": null,
-        "nullable": false
+        "nullable": true
       },
-      "description": "The ID of the blob to delete.",
+      "description": "Can be used for standard blobs - for secure blobs, use \u0060BlobUrl\u0060 instead.",
       "skippable": false,
       "deprecated": null,
       "required": null,
@@ -42,6 +42,25 @@
         "isEvaID": true,
         "isExternalID": false
       },
+      "allowedValues": []
+    },
+    "BlobUrl": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "Can be used for both standard- and secured blobs - must match environment assets URL.",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     }
   },

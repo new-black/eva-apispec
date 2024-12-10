@@ -1,7 +1,7 @@
 {
   "typename": "UploadPaymentSettlementFile",
   "assembly": "EVA.Core.Management",
-  "description": "Upload a new settlement file\n\nThe settelements in the file will be imported and booked into financialevents to allow processing in cookbook.\n\nIt is required to supply the Handler to use. Available handlers can be fetched with the GetAvailablePaymentSettlementFileHandlers service.\n\nFor Settlement records that don\u0027t have a matching PaymentTransaction in EVA there will be financial events generated. The OrganizationUnit where this should happen can be defined with the OrganizationUnitID property.",
+  "description": "Upload a new settlement file.\n\n- The settlements in the file will be imported and booked into financial events to allow processing in cookbook\n- It is required to supply the \u0060Handler\u0060 to use (available handlers can be fetched with the \u0060GetAvailablePaymentSettlementFileHandlers\u0060 service)\n- For settlement records that don\u0027t have a matching \u0060PaymentTransaction\u0060 in EVA there will be financial events generated (which will happen for supplied \u0060OrganizationUnitID\u0060)",
   "usage": {
     "request": true,
     "response": false
@@ -23,25 +23,13 @@
         "ref": "guid",
         "args": [],
         "shared": null,
-        "nullable": false
+        "nullable": true
       },
-      "description": null,
+      "description": "Can be used for standard blobs - for secure blobs, use \u0060BlobUrl\u0060 instead.",
       "skippable": false,
       "deprecated": null,
-      "required": {
-        "current": true,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
-      "requiredAllowEmpty": {
-        "current": false,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
+      "required": null,
+      "requiredAllowEmpty": null,
       "minValue": null,
       "maxValue": null,
       "stringLengthConstraint": null,
@@ -54,6 +42,25 @@
         "isEvaID": true,
         "isExternalID": false
       },
+      "allowedValues": []
+    },
+    "BlobUrl": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": "Can be used for both standard- and secured blobs - must match environment assets URL.",
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
       "allowedValues": []
     },
     "Handler": {
