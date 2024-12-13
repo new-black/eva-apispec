@@ -52,7 +52,10 @@
       "requiredAllowEmpty": null,
       "minValue": null,
       "maxValue": null,
-      "stringLengthConstraint": null,
+      "stringLengthConstraint": {
+        "min": 1,
+        "max": 200
+      },
       "stringRegexConstraint": null,
       "datamodel": null,
       "allowedValues": []
@@ -121,6 +124,28 @@
       "datamodel": null,
       "allowedValues": []
     },
+    "DisplayType": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": true,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": {
+        "min": 1,
+        "max": 200
+      },
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
     "ID": {
       "type": {
         "ref": "id",
@@ -173,7 +198,10 @@
       "requiredAllowEmpty": null,
       "minValue": null,
       "maxValue": null,
-      "stringLengthConstraint": null,
+      "stringLengthConstraint": {
+        "min": 1,
+        "max": 200
+      },
       "stringRegexConstraint": null,
       "datamodel": null,
       "allowedValues": []
@@ -185,7 +213,7 @@
         "shared": null,
         "nullable": false
       },
-      "description": null,
+      "description": "This name can only be set/modified while the survey isn\u0027t published. Once published it can no longer be changed even if the survey is taken back in draft. It\u0027s a system name of the question.\nCan only be a single line. Only accepts digits, chars (upper and lowercase) and \u0060-\u0060. For example; Q123A, Q123-a, 01QUEST, 01-Quest, etc.",
       "skippable": true,
       "deprecated": null,
       "required": {
@@ -204,8 +232,13 @@
       },
       "minValue": null,
       "maxValue": null,
-      "stringLengthConstraint": null,
-      "stringRegexConstraint": null,
+      "stringLengthConstraint": {
+        "min": 1,
+        "max": 200
+      },
+      "stringRegexConstraint": {
+        "regex": "^[A-Za-z0-9-]*$"
+      },
       "datamodel": null,
       "allowedValues": []
     },
@@ -323,7 +356,7 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "PossibleAnswers": {
+    "OptionalAnswers": {
       "type": {
         "ref": "map",
         "args": [
@@ -419,7 +452,7 @@
         "shared": null,
         "nullable": true
       },
-      "description": null,
+      "description": "A custom field that is available from the SurveyContext.\nIf context for example is \u0060User\u0060, all custom fields of the user are available.\nIf context for example is \u0060Order\u0060, all custom fields from the order and customer (user) on the order are available.\n\nNOTE THAT this value cannot be update. If this question is based upon the custom field, any changes to the markup are rejected.\n\nNOTE THAT any security settings on the custom field are ignored. \n\nNOTE THAT when this value is set, the markup of the custom field is copied as markup for the survey question, and the response data is saved within the survey.\nIf the value also needs to be stored on the context entity self (e.g. order, user, etc), the setting \u0060StoreAnswerOnContextCustomField\u0060 needs to be set.\nWhen \u0060StoreAnswerOnContextCustomField\u0060 is set to true, changes to the custom field itself will also be blocked while the survey is active.",
       "skippable": true,
       "deprecated": null,
       "required": null,

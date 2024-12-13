@@ -10,13 +10,12 @@
   "typeArguments": [],
   "typeDependencies": [
     "EVA.Core.ResponseMessage",
-    "EVA.Core.DataModels.SurveyChangeStatus",
     "EVA.Core.Management.Surveys.GetSurveyByIDResponse\u002BUser",
+    "EVA.Core.DataModels.SurveyDeactivationReasons",
     "EVA.Core.Management.Surveys.GetSurveyByIDResponse\u002BOrganizationUnitSetDto",
     "EVA.Core.DataModels.SurveyContext",
-    "EVA.Core.DataModels.SurveyDistributionType",
-    "EVA.Core.Surveys.Triggers.ISurveyTriggerData",
-    "EVA.Core.Surveys.Triggers.OrderPaidSurveyTrigger\u002BTriggerData"
+    "EVA.Core.Surveys.Triggers.ISurveyDistributionHandlerData",
+    "EVA.Core.Surveys.Triggers.ISurveyTriggerData"
   ],
   "extends": {
     "ref": "EVA.Core.ResponseMessage",
@@ -31,25 +30,6 @@
         "args": [],
         "shared": null,
         "nullable": true
-      },
-      "description": null,
-      "skippable": false,
-      "deprecated": null,
-      "required": null,
-      "requiredAllowEmpty": null,
-      "minValue": null,
-      "maxValue": null,
-      "stringLengthConstraint": null,
-      "stringRegexConstraint": null,
-      "datamodel": null,
-      "allowedValues": []
-    },
-    "ChangeStatus": {
-      "type": {
-        "ref": "EVA.Core.DataModels.SurveyChangeStatus",
-        "args": [],
-        "shared": null,
-        "nullable": false
       },
       "description": null,
       "skippable": false,
@@ -177,6 +157,25 @@
       "datamodel": null,
       "allowedValues": []
     },
+    "DeactivationReasons": {
+      "type": {
+        "ref": "EVA.Core.DataModels.SurveyDeactivationReasons",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
     "Description": {
       "type": {
         "ref": "string",
@@ -247,6 +246,44 @@
         "args": [],
         "shared": null,
         "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "HasActivePublishedVersion": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "HasUnpublishedChanges": {
+      "type": {
+        "ref": "bool",
+        "args": [],
+        "shared": null,
+        "nullable": false
       },
       "description": null,
       "skippable": false,
@@ -343,14 +380,14 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "IsDeactivated": {
+    "IsPublishing": {
       "type": {
         "ref": "bool",
         "args": [],
         "shared": null,
         "nullable": false
       },
-      "description": "When true, the survey is no longer available to customers. A survey can be reactivated by publishing it.",
+      "description": null,
       "skippable": false,
       "deprecated": null,
       "required": null,
@@ -362,14 +399,33 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "IsPublished": {
+    "LastPublishedBy": {
       "type": {
-        "ref": "bool",
+        "ref": "EVA.Core.Management.Surveys.GetSurveyByIDResponse\u002BUser",
         "args": [],
         "shared": null,
-        "nullable": false
+        "nullable": true
       },
-      "description": "When true, the survey is available to customers. Changes made to the survey afterward will result in a new draft version",
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "LastPublishedOn": {
+      "type": {
+        "ref": "date",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      "description": null,
       "skippable": false,
       "deprecated": null,
       "required": null,
@@ -457,63 +513,6 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "PublishedBy": {
-      "type": {
-        "ref": "EVA.Core.Management.Surveys.GetSurveyByIDResponse\u002BUser",
-        "args": [],
-        "shared": null,
-        "nullable": true
-      },
-      "description": null,
-      "skippable": false,
-      "deprecated": null,
-      "required": null,
-      "requiredAllowEmpty": null,
-      "minValue": null,
-      "maxValue": null,
-      "stringLengthConstraint": null,
-      "stringRegexConstraint": null,
-      "datamodel": null,
-      "allowedValues": []
-    },
-    "PublishedOn": {
-      "type": {
-        "ref": "date",
-        "args": [],
-        "shared": null,
-        "nullable": true
-      },
-      "description": null,
-      "skippable": false,
-      "deprecated": null,
-      "required": null,
-      "requiredAllowEmpty": null,
-      "minValue": null,
-      "maxValue": null,
-      "stringLengthConstraint": null,
-      "stringRegexConstraint": null,
-      "datamodel": null,
-      "allowedValues": []
-    },
-    "PublishedVersion": {
-      "type": {
-        "ref": "int32",
-        "args": [],
-        "shared": null,
-        "nullable": true
-      },
-      "description": null,
-      "skippable": false,
-      "deprecated": null,
-      "required": null,
-      "requiredAllowEmpty": null,
-      "minValue": null,
-      "maxValue": null,
-      "stringLengthConstraint": null,
-      "stringRegexConstraint": null,
-      "datamodel": null,
-      "allowedValues": []
-    },
     "StartDate": {
       "type": {
         "ref": "date",
@@ -571,12 +570,12 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "SurveyDistributionType": {
+    "SurveyDistributionHandler": {
       "type": {
-        "ref": "EVA.Core.DataModels.SurveyDistributionType",
+        "ref": "string",
         "args": [],
         "shared": null,
-        "nullable": false
+        "nullable": true
       },
       "description": null,
       "skippable": false,
@@ -590,19 +589,12 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "TriggerEventData": {
+    "SurveyDistributionHandlerData": {
       "type": {
         "ref": "option",
-        "args": [
-          {
-            "ref": "EVA.Core.Surveys.Triggers.OrderPaidSurveyTrigger\u002BTriggerData",
-            "args": [],
-            "shared": null,
-            "nullable": true
-          }
-        ],
+        "args": [],
         "shared": {
-          "ref": "EVA.Core.Surveys.Triggers.ISurveyTriggerData",
+          "ref": "EVA.Core.Surveys.Triggers.ISurveyDistributionHandlerData",
           "args": [],
           "shared": null,
           "nullable": true
@@ -621,11 +613,35 @@
       "datamodel": null,
       "allowedValues": []
     },
-    "TriggerEventType": {
+    "SurveyTrigger": {
       "type": {
         "ref": "string",
         "args": [],
         "shared": null,
+        "nullable": true
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": null,
+      "requiredAllowEmpty": null,
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
+    "SurveyTriggerData": {
+      "type": {
+        "ref": "option",
+        "args": [],
+        "shared": {
+          "ref": "EVA.Core.Surveys.Triggers.ISurveyTriggerData",
+          "args": [],
+          "shared": null,
+          "nullable": true
+        },
         "nullable": true
       },
       "description": null,
