@@ -1,0 +1,2266 @@
+{
+  "name": "SearchOrders",
+  "method": "POST",
+  "path": "/message/SearchOrders",
+  "description": "Search for any type of orders by providing the filter details properties\nImportant search criterias are: OrganizationUnitID, CurrentOrganizationUnitType, OrderIDs, CustomerID(ClientContext.Type), PaymentStatus.\n\nWhen no StartTime is provided this will be defaulted to 3 months ago. The only exception is when specific OrderIDs are provided, then it\u0027s allowed to not specify a Date.\n\nTo include the custom fields of the customer, the property \u0060AdditionalOrderDataOptions.CustomerCustomFields\u0060 can be set to \u0060true\u0060.\n\nE.g. request:\n{\n  \u0022OrderIDs\u0022: [\n    \u0022orderID1\u0022,\n    \u0022orderID2\u0022\n  ],\n  \u0022PaymentStatus\u0022: \u0022PaymentStatus\u0022,\n  \u0022IsShipped\u0022: \u0022isShipped\u0022\n}\n\n\nPayment status options:\n    NotPaid = 0,\n    Paid = 1,\n    Partial = 2",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "JSON",
+      "sample": "{\n  \u0022AdditionalOrderDataOptions\u0022: {\n    \u0022CustomerCustomFields\u0022: true\n  },\n  \u0022AggregationOptions\u0022: {\n    \u0022ProductVariations\u0022: true,\n    \u0022UserAgentApplication\u0022: true\n  },\n  \u0022CarrierID\u0022: 123,\n  \u0022CompanyName\u0022: \u0022string\u0022,\n  \u0022CreatedByID\u0022: 123,\n  \u0022CustomFields\u0022: {\n    \u0022key\u0022: \u0022string\u0022\n  },\n  \u0022CustomFieldsByBackendID\u0022: {\n    \u0022key\u0022: \u0022string\u0022\n  },\n  \u0022CustomOrderTypeID\u0022: 123,\n  \u0022CustomStatus\u0022: [\n    123\n  ],\n  \u0022CustomerBackendID\u0022: \u0022string\u0022,\n  \u0022CustomerID\u0022: 123,\n  \u0022CustomerIDs\u0022: [\n    123\n  ],\n  \u0022CustomerOrderStatus\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022CustomerOrderStatusBackendID\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022CustomerOrderTypeBackendID\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022CustomerReference\u0022: \u0022string\u0022,\n  \u0022Data\u0022: {\n    \u0022key\u0022: {\n      \u0022BooleanValue\u0022: true,\n      \u0022EndDateTime\u0022: \u00222024-12-16\u0022,\n      \u0022EndDecimal\u0022: 123.456,\n      \u0022StartDateTime\u0022: \u00222024-12-16\u0022,\n      \u0022StartDecimal\u0022: 123.456,\n      \u0022StringValue\u0022: \u0022string\u0022\n    }\n  },\n  \u0022DiscountIDs\u0022: [\n    123\n  ],\n  \u0022EndConfirmationDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndCreationTime\u0022: \u00222024-12-16\u0022,\n  \u0022EndMaxExpectedAvailabilityDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndMinExpectedAvailabilityDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndOfferExpirationDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndPlacementDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndRequestedDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndShipmentDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndTime\u0022: \u00222024-12-16\u0022,\n  \u0022FulfillmentOrganizationUnitIDs\u0022: [\n    123\n  ],\n  \u0022FulfillmentStatus\u0022: {\n    \u0022CanFulfill\u0022: true,\n    \u0022IsBlocked\u0022: true\n  },\n  \u0022HasCancelledLines\u0022: true,\n  \u0022HasCustomer\u0022: true,\n  \u0022HasDeliveryLines\u0022: true,\n  \u0022HasDisputedPayments\u0022: true,\n  \u0022HasOrderLines\u0022: true,\n  \u0022HasPriceCorrection\u0022: true,\n  \u0022HasReserveLines\u0022: true,\n  \u0022HasShipLines\u0022: true,\n  \u0022HasSoldToOrganizationUnit\u0022: true,\n  \u0022HasUnresolvedDisputedPayments\u0022: true,\n  \u0022IncludeChildOrganizationUnits\u0022: true,\n  \u0022InvoiceNumber\u0022: \u0022string\u0022,\n  \u0022IsCaptured\u0022: true,\n  \u0022IsClickAndCollect\u0022: true,\n  \u0022IsCompleted\u0022: true,\n  \u0022IsConfirmed\u0022: true,\n  \u0022IsCrossChannelReturn\u0022: true,\n  \u0022IsEmpty\u0022: true,\n  \u0022IsEndlessAisle\u0022: true,\n  \u0022IsExported\u0022: true,\n  \u0022IsInvoiced\u0022: true,\n  \u0022IsOffer\u0022: true,\n  \u0022IsOrder\u0022: true,\n  \u0022IsPlaced\u0022: true,\n  \u0022IsReserved\u0022: true,\n  \u0022IsReturnToSupplier\u0022: true,\n  \u0022IsShipped\u0022: true,\n  \u0022IsSuspended\u0022: true,\n  \u0022LastModifiedByID\u0022: 123,\n  \u0022MaxOpenAmountInTax\u0022: 123.456,\n  \u0022MaxTotalAmountInTax\u0022: 123.456,\n  \u0022MaxTotalItems\u0022: 123,\n  \u0022MinOpenAmountInTax\u0022: 123.456,\n  \u0022MinTotalAmountInTax\u0022: 123.456,\n  \u0022MinTotalItems\u0022: 123,\n  \u0022NotProperties\u0022: [\n    123\n  ],\n  \u0022OrderBackendID\u0022: \u0022string\u0022,\n  \u0022OrderCustomStatusID\u0022: 123,\n  \u0022OrderCustomTypeID\u0022: 123,\n  \u0022OrderDisplayID\u0022: \u0022string\u0022,\n  \u0022OrderFulfillmentReferenceNumbers\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022OrderIDs\u0022: [\n    123\n  ],\n  \u0022OrderLineID\u0022: 123,\n  \u0022OrderStatus\u0022: 1,\n  \u0022OrderType\u0022: 1,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022OriginatingOrganizationUnitID\u0022: 123,\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022PaymentStatus\u0022: 1,\n  \u0022PaymentTransactionBackendID\u0022: \u0022string\u0022,\n  \u0022PaymentTypeID\u0022: 123,\n  \u0022PaymentTypeName\u0022: \u0022string\u0022,\n  \u0022PickupOrganizationUnitID\u0022: 123,\n  \u0022ProductID\u0022: 123,\n  \u0022ProductVariation\u0022: {\n    \u0022key\u0022: [\n      \u0022string\u0022\n    ]\n  },\n  \u0022Properties\u0022: [\n    123\n  ],\n  \u0022Query\u0022: \u0022string\u0022,\n  \u0022ReturnToSupplierRequestID\u0022: 123,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022ShipFromOrganizationUnitID\u0022: 123,\n  \u0022ShipToCountryID\u0022: \u0022st\u0022,\n  \u0022ShipToOrganizationUnitID\u0022: 123,\n  \u0022ShippingMethodID\u0022: 123,\n  \u0022ShippingOrganizationUnitID\u0022: 123,\n  \u0022SoldFromOrganizationUnitID\u0022: 123,\n  \u0022SoldToOrganizationUnitID\u0022: 123,\n  \u0022StartConfirmationDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartCreationTime\u0022: \u00222024-12-16\u0022,\n  \u0022StartMaxExpectedAvailabilityDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartMinExpectedAvailabilityDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartOfferExpirationDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartPlacementDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartRequestedDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartShipmentDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartTime\u0022: \u00222024-12-16\u0022,\n  \u0022UserAgentApplication\u0022: [\n    \u0022string\u0022\n  ]\n}",
+      "syntax": "json"
+    },
+    {
+      "name": "CURL",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AdditionalOrderDataOptions\u0022: {\n    \u0022CustomerCustomFields\u0022: true\n  },\n  \u0022AggregationOptions\u0022: {\n    \u0022ProductVariations\u0022: true,\n    \u0022UserAgentApplication\u0022: true\n  },\n  \u0022CarrierID\u0022: 123,\n  \u0022CompanyName\u0022: \u0022string\u0022,\n  \u0022CreatedByID\u0022: 123,\n  \u0022CustomFields\u0022: {\n    \u0022key\u0022: \u0022string\u0022\n  },\n  \u0022CustomFieldsByBackendID\u0022: {\n    \u0022key\u0022: \u0022string\u0022\n  },\n  \u0022CustomOrderTypeID\u0022: 123,\n  \u0022CustomStatus\u0022: [\n    123\n  ],\n  \u0022CustomerBackendID\u0022: \u0022string\u0022,\n  \u0022CustomerID\u0022: 123,\n  \u0022CustomerIDs\u0022: [\n    123\n  ],\n  \u0022CustomerOrderStatus\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022CustomerOrderStatusBackendID\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022CustomerOrderTypeBackendID\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022CustomerReference\u0022: \u0022string\u0022,\n  \u0022Data\u0022: {\n    \u0022key\u0022: {\n      \u0022BooleanValue\u0022: true,\n      \u0022EndDateTime\u0022: \u00222024-12-16\u0022,\n      \u0022EndDecimal\u0022: 123.456,\n      \u0022StartDateTime\u0022: \u00222024-12-16\u0022,\n      \u0022StartDecimal\u0022: 123.456,\n      \u0022StringValue\u0022: \u0022string\u0022\n    }\n  },\n  \u0022DiscountIDs\u0022: [\n    123\n  ],\n  \u0022EndConfirmationDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndCreationTime\u0022: \u00222024-12-16\u0022,\n  \u0022EndMaxExpectedAvailabilityDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndMinExpectedAvailabilityDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndOfferExpirationDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndPlacementDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndRequestedDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndShipmentDate\u0022: \u00222024-12-16\u0022,\n  \u0022EndTime\u0022: \u00222024-12-16\u0022,\n  \u0022FulfillmentOrganizationUnitIDs\u0022: [\n    123\n  ],\n  \u0022FulfillmentStatus\u0022: {\n    \u0022CanFulfill\u0022: true,\n    \u0022IsBlocked\u0022: true\n  },\n  \u0022HasCancelledLines\u0022: true,\n  \u0022HasCustomer\u0022: true,\n  \u0022HasDeliveryLines\u0022: true,\n  \u0022HasDisputedPayments\u0022: true,\n  \u0022HasOrderLines\u0022: true,\n  \u0022HasPriceCorrection\u0022: true,\n  \u0022HasReserveLines\u0022: true,\n  \u0022HasShipLines\u0022: true,\n  \u0022HasSoldToOrganizationUnit\u0022: true,\n  \u0022HasUnresolvedDisputedPayments\u0022: true,\n  \u0022IncludeChildOrganizationUnits\u0022: true,\n  \u0022InvoiceNumber\u0022: \u0022string\u0022,\n  \u0022IsCaptured\u0022: true,\n  \u0022IsClickAndCollect\u0022: true,\n  \u0022IsCompleted\u0022: true,\n  \u0022IsConfirmed\u0022: true,\n  \u0022IsCrossChannelReturn\u0022: true,\n  \u0022IsEmpty\u0022: true,\n  \u0022IsEndlessAisle\u0022: true,\n  \u0022IsExported\u0022: true,\n  \u0022IsInvoiced\u0022: true,\n  \u0022IsOffer\u0022: true,\n  \u0022IsOrder\u0022: true,\n  \u0022IsPlaced\u0022: true,\n  \u0022IsReserved\u0022: true,\n  \u0022IsReturnToSupplier\u0022: true,\n  \u0022IsShipped\u0022: true,\n  \u0022IsSuspended\u0022: true,\n  \u0022LastModifiedByID\u0022: 123,\n  \u0022MaxOpenAmountInTax\u0022: 123.456,\n  \u0022MaxTotalAmountInTax\u0022: 123.456,\n  \u0022MaxTotalItems\u0022: 123,\n  \u0022MinOpenAmountInTax\u0022: 123.456,\n  \u0022MinTotalAmountInTax\u0022: 123.456,\n  \u0022MinTotalItems\u0022: 123,\n  \u0022NotProperties\u0022: [\n    123\n  ],\n  \u0022OrderBackendID\u0022: \u0022string\u0022,\n  \u0022OrderCustomStatusID\u0022: 123,\n  \u0022OrderCustomTypeID\u0022: 123,\n  \u0022OrderDisplayID\u0022: \u0022string\u0022,\n  \u0022OrderFulfillmentReferenceNumbers\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022OrderIDs\u0022: [\n    123\n  ],\n  \u0022OrderLineID\u0022: 123,\n  \u0022OrderStatus\u0022: 1,\n  \u0022OrderType\u0022: 1,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022OriginatingOrganizationUnitID\u0022: 123,\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022PaymentStatus\u0022: 1,\n  \u0022PaymentTransactionBackendID\u0022: \u0022string\u0022,\n  \u0022PaymentTypeID\u0022: 123,\n  \u0022PaymentTypeName\u0022: \u0022string\u0022,\n  \u0022PickupOrganizationUnitID\u0022: 123,\n  \u0022ProductID\u0022: 123,\n  \u0022ProductVariation\u0022: {\n    \u0022key\u0022: [\n      \u0022string\u0022\n    ]\n  },\n  \u0022Properties\u0022: [\n    123\n  ],\n  \u0022Query\u0022: \u0022string\u0022,\n  \u0022ReturnToSupplierRequestID\u0022: 123,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022ShipFromOrganizationUnitID\u0022: 123,\n  \u0022ShipToCountryID\u0022: \u0022st\u0022,\n  \u0022ShipToOrganizationUnitID\u0022: 123,\n  \u0022ShippingMethodID\u0022: 123,\n  \u0022ShippingOrganizationUnitID\u0022: 123,\n  \u0022SoldFromOrganizationUnitID\u0022: 123,\n  \u0022SoldToOrganizationUnitID\u0022: 123,\n  \u0022StartConfirmationDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartCreationTime\u0022: \u00222024-12-16\u0022,\n  \u0022StartMaxExpectedAvailabilityDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartMinExpectedAvailabilityDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartOfferExpirationDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartPlacementDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartRequestedDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartShipmentDate\u0022: \u00222024-12-16\u0022,\n  \u0022StartTime\u0022: \u00222024-12-16\u0022,\n  \u0022UserAgentApplication\u0022: [\n    \u0022string\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SearchOrders",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{\n  \u0022CustomerOrderStatuses\u0022: {\n    \u0022key\u0022: 123\n  },\n  \u0022ProductVariations\u0022: {\n    \u0022key\u0022: {\n      \u0022key\u0022: 123\n    }\n  },\n  \u0022Result\u0022: {\n    \u0022CurrentPage\u0022: 123,\n    \u0022Filters\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022NumberOfPages\u0022: 123,\n    \u0022Offset\u0022: 123,\n    \u0022Page\u0022: [\n      {\n        \u0022BackendID\u0022: \u0022string\u0022,\n        \u0022ConfirmationDate\u0022: \u00222024-12-16\u0022,\n        \u0022CreatedBy\u0022: {\n          \u0022FullName\u0022: \u0022string\u0022,\n          \u0022ID\u0022: 123\n        },\n        \u0022CreationTime\u0022: \u00222024-12-16\u0022,\n        \u0022CurrencyID\u0022: \u0022string\u0022,\n        \u0022CustomOrderTypeID\u0022: 123,\n        \u0022CustomStatus\u0022: 123,\n        \u0022CustomStatusIDs\u0022: [\n          123\n        ],\n        \u0022Customer\u0022: {\n          \u0022CustomFieldValues\u0022: {\n            \u0022key\u0022: {\n              \u0022ArrayValues\u0022: [\n                {\n                  \u0022re\u0022: \u0022cursion\u0022\n                }\n              ],\n              \u0022BlobValue\u0022: \u0022a8598c48-6aa9-4887-9428-e9176ce48df5\u0022,\n              \u0022BoolValue\u0022: true,\n              \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n              \u0022NumberValue\u0022: 123.456,\n              \u0022StringValue\u0022: \u0022string\u0022\n            }\n          },\n          \u0022EmailAddress\u0022: \u0022string\u0022,\n          \u0022FullName\u0022: \u0022string\u0022,\n          \u0022ID\u0022: 123\n        },\n        \u0022CustomerReference\u0022: \u0022string\u0022,\n        \u0022Data\u0022: [\n          {\n            \u0022BooleanValue\u0022: true,\n            \u0022DateValue\u0022: \u00222024-12-16\u0022,\n            \u0022DecimalValue\u0022: 123.456,\n            \u0022Name\u0022: \u0022string\u0022,\n            \u0022StringValue\u0022: \u0022string\u0022\n          }\n        ],\n        \u0022Definition\u0022: {\n          \u0022Status\u0022: {\n            \u0022BackendID\u0022: \u0022string\u0022,\n            \u0022Title\u0022: \u0022string\u0022\n          },\n          \u0022Type\u0022: {\n            \u0022BackendID\u0022: \u0022string\u0022,\n            \u0022Title\u0022: \u0022string\u0022\n          }\n        },\n        \u0022DisplayID\u0022: \u0022string\u0022,\n        \u0022ForeignPaidAmount\u0022: 123.456,\n        \u0022HasCancelledLines\u0022: true,\n        \u0022HasDeliveryLines\u0022: true,\n        \u0022HasDisputedPayments\u0022: true,\n        \u0022HasOrderLines\u0022: true,\n        \u0022HasPriceCorrection\u0022: true,\n        \u0022HasReserveLines\u0022: true,\n        \u0022HasShipLines\u0022: true,\n        \u0022HasUnresolvedDisputedPayments\u0022: true,\n        \u0022ID\u0022: 123,\n        \u0022IsCaptured\u0022: true,\n        \u0022IsCompleted\u0022: true,\n        \u0022IsConfirmed\u0022: true,\n        \u0022IsEmpty\u0022: true,\n        \u0022IsInvoiced\u0022: true,\n        \u0022IsOffer\u0022: true,\n        \u0022IsPaid\u0022: true,\n        \u0022IsPlaced\u0022: true,\n        \u0022IsReserved\u0022: true,\n        \u0022IsShipped\u0022: true,\n        \u0022IsSuspended\u0022: true,\n        \u0022LastModificationTime\u0022: \u00222024-12-16\u0022,\n        \u0022LastModifiedBy\u0022: {\n          \u0022FullName\u0022: \u0022string\u0022,\n          \u0022ID\u0022: 123\n        },\n        \u0022MaxExpectedAvailabilityDate\u0022: \u00222024-12-16\u0022,\n        \u0022MinExpectedAvailabilityDate\u0022: \u00222024-12-16\u0022,\n        \u0022OpenAmount\u0022: 123.456,\n        \u0022OpenAmountInTax\u0022: 123.456,\n        \u0022OrderCustomStatusID\u0022: 123,\n        \u0022OrderCustomTypeID\u0022: 123,\n        \u0022OrganizationUnits\u0022: [\n          {\n            \u0022ID\u0022: 123,\n            \u0022Name\u0022: \u0022string\u0022\n          }\n        ],\n        \u0022OriginatingOrganizationUnit\u0022: {\n          \u0022ID\u0022: 123,\n          \u0022Name\u0022: \u0022string\u0022\n        },\n        \u0022PaidAmount\u0022: 123.456,\n        \u0022PickupOrganizationUnitID\u0022: {\n          \u0022ID\u0022: 123,\n          \u0022Name\u0022: \u0022string\u0022\n        },\n        \u0022PlacementDate\u0022: \u00222024-12-16\u0022,\n        \u0022PriceListIDs\u0022: [\n          123\n        ],\n        \u0022ProductImage\u0022: \u0022string\u0022,\n        \u0022ProductImageUrl\u0022: \u0022string\u0022,\n        \u0022Properties\u0022: 32,\n        \u0022PropertiesIDs\u0022: [\n          123\n        ],\n        \u0022RequestedDate\u0022: \u00222024-12-16\u0022,\n        \u0022ReturnToSupplierRequest\u0022: {\n          \u0022ID\u0022: 123,\n          \u0022Name\u0022: \u0022string\u0022\n        },\n        \u0022ShipFromOrganizationUnit\u0022: {\n          \u0022ID\u0022: 123,\n          \u0022Name\u0022: \u0022string\u0022\n        },\n        \u0022ShipToOrganizationUnit\u0022: {\n          \u0022ID\u0022: 123,\n          \u0022Name\u0022: \u0022string\u0022\n        },\n        \u0022ShippingAddress\u0022: {\n          \u0022CountryID\u0022: \u0022string\u0022\n        },\n        \u0022SoldFromOrganizationUnit\u0022: {\n          \u0022ID\u0022: 123,\n          \u0022Name\u0022: \u0022string\u0022\n        },\n        \u0022SoldToOrganizationUnit\u0022: {\n          \u0022ID\u0022: 123,\n          \u0022Name\u0022: \u0022string\u0022\n        },\n        \u0022Status\u0022: 1,\n        \u0022TotalAmount\u0022: 123.456,\n        \u0022TotalAmountInTax\u0022: 123.456,\n        \u0022TotalItems\u0022: 123,\n        \u0022TotalQuantityShipped\u0022: 123,\n        \u0022TotalQuantityToShip\u0022: 123,\n        \u0022Type\u0022: 1,\n        \u0022UserAgentApplication\u0022: \u0022string\u0022,\n        \u0022UserAgentVersion\u0022: \u0022string\u0022\n      }\n    ],\n    \u0022PageConfig\u0022: {\n      \u0022Filter\u0022: {\n        \u0022key\u0022: \u0022string\u0022\n      },\n      \u0022Limit\u0022: 123,\n      \u0022SortDirection\u0022: 1,\n      \u0022SortProperty\u0022: \u0022string\u0022,\n      \u0022Start\u0022: 123\n    },\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Total\u0022: 123\n  },\n  \u0022UserAgents\u0022: {\n    \u0022key\u0022: {\n      \u0022key\u0022: 123\n    }\n  }\n}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "H",
+  "types": {
+    "C": [
+      {
+        "name": "CustomerCustomFields",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "ProductVariations",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserAgentApplication",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "BooleanValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndDateTime",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndDecimal",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartDateTime",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartDecimal",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "CanFulfill",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsBlocked",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "AdditionalOrderDataOptions",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "AggregationOptions",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "CarrierID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Carrier\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CompanyName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreatedByID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFields",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060CustomField\u0060",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFieldsByBackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomOrderTypeID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060CustomOrderType\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomStatus",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerBackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerOrderStatus",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerOrderStatusBackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerOrderTypeBackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerReference",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[object] | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "DiscountIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Discount\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndConfirmationDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndCreationTime",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndMaxExpectedAvailabilityDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndMinExpectedAvailabilityDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndOfferExpirationDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndPlacementDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndRequestedDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndShipmentDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EndTime",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FulfillmentOrganizationUnitIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FulfillmentStatus",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "HasCancelledLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasCustomer",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasDeliveryLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasDisputedPayments",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasOrderLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasPriceCorrection",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasReserveLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasShipLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasSoldToOrganizationUnit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasUnresolvedDisputedPayments",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IncludeChildOrganizationUnits",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "InvoiceNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsCaptured",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsClickAndCollect",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsCompleted",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsConfirmed",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsCrossChannelReturn",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsEmpty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsEndlessAisle",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsExported",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsInvoiced",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsOffer",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsOrder",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsPlaced",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsReserved",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsReturnToSupplier",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsShipped",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsSuspended",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastModifiedByID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaxOpenAmountInTax",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaxTotalAmountInTax",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaxTotalItems",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinOpenAmountInTax",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinTotalAmountInTax",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinTotalItems",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NotProperties",
+        "deprecation_notice": null,
+        "description": "Properties that should not be present on the order",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderBackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderCustomStatusID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderCustomStatus\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderCustomTypeID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderCustomType\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderDisplayID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderFulfillmentReferenceNumbers",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderLineID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderStatus",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Cart\n* \u00601\u0060 - Order",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Sales\n* \u00601\u0060 - Purchase",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginatingOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PageConfig",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "PaymentStatus",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - NotPaid\n* \u00601\u0060 - Paid\n* \u00602\u0060 - Partial",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTransactionBackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTypeID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060PaymentType\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTypeName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PickupOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductVariation",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Properties",
+        "deprecation_notice": null,
+        "description": "Properties that should be present on the order",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Query",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnToSupplierRequestID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ReturnToSupplierRequest\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipFromOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipToCountryID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Country\u0060\n\nThis string must be between 2 (incl) and 2 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipToOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingMethodID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ShippingMethod\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SoldFromOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SoldToOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartConfirmationDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartCreationTime",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartMaxExpectedAvailabilityDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartMinExpectedAvailabilityDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartOfferExpirationDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartPlacementDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartRequestedDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartShipmentDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StartTime",
+        "deprecation_notice": null,
+        "description": "The StartTime will be defaulted to 3 months ago if not provided and OrderIDs are not provided.",
+        "type": "datetime",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserAgentApplication",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "Code",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "ExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "deprecation_notice": null,
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "FullName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "O": [
+      {
+        "name": "ArrayValues",
+        "deprecation_notice": null,
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "N": [
+      {
+        "name": "CustomFieldValues",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060CustomField\u0060",
+        "type": "map[object] | null",
+        "required": false,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "EmailAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FullName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "P": [
+      {
+        "name": "BooleanValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DecimalValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "R": [
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Title",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "Q": [
+      {
+        "name": "Status",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "R",
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "R",
+        "one_of": null
+      }
+    ],
+    "S": [
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "T": [
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "U": [
+      {
+        "name": "CountryID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ConfirmationDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreatedBy",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "CreationTime",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomOrderTypeID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060CustomOrderType\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomStatus",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomStatusIDs",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Customer",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      },
+      {
+        "name": "CustomerReference",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "P",
+        "one_of": null
+      },
+      {
+        "name": "Definition",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Q",
+        "one_of": null
+      },
+      {
+        "name": "DisplayID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ForeignPaidAmount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasCancelledLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasDeliveryLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasDisputedPayments",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasOrderLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasPriceCorrection",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasReserveLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasShipLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasUnresolvedDisputedPayments",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsCaptured",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsCompleted",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsConfirmed",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsEmpty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsInvoiced",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsOffer",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsPaid",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsPlaced",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsReserved",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsShipped",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsSuspended",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastModificationTime",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastModifiedBy",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "MaxExpectedAvailabilityDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinExpectedAvailabilityDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OpenAmount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OpenAmountInTax",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderCustomStatusID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderCustomTypeID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnits",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "OriginatingOrganizationUnit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "PaidAmount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PickupOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "PlacementDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PriceListIDs",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductImage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductImageUrl",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Properties",
+        "deprecation_notice": null,
+        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - IsPickup\n* \u00602\u0060 - CreatedByEmployee\n* \u00604\u0060 - IsInterbranch\n* \u00608\u0060 - IsB2B\n* \u006016\u0060 - Duplicated\n* \u006032\u0060 - Autocompleted\n* \u0060128\u0060 - ReturnToSupplier\n* \u0060256\u0060 - CustomTaxesApplied\n* \u0060512\u0060 - Replenishment\n* \u00601024\u0060 - SoldByOverridden\n* \u00602048\u0060 - ImportedFromLiveGuard\n* \u00604096\u0060 - IsTransferOrder\n* \u00608192\u0060 - IsReturnsTransferOrder\n* \u006016384\u0060 - IsOffer\n* \u006032768\u0060 - IsUnified\n* \u006065536\u0060 - IsReturned\n* \u0060131072\u0060 - HasReturnLines\n* \u0060262144\u0060 - DownPayment\n* \u0060524288\u0060 - Restitution\n* \u00601048576\u0060 - Repairs\n* \u00602097152\u0060 - IsReturnReversal",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PropertiesIDs",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestedDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnToSupplierRequest",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "T",
+        "one_of": null
+      },
+      {
+        "name": "ShipFromOrganizationUnit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "ShipToOrganizationUnit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "ShippingAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "U",
+        "one_of": null
+      },
+      {
+        "name": "SoldFromOrganizationUnit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "SoldToOrganizationUnit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "Status",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Cart\n* \u00601\u0060 - Order",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalAmount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalAmountInTax",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalItems",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalQuantityShipped",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalQuantityToShip",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Sales\n* \u00601\u0060 - Purchase",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserAgentApplication",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserAgentVersion",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "CurrentPage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberOfPages",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Offset",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Page",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "PageConfig",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Total",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "CustomerOrderStatuses",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "ProductVariations",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[map[integer]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Result",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "UserAgents",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[map[integer]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,2040 @@
+{
+  "name": "PushSalesOrder",
+  "method": "POST",
+  "path": "/message/PushSalesOrder",
+  "description": "Creates an order with all specified data, places it, and raises all follow-up events.\n\nWhenever the order already exists with the same BackendSystemID/BackendID combination, nothing will be modified.",
+  "auth_description": "Requires a user of type \u0060Api\u0060 with functionality \u0060PushSalesOrder:None\u0060",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "JSON",
+      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022BackfillInformation\u0022: {\n    \u0022OriginalCreationDate\u0022: \u00222024-12-16\u0022,\n    \u0022OriginalInvoiceDate\u0022: \u00222024-12-16\u0022,\n    \u0022OriginalInvoiceNumber\u0022: \u0022string\u0022\n  },\n  \u0022BillingAddress\u0022: {\n    \u0022Address1\u0022: \u0022string\u0022,\n    \u0022Address2\u0022: \u0022string\u0022,\n    \u0022City\u0022: \u0022string\u0022,\n    \u0022CountryID\u0022: \u0022st\u0022,\n    \u0022District\u0022: \u0022string\u0022,\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022HouseNumber\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022,\n    \u0022PhoneNumber\u0022: \u0022string\u0022,\n    \u0022Region\u0022: \u0022string\u0022,\n    \u0022State\u0022: \u0022string\u0022,\n    \u0022Subdistrict\u0022: \u0022string\u0022,\n    \u0022ZipCode\u0022: \u0022string\u0022\n  },\n  \u0022Coupons\u0022: [\n    {\n      \u0022CouponCode\u0022: \u0022string\u0022,\n      \u0022DiscountBackendID\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022CustomData\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022CustomFields\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Customer\u0022: {\n    \u0022AccountType\u0022: 1,\n    \u0022BackendID\u0022: \u0022string\u0022,\n    \u0022BackendRelationID\u0022: \u0022string\u0022,\n    \u0022BankAccount\u0022: \u0022string\u0022,\n    \u0022Company\u0022: {\n      \u0022FiscalID\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022RegistrationNumber\u0022: \u0022string\u0022,\n      \u0022VatNumber\u0022: \u0022string\u0022\n    },\n    \u0022CountryID\u0022: \u0022st\u0022,\n    \u0022DateOfBirth\u0022: \u00222024-12-16\u0022,\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022FiscalID\u0022: \u0022string\u0022,\n    \u0022Gender\u0022: \u0022string\u0022,\n    \u0022Initials\u0022: \u0022string\u0022,\n    \u0022LanguageID\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022,\n    \u0022Nickname\u0022: \u0022string\u0022,\n    \u0022PhoneNumber\u0022: \u0022string\u0022,\n    \u0022PlaceOfBirth\u0022: \u0022string\u0022,\n    \u0022Salutation\u0022: \u0022string\u0022,\n    \u0022SocialSecurityNumber\u0022: \u0022string\u0022,\n    \u0022Title\u0022: \u0022string\u0022\n  },\n  \u0022DisableEventExports\u0022: true,\n  \u0022Discounts\u0022: [\n    {\n      \u0022Amount\u0022: 123.456,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CampaignName\u0022: \u0022string\u0022,\n      \u0022CouponCode\u0022: \u0022string\u0022,\n      \u0022Description\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022FulfillmentMethod\u0022: 3,\n  \u0022IsOffer\u0022: true,\n  \u0022Lines\u0022: [\n    {\n      \u0022Amount\u0022: 123.456,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022ChildLines\u0022: [\n        {\n          \u0022Amount\u0022: 123.456,\n          \u0022BackendID\u0022: \u0022string\u0022,\n          \u0022CustomData\u0022: {\n            \u0022key\u0022: \u0022any valid json value\u0022\n          },\n          \u0022CustomFields\u0022: [\n            {\n              \u0022ArrayValues\u0022: [\n                {\n                  \u0022ArrayValues\u0022: [\n                    {\n                      \u0022re\u0022: \u0022cursion\u0022\n                    }\n                  ],\n                  \u0022BlobValue\u0022: \u00222e26fcb4-a586-4815-9f22-a5f2295bff0c\u0022,\n                  \u0022BoolValue\u0022: true,\n                  \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n                  \u0022NumberValue\u0022: 123.456,\n                  \u0022StringValue\u0022: \u0022string\u0022\n                }\n              ],\n              \u0022BlobValue\u0022: \u0022b0d94961-b32a-45a9-808c-0e7f142fcb74\u0022,\n              \u0022BoolValue\u0022: true,\n              \u0022CustomFieldID\u0022: 123,\n              \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n              \u0022NumberValue\u0022: 123.456,\n              \u0022StringValue\u0022: \u0022string\u0022\n            }\n          ],\n          \u0022CustomID\u0022: \u0022string\u0022,\n          \u0022Description\u0022: \u0022string\u0022,\n          \u0022Discounts\u0022: [\n            {\n              \u0022Amount\u0022: 123.456,\n              \u0022BackendID\u0022: \u0022string\u0022,\n              \u0022CampaignName\u0022: \u0022string\u0022,\n              \u0022CouponCode\u0022: \u0022string\u0022,\n              \u0022Description\u0022: \u0022string\u0022\n            }\n          ],\n          \u0022FulfillmentMethod\u0022: 3,\n          \u0022GiftcardData\u0022: {\n            \u0022DeliverySchedule\u0022: \u00222024-12-16\u0022,\n            \u0022From\u0022: \u0022string\u0022,\n            \u0022FromEmailAddress\u0022: \u0022string\u0022,\n            \u0022PhoneNumber\u0022: \u0022string\u0022,\n            \u0022Text\u0022: \u0022string\u0022,\n            \u0022Theme\u0022: {\n              \u0022BackgroundColor\u0022: \u0022string\u0022,\n              \u0022CloudinaryImagePublicID\u0022: \u0022string\u0022,\n              \u0022CloudinaryVideoPublicID\u0022: \u0022string\u0022,\n              \u0022Description\u0022: \u0022string\u0022,\n              \u0022ForegroundColor\u0022: \u0022string\u0022,\n              \u0022ID\u0022: \u0022string\u0022,\n              \u0022ImageBlobID\u0022: \u00225eefd2bf-39e0-47b5-a3d8-6ccb192f6d15\u0022,\n              \u0022ImageHeight\u0022: 123,\n              \u0022ImageUrl\u0022: \u0022string\u0022,\n              \u0022ImageWidth\u0022: 123,\n              \u0022LongDescription\u0022: \u0022string\u0022,\n              \u0022Name\u0022: \u0022string\u0022,\n              \u0022VideoBlobID\u0022: \u002247e45658-e474-4adb-b756-972a4fc22233\u0022,\n              \u0022VideoUrl\u0022: \u0022string\u0022\n            },\n            \u0022To\u0022: \u0022string\u0022,\n            \u0022ToEmailAddress\u0022: \u0022string\u0022,\n            \u0022UpdateUrl\u0022: \u0022string\u0022\n          },\n          \u0022GiftcardMedia\u0022: {\n            \u0022CloudinaryImageID\u0022: \u0022string\u0022,\n            \u0022CloudinaryImageMimeType\u0022: \u0022string\u0022,\n            \u0022CloudinaryVideoID\u0022: \u0022string\u0022,\n            \u0022CloudinaryVideoMimeType\u0022: \u0022string\u0022\n          },\n          \u0022IsFinalSale\u0022: true,\n          \u0022OriginalAmount\u0022: 123.456,\n          \u0022PaymentLineIdentifier\u0022: \u0022string\u0022,\n          \u0022PreferredFulfillmentOrganizationUnitBackendID\u0022: \u0022string\u0022,\n          \u0022ProductID\u0022: 123,\n          \u0022ProductRequirements\u0022: [\n            {\n              \u0022Name\u0022: \u0022string\u0022,\n              \u0022Value\u0022: \u0022any valid json value\u0022\n            }\n          ],\n          \u0022Quantity\u0022: 123,\n          \u0022RequestedDeliveryDate\u0022: \u00222024-12-16\u0022,\n          \u0022SerialNumber\u0022: \u0022string\u0022,\n          \u0022Shipments\u0022: [\n            {\n              \u0022BackendID\u0022: \u0022string\u0022,\n              \u0022Quantity\u0022: 123,\n              \u0022ShipmentBackendID\u0022: \u0022string\u0022,\n              \u0022ShipmentDate\u0022: \u00222024-12-16\u0022\n            }\n          ],\n          \u0022TaxAmount\u0022: 123.456,\n          \u0022TaxExemptionCode\u0022: \u0022string\u0022,\n          \u0022TaxExemptionReason\u0022: \u0022string\u0022,\n          \u0022TaxRate\u0022: 123.456,\n          \u0022TaxRateCategory\u0022: 5\n        }\n      ],\n      \u0022CustomData\u0022: {\n        \u0022key\u0022: \u0022any valid json value\u0022\n      },\n      \u0022CustomFields\u0022: [\n        {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022ArrayValues\u0022: [\n                {\n                  \u0022re\u0022: \u0022cursion\u0022\n                }\n              ],\n              \u0022BlobValue\u0022: \u00226ed2bcac-9e2a-4e5d-8fc8-a0950d9437c3\u0022,\n              \u0022BoolValue\u0022: true,\n              \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n              \u0022NumberValue\u0022: 123.456,\n              \u0022StringValue\u0022: \u0022string\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u002217c69ec1-eb85-4dc5-ab58-8ced3bef4b32\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022CustomFieldID\u0022: 123,\n          \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022CustomID\u0022: \u0022string\u0022,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Discounts\u0022: [\n        {\n          \u0022Amount\u0022: 123.456,\n          \u0022BackendID\u0022: \u0022string\u0022,\n          \u0022CampaignName\u0022: \u0022string\u0022,\n          \u0022CouponCode\u0022: \u0022string\u0022,\n          \u0022Description\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022FulfillmentMethod\u0022: 3,\n      \u0022GiftcardData\u0022: {\n        \u0022DeliverySchedule\u0022: \u00222024-12-16\u0022,\n        \u0022From\u0022: \u0022string\u0022,\n        \u0022FromEmailAddress\u0022: \u0022string\u0022,\n        \u0022PhoneNumber\u0022: \u0022string\u0022,\n        \u0022Text\u0022: \u0022string\u0022,\n        \u0022Theme\u0022: {\n          \u0022BackgroundColor\u0022: \u0022string\u0022,\n          \u0022CloudinaryImagePublicID\u0022: \u0022string\u0022,\n          \u0022CloudinaryVideoPublicID\u0022: \u0022string\u0022,\n          \u0022Description\u0022: \u0022string\u0022,\n          \u0022ForegroundColor\u0022: \u0022string\u0022,\n          \u0022ID\u0022: \u0022string\u0022,\n          \u0022ImageBlobID\u0022: \u0022ca5b049c-9f78-496e-9e3c-6c0aab37a088\u0022,\n          \u0022ImageHeight\u0022: 123,\n          \u0022ImageUrl\u0022: \u0022string\u0022,\n          \u0022ImageWidth\u0022: 123,\n          \u0022LongDescription\u0022: \u0022string\u0022,\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022VideoBlobID\u0022: \u00226850c750-e812-4eaa-9c2f-042fcbea361a\u0022,\n          \u0022VideoUrl\u0022: \u0022string\u0022\n        },\n        \u0022To\u0022: \u0022string\u0022,\n        \u0022ToEmailAddress\u0022: \u0022string\u0022,\n        \u0022UpdateUrl\u0022: \u0022string\u0022\n      },\n      \u0022GiftcardMedia\u0022: {\n        \u0022CloudinaryImageID\u0022: \u0022string\u0022,\n        \u0022CloudinaryImageMimeType\u0022: \u0022string\u0022,\n        \u0022CloudinaryVideoID\u0022: \u0022string\u0022,\n        \u0022CloudinaryVideoMimeType\u0022: \u0022string\u0022\n      },\n      \u0022GroupID\u0022: \u00228ff5f1da-5401-4f6c-be1c-e25d8762f851\u0022,\n      \u0022IsFinalSale\u0022: true,\n      \u0022OriginalAmount\u0022: 123.456,\n      \u0022PaymentLineIdentifier\u0022: \u0022string\u0022,\n      \u0022PreferredFulfillmentOrganizationUnitBackendID\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022ProductRequirements\u0022: [\n        {\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022Value\u0022: \u0022any valid json value\u0022\n        }\n      ],\n      \u0022Quantity\u0022: 123,\n      \u0022RequestedDeliveryDate\u0022: \u00222024-12-16\u0022,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022Shipments\u0022: [\n        {\n          \u0022BackendID\u0022: \u0022string\u0022,\n          \u0022Quantity\u0022: 123,\n          \u0022ShipmentBackendID\u0022: \u0022string\u0022,\n          \u0022ShipmentDate\u0022: \u00222024-12-16\u0022\n        }\n      ],\n      \u0022TaxAmount\u0022: 123.456,\n      \u0022TaxExemptionCode\u0022: \u0022string\u0022,\n      \u0022TaxExemptionReason\u0022: \u0022string\u0022,\n      \u0022TaxRate\u0022: 123.456,\n      \u0022TaxRateCategory\u0022: 5\n    }\n  ],\n  \u0022LockOrder\u0022: true,\n  \u0022LoyaltyProgramBackendID\u0022: \u0022string\u0022,\n  \u0022OfferExpirationDate\u0022: \u00222024-12-16\u0022,\n  \u0022Options\u0022: {\n    \u0022AllowPartialFulfillment\u0022: true,\n    \u0022CheckOpenAmountIsZero\u0022: true,\n    \u0022DoNotInvoice\u0022: true\n  },\n  \u0022Payments\u0022: [\n    {\n      \u0022Amount\u0022: 123.456,\n      \u0022AutoConfirm\u0022: true,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CaptureMoment\u0022: 3,\n      \u0022CapturedAmount\u0022: 123.456,\n      \u0022Data\u0022: \u0022string\u0022,\n      \u0022ForeignAmount\u0022: 123.456,\n      \u0022ForeignCurrencyID\u0022: \u0022string\u0022,\n      \u0022Method\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022PickupAddress\u0022: {\n    \u0022Address1\u0022: \u0022string\u0022,\n    \u0022Address2\u0022: \u0022string\u0022,\n    \u0022City\u0022: \u0022string\u0022,\n    \u0022CountryID\u0022: \u0022st\u0022,\n    \u0022District\u0022: \u0022string\u0022,\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022HouseNumber\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022,\n    \u0022PhoneNumber\u0022: \u0022string\u0022,\n    \u0022Region\u0022: \u0022string\u0022,\n    \u0022State\u0022: \u0022string\u0022,\n    \u0022Subdistrict\u0022: \u0022string\u0022,\n    \u0022ZipCode\u0022: \u0022string\u0022\n  },\n  \u0022PickupOrganizationUnitBackendID\u0022: \u0022string\u0022,\n  \u0022Properties\u0022: {\n    \u0022IsInterbranch\u0022: true,\n    \u0022Replenishment\u0022: true,\n    \u0022ReturnToSupplier\u0022: true\n  },\n  \u0022Remark\u0022: \u0022string\u0022,\n  \u0022ReturnToSupplierReason\u0022: \u0022string\u0022,\n  \u0022ShipToOrganizationUnitBackendID\u0022: \u0022string\u0022,\n  \u0022Shipments\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022ShipmentDate\u0022: \u00222024-12-16\u0022,\n      \u0022TrackingCode\u0022: \u0022string\u0022,\n      \u0022TrackingLink\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022ShippingAddress\u0022: {\n    \u0022Address1\u0022: \u0022string\u0022,\n    \u0022Address2\u0022: \u0022string\u0022,\n    \u0022City\u0022: \u0022string\u0022,\n    \u0022CountryID\u0022: \u0022st\u0022,\n    \u0022District\u0022: \u0022string\u0022,\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022HouseNumber\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022,\n    \u0022PhoneNumber\u0022: \u0022string\u0022,\n    \u0022Region\u0022: \u0022string\u0022,\n    \u0022State\u0022: \u0022string\u0022,\n    \u0022Subdistrict\u0022: \u0022string\u0022,\n    \u0022ZipCode\u0022: \u0022string\u0022\n  },\n  \u0022ShippingInformation\u0022: {\n    \u0022Amount\u0022: 123.456,\n    \u0022Discount\u0022: {\n      \u0022Amount\u0022: 123.456,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CampaignName\u0022: \u0022string\u0022,\n      \u0022CouponCode\u0022: \u0022string\u0022,\n      \u0022Description\u0022: \u0022string\u0022\n    },\n    \u0022Method\u0022: \u0022string\u0022,\n    \u0022PaymentLineIdentifier\u0022: \u0022string\u0022,\n    \u0022TaxAmount\u0022: 123.456,\n    \u0022TaxRate\u0022: 123.456\n  },\n  \u0022SoldFromOrganizationUnitBackendID\u0022: \u0022string\u0022\n}",
+      "syntax": "json"
+    },
+    {
+      "name": "CURL",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022BackfillInformation\u0022: {\n    \u0022OriginalCreationDate\u0022: \u00222024-12-16\u0022,\n    \u0022OriginalInvoiceDate\u0022: \u00222024-12-16\u0022,\n    \u0022OriginalInvoiceNumber\u0022: \u0022string\u0022\n  },\n  \u0022BillingAddress\u0022: {\n    \u0022Address1\u0022: \u0022string\u0022,\n    \u0022Address2\u0022: \u0022string\u0022,\n    \u0022City\u0022: \u0022string\u0022,\n    \u0022CountryID\u0022: \u0022st\u0022,\n    \u0022District\u0022: \u0022string\u0022,\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022HouseNumber\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022,\n    \u0022PhoneNumber\u0022: \u0022string\u0022,\n    \u0022Region\u0022: \u0022string\u0022,\n    \u0022State\u0022: \u0022string\u0022,\n    \u0022Subdistrict\u0022: \u0022string\u0022,\n    \u0022ZipCode\u0022: \u0022string\u0022\n  },\n  \u0022Coupons\u0022: [\n    {\n      \u0022CouponCode\u0022: \u0022string\u0022,\n      \u0022DiscountBackendID\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022CustomData\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022CustomFields\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Customer\u0022: {\n    \u0022AccountType\u0022: 1,\n    \u0022BackendID\u0022: \u0022string\u0022,\n    \u0022BackendRelationID\u0022: \u0022string\u0022,\n    \u0022BankAccount\u0022: \u0022string\u0022,\n    \u0022Company\u0022: {\n      \u0022FiscalID\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022RegistrationNumber\u0022: \u0022string\u0022,\n      \u0022VatNumber\u0022: \u0022string\u0022\n    },\n    \u0022CountryID\u0022: \u0022st\u0022,\n    \u0022DateOfBirth\u0022: \u00222024-12-16\u0022,\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022FiscalID\u0022: \u0022string\u0022,\n    \u0022Gender\u0022: \u0022string\u0022,\n    \u0022Initials\u0022: \u0022string\u0022,\n    \u0022LanguageID\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022,\n    \u0022Nickname\u0022: \u0022string\u0022,\n    \u0022PhoneNumber\u0022: \u0022string\u0022,\n    \u0022PlaceOfBirth\u0022: \u0022string\u0022,\n    \u0022Salutation\u0022: \u0022string\u0022,\n    \u0022SocialSecurityNumber\u0022: \u0022string\u0022,\n    \u0022Title\u0022: \u0022string\u0022\n  },\n  \u0022DisableEventExports\u0022: true,\n  \u0022Discounts\u0022: [\n    {\n      \u0022Amount\u0022: 123.456,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CampaignName\u0022: \u0022string\u0022,\n      \u0022CouponCode\u0022: \u0022string\u0022,\n      \u0022Description\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022FulfillmentMethod\u0022: 3,\n  \u0022IsOffer\u0022: true,\n  \u0022Lines\u0022: [\n    {\n      \u0022Amount\u0022: 123.456,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022ChildLines\u0022: [\n        {\n          \u0022Amount\u0022: 123.456,\n          \u0022BackendID\u0022: \u0022string\u0022,\n          \u0022CustomData\u0022: {\n            \u0022key\u0022: \u0022any valid json value\u0022\n          },\n          \u0022CustomFields\u0022: [\n            {\n              \u0022ArrayValues\u0022: [\n                {\n                  \u0022ArrayValues\u0022: [\n                    {\n                      \u0022re\u0022: \u0022cursion\u0022\n                    }\n                  ],\n                  \u0022BlobValue\u0022: \u00222e26fcb4-a586-4815-9f22-a5f2295bff0c\u0022,\n                  \u0022BoolValue\u0022: true,\n                  \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n                  \u0022NumberValue\u0022: 123.456,\n                  \u0022StringValue\u0022: \u0022string\u0022\n                }\n              ],\n              \u0022BlobValue\u0022: \u0022b0d94961-b32a-45a9-808c-0e7f142fcb74\u0022,\n              \u0022BoolValue\u0022: true,\n              \u0022CustomFieldID\u0022: 123,\n              \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n              \u0022NumberValue\u0022: 123.456,\n              \u0022StringValue\u0022: \u0022string\u0022\n            }\n          ],\n          \u0022CustomID\u0022: \u0022string\u0022,\n          \u0022Description\u0022: \u0022string\u0022,\n          \u0022Discounts\u0022: [\n            {\n              \u0022Amount\u0022: 123.456,\n              \u0022BackendID\u0022: \u0022string\u0022,\n              \u0022CampaignName\u0022: \u0022string\u0022,\n              \u0022CouponCode\u0022: \u0022string\u0022,\n              \u0022Description\u0022: \u0022string\u0022\n            }\n          ],\n          \u0022FulfillmentMethod\u0022: 3,\n          \u0022GiftcardData\u0022: {\n            \u0022DeliverySchedule\u0022: \u00222024-12-16\u0022,\n            \u0022From\u0022: \u0022string\u0022,\n            \u0022FromEmailAddress\u0022: \u0022string\u0022,\n            \u0022PhoneNumber\u0022: \u0022string\u0022,\n            \u0022Text\u0022: \u0022string\u0022,\n            \u0022Theme\u0022: {\n              \u0022BackgroundColor\u0022: \u0022string\u0022,\n              \u0022CloudinaryImagePublicID\u0022: \u0022string\u0022,\n              \u0022CloudinaryVideoPublicID\u0022: \u0022string\u0022,\n              \u0022Description\u0022: \u0022string\u0022,\n              \u0022ForegroundColor\u0022: \u0022string\u0022,\n              \u0022ID\u0022: \u0022string\u0022,\n              \u0022ImageBlobID\u0022: \u00225eefd2bf-39e0-47b5-a3d8-6ccb192f6d15\u0022,\n              \u0022ImageHeight\u0022: 123,\n              \u0022ImageUrl\u0022: \u0022string\u0022,\n              \u0022ImageWidth\u0022: 123,\n              \u0022LongDescription\u0022: \u0022string\u0022,\n              \u0022Name\u0022: \u0022string\u0022,\n              \u0022VideoBlobID\u0022: \u002247e45658-e474-4adb-b756-972a4fc22233\u0022,\n              \u0022VideoUrl\u0022: \u0022string\u0022\n            },\n            \u0022To\u0022: \u0022string\u0022,\n            \u0022ToEmailAddress\u0022: \u0022string\u0022,\n            \u0022UpdateUrl\u0022: \u0022string\u0022\n          },\n          \u0022GiftcardMedia\u0022: {\n            \u0022CloudinaryImageID\u0022: \u0022string\u0022,\n            \u0022CloudinaryImageMimeType\u0022: \u0022string\u0022,\n            \u0022CloudinaryVideoID\u0022: \u0022string\u0022,\n            \u0022CloudinaryVideoMimeType\u0022: \u0022string\u0022\n          },\n          \u0022IsFinalSale\u0022: true,\n          \u0022OriginalAmount\u0022: 123.456,\n          \u0022PaymentLineIdentifier\u0022: \u0022string\u0022,\n          \u0022PreferredFulfillmentOrganizationUnitBackendID\u0022: \u0022string\u0022,\n          \u0022ProductID\u0022: 123,\n          \u0022ProductRequirements\u0022: [\n            {\n              \u0022Name\u0022: \u0022string\u0022,\n              \u0022Value\u0022: \u0022any valid json value\u0022\n            }\n          ],\n          \u0022Quantity\u0022: 123,\n          \u0022RequestedDeliveryDate\u0022: \u00222024-12-16\u0022,\n          \u0022SerialNumber\u0022: \u0022string\u0022,\n          \u0022Shipments\u0022: [\n            {\n              \u0022BackendID\u0022: \u0022string\u0022,\n              \u0022Quantity\u0022: 123,\n              \u0022ShipmentBackendID\u0022: \u0022string\u0022,\n              \u0022ShipmentDate\u0022: \u00222024-12-16\u0022\n            }\n          ],\n          \u0022TaxAmount\u0022: 123.456,\n          \u0022TaxExemptionCode\u0022: \u0022string\u0022,\n          \u0022TaxExemptionReason\u0022: \u0022string\u0022,\n          \u0022TaxRate\u0022: 123.456,\n          \u0022TaxRateCategory\u0022: 5\n        }\n      ],\n      \u0022CustomData\u0022: {\n        \u0022key\u0022: \u0022any valid json value\u0022\n      },\n      \u0022CustomFields\u0022: [\n        {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022ArrayValues\u0022: [\n                {\n                  \u0022re\u0022: \u0022cursion\u0022\n                }\n              ],\n              \u0022BlobValue\u0022: \u00226ed2bcac-9e2a-4e5d-8fc8-a0950d9437c3\u0022,\n              \u0022BoolValue\u0022: true,\n              \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n              \u0022NumberValue\u0022: 123.456,\n              \u0022StringValue\u0022: \u0022string\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u002217c69ec1-eb85-4dc5-ab58-8ced3bef4b32\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022CustomFieldID\u0022: 123,\n          \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022CustomID\u0022: \u0022string\u0022,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Discounts\u0022: [\n        {\n          \u0022Amount\u0022: 123.456,\n          \u0022BackendID\u0022: \u0022string\u0022,\n          \u0022CampaignName\u0022: \u0022string\u0022,\n          \u0022CouponCode\u0022: \u0022string\u0022,\n          \u0022Description\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022FulfillmentMethod\u0022: 3,\n      \u0022GiftcardData\u0022: {\n        \u0022DeliverySchedule\u0022: \u00222024-12-16\u0022,\n        \u0022From\u0022: \u0022string\u0022,\n        \u0022FromEmailAddress\u0022: \u0022string\u0022,\n        \u0022PhoneNumber\u0022: \u0022string\u0022,\n        \u0022Text\u0022: \u0022string\u0022,\n        \u0022Theme\u0022: {\n          \u0022BackgroundColor\u0022: \u0022string\u0022,\n          \u0022CloudinaryImagePublicID\u0022: \u0022string\u0022,\n          \u0022CloudinaryVideoPublicID\u0022: \u0022string\u0022,\n          \u0022Description\u0022: \u0022string\u0022,\n          \u0022ForegroundColor\u0022: \u0022string\u0022,\n          \u0022ID\u0022: \u0022string\u0022,\n          \u0022ImageBlobID\u0022: \u0022ca5b049c-9f78-496e-9e3c-6c0aab37a088\u0022,\n          \u0022ImageHeight\u0022: 123,\n          \u0022ImageUrl\u0022: \u0022string\u0022,\n          \u0022ImageWidth\u0022: 123,\n          \u0022LongDescription\u0022: \u0022string\u0022,\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022VideoBlobID\u0022: \u00226850c750-e812-4eaa-9c2f-042fcbea361a\u0022,\n          \u0022VideoUrl\u0022: \u0022string\u0022\n        },\n        \u0022To\u0022: \u0022string\u0022,\n        \u0022ToEmailAddress\u0022: \u0022string\u0022,\n        \u0022UpdateUrl\u0022: \u0022string\u0022\n      },\n      \u0022GiftcardMedia\u0022: {\n        \u0022CloudinaryImageID\u0022: \u0022string\u0022,\n        \u0022CloudinaryImageMimeType\u0022: \u0022string\u0022,\n        \u0022CloudinaryVideoID\u0022: \u0022string\u0022,\n        \u0022CloudinaryVideoMimeType\u0022: \u0022string\u0022\n      },\n      \u0022GroupID\u0022: \u00228ff5f1da-5401-4f6c-be1c-e25d8762f851\u0022,\n      \u0022IsFinalSale\u0022: true,\n      \u0022OriginalAmount\u0022: 123.456,\n      \u0022PaymentLineIdentifier\u0022: \u0022string\u0022,\n      \u0022PreferredFulfillmentOrganizationUnitBackendID\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022ProductRequirements\u0022: [\n        {\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022Value\u0022: \u0022any valid json value\u0022\n        }\n      ],\n      \u0022Quantity\u0022: 123,\n      \u0022RequestedDeliveryDate\u0022: \u00222024-12-16\u0022,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022Shipments\u0022: [\n        {\n          \u0022BackendID\u0022: \u0022string\u0022,\n          \u0022Quantity\u0022: 123,\n          \u0022ShipmentBackendID\u0022: \u0022string\u0022,\n          \u0022ShipmentDate\u0022: \u00222024-12-16\u0022\n        }\n      ],\n      \u0022TaxAmount\u0022: 123.456,\n      \u0022TaxExemptionCode\u0022: \u0022string\u0022,\n      \u0022TaxExemptionReason\u0022: \u0022string\u0022,\n      \u0022TaxRate\u0022: 123.456,\n      \u0022TaxRateCategory\u0022: 5\n    }\n  ],\n  \u0022LockOrder\u0022: true,\n  \u0022LoyaltyProgramBackendID\u0022: \u0022string\u0022,\n  \u0022OfferExpirationDate\u0022: \u00222024-12-16\u0022,\n  \u0022Options\u0022: {\n    \u0022AllowPartialFulfillment\u0022: true,\n    \u0022CheckOpenAmountIsZero\u0022: true,\n    \u0022DoNotInvoice\u0022: true\n  },\n  \u0022Payments\u0022: [\n    {\n      \u0022Amount\u0022: 123.456,\n      \u0022AutoConfirm\u0022: true,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CaptureMoment\u0022: 3,\n      \u0022CapturedAmount\u0022: 123.456,\n      \u0022Data\u0022: \u0022string\u0022,\n      \u0022ForeignAmount\u0022: 123.456,\n      \u0022ForeignCurrencyID\u0022: \u0022string\u0022,\n      \u0022Method\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022PickupAddress\u0022: {\n    \u0022Address1\u0022: \u0022string\u0022,\n    \u0022Address2\u0022: \u0022string\u0022,\n    \u0022City\u0022: \u0022string\u0022,\n    \u0022CountryID\u0022: \u0022st\u0022,\n    \u0022District\u0022: \u0022string\u0022,\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022HouseNumber\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022,\n    \u0022PhoneNumber\u0022: \u0022string\u0022,\n    \u0022Region\u0022: \u0022string\u0022,\n    \u0022State\u0022: \u0022string\u0022,\n    \u0022Subdistrict\u0022: \u0022string\u0022,\n    \u0022ZipCode\u0022: \u0022string\u0022\n  },\n  \u0022PickupOrganizationUnitBackendID\u0022: \u0022string\u0022,\n  \u0022Properties\u0022: {\n    \u0022IsInterbranch\u0022: true,\n    \u0022Replenishment\u0022: true,\n    \u0022ReturnToSupplier\u0022: true\n  },\n  \u0022Remark\u0022: \u0022string\u0022,\n  \u0022ReturnToSupplierReason\u0022: \u0022string\u0022,\n  \u0022ShipToOrganizationUnitBackendID\u0022: \u0022string\u0022,\n  \u0022Shipments\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022ShipmentDate\u0022: \u00222024-12-16\u0022,\n      \u0022TrackingCode\u0022: \u0022string\u0022,\n      \u0022TrackingLink\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022ShippingAddress\u0022: {\n    \u0022Address1\u0022: \u0022string\u0022,\n    \u0022Address2\u0022: \u0022string\u0022,\n    \u0022City\u0022: \u0022string\u0022,\n    \u0022CountryID\u0022: \u0022st\u0022,\n    \u0022District\u0022: \u0022string\u0022,\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022HouseNumber\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022,\n    \u0022PhoneNumber\u0022: \u0022string\u0022,\n    \u0022Region\u0022: \u0022string\u0022,\n    \u0022State\u0022: \u0022string\u0022,\n    \u0022Subdistrict\u0022: \u0022string\u0022,\n    \u0022ZipCode\u0022: \u0022string\u0022\n  },\n  \u0022ShippingInformation\u0022: {\n    \u0022Amount\u0022: 123.456,\n    \u0022Discount\u0022: {\n      \u0022Amount\u0022: 123.456,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CampaignName\u0022: \u0022string\u0022,\n      \u0022CouponCode\u0022: \u0022string\u0022,\n      \u0022Description\u0022: \u0022string\u0022\n    },\n    \u0022Method\u0022: \u0022string\u0022,\n    \u0022PaymentLineIdentifier\u0022: \u0022string\u0022,\n    \u0022TaxAmount\u0022: 123.456,\n    \u0022TaxRate\u0022: 123.456\n  },\n  \u0022SoldFromOrganizationUnitBackendID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/PushSalesOrder",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{\n  \u0022AlreadyExists\u0022: true,\n  \u0022CustomerID\u0022: 123,\n  \u0022ID\u0022: 123\n}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "W",
+  "types": {
+    "C": [
+      {
+        "name": "OriginalCreationDate",
+        "deprecation_notice": null,
+        "description": "Original date when this order was created",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginalInvoiceDate",
+        "deprecation_notice": null,
+        "description": "Original date when this order was invoiced",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginalInvoiceNumber",
+        "deprecation_notice": null,
+        "description": "Original invoicenumber of this order\n\nThis string must be between 0 (incl) and 50 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Address1",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Address2",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "City",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "deprecation_notice": null,
+        "description": "ISO 3166-1\n\nThis is the ID of a \u0060Country\u0060\n\nThis string must be between 2 (incl) and 2 (incl) characters long.",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "District",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EmailAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FirstName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HouseNumber",
+        "deprecation_notice": null,
+        "description": "House number, including possible extensions",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PhoneNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Region",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "State",
+        "deprecation_notice": null,
+        "description": "ISO 3166-2",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Subdistrict",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ZipCode",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "CouponCode",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DiscountBackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "FiscalID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RegistrationNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "VatNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "AccountType",
+        "deprecation_notice": null,
+        "description": "Is this a Standard/Basic/Incognito account?\nPossible values:\n\n* \u00600\u0060 - Standard\n* \u00601\u0060 - Basic\n* \u00602\u0060 - Incognito",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendRelationID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BankAccount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Company",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "deprecation_notice": null,
+        "description": "ISO 3166-1\n\nThis is the ID of a \u0060Country\u0060\n\nThis string must be between 2 (incl) and 2 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateOfBirth",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EmailAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FirstName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FiscalID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Gender",
+        "deprecation_notice": null,
+        "description": "Possible values are: M, F, O",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Initials",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LanguageID",
+        "deprecation_notice": null,
+        "description": "ISO 639-1\n\nThis is the ID of a \u0060Language\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Nickname",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PhoneNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PlaceOfBirth",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Salutation",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SocialSecurityNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Title",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "Amount",
+        "deprecation_notice": null,
+        "description": "Amount of the discount, typically with a negative value",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "Reference to the discount of the 3rd party",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CampaignName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CouponCode",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [
+      {
+        "name": "ArrayValues",
+        "deprecation_notice": null,
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "ArrayValues",
+        "deprecation_notice": null,
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFieldID",
+        "deprecation_notice": null,
+        "description": "Identifier for the custom field\n\nThis is the ID of a \u0060CustomField\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "N": [
+      {
+        "name": "BackgroundColor",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CloudinaryImagePublicID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CloudinaryVideoPublicID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ForegroundColor",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageBlobID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageHeight",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageUrl",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageWidth",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LongDescription",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "VideoBlobID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "VideoUrl",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "DeliverySchedule",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "From",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FromEmailAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PhoneNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Text",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Theme",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      },
+      {
+        "name": "To",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ToEmailAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UpdateUrl",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "O": [
+      {
+        "name": "CloudinaryImageID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CloudinaryImageMimeType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CloudinaryVideoID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CloudinaryVideoMimeType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "P": [
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "Q": [
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "Identifier of the shipment line",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentBackendID",
+        "deprecation_notice": null,
+        "description": "Identifier of the shipment, must exist in the Order.Shipments",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentDate",
+        "deprecation_notice": null,
+        "description": "Date when this shipment line was shipped, will fall-back to the Shipment.ShipmentDate",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "Amount",
+        "deprecation_notice": null,
+        "description": "Price of a single unit, before discounts, based on the SoldFromOrganizationUnit settings this should be in or ex tax. See service documentation.",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "ID of the order line from the 3rd party",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomData",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFields",
+        "deprecation_notice": null,
+        "description": "Optional additional custom fields",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "CustomID",
+        "deprecation_notice": null,
+        "description": "Article number of the product from the 3rd party",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Discounts",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "FulfillmentMethod",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00601\u0060 - Delivery\n* \u00602\u0060 - Pickup\n* \u00603\u0060 - CarryOut",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GiftcardData",
+        "deprecation_notice": null,
+        "description": "Used for passing in the data for a digital giftcard.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "GiftcardMedia",
+        "deprecation_notice": null,
+        "description": "Used for passing in the media information for a digital giftcard.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "IsFinalSale",
+        "deprecation_notice": null,
+        "description": "Marks the line as a final sale line, making it non returnable.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginalAmount",
+        "deprecation_notice": null,
+        "description": "Original price of a single unit, before discounts, based on the SoldFromOrganizationUnit settings this should be in or ex tax. See service documentation.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentLineIdentifier",
+        "deprecation_notice": null,
+        "description": "Used for passing the identifier used to identify this line at the payment provider. This is required for payments that need capture on line level like Klarna.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PreferredFulfillmentOrganizationUnitBackendID",
+        "deprecation_notice": null,
+        "description": "Allows you to specify a preferred organization for doing the physical fulfillment of the OrderLine.\nDepending on your order orchestration configuration this can be a hard filter or merely a preference.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductRequirements",
+        "deprecation_notice": null,
+        "description": "Product requirements",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "P",
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestedDeliveryDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumber",
+        "deprecation_notice": null,
+        "description": "Used for passing in the serial number of, for example, a gift card. This is used to support refunding and other operations on the gift card.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Shipments",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "Q",
+        "one_of": null
+      },
+      {
+        "name": "TaxAmount",
+        "deprecation_notice": null,
+        "description": "When known the exact TaxAmount can be specified. Used when tax calculations are done by an external party like Avatax.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxExemptionCode",
+        "deprecation_notice": null,
+        "description": "A code identifying the tax exemption.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxExemptionReason",
+        "deprecation_notice": null,
+        "description": "A longer description with the justification for the tax exemption.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxRate",
+        "deprecation_notice": null,
+        "description": "When no tax rate is provided, the taxrate will be based on what is known in Eva. When no rate can be determined, an error will be thrown.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxRateCategory",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - High\n* \u00601\u0060 - Low\n* \u00602\u0060 - Zero\n* \u00603\u0060 - Exempt\n* \u00604\u0060 - Intermediate\n* \u00605\u0060 - Dynamic",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "Amount",
+        "deprecation_notice": null,
+        "description": "Price of a single unit, before discounts, based on the SoldFromOrganizationUnit settings this should be in or ex tax. See service documentation.",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "ID of the order line from the 3rd party",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ChildLines",
+        "deprecation_notice": null,
+        "description": "Child lines for this line",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "CustomData",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFields",
+        "deprecation_notice": null,
+        "description": "Optional additional custom fields",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "CustomID",
+        "deprecation_notice": null,
+        "description": "Article number of the product from the 3rd party",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Discounts",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "FulfillmentMethod",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00601\u0060 - Delivery\n* \u00602\u0060 - Pickup\n* \u00603\u0060 - CarryOut",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GiftcardData",
+        "deprecation_notice": null,
+        "description": "Used for passing in the data for a digital giftcard.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "GiftcardMedia",
+        "deprecation_notice": null,
+        "description": "Used for passing in the media information for a digital giftcard.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "GroupID",
+        "deprecation_notice": null,
+        "description": "Optional grouping identifier to keep lines \u0027together\u0027.",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsFinalSale",
+        "deprecation_notice": null,
+        "description": "Marks the line as a final sale line, making it non returnable.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginalAmount",
+        "deprecation_notice": null,
+        "description": "Original price of a single unit, before discounts, based on the SoldFromOrganizationUnit settings this should be in or ex tax. See service documentation.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentLineIdentifier",
+        "deprecation_notice": null,
+        "description": "Used for passing the identifier used to identify this line at the payment provider. This is required for payments that need capture on line level like Klarna.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PreferredFulfillmentOrganizationUnitBackendID",
+        "deprecation_notice": null,
+        "description": "Allows you to specify a preferred organization for doing the physical fulfillment of the OrderLine.\nDepending on your order orchestration configuration this can be a hard filter or merely a preference.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductRequirements",
+        "deprecation_notice": null,
+        "description": "Product requirements",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "P",
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestedDeliveryDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumber",
+        "deprecation_notice": null,
+        "description": "Used for passing in the serial number of, for example, a gift card. This is used to support refunding and other operations on the gift card.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Shipments",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "Q",
+        "one_of": null
+      },
+      {
+        "name": "TaxAmount",
+        "deprecation_notice": null,
+        "description": "When known the exact TaxAmount can be specified. Used when tax calculations are done by an external party like Avatax.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxExemptionCode",
+        "deprecation_notice": null,
+        "description": "A code identifying the tax exemption.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxExemptionReason",
+        "deprecation_notice": null,
+        "description": "A longer description with the justification for the tax exemption.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxRate",
+        "deprecation_notice": null,
+        "description": "When no tax rate is provided, the taxrate will be based on what is known in Eva. When no rate can be determined, an error will be thrown.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxRateCategory",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - High\n* \u00601\u0060 - Low\n* \u00602\u0060 - Zero\n* \u00603\u0060 - Exempt\n* \u00604\u0060 - Intermediate\n* \u00605\u0060 - Dynamic",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "R": [
+      {
+        "name": "AllowPartialFulfillment",
+        "deprecation_notice": null,
+        "description": "Allow the order to be fulfilled in multiple shipments",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CheckOpenAmountIsZero",
+        "deprecation_notice": null,
+        "description": "When true, this service call return with an error when the order does not end up with an open amount of exactly 0",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DoNotInvoice",
+        "deprecation_notice": null,
+        "description": "Never generate an invoice for this order. The order will be completed when it\u0027s Paid\u002BShipped",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "S": [
+      {
+        "name": "Amount",
+        "deprecation_notice": null,
+        "description": "Amount of the payment that was actually paid",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AutoConfirm",
+        "deprecation_notice": null,
+        "description": "Whether to automatically confirm the payment or adhere to the payment type configuration.\nThe default value is set to true.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "Identifier of the payment by the 3rd party (e.g. the one from the payment service provider (PSP))",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CaptureMoment",
+        "deprecation_notice": null,
+        "description": "If this is set to not None, the Payment will not be considered captured, but only Authorized. This means the capture will be done based on this value.\nIf it\u0027s not set, the CaptureMoment will be determined based on the PaymentType.\nPossible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Manual\n* \u00602\u0060 - Ship\n* \u00603\u0060 - Confirmation",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CapturedAmount",
+        "deprecation_notice": null,
+        "description": "Part (or all) of the amount that has already been captured for this payment.\nThis amount should always be in the base currency of the order.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "Data that can be used to store anything that may be required later to verify the payment for example",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ForeignAmount",
+        "deprecation_notice": null,
+        "description": "This property is optional but becomes mandatory when a payment is made in a currency different from the order base currency.\nIt indicates the specific amount paid in the foreign currency.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ForeignCurrencyID",
+        "deprecation_notice": null,
+        "description": "This property is optional but becomes mandatory when a payment is made in a currency different from the order base currency.\nIt indicates the currency used for the payment.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Method",
+        "deprecation_notice": null,
+        "description": "Code of the payment method (e.g. \u0060ADYEN_IDEAL\u0060)",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "T": [
+      {
+        "name": "IsInterbranch",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Replenishment",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnToSupplier",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "U": [
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "Identifier of the shipment; should also be filled on Line.Shipments.ShipmentBackendID",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentDate",
+        "deprecation_notice": null,
+        "description": "Date when this shipment was shipped",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TrackingCode",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TrackingLink",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "V": [
+      {
+        "name": "Amount",
+        "deprecation_notice": null,
+        "description": "ShippingCosts, before discounts, based on the SoldFromOrganizationUnit settings this should be in or ex tax. See service documentation.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Discount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "Method",
+        "deprecation_notice": null,
+        "description": "Method that is used to ship the order (e.g. UPS, DHL, etc.)",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentLineIdentifier",
+        "deprecation_notice": null,
+        "description": "Used for passing the identifier used to identify the shipping costs at the payment provider. This is required for payments that need capture on line level like Klarna.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxAmount",
+        "deprecation_notice": null,
+        "description": "When known the exact TaxAmount can be specified. Used when tax calculations are done by an external party like Avatax.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxRate",
+        "deprecation_notice": null,
+        "description": "Tax rate of the shipping method, when \u0060Amount\u0060 / \u0060UnitPriceInTax\u0060 is set and it\u0027s not provided, the taxrate will be based on what is known in Eva. When no rate can be determined, an error will be thrown.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "A unique identifier for the order, within the context of given \u0060BackendSystemID\u0060",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendSystemID",
+        "deprecation_notice": null,
+        "description": "A code, free of choice for the calling 3rd party application creating the order",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackfillInformation",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "BillingAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Coupons",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "deprecation_notice": null,
+        "description": "ISO code of the currency of the order",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomData",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[any] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFields",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[any] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Customer",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "DisableEventExports",
+        "deprecation_notice": null,
+        "description": "Enabling this will try to suppress as many eventexports as possible that might result from this call.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Discounts",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "FulfillmentMethod",
+        "deprecation_notice": null,
+        "description": "How this order is fulfilled, this can be overridden on line level. Default to Delivery or Pickup (when a PickupOrganizationUnit is defined)\nPossible values:\n\n* \u00601\u0060 - Delivery\n* \u00602\u0060 - Pickup\n* \u00603\u0060 - CarryOut",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsOffer",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Lines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "LockOrder",
+        "deprecation_notice": null,
+        "description": "Lock Order and block any future changes on it.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LoyaltyProgramBackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OfferExpirationDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Options",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "R",
+        "one_of": null
+      },
+      {
+        "name": "Payments",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "S",
+        "one_of": null
+      },
+      {
+        "name": "PickupAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "PickupOrganizationUnitBackendID",
+        "deprecation_notice": null,
+        "description": "Identifier for the shop where the order will be picked up, if any (\u0060OrganizationUnit.BackendID\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Properties",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "T",
+        "one_of": null
+      },
+      {
+        "name": "Remark",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnToSupplierReason",
+        "deprecation_notice": null,
+        "description": "The reason for this ReturnToSupplier order, used in combination with Properties.ReturnToSupplier. Required for ReturnToSupplier orders",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipToOrganizationUnitBackendID",
+        "deprecation_notice": null,
+        "description": "Identifier for the shop where the order will be shipped to, if any (\u0060OrganizationUnit.BackendID\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Shipments",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "U",
+        "one_of": null
+      },
+      {
+        "name": "ShippingAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "ShippingInformation",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "V",
+        "one_of": null
+      },
+      {
+        "name": "SoldFromOrganizationUnitBackendID",
+        "deprecation_notice": null,
+        "description": "Identifier for the (web)shop that made the sale (\u0060OrganizationUnit.BackendID\u0060)",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "X": [
+      {
+        "name": "Code",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "Y": [
+      {
+        "name": "ExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "deprecation_notice": null,
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "W": [
+      {
+        "name": "AlreadyExists",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomerID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "X",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Y",
+        "one_of": null
+      }
+    ]
+  }
+}

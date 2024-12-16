@@ -1,0 +1,2559 @@
+{
+  "name": "StartShipFromStoreTask",
+  "method": "POST",
+  "path": "/message/StartShipFromStoreTask",
+  "description": "Starts a ShipFromStore task, identified by its UserTaskID.\n\nThe service returns the order that should be shipped from the user\u0027s current store as well as the OrderLines\nthat should be part of the shipment. Not necessarily all orderlines of the order should be shipped, so the\nOrderLineIDs returned by this service should be respected.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "JSON",
+      "sample": "{\n  \u0022ProductProperties\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022UserTaskID\u0022: 123\n}",
+      "syntax": "json"
+    },
+    {
+      "name": "CURL",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ProductProperties\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022UserTaskID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/StartShipFromStoreTask",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{\n  \u0022AvailableShippingMethods\u0022: [\n    {\n      \u0022AppliesToOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022Carrier\u0022: {\n        \u0022Code\u0022: \u0022string\u0022,\n        \u0022ID\u0022: 123,\n        \u0022Name\u0022: \u0022string\u0022\n      },\n      \u0022CarrierID\u0022: 123,\n      \u0022Code\u0022: \u0022string\u0022,\n      \u0022Costs\u0022: {\n        \u0022Amount\u0022: 123.456,\n        \u0022Ranges\u0022: [\n          {\n            \u0022Costs\u0022: 123.456,\n            \u0022MaxAmount\u0022: 123.456,\n            \u0022MinAmount\u0022: 123.456\n          }\n        ]\n      },\n      \u0022CustomFieldValues\u0022: {\n        \u0022key\u0022: {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022re\u0022: \u0022cursion\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u0022da0309f4-6b5f-4d52-b6d6-f855cbddaaef\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        }\n      },\n      \u0022DeliveryType\u0022: 1,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022PaymentHandledByCarrier\u0022: true,\n      \u0022Priority\u0022: 123,\n      \u0022RequestedDeliveryDates\u0022: [\n        {\n          \u0022OrderLineID\u0022: 123,\n          \u0022RequestedDate\u0022: \u00222024-12-16\u0022\n        }\n      ]\n    }\n  ],\n  \u0022Data\u0022: {\n    \u0022ProductID\u0022: 123,\n    \u0022SerialNumber\u0022: \u0022string\u0022\n  },\n  \u0022GiftWrappingOptions\u0022: {\n    \u0022GiftWraps\u0022: [\n      {\n        \u0022GreetingCardProductID\u0022: 123,\n        \u0022Lines\u0022: [\n          {\n            \u0022Line\u0022: {\n              \u0022ChildLines\u0022: [\n                {\n                  \u0022re\u0022: \u0022cursion\u0022\n                }\n              ],\n              \u0022CurrencyID\u0022: \u0022string\u0022,\n              \u0022GroupID\u0022: \u002282107bb8-b768-4a07-9e43-cbc0d3ec9092\u0022,\n              \u0022NetTotalAmount\u0022: 123.456,\n              \u0022NetTotalAmountInTax\u0022: 123.456,\n              \u0022OrderLineID\u0022: 123,\n              \u0022ParentID\u0022: 123,\n              \u0022ProductBundleLineID\u0022: 123,\n              \u0022ProductID\u0022: 123,\n              \u0022ProductVariation\u0022: {\n                \u0022key\u0022: \u0022string\u0022\n              },\n              \u0022Properties\u0022: {\n                \u0022BackendID\u0022: \u0022string\u0022,\n                \u0022Barcodes\u0022: [\n                  \u0022string\u0022\n                ],\n                \u0022BrandName\u0022: \u0022string\u0022,\n                \u0022ConfigurableProperties\u0022: [\n                  \u0022string\u0022\n                ],\n                \u0022CurrencyID\u0022: \u0022string\u0022,\n                \u0022CustomID\u0022: \u0022string\u0022,\n                \u0022DisplayPrice\u0022: 123.456,\n                \u0022DisplayValue\u0022: \u0022string\u0022,\n                \u0022EcoTax\u0022: 123.456,\n                \u0022ExcludeFromGiftWrapping\u0022: true,\n                \u0022GiftCardHandler\u0022: \u0022string\u0022,\n                \u0022GiftCardType\u0022: \u0022string\u0022,\n                \u0022HistoricalPrice\u0022: 123.456,\n                \u0022ID\u0022: 123,\n                \u0022IncludedFields\u0022: [\n                  \u0022string\u0022\n                ],\n                \u0022IsSellable\u0022: true,\n                \u0022LogicalLevel\u0022: \u0022string\u0022,\n                \u0022LogicalLevelHierarchy\u0022: [\n                  {\n                    \u0022Name\u0022: \u0022string\u0022,\n                    \u0022ProductID\u0022: 123\n                  }\n                ],\n                \u0022LongDescription\u0022: \u0022string\u0022,\n                \u0022MaxQuantityPerOrder\u0022: 123,\n                \u0022Media\u0022: {\n                  \u0022Gallery\u0022: [\n                    \u0022string\u0022\n                  ],\n                  \u0022ImageCount\u0022: 123,\n                  \u0022Media\u0022: [\n                    {\n                      \u0022Blob\u0022: \u0022string\u0022,\n                      \u0022ID\u0022: \u0022string\u0022,\n                      \u0022Name\u0022: \u0022string\u0022,\n                      \u0022Sequence\u0022: 123,\n                      \u0022Type\u0022: \u0022string\u0022,\n                      \u0022Url\u0022: \u0022string\u0022\n                    }\n                  ],\n                  \u0022PrimaryImage\u0022: {\n                    \u0022Blob\u0022: \u0022string\u0022,\n                    \u0022Name\u0022: \u0022string\u0022,\n                    \u0022Type\u0022: \u0022string\u0022,\n                    \u0022Url\u0022: \u0022string\u0022\n                  },\n                  \u0022Swatches\u0022: [\n                    {\n                      \u0022Blob\u0022: \u0022string\u0022,\n                      \u0022ID\u0022: \u0022string\u0022,\n                      \u0022Name\u0022: \u0022string\u0022,\n                      \u0022Sequence\u0022: 123,\n                      \u0022Type\u0022: \u0022string\u0022,\n                      \u0022Url\u0022: \u0022string\u0022\n                    }\n                  ]\n                },\n                \u0022Name\u0022: \u0022string\u0022,\n                \u0022OriginalPrice\u0022: 123.456,\n                \u0022ParentHierarchy\u0022: [\n                  123\n                ],\n                \u0022Parents\u0022: [\n                  123\n                ],\n                \u0022PotentialDiscountedPrice\u0022: 123.456,\n                \u0022PotentialDiscountedPriceLabel\u0022: \u0022string\u0022,\n                \u0022PriceLabel\u0022: \u0022string\u0022,\n                \u0022PrimaryImage\u0022: {\n                  \u0022Blob\u0022: \u0022string\u0022,\n                  \u0022Name\u0022: \u0022string\u0022,\n                  \u0022Type\u0022: \u0022string\u0022,\n                  \u0022Url\u0022: \u0022string\u0022\n                },\n                \u0022ProductRequirements\u0022: [\n                  {\n                    \u0022Data\u0022: {\n                      \u0022key\u0022: \u0022any valid json value\u0022\n                    },\n                    \u0022DataType\u0022: \u0022string\u0022,\n                    \u0022ID\u0022: 123,\n                    \u0022IsArray\u0022: true,\n                    \u0022IsRequired\u0022: true,\n                    \u0022Name\u0022: \u0022string\u0022,\n                    \u0022Options\u0022: {\n                      \u0022DefaultCustomFieldValue\u0022: {\n                        \u0022ArrayValues\u0022: [\n                          {\n                            \u0022re\u0022: \u0022cursion\u0022\n                          }\n                        ],\n                        \u0022BlobValue\u0022: \u0022cbad6f7b-e3e4-4156-9d6e-b4dea3927e73\u0022,\n                        \u0022BoolValue\u0022: true,\n                        \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n                        \u0022NumberValue\u0022: 123.456,\n                        \u0022StringValue\u0022: \u0022string\u0022\n                      },\n                      \u0022DefaultValue\u0022: \u0022string\u0022,\n                      \u0022IsEditable\u0022: true,\n                      \u0022IsRequired\u0022: true,\n                      \u0022MaximumDate\u0022: \u00222024-12-16\u0022,\n                      \u0022MaximumLength\u0022: 123,\n                      \u0022MaximumValue\u0022: 123.456,\n                      \u0022MinimumDate\u0022: \u00222024-12-16\u0022,\n                      \u0022MinimumLength\u0022: 123,\n                      \u0022MinimumValue\u0022: 123.456\n                    },\n                    \u0022OrderType\u0022: \u0022string\u0022\n                  }\n                ],\n                \u0022PublicationStatuses\u0022: [\n                  \u0022string\u0022\n                ],\n                \u0022RecommendedRetailPrice\u0022: 123.456,\n                \u0022ShortDescription\u0022: \u0022string\u0022,\n                \u0022Status\u0022: 4,\n                \u0022TaxExemptionCode\u0022: \u0022string\u0022,\n                \u0022TaxExemptionReason\u0022: \u0022string\u0022,\n                \u0022Type\u0022: 2048,\n                \u0022Unstackable\u0022: true,\n                \u0022VariationsContent\u0022: \u0022any valid json value\u0022\n              },\n              \u0022Quantity\u0022: 123,\n              \u0022ReplacementProductIDs\u0022: [\n                123\n              ],\n              \u0022Requirements\u0022: [\n                {\n                  \u0022Name\u0022: \u0022string\u0022,\n                  \u0022Value\u0022: \u0022any valid json value\u0022\n                }\n              ],\n              \u0022SerialNumber\u0022: \u0022string\u0022,\n              \u0022SerialNumberConfigurationID\u0022: 123,\n              \u0022SerialNumberRequired\u0022: true,\n              \u0022TotalAmount\u0022: 123.456,\n              \u0022TotalAmountInTax\u0022: 123.456\n            },\n            \u0022Quantity\u0022: 123\n          }\n        ],\n        \u0022Message\u0022: \u0022string\u0022\n      }\n    ],\n    \u0022GreetingCardProductID\u0022: 123,\n    \u0022Message\u0022: \u0022string\u0022\n  },\n  \u0022Lines\u0022: [\n    {\n      \u0022ChildLines\u0022: [\n        {\n          \u0022re\u0022: \u0022cursion\u0022\n        }\n      ],\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022GroupID\u0022: \u00220c33e44c-e789-47c5-909b-6dcf65177ba3\u0022,\n      \u0022NetTotalAmount\u0022: 123.456,\n      \u0022NetTotalAmountInTax\u0022: 123.456,\n      \u0022OrderLineID\u0022: 123,\n      \u0022ParentID\u0022: 123,\n      \u0022ProductBundleLineID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022ProductVariation\u0022: {\n        \u0022key\u0022: \u0022string\u0022\n      },\n      \u0022Properties\u0022: {\n        \u0022BackendID\u0022: \u0022string\u0022,\n        \u0022Barcodes\u0022: [\n          \u0022string\u0022\n        ],\n        \u0022BrandName\u0022: \u0022string\u0022,\n        \u0022ConfigurableProperties\u0022: [\n          \u0022string\u0022\n        ],\n        \u0022CurrencyID\u0022: \u0022string\u0022,\n        \u0022CustomID\u0022: \u0022string\u0022,\n        \u0022DisplayPrice\u0022: 123.456,\n        \u0022DisplayValue\u0022: \u0022string\u0022,\n        \u0022EcoTax\u0022: 123.456,\n        \u0022ExcludeFromGiftWrapping\u0022: true,\n        \u0022GiftCardHandler\u0022: \u0022string\u0022,\n        \u0022GiftCardType\u0022: \u0022string\u0022,\n        \u0022HistoricalPrice\u0022: 123.456,\n        \u0022ID\u0022: 123,\n        \u0022IncludedFields\u0022: [\n          \u0022string\u0022\n        ],\n        \u0022IsSellable\u0022: true,\n        \u0022LogicalLevel\u0022: \u0022string\u0022,\n        \u0022LogicalLevelHierarchy\u0022: [\n          {\n            \u0022Name\u0022: \u0022string\u0022,\n            \u0022ProductID\u0022: 123\n          }\n        ],\n        \u0022LongDescription\u0022: \u0022string\u0022,\n        \u0022MaxQuantityPerOrder\u0022: 123,\n        \u0022Media\u0022: {\n          \u0022Gallery\u0022: [\n            \u0022string\u0022\n          ],\n          \u0022ImageCount\u0022: 123,\n          \u0022Media\u0022: [\n            {\n              \u0022Blob\u0022: \u0022string\u0022,\n              \u0022ID\u0022: \u0022string\u0022,\n              \u0022Name\u0022: \u0022string\u0022,\n              \u0022Sequence\u0022: 123,\n              \u0022Type\u0022: \u0022string\u0022,\n              \u0022Url\u0022: \u0022string\u0022\n            }\n          ],\n          \u0022PrimaryImage\u0022: {\n            \u0022Blob\u0022: \u0022string\u0022,\n            \u0022Name\u0022: \u0022string\u0022,\n            \u0022Type\u0022: \u0022string\u0022,\n            \u0022Url\u0022: \u0022string\u0022\n          },\n          \u0022Swatches\u0022: [\n            {\n              \u0022Blob\u0022: \u0022string\u0022,\n              \u0022ID\u0022: \u0022string\u0022,\n              \u0022Name\u0022: \u0022string\u0022,\n              \u0022Sequence\u0022: 123,\n              \u0022Type\u0022: \u0022string\u0022,\n              \u0022Url\u0022: \u0022string\u0022\n            }\n          ]\n        },\n        \u0022Name\u0022: \u0022string\u0022,\n        \u0022OriginalPrice\u0022: 123.456,\n        \u0022ParentHierarchy\u0022: [\n          123\n        ],\n        \u0022Parents\u0022: [\n          123\n        ],\n        \u0022PotentialDiscountedPrice\u0022: 123.456,\n        \u0022PotentialDiscountedPriceLabel\u0022: \u0022string\u0022,\n        \u0022PriceLabel\u0022: \u0022string\u0022,\n        \u0022PrimaryImage\u0022: {\n          \u0022Blob\u0022: \u0022string\u0022,\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022Type\u0022: \u0022string\u0022,\n          \u0022Url\u0022: \u0022string\u0022\n        },\n        \u0022ProductRequirements\u0022: [\n          {\n            \u0022Data\u0022: {\n              \u0022key\u0022: \u0022any valid json value\u0022\n            },\n            \u0022DataType\u0022: \u0022string\u0022,\n            \u0022ID\u0022: 123,\n            \u0022IsArray\u0022: true,\n            \u0022IsRequired\u0022: true,\n            \u0022Name\u0022: \u0022string\u0022,\n            \u0022Options\u0022: {\n              \u0022DefaultCustomFieldValue\u0022: {\n                \u0022ArrayValues\u0022: [\n                  {\n                    \u0022re\u0022: \u0022cursion\u0022\n                  }\n                ],\n                \u0022BlobValue\u0022: \u0022b55b0cef-6f8f-4010-995d-177151bb1d90\u0022,\n                \u0022BoolValue\u0022: true,\n                \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n                \u0022NumberValue\u0022: 123.456,\n                \u0022StringValue\u0022: \u0022string\u0022\n              },\n              \u0022DefaultValue\u0022: \u0022string\u0022,\n              \u0022IsEditable\u0022: true,\n              \u0022IsRequired\u0022: true,\n              \u0022MaximumDate\u0022: \u00222024-12-16\u0022,\n              \u0022MaximumLength\u0022: 123,\n              \u0022MaximumValue\u0022: 123.456,\n              \u0022MinimumDate\u0022: \u00222024-12-16\u0022,\n              \u0022MinimumLength\u0022: 123,\n              \u0022MinimumValue\u0022: 123.456\n            },\n            \u0022OrderType\u0022: \u0022string\u0022\n          }\n        ],\n        \u0022PublicationStatuses\u0022: [\n          \u0022string\u0022\n        ],\n        \u0022RecommendedRetailPrice\u0022: 123.456,\n        \u0022ShortDescription\u0022: \u0022string\u0022,\n        \u0022Status\u0022: 4,\n        \u0022TaxExemptionCode\u0022: \u0022string\u0022,\n        \u0022TaxExemptionReason\u0022: \u0022string\u0022,\n        \u0022Type\u0022: 2048,\n        \u0022Unstackable\u0022: true,\n        \u0022VariationsContent\u0022: \u0022any valid json value\u0022\n      },\n      \u0022Quantity\u0022: 123,\n      \u0022ReplacementProductIDs\u0022: [\n        123\n      ],\n      \u0022Requirements\u0022: [\n        {\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022Value\u0022: \u0022any valid json value\u0022\n        }\n      ],\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022SerialNumberConfigurationID\u0022: 123,\n      \u0022SerialNumberRequired\u0022: true,\n      \u0022TotalAmount\u0022: 123.456,\n      \u0022TotalAmountInTax\u0022: 123.456\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022PackLines\u0022: [\n    {\n      \u0022ChildLines\u0022: [\n        {\n          \u0022re\u0022: \u0022cursion\u0022\n        }\n      ],\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022GroupID\u0022: \u00229f7aba09-6e79-4d76-8f9e-54fc8729a29c\u0022,\n      \u0022NetTotalAmount\u0022: 123.456,\n      \u0022NetTotalAmountInTax\u0022: 123.456,\n      \u0022OrderLineID\u0022: 123,\n      \u0022ParentID\u0022: 123,\n      \u0022ProductBundleLineID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022ProductVariation\u0022: {\n        \u0022key\u0022: \u0022string\u0022\n      },\n      \u0022Properties\u0022: {\n        \u0022BackendID\u0022: \u0022string\u0022,\n        \u0022Barcodes\u0022: [\n          \u0022string\u0022\n        ],\n        \u0022BrandName\u0022: \u0022string\u0022,\n        \u0022ConfigurableProperties\u0022: [\n          \u0022string\u0022\n        ],\n        \u0022CurrencyID\u0022: \u0022string\u0022,\n        \u0022CustomID\u0022: \u0022string\u0022,\n        \u0022DisplayPrice\u0022: 123.456,\n        \u0022DisplayValue\u0022: \u0022string\u0022,\n        \u0022EcoTax\u0022: 123.456,\n        \u0022ExcludeFromGiftWrapping\u0022: true,\n        \u0022GiftCardHandler\u0022: \u0022string\u0022,\n        \u0022GiftCardType\u0022: \u0022string\u0022,\n        \u0022HistoricalPrice\u0022: 123.456,\n        \u0022ID\u0022: 123,\n        \u0022IncludedFields\u0022: [\n          \u0022string\u0022\n        ],\n        \u0022IsSellable\u0022: true,\n        \u0022LogicalLevel\u0022: \u0022string\u0022,\n        \u0022LogicalLevelHierarchy\u0022: [\n          {\n            \u0022Name\u0022: \u0022string\u0022,\n            \u0022ProductID\u0022: 123\n          }\n        ],\n        \u0022LongDescription\u0022: \u0022string\u0022,\n        \u0022MaxQuantityPerOrder\u0022: 123,\n        \u0022Media\u0022: {\n          \u0022Gallery\u0022: [\n            \u0022string\u0022\n          ],\n          \u0022ImageCount\u0022: 123,\n          \u0022Media\u0022: [\n            {\n              \u0022Blob\u0022: \u0022string\u0022,\n              \u0022ID\u0022: \u0022string\u0022,\n              \u0022Name\u0022: \u0022string\u0022,\n              \u0022Sequence\u0022: 123,\n              \u0022Type\u0022: \u0022string\u0022,\n              \u0022Url\u0022: \u0022string\u0022\n            }\n          ],\n          \u0022PrimaryImage\u0022: {\n            \u0022Blob\u0022: \u0022string\u0022,\n            \u0022Name\u0022: \u0022string\u0022,\n            \u0022Type\u0022: \u0022string\u0022,\n            \u0022Url\u0022: \u0022string\u0022\n          },\n          \u0022Swatches\u0022: [\n            {\n              \u0022Blob\u0022: \u0022string\u0022,\n              \u0022ID\u0022: \u0022string\u0022,\n              \u0022Name\u0022: \u0022string\u0022,\n              \u0022Sequence\u0022: 123,\n              \u0022Type\u0022: \u0022string\u0022,\n              \u0022Url\u0022: \u0022string\u0022\n            }\n          ]\n        },\n        \u0022Name\u0022: \u0022string\u0022,\n        \u0022OriginalPrice\u0022: 123.456,\n        \u0022ParentHierarchy\u0022: [\n          123\n        ],\n        \u0022Parents\u0022: [\n          123\n        ],\n        \u0022PotentialDiscountedPrice\u0022: 123.456,\n        \u0022PotentialDiscountedPriceLabel\u0022: \u0022string\u0022,\n        \u0022PriceLabel\u0022: \u0022string\u0022,\n        \u0022PrimaryImage\u0022: {\n          \u0022Blob\u0022: \u0022string\u0022,\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022Type\u0022: \u0022string\u0022,\n          \u0022Url\u0022: \u0022string\u0022\n        },\n        \u0022ProductRequirements\u0022: [\n          {\n            \u0022Data\u0022: {\n              \u0022key\u0022: \u0022any valid json value\u0022\n            },\n            \u0022DataType\u0022: \u0022string\u0022,\n            \u0022ID\u0022: 123,\n            \u0022IsArray\u0022: true,\n            \u0022IsRequired\u0022: true,\n            \u0022Name\u0022: \u0022string\u0022,\n            \u0022Options\u0022: {\n              \u0022DefaultCustomFieldValue\u0022: {\n                \u0022ArrayValues\u0022: [\n                  {\n                    \u0022re\u0022: \u0022cursion\u0022\n                  }\n                ],\n                \u0022BlobValue\u0022: \u0022ff1ac523-c0ff-41e7-b9a1-952befb9de0e\u0022,\n                \u0022BoolValue\u0022: true,\n                \u0022DateTimeValue\u0022: \u00222024-12-16\u0022,\n                \u0022NumberValue\u0022: 123.456,\n                \u0022StringValue\u0022: \u0022string\u0022\n              },\n              \u0022DefaultValue\u0022: \u0022string\u0022,\n              \u0022IsEditable\u0022: true,\n              \u0022IsRequired\u0022: true,\n              \u0022MaximumDate\u0022: \u00222024-12-16\u0022,\n              \u0022MaximumLength\u0022: 123,\n              \u0022MaximumValue\u0022: 123.456,\n              \u0022MinimumDate\u0022: \u00222024-12-16\u0022,\n              \u0022MinimumLength\u0022: 123,\n              \u0022MinimumValue\u0022: 123.456\n            },\n            \u0022OrderType\u0022: \u0022string\u0022\n          }\n        ],\n        \u0022PublicationStatuses\u0022: [\n          \u0022string\u0022\n        ],\n        \u0022RecommendedRetailPrice\u0022: 123.456,\n        \u0022ShortDescription\u0022: \u0022string\u0022,\n        \u0022Status\u0022: 4,\n        \u0022TaxExemptionCode\u0022: \u0022string\u0022,\n        \u0022TaxExemptionReason\u0022: \u0022string\u0022,\n        \u0022Type\u0022: 2048,\n        \u0022Unstackable\u0022: true,\n        \u0022VariationsContent\u0022: \u0022any valid json value\u0022\n      },\n      \u0022Quantity\u0022: 123,\n      \u0022ReplacementProductIDs\u0022: [\n        123\n      ],\n      \u0022Requirements\u0022: [\n        {\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022Value\u0022: \u0022any valid json value\u0022\n        }\n      ],\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022SerialNumberConfigurationID\u0022: 123,\n      \u0022SerialNumberRequired\u0022: true,\n      \u0022TotalAmount\u0022: 123.456,\n      \u0022TotalAmountInTax\u0022: 123.456\n    }\n  ],\n  \u0022PreferredPriceDisplayMode\u0022: 1,\n  \u0022ShipmentID\u0022: 123,\n  \u0022ShouldBePrinting\u0022: true,\n  \u0022SubTypeName\u0022: \u0022string\u0022,\n  \u0022TravelDistanceInMeters\u0022: 123.456,\n  \u0022TravelDistanceText\u0022: \u0022string\u0022,\n  \u0022TravelTimeInSeconds\u0022: 123.456,\n  \u0022TravelTimeText\u0022: \u0022string\u0022,\n  \u0022UserTaskID\u0022: 123\n}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "C",
+  "types": {
+    "B": [
+      {
+        "name": "ProductProperties",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserTaskID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060UserTask\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Code",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Carrier\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "Costs",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaxAmount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinAmount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Amount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Ranges",
+        "deprecation_notice": null,
+        "description": "The ranges of the shipping costs based on the order amount. Empty if shipping costs are determined using scripting or no ranges are known for the shipping method.\nThe ranges are non-overlapping, gapless and sorted by the minimum amount (ascending). The first range has a minimum amount of 0. The last range has a maximum amount of null.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "ArrayValues",
+        "deprecation_notice": null,
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "OrderLineID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestedDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "AppliesToOrderLineIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Carrier",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "CarrierID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Carrier\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Code",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Costs",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "CustomFieldValues",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[object] | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "DeliveryType",
+        "deprecation_notice": null,
+        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Default\n* \u00602\u0060 - ShipFromStore\n* \u00604\u0060 - Interbranch",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ShippingMethod\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentHandledByCarrier",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Priority",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestedDeliveryDates",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      }
+    ],
+    "J": [],
+    "K": [
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [
+      {
+        "name": "FullStockCountID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsRecount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StockLabelID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StockLabelName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "AllowStockMutationsDuringCount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsExternal",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsReady",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Progress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "O": [
+      {
+        "name": "Values",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060CustomField\u0060",
+        "type": "map[object] | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      }
+    ],
+    "P": [
+      {
+        "name": "CustomFieldID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060CustomField\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsRequired",
+        "deprecation_notice": null,
+        "description": "If the field is required, a value MUST be set when completing the task.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "N": [
+      {
+        "name": "CustomData",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "Fields",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "P",
+        "one_of": null
+      }
+    ],
+    "Q": [
+      {
+        "name": "CycleCountZoneID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CycleCountZoneName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginTypeID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductDisplayValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductImageBlob",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "R": [
+      {
+        "name": "DisplayValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Origin",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginTypeID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060CycleCountOriginType\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Progress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ZonedCycleCountID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ZonedCycleCount\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "S": [
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Default\n* \u00601\u0060 - ReturnToSupplier",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "productIDs",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "T": [
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "U": [
+      {
+        "name": "Count",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasMarkedProducts",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductMarkerValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "X": [
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "Z": [
+      {
+        "name": "Blob",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Sequence",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Url",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BA": [
+      {
+        "name": "Blob",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Url",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "Y": [
+      {
+        "name": "Gallery",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageCount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Media",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "Z",
+        "one_of": null
+      },
+      {
+        "name": "PrimaryImage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BA",
+        "one_of": null
+      },
+      {
+        "name": "Swatches",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "Z",
+        "one_of": null
+      }
+    ],
+    "BC": [
+      {
+        "name": "DefaultCustomFieldValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "DefaultValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsEditable",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsRequired",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumLength",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaximumValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumLength",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MinimumValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BB": [
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DataType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsArray",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsRequired",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Options",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BC",
+        "one_of": null
+      },
+      {
+        "name": "OrderType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "W": [
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Barcodes",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BrandName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ConfigurableProperties",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DisplayPrice",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DisplayValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EcoTax",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ExcludeFromGiftWrapping",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GiftCardHandler",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GiftCardType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HistoricalPrice",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IncludedFields",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsSellable",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LogicalLevel",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LogicalLevelHierarchy",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "X",
+        "one_of": null
+      },
+      {
+        "name": "LongDescription",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MaxQuantityPerOrder",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Media",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "Y",
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginalPrice",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ParentHierarchy",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Parents",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PotentialDiscountedPrice",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PotentialDiscountedPriceLabel",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PriceLabel",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PrimaryImage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BA",
+        "one_of": null
+      },
+      {
+        "name": "ProductRequirements",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BB",
+        "one_of": null
+      },
+      {
+        "name": "PublicationStatuses",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RecommendedRetailPrice",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShortDescription",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Status",
+        "deprecation_notice": null,
+        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - PreRelease\n* \u00604\u0060 - DeliveryOnly\n* \u00608\u0060 - DisableDelivery\n* \u006016\u0060 - DisablePickup\n* \u006032\u0060 - DisableBackorder\n* \u006034\u0060 - UseUp\n* \u006064\u0060 - NonSellable",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxExemptionCode",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxExemptionReason",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Stock\n* \u00602\u0060 - Insurance\n* \u00604\u0060 - Marketing\n* \u00608\u0060 - GiftCard\n* \u006016\u0060 - Service\n* \u006032\u0060 - GreetingCard\n* \u006064\u0060 - CustomPricing\n* \u0060128\u0060 - External\n* \u0060256\u0060 - OrderCosts\n* \u0060512\u0060 - SystemGenerated\n* \u00601024\u0060 - ProductSet\n* \u00602048\u0060 - BundleProduct\n* \u00604096\u0060 - VirtualProduct\n* \u00608192\u0060 - MadeToOrder\n* \u006016384\u0060 - Configurable\n* \u006032768\u0060 - SupplierProduct\n* \u006065536\u0060 - Template\n* \u0060131072\u0060 - SecondChance\n* \u0060262144\u0060 - NotReturnable",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Unstackable",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "VariationsContent",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "V": [
+      {
+        "name": "ExpireDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Originator",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Product",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "W",
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Default\n* \u00601\u0060 - Priority\n* \u00602\u0060 - AutoGenerated",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Zone",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BD": [
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BE": [
+      {
+        "name": "Count",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasMarkedProducts",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductMarkerValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Shipment\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShippingMethodID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ShippingMethod\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TravelDistanceInMeters",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TravelDistanceText",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TravelTimeInSeconds",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TravelTimeText",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "productIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BG": [
+      {
+        "name": "Category",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ExpireDate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "guid",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LocationType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "MimeType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OriginalName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Url",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BF": [
+      {
+        "name": "Blobs",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BG",
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsError",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsReady",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Shipment\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BH": [
+      {
+        "name": "Count",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HasMarkedProducts",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductMarkerValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Shipment\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TrackingCode",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UseExcludePolicyOnReturnToSupplierShipment",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BI": [
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BJ": [
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductImage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RepairID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Repair\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BL": [
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Crate\n* \u00601\u0060 - Seal",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BK": [
+      {
+        "name": "ShipmentID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Shipment\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentIdentifiers",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BL",
+        "one_of": null
+      }
+    ],
+    "BN": [
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BM": [
+      {
+        "name": "Products",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BN",
+        "one_of": null
+      }
+    ],
+    "BO": [
+      {
+        "name": "TypeID",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Paper\n* \u00601\u0060 - Zebra",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BP": [
+      {
+        "name": "CompletedCount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalCount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BQ": [
+      {
+        "name": "Code",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BV": [
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BU": [
+      {
+        "name": "ChildLines",
+        "deprecation_notice": null,
+        "description": "The child lines for this line",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BU",
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GroupID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NetTotalAmount",
+        "deprecation_notice": null,
+        "description": "The TotalAmount with the Discounts for this line included",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NetTotalAmountInTax",
+        "deprecation_notice": null,
+        "description": "The TotalAmountInTax with the Discounts for this line included",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderLineID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ParentID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductBundleLineID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ProductBundleLine\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductVariation",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Properties",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "W",
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReplacementProductIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Requirements",
+        "deprecation_notice": null,
+        "description": "The product requirements for this line",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BV",
+        "one_of": null
+      },
+      {
+        "name": "SerialNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumberConfigurationID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060SerialNumberConfiguration\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumberRequired",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalAmount",
+        "deprecation_notice": null,
+        "description": "The TotalAmount of this line: Quantity * UnitPrice",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TotalAmountInTax",
+        "deprecation_notice": null,
+        "description": "The TotalAmountInTax of this line: Quantity * UnitPrice \u002B Taxes",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BT": [
+      {
+        "name": "Line",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BU",
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BS": [
+      {
+        "name": "GreetingCardProductID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Lines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BT",
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BR": [
+      {
+        "name": "GiftWraps",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BS",
+        "one_of": null
+      },
+      {
+        "name": "GreetingCardProductID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BW": [
+      {
+        "name": "ExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "deprecation_notice": null,
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "AvailableShippingMethods",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "one-of[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": [
+          {
+            "name": "SecondChanceProductRegistrationUserTaskData",
+            "properties_id": "K"
+          },
+          {
+            "name": "FullStockCountLabelUserTaskData",
+            "properties_id": "L"
+          },
+          {
+            "name": "FullStockCountUserTaskData",
+            "properties_id": "M"
+          },
+          {
+            "name": "CustomUserTaskData",
+            "properties_id": "N"
+          },
+          {
+            "name": "ZonedCycleCountPreCountUserTaskData",
+            "properties_id": "Q"
+          },
+          {
+            "name": "ZonedCycleCountUserTaskData",
+            "properties_id": "R"
+          },
+          {
+            "name": "ReservationCleanupUserTaskData",
+            "properties_id": "S"
+          },
+          {
+            "name": "ReservationDeviationUserTaskData",
+            "properties_id": "T"
+          },
+          {
+            "name": "StockReservationUserTaskData",
+            "properties_id": "U"
+          },
+          {
+            "name": "StockReplenishmentUserTaskData",
+            "properties_id": "V"
+          },
+          {
+            "name": "StockMovementFollowUpUserTaskData",
+            "properties_id": "BD"
+          },
+          {
+            "name": "ShipFromStoreUserTaskData",
+            "properties_id": "BE"
+          },
+          {
+            "name": "ShipFromStorePrintUserTaskData",
+            "properties_id": "BF"
+          },
+          {
+            "name": "ReturnToSupplierUserTaskData",
+            "properties_id": "BH"
+          },
+          {
+            "name": "ReservationPickupUserTaskData",
+            "properties_id": "BI"
+          },
+          {
+            "name": "RepairUserTaskData",
+            "properties_id": "BJ"
+          },
+          {
+            "name": "ReceiveShipmentUserTaskData",
+            "properties_id": "BK"
+          },
+          {
+            "name": "PrintPriceLabelUserTaskData",
+            "properties_id": "BM"
+          },
+          {
+            "name": "PrintUserTaskData",
+            "properties_id": "BO"
+          },
+          {
+            "name": "CompositeUserTaskData",
+            "properties_id": "BP"
+          }
+        ]
+      },
+      {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BQ",
+        "one_of": null
+      },
+      {
+        "name": "GiftWrappingOptions",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BR",
+        "one_of": null
+      },
+      {
+        "name": "Lines",
+        "deprecation_notice": null,
+        "description": "All lines in the order fulfillment.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BU",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "BW",
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PackLines",
+        "deprecation_notice": null,
+        "description": "The lines that need to be packed. Only available for the Pack subtype.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "BU",
+        "one_of": null
+      },
+      {
+        "name": "PreferredPriceDisplayMode",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - InTax\n* \u00601\u0060 - ExTax",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Shipment\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShouldBePrinting",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SubTypeName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TravelDistanceInMeters",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TravelDistanceText",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TravelTimeInSeconds",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TravelTimeText",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserTaskID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060UserTask\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ]
+  }
+}
