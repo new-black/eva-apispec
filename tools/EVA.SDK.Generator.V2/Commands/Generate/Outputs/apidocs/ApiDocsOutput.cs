@@ -355,7 +355,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 
       if (type.Name is ApiSpecConsts.Specials.Option)
       {
-        return BuildMinimalSample(ctx, spec, type.Arguments[0], recursionGuard);
+        return BuildMinimalSample(ctx, spec, type.Arguments.FirstOrDefault() ?? type.Shared!, recursionGuard);
       }
 
       if (type.Name is ApiSpecConsts.Specials.Array)
