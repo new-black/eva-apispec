@@ -1,9 +1,9 @@
 {
-  "name": "MergePdfBlobs",
+  "name": "DownloadFullStockCountSummaryExcel_AsyncResult",
   "method": "POST",
-  "path": "/message/MergePdfBlobs",
-  "description": "Merges blobs into one PDF",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
+  "path": "/async-result/DownloadFullStockCountSummaryExcel",
+  "description": "The DownloadFullStockCountSummaryExcel_AsyncResult service",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060DownloadFullStockCountSummary:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobUrls\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Blobs\u0022: [\n    \u002201c1c851-8663-492a-aaa6-4961db9238c2\u0022\n  ]\n}",
+      "sample": "{\n  \u0022JobID\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobUrls\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Blobs\u0022: [\n    \u002201c1c851-8663-492a-aaa6-4961db9238c2\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/MergePdfBlobs",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022JobID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DownloadFullStockCountSummaryExcel_AsyncResult",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Url\u0022: \u0022string\u0022\n}"
+      "sample": "{\n  \u0022Metadata\u0022: {\n    \u0022IsAsyncResultAvailable\u0022: true\n  },\n  \u0022ResourceInfo\u0022: {\n    \u0022BlobID\u0022: \u0022a9b648b6-2e1d-4232-8934-6a2aaa832255\u0022,\n    \u0022Url\u0022: \u0022string\u0022\n  }\n}"
     },
     {
       "name": "400",
@@ -59,19 +59,10 @@
   "types": {
     "B": [
       {
-        "name": "BlobUrls",
+        "name": "JobID",
         "deprecation_notice": null,
-        "description": "Can be used for both standard- and secured blobs - must match environment assets URL. Limited to 100 entries.",
-        "type": "array[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Blobs",
-        "deprecation_notice": null,
-        "description": "Can be used for standard blobs - for secure blobs, use \u0060BlobUrls\u0060 instead. Limited to 100 entries.\n\nThis is the ID of a \u0060Blob\u0060",
-        "type": "array[guid] | null",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -153,6 +144,26 @@
         "one_of": null
       }
     ],
+    "F": [
+      {
+        "name": "BlobID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "guid",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Url",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "C": [
       {
         "name": "Error",
@@ -173,12 +184,12 @@
         "one_of": null
       },
       {
-        "name": "Url",
+        "name": "ResourceInfo",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "F",
         "one_of": null
       }
     ]

@@ -1,9 +1,9 @@
 {
-  "name": "MergePdfBlobs",
+  "name": "DownloadFullStockCountSummaryExcel_Async",
   "method": "POST",
-  "path": "/message/MergePdfBlobs",
-  "description": "Merges blobs into one PDF",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
+  "path": "/async-message/DownloadFullStockCountSummaryExcel",
+  "description": "The DownloadFullStockCountSummaryExcel_Async service",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060DownloadFullStockCountSummary:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobUrls\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Blobs\u0022: [\n    \u002201c1c851-8663-492a-aaa6-4961db9238c2\u0022\n  ]\n}",
+      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022IncludedProperties\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022OnlyShowDeviations\u0022: true\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobUrls\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Blobs\u0022: [\n    \u002201c1c851-8663-492a-aaa6-4961db9238c2\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/MergePdfBlobs",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123,\n  \u0022IncludedProperties\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022OnlyShowDeviations\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DownloadFullStockCountSummaryExcel_Async",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Url\u0022: \u0022string\u0022\n}"
+      "sample": "{\n  \u0022JobID\u0022: \u0022string\u0022\n}"
     },
     {
       "name": "400",
@@ -59,19 +59,28 @@
   "types": {
     "B": [
       {
-        "name": "BlobUrls",
+        "name": "ID",
         "deprecation_notice": null,
-        "description": "Can be used for both standard- and secured blobs - must match environment assets URL. Limited to 100 entries.",
+        "description": "This is the ID of a \u0060FullStockCount\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IncludedProperties",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ProductPropertyType\u0060",
         "type": "array[string] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Blobs",
+        "name": "OnlyShowDeviations",
         "deprecation_notice": null,
-        "description": "Can be used for standard blobs - for secure blobs, use \u0060BlobUrls\u0060 instead. Limited to 100 entries.\n\nThis is the ID of a \u0060Blob\u0060",
-        "type": "array[guid] | null",
+        "description": "",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -164,21 +173,21 @@
         "one_of": null
       },
       {
+        "name": "JobID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Url",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       }
     ]
