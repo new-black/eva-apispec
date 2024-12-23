@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022StockLabelID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}",
+      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022SerialNumbers\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022StockLabelID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022StockLabelID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListSerialNumbers",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022SerialNumbers\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022StockLabelID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListSerialNumbers",
       "syntax": "bash"
     }
   ],
@@ -86,6 +86,15 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060Product\u0060",
         "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumbers",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
