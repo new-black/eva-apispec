@@ -1,9 +1,9 @@
 {
-  "name": "ListBlobsForOrder",
+  "name": "ListZonedCycleCountSerialNumbersStatus",
   "method": "POST",
-  "path": "/message/ListBlobsForOrder",
-  "description": "Get the blobs that are attached to an Order\n\nIt\u0027s required to specify the order, optionally the blobs can also be filtered on \u0060InvoiceID\u0060 of \u0060ShipmentID\u0060.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/ListZonedCycleCountSerialNumbersStatus",
+  "description": "Retrieves the status of serial numbers for a specific product and stock label within a Zoned Cycle Count.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,38 +25,24 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-Mode",
-      "type": "string",
-      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
-      "required": false,
-      "default": null
-    },
-    {
-      "name": "EVA-IDs-BackendSystemID",
-      "type": "string",
-      "description": "The ID of the backend system that is used to resolve the IDs.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022InvoiceID\u0022: 123,\n  \u0022OrderID\u0022: 123,\n  \u0022ShipmentID\u0022: 123\n}",
+      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022SerialNumbers\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022Statuses\u0022: [\n        4\n      ]\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022StockLabelID\u0022: 123,\n  \u0022ZonedCycleCountID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InvoiceID\u0022: 123,\n  \u0022OrderID\u0022: 123,\n  \u0022ShipmentID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListBlobsForOrder",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022SerialNumbers\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022Statuses\u0022: [\n        4\n      ]\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022StockLabelID\u0022: 123,\n  \u0022ZonedCycleCountID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListZonedCycleCountSerialNumbersStatus",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Result\u0022: [\n    {\n      \u0022BlobID\u0022: \u00223b815944-2977-4b1f-aba3-e5ab6f41ecb7\u0022,\n      \u0022CreationTime\u0022: \u00222024-12-23\u0022,\n      \u0022InvoiceID\u0022: 123,\n      \u0022InvoiceNumber\u0022: \u0022string\u0022,\n      \u0022MessageTemplateID\u0022: 123,\n      \u0022MimeType\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrderID\u0022: 123,\n      \u0022OrderLineID\u0022: 123,\n      \u0022OrganizationUnitBackendID\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022ShipmentID\u0022: 123,\n      \u0022Type\u0022: 12,\n      \u0022Url\u0022: \u0022string\u0022\n    }\n  ]\n}"
+      "sample": "{\n  \u0022Result\u0022: {\n    \u0022CurrentPage\u0022: 123,\n    \u0022Filters\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022NumberOfPages\u0022: 123,\n    \u0022Offset\u0022: 123,\n    \u0022Page\u0022: [\n      {\n        \u0022CountedStockLabelID\u0022: 123,\n        \u0022ExpectedStockLabelID\u0022: 123,\n        \u0022SerialNumber\u0022: \u0022string\u0022,\n        \u0022Status\u0022: 4\n      }\n    ],\n    \u0022PageConfig\u0022: {\n      \u0022Filter\u0022: {\n        \u0022key\u0022: \u0022string\u0022\n      },\n      \u0022Limit\u0022: 123,\n      \u0022SortDirection\u0022: 1,\n      \u0022SortProperty\u0022: \u0022string\u0022,\n      \u0022Start\u0022: 123\n    },\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Total\u0022: 123\n  }\n}"
     },
     {
       "name": "400",
@@ -69,38 +55,105 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "E",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "InvoiceID",
+        "name": "SerialNumbers",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Invoice\u0060",
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Statuses",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - ExpectedAndCounted\n* \u00601\u0060 - ExpectedNotCounted\n* \u00602\u0060 - CountedOnDifferentStockLabel\n* \u00603\u0060 - CountedOnDifferentOrganizationUnit\n* \u00604\u0060 - CountedAsDifferentProduct\n* \u00605\u0060 - Unexpected",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "OrderID",
+        "name": "SortDirection",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Order\u0060",
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
         "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ShipmentID",
+        "name": "SortProperty",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Shipment\u0060",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "deprecation_notice": null,
+        "description": "",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
+      {
+        "name": "PageConfig",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "StockLabelID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060StockLabel\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ZonedCycleCountID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ZonedCycleCount\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -147,7 +200,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "G": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -176,54 +229,27 @@
         "one_of": null
       }
     ],
-    "F": [
+    "I": [
       {
-        "name": "BlobID",
+        "name": "CountedStockLabelID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CreationTime",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "InvoiceID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Invoice\u0060",
+        "description": "This is the ID of a \u0060StockLabel\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "InvoiceNumber",
+        "name": "ExpectedStockLabelID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MessageTemplateID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060MessageTemplate\u0060",
+        "description": "This is the ID of a \u0060StockLabel\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "MimeType",
+        "name": "SerialNumber",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -232,95 +258,162 @@
         "one_of": null
       },
       {
-        "name": "Name",
+        "name": "Status",
         "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Order\u0060",
+        "description": "Possible values:\n\n* \u00600\u0060 - ExpectedAndCounted\n* \u00601\u0060 - ExpectedNotCounted\n* \u00602\u0060 - CountedOnDifferentStockLabel\n* \u00603\u0060 - CountedOnDifferentOrganizationUnit\n* \u00604\u0060 - CountedAsDifferentProduct\n* \u00605\u0060 - Unexpected",
         "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderLineID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrderLine\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitBackendID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitID",
-        "deprecation_notice": null,
-        "description": "Optional OrganizationUnit based on Shipment.OrganizationUnit or Invoice.OrganizationUnit\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ShipmentID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Shipment\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Invoice\n* \u00602\u0060 - InvoiceThermal\n* \u00603\u0060 - ReturnLabel\n* \u00604\u0060 - ReturnForm\n* \u00605\u0060 - ShipmentLabel\n* \u00606\u0060 - Identification\n* \u00607\u0060 - PackingSlip\n* \u00608\u0060 - PickSlip\n* \u00609\u0060 - ThermalPrint\n* \u006010\u0060 - PinReceipt\n* \u006011\u0060 - Export\n* \u006012\u0060 - ElectronicReceipt\n* \u006013\u0060 - TaxFreeForm\n* \u006014\u0060 - Offline",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Url",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "C": [
+    "J": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "CurrentPage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberOfPages",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Offset",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Page",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "PageConfig",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Total",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "F",
         "one_of": null
       },
       {
@@ -329,16 +422,16 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "G",
         "one_of": null
       },
       {
         "name": "Result",
         "deprecation_notice": null,
         "description": "",
-        "type": "array[object] | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "H",
         "one_of": null
       }
     ]
