@@ -15,5 +15,5 @@ public class ErrorSpecificationArgument
   public TypeReference Type { get; }
 
   [JsonPropertyName("name")]
-  public string Name { get; }
+  public string? Name { get; }
 }

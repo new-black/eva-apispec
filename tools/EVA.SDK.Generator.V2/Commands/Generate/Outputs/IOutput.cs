@@ -1,4 +1,5 @@
 ﻿using EVA.API.Spec;
+using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs;
@@ -6,7 +7,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs;
 internal interface IOutput<T>
 {
   string? OutputPattern { get; }
-  string[] ForcedTransformations { get; }
+  bool GetForcedTransformations(T options, INamedTransform transform);
   Task Write(OutputContext<T> ctx);
 }
 

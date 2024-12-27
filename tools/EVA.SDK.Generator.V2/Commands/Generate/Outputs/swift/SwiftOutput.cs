@@ -7,11 +7,11 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.swift;
 
 internal class SwiftOutput : IOutput<SwiftOptions>
 {
-  private static readonly string[] SafePropertyNames = { "Type", "Protocol" };
+  private static readonly string[] SafePropertyNames = ["Type", "Protocol"];
 
   public string? OutputPattern => null;
 
-  public string[] ForcedTransformations => new[] { RemoveEventExports.ID, RemoveDataLakeExports.ID, RemoveErrors.ID, RemoveInheritance.ID };
+  public bool GetForcedTransformations(SwiftOptions _, INamedTransform x) => x is RemoveEventExports or RemoveDataLakeExports or RemoveErrors or RemoveInheritance;
 
   public async Task Write(OutputContext<SwiftOptions> ctx)
   {

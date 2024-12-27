@@ -24,10 +24,8 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 
     public string? OutputPattern => null;
 
-    public string[] ForcedTransformations => new[]
-    {
-        RemoveGenerics.ID, RemoveInheritance.ID, RemoveDataLakeExports.ID, RemoveEventExports.ID, RemoveErrors.ID
-    };
+    public bool GetForcedTransformations(ApiDocsOptions _, INamedTransform x) =>
+      x is RemoveGenerics or RemoveInheritance or RemoveDataLakeExports or RemoveEventExports or RemoveErrors;
 
     public async Task Write(OutputContext<ApiDocsOptions> ctx)
     {

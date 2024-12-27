@@ -6,8 +6,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 internal class RemoveUnusedGenericArguments : INamedTransform
 {
-  public const string ID = "remove-unused-type-params";
-  public string Name => ID;
+  public string ID => "remove-unused-type-params";
   public string Description => "Removes unused generic type parameters";
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)

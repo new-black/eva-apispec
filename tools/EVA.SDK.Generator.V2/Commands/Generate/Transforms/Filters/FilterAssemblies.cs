@@ -8,6 +8,8 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms.Filters;
 
 internal class FilterAssemblies : ITransform
 {
+  public string Description => "Filters assemblies";
+
   private readonly string? _targetAssembly;
   private readonly int _smallAssemblyLimit;
   private readonly List<(string filter, string? output)> _assemblyFilters;
@@ -57,7 +59,6 @@ internal class FilterAssemblies : ITransform
     return fallbackResult;
   }
 
-
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
     // Filter the services
@@ -75,13 +76,22 @@ internal class FilterAssemblies : ITransform
 
     input.Services = result.ToImmutableArray();
 
-    // Filter the types
+    // Filter the types (renaming actually)
     foreach (var type in input.Types.Values)
     {
       var targetName = DetermineTargetAssemblyFromFilters(type.Assembly);
       if (targetName != null)
       {
         type.Assembly = targetName;
+      }
+    }
+
+    // We can remove types for assemblies from option types, because they are not required there
+    foreach (var tr in input.EnumerateAllTypeReferences())
+    {
+      if (tr.Name == ApiSpecConsts.Specials.Option)
+      {
+        tr.Arguments = [..tr.Arguments.Where(x => input.Types.TryGetValue(x.Name, out var type) && DetermineTargetAssemblyFromFilters(type.Assembly) != null)];
       }
     }
 

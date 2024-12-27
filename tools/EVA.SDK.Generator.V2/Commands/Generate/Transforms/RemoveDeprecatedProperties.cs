@@ -6,8 +6,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 internal class RemoveDeprecatedProperties : INamedTransform
 {
-  public const string ID = "remove-deprecated-properties";
-  public string Name => ID;
+  public string ID => "remove-deprecated-properties";
   public string Description => "Will remove all deprecated properties";
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)

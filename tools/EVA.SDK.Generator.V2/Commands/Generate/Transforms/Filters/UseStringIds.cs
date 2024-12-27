@@ -8,6 +8,8 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 internal class UseStringIds : ITransform
 {
+  public string Description => "Use string IDs instead of the ID type";
+
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
     var changes = ITransform.TransformResult.None;

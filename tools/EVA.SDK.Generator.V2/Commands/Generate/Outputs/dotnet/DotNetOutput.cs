@@ -1,4 +1,6 @@
-﻿using EVA.API.Spec;
+﻿using System.Text;
+using System.Text.Json;
+using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 using EVA.SDK.Generator.V2.Helpers;
 using Microsoft.Extensions.Logging;
@@ -12,9 +14,9 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     public Dictionary<string, List<TypeReference?>> AllOptionsImplementations;
     public ApiDefinitionModel Input;
 
-    private Dictionary<string, (string local, string full)> typeNameCache = new();
-    private HashSet<(string ns, string local)> allocatedFullTypeNames = new();
-    public HashSet<string> AllOptionsInterfaces;
+    private Dictionary<string, (string local, string full)> typeNameCache = [];
+    private HashSet<(string ns, string local)> allocatedFullTypeNames = [];
+
 
     public (string localName, string fullName) AllocateName(string id)
     {
@@ -55,8 +57,12 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     Response = 2
   }
 
-  public string OutputPattern => "EVA.*.cs";
-  public string[] ForcedTransformations => new[] { RemoveEventExports.ID, RemoveDataLakeExports.ID, RemoveInheritance.ID };
+  public string? OutputPattern => null;
+
+  public bool GetForcedTransformations(DotNetOptions options, INamedTransform x) =>
+    options.GenerateDynamicData
+      ? x is RemoveEventExports or RemoveDataLakeExports or RemoveInheritance
+      : x is RemoveEventExports or RemoveDataLakeExports or RemoveInheritance or RemoveOptions;
 
   private static void WriteErrors(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, IndentedStringBuilder o, string name)
   {
@@ -80,7 +86,6 @@ internal class DotNetOutput : IOutput<DotNetOptions>
 
   public async Task Write(OutputContext<DotNetOptions> ctx)
   {
-    var groupedInput = ctx.Input.GroupByAssembly();
     var allResponseTypes = ctx.Input.Services.Select(s => s.ResponseTypeID).ToHashSet();
 
     // Some preprocessing
@@ -91,145 +96,212 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         .Where(x => x.Name == ApiSpecConsts.Specials.Option)
         .SelectMany(x => x.Arguments.Select(a => (x.Shared, a.Name)))
         .GroupBy(x => x.Name)
-        .ToDictionary(x => x.Key, x => x.Select(y => y.Shared).ToList()),
-      AllOptionsInterfaces = ctx.Input.EnumerateAllTypeReferences()
-        .Where(x => x.Name == ApiSpecConsts.Specials.Option)
-        .Where(x => x.Shared != null)
-        .Select(x => x.Shared.Name)
-        .ToHashSet()
+        .ToDictionary(x => x.Key, x => x.Select(y => y.Shared).ToList())
     };
 
-    foreach (var i in groupedInput)
+    if (ctx.Options.AddEvaClient)
     {
-      var handledTypes = new HashSet<string>();
+      var content = ManifestResourceHelpers.GetResource("dotnet.Resources.EVAClient.cs")!.Replace("<<API_VERSION>>", ctx.Input.ApiVersion.ToString());
 
-      var actualNamespace = FixNamespace(i.Assembly);
+      await ctx.Writer.WriteFileAsync("EVAClient.cs", content);
+    }
+
+    await ctx.Writer.WriteFileAsync("GlobalUsings.cs", ManifestResourceHelpers.GetResource("dotnet.Resources.GlobalUsings.cs")!);
+
+    var handledTypes = new HashSet<string>();
+
+    // First we write out the requests
+    foreach(var service in ctx.Input.Services)
+    {
+      var requestType = ctx.Input.Types[service.RequestTypeID];
+      var actualNamespace = FixNamespace(requestType.Assembly);
       var sb = new IndentedStringBuilder(2);
 
-      sb.WriteLine("#nullable enable");
+      sb.WriteLine("#pragma warning disable CS8618");
+      sb.WriteLine("using Newtonsoft.Json.Linq;");
       sb.WriteLine();
-      sb.WriteLine("using System;");
-      sb.WriteLine("using System.Collections;");
-      sb.WriteLine("using System.Collections.Generic;");
-      sb.WriteLine("using System.ComponentModel;");
-      sb.WriteLine("using System.Linq;");
-      if (ctx.Options.JsonSerializer == "newtonsoft")
-      {
-        sb.WriteLine("using System.Reflection;");
-        sb.WriteLine("using Newtonsoft.Json;");
-        sb.WriteLine("using Newtonsoft.Json.Serialization;");
-        sb.WriteLine("using Newtonsoft.Json.Linq;");
-      }
+
+      sb.WriteLine($"namespace {actualNamespace};");
+      sb.WriteLine();
+
+      var fullRequestTypeName = WriteRequestType(service.RequestTypeID, requestType, sb, service, ctx, allResponseTypes, state);
+      handledTypes.Add(service.RequestTypeID);
+
+      await ctx.Writer.WriteFileAsync($"requests/{fullRequestTypeName}.cs", sb.ToString());
+    }
+
+    // Next we write out the responses
+    foreach(var service in ctx.Input.Services)
+    {
+      if (!handledTypes.Add(service.ResponseTypeID)) continue;
+
+      var responseType = ctx.Input.Types[service.ResponseTypeID];
+      var actualNamespace = FixNamespace(responseType.Assembly);
+      var sb = new IndentedStringBuilder(2);
+
+      sb.WriteLine("#pragma warning disable CS8618");
+      sb.WriteLine("using Newtonsoft.Json.Linq;");
+      sb.WriteLine();
+
+      sb.WriteLine($"namespace {actualNamespace};");
+      sb.WriteLine();
+
+      var fullResponseTypeName = WriteResponseType(service.ResponseTypeID, responseType, sb, ctx, allResponseTypes, state);
+
+      await ctx.Writer.WriteFileAsync($"responses/{fullResponseTypeName}.cs", sb.ToString());
+    }
+
+    // As the following step, we write out all the remaining types
+    foreach (var type in ctx.Input.Types.Where(type => type.Value.ParentType == null))
+    {
+      if(!handledTypes.Add(type.Key)) continue;
+
+      var actualNamespace = FixNamespace(type.Value.Assembly);
+      var sb = new IndentedStringBuilder(2);
+
+      sb.WriteLine("#pragma warning disable CS8618");
+      sb.WriteLine("using Newtonsoft.Json.Linq;");
 
       sb.WriteLine();
-      sb.WriteLine($"namespace {actualNamespace}");
-      using (sb.BracedIndentation)
+      sb.WriteLine($"namespace {actualNamespace};");
+      sb.WriteLine();
+
+      var fullTypeName = WriteType(type.Key, type.Value, sb, ctx, allResponseTypes, state);
+      if (fullTypeName == null) continue;
+
+      await ctx.Writer.WriteFileAsync($"types/{fullTypeName}.cs", sb.ToString());
+    }
+
+    // We also need the list of possible errors
+    {
+      foreach (var group in ctx.Input.Errors.GroupBy(x => x.Assembly))
       {
-        if (i.Assembly == ApiSpecConsts.WellKnown.CoreAssembly)
-        {
-          sb.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.cs");
-          if (ctx.Options.JsonSerializer == "newtonsoft")
-          {
-            sb.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.NewtonsoftJson.cs");
-          }
-        }
-
-        WriteErrors(i.Errors.GroupByPrefix(), sb, "Errors");
-
-        foreach (var service in i.Services)
-        {
-          var requestType = ctx.Input.Types[service.RequestTypeID];
-          var responseType = ctx.Input.Types[service.ResponseTypeID];
-
-          sb.WriteLine();
-          WriteRequestType(service.RequestTypeID, requestType, sb, service, ctx, allResponseTypes, state);
-          handledTypes.Add(service.RequestTypeID);
-          sb.WriteLine();
-
-          // Write response
-          if (responseType.Assembly == service.Assembly && handledTypes.Add(service.ResponseTypeID))
-          {
-            WriteResponseType(service.ResponseTypeID, responseType, sb, ctx, allResponseTypes, state);
-          }
-        }
-
-        WriteExtensionMethods(i.Services, ctx, sb, state, i.Assembly);
-
-        foreach (var type in i.Types.Where(type => !handledTypes.Contains(type.Key) && type.Value.ParentType == null))
-        {
-          sb.WriteLine();
-          WriteType(type.Key, type.Value, sb, ctx, allResponseTypes, state);
-        }
+        var sb = new IndentedStringBuilder(2);
+        var ns = FixNamespace(group.Key);
+        sb.WriteLine($"namespace {ns};");
+        sb.WriteLine();
+        WriteErrors(group.GroupByPrefix(), sb, "Errors");
+        await ctx.Writer.WriteFileAsync($"errors/{ns}.cs", sb.ToString());
       }
+    }
 
-      await ctx.Writer.WriteFileAsync($"{actualNamespace}.cs", sb.ToString());
+    // Finally the shared data
+    {
+      var sb = new IndentedStringBuilder(2);
+      sb.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.cs");
+      await ctx.Writer.WriteFileAsync("EVA.SDK.cs", sb.ToString());
+    }
+
+    if (ctx.Options.GenerateDynamicData)
+    {
+      var sb = new IndentedStringBuilder(2);
+      sb.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.DynamicData.cs");
+      await ctx.Writer.WriteFileAsync("EVA.SDK.DynamicData.cs", sb.ToString());
+    }
+
+    if (ctx.Options.GenerateDynamicData)
+    {
+      var sb = new IndentedStringBuilder(2);
+      sb.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.DynamicData.NewtonsoftJson.cs");
+      await ctx.Writer.WriteFileAsync("EVA.SDK.DynamicData.NewtonsoftJson.cs", sb.ToString());
+    }
+
+    // Serialization specific data
+    {
+      var sb = new IndentedStringBuilder(2);
+      sb.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.NewtonsoftJson.cs");
+      await ctx.Writer.WriteFileAsync("EVA.SDK.NewtonsoftJson.cs", sb.ToString());
+    }
+
+    // Extensions
+    {
+      var sb = new IndentedStringBuilder(2);
+      sb.WriteLine("namespace EVA.SDK;");
+      WriteExtensionMethods(ctx, sb, state);
+      await ctx.Writer.WriteFileAsync("EVA.SDK.Extensions.cs", sb.ToString());
     }
   }
 
-  private void WriteExtensionMethods(List<ServiceModel> services, OutputContext<DotNetOptions> ctx, IndentedStringBuilder o, GenerationState state, string ns)
+  private void WriteExtensionMethods(OutputContext<DotNetOptions> ctx, IndentedStringBuilder o, GenerationState state)
   {
+    if (ctx.Options.GenerateDynamicData)
+    {
+      o.WriteLine("internal static class DynamicDataConverters");
+      using (o.BracedIndentation)
+      {
+        o.WriteLine("internal static readonly Newtonsoft.Json.JsonConverter[] Converters = new Newtonsoft.Json.JsonConverter[]");
+        using (o.BracedIndentation)
+        {
+          foreach (var typeName in ctx.Input.EnumerateAllTypeReferences()
+                     .Where(x => x.Name == ApiSpecConsts.Specials.Option)
+                     .Select(x => GetFullName(x.Shared.CloneAsNotNull(), TypeContext.None, ctx, state))
+                     .Distinct())
+          {
+            o.WriteLine($"new EVA.SDK.DynamicDataConverter<{typeName}>(),");
+          }
+        }
+
+        o.WriteLine(";");
+      }
+    }
+
     o.WriteLine("public static class EVAExtensions");
     using (o.BracedIndentation)
     {
-      foreach (var (classID, options) in state.AllOptionsImplementations)
+      if (ctx.Options.GenerateDynamicData)
       {
-        if (ctx.Input.Types[classID].Assembly != ns) continue;
-
-        var (_, fullTypeName) = state.AllocateName(classID);
-        foreach (var opt in options.Select(x => GetFullName(x.CloneAsNotNull(), TypeContext.None, ctx, state)).Distinct())
+        foreach (var (classID, options) in state.AllOptionsImplementations)
         {
-          o.WriteLine($"public static {fullTypeName} To{ctx.Input.Types[classID].TypeName}(this EVA.SDK.Core.DynamicData<{opt}> obj)");
-          using (o.BracedIndentation)
+          var (_, fullTypeName) = state.AllocateName(classID);
+          foreach (var opt in options.Select(x => GetFullName(x.CloneAsNotNull(), TypeContext.None, ctx, state)).Distinct())
           {
-            o.WriteLine($"return obj.Data.ToObject<{fullTypeName}>();");
+            o.WriteLine($"public static {fullTypeName}? To{ctx.Input.Types[classID].TypeName}(this EVA.SDK.DynamicData<{opt}>? obj)");
+            using (o.BracedIndentation)
+            {
+              o.WriteLine($"return obj?.Data.ToObject<{fullTypeName}>();");
+            }
           }
         }
       }
 
-      foreach (var service in services)
+      if (ctx.Options.GenerateExtensions)
       {
-        var (_, resType) = state.AllocateName(service.ResponseTypeID);
-        var (_, reqType) = state.AllocateName(service.RequestTypeID);
-
-        var requestType = ctx.Input.Types[service.RequestTypeID];
-        if (requestType.Properties.Count > 1) continue;
-
-        o.WriteLine($"public static System.Threading.Tasks.Task<{resType}> {service.Name}<TOptions>(this EVA.SDK.Core.IEVAClient<TOptions> client,");
-        using (o.Indentation)
+        foreach(var service in ctx.Input.Services)
         {
-          foreach (var property in requestType.Properties.OrderBy(p => p.Value.Type.Nullable ? 1 : 0))
-          {
-            var propName = GetFullPropName(TypeContext.Request, ctx, property.Value, state);
-            o.WriteLine($"{propName} {property.Key}{(property.Value.Type.Nullable ? " = default" : "")},");
-          }
+          var (_, fullRequestName) = state.AllocateName(service.RequestTypeID);
+          var (_, fullResponseName) = state.AllocateName(service.ResponseTypeID);
 
-          o.WriteLine(" TOptions options = default)");
-        }
-
-        using (o.BracedIndentation)
-        {
-          o.WriteLine($"var request = new {reqType}");
-          o.WriteLine("{");
-          using (o.Indentation)
+          var type = ctx.Input.Types[service.RequestTypeID];
+          if (type.ParentType == null && type.Properties.Count == 0)
           {
-            foreach (var p in requestType.Properties)
+            o.WriteLine($"public static System.Threading.Tasks.Task<{fullResponseName}> {service.Name}<TOptions>(this EVA.SDK.IEVAApiClient<TOptions> client, TOptions? options = default)");
+            using (o.BracedIndentation)
             {
-              o.WriteLine($"{p.Key} = {p.Key},");
+              o.WriteLine($"return client.CallService(new {fullRequestName}(), options);");
             }
           }
 
-          o.WriteLine("};");
-
-          o.WriteLine("return client.CallService(request, options);");
+          o.WriteLine($"public static System.Threading.Tasks.Task<{fullResponseName}> {service.Name}<TOptions>(this EVA.SDK.IEVAApiClient<TOptions> client, {fullRequestName} request, TOptions? options = default)");
+          using (o.BracedIndentation)
+          {
+            o.WriteLine("return client.CallService(request, options);");
+          }
         }
       }
     }
   }
 
-  private void WriteType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes, GenerationState state)
+  private string? WriteType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes, GenerationState state)
   {
     // These types have special handling
-    if (ctx.Options.UseNativeDayOfWeek && id == ApiSpecConsts.WellKnown.DayOfWeek) return;
+    if (ctx.Options.UseNativeDayOfWeek && id == ApiSpecConsts.WellKnown.DayOfWeek) return null;
+
+    var (localName, fullName) = state.AllocateName(id);
+
+    if (spec.ParentType != null)
+    {
+      localName = localName[(localName.LastIndexOf('.') + 1)..];
+    }
 
     if (spec.EnumIsFlag.HasValue)
     {
@@ -255,14 +327,9 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         }
       }
 
-      return;
+      return fullName;
     }
 
-    var (localName, _) = state.AllocateName(id);
-    if (spec.ParentType != null)
-    {
-      localName = localName[(localName.LastIndexOf('.') + 1)..];
-    }
     if (spec.TypeArguments.Any())
     {
       localName += $"<{string.Join(',', spec.TypeArguments.Select(x => x[1..]))}>";
@@ -277,35 +344,51 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       .Concat(allResponseTypes.Contains(id) ? new[] { "EVA.SDK.Core.IResponseMessage" } : Array.Empty<string>())
       .ToList();
 
-    var isInterface = state.AllOptionsInterfaces.Contains(id);
-    sb.WriteLine($"public {(isInterface ? "interface" : "class")} {localName}{(inheritFrom.Any() ? " : " + string.Join(", ", inheritFrom) : string.Empty)}");
+    sb.WriteLine($"public class {localName}{(inheritFrom.Any() ? " : " + string.Join(", ", inheritFrom) : string.Empty)}");
     var usage = (spec.Usage.Request ? TypeContext.Request : TypeContext.None) | (spec.Usage.Response ? TypeContext.Response : TypeContext.None);
     using (sb.BracedIndentation)
     {
-      WriteTypeBody(id, localName, spec, sb, usage, ctx, allResponseTypes, state);
-
-      // if (isInterface)
-      // {
-      //   sb.WriteLine($"public static implicit operator EVA.SDK.Core.DynamicData<{localName}>({localName} x)");
-      //   using (sb.BracedIndentation)
-      //   {
-      //     sb.WriteLine($"return new EVA.SDK.Core.DynamicData<{localName}> {{ Data = JObject.FromObject(x) }};");
-      //   }
-      // }
+      WriteTypeBody(id, spec, sb, usage, ctx, allResponseTypes, state);
     }
+
+    return fullName;
   }
 
-  private void WriteResponseType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes, GenerationState state)
+  private string WriteResponseType(string id, TypeSpecification spec, IndentedStringBuilder sb, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes, GenerationState state)
   {
-    var (localName, _) = state.AllocateName(id);
+    var (localName, fullName) = state.AllocateName(id);
     sb.WriteLine($"public class {localName} : EVA.SDK.Core.IResponseMessage");
     using (sb.BracedIndentation)
     {
-      WriteTypeBody(id, localName, spec, sb, TypeContext.Response, ctx, allResponseTypes, state);
+      WriteTypeBody(id, spec, sb, TypeContext.Response, ctx, allResponseTypes, state);
     }
+
+    return fullName;
   }
 
-  private void WriteRequestType(string id, TypeSpecification requestType, IndentedStringBuilder o, ServiceModel service, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes, GenerationState state)
+  private string WriteRequestType(string id, TypeSpecification requestType, IndentedStringBuilder o, ServiceModel service, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes,
+    GenerationState state)
+  {
+    var (localName, fullRequestName) = state.AllocateName(id);
+    var (localResponseName, fullResponseName) = state.AllocateName(service.ResponseTypeID);
+
+    o.WriteLine();
+
+    WriteRequestTypeHeader(requestType, o, service);
+
+    o.WriteLine($"public partial class {localName} : EVA.SDK.Core.IResponseType<{fullResponseName}>");
+    using (o.BracedIndentation)
+    {
+      o.WriteLine($"[{DotNetNames.JsonIgnore}]");
+      o.WriteLine($"public string Path => \"{service.Path.TrimStart('/')}\";");
+      o.WriteLine();
+      WriteTypeBody(service.RequestTypeID, requestType, o, TypeContext.Request, ctx, allResponseTypes, state);
+    }
+
+    return fullRequestName;
+  }
+
+  private static void WriteRequestTypeHeader(TypeSpecification requestType, IndentedStringBuilder o, ServiceModel service)
   {
     if (requestType.Description != null)
     {
@@ -321,19 +404,11 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       if (auth.Functionality != null) o.WriteLine($"/// Required permission: {auth.Functionality} (Scope: {auth.Scope})");
     }
 
-    var (localName, _) = state.AllocateName(id);
-    var (_, fullResponseName) = state.AllocateName(service.ResponseTypeID);
-
     o.WriteLine("/// </remarks>");
-    o.WriteLine($"[EVA.SDK.Core.RequestMessage(\"{service.Path}\")]");
-    o.WriteLine($"public class {localName} : EVA.SDK.Core.IResponseType<{fullResponseName}>");
-    using (o.BracedIndentation)
-    {
-      WriteTypeBody(service.RequestTypeID, localName, requestType, o, TypeContext.Request, ctx, allResponseTypes, state);
-    }
   }
 
-  private void WriteTypeBody(string id, string className, TypeSpecification spec, IndentedStringBuilder o, TypeContext context, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes, GenerationState state)
+  private void WriteTypeBody(string id, TypeSpecification spec, IndentedStringBuilder o, TypeContext context, OutputContext<DotNetOptions> ctx, HashSet<string> allResponseTypes,
+    GenerationState state)
   {
     foreach (var prop in spec.Properties)
     {
@@ -350,7 +425,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         o.WriteLine($"/// Entity type: {prop.Value.DataModelInformation.Name}");
         if (context.HasFlag(TypeContext.Request) && prop.Value.DataModelInformation.SupportsBackendID)
         {
-          o.WriteLine("/// Supports passing in the BackendID as a string.");
+          o.WriteLine($"/// Supports passing in the BackendID of a {prop.Value.DataModelInformation.Name} when using EVA-IDs-Mode: ExternalIDs.");
           if (prop.Value.DataModelInformation.Lenient) o.WriteLine("/// Allows missing/invalid values when using EVA-IDs-Mode: ExternalIDs.");
         }
 
@@ -362,22 +437,18 @@ internal class DotNetOutput : IOutput<DotNetOptions>
         o.WriteLine($"[Obsolete(@\"{prop.Value.Deprecated.Comment?.Replace("\"", "\"\"")}\")]");
       }
 
-      var fullPropName = GetFullPropName(context, ctx, prop.Value, state);
+      if (prop.Value.Skippable)
+      {
+        o.WriteLine("[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]");
+        o.WriteLine($"public bool ShouldSerialize{prop.Key}() => {prop.Key}.IsValuePresent;");
 
+        var nameForConverter = GetFullName(prop.Value.Type, context, ctx, state);
+        o.WriteLine($"[Newtonsoft.Json.JsonConverter(typeof(EVA.SDK.MaybeConverter<{nameForConverter}>))]");
+      }
+
+      var fullPropName = GetFullPropName(context, ctx, prop.Value, state);
       o.WriteLine($"public {fullPropName} {prop.Key} {{ get; set; }}");
     }
-
-    // if (state.AllOptionsImplementations.TryGetValue(id, out var options))
-    // {
-    //   foreach (var x in options.Select(x => GetFullName(x.CloneAsNotNull(), TypeContext.None, ctx, state)).Distinct())
-    //   {
-    //     o.WriteLine($"public static implicit operator EVA.SDK.Core.DynamicData<{x}>({className} x)");
-    //     using (o.BracedIndentation)
-    //     {
-    //       o.WriteLine($"return new EVA.SDK.Core.DynamicData<{x}> {{ Data = JObject.FromObject(x) }};");
-    //     }
-    //   }
-    // }
 
     foreach (var ts in ctx.Input.Types.Where(t => t.Value.ParentType == id))
     {
@@ -415,9 +486,16 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     // We'll expose the shared part of the option
     if (r.Name == ApiSpecConsts.Specials.Option)
     {
-      var name = GetFullName(r.Shared, context, ctx, state);
+      var name = GetFullName(r.Shared.CloneAsNotNull(), context, ctx, state);
       // if (!context.HasFlag(TypeContext.Response)) return name;
-      return $"EVA.SDK.Core.DynamicData<{name}>{n}";
+      if (ctx.Options.GenerateDynamicData)
+      {
+        return $"EVA.SDK.DynamicData<{name}>{n}";
+      }
+      else
+      {
+        return $"{name}{n}";
+      }
     }
 
     if (r.Name == ApiSpecConsts.Int64)

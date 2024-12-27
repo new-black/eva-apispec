@@ -16,7 +16,7 @@ public class GenerateOptions
   internal string[]? FilterAssemblies { get; set; }
   internal string[]? FilterServices { get; init; }
 
-  internal List<string>? Transforms { get; set; }
+  internal List<string> Transforms { get; set; } = [];
 
   internal string? OrphanedTypesAssembly { get; init; }
 
@@ -29,12 +29,6 @@ public class GenerateOptions
   internal bool UseStringIDs { get; init; } = BaseGenerateOptionsBinderOptions.UseStringIDs.Default;
 
   internal string Api { get; init; } = BaseGenerateOptionsBinderOptions.Api.Default;
-
-  internal void EnsureTransform(string transform)
-  {
-    Transforms ??= new List<string>();
-    if (!Transforms.Contains(transform)) Transforms.Add(transform);
-  }
 }
 
 internal static class BaseGenerateOptionsBinderOptions
@@ -124,7 +118,7 @@ internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : G
     return result;
   }
 
-  public IEnumerable<Option> GetAllOptions(string[] forcedTransformations)
+  public IEnumerable<Option> GetAllOptions(Func<INamedTransform, bool> isTransformForced)
   {
     yield return SharedOptions.Input;
     yield return BaseGenerateOptionsBinderOptions.OutputDir;
@@ -146,11 +140,11 @@ internal abstract class BaseGenerateOptionsBinder<T> : BinderBase<T> where T : G
     var sb = new StringBuilder();
     sb.AppendLine("Available transformations:");
 
-    foreach (var x in GenerationPipeline.Transforms)
+    foreach (var transform in GenerationPipeline.AllTransforms)
     {
-      if (forcedTransformations.Contains(x.Name)) continue;
+      if (isTransformForced(transform)) continue;
       sb.AppendLine();
-      sb.AppendLine($"{x.Name}: {x.Description}");
+      sb.AppendLine($"{transform.ID}: {transform.Description}");
     }
 
     _transforms = new Option<List<string>>("--transforms", sb.ToString()) { AllowMultipleArgumentsPerToken = true };

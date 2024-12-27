@@ -6,6 +6,8 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms.Filters;
 
 internal class FilterApi : ITransform
 {
+  public string Description => "Filters the API";
+
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
     if (options.Api == "eva")

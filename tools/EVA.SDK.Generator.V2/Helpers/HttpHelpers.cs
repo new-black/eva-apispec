@@ -22,7 +22,7 @@ internal static class HttpHelpers
     await using var stream = await response.Content.ReadAsStreamAsync();
     var result = await JsonSerializer.DeserializeAsync(stream, info);
     if (result == null) throw new ResponseParsingFailedException(url);
-    logger.LogInformation("Downloaded {Size} from {Url}", StringHelpers.FormatSize(stream.Position), url);
+    logger.LogDebug("Downloaded {Size} from {Url}", StringHelpers.FormatSize(stream.Position), url);
     return result;
   }
 
@@ -34,6 +34,6 @@ internal static class HttpHelpers
     await target.FlushAsync();
     target.Close();
 
-    logger.LogInformation("Downloaded {Size} from {Url}", StringHelpers.FormatSize(new FileInfo(path).Length), url);
+    logger.LogDebug("Downloaded {Size} from {Url}", StringHelpers.FormatSize(new FileInfo(path).Length), url);
   }
 }

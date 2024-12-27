@@ -25,7 +25,8 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
   public string? OutputPattern => null;
 
-  public string[] ForcedTransformations => new[] { RemoveGenerics.ID, RemoveUnusedGenericArguments.ID, RemoveErrors.ID, RemoveEventExports.ID, RemoveInheritance.ID };
+  public bool GetForcedTransformations(OpenApiOptions _, INamedTransform x) =>
+    x is RemoveGenerics or RemoveUnusedGenericArguments or RemoveErrors or RemoveEventExports or RemoveInheritance;
 
   private const string Parameter_Header_UserAgent = "p1";
   private const string Parameter_Header_IdsMode = "p2";

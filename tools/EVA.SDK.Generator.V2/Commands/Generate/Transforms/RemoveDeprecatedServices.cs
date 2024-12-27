@@ -6,8 +6,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 internal class RemoveDeprecatedServices : INamedTransform
 {
-  public const string ID = "remove-deprecated-services";
-  public string Name => ID;
+  public string ID => "remove-deprecated-services";
   public string Description => "Will remove all deprecated services";
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)

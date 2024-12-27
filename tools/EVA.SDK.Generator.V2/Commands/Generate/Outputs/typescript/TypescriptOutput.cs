@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using EVA.API.Spec;
+using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.typescript;
@@ -10,7 +11,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
 {
   public string? OutputPattern => null;
 
-  public string[] ForcedTransformations => Array.Empty<string>();
+  public bool GetForcedTransformations(TypescriptOptions _, INamedTransform x) => false;
 
   private const string AnyType = "TAnyValue";
   private const string IEvaServiceDefinition = "IEvaServiceDefinition";

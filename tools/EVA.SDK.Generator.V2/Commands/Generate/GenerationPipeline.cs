@@ -13,8 +13,8 @@ namespace EVA.SDK.Generator.V2.Commands.Generate;
 
 internal static class GenerationPipeline
 {
-  internal static readonly INamedTransform[] Transforms =
-  {
+  internal static INamedTransform[] AllTransforms =>
+  [
     new RemoveGenerics(),
     new RemoveDeprecatedProperties(),
     new RemoveDeprecatedServices(),
@@ -26,20 +26,17 @@ internal static class GenerationPipeline
     new RemoveOptions(),
     new RemoveSharedRequestResponseTypes(),
     new RemoveUnusedGenericArguments(),
-    new RemoveDataLakeExports()
-  };
+    new RemoveDataLakeExports(),
+  ];
 
   private static readonly ITransform Transform1 = new FixDependencies();
   private static readonly ITransform Transform2 = new RemoveUnusedTypes();
 
   internal static async Task Run<T>(T opt, IOutput<T> output, ILogger logger) where T : GenerateOptions
   {
-    // Some outputs require certain options
-    foreach (var o in output.ForcedTransformations) opt.EnsureTransform(o);
-
     // Find all parts of the pipeline
     var input = InputFactory.GetInputFromString(opt.Input);
-    var transforms = FindTransforms(opt).ToList();
+    var transforms = FindTransforms(opt, output, opt).ToList();
     var filters = FindFilters(opt).ToList();
 
     // The input
@@ -64,7 +61,6 @@ internal static class GenerationPipeline
     }
 
     // Run transformations
-    logger.LogInformation("Running transformations: {Transforms}", string.Join(", ", transforms.Select(t => t.Name)));
     for (var i = 0; i < 10; i++)
     {
       logger.LogDebug("Running iteration {Iteration}", i);
@@ -112,7 +108,12 @@ internal static class GenerationPipeline
     // Output
     var writer = new OutputWriter(opt.OutputDirectory, logger);
     await output.Write(new OutputContext<T>(model, opt, writer, logger));
-    logger.LogInformation("{WriterReport}", writer.ToReport());
+
+    // Delete remaining
+    writer.DeleteRemaining();
+
+    // Report
+    writer.WriteReport(logger);
   }
 
   /// <summary>
@@ -125,28 +126,13 @@ internal static class GenerationPipeline
     opt.OutputDirectory = fullOutputPath;
     if (opt.Overwrite)
     {
-      if (outputPattern == null)
-      {
-        if (File.Exists(fullOutputPath)) File.Delete(fullOutputPath);
-        if (Directory.Exists(fullOutputPath)) Directory.Delete(fullOutputPath, true);
-        Directory.CreateDirectory(fullOutputPath);
-      }
-      else
-      {
-        if (!Directory.Exists(fullOutputPath)) Directory.CreateDirectory(fullOutputPath);
-        var allFiles = Directory.GetFiles(fullOutputPath, outputPattern, SearchOption.AllDirectories);
-        foreach (var file in allFiles)
-        {
-          var relativeFile = Path.GetRelativePath(fullOutputPath, file);
-          if (FileSystemName.MatchesSimpleExpression(outputPattern, relativeFile)) File.Delete(file);
-        }
-      }
+      // Don't do anything here if we are overwriting.
     }
     else
     {
       if (File.Exists(fullOutputPath)) throw new SdkException($"Cannot output to {fullOutputPath}, it is a file");
-      if (Directory.Exists(fullOutputPath) && Directory.GetFileSystemEntries(fullOutputPath).Any()) throw new SdkException($"Cannot output to {fullOutputPath}, it is not empty");
-      Directory.CreateDirectory(fullOutputPath);
+      if (Directory.Exists(fullOutputPath) && Directory.GetFileSystemEntries(fullOutputPath).Length != 0) throw new SdkException($"Cannot output to {fullOutputPath}, it is not empty");
+      if (!Directory.Exists(fullOutputPath)) Directory.CreateDirectory(fullOutputPath);
     }
 
     logger.LogInformation("Outputting to: {FullOutputPath}", fullOutputPath);
@@ -168,13 +154,13 @@ internal static class GenerationPipeline
     }
   }
 
-  private static IEnumerable<INamedTransform> FindTransforms(GenerateOptions options)
+  private static IEnumerable<INamedTransform> FindTransforms<T>(GenerateOptions options, IOutput<T> output, T opt)
   {
-    var remove = (options.Transforms ?? new List<string>()).Distinct().ToHashSet();
-
-    foreach (var transform in Transforms)
+    var remove = options.Transforms.Distinct().ToHashSet();
+    foreach (var x in AllTransforms)
     {
-      if (remove.Contains(transform.Name)) yield return transform;
+      if (remove.Contains(x.ID) || output.GetForcedTransformations(opt, x)) yield return x;
     }
+
   }
 }

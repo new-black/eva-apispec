@@ -7,8 +7,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 internal class RemoveEmptyTypes : INamedTransform
 {
-  public const string ID = "remove-empty-types";
-  public string Name => ID;
+  public string ID => "remove-empty-types";
   public string Description => "Will remove all types that don't have any properties. An exception is made for types that are used as request/response types for services and errors.";
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)

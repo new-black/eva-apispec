@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.evaspec;
 
@@ -6,7 +7,7 @@ internal class EvaSpecOutput : IOutput<EvaSpecOptions>
 {
   public string? OutputPattern => null;
 
-  public string[] ForcedTransformations => [];
+  public bool GetForcedTransformations(EvaSpecOptions _, INamedTransform x) => false;
 
   public async Task Write(OutputContext<EvaSpecOptions> ctx)
   {

@@ -7,8 +7,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 internal class RemoveGenerics : INamedTransform
 {
-  public const string ID = "remove-generics";
-  public string Name => ID;
+  public string ID => "remove-generics";
   public string Description => "Removes generic types by flattening them.";
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)

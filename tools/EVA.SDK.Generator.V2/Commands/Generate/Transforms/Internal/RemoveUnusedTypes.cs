@@ -7,6 +7,8 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms.Internal;
 
 internal class RemoveUnusedTypes : ITransform
 {
+  public string Description => "Removes unused types";
+
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
     var allUnusedTypes = input.Types.Keys.ToHashSet();

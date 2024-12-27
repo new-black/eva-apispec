@@ -35,34 +35,30 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TrimmerRootDescriptor Include="trimming-roots.xml" />
+    <Compile Remove="validation\**" />
+    <EmbeddedResource Remove="validation\**" />
+    <None Remove="validation\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Commands\Generate\Outputs\dotnet\Resources\EVA.SDK.Core.cs" />
-    <EmbeddedResource Include="Commands\Generate\Outputs\dotnet\Resources\EVA.SDK.Core.cs" />
-    <Compile Remove="Commands\Generate\Outputs\dotnet\Resources\EVA.SDK.Core.NewtonsoftJson.cs" />
-    <EmbeddedResource Include="Commands\Generate\Outputs\dotnet\Resources\EVA.SDK.Core.NewtonsoftJson.cs" />
-    <Compile Remove="validation\**" />
-    <EmbeddedResource Remove="validation\**" />
-    <None Remove="Commands\Generate\Outputs\swift\Resources\Mocks.swift" />
-    <EmbeddedResource Include="Commands\Generate\Outputs\swift\Resources\Mocks.class.swift" />
-    <EmbeddedResource Include="Commands\Generate\Outputs\swift\Resources\Mocks.struct.swift" />
-    <EmbeddedResource Include="Commands\Generate\Outputs\swift\Resources\Mocks.swift" />
+    <Compile Remove="out\**" />
+    <EmbeddedResource Remove="out\**" />
+    <None Remove="out\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Commands\Generate\Outputs\swift\Resources\**" />
+    <EmbeddedResource Include="Commands\Generate\Outputs\swift\Resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Commands\Generate\Outputs\apidocs\Resources\index.md" />
     <EmbeddedResource Include="Commands\Generate\Outputs\apidocs\Resources\index.md" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="validation\**" />
+    <Compile Remove="Commands\Generate\Outputs\dotnet\Resources\**" />
+    <EmbeddedResource Include="Commands\Generate\Outputs\dotnet\Resources\**" />
   </ItemGroup>
-
-  <Target Name="ConfigureTrimming" BeforeTargets="PrepareForILLink">
-    <ItemGroup>
-      <ManagedAssemblyToLink Condition="'%(Filename)' == 'Microsoft.OpenApi'">
-        <TrimmerSingleWarn>False</TrimmerSingleWarn>
-      </ManagedAssemblyToLink>
-    </ItemGroup>
-  </Target>
 
 </Project>

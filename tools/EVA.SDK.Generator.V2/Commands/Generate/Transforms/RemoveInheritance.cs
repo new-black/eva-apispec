@@ -7,8 +7,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 
 internal class RemoveInheritance : INamedTransform
 {
-  public const string ID = "remove-inheritance";
-  public string Name => ID;
+  public string ID => "remove-inheritance";
   public string Description => "Will remove inheritance by flattening type hierarchies into a single type.";
 
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)

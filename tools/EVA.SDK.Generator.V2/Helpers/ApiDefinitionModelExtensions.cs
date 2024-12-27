@@ -142,13 +142,14 @@ internal static class ApiDefinitionModelExtensions
     var message = spec.Message;
     if (spec.Arguments.Any())
     {
-      message = string.Format(message, spec.Arguments.Select(a => (object)$"{{{a.Name}:{a.Type.Name}}}").ToArray());
+      var i = 0;
+      message = string.Format(message, spec.Arguments.Select(object (a) => $"{{{a.Name ?? i++.ToString()}:{a.Type.Name}}}").ToArray());
     }
 
     return message;
   }
 
-  internal static PrefixGroupedErrors GroupByPrefix(this List<ErrorSpecification> errors, int skip = 0)
+  internal static PrefixGroupedErrors GroupByPrefix(this IEnumerable<ErrorSpecification> errors, int skip = 0)
   {
     var rootErrors = new List<(string Name, ErrorSpecification error)>();
     var subErrors = new SortedDictionary<string, List<ErrorSpecification>>();

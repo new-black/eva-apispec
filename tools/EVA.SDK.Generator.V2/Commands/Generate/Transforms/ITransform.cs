@@ -13,11 +13,12 @@ internal interface ITransform
     None = 0
   }
 
+  string Description { get; }
+
   TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger);
 }
 
 internal interface INamedTransform : ITransform
 {
-  string Name { get; }
-  string Description { get; }
+  string ID { get; }
 }

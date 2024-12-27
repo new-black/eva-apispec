@@ -37,6 +37,21 @@ public static class ApiSpecConsts
     ID
   };
 
+  public static readonly HashSet<string> AllNonNullablePrimitives = new()
+  {
+    Int16,
+    Int32,
+    Int64,
+    Float32,
+    Float64,
+    Float128,
+    Date,
+    Guid,
+    Bool,
+    Duration,
+    ID
+  };
+
   public static class Specials
   {
     public const string Array = "array";

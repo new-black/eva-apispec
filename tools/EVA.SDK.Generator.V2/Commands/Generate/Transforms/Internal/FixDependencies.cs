@@ -7,6 +7,8 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms.Internal;
 
 internal class FixDependencies : ITransform
 {
+  public string Description => "Fixes dependencies";
+
   public ITransform.TransformResult Transform(ApiDefinitionModel input, GenerateOptions options, ILogger logger)
   {
     foreach (var (_, type) in input.Types)

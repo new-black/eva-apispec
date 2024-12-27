@@ -6,6 +6,8 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Transforms.Filters;
 
 internal class FilterServices : ITransform
 {
+  public string Description => "Filters for specific services";
+
   private readonly HashSet<string> _services;
 
   public FilterServices(IEnumerable<string> services)
