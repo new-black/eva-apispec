@@ -25,6 +25,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       var filename = "Svc" + FileNameFromType(input.Types[service.RequestTypeID]);
       var reqName = GetTypeName(service.RequestTypeID, input);
       var resName = GetTypeName(service.ResponseTypeID, input);
+      if (resName == "EVACoreGetApplicationConfigurationResponse") resName = "ApplicationConfiguration";
 
       var output = new IndentedStringBuilder(4);
 
@@ -47,7 +48,6 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       if (type.ParentType != null) continue;
 
       var assembly = FolderFromAssembly(type.Assembly);
-      var filename = FileNameFromType(type);
       var typename = GetTypeName(id, input);
 
       var output = new IndentedStringBuilder(2);
@@ -57,7 +57,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       WriteType(type, id, typename, output, ctx);
 
-      await writer.WriteFileAsync($"{assembly}/{filename}.swift", output.ToString());
+      await writer.WriteFileAsync($"{assembly}/{typename}.swift", output.ToString());
     }
 
     // Write mocks
@@ -296,8 +296,8 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             output.WriteLine("public init(");
             using (output.Indentation)
             {
-              output.WriteLine("properties: [String: JSON] = [:],");
               var list = options.ToList();
+              output.WriteLine("properties: [String: JSON] = [:]" + ((list.Count == 0) ? "" : ","));
               for (var i = 0; i < list.Count; i++)
               {
                 var option = list[i];
@@ -463,7 +463,15 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           var typePrefix = string.Empty;
           if (type.Properties.ContainsKey(typeNameNotNullable))
           {
-            typePrefix = "Foundation.";
+            if (typeNameNotNullable == "ProductDetails")
+            {
+              typeName += "Type";
+              typeNameNotNullable += "Type";
+            }
+            else
+            {
+              typePrefix = "Foundation.";
+            }
           }
 
           if (value.Type.Nullable || value.Deprecated != null)
@@ -649,7 +657,8 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     }
 
     if (typeReference is { Name: ApiSpecConsts.Any }) return $"{ctx.Options.AnyCodableName}{n}";
-    if (typeReference is { Name: ApiSpecConsts.WellKnown.IProductSearchItem or ApiSpecConsts.Object }) return $"[String: {ctx.Options.AnyCodableName}]{n}";
+    if (typeReference is { Name: ApiSpecConsts.WellKnown.IProductSearchItem }) return $"ProductDetails{n}";
+    if (typeReference is { Name: ApiSpecConsts.Object }) return $"[String: {ctx.Options.AnyCodableName}]{n}";
     if (typeReference is { Name: ApiSpecConsts.Specials.Map })
     {
       var ta0 = typeReference.Arguments[0];
@@ -684,6 +693,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   private static string GetTypeName(string id, ApiDefinitionModel input)
   {
+    if (id == "EVA.Core.Users.Subscriptions.UserDto") return "EVACoreSubscriptionsUserDto";
     var reference = input.Types[id];
     var assembly = reference.Assembly;
     assembly = assembly.Replace(".Services", string.Empty);
