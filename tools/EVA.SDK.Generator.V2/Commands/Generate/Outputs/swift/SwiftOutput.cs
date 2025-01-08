@@ -458,29 +458,20 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           var typeName = GetPropTypeName(value, key, typeContext, ctx);
           var typeNameNotNullable = GetPropTypeName(value, key, typeContext, ctx, true);
 
+          var isProductDetails = typeNameNotNullable == "ProductDetails";
           // Check if we have a conflicting property defined that will "claim" our typename
           // This is usually the case for props name Date or Data
-          var typePrefix = string.Empty;
-          if (type.Properties.ContainsKey(typeNameNotNullable))
-          {
-            if (typeNameNotNullable == "ProductDetails")
-            {
-              typeName += "Type";
-              typeNameNotNullable += "Type";
-            }
-            else
-            {
-              typePrefix = "Foundation.";
-            }
-          }
+          var typePrefix = (type.Properties.ContainsKey(typeNameNotNullable) && !isProductDetails) ? "Foundation." : string.Empty;
+          var typePostfix = isProductDetails ? "Wrapper" : string.Empty;
+          var postfix = isProductDetails ? "?.productDetails" : string.Empty;
 
           if (value.Type.Nullable || value.Deprecated != null)
           {
-            output.WriteLine($"do {{ self.{key} = try container.decodeIfPresent({typePrefix}{typeNameNotNullable}.self, forKey: .{key}) }} catch {{ decodeLog(error) }}");
+            output.WriteLine($"do {{ self.{key} = try container.decodeIfPresent({typePrefix}{typeNameNotNullable}{typePostfix}.self, forKey: .{key}){postfix} }} catch {{ decodeLog(error) }}");
           }
           else
           {
-            output.WriteLine($"self.{key} = try container.decode({typePrefix}{typeName}.self, forKey: .{key})");
+            output.WriteLine($"self.{key} = try container.decode({typePrefix}{typeName}{typePostfix}.self, forKey: .{key}){postfix}");
           }
         }
       }
