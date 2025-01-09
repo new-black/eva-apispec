@@ -75,4 +75,17 @@ struct ProductDetailsWrapper: Codable {
     var productDetails: ProductDetails
 }
 
+extension Sequence where Element == ProductDetailsWrapper {
+    var productDetails: [ProductDetails] {
+        []
+    }
+}
+
+extension Dictionary where Value == ProductDetailsWrapper {
+    var productDetails: [Key: ProductDetails] {
+        [:]
+    }
+}
+
+
 struct ProductDetails: Codable {}
