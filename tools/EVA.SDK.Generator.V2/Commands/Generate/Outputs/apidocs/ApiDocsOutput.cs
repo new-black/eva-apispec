@@ -9,6 +9,7 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
 
 internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 {
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
     private class State
     {
         internal readonly Dictionary<string, (bool backendID, bool systemID)> SupportsBackendIDCache = new();
@@ -185,14 +186,14 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     private static List<RequestSample> GetRequestSamples(OutputContext<ApiDocsOptions> ctx, string serviceRequestType, string serviceName)
     {
       var sample = BuildMinimalSample(ctx, serviceRequestType, new Stack<string>());
-      var sampleStr = sample.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
+      var sampleStr = sample.ToJsonString(_jsonSerializerOptions);
 
       return new List<RequestSample>
       {
         new RequestSample
         {
           Name = "JSON",
-          Sample = sample.ToJsonString(new JsonSerializerOptions { WriteIndented = true }),
+          Sample = sample.ToJsonString(_jsonSerializerOptions),
           Syntax = "json"
         },
         new RequestSample
@@ -238,7 +239,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
             new ResponseSample
             {
                 Name = "200",
-                Sample = sample.ToJsonString(new JsonSerializerOptions { WriteIndented = true })
+                Sample = sample.ToJsonString(_jsonSerializerOptions)
             },
             new ResponseSample
             {
