@@ -1,7 +1,7 @@
 {
   "typename": "CreatePasskey",
   "assembly": "EVA.Core",
-  "description": "Create a new passkey, specifying a generated challenge from \u0060GetPasskeySetupChallenge\u0060, signed with your private key as \u0060Signature\u0060 and including your \u0060PublicKey\u0060 for registration",
+  "description": "After having called \u0060GetPasskeyChallenge\u0060 to obtain a challenge and some information from the server, and after pushing that through WebAuthn using \u0060navigator.credentials.create\u0060,\nyou extract information from the generated credential and send it back to the server for storage.\n\n1. The \u0060Challenge\u0060 matching the one originally provided through \u0060GetPasskeyChallenge\u0060\n2. The \u0060PublicKey\u0060 generated (base64 encoded)\n3. The \u0060AuthenticatorData\u0060 generated (base64 encoded)\n\nThe creation will succeed if the \u0060Challenge\u0060 matches the one we created for you and all the data checks out, after which you can use your new key to log in!\n\nWhen you want to log in, simply call \u0060Login\u0060 using \u0060CustomAuthenticatorType\u0060 set to \u0022Passkey\u0022 and it will reply with a challenge and some information inside the\n\u0060CustomAuthenticateResponseData\u0060 property, which you can push through WebAuthn using \u0060navigator.credentials.get\u0060 to sign that challenge with your private key. Exact the information\nfrom the generated credential and call \u0060Login\u0060 again with the same \u0060CustomAuthenticatorType\u0060, but this time include \u0060CustomAuthenticateData\u0060 with an object of type\n\u0060PasskeyAuthenticateMessage\u0060 containing;\n\n- The \u0060ID\u0060 as the \u0022rawId\u0022 of the used credential (base64 encoded)\n- The \u0060Signature\u0060 that was created to sign the challenge (base64 encoded)\n- The \u0060ClientData\u0060 to include some client information (base64 encoded json)\n- The \u0060AuthenticatorData\u0060 to include some authenticator data (base64 encoded)\n\nIf this all checks out, you\u0027re logged in! As with every \u0060Login\u0060, be sure to specify user types and organization units of your preference.",
   "usage": {
     "request": true,
     "response": false
@@ -18,6 +18,37 @@
     "nullable": false
   },
   "properties": {
+    "AuthenticatorData": {
+      "type": {
+        "ref": "string",
+        "args": [],
+        "shared": null,
+        "nullable": false
+      },
+      "description": null,
+      "skippable": false,
+      "deprecated": null,
+      "required": {
+        "current": true,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "requiredAllowEmpty": {
+        "current": true,
+        "new": null,
+        "announced": null,
+        "active": null,
+        "comment": null
+      },
+      "minValue": null,
+      "maxValue": null,
+      "stringLengthConstraint": null,
+      "stringRegexConstraint": null,
+      "datamodel": null,
+      "allowedValues": []
+    },
     "Challenge": {
       "type": {
         "ref": "string",
@@ -36,7 +67,7 @@
         "comment": null
       },
       "requiredAllowEmpty": {
-        "current": false,
+        "current": true,
         "new": null,
         "announced": null,
         "active": null,
@@ -67,7 +98,7 @@
         "comment": null
       },
       "requiredAllowEmpty": {
-        "current": false,
+        "current": true,
         "new": null,
         "announced": null,
         "active": null,
@@ -78,75 +109,6 @@
       "stringLengthConstraint": null,
       "stringRegexConstraint": null,
       "datamodel": null,
-      "allowedValues": []
-    },
-    "Signature": {
-      "type": {
-        "ref": "string",
-        "args": [],
-        "shared": null,
-        "nullable": false
-      },
-      "description": null,
-      "skippable": false,
-      "deprecated": null,
-      "required": {
-        "current": true,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
-      "requiredAllowEmpty": {
-        "current": false,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
-      "minValue": null,
-      "maxValue": null,
-      "stringLengthConstraint": null,
-      "stringRegexConstraint": null,
-      "datamodel": null,
-      "allowedValues": []
-    },
-    "UserID": {
-      "type": {
-        "ref": "id",
-        "args": [],
-        "shared": null,
-        "nullable": false
-      },
-      "description": null,
-      "skippable": false,
-      "deprecated": null,
-      "required": {
-        "current": true,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
-      "requiredAllowEmpty": {
-        "current": false,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
-      "minValue": null,
-      "maxValue": null,
-      "stringLengthConstraint": null,
-      "stringRegexConstraint": null,
-      "datamodel": {
-        "name": "User",
-        "lenient": false,
-        "supportsCustomID": true,
-        "supportsSystemID": true,
-        "isEvaID": true,
-        "isExternalID": false
-      },
       "allowedValues": []
     }
   },
