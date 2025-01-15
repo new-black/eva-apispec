@@ -1,9 +1,9 @@
 {
-  "name": "AttachBlobToCase",
+  "name": "LiveGuardValidateToken",
   "method": "POST",
-  "path": "/message/AttachBlobToCase",
-  "description": "Attach blob to case.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Cases:Edit\u0060",
+  "path": "/message/LiveGuardValidateToken",
+  "description": "Validate the given token with the cloud, and if valid, trust the chain.",
+  "auth_description": "Requires a user of type \u0060Api\u0060 with functionality \u0060LiveGuard:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,31 +25,24 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-Mode",
-      "type": "string",
-      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobID\u0022: \u0022804b7444-8148-4b42-9168-b0bfe0cb4a52\u0022,\n  \u0022BlobUrl\u0022: \u0022string\u0022,\n  \u0022CaseID\u0022: 123\n}",
+      "sample": "{\n  \u0022AuthenticationToken\u0022: \u0022string\u0022,\n  \u0022CloudChainID\u0022: \u0022string\u0022,\n  \u0022LocalChainID\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u0022804b7444-8148-4b42-9168-b0bfe0cb4a52\u0022,\n  \u0022BlobUrl\u0022: \u0022string\u0022,\n  \u0022CaseID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AttachBlobToCase",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AuthenticationToken\u0022: \u0022string\u0022,\n  \u0022CloudChainID\u0022: \u0022string\u0022,\n  \u0022LocalChainID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/LiveGuardValidateToken",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022ChainID\u0022: \u0022string\u0022,\n  \u0022EmailAddress\u0022: \u0022string\u0022,\n  \u0022Nickname\u0022: \u0022string\u0022,\n  \u0022UserID\u0022: 123\n}"
     },
     {
       "name": "400",
@@ -66,28 +59,28 @@
   "types": {
     "B": [
       {
-        "name": "BlobID",
+        "name": "AuthenticationToken",
         "deprecation_notice": null,
-        "description": "Can be used for standard blobs - for secure blobs, use \u0060BlobUrl\u0060 instead.\n\nThis is the ID of a \u0060Blob\u0060",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BlobUrl",
-        "deprecation_notice": null,
-        "description": "Can be used for both standard- and secured blobs - must match environment assets URL.",
+        "description": "",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "CaseID",
+        "name": "CloudChainID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Case\u0060",
-        "type": "integer",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LocalChainID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -171,6 +164,24 @@
     ],
     "C": [
       {
+        "name": "ChainID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EmailAddress",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
@@ -186,6 +197,24 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Nickname",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ]
