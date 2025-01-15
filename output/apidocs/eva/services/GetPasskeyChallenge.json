@@ -2,8 +2,8 @@
   "name": "GetPasskeyChallenge",
   "method": "POST",
   "path": "/message/GetPasskeyChallenge",
-  "description": "Generates a new temporary passkey challenge for a sequential \u0060Login\u0060 flow",
-  "auth_description": "This service does not require authentication.",
+  "description": "As a logged in user, you can create a passkey as additional login method, which is a totally awesome, passwordless, usernameless method to log in!\n\nBefore you can create a new passkey, use this \u0060GetPasskeyChallenge\u0060 service to obtain a challenge and some information from the server, push that through WebAuthn using\n\u0060navigator.credentials.create\u0060 to create the credential, which you use to call \u0060CreatePasskey\u0060.\n\n:point_right: See \u0060CreatePasskey\u0060 for more details!",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Challenge\u0022: \u0022string\u0022,\n  \u0022EnvironmentID\u0022: \u0022string\u0022\n}"
+      "sample": "{\n  \u0022Algorithms\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022Type\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022Challenge\u0022: \u0022string\u0022,\n  \u0022RelyingParty\u0022: {\n    \u0022ID\u0022: \u0022string\u0022,\n    \u0022Name\u0022: \u0022string\u0022\n  },\n  \u0022User\u0022: {\n    \u0022DisplayName\u0022: \u0022string\u0022,\n    \u0022ID\u0022: \u0022string\u0022,\n    \u0022Name\u0022: \u0022string\u0022\n  }\n}"
     },
     {
       "name": "400",
@@ -59,6 +59,26 @@
   "types": {
     "B": [],
     "D": [
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -105,7 +125,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -134,9 +154,9 @@
         "one_of": null
       }
     ],
-    "C": [
+    "G": [
       {
-        "name": "Challenge",
+        "name": "ID",
         "deprecation_notice": null,
         "description": "",
         "type": "string",
@@ -145,7 +165,56 @@
         "one_of": null
       },
       {
-        "name": "EnvironmentID",
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "DisplayName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Algorithms",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Challenge",
         "deprecation_notice": null,
         "description": "",
         "type": "string",
@@ -159,7 +228,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "E",
         "one_of": null
       },
       {
@@ -168,7 +237,25 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "RelyingParty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "User",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object",
+        "required": true,
+        "properties_id": "H",
         "one_of": null
       }
     ]
