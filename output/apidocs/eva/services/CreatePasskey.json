@@ -2,7 +2,7 @@
   "name": "CreatePasskey",
   "method": "POST",
   "path": "/message/CreatePasskey",
-  "description": "Create a new passkey, specifying a generated challenge from \u0060GetPasskeySetupChallenge\u0060, signed with your private key as \u0060Signature\u0060 and including your \u0060PublicKey\u0060 for registration",
+  "description": "After having called \u0060GetPasskeyChallenge\u0060 to obtain a challenge and some information from the server, and after pushing that through WebAuthn using \u0060navigator.credentials.create\u0060,\nyou extract information from the generated credential and send it back to the server for storage.\n\n1. The \u0060Challenge\u0060 matching the one originally provided through \u0060GetPasskeyChallenge\u0060\n2. The \u0060PublicKey\u0060 generated (base64 encoded)\n3. The \u0060AuthenticatorData\u0060 generated (base64 encoded)\n\nThe creation will succeed if the \u0060Challenge\u0060 matches the one we created for you and all the data checks out, after which you can use your new key to log in!\n\nWhen you want to log in, simply call \u0060Login\u0060 using \u0060CustomAuthenticatorType\u0060 set to \u0022Passkey\u0022 and it will reply with a challenge and some information inside the\n\u0060CustomAuthenticateResponseData\u0060 property, which you can push through WebAuthn using \u0060navigator.credentials.get\u0060 to sign that challenge with your private key. Exact the information\nfrom the generated credential and call \u0060Login\u0060 again with the same \u0060CustomAuthenticatorType\u0060, but this time include \u0060CustomAuthenticateData\u0060 with an object of type\n\u0060PasskeyAuthenticateMessage\u0060 containing;\n\n- The \u0060ID\u0060 as the \u0022rawId\u0022 of the used credential (base64 encoded)\n- The \u0060Signature\u0060 that was created to sign the challenge (base64 encoded)\n- The \u0060ClientData\u0060 to include some client information (base64 encoded json)\n- The \u0060AuthenticatorData\u0060 to include some authenticator data (base64 encoded)\n\nIf this all checks out, you\u0027re logged in! As with every \u0060Login\u0060, be sure to specify user types and organization units of your preference.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -25,31 +25,17 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-Mode",
-      "type": "string",
-      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
-      "required": false,
-      "default": null
-    },
-    {
-      "name": "EVA-IDs-BackendSystemID",
-      "type": "string",
-      "description": "The ID of the backend system that is used to resolve the IDs.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Challenge\u0022: \u0022string\u0022,\n  \u0022PublicKey\u0022: \u0022string\u0022,\n  \u0022Signature\u0022: \u0022string\u0022,\n  \u0022UserID\u0022: 123\n}",
+      "sample": "{\n  \u0022AuthenticatorData\u0022: \u0022string\u0022,\n  \u0022Challenge\u0022: \u0022string\u0022,\n  \u0022PublicKey\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Challenge\u0022: \u0022string\u0022,\n  \u0022PublicKey\u0022: \u0022string\u0022,\n  \u0022Signature\u0022: \u0022string\u0022,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreatePasskey",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AuthenticatorData\u0022: \u0022string\u0022,\n  \u0022Challenge\u0022: \u0022string\u0022,\n  \u0022PublicKey\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreatePasskey",
       "syntax": "bash"
     }
   ],
@@ -73,6 +59,15 @@
   "types": {
     "B": [
       {
+        "name": "AuthenticatorData",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Challenge",
         "deprecation_notice": null,
         "description": "",
@@ -86,24 +81,6 @@
         "deprecation_notice": null,
         "description": "",
         "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Signature",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
-        "type": "integer",
         "required": true,
         "properties_id": null,
         "one_of": null

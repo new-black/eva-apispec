@@ -1,9 +1,9 @@
 {
-  "name": "GetOrderDefinitionRevisions",
+  "name": "SetSurveyQuestionSequences",
   "method": "POST",
-  "path": "/message/GetOrderDefinitionRevisions",
-  "description": "Returns a top list of the most recent modifications that have been made to an order definition.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
+  "path": "/message/SetSurveyQuestionSequences",
+  "description": "Takes in all questions of a survey and sets their sequences.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Surveys:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ID\u0022: 123\n}",
+      "sample": "{\n  \u0022SurveyID\u0022: 123,\n  \u0022SurveyQuestionIDs\u0022: [\n    123\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetOrderDefinitionRevisions",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022SurveyID\u0022: 123,\n  \u0022SurveyQuestionIDs\u0022: [\n    123\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SetSurveyQuestionSequences",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Results\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CreationTime\u0022: \u00222025-01-06\u0022,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Once\u0022: true,\n      \u0022Script\u0022: \u0022string\u0022,\n      \u0022ScriptLanguage\u0022: \u0022string\u0022,\n      \u0022Sequence\u0022: 123\n    }\n  ]\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -59,11 +59,20 @@
   "types": {
     "B": [
       {
-        "name": "ID",
+        "name": "SurveyID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrderDefinition\u0060",
+        "description": "This is the ID of a \u0060Survey\u0060",
         "type": "integer",
-        "required": false,
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SurveyQuestionIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060SurveyQuestion\u0060",
+        "type": "array[integer]",
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
@@ -144,71 +153,6 @@
         "one_of": null
       }
     ],
-    "F": [
-      {
-        "name": "BackendID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CreationTime",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Once",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Script",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ScriptLanguage",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Sequence",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "Error",
@@ -226,15 +170,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "Results",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "F",
         "one_of": null
       }
     ]

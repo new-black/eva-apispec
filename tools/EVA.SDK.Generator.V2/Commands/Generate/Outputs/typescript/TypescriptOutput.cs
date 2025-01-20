@@ -49,7 +49,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       if (group.Assembly == ApiSpecConsts.WellKnown.CoreAssembly)
       {
         o.WriteLine();
-        o.WriteLine($"export type {AnyType} = string | number | boolean | Date | Array<{AnyType}> | {{ [key: string]: {AnyType} }};");
+        o.WriteLine($"export type {AnyType} = string | number | boolean | Array<{AnyType}> | {{ [key: string]: {AnyType} }};");
         o.WriteLine($"export interface {IEvaServiceDefinition} {{ name: string; path: string; request?: unknown; response?: unknown; }}");
         o.WriteLine($"export function createServiceDefinition<SVC extends {IEvaServiceDefinition}>(service: new () => SVC): SVC {{ return new service(); }}");
         o.WriteLine($"export const EVA_API_VERSION = {ctx.Input.ApiVersion};");

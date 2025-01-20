@@ -1,8 +1,8 @@
 {
-  "name": "RemovePushNotificationDevice",
+  "name": "GetPasskeyInfo",
   "method": "POST",
-  "path": "/message/RemovePushNotificationDevice",
-  "description": "The RemovePushNotificationDevice service",
+  "path": "/message/GetPasskeyInfo",
+  "description": "Retrieves some basic information about the current user\u0027s passkeys.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022DeviceToken\u0022: \u0022string\u0022\n}",
+      "sample": "{}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022DeviceToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/RemovePushNotificationDevice",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetPasskeyInfo",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022Passkeys\u0022: [\n    {\n      \u0022ID\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -57,26 +57,7 @@
   "request_type_id": "B",
   "response_type_id": "C",
   "types": {
-    "B": [
-      {
-        "name": "BackendSystemID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DeviceToken",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
+    "B": [],
     "D": [
       {
         "name": "Code",
@@ -153,6 +134,17 @@
         "one_of": null
       }
     ],
+    "F": [
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "C": [
       {
         "name": "Error",
@@ -170,6 +162,15 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Passkeys",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "F",
         "one_of": null
       }
     ]

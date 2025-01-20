@@ -1,7 +1,7 @@
 {
-  "typename": "AddPushNotificationDevice",
+  "typename": "ListFullStockCountSerialNumbersStatus",
   "assembly": "EVA.Core",
-  "description": null,
+  "description": "Retrieves the status of serial numbers for a specific product and stock label within a Full Stock Count.",
   "usage": {
     "request": true,
     "response": false
@@ -9,18 +9,33 @@
   "enumIsFlag": null,
   "typeArguments": [],
   "typeDependencies": [
-    "EVA.Core.RequestMessageWithEmptyResponse"
+    "EVA.Core.FilteredPagedResultRequest\u00602",
+    "EVA.Core.Services.FullStockCountServices.ListFullStockCountSerialNumbersStatusFilter",
+    "EVA.Core.Services.FullStockCountServices.ListFullStockCountSerialNumbersStatusResponse"
   ],
   "extends": {
-    "ref": "EVA.Core.RequestMessageWithEmptyResponse",
-    "args": [],
+    "ref": "EVA.Core.FilteredPagedResultRequest\u00602",
+    "args": [
+      {
+        "ref": "EVA.Core.Services.FullStockCountServices.ListFullStockCountSerialNumbersStatusFilter",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      },
+      {
+        "ref": "EVA.Core.Services.FullStockCountServices.ListFullStockCountSerialNumbersStatusResponse",
+        "args": [],
+        "shared": null,
+        "nullable": true
+      }
+    ],
     "shared": null,
     "nullable": false
   },
   "properties": {
-    "BackendSystemID": {
+    "FullStockCountID": {
       "type": {
-        "ref": "string",
+        "ref": "id",
         "args": [],
         "shared": null,
         "nullable": false
@@ -46,12 +61,19 @@
       "maxValue": null,
       "stringLengthConstraint": null,
       "stringRegexConstraint": null,
-      "datamodel": null,
+      "datamodel": {
+        "name": "FullStockCount",
+        "lenient": false,
+        "supportsCustomID": false,
+        "supportsSystemID": false,
+        "isEvaID": true,
+        "isExternalID": false
+      },
       "allowedValues": []
     },
-    "DeviceOS": {
+    "ProductID": {
       "type": {
-        "ref": "string",
+        "ref": "id",
         "args": [],
         "shared": null,
         "nullable": false
@@ -77,12 +99,19 @@
       "maxValue": null,
       "stringLengthConstraint": null,
       "stringRegexConstraint": null,
-      "datamodel": null,
+      "datamodel": {
+        "name": "Product",
+        "lenient": false,
+        "supportsCustomID": true,
+        "supportsSystemID": true,
+        "isEvaID": true,
+        "isExternalID": false
+      },
       "allowedValues": []
     },
-    "DeviceToken": {
+    "StockLabelID": {
       "type": {
-        "ref": "string",
+        "ref": "id",
         "args": [],
         "shared": null,
         "nullable": false
@@ -108,38 +137,14 @@
       "maxValue": null,
       "stringLengthConstraint": null,
       "stringRegexConstraint": null,
-      "datamodel": null,
-      "allowedValues": []
-    },
-    "MobileAppID": {
-      "type": {
-        "ref": "string",
-        "args": [],
-        "shared": null,
-        "nullable": false
+      "datamodel": {
+        "name": "StockLabel",
+        "lenient": false,
+        "supportsCustomID": false,
+        "supportsSystemID": false,
+        "isEvaID": true,
+        "isExternalID": false
       },
-      "description": null,
-      "skippable": false,
-      "deprecated": null,
-      "required": {
-        "current": true,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
-      "requiredAllowEmpty": {
-        "current": false,
-        "new": null,
-        "announced": null,
-        "active": null,
-        "comment": null
-      },
-      "minValue": null,
-      "maxValue": null,
-      "stringLengthConstraint": null,
-      "stringRegexConstraint": null,
-      "datamodel": null,
       "allowedValues": []
     }
   },
