@@ -65,3 +65,27 @@ extension DecodingError {
         // No-op: This function intentionally does nothing.
     }
 }
+
+extension JSONDecoder {
+    static let iso8601: JSONDecoder = .init()
+    static let productDetails: JSONDecoder = .init()
+}
+
+struct ProductDetailsWrapper: Codable {
+    var productDetails: ProductDetails
+}
+
+extension Sequence where Element == ProductDetailsWrapper {
+    var productDetails: [ProductDetails] {
+        []
+    }
+}
+
+extension Dictionary where Value == ProductDetailsWrapper {
+    var productDetails: [Key: ProductDetails] {
+        [:]
+    }
+}
+
+
+struct ProductDetails: Codable {}
