@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <NoWarn>CS8618;CS1591;CS1570</NoWarn>
+    <PackageId>NewBlack.EVA.SDK</PackageId>
+    <Authors>New Black</Authors>
+    <Company>New Black</Company>
+    <Description>API client for the EVA platform</Description>
+    <RepositoryUrl>https://github.com/new-black/eva-apispec</RepositoryUrl>
+    <IsTrimmable Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">true</IsTrimmable>
+    <TrimmerSingleWarn>false</TrimmerSingleWarn>
+	  <!-- doesnt work yet: netstandard2.0;netstandard2.1;net6.0 -->
+	  <TargetFrameworks>net7.0;net8.0;net9.0</TargetFrameworks>
+    <LangVersion>default</LangVersion>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+</Project>
