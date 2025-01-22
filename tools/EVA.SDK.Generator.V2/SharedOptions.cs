@@ -12,6 +12,6 @@ internal static class SharedOptions
 
   internal static readonly OptionWithDefault<string> LogLevel = new Option<string>(
     name: "--log-level",
-    description: "The log level to use. Defaults to 'info'."
+    description: "The log level to use."
   ).WithAlias("-l").FromAmong("trace", "debug", "info", "warning", "error", "none").WithDefault("info");
 }
