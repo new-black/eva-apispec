@@ -306,12 +306,12 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 
       if (type.Name is ApiSpecConsts.Guid)
       {
-        return Guid.NewGuid().ToString();
+        return "DB422695-4164-4046-8E63-83CDAE00D364";
       }
 
       if (type.Name is ApiSpecConsts.Date)
       {
-        return DateTime.UtcNow.ToString("yyyy-MM-dd");
+        return "2025-01-01";
       }
 
       if (type.Name is ApiSpecConsts.Duration)
