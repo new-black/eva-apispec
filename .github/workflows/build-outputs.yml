@@ -40,7 +40,8 @@ jobs:
           9.0.x
     - name: Setup env and files
       run: |
-        echo "version=$(dotnet run --project ./tools/EVA.SDK.Generator.V2/ -- api-version -i ./spec/spec.json)" >> $GITHUB_ENV
+        dotnet build --project ./tools/EVA.SDK.Generator.V2/
+        echo "version=$(dotnet run -v q --no-build --project ./tools/EVA.SDK.Generator.V2/ -- api-version -i ./spec/spec.json)" >> $GITHUB_ENV
         echo "build_number=$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
         dotnet run --project ./tools/EVA.SDK.Generator.V2/ -- generate dotnet -o ./sdks/dotnet/typings/ --overwrite -i ./spec/spec.json --opt-eva-client --opt-extensions --use-string-ids --assembly "-EVA.Global" "-EVA.ShelfManagement" "-EVA.Sync"
     - name: Build NuGet
