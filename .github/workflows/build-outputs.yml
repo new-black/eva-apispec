@@ -30,3 +30,22 @@ jobs:
       run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate apidocs -i spec/spec.json -o output/apidocs --overwrite --assembly "-EVA.Global" "-EVA.ShelfManagement" "-EVA.Sync"
     - name: Commit changes
       run: 'git add .;git config --global user.email "ruben.oost@newblack.io";git config --global user.name "Ruben Oost";git diff-index --quiet HEAD || git commit -m "Outputs for: ${{ github.event.head_commit.message }}";git push origin main'
+    - uses: actions/setup-dotnet@v4
+      name: Setup .NET for NuGet
+      with:
+        dotnet-version: |
+          6.0.x
+          7.0.x
+          8.0.x
+          9.0.x
+    - name: Setup env and files
+      run: |
+        echo "version=$(dotnet run --project .\tools\EVA.SDK.Generator.V2\ -- api-version -i .\spec\spec.json)" >> $GITHUB_ENV
+        echo "build_number=$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+         dotnet run --project ./tools/EVA.SDK.Generator.V2/ -- generate dotnet -o ./sdks/dotnet/typings/ --overwrite -i ./spec/spec.json --opt-eva-client --opt-extensions --string-ids --assembly "-EVA.Global" "-EVA.ShelfManagement" "-EVA.Sync"
+    - name: Build NuGet
+      working-directory: sdks/dotnet
+      run: |
+        dotnet pack -c Release -o ./out --version-suffix beta /p:Version=${{ env.version }}.0.${{ env.build_number }}
+        ls -hlas ./out
+    
