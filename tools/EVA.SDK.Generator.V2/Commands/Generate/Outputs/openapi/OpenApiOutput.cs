@@ -785,7 +785,8 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
 
     if (iseva)
     {
-      result.Operations.First().Value.Responses["4XX"] = new()
+      var responses = result.Operations.First().Value.Responses;
+      responses["400"] = new()
       {
         Description = "A BadRequest response",
         Content = new Dictionary<string, OpenApiMediaType>
@@ -798,7 +799,22 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
               ["RequestValidationFailure"] = new()
               {
                 Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_400_RequestValidation }
-              },
+              }
+            }
+          }
+        }
+      };
+
+      responses["403"] = new()
+      {
+        Description = "A Forbidden response",
+        Content = new Dictionary<string, OpenApiMediaType>
+        {
+          ["application/json"] = new()
+          {
+            Schema = new OpenApiSchema { Reference = new OpenApiReference { Id = Schema_Error, Type = ReferenceType.Schema } },
+            Examples = new Dictionary<string, OpenApiExample>
+            {
               ["Forbidden"] = new()
               {
                 Reference = new OpenApiReference { Type = ReferenceType.Example, Id = Example_403_Forbidden }
