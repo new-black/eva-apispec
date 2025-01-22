@@ -48,5 +48,5 @@ jobs:
       working-directory: sdks/dotnet
       run: |
         dotnet pack -c Release -o ./out /p:Version=${{ env.version }}.0.${{ env.build_number }}-beta
-        ls -hlas ./out
+        dotnet nuget push ./out/NewBlack.EVA.SDK.${{ env.version }}.0.${{ env.build_number }}-beta --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
     
