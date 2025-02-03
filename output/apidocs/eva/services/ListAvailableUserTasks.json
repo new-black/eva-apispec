@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Filters\u0022: {\n    \u0022key\u0022: {\n      \u0022key\u0022: [\n        \u0022any valid json value\u0022\n      ]\n    }\n  },\n  \u0022IsStarted\u0022: true,\n  \u0022Labels\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022UserID\u0022: 123,\n  \u0022UserTaskSubTypes\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022UserTaskTypes\u0022: [\n    \u0022string\u0022\n  ]\n}",
+      "sample": "{\n  \u0022Filters\u0022: {\n    \u0022key\u0022: {\n      \u0022key\u0022: [\n        \u0022any valid json value\u0022\n      ]\n    }\n  },\n  \u0022IsHidden\u0022: true,\n  \u0022IsStarted\u0022: true,\n  \u0022Labels\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022UserID\u0022: 123,\n  \u0022UserTaskSubTypes\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022UserTaskTypes\u0022: [\n    \u0022string\u0022\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Filters\u0022: {\n    \u0022key\u0022: {\n      \u0022key\u0022: [\n        \u0022any valid json value\u0022\n      ]\n    }\n  },\n  \u0022IsStarted\u0022: true,\n  \u0022Labels\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022UserID\u0022: 123,\n  \u0022UserTaskSubTypes\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022UserTaskTypes\u0022: [\n    \u0022string\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListAvailableUserTasks",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Filters\u0022: {\n    \u0022key\u0022: {\n      \u0022key\u0022: [\n        \u0022any valid json value\u0022\n      ]\n    }\n  },\n  \u0022IsHidden\u0022: true,\n  \u0022IsStarted\u0022: true,\n  \u0022Labels\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022UserID\u0022: 123,\n  \u0022UserTaskSubTypes\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022UserTaskTypes\u0022: [\n    \u0022string\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListAvailableUserTasks",
       "syntax": "bash"
     }
   ],
@@ -77,6 +77,15 @@
         "deprecation_notice": null,
         "description": "Filter for a specific UserTaskType.Name using a property name and a list of values.",
         "type": "map[map[array[any]]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsHidden",
+        "deprecation_notice": null,
+        "description": "Return only Hidden/Visible UserTasks",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -1816,6 +1825,28 @@
     ],
     "BM": [
       {
+        "name": "ZonePickUserTaskIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060UserTask\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BN": [
+      {
+        "name": "ProductZoneID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ProductZone\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "BO": [
+      {
         "name": "CompletedCount",
         "deprecation_notice": null,
         "description": "",
@@ -1834,7 +1865,7 @@
         "one_of": null
       }
     ],
-    "BN": [
+    "BP": [
       {
         "name": "Description",
         "deprecation_notice": null,
@@ -1863,7 +1894,7 @@
         "one_of": null
       }
     ],
-    "BO": [
+    "BQ": [
       {
         "name": "DefaultPriority",
         "deprecation_notice": null,
@@ -1924,11 +1955,11 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "BN",
+        "properties_id": "BP",
         "one_of": null
       }
     ],
-    "BR": [
+    "BT": [
       {
         "name": "Address1",
         "deprecation_notice": null,
@@ -2110,7 +2141,7 @@
         "one_of": null
       }
     ],
-    "BQ": [
+    "BS": [
       {
         "name": "AccountHolderName",
         "deprecation_notice": null,
@@ -2198,7 +2229,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BR",
+        "properties_id": "BT",
         "one_of": null
       },
       {
@@ -2270,11 +2301,11 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BR",
+        "properties_id": "BT",
         "one_of": null
       }
     ],
-    "BS": [
+    "BU": [
       {
         "name": "CustomFieldBackendID",
         "deprecation_notice": null,
@@ -2303,7 +2334,7 @@
         "one_of": null
       }
     ],
-    "BP": [
+    "BR": [
       {
         "name": "AccountType",
         "deprecation_notice": null,
@@ -2364,7 +2395,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BQ",
+        "properties_id": "BS",
         "one_of": null
       },
       {
@@ -2409,7 +2440,7 @@
         "description": "This is the ID of a \u0060CustomField\u0060",
         "type": "map[object] | null",
         "required": false,
-        "properties_id": "BS",
+        "properties_id": "BU",
         "one_of": null
       },
       {
@@ -2778,8 +2809,16 @@
             "properties_id": "BL"
           },
           {
-            "name": "CompositeUserTaskData",
+            "name": "ConsolidatedPickUserTaskData",
             "properties_id": "BM"
+          },
+          {
+            "name": "ConsolidatedZonePickUserTaskData",
+            "properties_id": "BN"
+          },
+          {
+            "name": "CompositeUserTaskData",
+            "properties_id": "BO"
           }
         ]
       },
@@ -2897,7 +2936,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BN",
+        "properties_id": "BP",
         "one_of": null
       },
       {
@@ -2906,7 +2945,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BO",
+        "properties_id": "BQ",
         "one_of": null
       },
       {
@@ -2915,11 +2954,11 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BP",
+        "properties_id": "BR",
         "one_of": null
       }
     ],
-    "BT": [
+    "BV": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -2966,7 +3005,7 @@
         "one_of": null
       }
     ],
-    "BU": [
+    "BW": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -3029,7 +3068,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BT",
+        "properties_id": "BV",
         "one_of": null
       },
       {
@@ -3056,7 +3095,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BU",
+        "properties_id": "BW",
         "one_of": null
       }
     ]
