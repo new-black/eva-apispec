@@ -108,7 +108,7 @@ public partial class EVAApiClient<TState, TServiceCallOptions> : IEVAApiClient<T
             {
               httpRequest.Headers.Add("EVA-IDs-Mode", options.IDsMode.ToString());
             }
-            else
+            else if (options?.IDsMode != EVAClientIDsMode.LegacyIDs)
             {
               httpRequest.Headers.Add("EVA-IDs-Mode", "StringIDs");
             }
@@ -175,12 +175,31 @@ public partial class EVAApiClient<TState, TServiceCallOptions> : IEVAApiClient<T
             }
             else
             {
-              await using var responseStream = await response.Content.ReadAsStreamAsync();
+              Stream responseStream;
 
-              using var sr = new StreamReader(responseStream);
-              using var jsonTextReader = new JsonTextReader(sr);
+              if(options?.OnResponseStreamReceived != null)
+              {
+                responseStream = new MemoryStream();
+                await using (var httpResponseStream = await response.Content.ReadAsStreamAsync())
+                {
+                  await httpResponseStream.CopyToAsync(responseStream);
+                  responseStream.Position = 0;
+                  options.OnResponseStreamReceived(responseStream);
+                  responseStream.Position = 0;
+                }
+              }
+              else
+              {
+                responseStream = await response.Content.ReadAsStreamAsync();
+              }
 
-              responseMessage = _newtonsoftJsonSerializer.Deserialize<TResponse>(jsonTextReader);
+              await using (responseStream)
+              {
+                using var sr = new StreamReader(responseStream);
+                using var jsonTextReader = new JsonTextReader(sr);
+
+                responseMessage = _newtonsoftJsonSerializer.Deserialize<TResponse>(jsonTextReader);
+              }
             }
 
             await OnAfterRequest(httpClient, httpRequest, response, responseMessage, options, state);
@@ -276,13 +295,16 @@ public class ServiceOptions
     public int? ExternalIDsLeniencyThreshold { get; set; }
 
     public EVAClientIDsMode IDsMode { get; set; }
+
+    public Action<Stream>? OnResponseStreamReceived { get; set; }
 }
 
 public enum EVAClientIDsMode
 {
   Default = 0,
   Hybrid = 1,
-  ExternalIDs = 2
+  ExternalIDs = 2,
+  LegacyIDs = 3,
 }
 
 public class RequestedOrganizationUnitQuery
