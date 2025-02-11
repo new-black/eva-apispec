@@ -1,9 +1,9 @@
 {
-  "name": "GetAvailableSurveys",
+  "name": "GetAvailableSurveysForContext",
   "method": "POST",
-  "path": "/message/GetAvailableSurveys",
-  "description": "Get all available surveys for user",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/GetAvailableSurveysForContext",
+  "description": "Get all available surveys for user and given context",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -32,24 +32,17 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-BackendSystemID",
-      "type": "string",
-      "description": "The ID of the backend system that is used to resolve the IDs.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022UserID\u0022: 123\n}",
+      "sample": "{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022SurveyContext\u0022: 2,\n  \u0022SurveyContextSourceID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetAvailableSurveys",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022SurveyContext\u0022: 2,\n  \u0022SurveyContextSourceID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetAvailableSurveysForContext",
       "syntax": "bash"
     }
   ],
@@ -82,11 +75,20 @@
         "one_of": null
       },
       {
-        "name": "UserID",
+        "name": "SurveyContext",
         "deprecation_notice": null,
-        "description": "User for which surveys are available. When omitted, falls back to the current user.\n\nThis is the ID of a \u0060User\u0060",
-        "type": "integer | null",
-        "required": false,
+        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - User\n* \u00602\u0060 - Order",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SurveyContextSourceID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
