@@ -25,31 +25,17 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-Mode",
-      "type": "string",
-      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
-      "required": false,
-      "default": null
-    },
-    {
-      "name": "EVA-IDs-BackendSystemID",
-      "type": "string",
-      "description": "The ID of the backend system that is used to resolve the IDs.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022AccountType\u0022: 1,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022CreateIfNotExists\u0022: true,\n  \u0022OrderID\u0022: 123\n}",
+      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AccountType\u0022: 1,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022CreateIfNotExists\u0022: true,\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/FetchUserFromExternalProvider",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/FetchUserFromExternalProvider",
       "syntax": "bash"
     }
   ],
@@ -73,38 +59,11 @@
   "types": {
     "B": [
       {
-        "name": "AccountType",
-        "deprecation_notice": null,
-        "description": "The AccountType for the new customer\nPossible values:\n\n* \u00600\u0060 - Standard\n* \u00601\u0060 - Basic\n* \u00602\u0060 - Incognito",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "BackendID",
         "deprecation_notice": null,
         "description": "BackendID that is returned from the \u0060SearchUsers\u0060 with the source set to external",
         "type": "string",
         "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CreateIfNotExists",
-        "deprecation_notice": null,
-        "description": "If the fetched user doesn\u0027t exist in EVA, it will be created if this is set to true.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "deprecation_notice": null,
-        "description": "Identifier for the order to automatically attach the new customer to.\n\nThis is the ID of a \u0060Order\u0060",
-        "type": "integer | null",
-        "required": false,
         "properties_id": null,
         "one_of": null
       }
