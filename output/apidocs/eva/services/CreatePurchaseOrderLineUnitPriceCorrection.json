@@ -32,24 +32,31 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022PurchaseOrderLineID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}",
+      "sample": "{\n  \u0022OldPrice\u0022: 123.456,\n  \u0022ProductID\u0022: 123,\n  \u0022PurchaseOrderLineID\u0022: 123,\n  \u0022QuantityOrdered\u0022: 123,\n  \u0022SoldFromOrganizationUnitID\u0022: 123,\n  \u0022SoldToOrganizationUnitID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PurchaseOrderLineID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreatePurchaseOrderLineUnitPriceCorrection",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OldPrice\u0022: 123.456,\n  \u0022ProductID\u0022: 123,\n  \u0022PurchaseOrderLineID\u0022: 123,\n  \u0022QuantityOrdered\u0022: 123,\n  \u0022SoldFromOrganizationUnitID\u0022: 123,\n  \u0022SoldToOrganizationUnitID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreatePurchaseOrderLineUnitPriceCorrection",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022CorrectionPurchaseOrderLineID\u0022: 123\n}"
+      "sample": "{\n  \u0022CorrectionPurchaseOrderLineID\u0022: 123,\n  \u0022OrderID\u0022: 123\n}"
     },
     {
       "name": "400",
@@ -66,10 +73,55 @@
   "types": {
     "B": [
       {
+        "name": "OldPrice",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "PurchaseOrderLineID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrderLine\u0060",
-        "type": "integer",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QuantityOrdered",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SoldFromOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SoldToOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -186,6 +238,15 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ]
