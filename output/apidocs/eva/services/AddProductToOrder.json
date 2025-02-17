@@ -2,7 +2,7 @@
   "name": "AddProductToOrder",
   "method": "POST",
   "path": "/message/AddProductToOrder",
-  "description": "Add a Product to an Order\n\nA product can be defined by \u0060ProductID\u0060 or \u0060Barcode\u0060",
+  "description": "Add a Product to an Order\n\nA product can be defined by \u0060ProductID\u0060 or \u0060Barcode\u0060.\nIf the product is unstackable (e.g. gift cards, same product added with different serial numbers), new orderlines are created.",
   "auth_description": "This service does not require authentication.",
   "headers": [
     {
@@ -56,7 +56,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Children\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022ProductID\u0022: 123\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineID\u0022: 123\n}"
+      "sample": "{\n  \u0022Children\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022ProductID\u0022: 123\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineID\u0022: 123,\n  \u0022Result\u0022: [\n    {\n      \u0022Children\u0022: [\n        {\n          \u0022OrderLineID\u0022: 123,\n          \u0022ProductID\u0022: 123\n        }\n      ],\n      \u0022OrderLineID\u0022: 123\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -324,11 +324,31 @@
         "one_of": null
       }
     ],
-    "D": [
+    "H": [
       {
         "name": "Children",
         "deprecation_notice": null,
         "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "OrderLineID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Children",
+        "deprecation_notice": "\n\n**Deprecated since 773:** Children is deprecated and will be removed in 2.0.805: Use Result.Children.\n\n**Will be removed in 789**",
+        "description": "**Deprecated since 773:** Children is deprecated and will be removed in 2.0.805: Use Result.Children.\n\n**Will be removed in 789**",
         "type": "array[object] | null",
         "required": false,
         "properties_id": "E",
@@ -363,11 +383,20 @@
       },
       {
         "name": "OrderLineID",
-        "deprecation_notice": null,
-        "description": "Created or updated OrderLineID\n\nThis is the ID of a \u0060OrderLine\u0060",
+        "deprecation_notice": "\n\n**Deprecated since 773:** OrderLineID is deprecated and will be removed in 2.0.805: Use Result.OrderLineID.\n\n**Will be removed in 789**",
+        "description": "Created or updated OrderLineID\n\nThis is the ID of a \u0060OrderLine\u0060\n\n**Deprecated since 773:** OrderLineID is deprecated and will be removed in 2.0.805: Use Result.OrderLineID.\n\n**Will be removed in 789**",
         "type": "integer",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Result",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
         "one_of": null
       }
     ]
