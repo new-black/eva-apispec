@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022DeactivationReasons\u0022: [\n        4\n      ],\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022TimeRange\u0022: {\n        \u0022EndDate\u0022: \u00222025-01-01\u0022,\n        \u0022StartDate\u0022: \u00222025-01-01\u0022\n      }\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022DeactivationReasons\u0022: [\n        4\n      ],\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022SurveyTrigger\u0022: \u0022string\u0022,\n      \u0022TimeRange\u0022: {\n        \u0022EndDate\u0022: \u00222025-01-01\u0022,\n        \u0022StartDate\u0022: \u00222025-01-01\u0022\n      }\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022DeactivationReasons\u0022: [\n        4\n      ],\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022TimeRange\u0022: {\n        \u0022EndDate\u0022: \u00222025-01-01\u0022,\n        \u0022StartDate\u0022: \u00222025-01-01\u0022\n      }\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListSurveys",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022DeactivationReasons\u0022: [\n        4\n      ],\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022SurveyTrigger\u0022: \u0022string\u0022,\n      \u0022TimeRange\u0022: {\n        \u0022EndDate\u0022: \u00222025-01-01\u0022,\n        \u0022StartDate\u0022: \u00222025-01-01\u0022\n      }\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListSurveys",
       "syntax": "bash"
     }
   ],
@@ -86,6 +86,15 @@
     ],
     "D": [
       {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "DeactivationReasons",
         "deprecation_notice": null,
         "description": "You can filter surveys based on their deactivation reason.The array is interpreted as an \u0027or\u0027 value list\nTo get surveys with a specific deactivation reason, only provide the deactivation reason you want. For example:\n- providing an empty value will return all surveys\n- providing \u0060None\u0060 (0) will return surveys that are active.\n- providing \u0060Unpublished\u0060 (1) will return surveys that are inactive because they are unpublished.\n- providing \u0060Unpublished\u0060 (1) and \u0060DeactivatedByUser\u0060 (2) will return surveys that are inactive because they are either unpublished OR deactivated by user.\n- providing \u0060Unpublished\u0060 (1) and \u0060DeactivatedByUser\u0060 (2) as a combined flag (3) will return surveys that are inactive because they are unpublished AND deactivated by user.\nPossible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Unpublished\n* \u00602\u0060 - DeactivatedByUser\n* \u00604\u0060 - BySurveyTimeFrame",
@@ -117,6 +126,15 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
         "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SurveyTrigger",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
