@@ -87,5 +87,21 @@ extension Dictionary where Value == ProductDetailsWrapper {
     }
 }
 
-
 struct ProductDetails: Codable {}
+
+public enum Maybe<Wrapped> {
+    case null
+    case some(Wrapped)
+}
+
+extension Maybe: Encodable where Wrapped: Encodable {}
+extension Maybe: Decodable where Wrapped: Decodable {}
+extension Maybe: Equatable where Wrapped: Equatable {}
+extension Maybe: Hashable where Wrapped: Hashable {}
+extension Maybe: Sendable where Wrapped: Sendable {}
+
+extension Maybe: ExpressibleByNilLiteral {
+    public init(nilLiteral: ()) {
+        self = .null
+    }
+}
