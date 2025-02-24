@@ -186,7 +186,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         for (var i = 0; i < list.Count; i++)
         {
           var prop = list[i];
-          var propDefault = GetPropDefault(prop.Value.Type);
+          var propDefault = GetPropDefault(prop.Value.Type, prop.Value.Skippable);
           output.WriteLine(
             $"{prop.Key}: {GetPropTypeName(prop.Value, prop.Key, id, ctx, false, prop.Value.Deprecated != null)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
         }
@@ -615,22 +615,32 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   private static string GetPropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false)
   {
-    var typeReference = ps.Type;
-    var n = typeReference.Nullable && !forceNotNullable || forceNullable ? "?" : string.Empty;
-    if (ps.AllowedValues.Any()) return $"{name}Values{n}";
-    if (typeReference is { Name: ApiSpecConsts.Specials.Option }) return $"{name}Payload{n}";
-
-    return GetTypeName(typeReference, ctx, forceNotNullable, forceNullable);
+    var n = OptionalSuffix(ps.Type, forceNotNullable, forceNullable);
+    var typeName = GetCorePropTypeName(ps, name, typeContext, ctx, forceNotNullable, forceNullable);
+    return (ps.Skippable ? $"Maybe<{typeName}>" : typeName) + n;
   }
 
-  private static string GetPropDefault(TypeReference typeReference)
+  private static string GetCorePropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false)
   {
-    return typeReference.Nullable ? "nil" : string.Empty;
+    var typeReference = ps.Type;
+    if (ps.AllowedValues.Any()) return $"{name}Values";
+    if (typeReference is { Name: ApiSpecConsts.Specials.Option }) return $"{name}Payload";
+    return GetTypeName(typeReference, ctx, true);
+  }
+
+  private static string GetPropDefault(TypeReference typeReference, bool skippable = false)
+  {
+    return typeReference.Nullable || skippable ? "nil" : string.Empty;
+  }
+
+  private static string OptionalSuffix(TypeReference typeReference, bool forceNotNullable = false, bool forceNullable = false)
+  {
+    return typeReference.Nullable && !forceNotNullable || forceNullable ? "?" : string.Empty;
   }
 
   private static string GetTypeName(TypeReference typeReference, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false)
   {
-    var n = typeReference.Nullable && !forceNotNullable || forceNullable ? "?" : string.Empty;
+    var n = OptionalSuffix(typeReference, forceNotNullable, forceNullable);
 
     if (typeReference is { Name: ApiSpecConsts.String or ApiSpecConsts.Duration }) return $"String{n}";
     if (typeReference is { Name: ApiSpecConsts.Binary }) return $"Data{n}";
