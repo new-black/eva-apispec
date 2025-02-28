@@ -464,7 +464,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           // Check if we have a conflicting property defined that will "claim" our typename
           // This is usually the case for props name Date or Data
           var typePrefix = (type.Properties.ContainsKey(typeNameNotNullable) && !containsProductDetails) ? "Foundation." : string.Empty;
-          var isOptional = value.Type.Nullable || value.Deprecated != null;
+          var isOptional = value.Type.Nullable || value.Deprecated != null || value.Skippable;
           var postfix = containsProductDetails ? ((isOptional ? "?" : "") + ".productDetails") : string.Empty;
 
           if (isOptional)
@@ -615,9 +615,9 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   private static string GetPropTypeName(PropertySpecification ps, string name, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false)
   {
-    var n = OptionalSuffix(ps.Type, forceNotNullable, forceNullable);
+    var n = OptionalSuffix(ps.Type, forceNotNullable, forceNullable, ps.Skippable);
     var typeName = GetCorePropTypeName(ps, name, ctx);
-    return (ps.Skippable ? $"Maybe<{typeName}>" : typeName) + n;
+    return (ps.Skippable && ps.Type.Nullable ? $"Maybe<{typeName}>" : typeName) + n;
   }
 
   private static string GetCorePropTypeName(PropertySpecification ps, string name, OutputContext<SwiftOptions> ctx)
@@ -633,9 +633,9 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     return typeReference.Nullable || skippable ? "nil" : string.Empty;
   }
 
-  private static string OptionalSuffix(TypeReference typeReference, bool forceNotNullable = false, bool forceNullable = false)
+  private static string OptionalSuffix(TypeReference typeReference, bool forceNotNullable = false, bool forceNullable = false, bool skippable = false)
   {
-    return typeReference.Nullable && !forceNotNullable || forceNullable ? "?" : string.Empty;
+    return (typeReference.Nullable || skippable) && !forceNotNullable || forceNullable ? "?" : string.Empty;
   }
 
   private static string GetTypeName(TypeReference typeReference, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false)
@@ -697,6 +697,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
   private static string GetTypeName(string id, ApiDefinitionModel input)
   {
     if (id == "EVA.Core.Users.Subscriptions.UserDto") return "EVACoreSubscriptionsUserDto";
+    if (id == "EVA.Core.Users.Subscriptions.OrganizationUnitDto") return "EVACoreSubscriptionsOrganizationUnitDto";
     var reference = input.Types[id];
     var assembly = reference.Assembly;
     assembly = assembly.Replace(".Services", string.Empty);
