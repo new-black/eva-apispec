@@ -58,7 +58,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       // Write the errors
       o.WriteLine();
       var grouped = group.Errors.GroupByPrefix();
-      WriteErrorGroup(grouped, o, "Errors");
+      WriteErrorGroup(grouped, o, "Errors", ctx.Options);
 
       // Write the types
       WriteTypes(group, o, input, assemblyCtx, ctx.Options);
@@ -180,7 +180,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
     return o.ToString();
   }
 
-  private static void WriteErrorGroup(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, IndentedStringBuilder o, string prefix)
+  private static void WriteErrorGroup(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, IndentedStringBuilder o, string prefix, TypescriptOptions options)
   {
     void write_error(ApiDefinitionModelExtensions.PrefixGroupedErrors errors, string prefix)
     {
@@ -201,7 +201,12 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
 
     if (errors.Errors.Any() || errors.SubErrors.Any())
     {
-      o.WriteLine($"export const enum {prefix}");
+      if (options.ConstEnums) {
+        o.WriteLine($"export const enum {prefix}");
+      } else {
+        o.WriteLine($"export enum {prefix}");
+      }
+
       using (o.BracedIndentation)
       {
         write_error(errors, string.Empty);
@@ -217,7 +222,13 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
       {
         // We don't care about flag enums, there is no difference in TypeScript
         if (type.Description != null) WriteComment(o, type.Description);
-        o.WriteLine($"export const enum {TypeNameToTypescriptTypeName(ctx, input, id)} {{");
+
+        if (options.ConstEnums) {
+          o.WriteLine($"export const enum {TypeNameToTypescriptTypeName(ctx, input, id)} {{");
+        } else {
+          o.WriteLine($"export enum {TypeNameToTypescriptTypeName(ctx, input, id)} {{");
+        }
+
         using (o.Indentation)
         {
           foreach (var (name, value) in type.EnumValues.ToTotals().OrderBy(x => x.Value))
