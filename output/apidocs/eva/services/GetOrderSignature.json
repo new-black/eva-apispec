@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrderID\u0022: 123\n}",
+      "sample": "{\n  \u0022OrderID\u0022: 123,\n  \u0022Type\u0022: 4\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetOrderSignature",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123,\n  \u0022Type\u0022: 4\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetOrderSignature",
       "syntax": "bash"
     }
   ],
@@ -77,6 +77,15 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060Order\u0060",
         "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Untyped\n* \u00601\u0060 - Shipping\n* \u00602\u0060 - Scripted\n* \u00603\u0060 - AMLEmployee\n* \u00604\u0060 - AMLCustomer\n\n**Required since 780:** Field Type is required and will be enforced as such in 2.0.812.\n\n**Will be enforced in 796**",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null

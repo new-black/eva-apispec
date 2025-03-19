@@ -1,9 +1,9 @@
 {
-  "name": "AttachBlobToOrder",
+  "name": "CreateOrUpdateAMLConfiguration",
   "method": "POST",
-  "path": "/message/AttachBlobToOrder",
-  "description": "Attaches given blob to an order, either by \u0060BlobID\u0060 or \u0060BlobUrl\u0060.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/CreateOrUpdateAMLConfiguration",
+  "description": "Set the AML rules for a specific country. When no rules are provided, the configuration will be deleted.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060AMLConfigurations:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,31 +25,17 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-Mode",
-      "type": "string",
-      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
-      "required": false,
-      "default": null
-    },
-    {
-      "name": "EVA-IDs-BackendSystemID",
-      "type": "string",
-      "description": "The ID of the backend system that is used to resolve the IDs.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n  \u0022BlobUrl\u0022: \u0022string\u0022,\n  \u0022InvoiceID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineID\u0022: 123,\n  \u0022ShipmentID\u0022: 123,\n  \u0022Type\u0022: 15\n}",
+      "sample": "{\n  \u0022CountryID\u0022: \u0022string\u0022,\n  \u0022Rules\u0022: [\n    {\n      \u0022Blocked\u0022: true,\n      \u0022Business\u0022: true,\n      \u0022Foreigner\u0022: true,\n      \u0022RequireCustomer\u0022: true,\n      \u0022RequireCustomerSignature\u0022: true,\n      \u0022RequireCustomerVerification\u0022: true,\n      \u0022RequireEmployeeSignature\u0022: true,\n      \u0022RequireIdentification\u0022: true,\n      \u0022RequireIdentificationBlob\u0022: true,\n      \u0022RequireSurvey\u0022: true,\n      \u0022ScriptID\u0022: 123,\n      \u0022SlidingWindowDays\u0022: 123,\n      \u0022SurveyID\u0022: 123,\n      \u0022SystemSurvey\u0022: 1,\n      \u0022Threshold\u0022: 123.456,\n      \u0022TriggerType\u0022: 3\n    }\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n  \u0022BlobUrl\u0022: \u0022string\u0022,\n  \u0022InvoiceID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineID\u0022: 123,\n  \u0022ShipmentID\u0022: 123,\n  \u0022Type\u0022: 15\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AttachBlobToOrder",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CountryID\u0022: \u0022string\u0022,\n  \u0022Rules\u0022: [\n    {\n      \u0022Blocked\u0022: true,\n      \u0022Business\u0022: true,\n      \u0022Foreigner\u0022: true,\n      \u0022RequireCustomer\u0022: true,\n      \u0022RequireCustomerSignature\u0022: true,\n      \u0022RequireCustomerVerification\u0022: true,\n      \u0022RequireEmployeeSignature\u0022: true,\n      \u0022RequireIdentification\u0022: true,\n      \u0022RequireIdentificationBlob\u0022: true,\n      \u0022RequireSurvey\u0022: true,\n      \u0022ScriptID\u0022: 123,\n      \u0022SlidingWindowDays\u0022: 123,\n      \u0022SurveyID\u0022: 123,\n      \u0022SystemSurvey\u0022: 1,\n      \u0022Threshold\u0022: 123.456,\n      \u0022TriggerType\u0022: 3\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateOrUpdateAMLConfiguration",
       "syntax": "bash"
     }
   ],
@@ -69,83 +55,175 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "D",
   "types": {
-    "B": [
+    "C": [
       {
-        "name": "BlobID",
+        "name": "Blocked",
         "deprecation_notice": null,
-        "description": "Can be used for standard blobs - for secure blobs, use \u0060BlobUrl\u0060 instead.\n\nThis is the ID of a \u0060Blob\u0060",
-        "type": "guid | null",
+        "description": "",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "BlobUrl",
+        "name": "Business",
         "deprecation_notice": null,
-        "description": "Can be used for both standard- and secured blobs - must match environment assets URL.",
-        "type": "string | null",
+        "description": "",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "InvoiceID",
+        "name": "Foreigner",
         "deprecation_notice": null,
-        "description": "Optional link the blob to an Invoice of the Order\n\nThis is the ID of a \u0060Invoice\u0060",
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireCustomer",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireCustomerSignature",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireCustomerVerification",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireEmployeeSignature",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireIdentification",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireIdentificationBlob",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireSurvey",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ScriptID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Script\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Name",
+        "name": "SlidingWindowDays",
         "deprecation_notice": null,
         "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SurveyID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Survey\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SystemSurvey",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00601\u0060 - US_IRS8300",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Threshold",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TriggerType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00601\u0060 - Threshold\n* \u00602\u0060 - Scripting\n* \u00603\u0060 - Manual",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "CountryID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Country\u0060",
         "type": "string",
         "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "OrderID",
+        "name": "Rules",
         "deprecation_notice": null,
-        "description": "Required when \u0060OrderLineID\u0060 is omitted\n\nThis is the ID of a \u0060Order\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderLineID",
-        "deprecation_notice": null,
-        "description": "Required when \u0060OrderID\u0060 is omitted\n\nThis is the ID of a \u0060OrderLine\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ShipmentID",
-        "deprecation_notice": null,
-        "description": "Optional link the blob to a Shipment of the Order\n\nThis is the ID of a \u0060Shipment\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Invoice\n* \u00602\u0060 - InvoiceThermal\n* \u00603\u0060 - ReturnLabel\n* \u00604\u0060 - ReturnForm\n* \u00605\u0060 - ShipmentLabel\n* \u00606\u0060 - Identification\n* \u00607\u0060 - PackingSlip\n* \u00608\u0060 - PickSlip\n* \u00609\u0060 - ThermalPrint\n* \u006010\u0060 - PinReceipt\n* \u006011\u0060 - Export\n* \u006012\u0060 - ElectronicReceipt\n* \u006013\u0060 - TaxFreeForm\n* \u006014\u0060 - Offline\n* \u006015\u0060 - AMLSurvey",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "C",
         "one_of": null
       }
     ],
-    "D": [
+    "E": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -192,7 +270,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -221,14 +299,14 @@
         "one_of": null
       }
     ],
-    "C": [
+    "D": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "E",
         "one_of": null
       },
       {
@@ -237,7 +315,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "F",
         "one_of": null
       }
     ]

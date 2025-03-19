@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Options\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022ValueData\u0022: {}\n    }\n  ],\n  \u0022OrderID\u0022: 123\n}",
+      "sample": "{\n  \u0022Options\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022ValueData\u0022: {\n        \u0022MimeType\u0022: \u0022string\u0022,\n        \u0022Signature\u0022: \u0022base64 encoded binary data\u0022,\n        \u0022StoredSignature\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n        \u0022StoredSignatureUrl\u0022: \u0022string\u0022\n      }\n    }\n  ],\n  \u0022OrderID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Options\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022ValueData\u0022: {}\n    }\n  ],\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateOrderCheckoutOptions",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Options\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022ValueData\u0022: {\n        \u0022MimeType\u0022: \u0022string\u0022,\n        \u0022Signature\u0022: \u0022base64 encoded binary data\u0022,\n        \u0022StoredSignature\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n        \u0022StoredSignatureUrl\u0022: \u0022string\u0022\n      }\n    }\n  ],\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateOrderCheckoutOptions",
       "syntax": "bash"
     }
   ],
@@ -72,8 +72,46 @@
   "response_type_id": "Y",
   "types": {
     "D": [],
-    "E": [],
-    "F": [
+    "E": [
+      {
+        "name": "MimeType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Signature",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "binary | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StoredSignature",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StoredSignatureUrl",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [],
+    "G": [
       {
         "name": "FiscalID",
         "deprecation_notice": null,
@@ -147,7 +185,7 @@
         "one_of": null
       }
     ],
-    "G": [
+    "H": [
       {
         "name": "CustomerOrderID",
         "deprecation_notice": null,
@@ -167,14 +205,14 @@
         "one_of": null
       }
     ],
-    "K": [
+    "L": [
       {
         "name": "ArrayValues",
         "deprecation_notice": null,
         "description": "Used for multiple values",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "K",
+        "properties_id": "L",
         "one_of": null
       },
       {
@@ -223,14 +261,14 @@
         "one_of": null
       }
     ],
-    "J": [
+    "K": [
       {
         "name": "DefaultCustomFieldValue",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "K",
+        "properties_id": "L",
         "one_of": null
       },
       {
@@ -315,7 +353,7 @@
         "one_of": null
       }
     ],
-    "I": [
+    "J": [
       {
         "name": "BackendID",
         "deprecation_notice": null,
@@ -403,7 +441,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "J",
+        "properties_id": "K",
         "one_of": null
       },
       {
@@ -425,29 +463,29 @@
         "one_of": null
       }
     ],
-    "H": [
+    "I": [
       {
         "name": "CustomFields",
         "deprecation_notice": null,
         "description": "OrderLineID: CustomFieldResponse\n\nThis is the ID of a \u0060OrderLine\u0060",
         "type": "map[object]",
         "required": true,
-        "properties_id": "I",
+        "properties_id": "J",
         "one_of": null
       }
     ],
-    "L": [
+    "M": [
       {
         "name": "CustomFields",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object]",
         "required": true,
-        "properties_id": "I",
+        "properties_id": "J",
         "one_of": null
       }
     ],
-    "N": [
+    "O": [
       {
         "name": "Name",
         "deprecation_notice": null,
@@ -476,18 +514,18 @@
         "one_of": null
       }
     ],
-    "M": [
+    "N": [
       {
         "name": "ShippingMethods",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object]",
         "required": true,
-        "properties_id": "N",
+        "properties_id": "O",
         "one_of": null
       }
     ],
-    "O": [
+    "P": [
       {
         "name": "PublicProjectCode",
         "deprecation_notice": null,
@@ -525,7 +563,7 @@
         "one_of": null
       }
     ],
-    "P": [
+    "Q": [
       {
         "name": "FiscalID",
         "deprecation_notice": null,
@@ -536,7 +574,7 @@
         "one_of": null
       }
     ],
-    "Q": [
+    "R": [
       {
         "name": "FiscalRemark",
         "deprecation_notice": null,
@@ -547,7 +585,7 @@
         "one_of": null
       }
     ],
-    "R": [
+    "S": [
       {
         "name": "LotteryNumber",
         "deprecation_notice": null,
@@ -558,7 +596,7 @@
         "one_of": null
       }
     ],
-    "S": [
+    "T": [
       {
         "name": "Remark",
         "deprecation_notice": null,
@@ -569,7 +607,7 @@
         "one_of": null
       }
     ],
-    "T": [
+    "U": [
       {
         "name": "RequestedDate",
         "deprecation_notice": null,
@@ -580,7 +618,7 @@
         "one_of": null
       }
     ],
-    "V": [
+    "W": [
       {
         "name": "OrderLineID",
         "deprecation_notice": null,
@@ -600,58 +638,20 @@
         "one_of": null
       }
     ],
-    "U": [
+    "V": [
       {
         "name": "OrderLineInfos",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object]",
         "required": true,
-        "properties_id": "V",
-        "one_of": null
-      }
-    ],
-    "W": [
-      {
-        "name": "TaxRegistrationNumber",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "W",
         "one_of": null
       }
     ],
     "X": [
       {
-        "name": "MimeType",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Signature",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "binary | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StoredSignature",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StoredSignatureUrl",
+        "name": "TaxRegistrationNumber",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -679,63 +679,63 @@
         "properties_id": "D",
         "one_of": [
           {
-            "name": "NoCheckoutOptionValueData",
+            "name": "SignOrderOrderOptionValueData",
             "properties_id": "E"
           },
           {
-            "name": "CertificationOptionValueData",
+            "name": "NoCheckoutOptionValueData",
             "properties_id": "F"
           },
           {
-            "name": "CustomerReferencesOptionValueData",
+            "name": "CertificationOptionValueData",
             "properties_id": "G"
           },
           {
-            "name": "CustomFieldLineOptionValueData",
+            "name": "CustomerReferencesOptionValueData",
             "properties_id": "H"
           },
           {
-            "name": "CustomFieldOptionValueData",
-            "properties_id": "L"
+            "name": "CustomFieldLineOptionValueData",
+            "properties_id": "I"
           },
           {
-            "name": "DeliveryOptionValueData",
+            "name": "CustomFieldOptionValueData",
             "properties_id": "M"
           },
           {
-            "name": "ElectronicInvoiceOptionValue",
-            "properties_id": "O"
+            "name": "DeliveryOptionValueData",
+            "properties_id": "N"
           },
           {
-            "name": "FiscalIDOptionValue",
+            "name": "ElectronicInvoiceOptionValue",
             "properties_id": "P"
           },
           {
-            "name": "FiscalRemarkOptionValue",
+            "name": "FiscalIDOptionValue",
             "properties_id": "Q"
           },
           {
-            "name": "LotteryNumberOptionValue",
+            "name": "FiscalRemarkOptionValue",
             "properties_id": "R"
           },
           {
-            "name": "RemarkOptionValueData",
+            "name": "LotteryNumberOptionValue",
             "properties_id": "S"
           },
           {
-            "name": "RequestedDateOptionValueData",
+            "name": "RemarkOptionValueData",
             "properties_id": "T"
           },
           {
-            "name": "SoldByOptionValueData",
+            "name": "RequestedDateOptionValueData",
             "properties_id": "U"
           },
           {
-            "name": "TaxRegistrationNumberOptionValue",
-            "properties_id": "W"
+            "name": "SoldByOptionValueData",
+            "properties_id": "V"
           },
           {
-            "name": "SignOrderOrderOptionValueData",
+            "name": "TaxRegistrationNumberOptionValue",
             "properties_id": "X"
           }
         ]

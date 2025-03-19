@@ -1,9 +1,9 @@
 {
-  "name": "GetCheckoutOptions",
+  "name": "ListAMLConfigurations",
   "method": "POST",
-  "path": "/message/GetCheckoutOptions",
-  "description": "Get the CheckoutOptions",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060CheckoutOptions:View\u0060",
+  "path": "/message/ListAMLConfigurations",
+  "description": "List all AML configurations.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060AMLConfigurations:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,31 +25,24 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-Mode",
-      "type": "string",
-      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Filters\u0022: {\n    \u0022Handler\u0022: \u0022string\u0022,\n    \u0022IsActive\u0022: true,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022OrganizationUnitSetID\u0022: 123\n  }\n}",
+      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CountryID\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Filters\u0022: {\n    \u0022Handler\u0022: \u0022string\u0022,\n    \u0022IsActive\u0022: true,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022OrganizationUnitSetID\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetCheckoutOptions",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CountryID\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListAMLConfigurations",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Categories\u0022: [\n    {\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022Sequence\u0022: 123\n    }\n  ],\n  \u0022Options\u0022: [\n    {\n      \u0022CategoryDescription\u0022: \u0022string\u0022,\n      \u0022CategoryID\u0022: 123,\n      \u0022CategoryName\u0022: \u0022string\u0022,\n      \u0022ConfigData\u0022: {\n        \u0022key\u0022: \u0022any valid json value\u0022\n      },\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Handler\u0022: \u0022SignOrder\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsActive\u0022: true,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022OrganizationUnitSetName\u0022: \u0022string\u0022,\n      \u0022ScriptID\u0022: 123,\n      \u0022ScriptName\u0022: \u0022string\u0022,\n      \u0022Sequence\u0022: 123\n    }\n  ]\n}"
+      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022CountryID\u0022: \u0022string\u0022,\n      \u0022Rules\u0022: [\n        {\n          \u0022Blocked\u0022: true,\n          \u0022Business\u0022: true,\n          \u0022Foreigner\u0022: true,\n          \u0022RequireCustomer\u0022: true,\n          \u0022RequireCustomerSignature\u0022: true,\n          \u0022RequireCustomerVerification\u0022: true,\n          \u0022RequireEmployeeSignature\u0022: true,\n          \u0022RequireIdentification\u0022: true,\n          \u0022RequireIdentificationBlob\u0022: true,\n          \u0022RequireSurvey\u0022: true,\n          \u0022ScriptID\u0022: 123,\n          \u0022SlidingWindowDays\u0022: 123,\n          \u0022SurveyID\u0022: 123,\n          \u0022SystemSurvey\u0022: 1,\n          \u0022Threshold\u0022: 123.456,\n          \u0022TriggerType\u0022: 3\n        }\n      ]\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -62,40 +55,33 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "D",
+  "response_type_id": "E",
   "types": {
+    "D": [
+      {
+        "name": "CountryID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "C": [
       {
-        "name": "Handler",
+        "name": "Filter",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
+        "type": "object | null",
         "required": false,
-        "properties_id": null,
+        "properties_id": "D",
         "one_of": null
       },
       {
-        "name": "IsActive",
+        "name": "Limit",
         "deprecation_notice": null,
         "description": "",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitSetID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -104,49 +90,20 @@
     ],
     "B": [
       {
-        "name": "Filters",
+        "name": "InitialPageConfig",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "C",
         "one_of": null
-      }
-    ],
-    "E": [
+      },
       {
-        "name": "Description",
+        "name": "PageToken",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060CheckoutOptionCategory\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Sequence",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer",
-        "required": true,
         "properties_id": null,
         "one_of": null
       }
@@ -227,102 +184,93 @@
         "one_of": null
       }
     ],
-    "H": [
+    "I": [
       {
-        "name": "CategoryDescription",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CategoryID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060CheckoutOptionCategory\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CategoryName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ConfigData",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Handler",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u0060SignOrder\u0060\n* \u0060AML\u0060\n* \u0060Certification\u0060\n* \u0060CustomerReferences\u0060\n* \u0060CustomFieldLine\u0060\n* \u0060CustomField\u0060\n* \u0060Delivery\u0060\n* \u0060ElectronicInvoice\u0060\n* \u0060FiscalID\u0060\n* \u0060FiscalRemark\u0060\n* \u0060GiftWrapping\u0060\n* \u0060LotteryNumber\u0060\n* \u0060OrderBackendIdentifier\u0060\n* \u0060PartialShipment\u0060\n* \u0060PickupPoint\u0060\n* \u0060ProductSearchTemplate\u0060\n* \u0060QuickBuy\u0060\n* \u0060Remark\u0060\n* \u0060RequestedDate\u0060\n* \u0060SoldBy\u0060\n* \u0060TaxExempt\u0060\n* \u0060TaxRegistrationNumber\u0060\n* \u0060VerifyOrder\u0060\n* \u0060GlobalBlue\u0060",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060CheckoutOption\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsActive",
+        "name": "Blocked",
         "deprecation_notice": null,
         "description": "",
         "type": "boolean",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitSetID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
-        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "OrganizationUnitSetName",
+        "name": "Business",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Foreigner",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireCustomer",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireCustomerSignature",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireCustomerVerification",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireEmployeeSignature",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireIdentification",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireIdentificationBlob",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequireSurvey",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -337,34 +285,72 @@
         "one_of": null
       },
       {
-        "name": "ScriptName",
+        "name": "SlidingWindowDays",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Sequence",
+        "name": "SurveyID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Survey\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SystemSurvey",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00601\u0060 - US_IRS8300",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Threshold",
         "deprecation_notice": null,
         "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TriggerType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00601\u0060 - Threshold\n* \u00602\u0060 - Scripting\n* \u00603\u0060 - Manual",
         "type": "integer",
-        "required": true,
+        "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "D": [
+    "H": [
       {
-        "name": "Categories",
+        "name": "CountryID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "E",
+        "description": "This is the ID of a \u0060Country\u0060",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
         "one_of": null
       },
+      {
+        "name": "Rules",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "I",
+        "one_of": null
+      }
+    ],
+    "E": [
       {
         "name": "Error",
         "deprecation_notice": null,
@@ -384,11 +370,29 @@
         "one_of": null
       },
       {
-        "name": "Options",
+        "name": "NextPageToken",
         "deprecation_notice": null,
         "description": "",
-        "type": "array[object] | null",
+        "type": "string | null",
         "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PreviousPageToken",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Results",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
         "properties_id": "H",
         "one_of": null
       }

@@ -1,9 +1,9 @@
 {
-  "name": "ListUserIdentifications",
+  "name": "FinalizeAMLChecksOnOrder",
   "method": "POST",
-  "path": "/message/ListUserIdentifications",
-  "description": "The ListUserIdentifications service",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/FinalizeAMLChecksOnOrder",
+  "description": "Validate all AML requirements and finalize the pending PaymentTransactions on the Order.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022UserID\u0022: 123\n}",
+      "sample": "{\n  \u0022Force\u0022: true,\n  \u0022OrderID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListUserIdentifications",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Force\u0022: true,\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/FinalizeAMLChecksOnOrder",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Identifications\u0022: [\n    {\n      \u0022DocumentID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IssuingCity\u0022: \u0022string\u0022,\n      \u0022IssuingCountryID\u0022: \u0022string\u0022,\n      \u0022IssuingDate\u0022: \u00222025-01-01\u0022,\n      \u0022Number\u0022: \u0022string\u0022,\n      \u0022OriginatingCountryID\u0022: \u0022string\u0022,\n      \u0022Type\u0022: 1,\n      \u0022ValidTo\u0022: \u00222025-01-01\u0022\n    }\n  ]\n}"
+      "sample": "{\n  \u0022PaymentTransactionIDs\u0022: [\n    123\n  ]\n}"
     },
     {
       "name": "400",
@@ -73,9 +73,18 @@
   "types": {
     "B": [
       {
-        "name": "UserID",
+        "name": "Force",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
+        "description": "Force the AML checks to be finalized, even if the requirements are not met.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -131,89 +140,6 @@
     ],
     "E": [
       {
-        "name": "DocumentID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IssuingCity",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IssuingCountryID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IssuingDate",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Number",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OriginatingCountryID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00601\u0060 - DiplomaticPassport\n* \u00602\u0060 - DriverLicense\n* \u00603\u0060 - EuropeanIdentification\n* \u00604\u0060 - ForeignPassport\n* \u00605\u0060 - INDSticker\n* \u00606\u0060 - NatoPassport\n* \u00607\u0060 - Passport\n* \u00608\u0060 - PermanentResidencyDocument\n* \u00609\u0060 - PrivilegedDocument\n* \u006010\u0060 - ResidencePermitTypeEuEea\n* \u006011\u0060 - ResidencePermitTypeI\n* \u006012\u0060 - ResidencePermitTypeII\n* \u006013\u0060 - ResidencePermitTypeIII\n* \u006014\u0060 - ResidencePermitTypeIV\n* \u006015\u0060 - ResidencePermitTypeW\n* \u006016\u0060 - VNGCard\n* \u006017\u0060 - ResidencePermitTypeV",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ValidTo",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "F": [
-      {
         "name": "ExternalIDs",
         "deprecation_notice": null,
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
@@ -252,21 +178,21 @@
         "one_of": null
       },
       {
-        "name": "Identifications",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
         "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "PaymentTransactionIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060PaymentTransaction\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ]

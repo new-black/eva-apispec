@@ -1,9 +1,9 @@
 {
-  "name": "GetSigningCodeForOrder",
+  "name": "DetachIdentificationFromOrder",
   "method": "POST",
-  "path": "/message/GetSigningCodeForOrder",
-  "description": "Fetch the data to embed in the QrCode for the signing app",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/DetachIdentificationFromOrder",
+  "description": "Detach an identification document from an order. This will wipe the document and data.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -49,14 +49,14 @@
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetSigningCodeForOrder",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DetachIdentificationFromOrder",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Code\u0022: \u0022string\u0022,\n  \u0022IsAlreadySigned\u0022: true\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -160,30 +160,12 @@
     ],
     "C": [
       {
-        "name": "Code",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "IsAlreadySigned",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       },
       {
