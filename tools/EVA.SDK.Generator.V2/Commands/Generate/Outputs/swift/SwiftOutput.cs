@@ -2,6 +2,7 @@
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 using EVA.SDK.Generator.V2.Helpers;
 using Microsoft.Extensions.Logging;
+using System.Text.RegularExpressions;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.swift;
 
@@ -457,15 +458,33 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         {
           var typeName = GetPropTypeName(value, key, typeContext, ctx);
           var typeNameNotNullable = GetPropTypeName(value, key, typeContext, ctx, true);
-          typeNameNotNullable = typeNameNotNullable.Replace("ProductDetails", "ProductDetailsWrapper");
-          typeName = typeName.Replace("ProductDetails", "ProductDetailsWrapper");
 
-          var containsProductDetails = typeNameNotNullable.Contains("ProductDetails");
+          var postfix = string.Empty;
+          var containsProductDetails = false;
+          var isOptional = value.Type.Nullable || value.Deprecated != null || value.Skippable;
+
+          foreach (var t in new string[] { "ProductDetails", "String", "Int" })
+          {
+            var before = typeNameNotNullable;
+            typeNameNotNullable = Regex.Replace(typeNameNotNullable, $@"\b{t}\b",$"{t}Wrapper");
+            typeName = Regex.Replace(typeName, $@"\b{t}\b",$"{t}Wrapper");
+            typeNameNotNullable = Regex.Replace(typeNameNotNullable, $"{t}Wrapper:",$"{t}:");
+            typeName = Regex.Replace(typeName, $"{t}Wrapper:",$"{t}:");
+
+            if (before != typeNameNotNullable)
+            {
+              if (t == "ProductDetails")
+              {
+                containsProductDetails = true;
+              }
+              var property = t == "ProductDetails" ? "productDetails" : "unwrapped";
+              postfix = (isOptional ? "?" : "") + "." + property;
+            }
+          }
+
           // Check if we have a conflicting property defined that will "claim" our typename
           // This is usually the case for props name Date or Data
           var typePrefix = (type.Properties.ContainsKey(typeNameNotNullable) && !containsProductDetails) ? "Foundation." : string.Empty;
-          var isOptional = value.Type.Nullable || value.Deprecated != null || value.Skippable;
-          var postfix = containsProductDetails ? ((isOptional ? "?" : "") + ".productDetails") : string.Empty;
 
           if (isOptional)
           {
@@ -582,6 +601,8 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           output.WriteLine("default: self = .undocumented(codingKey.intValue ?? -1, codingKey.stringValue)");
         }
       }
+
+      WriteIntRawValueInit(output);
     }
 
     output.WriteLine("}");
@@ -608,9 +629,23 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         if (value == 0) continue;
         output.WriteLine($"public static let {name} = {typename}(rawValue: {value})");
       }
+
+      WriteIntRawValueInit(output);
     }
 
     output.WriteLine("}");
+  }
+
+  private static void WriteIntRawValueInit(IndentedStringBuilder output)
+  {
+      output.WriteLine();
+      output.WriteLine("public init(from decoder: any Decoder) throws");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("let container = try decoder.singleValueContainer()");
+        output.WriteLine("let rawValue = try container.decode(IntWrapper.self).unwrapped");
+        output.WriteLine("self.init(rawValue: rawValue)");
+      }
   }
 
   private static string GetPropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false)
