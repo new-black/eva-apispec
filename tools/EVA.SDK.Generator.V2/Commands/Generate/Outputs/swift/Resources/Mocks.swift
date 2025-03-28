@@ -87,7 +87,6 @@ extension Dictionary where Value == ProductDetailsWrapper {
     }
 }
 
-
 struct ProductDetails: Codable {}
 
 public enum Maybe<Wrapped> {
@@ -104,5 +103,48 @@ extension Maybe: Sendable where Wrapped: Sendable {}
 extension Maybe: ExpressibleByNilLiteral {
     public init(nilLiteral: ()) {
         self = .null
+    }
+}
+
+protocol Wrapper {
+    associatedtype Unwrapped
+    var unwrapped: Unwrapped { get }
+}
+
+struct StringWrapper: Codable, Hashable, Wrapper {
+    var unwrapped: String
+}
+
+struct IntWrapper: Codable, Hashable, Wrapper {
+    var unwrapped: Int
+}
+
+extension Array: Wrapper where Element: Wrapper {
+    var unwrapped: [Element.Unwrapped] {
+        []
+    }
+}
+
+extension Maybe: Wrapper where Wrapped: Wrapper {
+    var unwrapped: Maybe<Wrapped.Unwrapped> {
+        .null
+    }
+}
+
+extension Dictionary: Wrapper where Value: Wrapper {
+    var unwrapped: [Key: Value.Unwrapped] {
+        [:]
+    }
+}
+
+extension EVACorePageConfig: Wrapper where T: Wrapper {
+    var unwrapped: EVACorePageConfig<T.Unwrapped> {
+        .init(Filter: Filter?.unwrapped, Limit: Limit, SortDirection: SortDirection, SortProperty: SortProperty, Start: Start)
+    }
+}
+
+extension EVACorePageTokenConfig: Wrapper where T: Wrapper {
+    var unwrapped: EVACorePageTokenConfig<T.Unwrapped> {
+        .init(Filter: Filter?.unwrapped, Limit: Limit)
     }
 }
