@@ -1,9 +1,9 @@
 {
-  "name": "GetSerialNumberConfigurations",
+  "name": "GetCurrentVersion",
   "method": "POST",
-  "path": "/message/GetSerialNumberConfigurations",
-  "description": "Get all Serial Number Configurations, without paging.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060SerialNumbers:View\u0060",
+  "path": "/message/GetCurrentVersion",
+  "description": "Get the version status of the client compared to the current version of the API. The header EVA-API-Version is required.",
+  "auth_description": "This service does not require authentication.",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -35,14 +35,14 @@
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetSerialNumberConfigurations",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetCurrentVersion",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022SerialNumberConfigurations\u0022: [\n    {\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsStrict\u0022: true,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022Requirement\u0022: -1,\n      \u0022ScriptID\u0022: 123,\n      \u0022ValidationRegex\u0022: \u0022string\u0022\n    }\n  ]\n}"
+      "sample": "{\n  \u0022Status\u0022: 3\n}"
     },
     {
       "name": "400",
@@ -134,71 +134,6 @@
         "one_of": null
       }
     ],
-    "F": [
-      {
-        "name": "Description",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060SerialNumberConfiguration\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsStrict",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Requirement",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u0060-1\u0060 - None\n* \u00600\u0060 - Sales\n* \u00601\u0060 - OwnershipChange\n* \u00602\u0060 - StockMovements",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ScriptID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Script\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ValidationRegex",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "C": [
       {
         "name": "Error",
@@ -219,12 +154,12 @@
         "one_of": null
       },
       {
-        "name": "SerialNumberConfigurations",
+        "name": "Status",
         "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
+        "description": "Possible values:\n\n* \u00600\u0060 - Unknown\n* \u00601\u0060 - None\n* \u00602\u0060 - Old\n* \u00603\u0060 - Ancient",
+        "type": "integer",
         "required": false,
-        "properties_id": "F",
+        "properties_id": null,
         "one_of": null
       }
     ]
