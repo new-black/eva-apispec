@@ -1,9 +1,9 @@
 {
-  "name": "DeleteOrganizationUnit",
+  "name": "UnarchiveOrganizationUnit",
   "method": "POST",
-  "path": "/message/DeleteOrganizationUnit",
-  "description": "The DeleteOrganizationUnit service",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060OrganizationUnits:Delete\u0060",
+  "path": "/message/UnarchiveOrganizationUnit",
+  "description": "Restore an archived organization unit.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ArchiveOrganizationUnits:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ForceDeleteArchiveChildren\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123\n}",
+      "sample": "{\n  \u0022OrganizationUnitID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ForceDeleteArchiveChildren\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DeleteOrganizationUnit",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UnarchiveOrganizationUnit",
       "syntax": "bash"
     }
   ],
@@ -65,15 +65,6 @@
   "response_type_id": "C",
   "types": {
     "B": [
-      {
-        "name": "ForceDeleteArchiveChildren",
-        "deprecation_notice": null,
-        "description": "Enabling this will delete all children of the organization unit",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
       {
         "name": "OrganizationUnitID",
         "deprecation_notice": null,
