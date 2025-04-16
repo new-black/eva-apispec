@@ -56,7 +56,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Functionalities\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022ScopedFunctionalities\u0022: [\n    {\n      \u0022Functionality\u0022: \u0022string\u0022,\n      \u0022RequiresElevation\u0022: true,\n      \u0022Scope\u0022: 1\n    }\n  ]\n}"
+      "sample": "{\n  \u0022Functionalities\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022ScopedFunctionalities\u0022: [\n    {\n      \u0022ElevationType\u0022: 1,\n      \u0022Functionality\u0022: \u0022string\u0022,\n      \u0022RequiresElevation\u0022: true,\n      \u0022Scope\u0022: 1\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -67,7 +67,7 @@
       "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
     }
   ],
-  "deprecation_notice": null,
+  "deprecation_notice": "\n\n**Deprecated since 782:** Just use \u0060GetCurrentUser\u0060\n\n**Will be removed from the typings in 798**",
   "request_type_id": "B",
   "response_type_id": "C",
   "types": {
@@ -169,6 +169,15 @@
     ],
     "F": [
       {
+        "name": "ElevationType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Elevation\n* \u00602\u0060 - Verification",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Functionality",
         "deprecation_notice": null,
         "description": "",
@@ -179,8 +188,8 @@
       },
       {
         "name": "RequiresElevation",
-        "deprecation_notice": null,
-        "description": "",
+        "deprecation_notice": "\n\n**Deprecated since 782:** RequiresElevation is deprecated and will be removed in 2.0.814: Replaced by \u0060ElevationType\u0060.\n\n**Will be removed in 798**",
+        "description": "**Deprecated since 782:** RequiresElevation is deprecated and will be removed in 2.0.814: Replaced by \u0060ElevationType\u0060.\n\n**Will be removed in 798**",
         "type": "boolean",
         "required": false,
         "properties_id": null,
