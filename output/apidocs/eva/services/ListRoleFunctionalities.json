@@ -1,9 +1,9 @@
 {
-  "name": "GetRole",
+  "name": "ListRoleFunctionalities",
   "method": "POST",
-  "path": "/message/GetRole",
-  "description": "Get role with its functionalities by it\u0027s ID.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Roles:View\u0060",
+  "path": "/message/ListRoleFunctionalities",
+  "description": "List role functionalities.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Functionalities:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -37,19 +37,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022FlattenElevationFunctionalities\u0022: true,\n  \u0022ID\u0022: 123\n}",
+      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022Functionality\u0022: \u0022string\u0022,\n      \u0022HasValue\u0022: true\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022RoleID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022FlattenElevationFunctionalities\u0022: true,\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetRole",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022Functionality\u0022: \u0022string\u0022,\n      \u0022HasValue\u0022: true\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022RoleID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListRoleFunctionalities",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Result\u0022: {\n    \u0022Code\u0022: \u0022string\u0022,\n    \u0022DeactivateUserAfterInactiveDays\u0022: 123,\n    \u0022Functionalities\u0022: {\n      \u0022key\u0022: {\n        \u0022key\u0022: 1\n      }\n    },\n    \u0022ID\u0022: 123,\n    \u0022IsSystemDefined\u0022: true,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022ScopedFunctionalities\u0022: [\n      {\n        \u0022ElevationScope\u0022: 1,\n        \u0022Functionality\u0022: \u0022string\u0022,\n        \u0022RequiresElevation\u0022: true,\n        \u0022Scope\u0022: 1\n      }\n    ],\n    \u0022UserType\u0022: 4\n  }\n}"
+      "sample": "{\n  \u0022Result\u0022: {\n    \u0022CurrentPage\u0022: 123,\n    \u0022Filters\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022NumberOfPages\u0022: 123,\n    \u0022Offset\u0022: 123,\n    \u0022Page\u0022: [\n      {\n        \u0022Categories\u0022: [\n          \u0022string\u0022\n        ],\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022Name\u0022: \u0022string\u0022,\n        \u0022Scopes\u0022: {\n          \u0022key\u0022: 1\n        }\n      }\n    ],\n    \u0022PageConfig\u0022: {\n      \u0022Filter\u0022: {\n        \u0022key\u0022: \u0022string\u0022\n      },\n      \u0022Limit\u0022: 123,\n      \u0022SortDirection\u0022: 1,\n      \u0022SortProperty\u0022: \u0022string\u0022,\n      \u0022Start\u0022: 123\n    },\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Total\u0022: 123\n  }\n}"
     },
     {
       "name": "400",
@@ -62,29 +62,96 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "E",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "FlattenElevationFunctionalities",
-        "deprecation_notice": "\n\n**Deprecated since 782:** FlattenElevationFunctionalities is deprecated and will be removed in 2.0.814: Only controls the deprecated response property \u0060ScopedFunctionalities\u0060.\n\n**Will be removed in 798**",
-        "description": "Merge the normal and elevated functionalities into single records.\n\n**Deprecated since 782:** FlattenElevationFunctionalities is deprecated and will be removed in 2.0.814: Only controls the deprecated response property \u0060ScopedFunctionalities\u0060.\n\n**Will be removed in 798**",
-        "type": "boolean",
+        "name": "Functionality",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ID",
+        "name": "HasValue",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Role\u0060",
-        "type": "integer",
+        "description": "",
+        "type": "boolean | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "D": [
+    "C": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "PageConfig",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "RoleID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Role\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -131,7 +198,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "G": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -160,86 +227,21 @@
         "one_of": null
       }
     ],
-    "G": [
+    "I": [
       {
-        "name": "ElevationScope",
-        "deprecation_notice": null,
-        "description": "Scopes available only when elevated for this functionality. Should be set to \u0060None (0)\u0060 for unscoped functionalities.\nFlags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Create\n* \u00602\u0060 - Edit\n* \u00604\u0060 - Delete\n* \u00608\u0060 - View\n* \u006031\u0060 - Manage\n* \u006032\u0060 - Settings\n* \u006064\u0060 - Scripting\n* \u0060127\u0060 - All",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Functionality",
+        "name": "Categories",
         "deprecation_notice": null,
         "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RequiresElevation",
-        "deprecation_notice": null,
-        "description": "This is not required anymore, this is determined based on the availability of the ElevationScope property.",
-        "type": "boolean | null",
+        "type": "array[string] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Scope",
-        "deprecation_notice": null,
-        "description": "Scopes available for this functionality. Should be set to \u0060None (0)\u0060 for unscoped functionalities.\nFlags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Create\n* \u00602\u0060 - Edit\n* \u00604\u0060 - Delete\n* \u00608\u0060 - View\n* \u006031\u0060 - Manage\n* \u006032\u0060 - Settings\n* \u006064\u0060 - Scripting\n* \u0060127\u0060 - All",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "F": [
-      {
-        "name": "Code",
+        "name": "Description",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DeactivateUserAfterInactiveDays",
-        "deprecation_notice": null,
-        "description": "If this is set, any users that have not logged in after said days will get disabled",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Functionalities",
-        "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Create\n* \u00602\u0060 - Edit\n* \u00604\u0060 - Delete\n* \u00608\u0060 - View\n* \u006031\u0060 - Manage\n* \u006032\u0060 - Settings\n* \u006064\u0060 - Scripting\n* \u0060127\u0060 - All",
-        "type": "map[map[integer]] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Role\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsSystemDefined",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -254,32 +256,162 @@
         "one_of": null
       },
       {
-        "name": "ScopedFunctionalities",
-        "deprecation_notice": "\n\n**Deprecated since 782:** ScopedFunctionalities is deprecated and will be removed in 2.0.814: Replaced by \u0060Functionalities\u0060.\n\n**Will be removed in 798**",
-        "description": "**Deprecated since 782:** ScopedFunctionalities is deprecated and will be removed in 2.0.814: Replaced by \u0060Functionalities\u0060.\n\n**Will be removed in 798**",
-        "type": "array[object] | null",
+        "name": "Scopes",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Elevation\n* \u00602\u0060 - Verification",
+        "type": "map[integer] | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "UserType",
+        "name": "Limit",
         "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Employee\n* \u00602\u0060 - Customer\n* \u00604\u0060 - Anonymous\n* \u00608\u0060 - Business\n* \u006017\u0060 - System\n* \u006064\u0060 - Debtor\n* \u0060512\u0060 - Tester\n* \u00601024\u0060 - RemovedByRequest\n* \u00602048\u0060 - Api\n* \u00604096\u0060 - Impersonated",
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "CurrentPage",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberOfPages",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Offset",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Page",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "PageConfig",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "SortDirection",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Ascending\n* \u00601\u0060 - Descending",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortProperty",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Total",
+        "deprecation_notice": null,
+        "description": "",
         "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "C": [
+    "E": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "F",
         "one_of": null
       },
       {
@@ -288,16 +420,16 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "G",
         "one_of": null
       },
       {
         "name": "Result",
         "deprecation_notice": null,
         "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "F",
+        "type": "object",
+        "required": true,
+        "properties_id": "H",
         "one_of": null
       }
     ]
