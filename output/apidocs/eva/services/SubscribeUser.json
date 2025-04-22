@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Subscriptions\u0022: [\n    {\n      \u0022LoyaltyProgramID\u0022: 123,\n      \u0022SourceIdentifier\u0022: \u0022string\u0022,\n      \u0022SubscriptionID\u0022: 123,\n      \u0022UserIdentifier\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022UserID\u0022: 123\n}",
+      "sample": "{\n  \u0022Subscriptions\u0022: [\n    {\n      \u0022LoyaltyProgramID\u0022: 123,\n      \u0022SourceIdentifier\u0022: \u0022string\u0022,\n      \u0022SubscriptionID\u0022: 123,\n      \u0022UpdateUserIdentifierWhenChanged\u0022: true,\n      \u0022UserIdentifier\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022UserID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Subscriptions\u0022: [\n    {\n      \u0022LoyaltyProgramID\u0022: 123,\n      \u0022SourceIdentifier\u0022: \u0022string\u0022,\n      \u0022SubscriptionID\u0022: 123,\n      \u0022UserIdentifier\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SubscribeUser",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Subscriptions\u0022: [\n    {\n      \u0022LoyaltyProgramID\u0022: 123,\n      \u0022SourceIdentifier\u0022: \u0022string\u0022,\n      \u0022SubscriptionID\u0022: 123,\n      \u0022UpdateUserIdentifierWhenChanged\u0022: true,\n      \u0022UserIdentifier\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SubscribeUser",
       "syntax": "bash"
     }
   ],
@@ -95,6 +95,15 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060Subscription\u0060",
         "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UpdateUserIdentifierWhenChanged",
+        "deprecation_notice": null,
+        "description": "If the user is already subscribed, but the UserIdentifier is different, the UserIdentifier will be updated.\nNOTE THAT the old UserIdentifier will be overwritten and when the given UserIdentifier is already used, subscribing the user will fail.",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
