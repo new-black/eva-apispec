@@ -716,7 +716,6 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     {
       Summary = service.Name,
       Description = description,
-      Parameters = parameters,
       Operations = new Dictionary<OperationType, OpenApiOperation>
       {
         {
@@ -727,6 +726,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
             OperationId = service.Name,
             Deprecated = service.Deprecated is not null,
             Tags = openApiTags,
+            Parameters = parameters,
             Security = !requiresAuthentication
               ? new List<OpenApiSecurityRequirement>()
               : new List<OpenApiSecurityRequirement>
