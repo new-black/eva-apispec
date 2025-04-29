@@ -226,7 +226,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     model.Components.Parameters.Add(Parameter_Header_IdsMode, new()
     {
       In = ParameterLocation.Header,
-      Description = "The IDs mode to run this request in. Currently only `ExternalIDs` is supported.",
+      Description = "The IDs mode to run this request in. This can be either `StringIDs` (default behaviour) or `Hybrid` (when communicating via `BackendID`)",
       Name = "EVA-IDs-Mode",
       Required = false,
       AllowEmptyValue = false,
@@ -263,7 +263,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
       AllowEmptyValue = false,
       Schema = new OpenApiSchema
       {
-        Type = "integer"
+        Type = "string"
       },
       Style = ParameterStyle.Simple
     });
