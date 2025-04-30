@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Result\u0022: {\n    \u0022Amount\u0022: 123.456,\n    \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n    \u0022CurrencyID\u0022: \u0022string\u0022,\n    \u0022Number\u0022: \u0022string\u0022,\n    \u0022SignatureUrl\u0022: \u0022string\u0022\n  }\n}"
+      "sample": "{\n  \u0022Result\u0022: {\n    \u0022Amount\u0022: 123.456,\n    \u0022BankNotes\u0022: {\n      \u0022key\u0022: 123\n    },\n    \u0022Coins\u0022: {\n      \u0022key\u0022: 123\n    },\n    \u0022CreatedBy\u0022: {\n      \u0022Date\u0022: \u00222025-01-01\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022\n    },\n    \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n    \u0022CurrencyID\u0022: \u0022string\u0022,\n    \u0022DeviceID\u0022: 123,\n    \u0022DeviceName\u0022: \u0022string\u0022,\n    \u0022DroppedOffBy\u0022: {\n      \u0022Date\u0022: \u00222025-01-01\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022\n    },\n    \u0022ID\u0022: 123,\n    \u0022Number\u0022: \u0022string\u0022,\n    \u0022OrganizationUnitID\u0022: 123,\n    \u0022PaymentTypeID\u0022: 123,\n    \u0022PaymentTypeName\u0022: \u0022string\u0022,\n    \u0022SignatureBlobUrl\u0022: \u0022string\u0022,\n    \u0022SignatureUrl\u0022: \u0022string\u0022,\n    \u0022Status\u0022: -1,\n    \u0022Type\u0022: 1\n  }\n}"
     },
     {
       "name": "400",
@@ -153,6 +153,35 @@
         "one_of": null
       }
     ],
+    "G": [
+      {
+        "name": "Date",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "F": [
       {
         "name": "Amount",
@@ -161,6 +190,33 @@
         "type": "float",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BankNotes",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Coins",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreatedBy",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       },
       {
@@ -175,8 +231,44 @@
       {
         "name": "CurrencyID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "This is the ID of a \u0060Currency\u0060",
         "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DeviceID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Device\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DeviceName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DroppedOffBy",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060CashDeposit\u0060",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -191,10 +283,64 @@
         "one_of": null
       },
       {
-        "name": "SignatureUrl",
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTypeID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060PaymentType\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTypeName",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SignatureBlobUrl",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SignatureUrl",
+        "deprecation_notice": "\n\n**Deprecated since 784:** SignatureUrl is deprecated and will be removed in 2.0.816: Use \u0060SignatureBlobUrl\u0060 instead.\n\n**Will be removed in 800**",
+        "description": "**Deprecated since 784:** SignatureUrl is deprecated and will be removed in 2.0.816: Use \u0060SignatureBlobUrl\u0060 instead.\n\n**Will be removed in 800**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Status",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u0060-1\u0060 - Pending\n* \u00600\u0060 - Done",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Default\n* \u00601\u0060 - NonMonetary",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
