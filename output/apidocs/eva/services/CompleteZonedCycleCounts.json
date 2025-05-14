@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022CompletionType\u0022: 1,\n  \u0022ToComplete\u0022: [\n    {\n      \u0022CountedQuantityCorrections\u0022: [\n        {\n          \u0022NewCountedQuantity\u0022: 123,\n          \u0022StockLabelID\u0022: 123\n        }\n      ],\n      \u0022UserTaskID\u0022: 123\n    }\n  ]\n}",
+      "sample": "{\n  \u0022CompletionType\u0022: 1,\n  \u0022ToComplete\u0022: [\n    {\n      \u0022CountedQuantityCorrections\u0022: [\n        {\n          \u0022NewCountedQuantity\u0022: 123,\n          \u0022StockLabelID\u0022: 123\n        }\n      ],\n      \u0022DeviationReason\u0022: \u0022string\u0022,\n      \u0022UserTaskID\u0022: 123\n    }\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CompletionType\u0022: 1,\n  \u0022ToComplete\u0022: [\n    {\n      \u0022CountedQuantityCorrections\u0022: [\n        {\n          \u0022NewCountedQuantity\u0022: 123,\n          \u0022StockLabelID\u0022: 123\n        }\n      ],\n      \u0022UserTaskID\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CompleteZonedCycleCounts",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CompletionType\u0022: 1,\n  \u0022ToComplete\u0022: [\n    {\n      \u0022CountedQuantityCorrections\u0022: [\n        {\n          \u0022NewCountedQuantity\u0022: 123,\n          \u0022StockLabelID\u0022: 123\n        }\n      ],\n      \u0022DeviationReason\u0022: \u0022string\u0022,\n      \u0022UserTaskID\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CompleteZonedCycleCounts",
       "syntax": "bash"
     }
   ],
@@ -85,6 +85,15 @@
         "type": "array[object] | null",
         "required": false,
         "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "DeviationReason",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       },
       {
