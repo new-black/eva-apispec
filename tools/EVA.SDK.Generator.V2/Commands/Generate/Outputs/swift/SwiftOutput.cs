@@ -733,6 +733,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
   {
     if (id == "EVA.Core.Users.Subscriptions.UserDto") return "EVACoreSubscriptionsUserDto";
     if (id == "EVA.Core.Users.Subscriptions.OrganizationUnitDto") return "EVACoreSubscriptionsOrganizationUnitDto";
+    if (id == "EVA.Core.Orders.Dto.CompanyDto") return "EVACoreOrdersCompanyDto";
     var reference = input.Types[id];
     var assembly = reference.Assembly;
     assembly = assembly.Replace(".Services", string.Empty);
