@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022FinalShipment\u0022: true,\n  \u0022Force\u0022: true,\n  \u0022Lines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022QuantityShipped\u0022: 123,\n      \u0022ShipmentBackendID\u0022: \u0022string\u0022,\n      \u0022TrackingCode\u0022: \u0022string\u0022,\n      \u0022TrackingLink\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022ShippedFromOrganizationUnitID\u0022: 123\n}",
+      "sample": "{\n  \u0022FinalShipment\u0022: true,\n  \u0022Force\u0022: true,\n  \u0022Lines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022QuantityShipped\u0022: 123,\n      \u0022ShipmentBackendID\u0022: \u0022string\u0022,\n      \u0022TrackingCode\u0022: \u0022string\u0022,\n      \u0022TrackingLink\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022ShipmentBackendID\u0022: \u0022string\u0022,\n  \u0022ShippedFromOrganizationUnitID\u0022: 123,\n  \u0022TrackingCode\u0022: \u0022string\u0022,\n  \u0022TrackingLink\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022FinalShipment\u0022: true,\n  \u0022Force\u0022: true,\n  \u0022Lines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022QuantityShipped\u0022: 123,\n      \u0022ShipmentBackendID\u0022: \u0022string\u0022,\n      \u0022TrackingCode\u0022: \u0022string\u0022,\n      \u0022TrackingLink\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022ShippedFromOrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ShipOrder",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022FinalShipment\u0022: true,\n  \u0022Force\u0022: true,\n  \u0022Lines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022QuantityShipped\u0022: 123,\n      \u0022ShipmentBackendID\u0022: \u0022string\u0022,\n      \u0022TrackingCode\u0022: \u0022string\u0022,\n      \u0022TrackingLink\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022ShipmentBackendID\u0022: \u0022string\u0022,\n  \u0022ShippedFromOrganizationUnitID\u0022: 123,\n  \u0022TrackingCode\u0022: \u0022string\u0022,\n  \u0022TrackingLink\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ShipOrder",
       "syntax": "bash"
     }
   ],
@@ -93,7 +93,7 @@
       {
         "name": "ShipmentBackendID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "The BackendID used for the shipment, lines will be grouped on this to create Shipments. Will fallback to the ShipmentBackendID on the root of the request.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -102,7 +102,7 @@
       {
         "name": "TrackingCode",
         "deprecation_notice": null,
-        "description": "",
+        "description": "The TrackingCode used for the shipment. Will fallback to the TrackingCode on the root of the request.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -111,7 +111,7 @@
       {
         "name": "TrackingLink",
         "deprecation_notice": null,
-        "description": "",
+        "description": "The TrackingLink used for the shipment. Will fallback to the TrackingLink on the root of the request.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -156,10 +156,37 @@
         "one_of": null
       },
       {
+        "name": "ShipmentBackendID",
+        "deprecation_notice": null,
+        "description": "The BackendID used for the shipment. Can be overridden on each line.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "ShippedFromOrganizationUnitID",
         "deprecation_notice": null,
         "description": "The OrganizationUnit the shipment was physically shipped from.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
         "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TrackingCode",
+        "deprecation_notice": null,
+        "description": "The TrackingCode used for the shipment. Can be overridden on each line.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TrackingLink",
+        "deprecation_notice": null,
+        "description": "The TrackingLink used for the shipment. Can be overridden on each line.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
