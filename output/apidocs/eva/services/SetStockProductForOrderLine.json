@@ -1,9 +1,9 @@
 {
-  "name": "CompleteStockReservationTask",
+  "name": "SetStockProductForOrderLine",
   "method": "POST",
-  "path": "/message/CompleteStockReservationTask",
-  "description": "Complete a StockReservation task that has been started with the StartStockReservation(2) service\n\nThe service should be called with a line for each orderline that should be reserved. It is not required anymore to send a line for each item on a line.\n\nProvide each line with an OrderLineID and a QuantityTo(Cancel/Reserve/Order).",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
+  "path": "/message/SetStockProductForOrderLine",
+  "description": "Updates the StockProductID for an OrderLine",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Orders:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022PrintReceipt\u0022: true,\n  \u0022StationID\u0022: 123,\n  \u0022Task\u0022: {\n    \u0022Lines\u0022: [\n      {\n        \u0022ForceComplete\u0022: true,\n        \u0022OrderLineID\u0022: 123,\n        \u0022ProductID\u0022: 123,\n        \u0022QuantityToCancel\u0022: 123,\n        \u0022QuantityToOrder\u0022: 123,\n        \u0022QuantityToReserve\u0022: 123,\n        \u0022SerialNumber\u0022: \u0022string\u0022\n      }\n    ],\n    \u0022UserTaskID\u0022: 123\n  }\n}",
+      "sample": "{\n  \u0022OrderLineID\u0022: 123,\n  \u0022StockProductID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PrintReceipt\u0022: true,\n  \u0022StationID\u0022: 123,\n  \u0022Task\u0022: {\n    \u0022Lines\u0022: [\n      {\n        \u0022ForceComplete\u0022: true,\n        \u0022OrderLineID\u0022: 123,\n        \u0022ProductID\u0022: 123,\n        \u0022QuantityToCancel\u0022: 123,\n        \u0022QuantityToOrder\u0022: 123,\n        \u0022QuantityToReserve\u0022: 123,\n        \u0022SerialNumber\u0022: \u0022string\u0022\n      }\n    ],\n    \u0022UserTaskID\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CompleteStockReservationTask",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderLineID\u0022: 123,\n  \u0022StockProductID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SetStockProductForOrderLine",
       "syntax": "bash"
     }
   ],
@@ -69,123 +69,29 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "E",
+  "response_type_id": "C",
   "types": {
-    "D": [
-      {
-        "name": "ForceComplete",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
+    "B": [
       {
         "name": "OrderLineID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrderLine\u0060",
         "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductID",
-        "deprecation_notice": null,
-        "description": "The actual picked product. Must be provided when a stock aggregate product is returned in the task.\n\nThis is the ID of a \u0060Product\u0060",
-        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "QuantityToCancel",
+        "name": "StockProductID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "This is the ID of a \u0060Product\u0060",
         "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "QuantityToOrder",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "QuantityToReserve",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SerialNumber",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "C": [
-      {
-        "name": "Lines",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "UserTaskID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserTask\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "B": [
-      {
-        "name": "PrintReceipt",
-        "deprecation_notice": null,
-        "description": "Should we print a receipt? Default true",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StationID",
-        "deprecation_notice": null,
-        "description": "Station to print the receipt on\n\nThis is the ID of a \u0060Station\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Task",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
-    "F": [
+    "D": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -232,7 +138,7 @@
         "one_of": null
       }
     ],
-    "G": [
+    "E": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -261,14 +167,14 @@
         "one_of": null
       }
     ],
-    "E": [
+    "C": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "D",
         "one_of": null
       },
       {
@@ -277,7 +183,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "E",
         "one_of": null
       }
     ]
