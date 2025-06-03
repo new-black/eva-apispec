@@ -1,0 +1,72 @@
+name: Sync API Spec Content
+
+on:
+  push:
+    paths:
+      - 'output/apidocs/eva/services/*.json'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Get changed files and build payload
+        id: payload
+        run: |
+          # Get files with their status
+          added=$(git diff --name-only --diff-filter=A ${{ github.event.before }} ${{ github.sha }} | grep '^output/apidocs/eva/services/.*\.json$' || true)
+          modified=$(git diff --name-only --diff-filter=M ${{ github.event.before }} ${{ github.sha }} | grep '^output/apidocs/eva/services/.*\.json$' || true)
+          deleted=$(git diff --name-only --diff-filter=D ${{ github.event.before }} ${{ github.sha }} | grep '^output/apidocs/eva/services/.*\.json$' || true)
+          
+          # Build JSON array with filename and status
+          files_json="["
+          first=true
+          
+          # Process added files
+          for file in $added; do
+            if [ "$first" = true ]; then 
+              first=false
+            else 
+              files_json="$files_json,"
+            fi
+            files_json="$files_json{\"filename\":\"$file\",\"status\":\"added\"}"
+          done
+          
+          # Process modified files
+          for file in $modified; do
+            if [ "$first" = true ]; then 
+              first=false
+            else 
+              files_json="$files_json,"
+            fi
+            files_json="$files_json{\"filename\":\"$file\",\"status\":\"modified\"}"
+          done
+          
+          # Process deleted files (using "removed" status as expected by worker)
+          for file in $deleted; do
+            if [ "$first" = true ]; then 
+              first=false
+            else 
+              files_json="$files_json,"
+            fi
+            files_json="$files_json{\"filename\":\"$file\",\"status\":\"removed\"}"
+          done
+          
+          files_json="$files_json]"
+          
+          # Build complete payload
+          payload="{\"commitSha\":\"${{ github.sha }}\",\"files\":$files_json}"
+          echo "payload=$payload" >> $GITHUB_OUTPUT
+          
+      - name: Call worker
+        if: steps.payload.outputs.payload != '{"commitSha":"${{ github.sha }}","files":[]}'
+        env:
+          WORKER_URL: ${{ secrets.EVA_CONTENT_WORKER_URL }}
+          WORKER_TOKEN: ${{ secrets.EVA_CONTENT_WORKER_TOKEN }}
+        run: |
+          curl -X POST "$WORKER_URL/eva-apispec-action" \
+            -H "x-api-key: $WORKER_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '${{ steps.payload.outputs.payload }}'
