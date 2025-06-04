@@ -2,7 +2,7 @@
   "name": "DataLakeBackfill",
   "method": "POST",
   "path": "/message/DataLakeBackfill",
-  "description": "Manually re-export specific DataLake documents.\n\nThese types are currently supported;\n\n* \u0060FinancialPeriods\u0060 = 1\n* \u0060Orders\u0060 = 2\n* \u0060Invoices\u0060 = 3\n* \u0060Users\u0060 = 4\n* \u0060Discounts\u0060 = 5\n* \u0060UserBatches\u0060 = 6 (can only be used with \u0060From\u0060 and \u0060To\u0060)\n* \u0060Cases\u0060 = 7\n* \u0060Shipments\u0060 = 8\n* \u0060ZonedCycleCounts\u0060 = 9\n* \u0060UserTasks\u0060 = 10\n* \u0060StockMutations\u0060 = 11\n* \u0060UserLoyaltyPointMutations\u0060 = 12 (can only be used with the \u0060ID\u0060 or \u0060IDs\u0060. These need to be the user ID\u0027s of which the loyalty point mutation will be exported.)\n* \u0060LoyaltyProgramGroups\u0060 = 13 (can only be used with the \u0060ID\u0060 or \u0060IDs\u0060.)\n* \u0060LoyaltyPrograms\u0060 = 14 (can only be used with the \u0060ID\u0060 or \u0060IDs\u0060.)\n* \u0060FullStockCounts\u0060 = 15 (can only be used with the \u0060ID\u0060 or \u0060IDs\u0060.)\n* \u0060ProductSubscriptions\u0060 = 16 (can only be used with the \u0060ID\u0060 or \u0060IDs\u0060.)\n\nSpecify either a single \u0060ID\u0060, a list of \u0060IDs\u0060, or a datetime range \u0060From\u0060 and \u0060To\u0060 (inclusive).\n\nAs mandatory safety feature, specify the \u0060MaxNumberOfDocuments\u0060 you\u0027d like to run this for. When the amount of documents through above\nselection exceeds this number, this service will export NOTHING and return to you an error with the amount of documents it prevented you\nfrom exporting, so you can adjust your selection or expand your max.\n\n:warning: Triggering large amounts of data may impact system performance!\n\n:point_right: The \u0060ID\u0060 you are returned can be used in subsequent services \u0060DataLakeBackfillStatus\u0060 and \u0060DataLakeBackfillCancel\u0060.",
+  "description": "Manually re-export specific DataLake documents.\n\nThese types are currently supported;\n\n* \u0060FinancialPeriods\u0060 = 1\n* \u0060Orders\u0060 = 2\n* \u0060Invoices\u0060 = 3\n* \u0060Users\u0060 = 4\n* \u0060Discounts\u0060 = 5\n* \u0060UserBatches\u0060 = 6 (can only be used with \u0060From\u0060 and \u0060To\u0060)\n* \u0060Cases\u0060 = 7\n* \u0060Shipments\u0060 = 8\n* \u0060ZonedCycleCounts\u0060 = 9\n* \u0060UserTasks\u0060 = 10\n* \u0060StockMutations\u0060 = 11\n* \u0060UserLoyaltyPointMutations\u0060 = 12 (can only be used with the \u0060ID\u0060 or \u0060IDs\u0060. These need to be the user ID\u0027s of which the loyalty point mutation will be exported.)\n* \u0060LoyaltyProgramGroups\u0060 = 13 (can only be used with the \u0060ID\u0060 or \u0060IDs\u0060.)\n* \u0060LoyaltyPrograms\u0060 = 14 (can only be used with the \u0060ID\u0060 or \u0060IDs\u0060.)\n* \u0060FullStockCounts\u0060 = 15 (can only be used with the \u0060ID\u0060 or \u0060IDs\u0060.)\n* \u0060StockNotifications\u0060 = 16 (can only be used with the \u0060ID\u0060 or \u0060IDs\u0060.)\n* \u0060ProductSubscriptions\u0060 = 17 (can only be used with \u0060From\u0060 and \u0060To\u0060)\n\nSpecify either a single \u0060ID\u0060, a list of \u0060IDs\u0060, or a datetime range \u0060From\u0060 and \u0060To\u0060 (inclusive).\n\nFor the following types, you can optionally specify an \u0060OrganizationUnitID\u0060 to filter results within a datetime range:\n\u0060FinancialPeriods\u0060, \u0060Orders\u0060, \u0060Invoices\u0060, \u0060Discounts\u0060, \u0060Cases\u0060, \u0060Shipments\u0060, \u0060ZonedCycleCounts\u0060, \u0060UserTasks\u0060, \u0060StockMutations\u0060, \u0060StockNotifications\u0060.\n\nFor the following types: \u0060Discounts\u0060, the \u0060OrganizationUnitID\u0060 must be a setID\n\nAs mandatory safety feature, specify the \u0060MaxNumberOfDocuments\u0060 you\u0027d like to run this for. When the amount of documents through above\nselection exceeds this number, this service will export NOTHING and return to you an error with the amount of documents it prevented you\nfrom exporting, so you can adjust your selection or expand your max.\n\n:warning: Triggering large amounts of data may impact system performance!\n\n:point_right: The \u0060ID\u0060 you are returned can be used in subsequent services \u0060DataLakeBackfillStatus\u0060 and \u0060DataLakeBackfillCancel\u0060.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060DataLakeBackfill:None\u0060",
   "headers": [
     {
@@ -25,17 +25,24 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022From\u0022: \u00222025-01-01\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IDs\u0022: [\n    123\n  ],\n  \u0022MaxNumberOfDocuments\u0022: 123,\n  \u0022To\u0022: \u00222025-01-01\u0022,\n  \u0022Type\u0022: 7\n}",
+      "sample": "{\n  \u0022From\u0022: \u00222025-01-01\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IDs\u0022: [\n    123\n  ],\n  \u0022MaxNumberOfDocuments\u0022: 123,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022To\u0022: \u00222025-01-01\u0022,\n  \u0022Type\u0022: 7\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022From\u0022: \u00222025-01-01\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IDs\u0022: [\n    123\n  ],\n  \u0022MaxNumberOfDocuments\u0022: 123,\n  \u0022To\u0022: \u00222025-01-01\u0022,\n  \u0022Type\u0022: 7\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DataLakeBackfill",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022From\u0022: \u00222025-01-01\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IDs\u0022: [\n    123\n  ],\n  \u0022MaxNumberOfDocuments\u0022: 123,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022To\u0022: \u00222025-01-01\u0022,\n  \u0022Type\u0022: 7\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DataLakeBackfill",
       "syntax": "bash"
     }
   ],
@@ -91,6 +98,15 @@
         "description": "",
         "type": "integer",
         "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
