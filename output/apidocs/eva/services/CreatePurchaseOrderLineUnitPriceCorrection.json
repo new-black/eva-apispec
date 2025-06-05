@@ -2,7 +2,7 @@
   "name": "CreatePurchaseOrderLineUnitPriceCorrection",
   "method": "POST",
   "path": "/message/CreatePurchaseOrderLineUnitPriceCorrection",
-  "description": "Create a price correction on the purchase order line.",
+  "description": "Create price corrections for products",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060OrderLinePriceCorrection:Create\u0060",
   "headers": [
     {
@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OldPrice\u0022: 123.456,\n  \u0022ProductID\u0022: 123,\n  \u0022PurchaseOrderLineID\u0022: 123,\n  \u0022QuantityOrdered\u0022: 123,\n  \u0022SoldFromOrganizationUnitID\u0022: 123,\n  \u0022SoldToOrganizationUnitID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}",
+      "sample": "{\n  \u0022Lines\u0022: [\n    {\n      \u0022OldPrice\u0022: 123.456,\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityOrdered\u0022: 123,\n      \u0022UnitPrice\u0022: 123.456\n    }\n  ],\n  \u0022OldPrice\u0022: 123.456,\n  \u0022ProductID\u0022: 123,\n  \u0022PurchaseOrderLineID\u0022: 123,\n  \u0022QuantityOrdered\u0022: 123,\n  \u0022SoldFromOrganizationUnitID\u0022: 123,\n  \u0022SoldToOrganizationUnitID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OldPrice\u0022: 123.456,\n  \u0022ProductID\u0022: 123,\n  \u0022PurchaseOrderLineID\u0022: 123,\n  \u0022QuantityOrdered\u0022: 123,\n  \u0022SoldFromOrganizationUnitID\u0022: 123,\n  \u0022SoldToOrganizationUnitID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreatePurchaseOrderLineUnitPriceCorrection",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Lines\u0022: [\n    {\n      \u0022OldPrice\u0022: 123.456,\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityOrdered\u0022: 123,\n      \u0022UnitPrice\u0022: 123.456\n    }\n  ],\n  \u0022OldPrice\u0022: 123.456,\n  \u0022ProductID\u0022: 123,\n  \u0022PurchaseOrderLineID\u0022: 123,\n  \u0022QuantityOrdered\u0022: 123,\n  \u0022SoldFromOrganizationUnitID\u0022: 123,\n  \u0022SoldToOrganizationUnitID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreatePurchaseOrderLineUnitPriceCorrection",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022CorrectionPurchaseOrderLineID\u0022: 123,\n  \u0022OrderID\u0022: 123\n}"
+      "sample": "{\n  \u0022CorrectionPurchaseOrderLineID\u0022: 123,\n  \u0022OrderID\u0022: 123,\n  \u0022Results\u0022: [\n    {\n      \u0022CorrectionPurchaseOrderLineID\u0022: 123,\n      \u0022ProductID\u0022: 123\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -69,14 +69,14 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "D",
   "types": {
-    "B": [
+    "C": [
       {
         "name": "OldPrice",
         "deprecation_notice": null,
         "description": "",
-        "type": "float | null",
+        "type": "float",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -85,16 +85,7 @@
         "name": "ProductID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060Product\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PurchaseOrderLineID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrderLine\u0060",
-        "type": "integer | null",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -103,25 +94,7 @@
         "name": "QuantityOrdered",
         "deprecation_notice": null,
         "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SoldFromOrganizationUnitID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SoldToOrganizationUnitID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
-        "type": "integer | null",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -136,7 +109,81 @@
         "one_of": null
       }
     ],
-    "D": [
+    "B": [
+      {
+        "name": "Lines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "OldPrice",
+        "deprecation_notice": "\n\n**Deprecated since 789:** OldPrice is deprecated and will be removed in 2.0.821: Use \u0060Lines\u0060.\n\n**Will be removed in 805**",
+        "description": "**Deprecated since 789:** OldPrice is deprecated and will be removed in 2.0.821: Use \u0060Lines\u0060.\n\n**Will be removed in 805**",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": "\n\n**Deprecated since 789:** ProductID is deprecated and will be removed in 2.0.821: Use \u0060Lines\u0060.\n\n**Will be removed in 805**",
+        "description": "This is the ID of a \u0060Product\u0060\n\n**Deprecated since 789:** ProductID is deprecated and will be removed in 2.0.821: Use \u0060Lines\u0060.\n\n**Will be removed in 805**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PurchaseOrderLineID",
+        "deprecation_notice": "\n\n**Deprecated since 789:** PurchaseOrderLineID is deprecated and will be removed in 2.0.821: No longer supported, use \u0060Lines\u0060. Any value provided to this field will be ignored..\n\n**Will be removed in 805**",
+        "description": "This is the ID of a \u0060OrderLine\u0060\n\n**Deprecated since 789:** PurchaseOrderLineID is deprecated and will be removed in 2.0.821: No longer supported, use \u0060Lines\u0060. Any value provided to this field will be ignored..\n\n**Will be removed in 805**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QuantityOrdered",
+        "deprecation_notice": "\n\n**Deprecated since 789:** QuantityOrdered is deprecated and will be removed in 2.0.821: Use \u0060Lines\u0060.\n\n**Will be removed in 805**",
+        "description": "**Deprecated since 789:** QuantityOrdered is deprecated and will be removed in 2.0.821: Use \u0060Lines\u0060.\n\n**Will be removed in 805**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SoldFromOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SoldToOrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnitPrice",
+        "deprecation_notice": "\n\n**Deprecated since 789:** UnitPrice is deprecated and will be removed in 2.0.821: Use \u0060Lines\u0060.\n\n**Will be removed in 805**",
+        "description": "**Deprecated since 789:** UnitPrice is deprecated and will be removed in 2.0.821: Use \u0060Lines\u0060.\n\n**Will be removed in 805**",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -183,7 +230,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -212,11 +259,31 @@
         "one_of": null
       }
     ],
-    "C": [
+    "G": [
       {
         "name": "CorrectionPurchaseOrderLineID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "CorrectionPurchaseOrderLineID",
+        "deprecation_notice": "\n\n**Deprecated since 789:** CorrectionPurchaseOrderLineID is deprecated and will be removed in 2.0.821: Use \u0060Results\u0060.\n\n**Will be removed in 805**",
+        "description": "This is the ID of a \u0060OrderLine\u0060\n\n**Deprecated since 789:** CorrectionPurchaseOrderLineID is deprecated and will be removed in 2.0.821: Use \u0060Results\u0060.\n\n**Will be removed in 805**",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -228,7 +295,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "E",
         "one_of": null
       },
       {
@@ -237,16 +304,25 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "F",
         "one_of": null
       },
       {
         "name": "OrderID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Order\u0060",
+        "deprecation_notice": "\n\n**Deprecated since 789:** OrderID is deprecated and will be removed in 2.0.821: Use \u0060Results\u0060.\n\n**Will be removed in 805**",
+        "description": "This is the ID of a \u0060Order\u0060\n\n**Deprecated since 789:** OrderID is deprecated and will be removed in 2.0.821: Use \u0060Results\u0060.\n\n**Will be removed in 805**",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Results",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       }
     ]
