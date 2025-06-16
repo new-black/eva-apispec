@@ -6,7 +6,7 @@ API documentation for the EVA platform.
 
 ## Version
 
-2.0.790
+2.0.791
 
 ## Contact
 
