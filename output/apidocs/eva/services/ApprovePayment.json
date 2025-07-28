@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022PaymentID\u0022: 123\n}",
+      "sample": "{\n  \u0022PaymentID\u0022: 123,\n  \u0022PaymentTransactionID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PaymentID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ApprovePayment",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PaymentID\u0022: 123,\n  \u0022PaymentTransactionID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ApprovePayment",
       "syntax": "bash"
     }
   ],
@@ -67,9 +67,18 @@
     "B": [
       {
         "name": "PaymentID",
+        "deprecation_notice": "\n\n**Deprecated since 794:** PaymentID is deprecated and will be removed in 2.0.826: Renamed to PaymentTransactionID.\n\n**Will be removed in 810**",
+        "description": "This is the ID of a \u0060PaymentTransaction\u0060\n\n**Deprecated since 794:** PaymentID is deprecated and will be removed in 2.0.826: Renamed to PaymentTransactionID.\n\n**Will be removed in 810**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTransactionID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060PaymentTransaction\u0060",
-        "type": "integer",
+        "description": "This is the ID of a \u0060PaymentTransaction\u0060\n\n**Required since 794:** Field PaymentTransactionID is required and will be enforced as such in 2.0.826.\n\n**Will be enforced in 810**",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
