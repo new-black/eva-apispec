@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ProductID\u0022: 123,\n  \u0022SerialNumberConfigurationID\u0022: 123\n}",
+      "sample": "{\n  \u0022ProductID\u0022: 123,\n  \u0022ProductIDs\u0022: [\n    123\n  ],\n  \u0022SerialNumberConfigurationID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ProductID\u0022: 123,\n  \u0022SerialNumberConfigurationID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateSerialNumberProduct",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ProductID\u0022: 123,\n  \u0022ProductIDs\u0022: [\n    123\n  ],\n  \u0022SerialNumberConfigurationID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateSerialNumberProduct",
       "syntax": "bash"
     }
   ],
@@ -74,10 +74,19 @@
     "B": [
       {
         "name": "ProductID",
+        "deprecation_notice": "\n\n**Deprecated since 797:** ProductID is deprecated and will be removed in 2.0.829: Use \u0060ProductIDs\u0060.\n\n**Will be removed in 813**",
+        "description": "This is the ID of a \u0060Product\u0060\n\n**Deprecated since 797:** ProductID is deprecated and will be removed in 2.0.829: Use \u0060ProductIDs\u0060.\n\n**Will be removed in 813**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductIDs",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Product\u0060",
-        "type": "integer",
-        "required": true,
+        "description": "This is the ID of a \u0060Product\u0060\n\n**Required since 797:** Field ProductIDs is required and will be enforced as such in 2.0.829.\n\n**Will be enforced in 813**",
+        "type": "array[integer] | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
