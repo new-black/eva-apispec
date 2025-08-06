@@ -2,7 +2,7 @@
   "name": "AdjustStock",
   "method": "POST",
   "path": "/message/AdjustStock",
-  "description": "Book a set of Adjustments to modify stock.\n\nAn Adjustment should have a \u0060ProductID\u0060 to identify the product, an \u0060OrganizationUnitID\u0060 to identify the stock keeping organization, a \u0060StockLabelID\u0060 (see \u0060GetEnumValues\u0060 with type \u0060StockLabel\u0060),\na \u0060StockMutationReasonID\u0060 (see \u0060GetEnumValues\u0060 with type \u0060StockMutationReasons\u0060) and of course a \u0060Quantity\u0060 to actually book.\n\nSupply a \u0060BackendSystemID\u0060 on the request and \u0060BackendID\u0060\u0027s on the Adjustments to make the request idempotent (optional). When one adjustment in your request fails, all of them will fail. Duplicate\nkeys will not be processed again and yield a warning (but thus will not block!).\n\nOptionally supports a \u0060Remark\u0060 for each Adjustment.\n\nWhen specifying a \u0060SerialNumber\u0060, please note the \u0060Quantity\u0060 of this adjustment then should either be -1 or 1!",
+  "description": "Book a set of Adjustments to modify stock.\n\nAn Adjustment should have a \u0060ProductID\u0060 to identify the product, an \u0060OrganizationUnitID\u0060 to identify the stock keeping organization, a \u0060StockLabelID\u0060 (see \u0060GetEnumValues\u0060 with type \u0060StockLabel\u0060),\na \u0060StockMutationReasonID\u0060 (see \u0060GetEnumValues\u0060 with type \u0060StockMutationReasons\u0060) and of course a \u0060Quantity\u0060 to actually book.\n\nSupply a \u0060BackendSystemID\u0060 on the request and \u0060BackendID\u0060\u0027s on the Adjustments to make the request idempotent (optional). When one adjustment in your request fails, all of them will fail. Duplicate\nkeys will not be processed again and yield a warning (but thus will not block!).\n\nOptionally supports a \u0060Remark\u0060 for each Adjustment.\n\nWhen specifying a \u0060SerialNumber\u0060, please note the \u0060Quantity\u0060 of this adjustment then should either be -1 or 1!\n\nSet \u0060Adjustment.Absolute\u0060 to \u0060true\u0060 to specify an absolute quantity instead of a delta.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060AdjustStock:None\u0060",
   "headers": [
     {
@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Adjustments\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123,\n      \u0022StockMutationReasonID\u0022: 123\n    }\n  ],\n  \u0022BackendSystemID\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022Adjustments\u0022: [\n    {\n      \u0022Absolute\u0022: true,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123,\n      \u0022StockMutationReasonID\u0022: 123\n    }\n  ],\n  \u0022BackendSystemID\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Adjustments\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123,\n      \u0022StockMutationReasonID\u0022: 123\n    }\n  ],\n  \u0022BackendSystemID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AdjustStock",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Adjustments\u0022: [\n    {\n      \u0022Absolute\u0022: true,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123,\n      \u0022StockMutationReasonID\u0022: 123\n    }\n  ],\n  \u0022BackendSystemID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AdjustStock",
       "syntax": "bash"
     }
   ],
@@ -72,6 +72,15 @@
   "response_type_id": "D",
   "types": {
     "C": [
+      {
+        "name": "Absolute",
+        "deprecation_notice": null,
+        "description": "Indicates if \u0060Quantity\u0060 is a absolute",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "BackendID",
         "deprecation_notice": null,
