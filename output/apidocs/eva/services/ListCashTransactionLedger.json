@@ -2,7 +2,7 @@
   "name": "ListCashTransactionLedger",
   "method": "POST",
   "path": "/message/ListCashTransactionLedger",
-  "description": "This service allows you to view the cash transaction ledger, which underlies all cash transactions,\nsuch as received payments, moves between devices and expenses.\n\nBy default, you only get access to the cash transaction ledger for your current financial period. If\nyou have the \u0060ManageCashTransactionLedger\u0060 permission, you\u0027re also allowed to filter on another financial\nperiod.",
+  "description": "This service allows you to view the cash transaction ledger, which underlies all cash transactions,\nsuch as received payments, moves between devices, deposits and expenses.\n\nBy default this service will filter on your current organization unit\u0027s active financial period, unless \u0060Security:UseContextIndependentFunctionalityChecksAndFiltering\u0060 is enabled.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060CashTransactionLedger:View\u0060",
   "headers": [
     {
@@ -25,17 +25,24 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CashDepositID\u0022: 123,\n      \u0022CashDepositNumber\u0022: \u0022string\u0022,\n      \u0022CashJournalID\u0022: 123,\n      \u0022CurrencyID\u0022: \u00222025-01-01\u0022,\n      \u0022DeviceID\u0022: 123,\n      \u0022FinancialPeriodID\u0022: 123,\n      \u0022FromDate\u0022: \u00222025-01-01\u0022,\n      \u0022PaymentTypeID\u0022: 123,\n      \u0022ToDate\u0022: \u00222025-01-01\u0022,\n      \u0022Types\u0022: [\n        5\n      ]\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}",
+      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CashDepositID\u0022: 123,\n      \u0022CashDepositNumber\u0022: \u0022string\u0022,\n      \u0022CashJournalID\u0022: 123,\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022DeviceID\u0022: 123,\n      \u0022FinancialPeriodID\u0022: 123,\n      \u0022FinancialPeriodIDs\u0022: [\n        123\n      ],\n      \u0022FromDate\u0022: \u00222025-01-01\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitIDs\u0022: [\n        123\n      ],\n      \u0022PaymentTypeID\u0022: 123,\n      \u0022ToDate\u0022: \u00222025-01-01\u0022,\n      \u0022Types\u0022: [\n        5\n      ]\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CashDepositID\u0022: 123,\n      \u0022CashDepositNumber\u0022: \u0022string\u0022,\n      \u0022CashJournalID\u0022: 123,\n      \u0022CurrencyID\u0022: \u00222025-01-01\u0022,\n      \u0022DeviceID\u0022: 123,\n      \u0022FinancialPeriodID\u0022: 123,\n      \u0022FromDate\u0022: \u00222025-01-01\u0022,\n      \u0022PaymentTypeID\u0022: 123,\n      \u0022ToDate\u0022: \u00222025-01-01\u0022,\n      \u0022Types\u0022: [\n        5\n      ]\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListCashTransactionLedger",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CashDepositID\u0022: 123,\n      \u0022CashDepositNumber\u0022: \u0022string\u0022,\n      \u0022CashJournalID\u0022: 123,\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022DeviceID\u0022: 123,\n      \u0022FinancialPeriodID\u0022: 123,\n      \u0022FinancialPeriodIDs\u0022: [\n        123\n      ],\n      \u0022FromDate\u0022: \u00222025-01-01\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitIDs\u0022: [\n        123\n      ],\n      \u0022PaymentTypeID\u0022: 123,\n      \u0022ToDate\u0022: \u00222025-01-01\u0022,\n      \u0022Types\u0022: [\n        5\n      ]\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListCashTransactionLedger",
       "syntax": "bash"
     }
   ],
@@ -61,7 +68,7 @@
       {
         "name": "CashDepositID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "This is the ID of a \u0060CashDeposit\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -79,7 +86,7 @@
       {
         "name": "CashJournalID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "This is the ID of a \u0060CashJournal\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -88,8 +95,8 @@
       {
         "name": "CurrencyID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
+        "description": "This is the ID of a \u0060Currency\u0060",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -97,7 +104,7 @@
       {
         "name": "DeviceID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "This is the ID of a \u0060Device\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -106,8 +113,17 @@
       {
         "name": "FinancialPeriodID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "This is the ID of a \u0060FinancialPeriod\u0060",
         "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FinancialPeriodIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060FinancialPeriod\u0060",
+        "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -122,9 +138,27 @@
         "one_of": null
       },
       {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "PaymentTypeID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "This is the ID of a \u0060PaymentType\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -142,7 +176,7 @@
       {
         "name": "Types",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - MoveFrom\n* \u00601\u0060 - MoveTo\n* \u00602\u0060 - Deposit\n* \u00603\u0060 - Correction\n* \u00604\u0060 - Expense\n* \u00605\u0060 - AmountGiven\n* \u00606\u0060 - Change\n* \u00607\u0060 - DepositPending",
+        "description": "Possible values:\n\n* \u00600\u0060 - MoveFrom\n* \u00601\u0060 - MoveTo\n* \u00602\u0060 - Deposit\n* \u00603\u0060 - Correction\n* \u00604\u0060 - Expense\n* \u00605\u0060 - AmountGiven\n* \u00606\u0060 - Change\n* \u00607\u0060 - DepositPending\n* \u00608\u0060 - DepositDeleted\n* \u00609\u0060 - DepositCounted",
         "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
@@ -449,7 +483,7 @@
       {
         "name": "Type",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - MoveFrom\n* \u00601\u0060 - MoveTo\n* \u00602\u0060 - Deposit\n* \u00603\u0060 - Correction\n* \u00604\u0060 - Expense\n* \u00605\u0060 - AmountGiven\n* \u00606\u0060 - Change\n* \u00607\u0060 - DepositPending",
+        "description": "Possible values:\n\n* \u00600\u0060 - MoveFrom\n* \u00601\u0060 - MoveTo\n* \u00602\u0060 - Deposit\n* \u00603\u0060 - Correction\n* \u00604\u0060 - Expense\n* \u00605\u0060 - AmountGiven\n* \u00606\u0060 - Change\n* \u00607\u0060 - DepositPending\n* \u00608\u0060 - DepositDeleted\n* \u00609\u0060 - DepositCounted",
         "type": "integer",
         "required": false,
         "properties_id": null,
