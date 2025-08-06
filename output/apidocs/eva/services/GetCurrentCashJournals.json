@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022CashJournals\u0022: [\n    {\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022DeviceID\u0022: 123,\n      \u0022ExpectedClosingAmount\u0022: 123.456,\n      \u0022ID\u0022: 123,\n      \u0022OpeningAmount\u0022: 123.456,\n      \u0022OpeningTime\u0022: \u00222025-01-01\u0022,\n      \u0022PaymentType\u0022: {\n        \u0022CashJournalMethod\u0022: 1,\n        \u0022Code\u0022: \u0022string\u0022,\n        \u0022ID\u0022: 123,\n        \u0022Name\u0022: \u0022string\u0022\n      },\n      \u0022PreviousCashJournal\u0022: {\n        \u0022ClosingAmount\u0022: 123.456,\n        \u0022ClosingTime\u0022: \u00222025-01-01\u0022,\n        \u0022ID\u0022: 123,\n        \u0022OpeningAmount\u0022: 123.456,\n        \u0022OpeningTime\u0022: \u00222025-01-01\u0022\n      },\n      \u0022Type\u0022: 1\n    }\n  ]\n}"
+      "sample": "{\n  \u0022CashJournals\u0022: [\n    {\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022DeviceID\u0022: 123,\n      \u0022ExpectedClosingAmount\u0022: 123.456,\n      \u0022ID\u0022: 123,\n      \u0022OpeningAmount\u0022: 123.456,\n      \u0022OpeningTime\u0022: \u00222025-01-01\u0022,\n      \u0022PaymentType\u0022: {\n        \u0022CashJournalMethod\u0022: 1,\n        \u0022Code\u0022: \u0022string\u0022,\n        \u0022ID\u0022: 123,\n        \u0022Name\u0022: \u0022string\u0022\n      },\n      \u0022PendingCashDeposits\u0022: [\n        {\n          \u0022Amount\u0022: 123.456,\n          \u0022ID\u0022: 123,\n          \u0022Number\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022PreviousCashJournal\u0022: {\n        \u0022ClosingAmount\u0022: 123.456,\n        \u0022ClosingTime\u0022: \u00222025-01-01\u0022,\n        \u0022ID\u0022: 123,\n        \u0022OpeningAmount\u0022: 123.456,\n        \u0022OpeningTime\u0022: \u00222025-01-01\u0022\n      },\n      \u0022Type\u0022: 1\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -107,6 +107,35 @@
       }
     ],
     "F": [
+      {
+        "name": "Amount",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060CashDeposit\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Number",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
       {
         "name": "ClosingAmount",
         "deprecation_notice": null,
@@ -218,12 +247,21 @@
         "one_of": null
       },
       {
+        "name": "PendingCashDeposits",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
         "name": "PreviousCashJournal",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "G",
         "one_of": null
       },
       {
@@ -236,7 +274,7 @@
         "one_of": null
       }
     ],
-    "G": [
+    "H": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -283,7 +321,7 @@
         "one_of": null
       }
     ],
-    "H": [
+    "I": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -328,7 +366,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "H",
         "one_of": null
       },
       {
@@ -337,7 +375,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "I",
         "one_of": null
       }
     ]
