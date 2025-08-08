@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrderID\u0022: 123\n}",
+      "sample": "{\n  \u0022OrderID\u0022: 123,\n  \u0022SupportedOptions\u0022: 1\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetOrderFulfillmentOptions",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123,\n  \u0022SupportedOptions\u0022: 1\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetOrderFulfillmentOptions",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022AvailableFulfillmentOptions\u0022: {\n    \u0022NormalDelivery\u0022: {\n      \u0022AvailableForOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022Price\u0022: 123.456\n    },\n    \u0022SameDayDelivery\u0022: {\n      \u0022AvailableForOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022CutoffTime\u0022: \u002201:00:00\u0022,\n      \u0022EstimatedDeliveryTimeframeFrom\u0022: \u002201:00:00\u0022,\n      \u0022EstimatedDeliveryTimeframeTo\u0022: \u002201:00:00\u0022,\n      \u0022IsAvailable\u0022: true,\n      \u0022Price\u0022: 123.456\n    }\n  },\n  \u0022BlockedFulfillmentOptions\u0022: {\n    \u0022BlockingOrderLineIDs\u0022: [\n      123\n    ],\n    \u0022BlockingReason\u0022: 0,\n    \u0022FulfillmentOptions\u0022: {\n      \u0022NormalDelivery\u0022: {\n        \u0022AvailableForOrderLineIDs\u0022: [\n          123\n        ],\n        \u0022Price\u0022: 123.456\n      },\n      \u0022SameDayDelivery\u0022: {\n        \u0022AvailableForOrderLineIDs\u0022: [\n          123\n        ],\n        \u0022CutoffTime\u0022: \u002201:00:00\u0022,\n        \u0022EstimatedDeliveryTimeframeFrom\u0022: \u002201:00:00\u0022,\n        \u0022EstimatedDeliveryTimeframeTo\u0022: \u002201:00:00\u0022,\n        \u0022IsAvailable\u0022: true,\n        \u0022Price\u0022: 123.456\n      }\n    }\n  },\n  \u0022FulfillmentOptions\u0022: [\n    {\n      \u0022ApplicableToOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022ID\u0022: \u0022string\u0022,\n      \u0022SameDayDelivery\u0022: {\n        \u0022CutoffTime\u0022: \u002201:00:00\u0022,\n        \u0022EstimatedDeliveryTimeframeFrom\u0022: \u002201:00:00\u0022,\n        \u0022EstimatedDeliveryTimeframeTo\u0022: \u002201:00:00\u0022,\n        \u0022IsAvailable\u0022: true\n      },\n      \u0022ShippingCosts\u0022: 123.456\n    }\n  ],\n  \u0022PotentialFulfillmentOptions\u0022: [\n    {\n      \u0022BlockingOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022BlockingReason\u0022: 0,\n      \u0022PotentialFulfillmentOptions\u0022: [\n        {\n          \u0022ApplicableToOrderLineIDs\u0022: [\n            123\n          ],\n          \u0022ID\u0022: \u0022string\u0022,\n          \u0022SameDayDelivery\u0022: {\n            \u0022CutoffTime\u0022: \u002201:00:00\u0022,\n            \u0022EstimatedDeliveryTimeframeFrom\u0022: \u002201:00:00\u0022,\n            \u0022EstimatedDeliveryTimeframeTo\u0022: \u002201:00:00\u0022,\n            \u0022IsAvailable\u0022: true\n          },\n          \u0022ShippingCosts\u0022: 123.456\n        }\n      ]\n    }\n  ]\n}"
+      "sample": "{\n  \u0022AvailableFulfillmentOptions\u0022: {\n    \u0022NormalDelivery\u0022: {\n      \u0022AvailableForOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022Carriers\u0022: [\n        {\n          \u0022DisplayName\u0022: \u0022string\u0022,\n          \u0022LogoUrl\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022IsAvailable\u0022: true,\n      \u0022Options\u0022: [\n        {\n          \u0022AvailableForOrderLineIDs\u0022: [\n            123\n          ],\n          \u0022Carriers\u0022: [\n            {\n              \u0022DisplayName\u0022: \u0022string\u0022,\n              \u0022LogoUrl\u0022: \u0022string\u0022\n            }\n          ],\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022OptionID\u0022: \u0022string\u0022,\n          \u0022Price\u0022: 123.456,\n          \u0022Sequence\u0022: 123,\n          \u0022SubOptions\u0022: [\n            {\n              \u0022AvailableForOrderLineIDs\u0022: [\n                123\n              ],\n              \u0022CarrierMetadata\u0022: {\n                \u0022DisplayName\u0022: \u0022string\u0022,\n                \u0022LogoUrl\u0022: \u0022string\u0022\n              },\n              \u0022Name\u0022: \u0022string\u0022,\n              \u0022OptionID\u0022: \u0022string\u0022,\n              \u0022Price\u0022: 123.456\n            }\n          ]\n        }\n      ],\n      \u0022Price\u0022: 123.456\n    },\n    \u0022PickupDropoff\u0022: {\n      \u0022AvailableForOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022Carriers\u0022: [\n        {\n          \u0022DisplayName\u0022: \u0022string\u0022,\n          \u0022LogoUrl\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022IsAvailable\u0022: true,\n      \u0022Locations\u0022: [\n        {\n          \u0022AddressLines\u0022: [\n            \u0022string\u0022\n          ],\n          \u0022CarrierMetadata\u0022: {\n            \u0022DisplayName\u0022: \u0022string\u0022,\n            \u0022LogoUrl\u0022: \u0022string\u0022\n          },\n          \u0022City\u0022: \u0022string\u0022,\n          \u0022CountryID\u0022: \u0022string\u0022,\n          \u0022Distance\u0022: {\n            \u0022CarDistanceInMeters\u0022: 123,\n            \u0022CarDistanceInMinutes\u0022: 123,\n            \u0022WalkingDistanceInMeters\u0022: 123,\n            \u0022WalkingDistanceInMinutes\u0022: 123\n          },\n          \u0022ID\u0022: \u0022string\u0022,\n          \u0022Latitude\u0022: 123.456,\n          \u0022Longitude\u0022: 123.456,\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022OpeningHours\u0022: {\n            \u0022Friday\u0022: [\n              \u0022string\u0022\n            ],\n            \u0022Monday\u0022: [\n              \u0022string\u0022\n            ],\n            \u0022Saturday\u0022: [\n              \u0022string\u0022\n            ],\n            \u0022Sunday\u0022: [\n              \u0022string\u0022\n            ],\n            \u0022Thursday\u0022: [\n              \u0022string\u0022\n            ],\n            \u0022Tuesday\u0022: [\n              \u0022string\u0022\n            ],\n            \u0022Wednesday\u0022: [\n              \u0022string\u0022\n            ]\n          },\n          \u0022ZipCode\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022Options\u0022: [\n        {\n          \u0022AvailableForOrderLineIDs\u0022: [\n            123\n          ],\n          \u0022Carriers\u0022: [\n            {\n              \u0022DisplayName\u0022: \u0022string\u0022,\n              \u0022LogoUrl\u0022: \u0022string\u0022\n            }\n          ],\n          \u0022Locations\u0022: [\n            {\n              \u0022AddressLines\u0022: [\n                \u0022string\u0022\n              ],\n              \u0022CarrierMetadata\u0022: {\n                \u0022DisplayName\u0022: \u0022string\u0022,\n                \u0022LogoUrl\u0022: \u0022string\u0022\n              },\n              \u0022City\u0022: \u0022string\u0022,\n              \u0022CountryID\u0022: \u0022string\u0022,\n              \u0022Distance\u0022: {\n                \u0022CarDistanceInMeters\u0022: 123,\n                \u0022CarDistanceInMinutes\u0022: 123,\n                \u0022WalkingDistanceInMeters\u0022: 123,\n                \u0022WalkingDistanceInMinutes\u0022: 123\n              },\n              \u0022ID\u0022: \u0022string\u0022,\n              \u0022Latitude\u0022: 123.456,\n              \u0022Longitude\u0022: 123.456,\n              \u0022Name\u0022: \u0022string\u0022,\n              \u0022OpeningHours\u0022: {\n                \u0022Friday\u0022: [\n                  \u0022string\u0022\n                ],\n                \u0022Monday\u0022: [\n                  \u0022string\u0022\n                ],\n                \u0022Saturday\u0022: [\n                  \u0022string\u0022\n                ],\n                \u0022Sunday\u0022: [\n                  \u0022string\u0022\n                ],\n                \u0022Thursday\u0022: [\n                  \u0022string\u0022\n                ],\n                \u0022Tuesday\u0022: [\n                  \u0022string\u0022\n                ],\n                \u0022Wednesday\u0022: [\n                  \u0022string\u0022\n                ]\n              },\n              \u0022ZipCode\u0022: \u0022string\u0022\n            }\n          ],\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022OptionID\u0022: \u0022string\u0022,\n          \u0022Price\u0022: 123.456,\n          \u0022Sequence\u0022: 123,\n          \u0022SubOptions\u0022: [\n            {\n              \u0022AvailableForOrderLineIDs\u0022: [\n                123\n              ],\n              \u0022CarrierMetadata\u0022: {\n                \u0022DisplayName\u0022: \u0022string\u0022,\n                \u0022LogoUrl\u0022: \u0022string\u0022\n              },\n              \u0022Locations\u0022: [\n                {\n                  \u0022AddressLines\u0022: [\n                    \u0022string\u0022\n                  ],\n                  \u0022CarrierMetadata\u0022: {\n                    \u0022DisplayName\u0022: \u0022string\u0022,\n                    \u0022LogoUrl\u0022: \u0022string\u0022\n                  },\n                  \u0022City\u0022: \u0022string\u0022,\n                  \u0022CountryID\u0022: \u0022string\u0022,\n                  \u0022Distance\u0022: {\n                    \u0022CarDistanceInMeters\u0022: 123,\n                    \u0022CarDistanceInMinutes\u0022: 123,\n                    \u0022WalkingDistanceInMeters\u0022: 123,\n                    \u0022WalkingDistanceInMinutes\u0022: 123\n                  },\n                  \u0022ID\u0022: \u0022string\u0022,\n                  \u0022Latitude\u0022: 123.456,\n                  \u0022Longitude\u0022: 123.456,\n                  \u0022Name\u0022: \u0022string\u0022,\n                  \u0022OpeningHours\u0022: {\n                    \u0022Friday\u0022: [\n                      \u0022string\u0022\n                    ],\n                    \u0022Monday\u0022: [\n                      \u0022string\u0022\n                    ],\n                    \u0022Saturday\u0022: [\n                      \u0022string\u0022\n                    ],\n                    \u0022Sunday\u0022: [\n                      \u0022string\u0022\n                    ],\n                    \u0022Thursday\u0022: [\n                      \u0022string\u0022\n                    ],\n                    \u0022Tuesday\u0022: [\n                      \u0022string\u0022\n                    ],\n                    \u0022Wednesday\u0022: [\n                      \u0022string\u0022\n                    ]\n                  },\n                  \u0022ZipCode\u0022: \u0022string\u0022\n                }\n              ],\n              \u0022Name\u0022: \u0022string\u0022,\n              \u0022OptionID\u0022: \u0022string\u0022,\n              \u0022Price\u0022: 123.456,\n              \u0022Sequence\u0022: 123\n            }\n          ]\n        }\n      ],\n      \u0022Price\u0022: 123.456\n    },\n    \u0022SameDayDelivery\u0022: {\n      \u0022AvailableForOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022CutoffTime\u0022: \u002201:00:00\u0022,\n      \u0022EstimatedDeliveryTimeframeFrom\u0022: \u002201:00:00\u0022,\n      \u0022EstimatedDeliveryTimeframeTo\u0022: \u002201:00:00\u0022,\n      \u0022IsAvailable\u0022: true,\n      \u0022Price\u0022: 123.456\n    }\n  },\n  \u0022BlockedFulfillmentOptions\u0022: {\n    \u0022BlockingOrderLineIDs\u0022: [\n      123\n    ],\n    \u0022BlockingReason\u0022: 0,\n    \u0022FulfillmentOptions\u0022: {\n      \u0022NormalDelivery\u0022: {\n        \u0022AvailableForOrderLineIDs\u0022: [\n          123\n        ],\n        \u0022Carriers\u0022: [\n          {\n            \u0022DisplayName\u0022: \u0022string\u0022,\n            \u0022LogoUrl\u0022: \u0022string\u0022\n          }\n        ],\n        \u0022IsAvailable\u0022: true,\n        \u0022Options\u0022: [\n          {\n            \u0022AvailableForOrderLineIDs\u0022: [\n              123\n            ],\n            \u0022Carriers\u0022: [\n              {\n                \u0022DisplayName\u0022: \u0022string\u0022,\n                \u0022LogoUrl\u0022: \u0022string\u0022\n              }\n            ],\n            \u0022Name\u0022: \u0022string\u0022,\n            \u0022OptionID\u0022: \u0022string\u0022,\n            \u0022Price\u0022: 123.456,\n            \u0022Sequence\u0022: 123,\n            \u0022SubOptions\u0022: [\n              {\n                \u0022AvailableForOrderLineIDs\u0022: [\n                  123\n                ],\n                \u0022CarrierMetadata\u0022: {\n                  \u0022DisplayName\u0022: \u0022string\u0022,\n                  \u0022LogoUrl\u0022: \u0022string\u0022\n                },\n                \u0022Name\u0022: \u0022string\u0022,\n                \u0022OptionID\u0022: \u0022string\u0022,\n                \u0022Price\u0022: 123.456\n              }\n            ]\n          }\n        ],\n        \u0022Price\u0022: 123.456\n      },\n      \u0022PickupDropoff\u0022: {\n        \u0022AvailableForOrderLineIDs\u0022: [\n          123\n        ],\n        \u0022Carriers\u0022: [\n          {\n            \u0022DisplayName\u0022: \u0022string\u0022,\n            \u0022LogoUrl\u0022: \u0022string\u0022\n          }\n        ],\n        \u0022IsAvailable\u0022: true,\n        \u0022Locations\u0022: [\n          {\n            \u0022AddressLines\u0022: [\n              \u0022string\u0022\n            ],\n            \u0022CarrierMetadata\u0022: {\n              \u0022DisplayName\u0022: \u0022string\u0022,\n              \u0022LogoUrl\u0022: \u0022string\u0022\n            },\n            \u0022City\u0022: \u0022string\u0022,\n            \u0022CountryID\u0022: \u0022string\u0022,\n            \u0022Distance\u0022: {\n              \u0022CarDistanceInMeters\u0022: 123,\n              \u0022CarDistanceInMinutes\u0022: 123,\n              \u0022WalkingDistanceInMeters\u0022: 123,\n              \u0022WalkingDistanceInMinutes\u0022: 123\n            },\n            \u0022ID\u0022: \u0022string\u0022,\n            \u0022Latitude\u0022: 123.456,\n            \u0022Longitude\u0022: 123.456,\n            \u0022Name\u0022: \u0022string\u0022,\n            \u0022OpeningHours\u0022: {\n              \u0022Friday\u0022: [\n                \u0022string\u0022\n              ],\n              \u0022Monday\u0022: [\n                \u0022string\u0022\n              ],\n              \u0022Saturday\u0022: [\n                \u0022string\u0022\n              ],\n              \u0022Sunday\u0022: [\n                \u0022string\u0022\n              ],\n              \u0022Thursday\u0022: [\n                \u0022string\u0022\n              ],\n              \u0022Tuesday\u0022: [\n                \u0022string\u0022\n              ],\n              \u0022Wednesday\u0022: [\n                \u0022string\u0022\n              ]\n            },\n            \u0022ZipCode\u0022: \u0022string\u0022\n          }\n        ],\n        \u0022Options\u0022: [\n          {\n            \u0022AvailableForOrderLineIDs\u0022: [\n              123\n            ],\n            \u0022Carriers\u0022: [\n              {\n                \u0022DisplayName\u0022: \u0022string\u0022,\n                \u0022LogoUrl\u0022: \u0022string\u0022\n              }\n            ],\n            \u0022Locations\u0022: [\n              {\n                \u0022AddressLines\u0022: [\n                  \u0022string\u0022\n                ],\n                \u0022CarrierMetadata\u0022: {\n                  \u0022DisplayName\u0022: \u0022string\u0022,\n                  \u0022LogoUrl\u0022: \u0022string\u0022\n                },\n                \u0022City\u0022: \u0022string\u0022,\n                \u0022CountryID\u0022: \u0022string\u0022,\n                \u0022Distance\u0022: {\n                  \u0022CarDistanceInMeters\u0022: 123,\n                  \u0022CarDistanceInMinutes\u0022: 123,\n                  \u0022WalkingDistanceInMeters\u0022: 123,\n                  \u0022WalkingDistanceInMinutes\u0022: 123\n                },\n                \u0022ID\u0022: \u0022string\u0022,\n                \u0022Latitude\u0022: 123.456,\n                \u0022Longitude\u0022: 123.456,\n                \u0022Name\u0022: \u0022string\u0022,\n                \u0022OpeningHours\u0022: {\n                  \u0022Friday\u0022: [\n                    \u0022string\u0022\n                  ],\n                  \u0022Monday\u0022: [\n                    \u0022string\u0022\n                  ],\n                  \u0022Saturday\u0022: [\n                    \u0022string\u0022\n                  ],\n                  \u0022Sunday\u0022: [\n                    \u0022string\u0022\n                  ],\n                  \u0022Thursday\u0022: [\n                    \u0022string\u0022\n                  ],\n                  \u0022Tuesday\u0022: [\n                    \u0022string\u0022\n                  ],\n                  \u0022Wednesday\u0022: [\n                    \u0022string\u0022\n                  ]\n                },\n                \u0022ZipCode\u0022: \u0022string\u0022\n              }\n            ],\n            \u0022Name\u0022: \u0022string\u0022,\n            \u0022OptionID\u0022: \u0022string\u0022,\n            \u0022Price\u0022: 123.456,\n            \u0022Sequence\u0022: 123,\n            \u0022SubOptions\u0022: [\n              {\n                \u0022AvailableForOrderLineIDs\u0022: [\n                  123\n                ],\n                \u0022CarrierMetadata\u0022: {\n                  \u0022DisplayName\u0022: \u0022string\u0022,\n                  \u0022LogoUrl\u0022: \u0022string\u0022\n                },\n                \u0022Locations\u0022: [\n                  {\n                    \u0022AddressLines\u0022: [\n                      \u0022string\u0022\n                    ],\n                    \u0022CarrierMetadata\u0022: {\n                      \u0022DisplayName\u0022: \u0022string\u0022,\n                      \u0022LogoUrl\u0022: \u0022string\u0022\n                    },\n                    \u0022City\u0022: \u0022string\u0022,\n                    \u0022CountryID\u0022: \u0022string\u0022,\n                    \u0022Distance\u0022: {\n                      \u0022CarDistanceInMeters\u0022: 123,\n                      \u0022CarDistanceInMinutes\u0022: 123,\n                      \u0022WalkingDistanceInMeters\u0022: 123,\n                      \u0022WalkingDistanceInMinutes\u0022: 123\n                    },\n                    \u0022ID\u0022: \u0022string\u0022,\n                    \u0022Latitude\u0022: 123.456,\n                    \u0022Longitude\u0022: 123.456,\n                    \u0022Name\u0022: \u0022string\u0022,\n                    \u0022OpeningHours\u0022: {\n                      \u0022Friday\u0022: [\n                        \u0022string\u0022\n                      ],\n                      \u0022Monday\u0022: [\n                        \u0022string\u0022\n                      ],\n                      \u0022Saturday\u0022: [\n                        \u0022string\u0022\n                      ],\n                      \u0022Sunday\u0022: [\n                        \u0022string\u0022\n                      ],\n                      \u0022Thursday\u0022: [\n                        \u0022string\u0022\n                      ],\n                      \u0022Tuesday\u0022: [\n                        \u0022string\u0022\n                      ],\n                      \u0022Wednesday\u0022: [\n                        \u0022string\u0022\n                      ]\n                    },\n                    \u0022ZipCode\u0022: \u0022string\u0022\n                  }\n                ],\n                \u0022Name\u0022: \u0022string\u0022,\n                \u0022OptionID\u0022: \u0022string\u0022,\n                \u0022Price\u0022: 123.456,\n                \u0022Sequence\u0022: 123\n              }\n            ]\n          }\n        ],\n        \u0022Price\u0022: 123.456\n      },\n      \u0022SameDayDelivery\u0022: {\n        \u0022AvailableForOrderLineIDs\u0022: [\n          123\n        ],\n        \u0022CutoffTime\u0022: \u002201:00:00\u0022,\n        \u0022EstimatedDeliveryTimeframeFrom\u0022: \u002201:00:00\u0022,\n        \u0022EstimatedDeliveryTimeframeTo\u0022: \u002201:00:00\u0022,\n        \u0022IsAvailable\u0022: true,\n        \u0022Price\u0022: 123.456\n      }\n    }\n  },\n  \u0022FulfillmentOptions\u0022: [\n    {\n      \u0022ApplicableToOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022ID\u0022: \u0022string\u0022,\n      \u0022SameDayDelivery\u0022: {\n        \u0022CutoffTime\u0022: \u002201:00:00\u0022,\n        \u0022EstimatedDeliveryTimeframeFrom\u0022: \u002201:00:00\u0022,\n        \u0022EstimatedDeliveryTimeframeTo\u0022: \u002201:00:00\u0022,\n        \u0022IsAvailable\u0022: true\n      },\n      \u0022ShippingCosts\u0022: 123.456\n    }\n  ],\n  \u0022PotentialFulfillmentOptions\u0022: [\n    {\n      \u0022BlockingOrderLineIDs\u0022: [\n        123\n      ],\n      \u0022BlockingReason\u0022: 0,\n      \u0022PotentialFulfillmentOptions\u0022: [\n        {\n          \u0022ApplicableToOrderLineIDs\u0022: [\n            123\n          ],\n          \u0022ID\u0022: \u0022string\u0022,\n          \u0022SameDayDelivery\u0022: {\n            \u0022CutoffTime\u0022: \u002201:00:00\u0022,\n            \u0022EstimatedDeliveryTimeframeFrom\u0022: \u002201:00:00\u0022,\n            \u0022EstimatedDeliveryTimeframeTo\u0022: \u002201:00:00\u0022,\n            \u0022IsAvailable\u0022: true\n          },\n          \u0022ShippingCosts\u0022: 123.456\n        }\n      ]\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -75,19 +75,75 @@
       {
         "name": "OrderID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Order\u0060",
+        "description": "The order to get the fulfillment options for.\n\nThis is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SupportedOptions",
+        "deprecation_notice": null,
+        "description": "The options the client supports for picking the fulfillment options.\nThis is for backwards compatibility purposes if a new option is added in the future so existing\noptions don\u0027t move to another set of options that the client can\u0027t handle yet.\nFlags enum, combine any of the below values:\n\n* \u00600\u0060 - NormalDelivery\n* \u00601\u0060 - PickupDropoff",
         "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
+      {
+        "name": "DisplayName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LogoUrl",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
       {
         "name": "AvailableForOrderLineIDs",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrderLine\u0060",
         "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CarrierMetadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OptionID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -102,7 +158,518 @@
         "one_of": null
       }
     ],
-    "F": [
+    "G": [
+      {
+        "name": "AvailableForOrderLineIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Carriers",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OptionID",
+        "deprecation_notice": null,
+        "description": "Only set if this option has no suboptions",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Price",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Sequence",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SubOptions",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "AvailableForOrderLineIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Carriers",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "IsAvailable",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Options",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Price",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "CarDistanceInMeters",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CarDistanceInMinutes",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "WalkingDistanceInMeters",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "WalkingDistanceInMinutes",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [
+      {
+        "name": "Friday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Monday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Saturday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Sunday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Thursday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Tuesday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Wednesday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "AddressLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CarrierMetadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "City",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Distance",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Latitude",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Longitude",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OpeningHours",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "ZipCode",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "N": [
+      {
+        "name": "AvailableForOrderLineIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CarrierMetadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Locations",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OptionID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Price",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Sequence",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "AvailableForOrderLineIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Carriers",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Locations",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OptionID",
+        "deprecation_notice": null,
+        "description": "Only set if this option has no suboptions",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Price",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Sequence",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SubOptions",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "AvailableForOrderLineIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Carriers",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "IsAvailable",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Locations",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "Options",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "Price",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "O": [
       {
         "name": "AvailableForOrderLineIDs",
         "deprecation_notice": null,
@@ -169,16 +736,25 @@
         "one_of": null
       },
       {
+        "name": "PickupDropoff",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
         "name": "SameDayDelivery",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "O",
         "one_of": null
       }
     ],
-    "G": [
+    "P": [
       {
         "name": "BlockingOrderLineIDs",
         "deprecation_notice": null,
@@ -193,7 +769,7 @@
         "deprecation_notice": null,
         "description": "Possible values:\n\n* \u00600\u0060 - NoPartialFulfillmentAllowed",
         "type": "integer",
-        "required": false,
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
@@ -207,7 +783,7 @@
         "one_of": null
       }
     ],
-    "H": [
+    "Q": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -254,7 +830,7 @@
         "one_of": null
       }
     ],
-    "J": [
+    "S": [
       {
         "name": "CutoffTime",
         "deprecation_notice": null,
@@ -292,7 +868,7 @@
         "one_of": null
       }
     ],
-    "I": [
+    "R": [
       {
         "name": "ApplicableToOrderLineIDs",
         "deprecation_notice": null,
@@ -317,7 +893,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "J",
+        "properties_id": "S",
         "one_of": null
       },
       {
@@ -330,7 +906,7 @@
         "one_of": null
       }
     ],
-    "K": [
+    "T": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -359,7 +935,7 @@
         "one_of": null
       }
     ],
-    "L": [
+    "U": [
       {
         "name": "BlockingOrderLineIDs",
         "deprecation_notice": null,
@@ -384,7 +960,7 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "I",
+        "properties_id": "R",
         "one_of": null
       }
     ],
@@ -404,7 +980,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "P",
         "one_of": null
       },
       {
@@ -413,16 +989,16 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "Q",
         "one_of": null
       },
       {
         "name": "FulfillmentOptions",
-        "deprecation_notice": null,
-        "description": "",
+        "deprecation_notice": "\n\n**Deprecated since 785:** FulfillmentOptions is deprecated and will be removed in 2.0.817: Not used anymore.\n\n**Will be removed in 801**",
+        "description": "**Deprecated since 785:** FulfillmentOptions is deprecated and will be removed in 2.0.817: Not used anymore.\n\n**Will be removed in 801**",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "I",
+        "properties_id": "R",
         "one_of": null
       },
       {
@@ -431,16 +1007,16 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "K",
+        "properties_id": "T",
         "one_of": null
       },
       {
         "name": "PotentialFulfillmentOptions",
-        "deprecation_notice": null,
-        "description": "",
+        "deprecation_notice": "\n\n**Deprecated since 785:** PotentialFulfillmentOptions is deprecated and will be removed in 2.0.817: Not used anymore.\n\n**Will be removed in 801**",
+        "description": "**Deprecated since 785:** PotentialFulfillmentOptions is deprecated and will be removed in 2.0.817: Not used anymore.\n\n**Will be removed in 801**",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "L",
+        "properties_id": "U",
         "one_of": null
       }
     ]

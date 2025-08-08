@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022FulfillmentOptionsSelection\u0022: {\n    \u0022NormalDelivery\u0022: {\n      \u0022OrderLineIDs\u0022: [\n        123\n      ]\n    },\n    \u0022SameDayDelivery\u0022: {\n      \u0022OrderLineIDs\u0022: [\n        123\n      ]\n    }\n  },\n  \u0022OrderID\u0022: 123,\n  \u0022SelectedFulfillmentOptions\u0022: [\n    {\n      \u0022ID\u0022: \u0022string\u0022,\n      \u0022OrderLineIDs\u0022: [\n        123\n      ]\n    }\n  ]\n}",
+      "sample": "{\n  \u0022FulfillmentOptionsSelection\u0022: {\n    \u0022NormalDelivery\u0022: {\n      \u0022OptionID\u0022: \u0022string\u0022,\n      \u0022OrderLineIDs\u0022: [\n        123\n      ],\n      \u0022SubOptionID\u0022: \u0022string\u0022\n    },\n    \u0022PickupDropoff\u0022: {\n      \u0022LocationID\u0022: \u0022string\u0022,\n      \u0022OptionID\u0022: \u0022string\u0022,\n      \u0022OrderLineIDs\u0022: [\n        123\n      ],\n      \u0022SubOptionID\u0022: \u0022string\u0022\n    },\n    \u0022SameDayDelivery\u0022: {\n      \u0022OptionID\u0022: \u0022string\u0022,\n      \u0022OrderLineIDs\u0022: [\n        123\n      ],\n      \u0022SubOptionID\u0022: \u0022string\u0022\n    }\n  },\n  \u0022OrderID\u0022: 123,\n  \u0022SelectedFulfillmentOptions\u0022: [\n    {\n      \u0022ID\u0022: \u0022string\u0022,\n      \u0022OrderLineIDs\u0022: [\n        123\n      ]\n    }\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022FulfillmentOptionsSelection\u0022: {\n    \u0022NormalDelivery\u0022: {\n      \u0022OrderLineIDs\u0022: [\n        123\n      ]\n    },\n    \u0022SameDayDelivery\u0022: {\n      \u0022OrderLineIDs\u0022: [\n        123\n      ]\n    }\n  },\n  \u0022OrderID\u0022: 123,\n  \u0022SelectedFulfillmentOptions\u0022: [\n    {\n      \u0022ID\u0022: \u0022string\u0022,\n      \u0022OrderLineIDs\u0022: [\n        123\n      ]\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SetOrderFulfillmentOptions",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022FulfillmentOptionsSelection\u0022: {\n    \u0022NormalDelivery\u0022: {\n      \u0022OptionID\u0022: \u0022string\u0022,\n      \u0022OrderLineIDs\u0022: [\n        123\n      ],\n      \u0022SubOptionID\u0022: \u0022string\u0022\n    },\n    \u0022PickupDropoff\u0022: {\n      \u0022LocationID\u0022: \u0022string\u0022,\n      \u0022OptionID\u0022: \u0022string\u0022,\n      \u0022OrderLineIDs\u0022: [\n        123\n      ],\n      \u0022SubOptionID\u0022: \u0022string\u0022\n    },\n    \u0022SameDayDelivery\u0022: {\n      \u0022OptionID\u0022: \u0022string\u0022,\n      \u0022OrderLineIDs\u0022: [\n        123\n      ],\n      \u0022SubOptionID\u0022: \u0022string\u0022\n    }\n  },\n  \u0022OrderID\u0022: 123,\n  \u0022SelectedFulfillmentOptions\u0022: [\n    {\n      \u0022ID\u0022: \u0022string\u0022,\n      \u0022OrderLineIDs\u0022: [\n        123\n      ]\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SetOrderFulfillmentOptions",
       "syntax": "bash"
     }
   ],
@@ -69,9 +69,18 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "G",
+  "response_type_id": "H",
   "types": {
     "D": [
+      {
+        "name": "OptionID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "OrderLineIDs",
         "deprecation_notice": null,
@@ -80,14 +89,79 @@
         "required": false,
         "properties_id": null,
         "one_of": null
+      },
+      {
+        "name": "SubOptionID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
       }
     ],
     "E": [
+      {
+        "name": "LocationID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OptionID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "OrderLineIDs",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrderLine\u0060",
         "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SubOptionID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "OptionID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderLineIDs",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SubOptionID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -104,16 +178,25 @@
         "one_of": null
       },
       {
-        "name": "SameDayDelivery",
+        "name": "PickupDropoff",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "E",
         "one_of": null
+      },
+      {
+        "name": "SameDayDelivery",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
       }
     ],
-    "F": [
+    "G": [
       {
         "name": "ID",
         "deprecation_notice": null,
@@ -154,15 +237,15 @@
       },
       {
         "name": "SelectedFulfillmentOptions",
-        "deprecation_notice": null,
-        "description": "",
+        "deprecation_notice": "\n\n**Deprecated since 785:** SelectedFulfillmentOptions is deprecated and will be removed in 2.0.817: Not used anymore.\n\n**Will be removed in 801**",
+        "description": "**Deprecated since 785:** SelectedFulfillmentOptions is deprecated and will be removed in 2.0.817: Not used anymore.\n\n**Will be removed in 801**",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "G",
         "one_of": null
       }
     ],
-    "H": [
+    "I": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -209,7 +292,7 @@
         "one_of": null
       }
     ],
-    "I": [
+    "J": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -238,14 +321,14 @@
         "one_of": null
       }
     ],
-    "G": [
+    "H": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "I",
         "one_of": null
       },
       {
@@ -254,7 +337,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "I",
+        "properties_id": "J",
         "one_of": null
       }
     ]
