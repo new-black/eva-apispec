@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ApplyRecursive\u0022: true,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Conditions\u0022: [\n    {\n      \u0022Data\u0022: {},\n      \u0022ID\u0022: 123,\n      \u0022Type\u0022: \u0022ORDERAMOUNT\u0022\n    }\n  ],\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Enabled\u0022: true,\n  \u0022EndDate\u0022: \u00222025-01-01\u0022,\n  \u0022ID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022LoyaltyProgramName\u0022: \u0022string\u0022,\n  \u0022MarketingDescription\u0022: \u0022string\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022OrganizationUnitSetName\u0022: \u0022string\u0022,\n  \u0022PointExpirationPolicyData\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022PointExpirationPolicyType\u0022: \u0022string\u0022,\n  \u0022PointPendingPolicyData\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022PointPendingPolicyType\u0022: \u0022string\u0022,\n  \u0022PointsToAward\u0022: 123,\n  \u0022StartDate\u0022: \u00222025-01-01\u0022\n}"
+      "sample": "{\n  \u0022ApplyRecursive\u0022: true,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Conditions\u0022: [\n    {\n      \u0022Data\u0022: {},\n      \u0022ID\u0022: 123,\n      \u0022Type\u0022: \u0022ORDERAMOUNT\u0022\n    }\n  ],\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Enabled\u0022: true,\n  \u0022EndDate\u0022: \u00222025-01-01\u0022,\n  \u0022ID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022LoyaltyProgramName\u0022: \u0022string\u0022,\n  \u0022MarketingDescription\u0022: \u0022string\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022OrganizationUnitSetName\u0022: \u0022string\u0022,\n  \u0022PointExpirationPolicyData\u0022: {},\n  \u0022PointExpirationPolicyType\u0022: \u0022DEFAULT\u0022,\n  \u0022PointPendingPolicyData\u0022: {},\n  \u0022PointPendingPolicyType\u0022: \u0022DEFAULT\u0022,\n  \u0022PointsToAward\u0022: 123,\n  \u0022StartDate\u0022: \u00222025-01-01\u0022\n}"
     },
     {
       "name": "400",
@@ -523,6 +523,79 @@
         "one_of": null
       }
     ],
+    "Q": [],
+    "R": [],
+    "S": [
+      {
+        "name": "IntervalType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Day\n* \u00601\u0060 - Week\n* \u00602\u0060 - Month\n* \u00603\u0060 - Year",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IntervalValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "T": [
+      {
+        "name": "LeniencyDays",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "U": [
+      {
+        "name": "LeniencyDays",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "V": [
+      {
+        "name": "Day",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LeniencyDays",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Month",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "C": [
       {
         "name": "ApplyRecursive",
@@ -672,15 +745,36 @@
         "name": "PointExpirationPolicyData",
         "deprecation_notice": null,
         "description": "",
-        "type": "object | null",
+        "type": "one-of[object] | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
+        "properties_id": "Q",
+        "one_of": [
+          {
+            "name": "EmptyPointPolicyData",
+            "properties_id": "R"
+          },
+          {
+            "name": "CustomPointPolicyData",
+            "properties_id": "S"
+          },
+          {
+            "name": "ExpireEndOfYearPointPolicyData",
+            "properties_id": "T"
+          },
+          {
+            "name": "ExpireEndOfMonthPointPolicyData",
+            "properties_id": "U"
+          },
+          {
+            "name": "ExpireSetDatePointPolicyData",
+            "properties_id": "V"
+          }
+        ]
       },
       {
         "name": "PointExpirationPolicyType",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Possible values:\n\n* \u0060DEFAULT\u0060\n* \u0060CUSTOM\u0060\n* \u0060PENDINGRETURNPERIOD\u0060\n* \u0060EXPIREENDOFYEAR\u0060\n* \u0060EXPIREENDOFMONTH\u0060\n* \u0060EXPIRESETDATE\u0060",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -690,15 +784,36 @@
         "name": "PointPendingPolicyData",
         "deprecation_notice": null,
         "description": "",
-        "type": "object | null",
+        "type": "one-of[object] | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
+        "properties_id": "Q",
+        "one_of": [
+          {
+            "name": "EmptyPointPolicyData",
+            "properties_id": "R"
+          },
+          {
+            "name": "CustomPointPolicyData",
+            "properties_id": "S"
+          },
+          {
+            "name": "ExpireEndOfYearPointPolicyData",
+            "properties_id": "T"
+          },
+          {
+            "name": "ExpireEndOfMonthPointPolicyData",
+            "properties_id": "U"
+          },
+          {
+            "name": "ExpireSetDatePointPolicyData",
+            "properties_id": "V"
+          }
+        ]
       },
       {
         "name": "PointPendingPolicyType",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Possible values:\n\n* \u0060DEFAULT\u0060\n* \u0060CUSTOM\u0060\n* \u0060PENDINGRETURNPERIOD\u0060\n* \u0060EXPIREENDOFYEAR\u0060\n* \u0060EXPIREENDOFMONTH\u0060\n* \u0060EXPIRESETDATE\u0060",
         "type": "string | null",
         "required": false,
         "properties_id": null,
