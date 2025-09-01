@@ -26,9 +26,7 @@ jobs:
       with:
         dotnet-version: '9.0.x'
     - name: Generate OpenAPI
-      run: rm -Rf output/openapi;dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite --opt-format json --opt-examples-folder "examples/" --assembly "-EVA.Global" "-EVA.ShelfManagement" "-EVA.Sync"
-    - name: Generate OpenAPI Beta
-      run: rm -Rf output/openapi-beta;dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi-beta --overwrite --use-string-ids --opt-format json --opt-examples-folder "examples/" --assembly "-EVA.Global" "-EVA.ShelfManagement" "-EVA.Sync"
+      run: rm -Rf output/openapi;dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite --use-string-ids --opt-format json --opt-examples-folder "examples/" --assembly "-EVA.Global" "-EVA.ShelfManagement" "-EVA.Sync"
     - name: Generate Api docs
       run: dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate apidocs -i spec/spec.json -o output/apidocs --overwrite --assembly "-EVA.Global" "-EVA.ShelfManagement" "-EVA.Sync"
     - name: Commit changes
@@ -50,6 +48,6 @@ jobs:
     - name: Build NuGet
       working-directory: sdks/dotnet
       run: |
-        dotnet pack -c Release -o ./out /p:Version=${{ env.version }}.0.${{ env.build_number }}-beta
-        dotnet nuget push ./out/NewBlack.EVA.SDK.${{ env.version }}.0.${{ env.build_number }}-beta.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+        dotnet pack -c Release -o ./out /p:Version=${{ env.version }}.0.${{ env.build_number }}
+        dotnet nuget push ./out/NewBlack.EVA.SDK.${{ env.version }}.0.${{ env.build_number }}.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
     
