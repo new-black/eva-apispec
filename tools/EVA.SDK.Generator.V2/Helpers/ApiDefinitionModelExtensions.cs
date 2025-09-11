@@ -176,20 +176,25 @@ internal static class ApiDefinitionModelExtensions
     );
   }
 
-  internal static Dictionary<string, long> ToTotals(this ImmutableSortedDictionary<string, EnumValueSpecification> source)
+  internal static List<(long value, string name, string? description)> ToTotals(this ImmutableSortedDictionary<string, EnumValueSpecification> source)
   {
-    var result = new Dictionary<string, long>();
+    var result = new List<(long value, string name, string? description)>();
 
     long GetVal(string s)
     {
-      if (result.TryGetValue(s, out var v)) return v;
+      if (result.FirstOrDefault(x => x.name == s) is { } v)
+      {
+        return v.value;
+      }
+      
       var spec = source[s];
-      result[s] = v = spec.Extends.Aggregate(spec.Value, (a, b) => a | GetVal(b));
-      return v;
+      var total = spec.Extends.Aggregate(spec.Value, (a, b) => a | GetVal(b));
+      result.Add((total, s, spec.Description));
+      return total;
     }
 
     foreach (var x in source.Keys) GetVal(x);
-    return result;
+    return result.OrderBy(x => x.value).ToList();
   }
 
   internal static TypeReference CloneAsNotNull(this TypeReference reference)

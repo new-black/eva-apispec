@@ -513,7 +513,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
           {
 
             var totals = targetType.EnumValues.ToTotals();
-            var possibleValues = string.Join('\n', totals.OrderBy(kv => kv.Value).Select(kv => $"* `{kv.Value}` - {kv.Key}"));
+            var possibleValues = string.Join('\n', totals.Select(kv => $"* `{kv.value}` - {kv.name}"));
 
             if (enumIsFlag)
             {

@@ -231,7 +231,7 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
 
         using (o.Indentation)
         {
-          foreach (var (name, value) in type.EnumValues.ToTotals().OrderBy(x => x.Value))
+          foreach (var (value, name, _) in type.EnumValues.ToTotals())
           {
             o.WriteLine($"{name} = {value},");
           }

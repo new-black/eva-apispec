@@ -363,7 +363,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
     if (type.EnumIsFlag.HasValue)
     {
       var totals = type.EnumValues.ToTotals();
-      var possibleValues = string.Join('\n', totals.OrderBy(kv => kv.Value).Select(kv => $"* `{kv.Value}` - {kv.Key}"));
+      var possibleValues = string.Join('\n', totals.Select(x => $"* `{x.value}` - {x.name}{(x.description is {} d ? $" - {d}" : "")}"));
 
       if (type.EnumIsFlag is true)
       {
@@ -379,7 +379,7 @@ internal partial class OpenApiOutput : IOutput<OpenApiOptions>
         return new OpenApiSchema
         {
           Type = "integer",
-          Enum = totals.Select(kv => new OpenApiInteger((int)kv.Value) as IOpenApiAny).ToList(),
+          Enum = totals.Select(kv => new OpenApiInteger((int)kv.value) as IOpenApiAny).ToList(),
           Description = $"Possible values:\n\n{possibleValues}"
         };
       }

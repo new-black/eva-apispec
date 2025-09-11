@@ -624,7 +624,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       output.WriteLine("}");
       output.WriteLine();
 
-      foreach (var (name, value) in type.EnumValues.ToTotals().OrderBy(v => v.Value))
+      foreach (var (value, name, _) in type.EnumValues.ToTotals())
       {
         if (value == 0) continue;
         output.WriteLine($"public static let {name} = {typename}(rawValue: {value})");

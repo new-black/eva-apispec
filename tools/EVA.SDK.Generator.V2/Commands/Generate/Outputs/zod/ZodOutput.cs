@@ -49,7 +49,7 @@ internal class ZodOutput : IOutput<ZodOptions>
       }
       else
       {
-        var values = type.EnumValues.ToTotals().Select(x => x.Value).Order().Select(x => $"z.literal({x})");
+        var values = type.EnumValues.ToTotals().Select(x => x.value).Order().Select(x => $"z.literal({x})");
 
         if (values.Count() == 1)
         {
