@@ -182,7 +182,7 @@ internal static class ApiDefinitionModelExtensions
 
     long GetVal(string s)
     {
-      if (result.FirstOrDefault(x => x.name == s) is { } v)
+      if (result.FirstOrDefault(x => x.name == s) is { name: not null } v)
       {
         return v.value;
       }
