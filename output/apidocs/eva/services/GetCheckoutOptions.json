@@ -49,7 +49,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Categories\u0022: [\n    {\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022Sequence\u0022: 123\n    }\n  ],\n  \u0022Options\u0022: [\n    {\n      \u0022CategoryDescription\u0022: \u0022string\u0022,\n      \u0022CategoryID\u0022: 123,\n      \u0022CategoryName\u0022: \u0022string\u0022,\n      \u0022ConfigData\u0022: {\n        \u0022key\u0022: \u0022any valid json value\u0022\n      },\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Handler\u0022: \u0022SignOrder\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsActive\u0022: true,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022OrganizationUnitSetName\u0022: \u0022string\u0022,\n      \u0022ScriptID\u0022: 123,\n      \u0022ScriptName\u0022: \u0022string\u0022,\n      \u0022Sequence\u0022: 123\n    }\n  ]\n}"
+      "sample": "{\n  \u0022Categories\u0022: [\n    {\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022Sequence\u0022: 123\n    }\n  ],\n  \u0022Options\u0022: [\n    {\n      \u0022CategoryDescription\u0022: \u0022string\u0022,\n      \u0022CategoryID\u0022: 123,\n      \u0022CategoryName\u0022: \u0022string\u0022,\n      \u0022ConfigData\u0022: {},\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Handler\u0022: \u0022SignOrder\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsActive\u0022: true,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022OrganizationUnitSetName\u0022: \u0022string\u0022,\n      \u0022ScriptID\u0022: 123,\n      \u0022ScriptName\u0022: \u0022string\u0022,\n      \u0022Sequence\u0022: 123\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -236,6 +236,117 @@
         "one_of": null
       }
     ],
+    "I": [],
+    "J": [],
+    "K": [
+      {
+        "name": "ShowFiscalID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShowFiscalRemark",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShowLotteryNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShowPublicProjectCode",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShowRecipientFields",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShowTenderIdentificationCode",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShowVatNumber",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [
+      {
+        "name": "CustomFieldID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060CustomField\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "N": [
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "CustomFields",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "N",
+        "one_of": null
+      }
+    ],
+    "O": [
+      {
+        "name": "ProductSearchTemplateID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "H": [
       {
         "name": "CategoryDescription",
@@ -268,10 +379,31 @@
         "name": "ConfigData",
         "deprecation_notice": null,
         "description": "",
-        "type": "object | null",
+        "type": "one-of[object] | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
+        "properties_id": "I",
+        "one_of": [
+          {
+            "name": "NoCheckoutOptionConfigData",
+            "properties_id": "J"
+          },
+          {
+            "name": "CertificationOptionConfigData",
+            "properties_id": "K"
+          },
+          {
+            "name": "CustomFieldLineOptionConfigData",
+            "properties_id": "L"
+          },
+          {
+            "name": "CustomFieldOptionConfigData",
+            "properties_id": "M"
+          },
+          {
+            "name": "ProductSearchTemplateOptionConfig",
+            "properties_id": "O"
+          }
+        ]
       },
       {
         "name": "Description",
