@@ -2,7 +2,7 @@
   "name": "ImportOrganizationUnits",
   "method": "POST",
   "path": "/message/ImportOrganizationUnits",
-  "description": "Creates or updates specified \u0060OrganizationUnits\u0060, identified by your \u0060ID\u0060 (that we map to our \u0060BackendID\u0060).\n\nOmit any field you don\u0027t want altered, or send in null values of nullable fields to unset their current value.\n\n- Does not apply to \u0060Address\u0060 - if you specify a new or different one from the current, a new Address will be created with only the data specify!\n- Does not apply to \u0060OpeningHours\u0060 - every value you specify will either update or create a record for that day",
+  "description": "Creates or updates organization units using your own identifiers, which EVA stores as the \u0060BackendID\u0060 of the Organization Units.\n\nOmit any field you do not want to change, or send \u0060null\u0060 for nullable fields to clear their existing value.\n\n\u0060Address\u0060 behaves differently: providing any address data creates a new address containing only the supplied fields.\n\u0060OpeningHours\u0060 works similarly: each supplied entry updates or creates the record for that day.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ImportOrganizationUnits:None\u0060",
   "headers": [
     {
@@ -68,7 +68,7 @@
       {
         "name": "Address1",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Primary address line, e.g. street and number",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -77,7 +77,7 @@
       {
         "name": "Address2",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Additional address line such as suite or floor",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -86,7 +86,7 @@
       {
         "name": "City",
         "deprecation_notice": null,
-        "description": "",
+        "description": "City or town",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -95,7 +95,7 @@
       {
         "name": "CountryID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "ISO 3166-1 alpha-2 country code",
         "type": "string",
         "required": true,
         "properties_id": null,
@@ -104,7 +104,7 @@
       {
         "name": "District",
         "deprecation_notice": null,
-        "description": "",
+        "description": "District or municipality",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -113,7 +113,7 @@
       {
         "name": "FirstName",
         "deprecation_notice": null,
-        "description": "",
+        "description": "First/given name of the contact person",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -122,7 +122,7 @@
       {
         "name": "HouseNumber",
         "deprecation_notice": null,
-        "description": "",
+        "description": "House or building number",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -131,7 +131,7 @@
       {
         "name": "LastName",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Last/family name of the contact person",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -140,7 +140,7 @@
       {
         "name": "Latitude",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Latitude in decimal degrees",
         "type": "float | null",
         "required": false,
         "properties_id": null,
@@ -149,7 +149,7 @@
       {
         "name": "Longitude",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Longitude in decimal degrees",
         "type": "float | null",
         "required": false,
         "properties_id": null,
@@ -158,7 +158,7 @@
       {
         "name": "Region",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Region or area used for internal grouping",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -167,7 +167,7 @@
       {
         "name": "State",
         "deprecation_notice": null,
-        "description": "",
+        "description": "State or province",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -176,7 +176,7 @@
       {
         "name": "Subdistrict",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Subdistrict or neighborhood",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -185,7 +185,7 @@
       {
         "name": "ZipCode",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Postal or ZIP code",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -317,7 +317,7 @@
       {
         "name": "Date",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Specific calendar date for exceptional hours",
         "type": "datetime | null",
         "required": false,
         "properties_id": null,
@@ -326,7 +326,7 @@
       {
         "name": "DayOfWeek",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Sunday\n* \u00601\u0060 - Monday\n* \u00602\u0060 - Tuesday\n* \u00603\u0060 - Wednesday\n* \u00604\u0060 - Thursday\n* \u00605\u0060 - Friday\n* \u00606\u0060 - Saturday",
+        "description": "Day of the week these hours apply to; \u0060null\u0060 when using \u0060Date\u0060\nPossible values:\n\n* \u00600\u0060 - Sunday\n* \u00601\u0060 - Monday\n* \u00602\u0060 - Tuesday\n* \u00603\u0060 - Wednesday\n* \u00604\u0060 - Thursday\n* \u00605\u0060 - Friday\n* \u00606\u0060 - Saturday",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -335,7 +335,7 @@
       {
         "name": "Description",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Human-readable description of the hours, e.g. \u0027Christmas Eve\u0027",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -344,7 +344,7 @@
       {
         "name": "EndTime",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Local closing time for the organization unit",
         "type": "duration | null",
         "required": false,
         "properties_id": null,
@@ -353,7 +353,7 @@
       {
         "name": "StartTime",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Local opening time for the organization unit",
         "type": "duration | null",
         "required": false,
         "properties_id": null,
@@ -362,7 +362,7 @@
       {
         "name": "TypeID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OpeningHoursType\u0060",
+        "description": "ID of the predefined \u0060OpeningHoursType\u0060 to classify these hours\n\nThis is the ID of a \u0060OpeningHoursType\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -371,7 +371,7 @@
       {
         "name": "TypeName",
         "deprecation_notice": null,
-        "description": "Name of the OpeningHoursType, used when TypeID is not set",
+        "description": "Name of the \u0060OpeningHoursType\u0060 when \u0060TypeID\u0060 is not provided",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -382,7 +382,7 @@
       {
         "name": "Address",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "Postal address and coordinates of the organization unit\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "object | null",
         "required": false,
         "properties_id": "D",
@@ -391,7 +391,7 @@
       {
         "name": "CompanyBackendID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Company\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "Your backend identifier of the company that owns this organization unit\n\nThis is the ID of a \u0060Company\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -400,7 +400,7 @@
       {
         "name": "CompanyID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Company\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "EVA ID of the company that owns this organization unit\n\nThis is the ID of a \u0060Company\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -409,7 +409,7 @@
       {
         "name": "CostPriceCurrencyID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Currency\u0060",
+        "description": "Currency (ISO 4217 code) used for cost prices\n\nThis is the ID of a \u0060Currency\u0060",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -418,7 +418,7 @@
       {
         "name": "CountryID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Country\u0060\n\nThis string must be between 2 (incl) and 2 (incl) characters long.\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
+        "description": "ISO 3166-1 alpha-2 code of the organization\u0027s country\n\nThis is the ID of a \u0060Country\u0060\n\nThis string must be between 2 (incl) and 2 (incl) characters long.\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
         "type": "string",
         "required": false,
         "properties_id": null,
@@ -427,7 +427,7 @@
       {
         "name": "CountrySubdivisionID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060CountrySubdivision\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "ISO 3166-2 code of the state or province\n\nThis is the ID of a \u0060CountrySubdivision\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -436,7 +436,7 @@
       {
         "name": "CurrencyID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Currency\u0060",
+        "description": "Default currency (ISO 4217 code) used for sales prices\n\nThis is the ID of a \u0060Currency\u0060",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -445,7 +445,7 @@
       {
         "name": "CustomFields",
         "deprecation_notice": null,
-        "description": "Optional additional custom fields\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "Custom metadata as key/value pairs\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "array[object] | null",
         "required": false,
         "properties_id": "E",
@@ -454,7 +454,7 @@
       {
         "name": "Description",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "Optional human-readable description or notes\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -463,7 +463,7 @@
       {
         "name": "EmailAddress",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "Primary contact email address for the organization unit\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -472,7 +472,7 @@
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "Your identifier for an organization unit (mapped as \u0060BackendID\u0060)",
+        "description": "Unique identifier of the organization unit on your side, stored as \u0060BackendID\u0060 in EVA",
         "type": "string",
         "required": true,
         "properties_id": null,
@@ -481,7 +481,7 @@
       {
         "name": "IsDeleted",
         "deprecation_notice": null,
-        "description": "",
+        "description": "When true, marks the organization unit as deleted",
         "type": "boolean",
         "required": false,
         "properties_id": null,
@@ -490,7 +490,7 @@
       {
         "name": "LanguageID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Language\u0060\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
+        "description": "Default language (ISO 639-1 code) for this organization unit\n\nThis is the ID of a \u0060Language\u0060\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
         "type": "string",
         "required": false,
         "properties_id": null,
@@ -499,7 +499,7 @@
       {
         "name": "Latitude",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "Latitude in decimal degrees of the organization\u0027s location\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "float | null",
         "required": false,
         "properties_id": null,
@@ -508,7 +508,7 @@
       {
         "name": "Longitude",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "Longitude in decimal degrees of the organization\u0027s location\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "float | null",
         "required": false,
         "properties_id": null,
@@ -517,7 +517,7 @@
       {
         "name": "Name",
         "deprecation_notice": null,
-        "description": "Name of the organization unit",
+        "description": "Human-readable name displayed for the organization unit",
         "type": "string",
         "required": true,
         "properties_id": null,
@@ -526,7 +526,7 @@
       {
         "name": "OpeningHours",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "Collection of opening-hour records for the organization unit\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "array[object] | null",
         "required": false,
         "properties_id": "G",
@@ -535,7 +535,7 @@
       {
         "name": "ParentID",
         "deprecation_notice": null,
-        "description": "Your identifier for a parent organization unit (mapped as \u0060BackendID\u0060)",
+        "description": "BackendID of the parent organization unit to place this unit under",
         "type": "string",
         "required": true,
         "properties_id": null,
@@ -544,7 +544,7 @@
       {
         "name": "PhoneNumber",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "Primary contact phone number for the organization unit\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -553,7 +553,7 @@
       {
         "name": "Region",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "Arbitrary region label for grouping or reporting\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -562,7 +562,7 @@
       {
         "name": "ReturnOrganizationUnitID",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "BackendID of the organization unit that handles returns for this unit\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -571,7 +571,7 @@
       {
         "name": "Status",
         "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - Default\n* \u00601\u0060 - Open\n* \u00602\u0060 - Closed\n* \u00604\u0060 - OpeningSoon\n* \u00608\u0060 - TemporarilyClosed\n* \u006016\u0060 - Sale\n* \u006032\u0060 - Hidden",
+        "description": "Operational status such as Active or Closed\nFlags enum, combine any of the below values:\n\n* \u00600\u0060 - Default\n* \u00601\u0060 - Open\n* \u00602\u0060 - Closed\n* \u00604\u0060 - OpeningSoon\n* \u00608\u0060 - TemporarilyClosed\n* \u006016\u0060 - Sale\n* \u006032\u0060 - Hidden",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -580,7 +580,7 @@
       {
         "name": "Subnet",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "External network subnet (CIDR) representing the public IP range of this organization unit\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -589,7 +589,7 @@
       {
         "name": "TimeZone",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "IANA time zone identifier, e.g. \u0060Europe/Amsterdam\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -598,7 +598,7 @@
       {
         "name": "Type",
         "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Shop\n* \u00602\u0060 - WebShop\n* \u00604\u0060 - Container\n* \u00608\u0060 - Pickup\n* \u006016\u0060 - Warehouse\n* \u006036\u0060 - Country\n* \u006064\u0060 - Franchise\n* \u0060128\u0060 - EVA\n* \u0060256\u0060 - TestOrganizationUnit\n* \u0060512\u0060 - DisableLogin\n* \u00601024\u0060 - Supplier\n* \u00601024\u0060 - ExternalSupplier\n* \u00603072\u0060 - Consignment\n* \u00604096\u0060 - B2b\n* \u00608196\u0060 - Region\n* \u006016384\u0060 - ReturnsPortal\n* \u006032768\u0060 - Restitution\n* \u006065536\u0060 - RepairCenter\n* \u0060131072\u0060 - Mobile\n* \u0060262144\u0060 - ConcessionStore\n* \u0060524288\u0060 - Virtual",
+        "description": "Type of organization unit, e.g. Store or Warehouse\nFlags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Shop\n* \u00602\u0060 - WebShop\n* \u00604\u0060 - Container\n* \u00608\u0060 - Pickup\n* \u006016\u0060 - Warehouse\n* \u006036\u0060 - Country\n* \u006064\u0060 - Franchise\n* \u0060128\u0060 - EVA\n* \u0060256\u0060 - TestOrganizationUnit\n* \u0060512\u0060 - DisableLogin\n* \u00601024\u0060 - Supplier\n* \u00601024\u0060 - ExternalSupplier\n* \u00603072\u0060 - Consignment\n* \u00604096\u0060 - B2b\n* \u00608196\u0060 - Region\n* \u006016384\u0060 - ReturnsPortal\n* \u006032768\u0060 - Restitution\n* \u006065536\u0060 - RepairCenter\n* \u0060131072\u0060 - Mobile\n* \u0060262144\u0060 - ConcessionStore\n* \u0060524288\u0060 - Virtual",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -607,7 +607,7 @@
       {
         "name": "VatNumber",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "VAT registration number for tax purposes\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -618,7 +618,7 @@
       {
         "name": "OrganizationUnits",
         "deprecation_notice": null,
-        "description": "",
+        "description": "An array of organization units to create or update",
         "type": "array[object] | null",
         "required": false,
         "properties_id": "C",
@@ -705,7 +705,7 @@
       {
         "name": "Created",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Mapping of your BackendID to EVA\u0027s ID for newly created organization units",
         "type": "map[integer] | null",
         "required": false,
         "properties_id": null,
@@ -732,7 +732,7 @@
       {
         "name": "Updated",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Mapping of your BackendID to EVA\u0027s ID for organization units that were updated",
         "type": "map[integer] | null",
         "required": false,
         "properties_id": null,
