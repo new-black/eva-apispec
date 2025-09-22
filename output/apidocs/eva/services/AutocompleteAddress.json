@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Countries\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Language\u0022: \u0022string\u0022,\n  \u0022Query\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022Countries\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022CountryIDs\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Language\u0022: \u0022string\u0022,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022Query\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Countries\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Language\u0022: \u0022string\u0022,\n  \u0022Query\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AutocompleteAddress",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Countries\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022CountryIDs\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Language\u0022: \u0022string\u0022,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022Query\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AutocompleteAddress",
       "syntax": "bash"
     }
   ],
@@ -60,8 +60,17 @@
     "B": [
       {
         "name": "Countries",
+        "deprecation_notice": "\n\n**Deprecated since 802:** Countries is deprecated and will be removed in 2.0.834: Use CountryIDs.\n\n**Will be removed in 818**",
+        "description": "**Deprecated since 802:** Countries is deprecated and will be removed in 2.0.834: Use CountryIDs.\n\n**Will be removed in 818**",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CountryIDs",
         "deprecation_notice": null,
-        "description": "",
+        "description": "This is the ID of a \u0060Country\u0060",
         "type": "array[string] | null",
         "required": false,
         "properties_id": null,
@@ -69,8 +78,17 @@
       },
       {
         "name": "Language",
+        "deprecation_notice": "\n\n**Deprecated since 802:** Language is deprecated and will be removed in 2.0.834: Use LanguageID.\n\n**Will be removed in 818**",
+        "description": "**Deprecated since 802:** Language is deprecated and will be removed in 2.0.834: Use LanguageID.\n\n**Will be removed in 818**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LanguageID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "This is the ID of a \u0060Language\u0060",
         "type": "string | null",
         "required": false,
         "properties_id": null,
