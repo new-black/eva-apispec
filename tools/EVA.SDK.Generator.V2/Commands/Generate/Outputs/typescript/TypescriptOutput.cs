@@ -392,11 +392,11 @@ internal partial class TypescriptOutput : IOutput<TypescriptOptions>
     {
       if (input.Types.GetValueOrDefault(typeReference.Name)?.EnumIsFlag.HasValue ?? true)
       {
-        return TypeNameToTypescriptTypeName(ctx, input, typeReference.Name) + n;
+        return TypeNameToTypescriptTypeName(ctx, input, typeReference.Name);
       }
       else
       {
-        return TypeNameToTypescriptTypeName(ctx, input, typeReference.Name) + (options.FlexibleIDs ? "<ID_TYPE>" : string.Empty) + n;
+        return TypeNameToTypescriptTypeName(ctx, input, typeReference.Name) + (options.FlexibleIDs ? "<ID_TYPE>" : string.Empty);
       }
     }
 
