@@ -25,17 +25,12 @@ internal class HttpInput : IInput
       DefaultRequestHeaders = { { "EVA-User-Agent", HttpConstants.UserAgent } }
     };
 
-    using var response = await http.PostAsync(HttpConstants.EvaEndpoint, new StringContent("{}", Encoding.UTF8, "application/json"));
+    using var response = await http.GetAsync(HttpConstants.EvaEndpoint);
     if (!response.IsSuccessStatusCode) throw new NonSuccessStatusCodeException(response);
 
-    var responseModel = await JsonContext.Default.EvaResponse.DeserializeAsync(await response.Content.ReadAsStreamAsync());
-    if (responseModel?.ApiDefinition == null) throw new ResponseParsingFailedException(_url);
+    var responseModel = await JsonContext.Default.ApiDefinitionModel.DeserializeAsync(await response.Content.ReadAsStreamAsync());
+    if (responseModel == null) throw new ResponseParsingFailedException(_url);
 
-    return responseModel.ApiDefinition;
-  }
-
-  internal class EvaResponse
-  {
-    public ApiDefinitionModel? ApiDefinition { get; set; }
+    return responseModel;
   }
 }

@@ -12,7 +12,6 @@ namespace EVA.SDK.Generator.V2;
 [JsonSerializable(typeof(ApiDefinitionModel))]
 [JsonSerializable(typeof(ServiceModel))]
 [JsonSerializable(typeof(TypeSpecification))]
-[JsonSerializable(typeof(HttpInput.EvaResponse))]
 [JsonSerializable(typeof(UpdateCommand.LatestResponse))]
 [JsonSerializable(typeof(ServiceIndex))]
 [JsonSerializable(typeof(SingleService))]
