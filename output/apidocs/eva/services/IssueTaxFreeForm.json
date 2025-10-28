@@ -1,8 +1,8 @@
 {
-  "name": "CancelPayment",
+  "name": "IssueTaxFreeForm",
   "method": "POST",
-  "path": "/message/CancelPayment",
-  "description": "Cancels a non-confirmed payment transaction",
+  "path": "/message/IssueTaxFreeForm",
+  "description": "Start the TaxFreeForm issuing process.\nThe property PosIdentification should contain a unique identifier the current frontend instance, device/app specific.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -32,24 +32,31 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022PaymentID\u0022: 123,\n  \u0022PaymentTransactionID\u0022: 123\n}",
+      "sample": "{\n  \u0022OrderID\u0022: 123,\n  \u0022PosIdentification\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PaymentID\u0022: 123,\n  \u0022PaymentTransactionID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CancelPayment",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123,\n  \u0022PosIdentification\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/IssueTaxFreeForm",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022ErrorMessages\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022FormData\u0022: {\n    \u0022key\u0022: \u0022string\u0022\n  },\n  \u0022GroupID\u0022: \u0022string\u0022,\n  \u0022Url\u0022: \u0022string\u0022\n}"
     },
     {
       "name": "400",
@@ -66,19 +73,19 @@
   "types": {
     "B": [
       {
-        "name": "PaymentID",
-        "deprecation_notice": "\n\n**Deprecated since 794:** PaymentID is deprecated and will be removed in 2.0.826: Renamed to PaymentTransactionID.\n\n**Will be removed in 810**",
-        "description": "This is the ID of a \u0060PaymentTransaction\u0060\n\n**Deprecated since 794:** PaymentID is deprecated and will be removed in 2.0.826: Renamed to PaymentTransactionID.\n\n**Will be removed in 810**",
-        "type": "integer | null",
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "PaymentTransactionID",
+        "name": "PosIdentification",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060PaymentTransaction\u0060",
-        "type": "integer",
+        "description": "Unique identifier for the current frontend instance, device/app specific",
+        "type": "string",
         "required": true,
         "properties_id": null,
         "one_of": null
@@ -171,12 +178,48 @@
         "one_of": null
       },
       {
+        "name": "ErrorMessages",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FormData",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "map[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "GroupID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Url",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ]

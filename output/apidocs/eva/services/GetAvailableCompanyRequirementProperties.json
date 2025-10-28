@@ -1,9 +1,9 @@
 {
-  "name": "CancelPayment",
+  "name": "GetAvailableCompanyRequirementProperties",
   "method": "POST",
-  "path": "/message/CancelPayment",
-  "description": "Cancels a non-confirmed payment transaction",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
+  "path": "/message/GetAvailableCompanyRequirementProperties",
+  "description": "Get all unsued company requirement properties for the given country and company type. For existing requirements, use \u0060GetCompanyRequirements\u0060.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060CompanyRequirements:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,31 +25,24 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-Mode",
-      "type": "string",
-      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022PaymentID\u0022: 123,\n  \u0022PaymentTransactionID\u0022: 123\n}",
+      "sample": "{\n  \u0022ApplyToCompanyType\u0022: 1,\n  \u0022CountryID\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PaymentID\u0022: 123,\n  \u0022PaymentTransactionID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CancelPayment",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ApplyToCompanyType\u0022: 1,\n  \u0022CountryID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetAvailableCompanyRequirementProperties",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022Properties\u0022: [\n    1\n  ]\n}"
     },
     {
       "name": "400",
@@ -66,19 +59,19 @@
   "types": {
     "B": [
       {
-        "name": "PaymentID",
-        "deprecation_notice": "\n\n**Deprecated since 794:** PaymentID is deprecated and will be removed in 2.0.826: Renamed to PaymentTransactionID.\n\n**Will be removed in 810**",
-        "description": "This is the ID of a \u0060PaymentTransaction\u0060\n\n**Deprecated since 794:** PaymentID is deprecated and will be removed in 2.0.826: Renamed to PaymentTransactionID.\n\n**Will be removed in 810**",
-        "type": "integer | null",
-        "required": false,
+        "name": "ApplyToCompanyType",
+        "deprecation_notice": null,
+        "description": "Flags enum, combine any of the below values:\n\n* \u00601\u0060 - Consumer\n* \u00602\u0060 - OrganizationUnit",
+        "type": "integer",
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "PaymentTransactionID",
+        "name": "CountryID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060PaymentTransaction\u0060",
-        "type": "integer",
+        "description": "This is the ID of a \u0060Country\u0060",
+        "type": "string",
         "required": true,
         "properties_id": null,
         "one_of": null
@@ -177,6 +170,15 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Properties",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00601\u0060 - BackendID\n* \u00602\u0060 - TaxRegistrationNumber\n* \u00603\u0060 - FiscalID\n* \u00604\u0060 - EmailAddress\n* \u00605\u0060 - PhoneNumber\n* \u00606\u0060 - TaxRecipientCode\n* \u00607\u0060 - TaxRecipientEmail\n* \u00608\u0060 - RegistrationNumber\n* \u00609\u0060 - RegistrationCountryID\n* \u006010\u0060 - RegistrationCountrySubdivisionID\n* \u006011\u0060 - TaxOfficeNumber",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ]

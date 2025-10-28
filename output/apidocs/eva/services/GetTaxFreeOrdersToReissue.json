@@ -1,9 +1,9 @@
 {
-  "name": "GetSubscriptionOrganizationUnitSets",
+  "name": "GetTaxFreeOrdersToReissue",
   "method": "POST",
-  "path": "/message/GetSubscriptionOrganizationUnitSets",
-  "description": "Gets all the SubscriptionOrganizationUnitSets and returns a paged response.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Subscriptions:View\u0060",
+  "path": "/message/GetTaxFreeOrdersToReissue",
+  "description": "Fetch the reissue information for the current return order.\n\nIt will return the orders that will be voided, but are not fully returned, so it would make sense to reissue these orders.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,24 +25,38 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{}",
+      "sample": "{\n  \u0022OrderID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetSubscriptionOrganizationUnitSets",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetTaxFreeOrdersToReissue",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022SubscriptionOrganizationUnitSets\u0022: [\n    {\n      \u0022Default\u0022: true,\n      \u0022Enabled\u0022: true,\n      \u0022Hidden\u0022: true,\n      \u0022ID\u0022: 123,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitSetDescription\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022OrganizationUnitSetName\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetType\u0022: 2,\n      \u0022Preferred\u0022: true,\n      \u0022Priority\u0022: 123,\n      \u0022SubscriptionConfirmation\u0022: 1,\n      \u0022SubscriptionID\u0022: 123,\n      \u0022SubscriptionName\u0022: \u0022string\u0022\n    }\n  ]\n}"
+      "sample": "{\n  \u0022Orders\u0022: [\n    {\n      \u0022OrderID\u0022: 123\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -53,11 +67,21 @@
       "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
     }
   ],
-  "deprecation_notice": "\n\n**Deprecated since 794:** Use ListSubscriptionOrganizationUnitSets instead.\n\n**Will be removed from the typings in 810**",
+  "deprecation_notice": null,
   "request_type_id": "B",
   "response_type_id": "C",
   "types": {
-    "B": [],
+    "B": [
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "The return order\n\nThis is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "D": [
       {
         "name": "Code",
@@ -136,127 +160,10 @@
     ],
     "F": [
       {
-        "name": "Default",
+        "name": "OrderID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Enabled",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Hidden",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060SubscriptionOrganizationUnitSet\u0060",
+        "description": "This is the ID of a \u0060Order\u0060",
         "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitSetDescription",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitSetID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitSetName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitSetType",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - System\n* \u00601\u0060 - Custom\n* \u00602\u0060 - AdHoc",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Preferred",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Priority",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SubscriptionConfirmation",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Email\n* \u00602\u0060 - Webhook",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SubscriptionID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Subscription\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SubscriptionName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -282,7 +189,7 @@
         "one_of": null
       },
       {
-        "name": "SubscriptionOrganizationUnitSets",
+        "name": "Orders",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object] | null",
