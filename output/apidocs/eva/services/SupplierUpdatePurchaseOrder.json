@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Lines\u0022: [\n    {\n      \u0022BackendReference\u0022: \u0022string\u0022,\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022ExpectedDeliveryDate\u0022: \u00222025-01-01\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022UnitPrice\u0022: 123.456\n    }\n  ],\n  \u0022ShipToOrganizationUnitID\u0022: 123\n}",
+      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Lines\u0022: [\n    {\n      \u0022BackendReference\u0022: \u0022string\u0022,\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022ExpectedDeliveryDate\u0022: \u00222025-01-01\u0022,\n      \u0022OrderLineID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022UnitPrice\u0022: 123.456\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022ShipToOrganizationUnitID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Lines\u0022: [\n    {\n      \u0022BackendReference\u0022: \u0022string\u0022,\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022ExpectedDeliveryDate\u0022: \u00222025-01-01\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022UnitPrice\u0022: 123.456\n    }\n  ],\n  \u0022ShipToOrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SupplierUpdatePurchaseOrder",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Lines\u0022: [\n    {\n      \u0022BackendReference\u0022: \u0022string\u0022,\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022ExpectedDeliveryDate\u0022: \u00222025-01-01\u0022,\n      \u0022OrderLineID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022UnitPrice\u0022: 123.456\n    }\n  ],\n  \u0022OrderID\u0022: 123,\n  \u0022ShipToOrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SupplierUpdatePurchaseOrder",
       "syntax": "bash"
     }
   ],
@@ -100,11 +100,20 @@
         "one_of": null
       },
       {
+        "name": "OrderLineID",
+        "deprecation_notice": null,
+        "description": "Identifier of the order line to update\n\nThis is the ID of a \u0060OrderLine\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "ProductID",
         "deprecation_notice": null,
         "description": "Identifier of the product\n\nThis is the ID of a \u0060Product\u0060",
-        "type": "integer",
-        "required": true,
+        "type": "integer | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
@@ -153,6 +162,15 @@
         "type": "array[object]",
         "required": true,
         "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "Identifier of the purchase order in EVA\n\nThis is the ID of a \u0060Order\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       },
       {
