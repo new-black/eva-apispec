@@ -49,16 +49,56 @@ internal class ZodOutput : IOutput<ZodOptions>
       }
       else
       {
-        var values = type.EnumValues.ToTotals().Select(x => x.value).Order().Select(x => $"z.literal({x})");
-
-        if (values.Count() == 1)
+        var enumTypeName = TypeNameToTypescriptTypeName(input, id, null);
+        var constName = enumTypeName.Replace("Schema", "");
+        
+        var enumValues = type.EnumValues.ToTotals().OrderBy(x => x.value).ToList();
+        
+        // Add JSDoc comment for the const object
+        o.WriteLine("/**");
+        if (type.Description != null)
         {
-          o.WriteLine($"export const {TypeNameToTypescriptTypeName(input, id, null)} = {values.First()};");
+          WriteCommentLines(o, type.Description);
+          if (enumValues.Any())
+          {
+            o.WriteLine(" *");
+          }
         }
-        else
+        if (enumValues.Any())
         {
-          o.WriteLine($"export const {TypeNameToTypescriptTypeName(input, id, null)} = z.union([{string.Join(", ", values)}]);");
+          o.WriteLine(" * @enum");
+          foreach (var (value, name, description) in enumValues)
+          {
+            if (description != null)
+            {
+              o.WriteLine($" * @property {name} ({value}) - {description}");
+            }
+            else
+            {
+              o.WriteLine($" * @property {name} ({value})");
+            }
+          }
         }
+        o.WriteLine(" */");
+        
+        // Generate the const object
+        o.WriteLine($"export const {constName} = {{");
+        using (o.Indentation)
+        {
+          foreach (var (value, name, description) in enumValues)
+          {
+            if (description != null)
+            {
+              o.WriteLine($"  /** `{name}` - {description} */");
+            }
+            o.WriteLine($"  {name}: {value},");
+          }
+        }
+        o.WriteLine("} as const;");
+        o.WriteLine();
+        
+        // Generate the schema using z.nativeEnum
+        o.WriteLine($"export const {enumTypeName} = z.nativeEnum({constName});");
       }
     }
     else if (id == ApiSpecConsts.WellKnown.IProductSearchItem)
@@ -72,7 +112,7 @@ internal class ZodOutput : IOutput<ZodOptions>
 
       if (type.TypeArguments.Any())
       {
-        var typeArgument1 = string.Join(", ", type.TypeArguments.Select(x => $"{x[1..]} extends z.ZodTypeAny"));
+        var typeArgument1 = string.Join(", ", type.TypeArguments.Select(x => $"{x[1..]} extends z.ZodType"));
         var typeArgument2 = string.Join(", ", type.TypeArguments.Select(x => $"{x[1..]}Schema: {x[1..]}"));
         o.WriteLine($"function __{fixedTypeName}<{typeArgument1}>({typeArgument2}) {{ return z.object({{");
       }
@@ -409,6 +449,29 @@ internal class ZodOutput : IOutput<ZodOptions>
   private static string EscapeForString(string s)
   {
     return $"'{s.Replace("'", @"\'")}'";
+  }
+
+  private static void WriteCommentLines(IndentedStringBuilder o, string comment)
+  {
+    var c = comment.Trim();
+    if (string.IsNullOrWhiteSpace(c)) return;
+    foreach (var line in c.Split('\n'))
+    {
+      var trimmed = line.Trim();
+      if (!string.IsNullOrWhiteSpace(trimmed))
+      {
+        o.WriteLine($" * {trimmed}");
+      }
+    }
+  }
+
+  private static void WriteComment(IndentedStringBuilder o, string comment)
+  {
+    var c = comment.Trim();
+    if (string.IsNullOrWhiteSpace(c)) return;
+    o.WriteLine("/**");
+    WriteCommentLines(o, comment);
+    o.WriteLine(" */");
   }
 
   private static string TypeNameToTypescriptTypeName(ApiDefinitionModel input, string name, HashSet<string>? references)
