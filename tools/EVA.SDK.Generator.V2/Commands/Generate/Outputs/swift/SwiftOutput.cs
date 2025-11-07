@@ -484,7 +484,8 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
           // Check if we have a conflicting property defined that will "claim" our typename
           // This is usually the case for props name Date or Data
-          var typePrefix = (type.Properties.ContainsKey(typeNameNotNullable) && !containsProductDetails) ? "Foundation." : string.Empty;
+          string[] foundationTypes = ["Data", "Date"];
+          var typePrefix = (type.Properties.ContainsKey(typeNameNotNullable) && !containsProductDetails || foundationTypes.Contains(typeNameNotNullable)) ? "Foundation." : string.Empty;
 
           if (isOptional)
           {
