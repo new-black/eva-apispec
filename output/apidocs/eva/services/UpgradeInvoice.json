@@ -2,7 +2,7 @@
   "name": "UpgradeInvoice",
   "method": "POST",
   "path": "/message/UpgradeInvoice",
-  "description": "Service to validate and upgrade tickets to invoices based on order details.",
+  "description": "Service to validate and upgrade tickets into invoices, and invoices into updated invoices based on order details.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -56,7 +56,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022InvoiceIDs\u0022: [\n    123\n  ],\n  \u0022ValidationErrors\u0022: [\n    {\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Parameter\u0022: \u0022string\u0022\n    }\n  ]\n}"
+      "sample": "{\n  \u0022InvoiceIDs\u0022: [\n    123\n  ],\n  \u0022ValidationErrors\u0022: [\n    {\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022IsValid\u0022: true,\n      \u0022Parameter\u0022: \u0022string\u0022,\n      \u0022Type\u0022: 3\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -163,8 +163,17 @@
         "name": "Description",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
-        "required": false,
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsValid",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
@@ -173,6 +182,15 @@
         "deprecation_notice": null,
         "description": "",
         "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Order\n* \u00601\u0060 - Customer\n* \u00602\u0060 - Company\n* \u00603\u0060 - BillingAddress",
+        "type": "integer",
         "required": true,
         "properties_id": null,
         "one_of": null
