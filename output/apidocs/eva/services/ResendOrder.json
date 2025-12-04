@@ -2,7 +2,7 @@
   "name": "ResendOrder",
   "method": "POST",
   "path": "/message/ResendOrder",
-  "description": "Resend an order based on an existing one. Applies a 100% discount configured through the setting \u0060ResendOrder:DiscountBackendID\u0060.\n\n* Optionally, you can provide some OrderLineIDs to duplicate only a subset of the order.\n* When an \u0060OrganizationUnitID\u0060 is set, the Order will be created Originating and SoldFrom the specified OrganizationUnit\n* Gift wrapping is automatically included if the original order has it. When combining this with a subset of lines, this can generate an error when some wrapped lines are not duplicated.",
+  "description": "Resend an order based on an existing one. Applies a 100% discount configured through the setting \u0060ResendOrder:DiscountBackendID\u0060.\n\n* Optionally, you can provide some OrderLines to duplicate only a subset of the order. If quantity is not provided, it is assumed all quantity should be duplicated.\n* When an \u0060OrganizationUnitID\u0060 is set, the Order will be created Originating and SoldFrom the specified OrganizationUnit\n* Gift wrapping is automatically included if the original order has it. When combining this with a subset of lines, this can generate an error when some wrapped lines are not duplicated.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ResendOrder:None\u0060",
   "headers": [
     {
@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineIDs\u0022: [\n    123\n  ],\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ResendReasonID\u0022: 123\n}",
+      "sample": "{\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineIDs\u0022: [\n    123\n  ],\n  \u0022OrderLines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ],\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ResendReasonID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineIDs\u0022: [\n    123\n  ],\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ResendReasonID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ResendOrder",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineIDs\u0022: [\n    123\n  ],\n  \u0022OrderLines\u0022: [\n    {\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ],\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ResendReasonID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ResendOrder",
       "syntax": "bash"
     }
   ],
@@ -69,8 +69,28 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "D",
   "types": {
+    "C": [
+      {
+        "name": "OrderLineID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "OrderID",
@@ -83,11 +103,20 @@
       },
       {
         "name": "OrderLineIDs",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "deprecation_notice": "\n\n**Deprecated since 812:** OrderLineIDs is deprecated and will be removed in 2.0.844: Use OrderLines.\n\n**Will be removed in 828**",
+        "description": "This is the ID of a \u0060OrderLine\u0060\n\n**Deprecated since 812:** OrderLineIDs is deprecated and will be removed in 2.0.844: Use OrderLines.\n\n**Will be removed in 828**",
         "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "C",
         "one_of": null
       },
       {
@@ -109,7 +138,7 @@
         "one_of": null
       }
     ],
-    "D": [
+    "E": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -156,7 +185,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -185,14 +214,14 @@
         "one_of": null
       }
     ],
-    "C": [
+    "D": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "E",
         "one_of": null
       },
       {
@@ -201,7 +230,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "F",
         "one_of": null
       },
       {
