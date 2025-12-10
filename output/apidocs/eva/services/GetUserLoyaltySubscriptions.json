@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022AllowUnsubscribeBy\u0022: 2,\n  \u0022CompanyID\u0022: 123,\n  \u0022IncludeAvailableSubscriptions\u0022: true,\n  \u0022IncludeHiddenSubscriptions\u0022: true,\n  \u0022LoyaltyProgramGroupID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022LoyaltyProgramOptions\u0022: 4,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022UserID\u0022: 123\n}",
+      "sample": "{\n  \u0022AllowUnsubscribeBy\u0022: 2,\n  \u0022CompanyID\u0022: 123,\n  \u0022IncludeAvailableSubscriptions\u0022: true,\n  \u0022IncludeHiddenSubscriptions\u0022: true,\n  \u0022LoyaltyProgramGroupID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022LoyaltyProgramOptions\u0022: 4,\n  \u0022LoyaltyProgramType\u0022: 1,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022UserID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AllowUnsubscribeBy\u0022: 2,\n  \u0022CompanyID\u0022: 123,\n  \u0022IncludeAvailableSubscriptions\u0022: true,\n  \u0022IncludeHiddenSubscriptions\u0022: true,\n  \u0022LoyaltyProgramGroupID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022LoyaltyProgramOptions\u0022: 4,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetUserLoyaltySubscriptions",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AllowUnsubscribeBy\u0022: 2,\n  \u0022CompanyID\u0022: 123,\n  \u0022IncludeAvailableSubscriptions\u0022: true,\n  \u0022IncludeHiddenSubscriptions\u0022: true,\n  \u0022LoyaltyProgramGroupID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022LoyaltyProgramOptions\u0022: 4,\n  \u0022LoyaltyProgramType\u0022: 1,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetUserLoyaltySubscriptions",
       "syntax": "bash"
     }
   ],
@@ -177,6 +177,15 @@
         "name": "LoyaltyProgramOptions",
         "deprecation_notice": null,
         "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - EnablePaymentMethods\n* \u00602\u0060 - EnableLoyaltyPoints\n* \u00604\u0060 - EnableDiscounts",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LoyaltyProgramType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Loyalty\n* \u00601\u0060 - B2B",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
