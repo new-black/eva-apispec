@@ -24,7 +24,7 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: '9.0.x'
+        dotnet-version: '10.0.x'
     - name: Generate OpenAPI
       run: rm -Rf output/openapi;dotnet run --project tools/EVA.SDK.Generator.V2/ -- generate openapi -i spec/spec.json -o output/openapi --overwrite --use-string-ids --opt-format json --opt-examples-folder "examples/" --assembly "-EVA.Global" "-EVA.ShelfManagement" "-EVA.Sync"
     - name: Generate Api docs
@@ -39,6 +39,7 @@ jobs:
           7.0.x
           8.0.x
           9.0.x
+          10.0.x
     - name: Setup env and files
       run: |
         dotnet build ./tools/EVA.SDK.Generator.V2/
