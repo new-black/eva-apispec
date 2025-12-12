@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022CommunicationOptions\u0022: 1,\n  \u0022GiftCardConfigurationID\u0022: 123,\n  \u0022ID\u0022: 123,\n  \u0022IsDigital\u0022: true,\n  \u0022IsReturnable\u0022: true,\n  \u0022ProductID\u0022: 123\n}",
+      "sample": "{\n  \u0022CardType\u0022: \u0022string\u0022,\n  \u0022CommunicationOptions\u0022: 1,\n  \u0022Data\u0022: \u0022any valid json value\u0022,\n  \u0022GiftCardConfigurationID\u0022: 123,\n  \u0022Handler\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IsDigital\u0022: true,\n  \u0022IsReturnable\u0022: true,\n  \u0022ProductID\u0022: 123,\n  \u0022Type\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CommunicationOptions\u0022: 1,\n  \u0022GiftCardConfigurationID\u0022: 123,\n  \u0022ID\u0022: 123,\n  \u0022IsDigital\u0022: true,\n  \u0022IsReturnable\u0022: true,\n  \u0022ProductID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateProductGiftCard",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CardType\u0022: \u0022string\u0022,\n  \u0022CommunicationOptions\u0022: 1,\n  \u0022Data\u0022: \u0022any valid json value\u0022,\n  \u0022GiftCardConfigurationID\u0022: 123,\n  \u0022Handler\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IsDigital\u0022: true,\n  \u0022IsReturnable\u0022: true,\n  \u0022ProductID\u0022: 123,\n  \u0022Type\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateProductGiftCard",
       "syntax": "bash"
     }
   ],
@@ -73,6 +73,15 @@
   "types": {
     "B": [
       {
+        "name": "CardType",
+        "deprecation_notice": "\n\n**Deprecated since 812:** CardType is deprecated and will be removed in 2.0.856: Moved to GiftCardConfiguration.\n\n**Will be removed in 838**",
+        "description": "Some gift card handlers are able to handle multiple types of cards. With this property you can set the card the handler should work with.\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.\n\n**Deprecated since 812:** CardType is deprecated and will be removed in 2.0.856: Moved to GiftCardConfiguration.\n\n**Will be removed in 838**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "CommunicationOptions",
         "deprecation_notice": null,
         "description": "Communication options for digital giftcards\nPossible values:\n\n* \u00601\u0060 - Mail\n* \u00602\u0060 - Sms\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
@@ -82,10 +91,28 @@
         "one_of": null
       },
       {
+        "name": "Data",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Data is deprecated and will be removed in 2.0.856: Moved to GiftCardConfiguration.\n\n**Will be removed in 838**",
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.\n\n**Deprecated since 812:** Data is deprecated and will be removed in 2.0.856: Moved to GiftCardConfiguration.\n\n**Will be removed in 838**",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "GiftCardConfigurationID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060GiftCardConfiguration\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Handler",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Handler is deprecated and will be removed in 2.0.856: Moved to GiftCardConfiguration.\n\n**Will be removed in 838**",
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.\n\n**Deprecated since 812:** Handler is deprecated and will be removed in 2.0.856: Moved to GiftCardConfiguration.\n\n**Will be removed in 838**",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -102,7 +129,7 @@
       {
         "name": "IsDigital",
         "deprecation_notice": null,
-        "description": "While this property is not required, if it is sent in the request it must have a valid value.",
+        "description": "**Required since 812:** Field IsDigital is required and will be enforced as such in 2.0.856.\n\n**Will be enforced in 838**",
         "type": "boolean",
         "required": false,
         "properties_id": null,
@@ -122,6 +149,15 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060Product\u0060",
         "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Type is deprecated and will be removed in 2.0.856: Use Handler.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** Type is deprecated and will be removed in 2.0.856: Use Handler.\n\n**Will be removed in 838**",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null

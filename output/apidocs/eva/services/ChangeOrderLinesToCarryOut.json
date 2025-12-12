@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022MustBeOrdered\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineIDs\u0022: [\n    123\n  ]\n}",
+      "sample": "{\n  \u0022MustBeOrdered\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineIDs\u0022: [\n    123\n  ],\n  \u0022OrderTheLinesFromASupplier\u0022: true\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022MustBeOrdered\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineIDs\u0022: [\n    123\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ChangeOrderLinesToCarryOut",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022MustBeOrdered\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineIDs\u0022: [\n    123\n  ],\n  \u0022OrderTheLinesFromASupplier\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ChangeOrderLinesToCarryOut",
       "syntax": "bash"
     }
   ],
@@ -95,6 +95,15 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrderLine\u0060",
         "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderTheLinesFromASupplier",
+        "deprecation_notice": "\n\n**Deprecated since 812:** OrderTheLinesFromASupplier is deprecated and will be removed in 2.0.856: Use MustBeOrdered instead..\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** OrderTheLinesFromASupplier is deprecated and will be removed in 2.0.856: Use MustBeOrdered instead..\n\n**Will be removed in 838**",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null

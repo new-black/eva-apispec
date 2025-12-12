@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022UserTaskTypes\u0022: [\n    \u0022string\u0022\n  ]\n}",
+      "sample": "{\n  \u0022ExcludeChildOrganizations\u0022: true,\n  \u0022IncludeAllTasks\u0022: true,\n  \u0022IncludeAssignedTasks\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022UserTaskTypes\u0022: [\n    \u0022string\u0022\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022UserTaskTypes\u0022: [\n    \u0022string\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetUserTaskCounts",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ExcludeChildOrganizations\u0022: true,\n  \u0022IncludeAllTasks\u0022: true,\n  \u0022IncludeAssignedTasks\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022UserTaskTypes\u0022: [\n    \u0022string\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetUserTaskCounts",
       "syntax": "bash"
     }
   ],
@@ -65,6 +65,33 @@
   "response_type_id": "C",
   "types": {
     "B": [
+      {
+        "name": "ExcludeChildOrganizations",
+        "deprecation_notice": "\n\n**Deprecated since 812:** ExcludeChildOrganizations is deprecated and will be removed in 2.0.856: No longer supported, result only include the current ou/requested ou.\n\n**Will be removed in 838**",
+        "description": "When specified, will include only tasks from the specified organization unit, excluding child organizations\n\n**Deprecated since 812:** ExcludeChildOrganizations is deprecated and will be removed in 2.0.856: No longer supported, result only include the current ou/requested ou.\n\n**Will be removed in 838**",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IncludeAllTasks",
+        "deprecation_notice": "\n\n**Deprecated since 812:** IncludeAllTasks is deprecated and will be removed in 2.0.856: No longer supported, results are permission-filtered..\n\n**Will be removed in 838**",
+        "description": "When specified, will include all tasks, regardless if the user can execute them\n\n**Deprecated since 812:** IncludeAllTasks is deprecated and will be removed in 2.0.856: No longer supported, results are permission-filtered..\n\n**Will be removed in 838**",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IncludeAssignedTasks",
+        "deprecation_notice": "\n\n**Deprecated since 812:** IncludeAssignedTasks is deprecated and will be removed in 2.0.856: No longer supported, counts always include all tasks.\n\n**Will be removed in 838**",
+        "description": "When specified, will include all assigned tasks in the counts (regardless of whom it is assigned to)\n\n**Deprecated since 812:** IncludeAssignedTasks is deprecated and will be removed in 2.0.856: No longer supported, counts always include all tasks.\n\n**Will be removed in 838**",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "OrganizationUnitID",
         "deprecation_notice": null,

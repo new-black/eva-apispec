@@ -32,17 +32,24 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022RoleOwners\u0022: [\n    {\n      \u0022IsAllowedToEdit\u0022: true,\n      \u0022RoleID\u0022: 123\n    }\n  ]\n}",
+      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022RoleOwners\u0022: [\n    {\n      \u0022IsAllowedToEdit\u0022: true,\n      \u0022RoleID\u0022: 123\n    }\n  ],\n  \u0022UserOwners\u0022: [\n    {\n      \u0022IsAllowedToEdit\u0022: true,\n      \u0022UserID\u0022: 123\n    }\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123,\n  \u0022RoleOwners\u0022: [\n    {\n      \u0022IsAllowedToEdit\u0022: true,\n      \u0022RoleID\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SetMonitorPermissions",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123,\n  \u0022RoleOwners\u0022: [\n    {\n      \u0022IsAllowedToEdit\u0022: true,\n      \u0022RoleID\u0022: 123\n    }\n  ],\n  \u0022UserOwners\u0022: [\n    {\n      \u0022IsAllowedToEdit\u0022: true,\n      \u0022UserID\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SetMonitorPermissions",
       "syntax": "bash"
     }
   ],
@@ -62,7 +69,7 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "D",
+  "response_type_id": "E",
   "types": {
     "C": [
       {
@@ -78,6 +85,26 @@
         "name": "RoleID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060Role\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "IsAllowedToEdit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060User\u0060",
         "type": "integer",
         "required": true,
         "properties_id": null,
@@ -102,9 +129,18 @@
         "required": true,
         "properties_id": "C",
         "one_of": null
+      },
+      {
+        "name": "UserOwners",
+        "deprecation_notice": "\n\n**Deprecated since 812:** UserOwners is deprecated and will be removed in 2.0.856: Not used anymore.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** UserOwners is deprecated and will be removed in 2.0.856: Not used anymore.\n\n**Will be removed in 838**",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -151,7 +187,7 @@
         "one_of": null
       }
     ],
-    "F": [
+    "G": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -180,14 +216,14 @@
         "one_of": null
       }
     ],
-    "D": [
+    "E": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "F",
         "one_of": null
       },
       {
@@ -196,7 +232,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "G",
         "one_of": null
       }
     ]

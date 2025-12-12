@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CreationDateRange\u0022: {\n        \u0022EndDate\u0022: \u00222025-01-01\u0022,\n        \u0022StartDate\u0022: \u00222025-01-01\u0022\n      },\n      \u0022Hashes\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022IDs\u0022: [\n        123\n      ],\n      \u0022Status\u0022: 4,\n      \u0022UserIDs\u0022: [\n        123\n      ]\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}",
+      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CreationDateRange\u0022: {\n        \u0022EndDate\u0022: \u00222025-01-01\u0022,\n        \u0022StartDate\u0022: \u00222025-01-01\u0022\n      },\n      \u0022Hash\u0022: \u0022string\u0022,\n      \u0022Hashes\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022IDs\u0022: [\n        123\n      ],\n      \u0022Status\u0022: 4,\n      \u0022UserID\u0022: 123,\n      \u0022UserIDs\u0022: [\n        123\n      ]\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CreationDateRange\u0022: {\n        \u0022EndDate\u0022: \u00222025-01-01\u0022,\n        \u0022StartDate\u0022: \u00222025-01-01\u0022\n      },\n      \u0022Hashes\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022IDs\u0022: [\n        123\n      ],\n      \u0022Status\u0022: 4,\n      \u0022UserIDs\u0022: [\n        123\n      ]\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListPrivacyRemovalRequests",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CreationDateRange\u0022: {\n        \u0022EndDate\u0022: \u00222025-01-01\u0022,\n        \u0022StartDate\u0022: \u00222025-01-01\u0022\n      },\n      \u0022Hash\u0022: \u0022string\u0022,\n      \u0022Hashes\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022IDs\u0022: [\n        123\n      ],\n      \u0022Status\u0022: 4,\n      \u0022UserID\u0022: 123,\n      \u0022UserIDs\u0022: [\n        123\n      ]\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListPrivacyRemovalRequests",
       "syntax": "bash"
     }
   ],
@@ -102,6 +102,15 @@
         "one_of": null
       },
       {
+        "name": "Hash",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Hash is deprecated and will be removed in 2.0.856: Use Hashes instead..\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** Hash is deprecated and will be removed in 2.0.856: Use Hashes instead..\n\n**Will be removed in 838**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Hashes",
         "deprecation_notice": null,
         "description": "",
@@ -123,6 +132,15 @@
         "name": "Status",
         "deprecation_notice": null,
         "description": "Possible values:\n\n* \u00600\u0060 - Requested\n* \u00601\u0060 - Processing\n* \u00602\u0060 - Done\n* \u00603\u0060 - Failed\n* \u00604\u0060 - Cancelled",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** UserID is deprecated and will be removed in 2.0.856: Use UserIDs instead..\n\n**Will be removed in 838**",
+        "description": "This is the ID of a \u0060User\u0060\n\n**Deprecated since 812:** UserID is deprecated and will be removed in 2.0.856: Use UserIDs instead..\n\n**Will be removed in 838**",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -387,8 +405,8 @@
       },
       {
         "name": "Filters",
-        "deprecation_notice": "\n\n**Deprecated since 803:** Filters is deprecated and will be removed in 2.0.835: Will not be returned anymore. Remember what you passed to the request..\n\n**Will be removed in 819**",
-        "description": "**Deprecated since 803:** Filters is deprecated and will be removed in 2.0.835: Will not be returned anymore. Remember what you passed to the request..\n\n**Will be removed in 819**",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Filters is deprecated and will be removed in 2.0.856: Will not be returned anymore. Remember what you passed to the request..\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** Filters is deprecated and will be removed in 2.0.856: Will not be returned anymore. Remember what you passed to the request..\n\n**Will be removed in 838**",
         "type": "map[string] | null",
         "required": false,
         "properties_id": null,

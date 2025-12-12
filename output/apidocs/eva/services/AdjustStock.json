@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Adjustments\u0022: [\n    {\n      \u0022Absolute\u0022: true,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123,\n      \u0022StockMutationReasonID\u0022: 123\n    }\n  ],\n  \u0022BackendSystemID\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022Adjustments\u0022: [\n    {\n      \u0022Absolute\u0022: true,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductBackendID\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123,\n      \u0022StockMutationReasonID\u0022: 123\n    }\n  ],\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ProductID\u0022: 123,\n  \u0022Quantity\u0022: 123,\n  \u0022Reason\u0022: 123,\n  \u0022Remark\u0022: \u0022string\u0022,\n  \u0022SourceLabel\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Adjustments\u0022: [\n    {\n      \u0022Absolute\u0022: true,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123,\n      \u0022StockMutationReasonID\u0022: 123\n    }\n  ],\n  \u0022BackendSystemID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AdjustStock",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Adjustments\u0022: [\n    {\n      \u0022Absolute\u0022: true,\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductBackendID\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123,\n      \u0022StockMutationReasonID\u0022: 123\n    }\n  ],\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ProductID\u0022: 123,\n  \u0022Quantity\u0022: 123,\n  \u0022Reason\u0022: 123,\n  \u0022Remark\u0022: \u0022string\u0022,\n  \u0022SourceLabel\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AdjustStock",
       "syntax": "bash"
     }
   ],
@@ -100,11 +100,20 @@
         "one_of": null
       },
       {
+        "name": "ProductBackendID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** ProductBackendID is deprecated and will be removed in 2.0.856: Use \u0060ProductID\u0060 instead with the \u0060EVA-IDs-Mode\u0060 header.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** ProductBackendID is deprecated and will be removed in 2.0.856: Use \u0060ProductID\u0060 instead with the \u0060EVA-IDs-Mode\u0060 header.\n\n**Will be removed in 838**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "ProductID",
         "deprecation_notice": null,
-        "description": "Required product identifier (use the \u0060EVA-IDs-Mode\u0060 header to switch identifier keys (\u0060Product.ID\u0060, \u0060Product.BackendID\u0060, ...)\n\nThis is the ID of a \u0060Product\u0060",
-        "type": "integer",
-        "required": true,
+        "description": "Required product identifier (use the \u0060EVA-IDs-Mode\u0060 header to switch identifier keys (\u0060Product.ID\u0060, \u0060Product.BackendID\u0060, ...)\n\nThis is the ID of a \u0060Product\u0060\n\n**Required since 812:** Field ProductID is required and will be enforced as such in 2.0.856.\n\n**Will be enforced in 838**",
+        "type": "integer | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
@@ -158,9 +167,9 @@
       {
         "name": "Adjustments",
         "deprecation_notice": null,
-        "description": "",
-        "type": "array[object]",
-        "required": true,
+        "description": "**Required since 812:** Field Adjustments is required and will be enforced as such in 2.0.856.\n\n**Will be enforced in 838**",
+        "type": "array[object] | null",
+        "required": false,
         "properties_id": "C",
         "one_of": null
       },
@@ -169,6 +178,60 @@
         "deprecation_notice": null,
         "description": "Optional, unique identifier for the system that owns the \u0060Adjustment.BackendID\u0060 as key for the mutation",
         "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** OrganizationUnitID is deprecated and will be removed in 2.0.856: Use \u0060Adjustments\u0060.\n\n**Will be removed in 838**",
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060\n\n**Deprecated since 812:** OrganizationUnitID is deprecated and will be removed in 2.0.856: Use \u0060Adjustments\u0060.\n\n**Will be removed in 838**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** ProductID is deprecated and will be removed in 2.0.856: Use \u0060Adjustments\u0060.\n\n**Will be removed in 838**",
+        "description": "This is the ID of a \u0060Product\u0060\n\n**Deprecated since 812:** ProductID is deprecated and will be removed in 2.0.856: Use \u0060Adjustments\u0060.\n\n**Will be removed in 838**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Quantity is deprecated and will be removed in 2.0.856: Use \u0060Adjustments\u0060.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** Quantity is deprecated and will be removed in 2.0.856: Use \u0060Adjustments\u0060.\n\n**Will be removed in 838**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Reason",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Reason is deprecated and will be removed in 2.0.856: Use \u0060Adjustments\u0060.\n\n**Will be removed in 838**",
+        "description": "This is the ID of a \u0060StockMutationReasons\u0060\n\n**Deprecated since 812:** Reason is deprecated and will be removed in 2.0.856: Use \u0060Adjustments\u0060.\n\n**Will be removed in 838**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Remark",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Remark is deprecated and will be removed in 2.0.856: Use \u0060Adjustments\u0060.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** Remark is deprecated and will be removed in 2.0.856: Use \u0060Adjustments\u0060.\n\n**Will be removed in 838**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SourceLabel",
+        "deprecation_notice": "\n\n**Deprecated since 812:** SourceLabel is deprecated and will be removed in 2.0.856: Use \u0060Adjustments\u0060.\n\n**Will be removed in 838**",
+        "description": "This is the ID of a \u0060StockLabel\u0060\n\n**Deprecated since 812:** SourceLabel is deprecated and will be removed in 2.0.856: Use \u0060Adjustments\u0060.\n\n**Will be removed in 838**",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null

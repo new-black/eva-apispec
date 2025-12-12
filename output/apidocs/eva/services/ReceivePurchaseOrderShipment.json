@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022CompleteShipment\u0022: true,\n  \u0022Lines\u0022: [\n    {\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityReceived\u0022: 123,\n      \u0022SerialNumbers\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022ShipmentLineID\u0022: 123\n    }\n  ],\n  \u0022ShipmentID\u0022: 123\n}",
+      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022CompleteShipment\u0022: true,\n  \u0022FinalShipment\u0022: true,\n  \u0022Lines\u0022: [\n    {\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityReceived\u0022: 123,\n      \u0022SerialNumbers\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022ShipmentLineID\u0022: 123\n    }\n  ],\n  \u0022QuantityReceived\u0022: {\n    \u0022key\u0022: 123\n  },\n  \u0022ShipmentID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022CompleteShipment\u0022: true,\n  \u0022Lines\u0022: [\n    {\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityReceived\u0022: 123,\n      \u0022SerialNumbers\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022ShipmentLineID\u0022: 123\n    }\n  ],\n  \u0022ShipmentID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ReceivePurchaseOrderShipment",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022CompleteShipment\u0022: true,\n  \u0022FinalShipment\u0022: true,\n  \u0022Lines\u0022: [\n    {\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityReceived\u0022: 123,\n      \u0022SerialNumbers\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022ShipmentLineID\u0022: 123\n    }\n  ],\n  \u0022QuantityReceived\u0022: {\n    \u0022key\u0022: 123\n  },\n  \u0022ShipmentID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ReceivePurchaseOrderShipment",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ID\u0022: 123\n}"
+      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022Success\u0022: true\n}"
     },
     {
       "name": "400",
@@ -138,12 +138,30 @@
         "one_of": null
       },
       {
+        "name": "FinalShipment",
+        "deprecation_notice": "\n\n**Deprecated since 812:** FinalShipment is deprecated and will be removed in 2.0.856: This is currently intereprted the wrong way around, use CompleteShipment instead for the correct behavior..\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** FinalShipment is deprecated and will be removed in 2.0.856: This is currently intereprted the wrong way around, use CompleteShipment instead for the correct behavior..\n\n**Will be removed in 838**",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Lines",
         "deprecation_notice": null,
-        "description": "",
-        "type": "array[object]",
-        "required": true,
+        "description": "**Required since 812:** Field Lines is required and will be enforced as such in 2.0.856.\n\n**Will be enforced in 838**",
+        "type": "array[object] | null",
+        "required": false,
         "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "QuantityReceived",
+        "deprecation_notice": "\n\n**Deprecated since 812:** QuantityReceived is deprecated and will be removed in 2.0.856: QuantityReceived dictionary is deprecated. Please use Lines list.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** QuantityReceived is deprecated and will be removed in 2.0.856: QuantityReceived dictionary is deprecated. Please use Lines list.\n\n**Will be removed in 838**",
+        "type": "map[integer] | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       },
       {
@@ -258,6 +276,15 @@
         "type": "object | null",
         "required": false,
         "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Success",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Success is deprecated and will be removed in 2.0.856: Always true.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** Success is deprecated and will be removed in 2.0.856: Always true.\n\n**Will be removed in 838**",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ]

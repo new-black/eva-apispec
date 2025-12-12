@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022Products\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ]\n}",
+      "sample": "{\n  \u0022Identifier\u0022: 1,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022Products\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ],\n  \u0022Stock\u0022: {\n    \u0022key\u0022: 123\n  }\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022Products\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateStock",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Identifier\u0022: 1,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022Products\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ],\n  \u0022Stock\u0022: {\n    \u0022key\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateStock",
       "syntax": "bash"
     }
   ],
@@ -93,6 +93,15 @@
     ],
     "B": [
       {
+        "name": "Identifier",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Identifier is deprecated and will be removed in 2.0.856: Use \u0060Products.ID\u0060 along with the \u0060EVA-IDs-Mode\u0060 header.\n\n**Will be removed in 838**",
+        "description": "Possible values:\n\n* \u00600\u0060 - ID\n* \u00601\u0060 - BackendID\n\n**Deprecated since 812:** Identifier is deprecated and will be removed in 2.0.856: Use \u0060Products.ID\u0060 along with the \u0060EVA-IDs-Mode\u0060 header.\n\n**Will be removed in 838**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "OrganizationUnitID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrganizationUnit\u0060",
@@ -104,10 +113,19 @@
       {
         "name": "Products",
         "deprecation_notice": null,
-        "description": "",
-        "type": "array[object]",
-        "required": true,
+        "description": "**Required since 812:** Field Products is required and will be enforced as such in 2.0.856.\n\n**Will be enforced in 838**",
+        "type": "array[object] | null",
+        "required": false,
         "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "Stock",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Stock is deprecated and will be removed in 2.0.856: Use \u0060Products\u0060.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** Stock is deprecated and will be removed in 2.0.856: Use \u0060Products\u0060.\n\n**Will be removed in 838**",
+        "type": "map[integer] | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],

@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Default\u0022: true,\n  \u0022Enabled\u0022: true,\n  \u0022Hidden\u0022: true,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022Preferred\u0022: true,\n  \u0022Priority\u0022: 123,\n  \u0022SubscriptionConfirmation\u0022: 1,\n  \u0022SubscriptionID\u0022: 123\n}",
+      "sample": "{\n  \u0022ConfirmationRequired\u0022: true,\n  \u0022Default\u0022: true,\n  \u0022Enabled\u0022: true,\n  \u0022Hidden\u0022: true,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022Preferred\u0022: true,\n  \u0022Priority\u0022: 123,\n  \u0022SubscriptionConfirmation\u0022: 1,\n  \u0022SubscriptionID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Default\u0022: true,\n  \u0022Enabled\u0022: true,\n  \u0022Hidden\u0022: true,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022Preferred\u0022: true,\n  \u0022Priority\u0022: 123,\n  \u0022SubscriptionConfirmation\u0022: 1,\n  \u0022SubscriptionID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateSubscriptionOrganizationUnitSet",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ConfirmationRequired\u0022: true,\n  \u0022Default\u0022: true,\n  \u0022Enabled\u0022: true,\n  \u0022Hidden\u0022: true,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022Preferred\u0022: true,\n  \u0022Priority\u0022: 123,\n  \u0022SubscriptionConfirmation\u0022: 1,\n  \u0022SubscriptionID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateSubscriptionOrganizationUnitSet",
       "syntax": "bash"
     }
   ],
@@ -65,6 +65,15 @@
   "response_type_id": "C",
   "types": {
     "B": [
+      {
+        "name": "ConfirmationRequired",
+        "deprecation_notice": "\n\n**Deprecated since 812:** ConfirmationRequired is deprecated and will be removed in 2.0.856: This property has been replaced by SubscriptionConfirmation. Setting this property to true is equivalent to setting SubscriptionConfirmation to Email..\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** ConfirmationRequired is deprecated and will be removed in 2.0.856: This property has been replaced by SubscriptionConfirmation. Setting this property to true is equivalent to setting SubscriptionConfirmation to Email..\n\n**Will be removed in 838**",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "Default",
         "deprecation_notice": null,
@@ -122,9 +131,9 @@
       {
         "name": "SubscriptionConfirmation",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Email\n* \u00602\u0060 - Webhook",
-        "type": "integer",
-        "required": true,
+        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Email\n* \u00602\u0060 - Webhook\n\n**Required since 812:** Field SubscriptionConfirmation is required and will be enforced as such in 2.0.856.\n\n**Will be enforced in 838**",
+        "type": "integer | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },

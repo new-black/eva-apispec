@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Code\u0022: \u0022string\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022RequiresVerification\u0022: true\n}",
+      "sample": "{\n  \u0022Code\u0022: \u0022string\u0022,\n  \u0022Lines\u0022: [\n    {\n      \u0022TaxName\u0022: \u0022string\u0022,\n      \u0022TaxRate\u0022: 123.456\n    }\n  ],\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022RequiresVerification\u0022: true\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Code\u0022: \u0022string\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022RequiresVerification\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateManualTaxExemptionReason",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Code\u0022: \u0022string\u0022,\n  \u0022Lines\u0022: [\n    {\n      \u0022TaxName\u0022: \u0022string\u0022,\n      \u0022TaxRate\u0022: 123.456\n    }\n  ],\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022RequiresVerification\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateManualTaxExemptionReason",
       "syntax": "bash"
     }
   ],
@@ -62,8 +62,28 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "D",
   "types": {
+    "C": [
+      {
+        "name": "TaxName",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 100 (incl) characters long.",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TaxRate",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "Code",
@@ -72,6 +92,15 @@
         "type": "string",
         "required": true,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Lines",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Lines is deprecated and will be removed in 2.0.856: This is no longer supported.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** Lines is deprecated and will be removed in 2.0.856: This is no longer supported.\n\n**Will be removed in 838**",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "C",
         "one_of": null
       },
       {
@@ -102,7 +131,7 @@
         "one_of": null
       }
     ],
-    "D": [
+    "E": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -149,7 +178,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -178,14 +207,14 @@
         "one_of": null
       }
     ],
-    "C": [
+    "D": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "E",
         "one_of": null
       },
       {
@@ -203,7 +232,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "F",
         "one_of": null
       }
     ]

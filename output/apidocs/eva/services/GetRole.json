@@ -37,19 +37,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ID\u0022: 123\n}",
+      "sample": "{\n  \u0022FlattenElevationFunctionalities\u0022: true,\n  \u0022ID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetRole",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022FlattenElevationFunctionalities\u0022: true,\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetRole",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Result\u0022: {\n    \u0022Code\u0022: \u0022string\u0022,\n    \u0022DeactivateUserAfterInactiveDays\u0022: 123,\n    \u0022Functionalities\u0022: {\n      \u0022key\u0022: {\n        \u0022key\u0022: 1\n      }\n    },\n    \u0022ID\u0022: 123,\n    \u0022IsSystemDefined\u0022: true,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022UserType\u0022: 4\n  }\n}"
+      "sample": "{\n  \u0022Result\u0022: {\n    \u0022Code\u0022: \u0022string\u0022,\n    \u0022DeactivateUserAfterInactiveDays\u0022: 123,\n    \u0022Functionalities\u0022: {\n      \u0022key\u0022: {\n        \u0022key\u0022: 1\n      }\n    },\n    \u0022ID\u0022: 123,\n    \u0022IsSystemDefined\u0022: true,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022ScopedFunctionalities\u0022: [\n      {\n        \u0022ElevationScope\u0022: 1,\n        \u0022Functionality\u0022: \u0022string\u0022,\n        \u0022RequiresElevation\u0022: true,\n        \u0022Scope\u0022: 1\n      }\n    ],\n    \u0022UserType\u0022: 4\n  }\n}"
     },
     {
       "name": "400",
@@ -65,6 +65,15 @@
   "response_type_id": "C",
   "types": {
     "B": [
+      {
+        "name": "FlattenElevationFunctionalities",
+        "deprecation_notice": "\n\n**Deprecated since 812:** FlattenElevationFunctionalities is deprecated and will be removed in 2.0.856: Only controls the deprecated response property \u0060ScopedFunctionalities\u0060.\n\n**Will be removed in 838**",
+        "description": "Merge the normal and elevated functionalities into single records.\n\n**Deprecated since 812:** FlattenElevationFunctionalities is deprecated and will be removed in 2.0.856: Only controls the deprecated response property \u0060ScopedFunctionalities\u0060.\n\n**Will be removed in 838**",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "ID",
         "deprecation_notice": null,
@@ -151,6 +160,44 @@
         "one_of": null
       }
     ],
+    "G": [
+      {
+        "name": "ElevationScope",
+        "deprecation_notice": null,
+        "description": "Scopes available only when elevated for this functionality. Should be set to \u0060None (0)\u0060 for unscoped functionalities.\nFlags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Create\n* \u00602\u0060 - Edit\n* \u00604\u0060 - Delete\n* \u00608\u0060 - View\n* \u006031\u0060 - Manage\n* \u006032\u0060 - Settings\n* \u006064\u0060 - Scripting\n* \u0060127\u0060 - All",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Functionality",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequiresElevation",
+        "deprecation_notice": null,
+        "description": "This is not required anymore, this is determined based on the availability of the ElevationScope property.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Scope",
+        "deprecation_notice": null,
+        "description": "Scopes available for this functionality. Should be set to \u0060None (0)\u0060 for unscoped functionalities.\nFlags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Create\n* \u00602\u0060 - Edit\n* \u00604\u0060 - Delete\n* \u00608\u0060 - View\n* \u006031\u0060 - Manage\n* \u006032\u0060 - Settings\n* \u006064\u0060 - Scripting\n* \u0060127\u0060 - All",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "F": [
       {
         "name": "Code",
@@ -204,6 +251,15 @@
         "type": "string | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ScopedFunctionalities",
+        "deprecation_notice": "\n\n**Deprecated since 812:** ScopedFunctionalities is deprecated and will be removed in 2.0.856: Replaced by \u0060Functionalities\u0060.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** ScopedFunctionalities is deprecated and will be removed in 2.0.856: Replaced by \u0060Functionalities\u0060.\n\n**Will be removed in 838**",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       },
       {

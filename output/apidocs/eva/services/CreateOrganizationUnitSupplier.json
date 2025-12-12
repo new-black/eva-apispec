@@ -37,19 +37,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022OrganizationUnitIDs\u0022: [\n    123\n  ],\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022SupplierOrganizationUnitID\u0022: 123,\n  \u0022SupplierOrganizationUnitIDs\u0022: [\n    123\n  ],\n  \u0022SupplierOrganizationUnitSetID\u0022: 123,\n  \u0022Target\u0022: 3\n}",
+      "sample": "{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022OrganizationUnitIDs\u0022: [\n    123\n  ],\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022SupplierOrganizationUnitID\u0022: 123,\n  \u0022SupplierOrganizationUnitIDs\u0022: [\n    123\n  ],\n  \u0022SupplierOrganizationUnitSetID\u0022: 123,\n  \u0022Target\u0022: 3,\n  \u0022Type\u0022: 1\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022OrganizationUnitIDs\u0022: [\n    123\n  ],\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022SupplierOrganizationUnitID\u0022: 123,\n  \u0022SupplierOrganizationUnitIDs\u0022: [\n    123\n  ],\n  \u0022SupplierOrganizationUnitSetID\u0022: 123,\n  \u0022Target\u0022: 3\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateOrganizationUnitSupplier",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022OrganizationUnitIDs\u0022: [\n    123\n  ],\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022SupplierOrganizationUnitID\u0022: 123,\n  \u0022SupplierOrganizationUnitIDs\u0022: [\n    123\n  ],\n  \u0022SupplierOrganizationUnitSetID\u0022: 123,\n  \u0022Target\u0022: 3,\n  \u0022Type\u0022: 1\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateOrganizationUnitSupplier",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022OrganizationUnitSupplierIDs\u0022: [\n    123\n  ]\n}"
+      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022OrganizationUnitSupplierIDs\u0022: [\n    123\n  ]\n}"
     },
     {
       "name": "400",
@@ -124,6 +124,15 @@
         "deprecation_notice": null,
         "description": "Possible values:\n\n* \u00600\u0060 - Default\n* \u00601\u0060 - Replenishment\n* \u00602\u0060 - SupplierReturns\n* \u00603\u0060 - Pickup",
         "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Type is deprecated and will be removed in 2.0.856: No longer used..\n\n**Will be removed in 838**",
+        "description": "Possible values:\n\n* \u00600\u0060 - Internal\n* \u00601\u0060 - External\n\n**Deprecated since 812:** Type is deprecated and will be removed in 2.0.856: No longer used..\n\n**Will be removed in 838**",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -213,6 +222,15 @@
         "type": "object | null",
         "required": false,
         "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** ID is deprecated and will be removed in 2.0.856: Replaced by OrganizationUnitSupplierIDs.\n\n**Will be removed in 838**",
+        "description": "This is the ID of a \u0060OrganizationUnitSupplier\u0060\n\n**Deprecated since 812:** ID is deprecated and will be removed in 2.0.856: Replaced by OrganizationUnitSupplierIDs.\n\n**Will be removed in 838**",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       },
       {

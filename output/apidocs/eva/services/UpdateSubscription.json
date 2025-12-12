@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022AllowUnsubscribeBy\u0022: 2,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022InquiryID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ResubscribeHandling\u0022: 2\n}",
+      "sample": "{\n  \u0022AllowUnsubscribeBy\u0022: 2,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IdentifierCustomFieldID\u0022: 123,\n  \u0022InquiryID\u0022: 123,\n  \u0022ManualUserIdentifiers\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ResubscribeHandling\u0022: 2,\n  \u0022UserIdentifierPrefix\u0022: \u0022string\u0022,\n  \u0022UserIdentifierStartNumber\u0022: 123,\n  \u0022UserIdentifierSuffix\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AllowUnsubscribeBy\u0022: 2,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022InquiryID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ResubscribeHandling\u0022: 2\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateSubscription",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AllowUnsubscribeBy\u0022: 2,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IdentifierCustomFieldID\u0022: 123,\n  \u0022InquiryID\u0022: 123,\n  \u0022ManualUserIdentifiers\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ResubscribeHandling\u0022: 2,\n  \u0022UserIdentifierPrefix\u0022: \u0022string\u0022,\n  \u0022UserIdentifierStartNumber\u0022: 123,\n  \u0022UserIdentifierSuffix\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateSubscription",
       "syntax": "bash"
     }
   ],
@@ -102,10 +102,28 @@
         "one_of": null
       },
       {
+        "name": "IdentifierCustomFieldID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** IdentifierCustomFieldID is deprecated and will be removed in 2.0.856: Custom fields cannot be updated after create.\n\n**Will be removed in 838**",
+        "description": "The (optional) custom field the UserIdentifier of the subscription is written back to. Values from in the custom field are informational only.\n\nThis is the ID of a \u0060CustomField\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.\n\n**Deprecated since 812:** IdentifierCustomFieldID is deprecated and will be removed in 2.0.856: Custom fields cannot be updated after create.\n\n**Will be removed in 838**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "InquiryID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060Inquiry\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ManualUserIdentifiers",
+        "deprecation_notice": "\n\n**Deprecated since 812:** ManualUserIdentifiers is deprecated and will be removed in 2.0.856: Cannot change subscription identifier policy.\n\n**Will be removed in 838**",
+        "description": "When set to true, subscribing the user will require a UserIdentifier to be given.\n\n**Deprecated since 812:** ManualUserIdentifiers is deprecated and will be removed in 2.0.856: Cannot change subscription identifier policy.\n\n**Will be removed in 838**",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -124,6 +142,33 @@
         "deprecation_notice": null,
         "description": "Handling when a user is unsubscribed and re-subscribes.\nPossible values:\n\n* \u00600\u0060 - UpdateUserIdentifier\n* \u00601\u0060 - KeepOriginalUserIdentifier\n* \u00602\u0060 - Block",
         "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserIdentifierPrefix",
+        "deprecation_notice": "\n\n**Deprecated since 812:** UserIdentifierPrefix is deprecated and will be removed in 2.0.856: Cannot change subscription identifier policy.\n\n**Will be removed in 838**",
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.\n\n**Deprecated since 812:** UserIdentifierPrefix is deprecated and will be removed in 2.0.856: Cannot change subscription identifier policy.\n\n**Will be removed in 838**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserIdentifierStartNumber",
+        "deprecation_notice": "\n\n**Deprecated since 812:** UserIdentifierStartNumber is deprecated and will be removed in 2.0.856: Cannot change subscription identifier policy.\n\n**Will be removed in 838**",
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.\n\n**Deprecated since 812:** UserIdentifierStartNumber is deprecated and will be removed in 2.0.856: Cannot change subscription identifier policy.\n\n**Will be removed in 838**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserIdentifierSuffix",
+        "deprecation_notice": "\n\n**Deprecated since 812:** UserIdentifierSuffix is deprecated and will be removed in 2.0.856: Cannot change subscription identifier policy.\n\n**Will be removed in 838**",
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.\n\n**Deprecated since 812:** UserIdentifierSuffix is deprecated and will be removed in 2.0.856: Cannot change subscription identifier policy.\n\n**Will be removed in 838**",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null

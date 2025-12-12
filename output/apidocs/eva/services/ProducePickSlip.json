@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrderIDs\u0022: [\n    123\n  ],\n  \u0022Print\u0022: true,\n  \u0022StationID\u0022: 123\n}",
+      "sample": "{\n  \u0022Download\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderIDs\u0022: [\n    123\n  ],\n  \u0022Print\u0022: true,\n  \u0022StationID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderIDs\u0022: [\n    123\n  ],\n  \u0022Print\u0022: true,\n  \u0022StationID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ProducePickSlip",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Download\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderIDs\u0022: [\n    123\n  ],\n  \u0022Print\u0022: true,\n  \u0022StationID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ProducePickSlip",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ResourceInfos\u0022: [\n    {\n      \u0022BlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n      \u0022Url\u0022: \u0022string\u0022\n    }\n  ]\n}"
+      "sample": "{\n  \u0022ResourceInfos\u0022: [\n    {\n      \u0022BlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n      \u0022Url\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022Url\u0022: \u0022string\u0022,\n  \u0022Urls\u0022: [\n    \u0022string\u0022\n  ]\n}"
     },
     {
       "name": "400",
@@ -73,11 +73,29 @@
   "types": {
     "B": [
       {
+        "name": "Download",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Download is deprecated and will be removed in 2.0.856: Urls are always returned now.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** Download is deprecated and will be removed in 2.0.856: Urls are always returned now.\n\n**Will be removed in 838**",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** OrderID is deprecated and will be removed in 2.0.856: Use \u0060OrderIDs\u0060.\n\n**Will be removed in 838**",
+        "description": "This is the ID of a \u0060Order\u0060\n\n**Deprecated since 812:** OrderID is deprecated and will be removed in 2.0.856: Use \u0060OrderIDs\u0060.\n\n**Will be removed in 838**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "OrderIDs",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Order\u0060",
-        "type": "array[integer]",
-        "required": true,
+        "description": "This is the ID of a \u0060Order\u0060\n\n**Required since 812:** Field OrderIDs is required and will be enforced as such in 2.0.856.\n\n**Will be enforced in 838**",
+        "type": "array[integer] | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
@@ -222,6 +240,24 @@
         "type": "array[object] | null",
         "required": false,
         "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "Url",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Url is deprecated and will be removed in 2.0.856: Use \u0060ResourceInfos\u0060.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** Url is deprecated and will be removed in 2.0.856: Use \u0060ResourceInfos\u0060.\n\n**Will be removed in 838**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Urls",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Urls is deprecated and will be removed in 2.0.856: Use \u0060ResourceInfos\u0060.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** Urls is deprecated and will be removed in 2.0.856: Use \u0060ResourceInfos\u0060.\n\n**Will be removed in 838**",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ]

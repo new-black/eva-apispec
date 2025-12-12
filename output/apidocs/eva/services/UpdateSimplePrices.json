@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ForcePriceListRecalculation\u0022: true,\n  \u0022PriceListBackendID\u0022: \u0022string\u0022,\n  \u0022PriceListBackendSystemID\u0022: \u0022string\u0022,\n  \u0022PriceListID\u0022: 123,\n  \u0022Prices\u0022: [\n    {\n      \u0022NewPrice\u0022: 123.456,\n      \u0022ProductID\u0022: 123\n    }\n  ]\n}",
+      "sample": "{\n  \u0022ForcePriceListRecalculation\u0022: true,\n  \u0022PriceListBackendID\u0022: \u0022string\u0022,\n  \u0022PriceListBackendSystemID\u0022: \u0022string\u0022,\n  \u0022PriceListID\u0022: 123,\n  \u0022Prices\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CustomID\u0022: \u0022string\u0022,\n      \u0022NewPrice\u0022: 123.456,\n      \u0022ProductID\u0022: 123\n    }\n  ],\n  \u0022SkipPriceListRecalculation\u0022: true\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ForcePriceListRecalculation\u0022: true,\n  \u0022PriceListBackendID\u0022: \u0022string\u0022,\n  \u0022PriceListBackendSystemID\u0022: \u0022string\u0022,\n  \u0022PriceListID\u0022: 123,\n  \u0022Prices\u0022: [\n    {\n      \u0022NewPrice\u0022: 123.456,\n      \u0022ProductID\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateSimplePrices",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ForcePriceListRecalculation\u0022: true,\n  \u0022PriceListBackendID\u0022: \u0022string\u0022,\n  \u0022PriceListBackendSystemID\u0022: \u0022string\u0022,\n  \u0022PriceListID\u0022: 123,\n  \u0022Prices\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CustomID\u0022: \u0022string\u0022,\n      \u0022NewPrice\u0022: 123.456,\n      \u0022ProductID\u0022: 123\n    }\n  ],\n  \u0022SkipPriceListRecalculation\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateSimplePrices",
       "syntax": "bash"
     }
   ],
@@ -72,6 +72,24 @@
   "response_type_id": "D",
   "types": {
     "C": [
+      {
+        "name": "BackendID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** BackendID is deprecated and will be removed in 2.0.856: Use the \u0060External-IDs\u0060 mode header and the \u0060ID\u0060 parameter.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** BackendID is deprecated and will be removed in 2.0.856: Use the \u0060External-IDs\u0060 mode header and the \u0060ID\u0060 parameter.\n\n**Will be removed in 838**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** CustomID is deprecated and will be removed in 2.0.856: No longer supported - switch to \u0060ProductID\u0060 either with an (EVA) \u0060ID\u0060 or a \u0060BackendID\u0060 through the \u0060External-IDs\u0060 mode header..\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** CustomID is deprecated and will be removed in 2.0.856: No longer supported - switch to \u0060ProductID\u0060 either with an (EVA) \u0060ID\u0060 or a \u0060BackendID\u0060 through the \u0060External-IDs\u0060 mode header..\n\n**Will be removed in 838**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "NewPrice",
         "deprecation_notice": null,
@@ -135,6 +153,15 @@
         "type": "array[object]",
         "required": true,
         "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "SkipPriceListRecalculation",
+        "deprecation_notice": "\n\n**Deprecated since 812:** SkipPriceListRecalculation is deprecated and will be removed in 2.0.856: This parameter will be removed and default to \u0060true\u0060, use \u0060ForcePriceListRecalculation\u0060 if an immediate price list recalculation is required..\n\n**Will be removed in 838**",
+        "description": "Set this to \u0060true\u0060 when an immediate persistance of these prices is not needed (eg. when batching multiple calls). Background recalculation is usually done within 15 minutes.\n\n**Deprecated since 812:** SkipPriceListRecalculation is deprecated and will be removed in 2.0.856: This parameter will be removed and default to \u0060true\u0060, use \u0060ForcePriceListRecalculation\u0060 if an immediate price list recalculation is required..\n\n**Will be removed in 838**",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],

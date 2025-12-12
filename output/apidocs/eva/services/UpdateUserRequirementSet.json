@@ -25,17 +25,24 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitSetID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateUserRequirementSet",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitSetID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateUserRequirementSet",
       "syntax": "bash"
     }
   ],
@@ -72,6 +79,15 @@
         "deprecation_notice": null,
         "description": "While this property is not required, if it is sent in the request it must have a valid value.",
         "type": "string",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitSetID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** OrganizationUnitSetID is deprecated and will be removed in 2.0.856: Updating this property makes no sense. Create a duplicate and remove this one if you want to move to another OU set..\n\n**Will be removed in 838**",
+        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060\n\n**Deprecated since 812:** OrganizationUnitSetID is deprecated and will be removed in 2.0.856: Updating this property makes no sense. Create a duplicate and remove this one if you want to move to another OU set..\n\n**Will be removed in 838**",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null

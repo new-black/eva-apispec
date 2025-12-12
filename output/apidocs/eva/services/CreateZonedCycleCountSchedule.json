@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022CycleCountIntervalInDays\u0022: 123,\n  \u0022Date\u0022: \u00222025-01-01\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022ProductSearchModel\u0022: {\n    \u0022Filters\u0022: {\n      \u0022key\u0022: {\n        \u0022ExactMatch\u0022: true,\n        \u0022From\u0022: \u0022string\u0022,\n        \u0022IncludeMissing\u0022: true,\n        \u0022Negation\u0022: true,\n        \u0022To\u0022: \u0022string\u0022,\n        \u0022Values\u0022: [\n          \u0022any valid json value\u0022\n        ]\n      }\n    },\n    \u0022Query\u0022: \u0022string\u0022\n  }\n}",
+      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022CycleCountIntervalInDays\u0022: 123,\n  \u0022Date\u0022: \u00222025-01-01\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022ProductSearchModel\u0022: {\n    \u0022Filters\u0022: {\n      \u0022key\u0022: {\n        \u0022ExactMatch\u0022: true,\n        \u0022From\u0022: \u0022string\u0022,\n        \u0022IncludeMissing\u0022: true,\n        \u0022Negation\u0022: true,\n        \u0022To\u0022: \u0022string\u0022,\n        \u0022Values\u0022: [\n          \u0022any valid json value\u0022\n        ]\n      }\n    },\n    \u0022Query\u0022: \u0022string\u0022\n  }\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022CycleCountIntervalInDays\u0022: 123,\n  \u0022Date\u0022: \u00222025-01-01\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022ProductSearchModel\u0022: {\n    \u0022Filters\u0022: {\n      \u0022key\u0022: {\n        \u0022ExactMatch\u0022: true,\n        \u0022From\u0022: \u0022string\u0022,\n        \u0022IncludeMissing\u0022: true,\n        \u0022Negation\u0022: true,\n        \u0022To\u0022: \u0022string\u0022,\n        \u0022Values\u0022: [\n          \u0022any valid json value\u0022\n        ]\n      }\n    },\n    \u0022Query\u0022: \u0022string\u0022\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateZonedCycleCountSchedule",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022CycleCountIntervalInDays\u0022: 123,\n  \u0022Date\u0022: \u00222025-01-01\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022ProductSearchModel\u0022: {\n    \u0022Filters\u0022: {\n      \u0022key\u0022: {\n        \u0022ExactMatch\u0022: true,\n        \u0022From\u0022: \u0022string\u0022,\n        \u0022IncludeMissing\u0022: true,\n        \u0022Negation\u0022: true,\n        \u0022To\u0022: \u0022string\u0022,\n        \u0022Values\u0022: [\n          \u0022any valid json value\u0022\n        ]\n      }\n    },\n    \u0022Query\u0022: \u0022string\u0022\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateZonedCycleCountSchedule",
       "syntax": "bash"
     }
   ],
@@ -178,11 +178,20 @@
         "one_of": null
       },
       {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** OrganizationUnitID is deprecated and will be removed in 2.0.856: Use \u0060OrganizationUnitSetID\u0060..\n\n**Will be removed in 838**",
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060\n\n**Deprecated since 812:** OrganizationUnitID is deprecated and will be removed in 2.0.856: Use \u0060OrganizationUnitSetID\u0060..\n\n**Will be removed in 838**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "OrganizationUnitSetID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
-        "type": "integer",
-        "required": true,
+        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060\n\n**Required since 812:** Field OrganizationUnitSetID is required and will be enforced as such in 2.0.856.\n\n**Will be enforced in 838**",
+        "type": "integer | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },

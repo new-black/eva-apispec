@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Images\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022NotReturnable\u0022: true,\n  \u0022Price\u0022: 123.456,\n  \u0022ProductName\u0022: \u0022string\u0022,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022StockLabelID\u0022: 123,\n  \u0022UserTaskID\u0022: 123\n}",
+      "sample": "{\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Images\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022NotReturnable\u0022: true,\n  \u0022Price\u0022: 123.456,\n  \u0022PrimitiveName\u0022: \u0022string\u0022,\n  \u0022ProductName\u0022: \u0022string\u0022,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022StockLabelID\u0022: 123,\n  \u0022UserTaskID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Images\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022NotReturnable\u0022: true,\n  \u0022Price\u0022: 123.456,\n  \u0022ProductName\u0022: \u0022string\u0022,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022StockLabelID\u0022: 123,\n  \u0022UserTaskID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CompleteSecondChanceProductRegistration",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Images\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022NotReturnable\u0022: true,\n  \u0022Price\u0022: 123.456,\n  \u0022PrimitiveName\u0022: \u0022string\u0022,\n  \u0022ProductName\u0022: \u0022string\u0022,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022StockLabelID\u0022: 123,\n  \u0022UserTaskID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CompleteSecondChanceProductRegistration",
       "syntax": "bash"
     }
   ],
@@ -102,11 +102,20 @@
         "one_of": null
       },
       {
+        "name": "PrimitiveName",
+        "deprecation_notice": "\n\n**Deprecated since 812:** PrimitiveName is deprecated and will be removed in 2.0.856: Replaced by \u0060ProductName\u0060 for clarity.\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** PrimitiveName is deprecated and will be removed in 2.0.856: Replaced by \u0060ProductName\u0060 for clarity.\n\n**Will be removed in 838**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "ProductName",
         "deprecation_notice": null,
-        "description": "",
-        "type": "string",
-        "required": true,
+        "description": "**Required since 812:** Field ProductName is required and will be enforced as such in 2.0.856.\n\n**Will be enforced in 838**",
+        "type": "string | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },

@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Force\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLines\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ]\n}",
+      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Force\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineIDs\u0022: [\n    123\n  ],\n  \u0022OrderLines\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Force\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLines\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CancelOrder",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Force\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLineIDs\u0022: [\n    123\n  ],\n  \u0022OrderLines\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CancelOrder",
       "syntax": "bash"
     }
   ],
@@ -133,6 +133,15 @@
         "deprecation_notice": null,
         "description": "ID of the order that is being cancelled - required when \u0060BackendID\u0060 and \u0060BackendSystemID\u0060 are omitted\n\nThis is the ID of a \u0060Order\u0060",
         "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderLineIDs",
+        "deprecation_notice": "\n\n**Deprecated since 812:** OrderLineIDs is deprecated and will be removed in 2.0.856: Use \u0060OrderLines\u0060.\n\n**Will be removed in 838**",
+        "description": "This is the ID of a \u0060OrderLine\u0060\n\n**Deprecated since 812:** OrderLineIDs is deprecated and will be removed in 2.0.856: Use \u0060OrderLines\u0060.\n\n**Will be removed in 838**",
+        "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
         "one_of": null

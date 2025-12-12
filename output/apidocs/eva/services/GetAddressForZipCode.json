@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Result\u0022: {\n    \u0022Address1\u0022: \u0022string\u0022,\n    \u0022Address2\u0022: \u0022string\u0022,\n    \u0022City\u0022: \u0022string\u0022,\n    \u0022CountryID\u0022: \u0022string\u0022,\n    \u0022CountrySubdivisionID\u0022: \u0022string\u0022,\n    \u0022CountrySubdivisionName\u0022: \u0022string\u0022,\n    \u0022District\u0022: \u0022string\u0022,\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022HouseNumber\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022,\n    \u0022Latitude\u0022: 123.456,\n    \u0022Longitude\u0022: 123.456,\n    \u0022PhoneNumber\u0022: \u0022string\u0022,\n    \u0022Region\u0022: \u0022string\u0022,\n    \u0022Remark\u0022: \u0022string\u0022,\n    \u0022State\u0022: \u0022string\u0022,\n    \u0022Subdistrict\u0022: \u0022string\u0022,\n    \u0022ZipCode\u0022: \u0022string\u0022\n  }\n}"
+      "sample": "{\n  \u0022Result\u0022: {\n    \u0022Address1\u0022: \u0022string\u0022,\n    \u0022Address2\u0022: \u0022string\u0022,\n    \u0022AddressedTo\u0022: \u0022string\u0022,\n    \u0022City\u0022: \u0022string\u0022,\n    \u0022CountryID\u0022: \u0022string\u0022,\n    \u0022CountrySubdivisionID\u0022: \u0022string\u0022,\n    \u0022CountrySubdivisionName\u0022: \u0022string\u0022,\n    \u0022District\u0022: \u0022string\u0022,\n    \u0022EmailAddress\u0022: \u0022string\u0022,\n    \u0022FirstName\u0022: \u0022string\u0022,\n    \u0022HouseNumber\u0022: \u0022string\u0022,\n    \u0022LastName\u0022: \u0022string\u0022,\n    \u0022Latitude\u0022: 123.456,\n    \u0022Longitude\u0022: 123.456,\n    \u0022PhoneNumber\u0022: \u0022string\u0022,\n    \u0022Region\u0022: \u0022string\u0022,\n    \u0022Remark\u0022: \u0022string\u0022,\n    \u0022State\u0022: \u0022string\u0022,\n    \u0022Street\u0022: \u0022string\u0022,\n    \u0022Subdistrict\u0022: \u0022string\u0022,\n    \u0022ZipCode\u0022: \u0022string\u0022\n  }\n}"
     },
     {
       "name": "400",
@@ -61,18 +61,18 @@
       {
         "name": "HouseNumber",
         "deprecation_notice": null,
-        "description": "This string must be between 0 (incl) and 100 (incl) characters long.",
-        "type": "string",
-        "required": true,
+        "description": "This string must be between 0 (incl) and 100 (incl) characters long.\n\n**Required since 812:** Field HouseNumber is required and will be enforced as such in 2.0.856.\n\n**Will be enforced in 838**",
+        "type": "string | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
         "name": "ZipCode",
         "deprecation_notice": null,
-        "description": "Expected format: 9999ZZ\n\nThis string must be between 0 (incl) and 20 (incl) characters long.",
-        "type": "string",
-        "required": true,
+        "description": "Expected format: 9999ZZ\n\nThis string must be between 0 (incl) and 20 (incl) characters long.\n\n**Required since 812:** Field ZipCode is required and will be enforced as such in 2.0.856.\n\n**Will be enforced in 838**",
+        "type": "string | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       }
@@ -167,6 +167,15 @@
         "name": "Address2",
         "deprecation_notice": null,
         "description": "This string must be between 0 (incl) and 100 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AddressedTo",
+        "deprecation_notice": "\n\n**Deprecated since 812:** AddressedTo is deprecated and will be removed in 2.0.856: Split into \u0060FirstName\u0060 and \u0060LastName\u0060 (use \u0060LastName\u0060 when only a single value is available).\n\n**Will be removed in 838**",
+        "description": "**Deprecated since 812:** AddressedTo is deprecated and will be removed in 2.0.856: Split into \u0060FirstName\u0060 and \u0060LastName\u0060 (use \u0060LastName\u0060 when only a single value is available).\n\n**Will be removed in 838**",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -302,6 +311,15 @@
         "name": "State",
         "deprecation_notice": null,
         "description": "This string must be between 0 (incl) and 64 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Street",
+        "deprecation_notice": "\n\n**Deprecated since 812:** Street is deprecated and will be removed in 2.0.856: Use \u0060Address1\u0060.\n\n**Will be removed in 838**",
+        "description": "This string must be between 0 (incl) and 100 (incl) characters long.\n\n**Deprecated since 812:** Street is deprecated and will be removed in 2.0.856: Use \u0060Address1\u0060.\n\n**Will be removed in 838**",
         "type": "string | null",
         "required": false,
         "properties_id": null,

@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BlobImageUrls\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022CustomContent\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022DestinationStockLabelID\u0022: 123,\n  \u0022MoveStock\u0022: true,\n  \u0022NotReturnable\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022Price\u0022: 123.456,\n  \u0022ProductID\u0022: 123,\n  \u0022ProductName\u0022: \u0022string\u0022,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022SourceStockLabelID\u0022: 123\n}",
+      "sample": "{\n  \u0022BlobImageUrls\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022CustomContent\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022DestinationStockLabelID\u0022: 123,\n  \u0022MoveStock\u0022: true,\n  \u0022NotReturnable\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022Price\u0022: 123.456,\n  \u0022ProductID\u0022: 123,\n  \u0022ProductName\u0022: \u0022string\u0022,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022SourceStockLabelID\u0022: 123,\n  \u0022StockLabelID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobImageUrls\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022CustomContent\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022DestinationStockLabelID\u0022: 123,\n  \u0022MoveStock\u0022: true,\n  \u0022NotReturnable\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022Price\u0022: 123.456,\n  \u0022ProductID\u0022: 123,\n  \u0022ProductName\u0022: \u0022string\u0022,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022SourceStockLabelID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateSecondChanceProduct",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BlobImageUrls\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022CustomContent\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022DestinationStockLabelID\u0022: 123,\n  \u0022MoveStock\u0022: true,\n  \u0022NotReturnable\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022Price\u0022: 123.456,\n  \u0022ProductID\u0022: 123,\n  \u0022ProductName\u0022: \u0022string\u0022,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022SourceStockLabelID\u0022: 123,\n  \u0022StockLabelID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateSecondChanceProduct",
       "syntax": "bash"
     }
   ],
@@ -175,6 +175,15 @@
         "name": "SourceStockLabelID",
         "deprecation_notice": null,
         "description": "The stock label of the original product. If unspecified, defaults to \u0060Damaged\u0060.\n\nThis is the ID of a \u0060StockLabel\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StockLabelID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** StockLabelID is deprecated and will be removed in 2.0.856: Use \u0060SourceStockLabelID\u0060..\n\n**Will be removed in 838**",
+        "description": "The stock label of the original product. If unspecified, defaults to \u0060Damaged\u0060.\n\nThis is the ID of a \u0060StockLabel\u0060\n\n**Deprecated since 812:** StockLabelID is deprecated and will be removed in 2.0.856: Use \u0060SourceStockLabelID\u0060..\n\n**Will be removed in 838**",
         "type": "integer | null",
         "required": false,
         "properties_id": null,

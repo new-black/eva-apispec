@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Force\u0022: true,\n  \u0022InvoiceExportIDs\u0022: [\n    123\n  ]\n}",
+      "sample": "{\n  \u0022Force\u0022: true,\n  \u0022ID\u0022: 123,\n  \u0022InvoiceExportIDs\u0022: [\n    123\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Force\u0022: true,\n  \u0022InvoiceExportIDs\u0022: [\n    123\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/RetryInvoiceExport",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Force\u0022: true,\n  \u0022ID\u0022: 123,\n  \u0022InvoiceExportIDs\u0022: [\n    123\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/RetryInvoiceExport",
       "syntax": "bash"
     }
   ],
@@ -68,11 +68,20 @@
         "one_of": null
       },
       {
+        "name": "ID",
+        "deprecation_notice": "\n\n**Deprecated since 812:** ID is deprecated and will be removed in 2.0.856: Replaced by \u0060InvoiceExportIDs\u0060 so that multiple invoice exports can be retried at once..\n\n**Will be removed in 838**",
+        "description": "This is the ID of a \u0060InvoiceExport\u0060\n\n**Deprecated since 812:** ID is deprecated and will be removed in 2.0.856: Replaced by \u0060InvoiceExportIDs\u0060 so that multiple invoice exports can be retried at once..\n\n**Will be removed in 838**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "InvoiceExportIDs",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060InvoiceExport\u0060",
-        "type": "array[integer]",
-        "required": true,
+        "description": "This is the ID of a \u0060InvoiceExport\u0060\n\n**Required since 812:** Field InvoiceExportIDs is required and will be enforced as such in 2.0.856.\n\n**Will be enforced in 838**",
+        "type": "array[integer] | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       }

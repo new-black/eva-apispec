@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022FullStockCountID\u0022: 123,\n  \u0022Recounts\u0022: [\n    {\n      \u0022ProductID\u0022: 123,\n      \u0022StockLabelID\u0022: 123\n    }\n  ]\n}",
+      "sample": "{\n  \u0022FullStockCountID\u0022: 123,\n  \u0022ProductIDs\u0022: [\n    123\n  ],\n  \u0022Recounts\u0022: [\n    {\n      \u0022ProductID\u0022: 123,\n      \u0022StockLabelID\u0022: 123\n    }\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022FullStockCountID\u0022: 123,\n  \u0022Recounts\u0022: [\n    {\n      \u0022ProductID\u0022: 123,\n      \u0022StockLabelID\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/RecountFullStockCountProduct",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022FullStockCountID\u0022: 123,\n  \u0022ProductIDs\u0022: [\n    123\n  ],\n  \u0022Recounts\u0022: [\n    {\n      \u0022ProductID\u0022: 123,\n      \u0022StockLabelID\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/RecountFullStockCountProduct",
       "syntax": "bash"
     }
   ],
@@ -98,6 +98,15 @@
         "description": "This is the ID of a \u0060FullStockCount\u0060",
         "type": "integer",
         "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductIDs",
+        "deprecation_notice": "\n\n**Deprecated since 812:** ProductIDs is deprecated and will be removed in 2.0.856: Replaced by \u0060RecountItems\u0060 where you can explicitly provided the Stocklabel/Product combination for recounting.\n\n**Will be removed in 838**",
+        "description": "This is the ID of a \u0060Product\u0060\n\n**Deprecated since 812:** ProductIDs is deprecated and will be removed in 2.0.856: Replaced by \u0060RecountItems\u0060 where you can explicitly provided the Stocklabel/Product combination for recounting.\n\n**Will be removed in 838**",
+        "type": "array[integer] | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
