@@ -187,7 +187,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         for (var i = 0; i < list.Count; i++)
         {
           var prop = list[i];
-          var propDefault = GetPropDefault(prop.Value.Type, prop.Value.Skippable);
+          var propDefault = GetPropDefault(prop.Value.Type, prop.Value.Skippable || prop.Value.Deprecated != null);
           output.WriteLine(
             $"{prop.Key}: {GetPropTypeName(prop.Value, prop.Key, id, ctx, false, prop.Value.Deprecated != null)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
         }
