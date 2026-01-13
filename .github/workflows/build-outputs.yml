@@ -16,6 +16,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    permissions:
+      id-token: write
     env:
       AWS_PAGER: ''
     steps:
@@ -46,9 +48,16 @@ jobs:
         echo "version=$(dotnet run -v q --no-build --project ./tools/EVA.SDK.Generator.V2/ -- api-version -i ./spec/spec.json)" >> $GITHUB_ENV
         echo "build_number=$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
         dotnet run --project ./tools/EVA.SDK.Generator.V2/ -- generate dotnet -o ./sdks/dotnet/typings/ --overwrite -i ./spec/spec.json --opt-eva-client --opt-extensions --use-string-ids --assembly "-EVA.Global" "-EVA.ShelfManagement" "-EVA.Sync"
+
+    - name: NuGet login
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: ${{ secrets.NUGET_USER }}
+    
     - name: Build NuGet
       working-directory: sdks/dotnet
       run: |
         dotnet pack -c Release -o ./out /p:Version=${{ env.version }}.0.${{ env.build_number }}
-        dotnet nuget push ./out/NewBlack.EVA.SDK.${{ env.version }}.0.${{ env.build_number }}.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+        dotnet nuget push ./out/NewBlack.EVA.SDK.${{ env.version }}.0.${{ env.build_number }}.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
     
