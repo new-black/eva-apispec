@@ -2,7 +2,7 @@
   "name": "CloseFinancialPeriod",
   "method": "POST",
   "path": "/message/CloseFinancialPeriod",
-  "description": "Closes the financial period for your current OrganizationUnit.",
+  "description": "Closes a financial period.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060FinancialPeriods:Edit\u0060",
   "headers": [
     {
@@ -25,17 +25,24 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ClosingImpedimentTypesToIgnore\u0022: [\n    \u0022string\u0022\n  ]\n}",
+      "sample": "{\n  \u0022ClosingImpedimentTypesToIgnore\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022FinancialPeriodID\u0022: 123,\n  \u0022OrganizationUnitID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ClosingImpedimentTypesToIgnore\u0022: [\n    \u0022string\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CloseFinancialPeriod",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ClosingImpedimentTypesToIgnore\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022FinancialPeriodID\u0022: 123,\n  \u0022OrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CloseFinancialPeriod",
       "syntax": "bash"
     }
   ],
@@ -63,6 +70,24 @@
         "deprecation_notice": null,
         "description": "If there is an impediment to closing the period and it allows being ignored then passing the name of the impediment type in this collection will not block closing the period on that impediment. Also see \u0060GetFinancialPeriodClosingImpediments\u0060.",
         "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FinancialPeriodID",
+        "deprecation_notice": null,
+        "description": "The financial period to close. If not specified, the current financial period of the specified or current organization unit is used.\n\nThis is the ID of a \u0060FinancialPeriod\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "The organization unit to close the financial period for. Ignored if FinancialPeriodID is specified. If not specified, defaults to the organization unit of the logged in user.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
