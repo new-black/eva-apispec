@@ -3,7 +3,7 @@
   "method": "POST",
   "path": "/message/GetUserRequirements",
   "description": "Get the configured UserRequirements for the current, or given, \u0060OrganizationUnit\u0060.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060UserRequirements:View\u0060",
+  "auth_description": "This service does not require authentication.",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -32,24 +32,31 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ShippingMethodID\u0022: 123,\n  \u0022SubscriptionID\u0022: 123,\n  \u0022UserType\u0022: 4\n}",
+      "sample": "{\n  \u0022OrderID\u0022: 123,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ShippingMethodID\u0022: 123,\n  \u0022SubscriptionID\u0022: 123,\n  \u0022UserType\u0022: 4\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ShippingMethodID\u0022: 123,\n  \u0022SubscriptionID\u0022: 123,\n  \u0022UserType\u0022: 4\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetUserRequirements",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ShippingMethodID\u0022: 123,\n  \u0022SubscriptionID\u0022: 123,\n  \u0022UserType\u0022: 4\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetUserRequirements",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022PropertyRequirements\u0022: {\n    \u0022key\u0022: [\n      {\n        \u0022AccountType\u0022: 1,\n        \u0022CustomValidators\u0022: {\n          \u0022key\u0022: \u0022any valid json value\u0022\n        },\n        \u0022Display\u0022: true,\n        \u0022ID\u0022: 123,\n        \u0022Preferred\u0022: true,\n        \u0022Required\u0022: true,\n        \u0022RequiredFor\u0022: 1,\n        \u0022ShippingMethodID\u0022: 123,\n        \u0022UserType\u0022: 4\n      }\n    ]\n  },\n  \u0022Requirements\u0022: {\n    \u0022key\u0022: {\n      \u0022AccountType\u0022: 1,\n      \u0022CustomValidators\u0022: {\n        \u0022key\u0022: \u0022any valid json value\u0022\n      },\n      \u0022Display\u0022: true,\n      \u0022ID\u0022: 123,\n      \u0022Preferred\u0022: true,\n      \u0022Required\u0022: true,\n      \u0022RequiredFor\u0022: 1,\n      \u0022ShippingMethodID\u0022: 123,\n      \u0022UserType\u0022: 4\n    }\n  },\n  \u0022UserAgreements\u0022: [\n    {\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsRequired\u0022: true,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022RequiresSignature\u0022: true,\n      \u0022UsedForDataProcessing\u0022: true\n    }\n  ]\n}"
+      "sample": "{\n  \u0022OrderCustomerRequirements\u0022: [\n    {\n      \u0022Message\u0022: \u0022string\u0022,\n      \u0022Property\u0022: \u0022string\u0022,\n      \u0022RequiredFor\u0022: 8\n    }\n  ],\n  \u0022PropertyRequirements\u0022: {\n    \u0022key\u0022: [\n      {\n        \u0022AccountType\u0022: 1,\n        \u0022CustomValidators\u0022: {\n          \u0022key\u0022: \u0022any valid json value\u0022\n        },\n        \u0022Display\u0022: true,\n        \u0022ID\u0022: 123,\n        \u0022Preferred\u0022: true,\n        \u0022Required\u0022: true,\n        \u0022RequiredFor\u0022: 1,\n        \u0022ShippingMethodID\u0022: 123,\n        \u0022UserType\u0022: 4\n      }\n    ]\n  },\n  \u0022Requirements\u0022: {\n    \u0022key\u0022: {\n      \u0022AccountType\u0022: 1,\n      \u0022CustomValidators\u0022: {\n        \u0022key\u0022: \u0022any valid json value\u0022\n      },\n      \u0022Display\u0022: true,\n      \u0022ID\u0022: 123,\n      \u0022Preferred\u0022: true,\n      \u0022Required\u0022: true,\n      \u0022RequiredFor\u0022: 1,\n      \u0022ShippingMethodID\u0022: 123,\n      \u0022UserType\u0022: 4\n    }\n  },\n  \u0022UserAgreements\u0022: [\n    {\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsRequired\u0022: true,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022RequiresSignature\u0022: true,\n      \u0022UsedForDataProcessing\u0022: true\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -65,6 +72,15 @@
   "response_type_id": "C",
   "types": {
     "B": [
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "OrganizationUnitID",
         "deprecation_notice": null,
@@ -180,6 +196,35 @@
     ],
     "F": [
       {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Property",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequiredFor",
+        "deprecation_notice": null,
+        "description": "Flags enum, combine any of the below values:\n\n* \u00601\u0060 - PlaceOrder\n* \u00602\u0060 - Payment\n* \u00604\u0060 - Ship\n* \u00608\u0060 - Invoice\n* \u006015\u0060 - All",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
         "name": "AccountType",
         "deprecation_notice": null,
         "description": "Possible values:\n\n* \u00600\u0060 - Standard\n* \u00601\u0060 - Basic\n* \u00602\u0060 - Incognito",
@@ -261,7 +306,7 @@
         "one_of": null
       }
     ],
-    "G": [
+    "H": [
       {
         "name": "Description",
         "deprecation_notice": null,
@@ -337,12 +382,21 @@
         "one_of": null
       },
       {
+        "name": "OrderCustomerRequirements",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
         "name": "PropertyRequirements",
         "deprecation_notice": null,
         "description": "",
         "type": "map[array[object]] | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "G",
         "one_of": null
       },
       {
@@ -351,7 +405,7 @@
         "description": "",
         "type": "map[object] | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "G",
         "one_of": null
       },
       {
@@ -360,7 +414,7 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "H",
         "one_of": null
       }
     ]
