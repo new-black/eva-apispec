@@ -1,8 +1,8 @@
 {
-  "name": "SearchSurveys",
+  "name": "ListKnowledgeBaseSurveys",
   "method": "POST",
-  "path": "/message/SearchSurveys",
-  "description": "Search surveys based upon the survey and/or survey question.",
+  "path": "/message/ListKnowledgeBaseSurveys",
+  "description": "List knowledge base surveys",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -37,19 +37,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CategoryID\u0022: 123,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022SearchText\u0022: \u0022string\u0022,\n      \u0022SurveyContext\u0022: 6,\n      \u0022Type\u0022: 1\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CategoryID\u0022: 123\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CategoryID\u0022: 123,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022SearchText\u0022: \u0022string\u0022,\n      \u0022SurveyContext\u0022: 6,\n      \u0022Type\u0022: 1\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SearchSurveys",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CategoryID\u0022: 123\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListKnowledgeBaseSurveys",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022Category\u0022: {\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022ID\u0022: 123,\n        \u0022Name\u0022: \u0022string\u0022\n      },\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022SurveyContext\u0022: 6\n    }\n  ]\n}"
+      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022Category\u0022: {\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022ID\u0022: 123,\n        \u0022Name\u0022: \u0022string\u0022\n      },\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -69,42 +69,6 @@
         "name": "CategoryID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060SurveyCategory\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitSetID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SearchText",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SurveyContext",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - User\n* \u00602\u0060 - Order\n* \u00603\u0060 - OrganizationUnit\n* \u00604\u0060 - Case\n* \u00605\u0060 - Repair\n* \u00606\u0060 - Appointment",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Survey\n* \u00601\u0060 - KnowledgeCenter",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -139,6 +103,15 @@
         "type": "object | null",
         "required": false,
         "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "Organization unit in which surveys are available. When omitted, falls back to the current organization. Ignored when logged in user is a customer\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       },
       {
@@ -258,15 +231,6 @@
     ],
     "H": [
       {
-        "name": "BackendID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "Category",
         "deprecation_notice": null,
         "description": "",
@@ -298,24 +262,6 @@
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrganizationUnitSetID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SurveyContext",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - User\n* \u00602\u0060 - Order\n* \u00603\u0060 - OrganizationUnit\n* \u00604\u0060 - Case\n* \u00605\u0060 - Repair\n* \u00606\u0060 - Appointment",
-        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
