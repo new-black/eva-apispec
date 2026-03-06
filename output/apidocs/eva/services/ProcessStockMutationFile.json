@@ -2,7 +2,7 @@
   "name": "ProcessStockMutationFile",
   "method": "POST",
   "path": "/message/ProcessStockMutationFile",
-  "description": "Processes a (delta)stock mutation file.\n\nExpected format of the file is JSON with the following markup:\n\n\u0060\u0060\u0060\n[\n  {\n    \u0022ProductID\u0022: [Optional, int],\n    \u0022ProductBackendID\u0022: [Optional, string],\n    \u0022QuantityOnHand\u0022: [Required, int, value \u003E= 0],\n    \u0022StockMutationReasonID\u0022: [Optional, int],\n    \u0022Remark\u0022: [Optional, string]\n  },\n  ...\n]\n\u0060\u0060\u0060\n\nMutation will only be processed for valid ProductIDs or ProductBackendIDs. In case ProductID and ProductBackendID are provided,\nProductBackendID will be selected as the search parameter.",
+  "description": "Processes a (delta)stock mutation file.\n\nExpected format of the file is JSON with the following markup:\n\n\u0060\u0060\u0060\n[\n  {\n    \u0022ProductID\u0022: [Optional, int],\n    \u0022ProductBackendID\u0022: [Optional, string],\n    \u0022Barcode\u0022: [Optional, string],\n    \u0022QuantityOnHand\u0022: [Required, int, value \u003E= 0],\n    \u0022StockMutationReasonID\u0022: [Optional, int],\n    \u0022Remark\u0022: [Optional, string]\n  },\n  ...\n]\n\u0060\u0060\u0060\n\nProducts are identified using one of three fields with the following precedence: ProductID \u003E ProductBackendID \u003E Barcode.\nMutation will only be processed for products that can be resolved through one of these identifiers.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060MassStockUpdate:None\u0060",
   "headers": [
     {
