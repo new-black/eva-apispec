@@ -1,9 +1,9 @@
 {
-  "name": "CreateLoyaltyProgramTier",
+  "name": "ListEntityBlobTranslations",
   "method": "POST",
-  "path": "/message/CreateLoyaltyProgramTier",
-  "description": "Create a new LoyaltyProgramTier",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LoyaltyPrograms:Edit\u0060",
+  "path": "/message/ListEntityBlobTranslations",
+  "description": "Service for retrieving a list of \u0060EntityBlobTranslation\u0060",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Translations:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,31 +25,24 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-Mode",
-      "type": "string",
-      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022ImageBlobUrl\u0022: \u0022string\u0022,\n  \u0022IsDefault\u0022: true,\n  \u0022IsHiddenUntilReached\u0022: true,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022PointThreshold\u0022: 123,\n  \u0022SendMailOnAssign\u0022: true\n}",
+      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022BlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n      \u0022CountryID\u0022: \u0022string\u0022,\n      \u0022EntityField\u0022: \u0022string\u0022,\n      \u0022EntityID\u0022: \u0022string\u0022,\n      \u0022EntityType\u0022: \u0022string\u0022,\n      \u0022LanguageID\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022ImageBlobUrl\u0022: \u0022string\u0022,\n  \u0022IsDefault\u0022: true,\n  \u0022IsHiddenUntilReached\u0022: true,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022PointThreshold\u0022: 123,\n  \u0022SendMailOnAssign\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateLoyaltyProgramTier",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022BlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n      \u0022CountryID\u0022: \u0022string\u0022,\n      \u0022EntityField\u0022: \u0022string\u0022,\n      \u0022EntityID\u0022: \u0022string\u0022,\n      \u0022EntityType\u0022: \u0022string\u0022,\n      \u0022LanguageID\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListEntityBlobTranslations",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ID\u0022: 123\n}"
+      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022BlobURL\u0022: \u0022string\u0022,\n      \u0022CountryID\u0022: \u0022string\u0022,\n      \u0022EntityField\u0022: \u0022string\u0022,\n      \u0022EntityID\u0022: \u0022string\u0022,\n      \u0022EntityType\u0022: \u0022string\u0022,\n      \u0022LanguageID\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -62,11 +55,20 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "E",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "BackendID",
+        "name": "BlobID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -75,7 +77,7 @@
         "one_of": null
       },
       {
-        "name": "ImageBlobUrl",
+        "name": "EntityField",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -84,61 +86,74 @@
         "one_of": null
       },
       {
-        "name": "IsDefault",
+        "name": "EntityID",
         "deprecation_notice": null,
-        "description": "Only applicable for tiers that are not point based. A default tier is automatically assigned when subscribing to the loyalty program. Cannot be combined with IsHiddenUntilReached.",
-        "type": "boolean",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "IsHiddenUntilReached",
+        "name": "EntityType",
         "deprecation_notice": null,
-        "description": "If true, the tier will be hidden until the user reaches it. Cannot be combined with IsDefault.",
-        "type": "boolean",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "LoyaltyProgramID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
+        "name": "LanguageID",
         "deprecation_notice": null,
         "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PointThreshold",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SendMailOnAssign",
-        "deprecation_notice": null,
-        "description": "If true, an email will be sent to the user when they are assigned to this tier.",
-        "type": "boolean",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "D": [
+    "C": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "InitialPageConfig",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "PageToken",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -185,7 +200,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "G": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -214,23 +229,70 @@
         "one_of": null
       }
     ],
-    "C": [
+    "H": [
+      {
+        "name": "BlobURL",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EntityField",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EntityID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EntityType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LanguageID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramTier\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "F",
         "one_of": null
       },
       {
@@ -239,7 +301,34 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "NextPageToken",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PreviousPageToken",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Results",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "H",
         "one_of": null
       }
     ]
