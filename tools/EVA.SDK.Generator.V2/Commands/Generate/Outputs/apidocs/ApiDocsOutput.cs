@@ -55,7 +55,8 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
 
         var sidebar = new ServiceIndex
         {
-            Entries = entries
+            Entries = entries,
+            Version = $"2.0.{ctx.Input.ApiVersion}"
         };
 
         await ctx.Writer.WriteFileAsync("eva/index.json", JsonSerializer.Serialize(sidebar, JsonContext.Default.ServiceIndex));

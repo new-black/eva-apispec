@@ -8,6 +8,9 @@ public class ServiceIndex
   [JsonPropertyName("entries")]
   public ImmutableArray<Entry> Entries { get; set; } = ImmutableArray<Entry>.Empty;
 
+  [JsonPropertyName("version")]
+  public string Version { get; set; } = "???";
+
   public class Entry
   {
     [JsonPropertyName("name")]
