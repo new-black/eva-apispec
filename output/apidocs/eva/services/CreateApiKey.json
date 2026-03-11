@@ -2,7 +2,7 @@
   "name": "CreateApiKey",
   "method": "POST",
   "path": "/message/CreateApiKey",
-  "description": "Creates an API key for specified user",
+  "description": "Creates an API key for specified user.\n\nIf the specified user is an API type user;\n\n- \u0060RequestPermanentApiKey\u0060 may be set to \u0060true\u0060\n- \u0060ExpirationDate\u0060 may be omitted, or may be any date in the future\n\nIf the specified user is not an API type user;\n\n- It must be you\n- \u0060RequestPermanentApiKey\u0060 must not be specified, or be set to \u0060false\u0060\n- \u0060ExpirationDate\u0060 may be omitted, or when specified, must not exceed the configured \u0060Security:ApiKeyExpirationInDays\u0060 value",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ApiKeys:Create\u0060",
   "headers": [
     {
@@ -75,7 +75,7 @@
       {
         "name": "Description",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Description of this API key, for display purposes",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -84,7 +84,7 @@
       {
         "name": "ExpirationDate",
         "deprecation_notice": null,
-        "description": "Will default to setting \u0060ApiKeyExpirationInDays\u0060 when null and \u0060RequestPermanentApiKey\u0060 is false",
+        "description": "Will default to setting \u0060Security:ApiKeyExpirationInDays\u0060 when omitted (may not exceed that default for non-API users!",
         "type": "datetime | null",
         "required": false,
         "properties_id": null,
@@ -93,7 +93,7 @@
       {
         "name": "LockApiKeyToOrganizationUnit",
         "deprecation_notice": null,
-        "description": "When set, the key will be locked to the organization unit, so the key can\u0027t be used to access different OrganizationUnits",
+        "description": "When set, the key will be locked to the organization unit so the key can\u0027t be used to access different organizations",
         "type": "boolean",
         "required": false,
         "properties_id": null,
@@ -102,7 +102,7 @@
       {
         "name": "OrganizationUnitID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "description": "The organization unit to scope this API key for - also see \u0060LockApiKeyToOrganizationUnit\u0060\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
         "type": "integer",
         "required": true,
         "properties_id": null,
@@ -111,7 +111,7 @@
       {
         "name": "RequestPermanentApiKey",
         "deprecation_notice": null,
-        "description": "To request a permanent key, set this to true. The key will not expire.",
+        "description": "Set as \u0060true\u0060 to request a permanent key (not allowed for non-API users!)",
         "type": "boolean",
         "required": false,
         "properties_id": null,
@@ -129,7 +129,7 @@
       {
         "name": "UserID",
         "deprecation_notice": null,
-        "description": "Requires a user of type API, unless \u0060ApiKeyForNonAPIUsers\u0060 setting is enabled\n\nThis is the ID of a \u0060User\u0060",
+        "description": "The user to create the API key for (must be the current user for non-API users!)\n\nThis is the ID of a \u0060User\u0060",
         "type": "integer",
         "required": true,
         "properties_id": null,
