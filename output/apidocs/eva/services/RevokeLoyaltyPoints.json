@@ -1,9 +1,9 @@
 {
-  "name": "DepositLoyaltyPoints",
+  "name": "RevokeLoyaltyPoints",
   "method": "POST",
-  "path": "/message/DepositLoyaltyPoints",
-  "description": "Deposit loyalty points to a user",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060DepositLoyaltyPoints:None\u0060",
+  "path": "/message/RevokeLoyaltyPoints",
+  "description": "Revoke deposited loyalty points",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060RevokeLoyaltyPointsDeposit:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ApplyPointAwardingRulePolicies\u0022: true,\n  \u0022ApplyProgramPointPolicies\u0022: true,\n  \u0022ExpirationDate\u0022: \u00222025-01-01\u0022,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022PendingTillDate\u0022: \u00222025-01-01\u0022,\n  \u0022PointAwardingRuleID\u0022: 123,\n  \u0022Points\u0022: 123,\n  \u0022UserID\u0022: 123\n}",
+      "sample": "{\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022Points\u0022: 123,\n  \u0022TransactionID\u0022: \u0022string\u0022,\n  \u0022UserID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ApplyPointAwardingRulePolicies\u0022: true,\n  \u0022ApplyProgramPointPolicies\u0022: true,\n  \u0022ExpirationDate\u0022: \u00222025-01-01\u0022,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022PendingTillDate\u0022: \u00222025-01-01\u0022,\n  \u0022PointAwardingRuleID\u0022: 123,\n  \u0022Points\u0022: 123,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DepositLoyaltyPoints",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022Points\u0022: 123,\n  \u0022TransactionID\u0022: \u0022string\u0022,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/RevokeLoyaltyPoints",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022TransactionID\u0022: \u0022string\u0022\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -73,33 +73,6 @@
   "types": {
     "B": [
       {
-        "name": "ApplyPointAwardingRulePolicies",
-        "deprecation_notice": null,
-        "description": "Apply the point awarding point policies. Can be overridden by PendingTillDate or ExpirationDate.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ApplyProgramPointPolicies",
-        "deprecation_notice": null,
-        "description": "Apply the program point policies. Ignored when \u0060ApplyPointAwardingRulePolicies\u0060 is set to true. Can be overridden by PendingTillDate or ExpirationDate.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ExpirationDate",
-        "deprecation_notice": null,
-        "description": "Date when the new points will be expired. When null point will not be expired or will following the program or rule policies if indicated.",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "LoyaltyProgramID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
@@ -109,28 +82,19 @@
         "one_of": null
       },
       {
-        "name": "PendingTillDate",
+        "name": "Points",
         "deprecation_notice": null,
-        "description": "Date that indicates till when the points are pending. When null point will not be pending or will following the program or rule policies if indicated.",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PointAwardingRuleID",
-        "deprecation_notice": null,
-        "description": "The rule which is connected to this point deposit.\n\nThis is the ID of a \u0060PointAwardingRule\u0060",
+        "description": "Points to revoke. When left empty the entire transaction will be revoked.",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Points",
+        "name": "TransactionID",
         "deprecation_notice": null,
         "description": "",
-        "type": "integer",
+        "type": "string",
         "required": true,
         "properties_id": null,
         "one_of": null
@@ -238,15 +202,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "TransactionID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       }
     ]
