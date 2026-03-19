@@ -37,19 +37,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022IDs\u0022: [\n        123\n      ],\n      \u0022Name\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CategoryID\u0022: 123,\n      \u0022IDs\u0022: [\n        123\n      ],\n      \u0022Name\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022IDs\u0022: [\n        123\n      ],\n      \u0022Name\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListLoyaltyProgramBadges",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022CategoryID\u0022: 123,\n      \u0022IDs\u0022: [\n        123\n      ],\n      \u0022Name\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListLoyaltyProgramBadges",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022Blob\u0022: {\n        \u0022MimeType\u0022: \u0022string\u0022,\n        \u0022Url\u0022: \u0022string\u0022\n      },\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsManual\u0022: true,\n      \u0022LoyaltyProgramID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022PointsToAward\u0022: 123\n    }\n  ]\n}"
+      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022Blob\u0022: {\n        \u0022MimeType\u0022: \u0022string\u0022,\n        \u0022Url\u0022: \u0022string\u0022\n      },\n      \u0022CategoryID\u0022: 123,\n      \u0022CategoryName\u0022: \u0022string\u0022,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsManual\u0022: true,\n      \u0022LoyaltyProgramID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022PointsToAward\u0022: 123,\n      \u0022Sequence\u0022: 123\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -70,6 +70,15 @@
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CategoryID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060LoyaltyProgramBadgeCategory\u0060",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -258,6 +267,24 @@
         "one_of": null
       },
       {
+        "name": "CategoryID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060LoyaltyProgramBadgeCategory\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CategoryName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Description",
         "deprecation_notice": null,
         "description": "",
@@ -307,6 +334,15 @@
         "deprecation_notice": null,
         "description": "",
         "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Sequence",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
