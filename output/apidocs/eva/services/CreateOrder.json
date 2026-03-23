@@ -2,7 +2,7 @@
   "name": "CreateOrder",
   "method": "POST",
   "path": "/message/CreateOrder",
-  "description": "Create a new Order of the given Type",
+  "description": "Create a new order.\n\nThe order will be created in the organization unit specified by \u0060OrganizationUnitID\u0060, or in the current organization unit of the client if not provided.\n\n- For employee- and API users, requires \u0060Order:Create\u0060 functionality in the specified organization unit\n- For anonymous- and customer users, the specified organization unit must be your current organization unit, and it must allow ecommerce access",
   "auth_description": "This service does not require authentication.",
   "headers": [
     {
@@ -68,7 +68,7 @@
       {
         "name": "ClientOrderID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Optional, but when specified, must be a unique identifier",
         "type": "guid | null",
         "required": false,
         "properties_id": null,
@@ -85,8 +85,8 @@
       },
       {
         "name": "Type",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Sales\n* \u00601\u0060 - Purchase",
+        "deprecation_notice": "\n\n**Deprecated since 838:** Type is deprecated and will be removed in 2.0.882: Will always be OrderTypes.Sales.\n\n**Will be removed in 856**",
+        "description": "Possible values:\n\n* \u00600\u0060 - Sales\n* \u00601\u0060 - Purchase\n\n**Deprecated since 838:** Type is deprecated and will be removed in 2.0.882: Will always be OrderTypes.Sales.\n\n**Will be removed in 856**",
         "type": "integer",
         "required": false,
         "properties_id": null,
