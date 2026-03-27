@@ -1,8 +1,8 @@
 {
-  "name": "CreateLoyaltyProgramCondition",
+  "name": "UpdateLoyaltyProgramBadgeCondition",
   "method": "POST",
-  "path": "/message/CreateLoyaltyProgramCondition",
-  "description": "Create a new LoyaltyProgramCondition",
+  "path": "/message/UpdateLoyaltyProgramBadgeCondition",
+  "description": "Update an existing LoyaltyProgramBadgeCondition",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LoyaltyPrograms:Edit\u0060",
   "headers": [
     {
@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Data\u0022: {\n    \u0022BadgeID\u0022: 123\n  },\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022Type\u0022: \u0022V2:CUSTOMER\u0022\n}",
+      "sample": "{\n  \u0022Data\u0022: {\n    \u0022BadgeID\u0022: 123\n  },\n  \u0022ID\u0022: 123,\n  \u0022RequireForVisibility\u0022: true\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Data\u0022: {\n    \u0022BadgeID\u0022: 123\n  },\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022Type\u0022: \u0022V2:CUSTOMER\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateLoyaltyProgramCondition",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Data\u0022: {\n    \u0022BadgeID\u0022: 123\n  },\n  \u0022ID\u0022: 123,\n  \u0022RequireForVisibility\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateLoyaltyProgramBadgeCondition",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ID\u0022: 123\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -1134,18 +1134,9 @@
     "BM": [],
     "B": [
       {
-        "name": "BackendID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramCondition\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "Data",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "one-of[object] | null",
         "required": false,
         "properties_id": "C",
@@ -1265,20 +1256,20 @@
         ]
       },
       {
-        "name": "LoyaltyProgramID",
+        "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
+        "description": "This is the ID of a \u0060LoyaltyProgramBadgeCondition\u0060",
         "type": "integer",
         "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Type",
+        "name": "RequireForVisibility",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u0060V2:CUSTOMER\u0060\n* \u0060V2:ORDERCUSTOMFIELD\u0060\n* \u0060V2:ORDERPROPERTIES\u0060\n* \u0060V2:ORDERTYPE\u0060\n* \u0060V2:USERCUSTOMFIELD\u0060",
-        "type": "string",
-        "required": true,
+        "description": "",
+        "type": "boolean",
+        "required": false,
         "properties_id": null,
         "one_of": null
       }
@@ -1367,15 +1358,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "BO",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramCondition\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       },
       {

@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Data\u0022: {},\n  \u0022ID\u0022: 123\n}",
+      "sample": "{\n  \u0022Data\u0022: {\n    \u0022BadgeID\u0022: 123\n  },\n  \u0022ID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Data\u0022: {},\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateLoyaltyProgramCondition",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Data\u0022: {\n    \u0022BadgeID\u0022: 123\n  },\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateLoyaltyProgramCondition",
       "syntax": "bash"
     }
   ],
@@ -69,11 +69,216 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "BI",
+  "response_type_id": "BN",
   "types": {
     "C": [],
-    "D": [],
+    "D": [
+      {
+        "name": "BadgeID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060LoyaltyProgramBadge\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "G": [
+      {
+        "name": "ArrayValues",
+        "deprecation_notice": null,
+        "description": "Used for multiple values",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "BlobValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Blob",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BoolValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Bool",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DateTimeValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype DateTime and Date",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NumberValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype Integer and Decimal",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StringValue",
+        "deprecation_notice": null,
+        "description": "Used for datatype String, Text and Enum",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "CustomFieldId",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060CustomField\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CustomFieldValue",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Operator",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Equals\n* \u00601\u0060 - NotEquals\n* \u00602\u0060 - LowerThan\n* \u00603\u0060 - LowerThanOrEqualTo\n* \u00604\u0060 - HigherThanOrEqualTo\n* \u00605\u0060 - HigherThan\n* \u00607\u0060 - Contains\n* \u00608\u0060 - DoesNotContain\n* \u00609\u0060 - StartsWith\n* \u006010\u0060 - DoesNotStartWith\n* \u006011\u0060 - EndsWith\n* \u006012\u0060 - DoesNotEndWith\n* \u006013\u0060 - HasValue\n* \u006014\u0060 - DoesntHaveValue",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "Conditions",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "FilterType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - And\n* \u00601\u0060 - Or",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Conditions",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "FilterType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - And\n* \u00601\u0060 - Or",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Filters",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "PointsToReach",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "ProductSearchTemplateID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TargetQuantity",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UniqueProductsOnly",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "TierID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060LoyaltyProgramTier\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [],
+    "O": [
       {
         "name": "ExactMatch",
         "deprecation_notice": null,
@@ -129,7 +334,7 @@
         "one_of": null
       }
     ],
-    "H": [
+    "P": [
       {
         "name": "ProductRequirementID",
         "deprecation_notice": null,
@@ -149,7 +354,7 @@
         "one_of": null
       }
     ],
-    "F": [
+    "N": [
       {
         "name": "CountryID",
         "deprecation_notice": null,
@@ -174,7 +379,7 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "O",
         "one_of": null
       },
       {
@@ -237,7 +442,7 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "P",
         "one_of": null
       },
       {
@@ -277,7 +482,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "M": [
       {
         "name": "DaysValid",
         "deprecation_notice": null,
@@ -293,7 +498,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "N",
         "one_of": null
       },
       {
@@ -351,7 +556,7 @@
         "one_of": null
       }
     ],
-    "I": [
+    "Q": [
       {
         "name": "ExactAgeOnly",
         "deprecation_notice": null,
@@ -380,7 +585,7 @@
         "one_of": null
       }
     ],
-    "K": [
+    "S": [
       {
         "name": "Operator",
         "deprecation_notice": null,
@@ -400,7 +605,7 @@
         "one_of": null
       }
     ],
-    "J": [
+    "R": [
       {
         "name": "AccountType",
         "deprecation_notice": null,
@@ -416,7 +621,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "K",
+        "properties_id": "S",
         "one_of": null
       },
       {
@@ -434,7 +639,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "K",
+        "properties_id": "S",
         "one_of": null
       },
       {
@@ -452,7 +657,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "K",
+        "properties_id": "S",
         "one_of": null
       },
       {
@@ -483,7 +688,7 @@
         "one_of": null
       }
     ],
-    "L": [
+    "T": [
       {
         "name": "LoyaltyBadgeID",
         "deprecation_notice": null,
@@ -494,7 +699,7 @@
         "one_of": null
       }
     ],
-    "M": [
+    "U": [
       {
         "name": "LoyaltyProgramID",
         "deprecation_notice": null,
@@ -514,7 +719,7 @@
         "one_of": null
       }
     ],
-    "N": [
+    "V": [
       {
         "name": "ExactTierOnly",
         "deprecation_notice": null,
@@ -534,7 +739,7 @@
         "one_of": null
       }
     ],
-    "O": [
+    "W": [
       {
         "name": "MaximumUsage",
         "deprecation_notice": null,
@@ -545,7 +750,7 @@
         "one_of": null
       }
     ],
-    "Q": [
+    "Y": [
       {
         "name": "UserFieldId",
         "deprecation_notice": null,
@@ -565,14 +770,14 @@
         "one_of": null
       }
     ],
-    "P": [
+    "X": [
       {
         "name": "Conditions",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "Q",
+        "properties_id": "Y",
         "one_of": null
       },
       {
@@ -581,7 +786,7 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "P",
+        "properties_id": "X",
         "one_of": null
       },
       {
@@ -594,14 +799,14 @@
         "one_of": null
       }
     ],
-    "R": [
+    "Z": [
       {
         "name": "ExcludedProducts",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "N",
         "one_of": null
       },
       {
@@ -632,99 +837,14 @@
         "one_of": null
       }
     ],
-    "U": [
-      {
-        "name": "ArrayValues",
-        "deprecation_notice": null,
-        "description": "Used for multiple values",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "U",
-        "one_of": null
-      },
-      {
-        "name": "BlobValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype Blob",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "BoolValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype Bool",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DateTimeValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype DateTime and Date",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NumberValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype Integer and Decimal",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StringValue",
-        "deprecation_notice": null,
-        "description": "Used for datatype String, Text and Enum",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "T": [
-      {
-        "name": "CustomFieldId",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060CustomField\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CustomFieldValue",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "U",
-        "one_of": null
-      },
-      {
-        "name": "Operator",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Equals\n* \u00601\u0060 - NotEquals\n* \u00602\u0060 - LowerThan\n* \u00603\u0060 - LowerThanOrEqualTo\n* \u00604\u0060 - HigherThanOrEqualTo\n* \u00605\u0060 - HigherThan\n* \u00607\u0060 - Contains\n* \u00608\u0060 - DoesNotContain\n* \u00609\u0060 - StartsWith\n* \u006010\u0060 - DoesNotStartWith\n* \u006011\u0060 - EndsWith\n* \u006012\u0060 - DoesNotEndWith\n* \u006013\u0060 - HasValue\n* \u006014\u0060 - DoesntHaveValue",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "V": [
+    "BA": [
       {
         "name": "Conditions",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "T",
+        "properties_id": "F",
         "one_of": null
       },
       {
@@ -742,18 +862,18 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "V",
+        "properties_id": "H",
         "one_of": null
       }
     ],
-    "S": [
+    "BB": [
       {
         "name": "Conditions",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "T",
+        "properties_id": "F",
         "one_of": null
       },
       {
@@ -771,40 +891,11 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "V",
+        "properties_id": "H",
         "one_of": null
       }
     ],
-    "W": [
-      {
-        "name": "Conditions",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "T",
-        "one_of": null
-      },
-      {
-        "name": "FilterType",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - And\n* \u00601\u0060 - Or",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Filters",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "V",
-        "one_of": null
-      }
-    ],
-    "X": [
+    "BC": [
       {
         "name": "IsExcludingCondition",
         "deprecation_notice": null,
@@ -833,7 +924,7 @@
         "one_of": null
       }
     ],
-    "Y": [
+    "BD": [
       {
         "name": "OrderType",
         "deprecation_notice": null,
@@ -844,7 +935,7 @@
         "one_of": null
       }
     ],
-    "Z": [
+    "BE": [
       {
         "name": "IsExcludingCondition",
         "deprecation_notice": null,
@@ -864,7 +955,7 @@
         "one_of": null
       }
     ],
-    "BA": [
+    "BF": [
       {
         "name": "IsExcludingCondition",
         "deprecation_notice": null,
@@ -884,7 +975,7 @@
         "one_of": null
       }
     ],
-    "BB": [
+    "BG": [
       {
         "name": "IdenticalProductsOnly",
         "deprecation_notice": null,
@@ -909,7 +1000,7 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "N",
         "one_of": null
       },
       {
@@ -922,7 +1013,7 @@
         "one_of": null
       }
     ],
-    "BC": [
+    "BH": [
       {
         "name": "ProductRequirementID",
         "deprecation_notice": null,
@@ -942,7 +1033,7 @@
         "one_of": null
       }
     ],
-    "BD": [
+    "BI": [
       {
         "name": "IsExcludingCondition",
         "deprecation_notice": null,
@@ -962,14 +1053,14 @@
         "one_of": null
       }
     ],
-    "BE": [
+    "BJ": [
       {
         "name": "Conditions",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "T",
+        "properties_id": "F",
         "one_of": null
       },
       {
@@ -987,11 +1078,11 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "V",
+        "properties_id": "H",
         "one_of": null
       }
     ],
-    "BF": [
+    "BK": [
       {
         "name": "IsExcludingCondition",
         "deprecation_notice": null,
@@ -1020,7 +1111,7 @@
         "one_of": null
       }
     ],
-    "BG": [
+    "BL": [
       {
         "name": "IsExcludingCondition",
         "deprecation_notice": null,
@@ -1040,7 +1131,7 @@
         "one_of": null
       }
     ],
-    "BH": [],
+    "BM": [],
     "B": [
       {
         "name": "Data",
@@ -1051,96 +1142,116 @@
         "properties_id": "C",
         "one_of": [
           {
-            "name": "CouponOriginatingOrderOrganizationUnitConditionData",
+            "name": "BadgeConditionData",
             "properties_id": "D"
           },
           {
-            "name": "CouponValidityConditionData",
+            "name": "CustomFieldConditionData",
             "properties_id": "E"
           },
           {
-            "name": "CustomerAgeConditionData",
+            "name": "PointThresholdConditionData",
             "properties_id": "I"
           },
           {
-            "name": "CustomerConditionData",
+            "name": "BadgeProductConditionData",
             "properties_id": "J"
           },
           {
-            "name": "LoyaltyBadgeConditionData",
+            "name": "TierConditionData",
+            "properties_id": "K"
+          },
+          {
+            "name": "CouponOriginatingOrderOrganizationUnitConditionData",
             "properties_id": "L"
           },
           {
-            "name": "LoyaltyPointsConditionData",
+            "name": "CouponValidityConditionData",
             "properties_id": "M"
           },
           {
-            "name": "LoyaltyTierConditionData",
-            "properties_id": "N"
+            "name": "CustomerAgeConditionData",
+            "properties_id": "Q"
           },
           {
-            "name": "MaximumUsePerUserConditionData",
-            "properties_id": "O"
-          },
-          {
-            "name": "OldUserFieldConditionData",
-            "properties_id": "P"
-          },
-          {
-            "name": "OrderAmountConditionData",
+            "name": "CustomerConditionData",
             "properties_id": "R"
           },
           {
-            "name": "OrderCustomFieldConditionData",
-            "properties_id": "S"
+            "name": "LoyaltyBadgeConditionData",
+            "properties_id": "T"
           },
           {
-            "name": "OrderLineCustomFieldConditionData",
+            "name": "LoyaltyPointsConditionData",
+            "properties_id": "U"
+          },
+          {
+            "name": "LoyaltyTierConditionData",
+            "properties_id": "V"
+          },
+          {
+            "name": "MaximumUsePerUserConditionData",
             "properties_id": "W"
           },
           {
-            "name": "OrderPropertiesConditionData",
+            "name": "OldUserFieldConditionData",
             "properties_id": "X"
           },
           {
-            "name": "OrderTypeConditionData",
-            "properties_id": "Y"
-          },
-          {
-            "name": "OrganizationUnitConditionData",
+            "name": "OrderAmountConditionData",
             "properties_id": "Z"
           },
           {
-            "name": "OrganizationUnitTypeConditionData",
+            "name": "OrderCustomFieldConditionData",
             "properties_id": "BA"
           },
           {
-            "name": "ProductConditionData",
+            "name": "OrderLineCustomFieldConditionData",
             "properties_id": "BB"
           },
           {
-            "name": "ProductRequirementConditionData",
+            "name": "OrderPropertiesConditionData",
             "properties_id": "BC"
           },
           {
-            "name": "StockLabelConditionData",
+            "name": "OrderTypeConditionData",
             "properties_id": "BD"
           },
           {
-            "name": "UserCustomFieldConditionData",
+            "name": "OrganizationUnitConditionData",
             "properties_id": "BE"
           },
           {
-            "name": "UserRoleConditionData",
+            "name": "OrganizationUnitTypeConditionData",
             "properties_id": "BF"
           },
           {
-            "name": "UserTypeConditionData",
+            "name": "ProductConditionData",
             "properties_id": "BG"
           },
           {
-            "name": "EmptyConditionData",
+            "name": "ProductRequirementConditionData",
             "properties_id": "BH"
+          },
+          {
+            "name": "StockLabelConditionData",
+            "properties_id": "BI"
+          },
+          {
+            "name": "UserCustomFieldConditionData",
+            "properties_id": "BJ"
+          },
+          {
+            "name": "UserRoleConditionData",
+            "properties_id": "BK"
+          },
+          {
+            "name": "UserTypeConditionData",
+            "properties_id": "BL"
+          },
+          {
+            "name": "EmptyConditionData",
+            "properties_id": "BM"
           }
         ]
       },
@@ -1154,7 +1265,7 @@
         "one_of": null
       }
     ],
-    "BJ": [
+    "BO": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -1201,7 +1312,7 @@
         "one_of": null
       }
     ],
-    "BK": [
+    "BP": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -1230,14 +1341,14 @@
         "one_of": null
       }
     ],
-    "BI": [
+    "BN": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BJ",
+        "properties_id": "BO",
         "one_of": null
       },
       {
@@ -1246,7 +1357,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "BK",
+        "properties_id": "BP",
         "one_of": null
       }
     ]
