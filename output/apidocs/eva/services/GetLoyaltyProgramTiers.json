@@ -49,7 +49,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022LoyaltyProgram\u0022: {\n    \u0022Description\u0022: \u0022string\u0022,\n    \u0022LoyaltyPointNamePlural\u0022: \u0022string\u0022,\n    \u0022LoyaltyPointNameSingular\u0022: \u0022string\u0022,\n    \u0022Name\u0022: \u0022string\u0022\n  },\n  \u0022Tiers\u0022: [\n    {\n      \u0022Benefits\u0022: [\n        {\n          \u0022Description\u0022: \u0022string\u0022,\n          \u0022Title\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022ImageBlobUrl\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022PointThreshold\u0022: 123\n    }\n  ]\n}"
+      "sample": "{\n  \u0022LoyaltyProgram\u0022: {\n    \u0022Description\u0022: \u0022string\u0022,\n    \u0022LoyaltyPointNamePlural\u0022: \u0022string\u0022,\n    \u0022LoyaltyPointNameSingular\u0022: \u0022string\u0022,\n    \u0022Name\u0022: \u0022string\u0022\n  },\n  \u0022Tiers\u0022: [\n    {\n      \u0022Benefits\u0022: [\n        {\n          \u0022Data\u0022: {},\n          \u0022Description\u0022: \u0022string\u0022,\n          \u0022Title\u0022: \u0022string\u0022,\n          \u0022Type\u0022: \u0022Appointment\u0022\n        }\n      ],\n      \u0022ImageBlobUrl\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022PointThreshold\u0022: 123\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -189,7 +189,38 @@
         "one_of": null
       }
     ],
+    "I": [],
+    "J": [],
+    "K": [
+      {
+        "name": "EventID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Event\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "H": [
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "one-of[object] | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": [
+          {
+            "name": "EmptyBenefitData",
+            "properties_id": "J"
+          },
+          {
+            "name": "AppointmentBenefitData",
+            "properties_id": "K"
+          }
+        ]
+      },
       {
         "name": "Description",
         "deprecation_notice": null,
@@ -203,6 +234,15 @@
         "name": "Title",
         "deprecation_notice": null,
         "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u0060Appointment\u0060\n* \u0060AssortmentRule\u0060\n* \u0060BackInStockPriority\u0060\n* \u0060Discount\u0060\n* \u0060Text\u0060",
         "type": "string | null",
         "required": false,
         "properties_id": null,
