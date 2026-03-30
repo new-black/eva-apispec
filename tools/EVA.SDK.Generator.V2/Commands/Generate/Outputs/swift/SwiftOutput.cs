@@ -1,4 +1,5 @@
-﻿using EVA.API.Spec;
+﻿using System.Collections.Immutable;
+using EVA.API.Spec;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
 using EVA.SDK.Generator.V2.Helpers;
 using Microsoft.Extensions.Logging;
@@ -12,7 +13,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
   public string? OutputPattern => null;
 
-  public bool GetForcedTransformations(SwiftOptions _, INamedTransform x) => x is RemoveEventExports or RemoveDataLakeExports or RemoveErrors or RemoveInheritance;
+  public bool GetForcedTransformations(SwiftOptions _, INamedTransform x) => x is RemoveEventExports or RemoveDataLakeExports or RemoveErrors or RemoveEmptyTypes or RemoveEmptyBaseTypes;
 
   public async Task Write(OutputContext<SwiftOptions> ctx)
   {
@@ -125,6 +126,26 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       output.WriteLine($"public typealias Response = {resName}");
       output.WriteLine($"public static let name = \"{assembly}:{service.Name}\"");
       output.WriteLine($"public static let path = \"{service.Path}\"");
+      output.WriteLine($"public static let httpMethod = \"{service.Method ?? "POST"}\"");
+
+      var permissions = service.AuthInformation?.RequiredPermissions ?? [];
+      if (!permissions.IsEmpty)
+      {
+        output.WriteLine("public static let requiredPermissions: [EVAPermission] = [");
+        using (output.Indentation)
+        {
+          for (var i = 0; i < permissions.Length; i++)
+          {
+            var p = permissions[i];
+            var userTypes = (int?)p.UserTypes ?? 0;
+            var scope = (int?)p.Scope ?? 0;
+            var functionality = p.Functionality != null ? $"\"{p.Functionality}\"" : "nil";
+            var comma = i < permissions.Length - 1 ? "," : string.Empty;
+            output.WriteLine($"EVAPermission(userTypes: {userTypes}, functionality: {functionality}, scope: {scope}){comma}");
+          }
+        }
+        output.WriteLine("]");
+      }
     }
 
     output.WriteLine("}");
@@ -168,12 +189,16 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       typeArguments = $"<{typeArguments}>";
     }
 
-    // If the property ID exists, mark the struct as Identifiable.
-    if (type.Properties.ContainsKey("ID"))
+    // If the property ID exists (directly or via extends), mark the struct as Identifiable.
+    if (type.Properties.ContainsKey("ID") || FindIDProperty(type.Extends, ctx.Input) != null)
     {
       extends.Add("Identifiable");
     }
 
+    if (type.Extends != null)
+    {
+      output.WriteLine("@dynamicMemberLookup");
+    }
     output.WriteLine($"public struct {typename}{typeArguments}{(extends.Any() ? $": {string.Join(", ", extends)}" : "")} {{");
     output.WriteLine();
 
@@ -183,6 +208,12 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       using (output.Indentation)
       {
+        if (type.Extends != null)
+        {
+          var parentTypeName = GetTypeName(type.Extends, ctx);
+          var parentPropName = GetParentPropName(type.Extends);
+          output.WriteLine($"{parentPropName}: {parentTypeName}{(type.Properties.Any() ? "," : "")}");
+        }
         var list = type.Properties.ToList();
         for (var i = 0; i < list.Count; i++)
         {
@@ -196,13 +227,55 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       output.WriteLine(")");
       using (output.BracedIndentation)
       {
+        if (type.Extends != null)
+        {
+          var parentPropName = GetParentPropName(type.Extends);
+          output.WriteLine($"self.{parentPropName} = {parentPropName}");
+        }
         foreach (var prop in type.Properties.Keys)
         {
           output.WriteLine($"self.{prop} = {prop}");
         }
       }
-
+      
       output.WriteLine();
+
+      if (type.Extends != null)
+      {
+        var flatParentProps = CollectAllPropertiesFlat(type.Extends, ctx.Input);
+        if (flatParentProps != null)
+        {
+          var allFlatProps = flatParentProps
+            .Concat(type.Properties.Select(kv => (Name: kv.Key, Spec: kv.Value, TypeCtx: id)))
+            .OrderBy(x => x.Name, StringComparer.Ordinal)
+            .ToList();
+
+          output.WriteLine("public init(");
+          using (output.Indentation)
+          {
+            for (var i = 0; i < allFlatProps.Count; i++)
+            {
+              var (propName, prop, typeCtx) = allFlatProps[i];
+              var propDefault = GetPropDefault(prop.Type, prop.Skippable || prop.Deprecated != null);
+              var typePrefix = GetFlatInitTypePrefix(prop, typeCtx, id, ctx.Input);
+              output.WriteLine(
+                $"{propName}: {GetPropTypeName(prop, propName, typeCtx, ctx, false, prop.Deprecated != null, typePrefix)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == allFlatProps.Count - 1 ? string.Empty : ",")}");
+            }
+          }
+
+          output.WriteLine(")");
+          using (output.BracedIndentation)
+          {
+            var parentPropName = GetParentPropName(type.Extends);
+            var parentCtorCall = BuildParentConstructorCall(type.Extends, ctx);
+            var ownPropsArgs = type.Properties.Keys.Select(k => $"{k}: {k}");
+            var allArgs = new[] { $"{parentPropName}: {parentCtorCall}" }.Concat(ownPropsArgs);
+            output.WriteLine($"self.init({string.Join(", ", allArgs)})");
+          }
+
+          output.WriteLine();
+        }
+      }
 
       foreach (var (propName, prop) in type.Properties)
       {
@@ -282,14 +355,49 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           // Make this a struct instead of an enum, because the decoding may succeed for multiple types
           // and this cannot be represented in an enum (with associated values).
           // This method is also used in https://github.com/apple/swift-openapi-generator
+
+          // Build a conflict-aware name map: use the short last segment unless two options share it.
+          var shortNames = options.Select(o => o.Name.Replace("+", ".").Split(".").Last()).ToList();
+          var nameMap = options.Select((o, i) =>
+          {
+            var shortName = shortNames[i];
+            var isConflict = shortNames.Count(n => n == shortName) > 1;
+            // For nested types (e.g. "EVA.Core.Devices.ThermalPrinterDeviceTypeData+Base"), the short
+            // name is just "Base" which conflicts with sibling nested types. Use only the parent part
+            // ("ThermalPrinterDeviceTypeData") rather than concatenating parent+nested ("ThermalPrinterDeviceTypeDataBase").
+            return isConflict ? o.Name.Split('.').Last().Split('+').First().Replace("`", string.Empty) : shortName;
+          }).ToList();
+
+          // Deduplicate options:
+          // 1. Types with no own properties extending the same base decode identically — keep only the first.
+          // 2. If a base type and a derived type are both present, the base is always decodable whenever
+          //    the derived type is, so the base is redundant — keep only derived types.
+          var seenStructuralKeys = new HashSet<string>();
+          var dedupedOptions = Enumerable.Range(0, options.Length)
+            .Where(i =>
+            {
+              var o = options[i];
+              string key;
+              if (ctx.Input.Types.TryGetValue(o.Name, out var optType) && optType.Properties.IsEmpty && optType.Extends != null)
+                key = $"extends:{optType.Extends.Name}";
+              else
+                key = o.Name;
+              return seenStructuralKeys.Add(key);
+            })
+            .Select(i => (Option: options[i], Name: nameMap[i]))
+            .ToList();
+
+          var dedupedOptionIds = dedupedOptions.Select(x => x.Option.Name).ToHashSet();
+          dedupedOptions = [.. dedupedOptions
+            .Where(x => !dedupedOptionIds.Any(otherId => otherId != x.Option.Name && IsInExtendsChain(x.Option.Name, otherId, ctx.Input)))];
+
           output.WriteLine($"public struct {propName}Payload: Codable, Equatable, Hashable, Sendable {{");
           using (output.Indentation)
           {
             output.WriteLine("public var properties: [String: JSON]");
-            foreach (var option in options)
+            foreach (var (option, name) in dedupedOptions)
             {
               var typeName = GetTypeName(option, ctx);
-              var name = option.Name.Replace("+", ".").Split(".").Last();
               output.WriteLine($"public var {name}: {typeName}");
             }
 
@@ -297,16 +405,14 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             output.WriteLine("public init(");
             using (output.Indentation)
             {
-              var list = options.ToList();
-              output.WriteLine("properties: [String: JSON] = [:]" + ((list.Count == 0) ? "" : ","));
-              for (var i = 0; i < list.Count; i++)
+              output.WriteLine("properties: [String: JSON] = [:]" + ((dedupedOptions.Count == 0) ? "" : ","));
+              for (var i = 0; i < dedupedOptions.Count; i++)
               {
-                var option = list[i];
+                var (option, name) = dedupedOptions[i];
                 var propDefault = GetPropDefault(option);
                 var typeName = GetTypeName(option, ctx);
-                var name = option.Name.Replace("+", ".").Split(".").Last();
                 output.WriteLine(
-                  $"{name}: {typeName}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
+                  $"{name}: {typeName}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == dedupedOptions.Count - 1 ? string.Empty : ",")}");
               }
             }
 
@@ -314,9 +420,8 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             using (output.BracedIndentation)
             {
               output.WriteLine("self.properties = properties");
-              foreach (var option in options)
+              foreach (var (_, name) in dedupedOptions)
               {
-                var name = option.Name.Replace("+", ".").Split(".").Last();
                 output.WriteLine($"self.{name} = {name}");
               }
             }
@@ -326,9 +431,8 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             using (output.BracedIndentation)
             {
               output.WriteLine("properties = try .init(from: decoder)");
-              foreach (var option in options)
+              foreach (var (_, name) in dedupedOptions)
               {
-                var name = option.Name.Replace("+", ".").Split(".").Last();
                 output.WriteLine($"{name} = try? .init(from: decoder)");
               }
 
@@ -348,9 +452,8 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             using (output.BracedIndentation)
             {
               output.WriteLine($"try properties.encode(to: encoder)");
-              foreach (var option in options)
+              foreach (var (_, name) in dedupedOptions)
               {
-                var name = option.Name.Replace("+", ".").Split(".").Last();
                 output.WriteLine($"try {name}?.encode(to: encoder)");
               }
             }
@@ -366,6 +469,23 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       {
         output.WriteLine($"public var id: {GetPropTypeName(idProperty, "ID", id, ctx, false, idProperty.Deprecated != null)} {{ self.ID }}");
         output.WriteLine();
+      }
+      else if (type.Extends != null && FindIDProperty(type.Extends, ctx.Input) is { } inheritedIdProperty)
+      {
+        var parentPropName = GetParentPropName(type.Extends);
+        output.WriteLine($"public var id: {GetPropTypeName(inheritedIdProperty, "ID", id, ctx, false, inheritedIdProperty.Deprecated != null)} {{ {parentPropName}.id }}");
+        output.WriteLine();
+      }
+
+      if (type.Extends != null)
+      {
+        var parentTypeName = GetTypeName(type.Extends, ctx);
+        var parentPropName = GetParentPropName(type.Extends);
+        output.WriteLine($"public var {parentPropName}: {parentTypeName}");
+        output.WriteLine();
+        output.WriteLine($"public subscript<U>(dynamicMember keyPath: KeyPath<{parentTypeName}, U>) -> U {{ {parentPropName}[keyPath: keyPath] }}");
+        output.WriteLine();
+
       }
 
       foreach (var (propName, prop) in type.Properties)
@@ -396,7 +516,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       }
     }
 
-    if (!type.TypeArguments.Any() && type.Properties.Any())
+    if (!type.TypeArguments.Any() && (type.Properties.Any() || type.Extends != null))
     {
       WriteDecodeInit(type, output, id, ctx);
     }
@@ -449,10 +569,35 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     // Custom decoder
     using (output.Indentation)
     {
+      if (type.Extends != null && !type.Properties.IsEmpty)
+      {
+        output.WriteLine("enum CodingKeys: String, CodingKey {");
+        using (output.Indentation)
+        {
+          foreach (var key in type.Properties.Keys)
+          {
+            var safeKey = SafePropertyNames.Contains(key) ? $"`{key}`" : key;
+            output.WriteLine($"case {safeKey}");
+          }
+        }
+        output.WriteLine("}");
+        output.WriteLine();
+      }
+
       output.WriteLine("public init(from decoder: Decoder) throws");
       using (output.BracedIndentation)
       {
-        output.WriteLine("let container = try decoder.container(keyedBy: CodingKeys.self)");
+        if (type.Extends != null)
+        {
+          var parentTypeName = GetTypeName(type.Extends, ctx);
+          var parentPropName = GetParentPropName(type.Extends);
+          output.WriteLine($"self.{parentPropName} = try {parentTypeName}(from: decoder)");
+        }
+
+        if (type.Properties.Any())
+        {
+          output.WriteLine("let container = try decoder.container(keyedBy: CodingKeys.self)");
+        }
 
         foreach (var (key, value) in type.Properties)
         {
@@ -487,17 +632,142 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           string[] foundationTypes = ["Data", "Date"];
           var typePrefix = (type.Properties.ContainsKey(typeNameNotNullable) && !containsProductDetails || foundationTypes.Contains(typeNameNotNullable)) ? "Foundation." : string.Empty;
 
+          var safeKey = SafePropertyNames.Contains(key) ? $"`{key}`" : key;
           if (isOptional)
           {
-            output.WriteLine($"do {{ self.{key} = try container.decodeIfPresent({typePrefix}{typeNameNotNullable}.self, forKey: .{key}){postfix} }} catch {{ decodeLog(error) }}");
+            output.WriteLine($"do {{ self.{key} = try container.decodeIfPresent({typePrefix}{typeNameNotNullable}.self, forKey: .{safeKey}){postfix} }} catch {{ decodeLog(error) }}");
           }
           else
           {
-            output.WriteLine($"self.{key} = try container.decode({typePrefix}{typeName}.self, forKey: .{key}){postfix}");
+            output.WriteLine($"self.{key} = try container.decode({typePrefix}{typeName}.self, forKey: .{safeKey}){postfix}");
+          }
+        }
+      }
+
+      if (type.Extends != null)
+      {
+        output.WriteLine();
+        output.WriteLine("public func encode(to encoder: Encoder) throws");
+        using (output.BracedIndentation)
+        {
+          var parentPropName = GetParentPropName(type.Extends);
+          output.WriteLine($"try {parentPropName}.encode(to: encoder)");
+          if (type.Properties.Any())
+          {
+            output.WriteLine("var container = encoder.container(keyedBy: CodingKeys.self)");
+            foreach (var (key, value) in type.Properties)
+            {
+              var safeKey = SafePropertyNames.Contains(key) ? $"`{key}`" : key;
+              var isOptional = value.Type.Nullable || value.Deprecated != null || value.Skippable;
+              if (isOptional)
+              {
+                output.WriteLine($"try container.encodeIfPresent(self.{safeKey}, forKey: .{safeKey})");
+              }
+              else
+              {
+                output.WriteLine($"try container.encode(self.{safeKey}, forKey: .{safeKey})");
+              }
+            }
           }
         }
       }
     }
+  }
+
+  /// <summary>Returns true if <paramref name="baseId"/> appears anywhere in the extends chain of <paramref name="derivedId"/>.</summary>
+  private static bool IsInExtendsChain(string baseId, string derivedId, ApiDefinitionModel input)
+  {
+    if (!input.Types.TryGetValue(derivedId, out var type)) return false;
+    if (type.Extends == null) return false;
+    if (type.Extends.Name == baseId) return true;
+    return IsInExtendsChain(baseId, type.Extends.Name, input);
+  }
+
+  private static PropertySpecification? FindIDProperty(TypeReference? extends, ApiDefinitionModel input)
+  {
+    if (extends == null || !input.Types.TryGetValue(extends.Name, out var type)) return null;
+    if (type.Properties.TryGetValue("ID", out var idProp)) return idProp;
+    return FindIDProperty(type.Extends, input);
+  }
+
+  private static string GetParentPropName(TypeReference typeRef)
+  {
+    var name = typeRef.Name.Split('.').Last();
+    return name.Replace("`", string.Empty).Replace("+", string.Empty);
+  }
+
+  private static List<(string Name, PropertySpecification Spec, string TypeCtx)>? CollectAllPropertiesFlat(
+    TypeReference? extends, ApiDefinitionModel input,
+    Dictionary<string, TypeReference>? substitutions = null)
+  {
+    if (extends == null) return [];
+    if (!input.Types.TryGetValue(extends.Name, out var type)) return [];
+
+    // Build the substitution map for this level if the type is generic.
+    Dictionary<string, TypeReference>? nextSubstitutions = null;
+    if (type.TypeArguments.Any())
+    {
+      var resolvedArgs = extends.Arguments.Select(a => ApplyTypeSubstitutions(a, substitutions)).ToArray();
+      if (resolvedArgs.Length != type.TypeArguments.Length) return null;
+      nextSubstitutions = type.TypeArguments
+        .Zip(resolvedArgs, (param, arg) => (param, arg))
+        .ToDictionary(x => x.param, x => x.arg);
+    }
+
+    var parentProps = CollectAllPropertiesFlat(type.Extends, input, nextSubstitutions);
+    if (parentProps == null) return null;
+
+    var ownProps = type.Properties.Select(kv =>
+    {
+      var prop = nextSubstitutions != null ? SubstitutePropertyType(kv.Value, nextSubstitutions) : kv.Value;
+      return (kv.Key, prop, extends.Name);
+    }).ToList();
+
+    return [.. parentProps, .. ownProps];
+  }
+
+  private static PropertySpecification SubstitutePropertyType(PropertySpecification prop, Dictionary<string, TypeReference> substitutions)
+  {
+    return new PropertySpecification(ApplyTypeSubstitutions(prop.Type, substitutions))
+    {
+      Description = prop.Description,
+      Skippable = prop.Skippable,
+      Deprecated = prop.Deprecated,
+      AllowedValues = prop.AllowedValues,
+    };
+  }
+
+  private static TypeReference ApplyTypeSubstitutions(TypeReference typeRef, Dictionary<string, TypeReference>? substitutions)
+  {
+    if (substitutions == null) return typeRef;
+    if (substitutions.TryGetValue(typeRef.Name, out var replacement))
+      return new TypeReference(replacement.Name, replacement.Arguments, typeRef.Nullable || replacement.Nullable);
+    if (typeRef.Arguments.IsEmpty) return typeRef;
+    var newArgs = typeRef.Arguments.Select(a => ApplyTypeSubstitutions(a, substitutions)).ToImmutableArray();
+    return new TypeReference(typeRef.Name, newArgs, typeRef.Nullable);
+  }
+
+  private static string BuildParentConstructorCall(TypeReference typeRef, OutputContext<SwiftOptions> ctx)
+  {
+    var typeName = GetTypeName(typeRef, ctx, true);
+
+    if (!ctx.Input.Types.TryGetValue(typeRef.Name, out var type))
+      return $"{typeName}()";
+
+    var args = new List<string>();
+
+    if (type.Extends != null)
+    {
+      var parentPropName = GetParentPropName(type.Extends);
+      args.Add($"{parentPropName}: {BuildParentConstructorCall(type.Extends, ctx)}");
+    }
+
+    foreach (var propName in type.Properties.Keys)
+    {
+      args.Add($"{propName}: {propName}");
+    }
+
+    return $"{typeName}({string.Join(", ", args)})";
   }
 
   private static void WriteNonFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
@@ -603,6 +873,22 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         }
       }
 
+      output.WriteLine();
+      output.WriteLine("public init?(rawValue: String)");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("switch rawValue");
+        using (output.BracedIndentation)
+        {
+          foreach (var (name, _) in type.EnumValues.OrderBy(v => v.Value.Value))
+          {
+            var safeName = SafePropertyNames.Contains(name) ? $"`{name}`" : name;
+            output.WriteLine($"case \"{name}\": self = .{safeName}");
+          }
+          output.WriteLine("default: return nil");
+        }
+      }
+
       WriteIntRawValueInit(output);
     }
 
@@ -631,6 +917,22 @@ internal class SwiftOutput : IOutput<SwiftOptions>
         output.WriteLine($"public static let {name} = {typename}(rawValue: {value})");
       }
 
+      output.WriteLine();
+      output.WriteLine("public init?(rawValue: String)");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("switch rawValue");
+        using (output.BracedIndentation)
+        {
+          foreach (var (value, name, _) in type.EnumValues.ToTotals())
+          {
+            if (value == 0) continue;
+            output.WriteLine($"case \"{name}\": self = .{name}");
+          }
+          output.WriteLine("default: return nil");
+        }
+      }
+
       WriteIntRawValueInit(output);
     }
 
@@ -649,18 +951,31 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       }
   }
 
-  private static string GetPropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false)
+  /// <summary>
+  /// Returns the namespace prefix needed when referencing a property's type from outside the type
+  /// that defines the property. AllowedValues enums and Option payloads are generated as inline
+  /// nested types and are not visible outside the owning type without an explicit prefix.
+  /// </summary>
+  private static string GetFlatInitTypePrefix(PropertySpecification prop, string typeCtx, string currentTypeId, ApiDefinitionModel input)
+  {
+    if (typeCtx == currentTypeId) return "";
+    if (prop.AllowedValues.Any() || prop.Type.Name == ApiSpecConsts.Specials.Option)
+      return $"{GetTypeName(typeCtx, input)}.";
+    return "";
+  }
+
+  private static string GetPropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false, string typePrefix = "")
   {
     var n = OptionalSuffix(ps.Type, forceNotNullable, forceNullable, ps.Skippable);
-    var typeName = GetCorePropTypeName(ps, name, typeContext, ctx, forceNotNullable, forceNullable);
+    var typeName = GetCorePropTypeName(ps, name, typeContext, ctx, forceNotNullable, forceNullable, typePrefix);
     return (ps.Skippable && ps.Type.Nullable ? $"Maybe<{typeName}>" : typeName) + n;
   }
 
-  private static string GetCorePropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false)
+  private static string GetCorePropTypeName(PropertySpecification ps, string name, string? typeContext, OutputContext<SwiftOptions> ctx, bool forceNotNullable = false, bool forceNullable = false, string typePrefix = "")
   {
     var typeReference = ps.Type;
-    if (ps.AllowedValues.Any()) return $"{name}Values";
-    if (typeReference is { Name: ApiSpecConsts.Specials.Option }) return $"{name}Payload";
+    if (ps.AllowedValues.Any()) return $"{typePrefix}{name}Values";
+    if (typeReference is { Name: ApiSpecConsts.Specials.Option }) return $"{typePrefix}{name}Payload";
     return GetTypeName(typeReference, ctx, true);
   }
 
@@ -739,12 +1054,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     var assembly = reference.Assembly;
     assembly = assembly.Replace(".Services", string.Empty);
 
-    var typeName = reference.TypeName;
-    var splittedTypename = typeName.Split('`');
-    if (splittedTypename.Length > 1 && int.TryParse(splittedTypename[1], out _))
-    {
-      typeName = splittedTypename[0];
-    }
+    var typeName = reference.TypeName.Replace("`", string.Empty).Replace("+", string.Empty);
 
     return $"{assembly}{typeName}".Replace(".", string.Empty);
   }
@@ -764,12 +1074,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     if (assembly.StartsWith("EVA.")) assembly = assembly[4..];
     assembly = assembly.Replace(".Services", string.Empty);
 
-    var typeName = type.TypeName;
-    var splittedTypename = typeName.Split('`');
-    if (splittedTypename.Length > 1 && int.TryParse(splittedTypename[1], out _))
-    {
-      typeName = splittedTypename[0];
-    }
+    var typeName = type.TypeName.Replace("`", string.Empty).Replace("+", string.Empty);
 
     return $"{assembly}{typeName}".Replace(".", string.Empty);
   }
