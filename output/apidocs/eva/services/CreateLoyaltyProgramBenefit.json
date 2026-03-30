@@ -1,9 +1,9 @@
 {
-  "name": "GetLoyaltyProgramTier",
+  "name": "CreateLoyaltyProgramBenefit",
   "method": "POST",
-  "path": "/message/GetLoyaltyProgramTier",
-  "description": "Get a LoyaltyProgramTier",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LoyaltyPrograms:View\u0060",
+  "path": "/message/CreateLoyaltyProgramBenefit",
+  "description": "Add a benefit to a loyalty program. LoyaltyProgramTierID is optional; omit for tierless programs.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LoyaltyPrograms:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,24 +25,31 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022IncludedProductProperties\u0022: [\n    \u0022string\u0022\n  ]\n}",
+      "sample": "{\n  \u0022ApplyDiscountAutomatically\u0022: true,\n  \u0022BlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n  \u0022CanReload\u0022: true,\n  \u0022CustomFieldFilter\u0022: {\n    \u0022Conditions\u0022: [\n      {\n        \u0022CustomFieldId\u0022: 123,\n        \u0022CustomFieldValue\u0022: {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022re\u0022: \u0022cursion\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022DateTimeValue\u0022: \u00222025-01-01\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        },\n        \u0022Operator\u0022: 7\n      }\n    ],\n    \u0022FilterType\u0022: 1,\n    \u0022Filters\u0022: [\n      {\n        \u0022re\u0022: \u0022cursion\u0022\n      }\n    ]\n  },\n  \u0022CustomFieldID\u0022: 123,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022DiscountIDs\u0022: [\n    123\n  ],\n  \u0022IsManualClaimed\u0022: true,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022LoyaltyProgramTierID\u0022: 123,\n  \u0022MaxUsage\u0022: 123,\n  \u0022PointThreshold\u0022: 123,\n  \u0022Title\u0022: \u0022string\u0022,\n  \u0022UseCustomFieldAsUsage\u0022: true\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123,\n  \u0022IncludedProductProperties\u0022: [\n    \u0022string\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetLoyaltyProgramTier",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ApplyDiscountAutomatically\u0022: true,\n  \u0022BlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n  \u0022CanReload\u0022: true,\n  \u0022CustomFieldFilter\u0022: {\n    \u0022Conditions\u0022: [\n      {\n        \u0022CustomFieldId\u0022: 123,\n        \u0022CustomFieldValue\u0022: {\n          \u0022ArrayValues\u0022: [\n            {\n              \u0022re\u0022: \u0022cursion\u0022\n            }\n          ],\n          \u0022BlobValue\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n          \u0022BoolValue\u0022: true,\n          \u0022DateTimeValue\u0022: \u00222025-01-01\u0022,\n          \u0022NumberValue\u0022: 123.456,\n          \u0022StringValue\u0022: \u0022string\u0022\n        },\n        \u0022Operator\u0022: 7\n      }\n    ],\n    \u0022FilterType\u0022: 1,\n    \u0022Filters\u0022: [\n      {\n        \u0022re\u0022: \u0022cursion\u0022\n      }\n    ]\n  },\n  \u0022CustomFieldID\u0022: 123,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022DiscountIDs\u0022: [\n    123\n  ],\n  \u0022IsManualClaimed\u0022: true,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022LoyaltyProgramTierID\u0022: 123,\n  \u0022MaxUsage\u0022: 123,\n  \u0022PointThreshold\u0022: 123,\n  \u0022Title\u0022: \u0022string\u0022,\n  \u0022UseCustomFieldAsUsage\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateLoyaltyProgramBenefit",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Benefits\u0022: [\n    {\n      \u0022Blob\u0022: {\n        \u0022MimeType\u0022: \u0022string\u0022,\n        \u0022Url\u0022: \u0022string\u0022\n      },\n      \u0022CanReload\u0022: true,\n      \u0022CustomFieldFilter\u0022: {\n        \u0022Conditions\u0022: [\n          {\n            \u0022CustomFieldId\u0022: 123,\n            \u0022CustomFieldValue\u0022: {\n              \u0022ArrayValues\u0022: [\n                {\n                  \u0022re\u0022: \u0022cursion\u0022\n                }\n              ],\n              \u0022BlobValue\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n              \u0022BoolValue\u0022: true,\n              \u0022DateTimeValue\u0022: \u00222025-01-01\u0022,\n              \u0022NumberValue\u0022: 123.456,\n              \u0022StringValue\u0022: \u0022string\u0022\n            },\n            \u0022Operator\u0022: 7\n          }\n        ],\n        \u0022FilterType\u0022: 1,\n        \u0022Filters\u0022: [\n          {\n            \u0022re\u0022: \u0022cursion\u0022\n          }\n        ]\n      },\n      \u0022CustomFieldID\u0022: 123,\n      \u0022Data\u0022: {},\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Discount\u0022: {\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022ID\u0022: 123,\n        \u0022MarketingDescription\u0022: \u0022string\u0022,\n        \u0022PromotionLabel\u0022: \u0022string\u0022\n      },\n      \u0022DiscountID\u0022: 123,\n      \u0022Discounts\u0022: [\n        {\n          \u0022Description\u0022: \u0022string\u0022,\n          \u0022ID\u0022: 123,\n          \u0022MarketingDescription\u0022: \u0022string\u0022,\n          \u0022PromotionLabel\u0022: \u0022string\u0022\n        }\n      ],\n      \u0022ID\u0022: 123,\n      \u0022IsManualClaimed\u0022: true,\n      \u0022MaxUsage\u0022: 123,\n      \u0022PointThreshold\u0022: 123,\n      \u0022Title\u0022: \u0022string\u0022,\n      \u0022Type\u0022: \u0022Appointment\u0022,\n      \u0022UseCustomFieldAsUsage\u0022: true\n    }\n  ],\n  \u0022ID\u0022: 123,\n  \u0022ImageBlobUrl\u0022: \u0022string\u0022,\n  \u0022IsDefault\u0022: true,\n  \u0022IsHiddenUntilReached\u0022: true,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022PointThreshold\u0022: 123,\n  \u0022SendMailOnAssign\u0022: true\n}"
+      "sample": "{\n  \u0022ID\u0022: 123\n}"
     },
     {
       "name": "400",
@@ -55,56 +62,16 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "F",
   "types": {
-    "B": [
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramTier\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IncludedProductProperties",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060ProductPropertyType\u0060",
-        "type": "array[string] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "E": [
-      {
-        "name": "MimeType",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Url",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "H": [
       {
         "name": "ArrayValues",
         "deprecation_notice": null,
         "description": "Used for multiple values",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "E",
         "one_of": null
       },
       {
@@ -153,7 +120,7 @@
         "one_of": null
       }
     ],
-    "G": [
+    "D": [
       {
         "name": "CustomFieldId",
         "deprecation_notice": null,
@@ -169,7 +136,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "E",
         "one_of": null
       },
       {
@@ -182,14 +149,14 @@
         "one_of": null
       }
     ],
-    "F": [
+    "C": [
       {
         "name": "Conditions",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "D",
         "one_of": null
       },
       {
@@ -207,69 +174,27 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "C",
         "one_of": null
       }
     ],
-    "I": [],
-    "J": [],
-    "K": [
+    "B": [
       {
-        "name": "EventID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Event\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "L": [
-      {
-        "name": "Description",
+        "name": "ApplyDiscountAutomatically",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Discount\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MarketingDescription",
+        "name": "BlobID",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
+        "type": "guid | null",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PromotionLabel",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "D": [
-      {
-        "name": "Blob",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "E",
         "one_of": null
       },
       {
@@ -287,7 +212,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "C",
         "one_of": null
       },
       {
@@ -300,64 +225,19 @@
         "one_of": null
       },
       {
-        "name": "Data",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "one-of[object] | null",
-        "required": false,
-        "properties_id": "I",
-        "one_of": [
-          {
-            "name": "EmptyBenefitData",
-            "properties_id": "J"
-          },
-          {
-            "name": "AppointmentBenefitData",
-            "properties_id": "K"
-          }
-        ]
-      },
-      {
         "name": "Description",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
-        "required": false,
+        "type": "string",
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Discount",
-        "deprecation_notice": "\n\n**Deprecated since 838:** Discount is deprecated and will be removed in 2.0.882: Use \u0060Discounts\u0060 instead..\n\n**Will be removed in 856**",
-        "description": "**Deprecated since 838:** Discount is deprecated and will be removed in 2.0.882: Use \u0060Discounts\u0060 instead..\n\n**Will be removed in 856**",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      },
-      {
-        "name": "DiscountID",
-        "deprecation_notice": "\n\n**Deprecated since 838:** DiscountID is deprecated and will be removed in 2.0.882: Use \u0060Discounts\u0060 instead..\n\n**Will be removed in 856**",
-        "description": "This is the ID of a \u0060Discount\u0060\n\n**Deprecated since 838:** DiscountID is deprecated and will be removed in 2.0.882: Use \u0060Discounts\u0060 instead..\n\n**Will be removed in 856**",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Discounts",
+        "name": "DiscountIDs",
         "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramBenefit\u0060",
-        "type": "integer",
+        "description": "This is the ID of a \u0060Discount\u0060",
+        "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -367,6 +247,24 @@
         "deprecation_notice": null,
         "description": "",
         "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LoyaltyProgramID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LoyaltyProgramTierID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060LoyaltyProgramTier\u0060",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -393,17 +291,8 @@
         "name": "Title",
         "deprecation_notice": null,
         "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u0060Appointment\u0060\n* \u0060AssortmentRule\u0060\n* \u0060BackInStockPriority\u0060\n* \u0060Discount\u0060\n* \u0060Text\u0060",
-        "type": "string | null",
-        "required": false,
+        "type": "string",
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
@@ -417,7 +306,7 @@
         "one_of": null
       }
     ],
-    "M": [
+    "G": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -464,7 +353,7 @@
         "one_of": null
       }
     ],
-    "N": [
+    "H": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -493,74 +382,20 @@
         "one_of": null
       }
     ],
-    "C": [
-      {
-        "name": "BackendID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Benefits",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
+    "F": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "M",
+        "properties_id": "G",
         "one_of": null
       },
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramTier\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ImageBlobUrl",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsDefault",
-        "deprecation_notice": null,
-        "description": "Only applicable for tiers that are not point based. A default tier is automatically assigned when subscribing to the loyalty program",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsHiddenUntilReached",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LoyaltyProgramID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
+        "description": "This is the ID of a \u0060LoyaltyProgramBenefit\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -572,34 +407,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "N",
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PointThreshold",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SendMailOnAssign",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "H",
         "one_of": null
       }
     ]

@@ -1,9 +1,9 @@
 {
-  "name": "ReloadLoyaltyProgramTierBenefit",
+  "name": "DeleteLoyaltyProgramBenefit",
   "method": "POST",
-  "path": "/message/ReloadLoyaltyProgramTierBenefit",
-  "description": "Reload a loyalty program tier benefit for a user",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ReloadLoyaltyProgramTierBenefit:None\u0060",
+  "path": "/message/DeleteLoyaltyProgramBenefit",
+  "description": "Delete a loyalty program benefit.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LoyaltyPrograms:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -32,24 +32,17 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-BackendSystemID",
-      "type": "string",
-      "description": "The ID of the backend system that is used to resolve the IDs.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022TierBenefitID\u0022: 123,\n  \u0022UserID\u0022: 123\n}",
+      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022TierBenefitID\u0022: 123,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ReloadLoyaltyProgramTierBenefit",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DeleteLoyaltyProgramBenefit",
       "syntax": "bash"
     }
   ],
@@ -73,16 +66,7 @@
   "types": {
     "B": [
       {
-        "name": "LoyaltyProgramID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TierBenefitID",
+        "name": "ID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060LoyaltyProgramBenefit\u0060",
         "type": "integer",
@@ -91,9 +75,9 @@
         "one_of": null
       },
       {
-        "name": "UserID",
+        "name": "LoyaltyProgramID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
+        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
         "type": "integer",
         "required": true,
         "properties_id": null,
