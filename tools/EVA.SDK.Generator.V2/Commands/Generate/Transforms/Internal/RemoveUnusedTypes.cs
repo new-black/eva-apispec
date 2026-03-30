@@ -30,7 +30,8 @@ internal class RemoveUnusedTypes : ITransform
       allUsedTypes.Add(element);
       allUnusedTypes.Remove(element);
 
-      foreach (var t in input.Types[element].TypeDependencies)
+      if (!input.Types.TryGetValue(element, out var typeSpec)) continue;
+      foreach (var t in typeSpec.TypeDependencies)
       {
         typesToIterate.Add(t);
       }

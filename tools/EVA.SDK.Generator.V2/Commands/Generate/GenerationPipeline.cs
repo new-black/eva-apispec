@@ -27,6 +27,7 @@ internal static class GenerationPipeline
     new RemoveSharedRequestResponseTypes(),
     new RemoveUnusedGenericArguments(),
     new RemoveDataLakeExports(),
+    new RemoveEmptyBaseTypes(),
   ];
 
   private static readonly ITransform Transform1 = new FixDependencies();
