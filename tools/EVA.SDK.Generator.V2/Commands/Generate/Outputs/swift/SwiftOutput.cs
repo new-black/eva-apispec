@@ -365,7 +365,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
             // For nested types (e.g. "EVA.Core.Devices.ThermalPrinterDeviceTypeData+Base"), the short
             // name is just "Base" which conflicts with sibling nested types. Use only the parent part
             // ("ThermalPrinterDeviceTypeData") rather than concatenating parent+nested ("ThermalPrinterDeviceTypeDataBase").
-            return isConflict ? o.Name.Split('.').Last().Split('+').First().Split('`')[0] : shortName;
+            return isConflict ? o.Name.Split('.').Last().Split('+').First().Replace("`", string.Empty) : shortName;
           }).ToList();
 
           // Deduplicate options:
@@ -693,7 +693,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
   private static string GetParentPropName(TypeReference typeRef)
   {
     var name = typeRef.Name.Split('.').Last();
-    return name.Split('`')[0].Replace("+", string.Empty);
+    return name.Replace("`", string.Empty).Replace("+", string.Empty);
   }
 
   private static List<(string Name, PropertySpecification Spec, string TypeCtx)>? CollectAllPropertiesFlat(
@@ -1054,7 +1054,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     var assembly = reference.Assembly;
     assembly = assembly.Replace(".Services", string.Empty);
 
-    var typeName = reference.TypeName.Split('`')[0].Replace("+", string.Empty);
+    var typeName = reference.TypeName.Replace("`", string.Empty).Replace("+", string.Empty);
 
     return $"{assembly}{typeName}".Replace(".", string.Empty);
   }
@@ -1074,7 +1074,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     if (assembly.StartsWith("EVA.")) assembly = assembly[4..];
     assembly = assembly.Replace(".Services", string.Empty);
 
-    var typeName = type.TypeName.Split('`')[0].Replace("+", string.Empty);
+    var typeName = type.TypeName.Replace("`", string.Empty).Replace("+", string.Empty);
 
     return $"{assembly}{typeName}".Replace(".", string.Empty);
   }
