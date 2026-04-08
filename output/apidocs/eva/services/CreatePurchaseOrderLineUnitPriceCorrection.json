@@ -2,7 +2,7 @@
   "name": "CreatePurchaseOrderLineUnitPriceCorrection",
   "method": "POST",
   "path": "/message/CreatePurchaseOrderLineUnitPriceCorrection",
-  "description": "Create price corrections for products when a PO was completed that had incorrect prices.\n\nWe\u0027ll try to do a best-effort correction on the costprice of the product if the receiving OU uses WAC.\nTo track some product information, we\u0027ll store that on the description of the order line.",
+  "description": "Create price corrections for products when a PO was completed that had incorrect prices.\n\nWe\u0027ll try to do a best-effort correction on the costprice of the product if the receiving OU uses WAC.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060OrderLinePriceCorrection:Create\u0060",
   "headers": [
     {
@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Lines\u0022: [\n    {\n      \u0022OldPrice\u0022: 123.456,\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityOrdered\u0022: 123,\n      \u0022UnitPrice\u0022: 123.456\n    }\n  ],\n  \u0022OldPrice\u0022: 123.456,\n  \u0022OrderBackendID\u0022: \u0022string\u0022,\n  \u0022ProductID\u0022: 123,\n  \u0022PurchaseOrderLineID\u0022: 123,\n  \u0022QuantityOrdered\u0022: 123,\n  \u0022SoldFromOrganizationUnitID\u0022: 123,\n  \u0022SoldToOrganizationUnitID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}",
+      "sample": "{\n  \u0022Lines\u0022: [\n    {\n      \u0022OldPrice\u0022: 123.456,\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityOrdered\u0022: 123,\n      \u0022UnitPrice\u0022: 123.456\n    }\n  ],\n  \u0022OldPrice\u0022: 123.456,\n  \u0022OrderBackendID\u0022: \u0022string\u0022,\n  \u0022ProductID\u0022: 123,\n  \u0022QuantityOrdered\u0022: 123,\n  \u0022SoldFromOrganizationUnitID\u0022: 123,\n  \u0022SoldToOrganizationUnitID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Lines\u0022: [\n    {\n      \u0022OldPrice\u0022: 123.456,\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityOrdered\u0022: 123,\n      \u0022UnitPrice\u0022: 123.456\n    }\n  ],\n  \u0022OldPrice\u0022: 123.456,\n  \u0022OrderBackendID\u0022: \u0022string\u0022,\n  \u0022ProductID\u0022: 123,\n  \u0022PurchaseOrderLineID\u0022: 123,\n  \u0022QuantityOrdered\u0022: 123,\n  \u0022SoldFromOrganizationUnitID\u0022: 123,\n  \u0022SoldToOrganizationUnitID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreatePurchaseOrderLineUnitPriceCorrection",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Lines\u0022: [\n    {\n      \u0022OldPrice\u0022: 123.456,\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityOrdered\u0022: 123,\n      \u0022UnitPrice\u0022: 123.456\n    }\n  ],\n  \u0022OldPrice\u0022: 123.456,\n  \u0022OrderBackendID\u0022: \u0022string\u0022,\n  \u0022ProductID\u0022: 123,\n  \u0022QuantityOrdered\u0022: 123,\n  \u0022SoldFromOrganizationUnitID\u0022: 123,\n  \u0022SoldToOrganizationUnitID\u0022: 123,\n  \u0022UnitPrice\u0022: 123.456\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreatePurchaseOrderLineUnitPriceCorrection",
       "syntax": "bash"
     }
   ],
@@ -77,7 +77,7 @@
         "deprecation_notice": null,
         "description": "",
         "type": "float",
-        "required": false,
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
@@ -95,7 +95,7 @@
         "deprecation_notice": null,
         "description": "",
         "type": "integer",
-        "required": false,
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
@@ -141,15 +141,6 @@
         "name": "ProductID",
         "deprecation_notice": "\n\n**Deprecated since 812:** ProductID is deprecated and will be removed in 2.0.856: Use \u0060Lines\u0060.\n\n**Will be removed in 838**",
         "description": "This is the ID of a \u0060Product\u0060\n\n**Deprecated since 812:** ProductID is deprecated and will be removed in 2.0.856: Use \u0060Lines\u0060.\n\n**Will be removed in 838**",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PurchaseOrderLineID",
-        "deprecation_notice": "\n\n**Deprecated since 812:** PurchaseOrderLineID is deprecated and will be removed in 2.0.856: No longer supported, use \u0060Lines\u0060. Any value provided to this field will be ignored..\n\n**Will be removed in 838**",
-        "description": "This is the ID of a \u0060OrderLine\u0060\n\n**Deprecated since 812:** PurchaseOrderLineID is deprecated and will be removed in 2.0.856: No longer supported, use \u0060Lines\u0060. Any value provided to this field will be ignored..\n\n**Will be removed in 838**",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
