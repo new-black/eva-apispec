@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Data\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Status\u0022: 2\n}"
+      "sample": "{\n  \u0022Data\u0022: {\n    \u0022QR\u0022: \u0022string\u0022\n  },\n  \u0022Status\u0022: 2\n}"
     },
     {
       "name": "400",
@@ -77,7 +77,19 @@
         "one_of": null
       }
     ],
-    "D": [
+    "D": [],
+    "E": [
+      {
+        "name": "QR",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -124,7 +136,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "G": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -158,10 +170,15 @@
         "name": "Data",
         "deprecation_notice": null,
         "description": "",
-        "type": "object | null",
+        "type": "one-of[object] | null",
         "required": false,
-        "properties_id": null,
-        "one_of": null
+        "properties_id": "D",
+        "one_of": [
+          {
+            "name": "TwoFactorTOTPEnableData",
+            "properties_id": "E"
+          }
+        ]
       },
       {
         "name": "Error",
@@ -169,7 +186,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "F",
         "one_of": null
       },
       {
@@ -178,7 +195,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "G",
         "one_of": null
       },
       {
