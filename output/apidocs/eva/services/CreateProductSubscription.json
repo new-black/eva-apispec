@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Interval\u0022: 99999,\n  \u0022IsActive\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ShowModal\u0022: true,\n  \u0022SubscriptionProductID\u0022: 123,\n  \u0022TrialPeriodInDays\u0022: 123,\n  \u0022TriggerProductIDs\u0022: [\n    123\n  ]\n}",
+      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022ContractPeriod\u0022: 123,\n  \u0022ContractRepeatsOnRenewal\u0022: true,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Interval\u0022: 99999,\n  \u0022IsActive\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ShowModal\u0022: true,\n  \u0022SubscriptionProductID\u0022: 123,\n  \u0022TrialPeriodInDays\u0022: 123,\n  \u0022TriggerProductIDs\u0022: [\n    123\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Interval\u0022: 99999,\n  \u0022IsActive\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ShowModal\u0022: true,\n  \u0022SubscriptionProductID\u0022: 123,\n  \u0022TrialPeriodInDays\u0022: 123,\n  \u0022TriggerProductIDs\u0022: [\n    123\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateProductSubscription",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022ContractPeriod\u0022: 123,\n  \u0022ContractRepeatsOnRenewal\u0022: true,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Interval\u0022: 99999,\n  \u0022IsActive\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ShowModal\u0022: true,\n  \u0022SubscriptionProductID\u0022: 123,\n  \u0022TrialPeriodInDays\u0022: 123,\n  \u0022TriggerProductIDs\u0022: [\n    123\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateProductSubscription",
       "syntax": "bash"
     }
   ],
@@ -77,6 +77,24 @@
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ContractPeriod",
+        "deprecation_notice": null,
+        "description": "Number of recurring orders that must be billed before pause or cancel can take effect. Leave null for no contract period.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ContractRepeatsOnRenewal",
+        "deprecation_notice": null,
+        "description": "When true (default), the contract period restarts on each renewal. When false, the contract applies only to the first contract period and renewals are contract-free. May be overridden to false by the OU setting ProductSubscriptions:AllowContractRepeatOnRenewal.",
+        "type": "boolean | null",
         "required": false,
         "properties_id": null,
         "one_of": null
