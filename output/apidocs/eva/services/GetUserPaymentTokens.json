@@ -1,8 +1,8 @@
 {
-  "name": "GetProductSubscriptionsForUser",
+  "name": "GetUserPaymentTokens",
   "method": "POST",
-  "path": "/message/GetProductSubscriptionsForUser",
-  "description": "Get all ProductSubscriptions for a User.",
+  "path": "/message/GetUserPaymentTokens",
+  "description": "Returns the payment tokens stored for a user. Customers receive their own tokens; employees and API users must specify a UserID and require the UserPaymentTokens:View functionality on their current organization unit.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022UserID\u0022: 123\n}",
+      "sample": "{\n  \u0022IsUsable\u0022: true,\n  \u0022UserID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetProductSubscriptionsForUser",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022IsUsable\u0022: true,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetUserPaymentTokens",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Subscriptions\u0022: [\n    {\n      \u0022Contract\u0022: {\n        \u0022EndDate\u0022: \u00222025-01-01\u0022,\n        \u0022OrdersRemaining\u0022: 123,\n        \u0022Period\u0022: 123,\n        \u0022RepeatsOnRenewal\u0022: true,\n        \u0022ScheduledAction\u0022: 1,\n        \u0022TotalContractCost\u0022: 123.456\n      },\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Discount\u0022: {\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022ID\u0022: 123,\n        \u0022MarketingDescription\u0022: \u0022string\u0022\n      },\n      \u0022ID\u0022: 123,\n      \u0022Interval\u0022: 99999,\n      \u0022IsInTrial\u0022: true,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022Price\u0022: 123.456,\n      \u0022RenewalDate\u0022: \u00222025-01-01\u0022,\n      \u0022Status\u0022: 1,\n      \u0022SubscriptionID\u0022: 123,\n      \u0022SubscriptionProductID\u0022: 123,\n      \u0022TrialEndDate\u0022: \u00222025-01-01\u0022,\n      \u0022UpcomingUpgrade\u0022: {\n        \u0022ActiveFromDate\u0022: \u00222025-01-01\u0022,\n        \u0022CurrencyID\u0022: \u0022string\u0022,\n        \u0022Description\u0022: \u0022string\u0022,\n        \u0022Interval\u0022: 99999,\n        \u0022Name\u0022: \u0022string\u0022,\n        \u0022Price\u0022: 123.456,\n        \u0022SubscriptionID\u0022: 123,\n        \u0022SubscriptionProductID\u0022: 123\n      }\n    }\n  ]\n}"
+      "sample": "{\n  \u0022Tokens\u0022: [\n    {\n      \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n      \u0022ExpiryMonth\u0022: \u0022string\u0022,\n      \u0022ExpiryYear\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsActive\u0022: true,\n      \u0022IsUsable\u0022: true,\n      \u0022LastFourDigits\u0022: \u0022string\u0022,\n      \u0022LastUsedTime\u0022: \u00222025-01-01\u0022,\n      \u0022PaymentMethodName\u0022: \u0022string\u0022,\n      \u0022PaymentMethodSubType\u0022: \u0022string\u0022,\n      \u0022PaymentMethodType\u0022: \u0022string\u0022,\n      \u0022PaymentTransactionID\u0022: 123,\n      \u0022PaymentTypeID\u0022: 123,\n      \u0022PaymentTypeName\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -73,9 +73,18 @@
   "types": {
     "B": [
       {
+        "name": "IsUsable",
+        "deprecation_notice": null,
+        "description": "Filter on usability. null = all, true = usable only (active and not expired), false = unusable only.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "UserID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
+        "description": "Target user. Required for employees and API users; ignored for customers (replaced with the logged-in user).\n\nThis is the ID of a \u0060User\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -158,94 +167,9 @@
         "one_of": null
       }
     ],
-    "G": [
+    "F": [
       {
-        "name": "EndDate",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrdersRemaining",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Period",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "RepeatsOnRenewal",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ScheduledAction",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00601\u0060 - Pause\n* \u00602\u0060 - Stop",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TotalContractCost",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "H": [
-      {
-        "name": "Description",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Discount\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MarketingDescription",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "I": [
-      {
-        "name": "ActiveFromDate",
+        "name": "CreationTime",
         "deprecation_notice": null,
         "description": "",
         "type": "datetime",
@@ -254,16 +178,7 @@
         "one_of": null
       },
       {
-        "name": "CurrencyID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Currency\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
+        "name": "ExpiryMonth",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -272,108 +187,25 @@
         "one_of": null
       },
       {
-        "name": "Interval",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00602\u0060 - Weekly\n* \u00603\u0060 - Monthly\n* \u00604\u0060 - Quarterly\n* \u00605\u0060 - Yearly\n* \u006099999\u0060 - Manual",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Name",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Price",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "float",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SubscriptionID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060ProductSubscription\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SubscriptionProductID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Product\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "F": [
-      {
-        "name": "Contract",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "CurrencyID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Currency\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Description",
+        "name": "ExpiryYear",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Discount",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "H",
         "one_of": null
       },
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserProductSubscription\u0060",
+        "description": "This is the ID of a \u0060UserPaymentToken\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Interval",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00602\u0060 - Weekly\n* \u00603\u0060 - Monthly\n* \u00604\u0060 - Quarterly\n* \u00605\u0060 - Yearly\n* \u006099999\u0060 - Manual",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "IsInTrial",
+        "name": "IsActive",
         "deprecation_notice": null,
         "description": "",
         "type": "boolean",
@@ -382,61 +214,25 @@
         "one_of": null
       },
       {
-        "name": "Name",
+        "name": "IsUsable",
         "deprecation_notice": null,
         "description": "",
-        "type": "string",
-        "required": true,
+        "type": "boolean",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Price",
+        "name": "LastFourDigits",
         "deprecation_notice": null,
         "description": "",
-        "type": "float",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "RenewalDate",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Status",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Active\n* \u00601\u0060 - Paused\n* \u00602\u0060 - Stopped\n* \u00603\u0060 - PaymentFailed\n* \u00604\u0060 - PaymentRetrying",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SubscriptionID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060ProductSubscription\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SubscriptionProductID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Product\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "TrialEndDate",
+        "name": "LastUsedTime",
         "deprecation_notice": null,
         "description": "",
         "type": "datetime | null",
@@ -445,12 +241,57 @@
         "one_of": null
       },
       {
-        "name": "UpcomingUpgrade",
+        "name": "PaymentMethodName",
         "deprecation_notice": null,
         "description": "",
-        "type": "object | null",
+        "type": "string | null",
         "required": false,
-        "properties_id": "I",
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentMethodSubType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentMethodType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTransactionID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060PaymentTransaction\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTypeID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060PaymentType\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PaymentTypeName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
@@ -474,7 +315,7 @@
         "one_of": null
       },
       {
-        "name": "Subscriptions",
+        "name": "Tokens",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object] | null",
