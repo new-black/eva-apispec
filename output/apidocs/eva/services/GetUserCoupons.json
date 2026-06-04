@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022IsUsable\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022UserID\u0022: 123\n}",
+      "sample": "{\n  \u0022IsUsable\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022SortBy\u0022: 1,\n  \u0022UserID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022IsUsable\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetUserCoupons",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022IsUsable\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022SortBy\u0022: 1,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetUserCoupons",
       "syntax": "bash"
     }
   ],
@@ -85,6 +85,15 @@
         "name": "OrganizationUnitID",
         "deprecation_notice": null,
         "description": "You can provide an additional \u0060OrganizationUnitID\u0060 to filter the coupons. This only works when you are logged in as User. Employees/API\u0027s can only see coupons that are within the ClientContext CurrentOrganizationUnit\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SortBy",
+        "deprecation_notice": null,
+        "description": "Optional ordering. When omitted, the existing default order is preserved.\nPossible values:\n\n* \u00600\u0060 - CreationDateAsc\n* \u00601\u0060 - CreationDateDesc\n* \u00602\u0060 - DiscountDescriptionAsc\n* \u00603\u0060 - DiscountDescriptionDesc\n* \u00604\u0060 - ValidFromAsc\n* \u00605\u0060 - ValidFromDesc\n* \u00606\u0060 - ValidTillAsc\n* \u00607\u0060 - ValidTillDesc",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
