@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrderID\u0022: 123\n}",
+      "sample": "{\n  \u0022GenerateFinancialEvents\u0022: true,\n  \u0022OrderID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AutocompleteOrder",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022GenerateFinancialEvents\u0022: true,\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AutocompleteOrder",
       "syntax": "bash"
     }
   ],
@@ -72,6 +72,15 @@
   "response_type_id": "C",
   "types": {
     "B": [
+      {
+        "name": "GenerateFinancialEvents",
+        "deprecation_notice": null,
+        "description": "When enabled, a payment financial event is generated for the balancing payment that brings the order\u0027s open amount to zero, in the current financial period. Defaults to false, keeping that booking to be handled manually.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "OrderID",
         "deprecation_notice": null,
