@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ActivationMethod\u0022: 1,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022ContractPeriod\u0022: 123,\n  \u0022ContractRepeatsOnRenewal\u0022: true,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Interval\u0022: 99999,\n  \u0022IsActive\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ShowModal\u0022: true,\n  \u0022SubscriptionProductID\u0022: 123,\n  \u0022TrialPeriodInDays\u0022: 123,\n  \u0022TriggerProductIDs\u0022: [\n    123\n  ]\n}",
+      "sample": "{\n  \u0022ActivationMethod\u0022: 1,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022ContractPeriod\u0022: 123,\n  \u0022ContractRepeatsOnRenewal\u0022: true,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Interval\u0022: 99999,\n  \u0022IsActive\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ShipmentTrigger\u0022: 3,\n  \u0022ShowModal\u0022: true,\n  \u0022SubscriptionProductID\u0022: 123,\n  \u0022TrialPeriodInDays\u0022: 123,\n  \u0022TriggerProductIDs\u0022: [\n    123\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ActivationMethod\u0022: 1,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022ContractPeriod\u0022: 123,\n  \u0022ContractRepeatsOnRenewal\u0022: true,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Interval\u0022: 99999,\n  \u0022IsActive\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ShowModal\u0022: true,\n  \u0022SubscriptionProductID\u0022: 123,\n  \u0022TrialPeriodInDays\u0022: 123,\n  \u0022TriggerProductIDs\u0022: [\n    123\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateProductSubscription",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ActivationMethod\u0022: 1,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022ContractPeriod\u0022: 123,\n  \u0022ContractRepeatsOnRenewal\u0022: true,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Interval\u0022: 99999,\n  \u0022IsActive\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ShipmentTrigger\u0022: 3,\n  \u0022ShowModal\u0022: true,\n  \u0022SubscriptionProductID\u0022: 123,\n  \u0022TrialPeriodInDays\u0022: 123,\n  \u0022TriggerProductIDs\u0022: [\n    123\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateProductSubscription",
       "syntax": "bash"
     }
   ],
@@ -141,6 +141,15 @@
         "description": "",
         "type": "string",
         "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentTrigger",
+        "deprecation_notice": null,
+        "description": "Controls when the subscription line on the original order is shipped. OnOrderShipment (default): line ships together with the rest of the order. OnOrderPaid: line ships as soon as the order is paid and a usable UserPaymentToken exists for the customer. Manual: line is excluded from the shipper\u0027s auto-remainder sweep and ships only when explicitly listed in a shipper request.\nPossible values:\n\n* \u00601\u0060 - OnOrderShipment\n* \u00602\u0060 - OnOrderPaid\n* \u00603\u0060 - Manual",
+        "type": "integer | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
