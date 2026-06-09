@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022AllowUnsubscribeBy\u0022: 2,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Handler\u0022: \u0022string\u0022,\n  \u0022IdentifierCustomFieldID\u0022: 123,\n  \u0022InquiryID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022ManualUserIdentifiers\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ResubscribeHandling\u0022: 2,\n  \u0022UserIdentifierPrefix\u0022: \u0022string\u0022,\n  \u0022UserIdentifierStartNumber\u0022: 123,\n  \u0022UserIdentifierSuffix\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022AllowUnsubscribeBy\u0022: 2,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Handler\u0022: \u0022string\u0022,\n  \u0022IdentifierCustomFieldID\u0022: 123,\n  \u0022InquiryID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022ManualUserIdentifiers\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ResubscribeHandling\u0022: 2,\n  \u0022UseRandomUserIdentifiers\u0022: true,\n  \u0022UserIdentifierPrefix\u0022: \u0022string\u0022,\n  \u0022UserIdentifierStartNumber\u0022: 123,\n  \u0022UserIdentifierSuffix\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AllowUnsubscribeBy\u0022: 2,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Handler\u0022: \u0022string\u0022,\n  \u0022IdentifierCustomFieldID\u0022: 123,\n  \u0022InquiryID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022ManualUserIdentifiers\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ResubscribeHandling\u0022: 2,\n  \u0022UserIdentifierPrefix\u0022: \u0022string\u0022,\n  \u0022UserIdentifierStartNumber\u0022: 123,\n  \u0022UserIdentifierSuffix\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateSubscription",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AllowUnsubscribeBy\u0022: 2,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Handler\u0022: \u0022string\u0022,\n  \u0022IdentifierCustomFieldID\u0022: 123,\n  \u0022InquiryID\u0022: 123,\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022ManualUserIdentifiers\u0022: true,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022ResubscribeHandling\u0022: 2,\n  \u0022UseRandomUserIdentifiers\u0022: true,\n  \u0022UserIdentifierPrefix\u0022: \u0022string\u0022,\n  \u0022UserIdentifierStartNumber\u0022: 123,\n  \u0022UserIdentifierSuffix\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateSubscription",
       "syntax": "bash"
     }
   ],
@@ -151,6 +151,15 @@
         "deprecation_notice": null,
         "description": "Handling when a user is unsubscribed and re-subscribes.\nPossible values:\n\n* \u00600\u0060 - UpdateUserIdentifier\n* \u00601\u0060 - KeepOriginalUserIdentifier\n* \u00602\u0060 - Block",
         "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UseRandomUserIdentifiers",
+        "deprecation_notice": null,
+        "description": "When set to true, auto-generated UserIdentifiers use a random alphanumeric body instead of the sequential counter driven by \u0060UserIdentifierStartNumber\u0060. Cannot be combined with \u0060ManualUserIdentifiers\u0060 or \u0060UserIdentifierStartNumber\u0060.",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
