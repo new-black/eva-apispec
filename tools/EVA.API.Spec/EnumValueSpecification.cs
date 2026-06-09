@@ -8,4 +8,5 @@ public class EnumValueSpecification
   [JsonPropertyName("value")] public long Value { get; set; }
   [JsonPropertyName("extends")] public ImmutableArray<string> Extends { get; set; } = ImmutableArray<string>.Empty;
   [JsonPropertyName("description")] public string? Description { get; set; }
+  [JsonPropertyName("deprecated")] public TimingInformation? Deprecated { get; set; }
 }
