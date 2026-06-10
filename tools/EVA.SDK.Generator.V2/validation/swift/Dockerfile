@@ -1,4 +1,4 @@
-FROM swift:5.8.1-jammy@sha256:78606da7da46b8a5a6a33710134e093956da1692960c22704e95c4822ecb771e
+FROM swift:6.3.2-jammy@sha256:5f846f008aa76859377d4e9dafe2826c74dde99421bbc60ae2b98d0f1daf72cf
 
 RUN mkdir /src
 WORKDIR /src
