@@ -2,7 +2,7 @@
   "name": "ModifyOrderLinePrice",
   "method": "POST",
   "path": "/message/ModifyOrderLinePrice",
-  "description": "Update the UnitPriceInTax and optional UnitCost for a specific OrderLineID.",
+  "description": "Update the unit price and optional UnitCost for a specific OrderLineID.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrderLineID\u0022: 123,\n  \u0022UnitCost\u0022: 123.456,\n  \u0022UnitPriceInTax\u0022: 123.456\n}",
+      "sample": "{\n  \u0022OrderLineID\u0022: 123,\n  \u0022UnitCost\u0022: 123.456,\n  \u0022UnitPrice\u0022: 123.456,\n  \u0022UnitPriceInTax\u0022: 123.456,\n  \u0022UnitPriceIncludingTax\u0022: true\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderLineID\u0022: 123,\n  \u0022UnitCost\u0022: 123.456,\n  \u0022UnitPriceInTax\u0022: 123.456\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ModifyOrderLinePrice",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderLineID\u0022: 123,\n  \u0022UnitCost\u0022: 123.456,\n  \u0022UnitPrice\u0022: 123.456,\n  \u0022UnitPriceInTax\u0022: 123.456,\n  \u0022UnitPriceIncludingTax\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ModifyOrderLinePrice",
       "syntax": "bash"
     }
   ],
@@ -84,10 +84,28 @@
         "one_of": null
       },
       {
-        "name": "UnitPriceInTax",
+        "name": "UnitPrice",
         "deprecation_notice": null,
-        "description": "",
-        "type": "float",
+        "description": "**Required since 838:** Field UnitPrice is required and will be enforced as such in 2.0.882.\n\n**Will be enforced in 856**",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnitPriceInTax",
+        "deprecation_notice": "\n\n**Deprecated since 838:** UnitPriceInTax is deprecated and will be removed in 2.0.882: Use \u0060UnitPrice\u0060 and \u0060UnitPriceIncludingTax\u0060 instead..\n\n**Will be removed in 856**",
+        "description": "**Deprecated since 838:** UnitPriceInTax is deprecated and will be removed in 2.0.882: Use \u0060UnitPrice\u0060 and \u0060UnitPriceIncludingTax\u0060 instead..\n\n**Will be removed in 856**",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnitPriceIncludingTax",
+        "deprecation_notice": null,
+        "description": "Specify whether the \u0060UnitPrice\u0060 amount includes tax. When not specified, updates are made based on order\u0027s tax handling mode.",
+        "type": "boolean | null",
         "required": false,
         "properties_id": null,
         "one_of": null
