@@ -1,9 +1,9 @@
 {
-  "name": "CancelProductSubscriptionForUser",
+  "name": "DeleteProductSubscriptionCancellationReason",
   "method": "POST",
-  "path": "/message/CancelProductSubscriptionForUser",
-  "description": "Cancel a ProductSubscription for a User.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/DeleteProductSubscriptionCancellationReason",
+  "description": "Delete a product subscription cancellation reason.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ProductSubscriptions:Delete\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022CancellationReasonID\u0022: 123,\n  \u0022CancellationRemark\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123\n}",
+      "sample": "{\n  \u0022ID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CancellationReasonID\u0022: 123,\n  \u0022CancellationRemark\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CancelProductSubscriptionForUser",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DeleteProductSubscriptionCancellationReason",
       "syntax": "bash"
     }
   ],
@@ -66,29 +66,11 @@
   "types": {
     "B": [
       {
-        "name": "CancellationReasonID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060ProductSubscriptionCancellationReason\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CancellationRemark",
-        "deprecation_notice": null,
-        "description": "This string must be between 0 (incl) and 1000 (incl) characters long.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserProductSubscription\u0060",
+        "description": "This is the ID of a \u0060ProductSubscriptionCancellationReason\u0060",
         "type": "integer",
-        "required": false,
+        "required": true,
         "properties_id": null,
         "one_of": null
       }

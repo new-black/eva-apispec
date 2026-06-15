@@ -1,9 +1,9 @@
 {
-  "name": "CancelProductSubscriptionForUser",
+  "name": "ListProductSubscriptionCancellationReasons",
   "method": "POST",
-  "path": "/message/CancelProductSubscriptionForUser",
-  "description": "Cancel a ProductSubscription for a User.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/ListProductSubscriptionCancellationReasons",
+  "description": "List product subscription cancellation reasons.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ProductSubscriptions:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -37,19 +37,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022CancellationReasonID\u0022: 123,\n  \u0022CancellationRemark\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123\n}",
+      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022RemarkType\u0022: 2\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CancellationReasonID\u0022: 123,\n  \u0022CancellationRemark\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CancelProductSubscriptionForUser",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022RemarkType\u0022: 2\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListProductSubscriptionCancellationReasons",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022OrganizationUnitSetName\u0022: \u0022string\u0022,\n      \u0022RemarkType\u0022: 2\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -62,38 +62,78 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "E",
   "types": {
-    "B": [
+    "D": [
       {
-        "name": "CancellationReasonID",
+        "name": "Name",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060ProductSubscriptionCancellationReason\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CancellationRemark",
-        "deprecation_notice": null,
-        "description": "This string must be between 0 (incl) and 1000 (incl) characters long.",
+        "description": "",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ID",
+        "name": "OrganizationUnitSetID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserProductSubscription\u0060",
-        "type": "integer",
+        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RemarkType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Hidden\n* \u00601\u0060 - Show\n* \u00602\u0060 - Required",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "D": [
+    "C": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "InitialPageConfig",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "PageToken",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -140,7 +180,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "G": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -169,14 +209,70 @@
         "one_of": null
       }
     ],
-    "C": [
+    "H": [
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ProductSubscriptionCancellationReason\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitSetID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitSetName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RemarkType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Hidden\n* \u00601\u0060 - Show\n* \u00602\u0060 - Required",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "F",
         "one_of": null
       },
       {
@@ -185,7 +281,34 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "NextPageToken",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PreviousPageToken",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Results",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "H",
         "one_of": null
       }
     ]

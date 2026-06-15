@@ -1,9 +1,9 @@
 {
-  "name": "CancelProductSubscriptionForUser",
+  "name": "GetProductSubscriptionCancellationReason",
   "method": "POST",
-  "path": "/message/CancelProductSubscriptionForUser",
-  "description": "Cancel a ProductSubscription for a User.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
+  "path": "/message/GetProductSubscriptionCancellationReason",
+  "description": "Get a product subscription cancellation reason by ID.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ProductSubscriptions:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -37,19 +37,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022CancellationReasonID\u0022: 123,\n  \u0022CancellationRemark\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123\n}",
+      "sample": "{\n  \u0022ID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CancellationReasonID\u0022: 123,\n  \u0022CancellationRemark\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CancelProductSubscriptionForUser",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetProductSubscriptionCancellationReason",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022Result\u0022: {\n    \u0022Description\u0022: \u0022string\u0022,\n    \u0022ID\u0022: 123,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022OrganizationUnitSetID\u0022: 123,\n    \u0022OrganizationUnitSetName\u0022: \u0022string\u0022,\n    \u0022RemarkType\u0022: 2\n  }\n}"
     },
     {
       "name": "400",
@@ -66,29 +66,11 @@
   "types": {
     "B": [
       {
-        "name": "CancellationReasonID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060ProductSubscriptionCancellationReason\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CancellationRemark",
-        "deprecation_notice": null,
-        "description": "This string must be between 0 (incl) and 1000 (incl) characters long.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserProductSubscription\u0060",
+        "description": "This is the ID of a \u0060ProductSubscriptionCancellationReason\u0060",
         "type": "integer",
-        "required": false,
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
@@ -169,6 +151,62 @@
         "one_of": null
       }
     ],
+    "F": [
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060ProductSubscriptionCancellationReason\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitSetID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitSetName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RemarkType",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Hidden\n* \u00601\u0060 - Show\n* \u00602\u0060 - Required",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "C": [
       {
         "name": "Error",
@@ -186,6 +224,15 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Result",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
         "one_of": null
       }
     ]
