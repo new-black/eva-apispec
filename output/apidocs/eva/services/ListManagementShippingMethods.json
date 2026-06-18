@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CarrierID\u0022: 123,\n      \u0022CarrierName\u0022: \u0022string\u0022,\n      \u0022Code\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}",
+      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CarrierID\u0022: 123,\n      \u0022CarrierName\u0022: \u0022string\u0022,\n      \u0022Code\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CarrierID\u0022: 123,\n      \u0022CarrierName\u0022: \u0022string\u0022,\n      \u0022Code\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CarrierID\u0022: 123,\n      \u0022CarrierName\u0022: \u0022string\u0022,\n      \u0022Code\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListManagementShippingMethods",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CarrierID\u0022: 123,\n      \u0022CarrierName\u0022: \u0022string\u0022,\n      \u0022Code\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CarrierID\u0022: 123,\n      \u0022CarrierName\u0022: \u0022string\u0022,\n      \u0022Code\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListManagementShippingMethods",
       "syntax": "bash"
     }
   ],
@@ -62,7 +62,7 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "E",
+  "response_type_id": "F",
   "types": {
     "D": [
       {
@@ -120,6 +120,26 @@
         "required": false,
         "properties_id": null,
         "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
       },
       {
         "name": "SortDirection",
@@ -151,16 +171,34 @@
     ],
     "B": [
       {
-        "name": "PageConfig",
+        "name": "InitialPageConfig",
         "deprecation_notice": null,
-        "description": "",
+        "description": "The initial page configuration. This is only used when requesting the first page of results. Subsequent pages are requested using the \u0060PageToken\u0060 property.",
         "type": "object | null",
         "required": false,
         "properties_id": "C",
         "one_of": null
+      },
+      {
+        "name": "PageConfig",
+        "deprecation_notice": "\n\n**Deprecated since 838:** PageConfig is deprecated and will be removed in 2.0.882: Use InitialPageConfig/PageToken instead..\n\n**Will be removed in 856**",
+        "description": "**Deprecated since 838:** PageConfig is deprecated and will be removed in 2.0.882: Use InitialPageConfig/PageToken instead..\n\n**Will be removed in 856**",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "PageToken",
+        "deprecation_notice": null,
+        "description": "The page token from a previous response. This is used to request subsequent pages of results.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
       }
     ],
-    "F": [
+    "G": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -207,7 +245,7 @@
         "one_of": null
       }
     ],
-    "G": [
+    "H": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -236,14 +274,14 @@
         "one_of": null
       }
     ],
-    "L": [
+    "M": [
       {
         "name": "ArrayValues",
         "deprecation_notice": null,
         "description": "Used for multiple values",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "L",
+        "properties_id": "M",
         "one_of": null
       },
       {
@@ -292,14 +330,14 @@
         "one_of": null
       }
     ],
-    "K": [
+    "L": [
       {
         "name": "DefaultCustomFieldValue",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "L",
+        "properties_id": "M",
         "one_of": null
       },
       {
@@ -411,7 +449,7 @@
         "one_of": null
       }
     ],
-    "J": [
+    "K": [
       {
         "name": "CustomFieldBackendID",
         "deprecation_notice": null,
@@ -427,7 +465,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "K",
+        "properties_id": "L",
         "one_of": null
       },
       {
@@ -436,11 +474,11 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "L",
+        "properties_id": "M",
         "one_of": null
       }
     ],
-    "I": [
+    "J": [
       {
         "name": "CarrierCode",
         "deprecation_notice": null,
@@ -483,7 +521,7 @@
         "description": "This is the ID of a \u0060CustomField\u0060",
         "type": "map[object] | null",
         "required": false,
-        "properties_id": "J",
+        "properties_id": "K",
         "one_of": null
       },
       {
@@ -586,7 +624,7 @@
         "one_of": null
       }
     ],
-    "M": [
+    "N": [
       {
         "name": "Filter",
         "deprecation_notice": null,
@@ -633,7 +671,7 @@
         "one_of": null
       }
     ],
-    "H": [
+    "I": [
       {
         "name": "CurrentPage",
         "deprecation_notice": null,
@@ -685,7 +723,7 @@
         "description": "",
         "type": "array[object]",
         "required": true,
-        "properties_id": "I",
+        "properties_id": "J",
         "one_of": null
       },
       {
@@ -694,7 +732,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "M",
+        "properties_id": "N",
         "one_of": null
       },
       {
@@ -725,14 +763,14 @@
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "G",
         "one_of": null
       },
       {
@@ -741,7 +779,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "H",
         "one_of": null
       },
       {
@@ -768,7 +806,7 @@
         "description": "**Deprecated since 838:** Result is deprecated and will be removed in 2.0.882: Use Results, PreviousPageToken and NextPageToken instead..\n\n**Will be removed in 856**",
         "type": "object | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "I",
         "one_of": null
       },
       {
@@ -777,7 +815,7 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "I",
+        "properties_id": "J",
         "one_of": null
       }
     ]

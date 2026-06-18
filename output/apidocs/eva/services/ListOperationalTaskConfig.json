@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022ConfigName\u0022: \u0022string\u0022,\n      \u0022SurveyName\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}",
+      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022ConfigName\u0022: \u0022string\u0022,\n      \u0022SurveyName\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022ConfigName\u0022: \u0022string\u0022,\n      \u0022SurveyName\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022ConfigName\u0022: \u0022string\u0022,\n      \u0022SurveyName\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListOperationalTaskConfig",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022ConfigName\u0022: \u0022string\u0022,\n      \u0022SurveyName\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022ConfigName\u0022: \u0022string\u0022,\n      \u0022SurveyName\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListOperationalTaskConfig",
       "syntax": "bash"
     }
   ],
@@ -55,7 +55,7 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "E",
+  "response_type_id": "F",
   "types": {
     "D": [
       {
@@ -78,6 +78,26 @@
       }
     ],
     "C": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
       {
         "name": "Filter",
         "deprecation_notice": null,
@@ -126,16 +146,34 @@
     ],
     "B": [
       {
-        "name": "PageConfig",
+        "name": "InitialPageConfig",
         "deprecation_notice": null,
-        "description": "",
+        "description": "The initial page configuration. This is only used when requesting the first page of results. Subsequent pages are requested using the \u0060PageToken\u0060 property.",
         "type": "object | null",
         "required": false,
         "properties_id": "C",
         "one_of": null
+      },
+      {
+        "name": "PageConfig",
+        "deprecation_notice": "\n\n**Deprecated since 838:** PageConfig is deprecated and will be removed in 2.0.882: Use InitialPageConfig/PageToken instead..\n\n**Will be removed in 856**",
+        "description": "**Deprecated since 838:** PageConfig is deprecated and will be removed in 2.0.882: Use InitialPageConfig/PageToken instead..\n\n**Will be removed in 856**",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "PageToken",
+        "deprecation_notice": null,
+        "description": "The page token from a previous response. This is used to request subsequent pages of results.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
       }
     ],
-    "F": [
+    "G": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -182,7 +220,7 @@
         "one_of": null
       }
     ],
-    "G": [
+    "H": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -211,7 +249,7 @@
         "one_of": null
       }
     ],
-    "J": [
+    "K": [
       {
         "name": "ID",
         "deprecation_notice": null,
@@ -231,65 +269,7 @@
         "one_of": null
       }
     ],
-    "L": [
-      {
-        "name": "End",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Interval",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Start",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "N": [
-      {
-        "name": "Day",
-        "deprecation_notice": null,
-        "description": "The how-manieth day of the month. When a DayOfWeek = Monday is provided, this means 1st,2nd,etc.. monday. When DayOfWeek = null is provided, this meanst, 1st,2nd,etc.. day of the month.",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "DayOfWeek",
-        "deprecation_notice": null,
-        "description": "The day of the week, if set to \u0060null\u0060 this means \u0027any day\u0027\nPossible values:\n\n* \u00600\u0060 - Sunday\n* \u00601\u0060 - Monday\n* \u00602\u0060 - Tuesday\n* \u00603\u0060 - Wednesday\n* \u00604\u0060 - Thursday\n* \u00605\u0060 - Friday\n* \u00606\u0060 - Saturday",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "M": [
-      {
-        "name": "Days",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "N",
-        "one_of": null
-      },
       {
         "name": "End",
         "deprecation_notice": null,
@@ -319,6 +299,64 @@
       }
     ],
     "O": [
+      {
+        "name": "Day",
+        "deprecation_notice": null,
+        "description": "The how-manieth day of the month. When a DayOfWeek = Monday is provided, this means 1st,2nd,etc.. monday. When DayOfWeek = null is provided, this meanst, 1st,2nd,etc.. day of the month.",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DayOfWeek",
+        "deprecation_notice": null,
+        "description": "The day of the week, if set to \u0060null\u0060 this means \u0027any day\u0027\nPossible values:\n\n* \u00600\u0060 - Sunday\n* \u00601\u0060 - Monday\n* \u00602\u0060 - Tuesday\n* \u00603\u0060 - Wednesday\n* \u00604\u0060 - Thursday\n* \u00605\u0060 - Friday\n* \u00606\u0060 - Saturday",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "N": [
+      {
+        "name": "Days",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "O",
+        "one_of": null
+      },
+      {
+        "name": "End",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Interval",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "P": [
       {
         "name": "End",
         "deprecation_notice": null,
@@ -410,7 +448,7 @@
         "one_of": null
       }
     ],
-    "Q": [
+    "R": [
       {
         "name": "Day",
         "deprecation_notice": null,
@@ -439,14 +477,14 @@
         "one_of": null
       }
     ],
-    "P": [
+    "Q": [
       {
         "name": "Days",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object]",
         "required": true,
-        "properties_id": "Q",
+        "properties_id": "R",
         "one_of": null
       },
       {
@@ -477,7 +515,7 @@
         "one_of": null
       }
     ],
-    "K": [
+    "L": [
       {
         "name": "Cron",
         "deprecation_notice": null,
@@ -493,7 +531,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "L",
+        "properties_id": "M",
         "one_of": null
       },
       {
@@ -502,7 +540,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "M",
+        "properties_id": "N",
         "one_of": null
       },
       {
@@ -520,7 +558,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "O",
+        "properties_id": "P",
         "one_of": null
       },
       {
@@ -529,11 +567,11 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "P",
+        "properties_id": "Q",
         "one_of": null
       }
     ],
-    "R": [
+    "S": [
       {
         "name": "ID",
         "deprecation_notice": null,
@@ -553,7 +591,7 @@
         "one_of": null
       }
     ],
-    "I": [
+    "J": [
       {
         "name": "DeactivateDuplicatePersonalTasks",
         "deprecation_notice": null,
@@ -650,7 +688,7 @@
         "description": "List of roles that can execute tasks created by this configuration.",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "J",
+        "properties_id": "K",
         "one_of": null
       },
       {
@@ -659,7 +697,7 @@
         "description": "Schedule for the task configuration. This is optional, and if not provided, the tasks can only be created by manually triggering this config.",
         "type": "object | null",
         "required": false,
-        "properties_id": "K",
+        "properties_id": "L",
         "one_of": null
       },
       {
@@ -677,7 +715,7 @@
         "description": "Information about the optional survey linked to this config.",
         "type": "object | null",
         "required": false,
-        "properties_id": "R",
+        "properties_id": "S",
         "one_of": null
       },
       {
@@ -690,7 +728,7 @@
         "one_of": null
       }
     ],
-    "S": [
+    "T": [
       {
         "name": "Filter",
         "deprecation_notice": null,
@@ -737,7 +775,7 @@
         "one_of": null
       }
     ],
-    "H": [
+    "I": [
       {
         "name": "CurrentPage",
         "deprecation_notice": null,
@@ -789,7 +827,7 @@
         "description": "",
         "type": "array[object]",
         "required": true,
-        "properties_id": "I",
+        "properties_id": "J",
         "one_of": null
       },
       {
@@ -798,7 +836,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "S",
+        "properties_id": "T",
         "one_of": null
       },
       {
@@ -829,14 +867,14 @@
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "G",
         "one_of": null
       },
       {
@@ -845,7 +883,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "H",
         "one_of": null
       },
       {
@@ -872,7 +910,7 @@
         "description": "**Deprecated since 838:** Result is deprecated and will be removed in 2.0.882: Use Results, PreviousPageToken and NextPageToken instead..\n\n**Will be removed in 856**",
         "type": "object | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "I",
         "one_of": null
       },
       {
@@ -881,7 +919,7 @@
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "I",
+        "properties_id": "J",
         "one_of": null
       }
     ]
