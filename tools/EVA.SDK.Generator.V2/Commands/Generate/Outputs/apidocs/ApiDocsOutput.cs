@@ -41,6 +41,14 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
             state.ResetForService();
             await GenerateService(state, service, ctx);
         }
+
+        await GenerateDataLakeIndex(ctx);
+        
+        foreach (var dl in ctx.Input.DatalakeExports)
+        {
+            state.ResetForService();
+            await GenerateDataLake(state, dl, ctx);
+        }
     }
 
     private static async Task GenerateSidebar(OutputContext<ApiDocsOptions> ctx)
@@ -60,6 +68,23 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
         };
 
         await ctx.Writer.WriteFileAsync("eva/index.json", JsonSerializer.Serialize(sidebar, JsonContext.Default.ServiceIndex));
+    }
+    
+    private static async Task GenerateDataLakeIndex(OutputContext<ApiDocsOptions> ctx)
+    {
+        var entries = ctx.Input.DatalakeExports
+            .Select(service => new ServiceIndex.Entry
+            {
+                Name = service.Name
+            })
+            .OrderBy(x => x.Name).ToImmutableArray();
+
+        var sidebar = new ServiceIndex
+        {
+            Entries = entries
+        };
+
+        await ctx.Writer.WriteFileAsync("eva/datalake_index.json", JsonSerializer.Serialize(sidebar, JsonContext.Default.ServiceIndex));
     }
 
     private static async Task GenerateService(State state, ServiceModel service, OutputContext<ApiDocsOptions> ctx)
@@ -91,6 +116,20 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
         result.ResponseSamples = GetResponseSamples(ctx, service.ResponseTypeID, service.Name);
 
         await ctx.Writer.WriteFileAsync($"eva/services/{service.Name}.json", JsonSerializer.Serialize(result, JsonContext.Indented.SingleService));
+    }
+    
+    private static async Task GenerateDataLake(State state, DatalakeExportTarget service, OutputContext<ApiDocsOptions> ctx)
+    {
+        var result = new SingleDataLake
+        {
+            Name = service.Name,
+            Path = service.ExamplePath,
+            Types = new Dictionary<string, List<TypeInfo>>()
+        };
+
+        result.TypeID = BuildTypeInfo(state, result.Types, ctx, service.DataType);
+
+        await ctx.Writer.WriteFileAsync($"eva/datalake/{service.Name}.json", JsonSerializer.Serialize(result, JsonContext.Indented.SingleDataLake));
     }
 
     private static string GetDeprecationMessage(ServiceModel service)
