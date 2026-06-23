@@ -26,7 +26,7 @@ internal class ApiDocsOutput : IOutput<ApiDocsOptions>
     public string? OutputPattern => null;
 
     public bool GetForcedTransformations(ApiDocsOptions _, INamedTransform x) =>
-      x is RemoveGenerics or RemoveInheritance or RemoveDataLakeExports or RemoveEventExports or RemoveErrors;
+      x is RemoveGenerics or RemoveInheritance or RemoveEventExports or RemoveErrors;
 
     public async Task Write(OutputContext<ApiDocsOptions> ctx)
     {
