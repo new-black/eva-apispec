@@ -1,8 +1,8 @@
 {
-  "name": "EditProductPropertyType",
+  "name": "ImportProductPropertyTypeContent",
   "method": "POST",
-  "path": "/message/EditProductPropertyType",
-  "description": "Update a ProductPropertyType\n\nThe SearchType or Options can be changed\n\nFor the Edits there is a specific set of properties that can be set:\n- display_name\n- name\n- unit_of_measure",
+  "path": "/message/ImportProductPropertyTypeContent",
+  "description": "Imports the per-language content (display name, and unit of measure) for existing product property types.\n\nThe property types must already exist; this service only writes their translations and never creates,\nupdates or deletes the property types themselves. Leave a content entry\u0027s LanguageID null to set the\nlanguage-agnostic default label, or set \u0060IsDeleted\u0060 = true to remove the translation for that language.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ProductComponents:Edit\u0060",
   "headers": [
     {
@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022CopyToParentProductPropertyTypeID\u0022: \u0022string\u0022,\n  \u0022Edits\u0022: [\n    {\n      \u0022Content\u0022: {\n        \u0022key\u0022: \u0022any valid json value\u0022\n      },\n      \u0022LayerID\u0022: 123\n    }\n  ],\n  \u0022ID\u0022: \u0022string\u0022,\n  \u0022Options\u0022: 1,\n  \u0022SearchType\u0022: 4\n}",
+      "sample": "{\n  \u0022PropertyTypes\u0022: {\n    \u0022key\u0022: [\n      {\n        \u0022IsDeleted\u0022: true,\n        \u0022LanguageID\u0022: \u0022st\u0022,\n        \u0022Name\u0022: \u0022string\u0022,\n        \u0022UnitOfMeasure\u0022: \u0022string\u0022\n      }\n    ]\n  }\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CopyToParentProductPropertyTypeID\u0022: \u0022string\u0022,\n  \u0022Edits\u0022: [\n    {\n      \u0022Content\u0022: {\n        \u0022key\u0022: \u0022any valid json value\u0022\n      },\n      \u0022LayerID\u0022: 123\n    }\n  ],\n  \u0022ID\u0022: \u0022string\u0022,\n  \u0022Options\u0022: 1,\n  \u0022SearchType\u0022: 4\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/EditProductPropertyType",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022PropertyTypes\u0022: {\n    \u0022key\u0022: [\n      {\n        \u0022IsDeleted\u0022: true,\n        \u0022LanguageID\u0022: \u0022st\u0022,\n        \u0022Name\u0022: \u0022string\u0022,\n        \u0022UnitOfMeasure\u0022: \u0022string\u0022\n      }\n    ]\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ImportProductPropertyTypeContent",
       "syntax": "bash"
     }
   ],
@@ -59,19 +59,37 @@
   "types": {
     "C": [
       {
-        "name": "Content",
+        "name": "IsDeleted",
         "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
+        "description": "When true, the content for this language is removed instead of written.",
+        "type": "boolean | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "LayerID",
+        "name": "LanguageID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060ContentLayer\u0060",
-        "type": "integer",
+        "description": "Language for this content entry. Leave null for language-agnostic content.\n\nThis is the ID of a \u0060Language\u0060\n\nThis string must be between 2 (incl) and 2 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "User-facing name of the property type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnitOfMeasure",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -79,48 +97,12 @@
     ],
     "B": [
       {
-        "name": "CopyToParentProductPropertyTypeID",
+        "name": "PropertyTypes",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Edits",
-        "deprecation_notice": "\n\n**Deprecated since 838:** Edits is deprecated and will be removed in 2.0.882: Use ImportProductPropertyTypeContent.\n\n**Will be removed in 856**",
-        "description": "**Deprecated since 838:** Edits is deprecated and will be removed in 2.0.882: Use ImportProductPropertyTypeContent.\n\n**Will be removed in 856**",
-        "type": "array[object] | null",
-        "required": false,
+        "description": "The identifier of an existing property type (e.g. \u0027color\u0027, \u0027material\u0027).\n\nThis is the ID of a \u0060ProductPropertyType\u0060",
+        "type": "map[array[object]]",
+        "required": true,
         "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060ProductPropertyType\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Options",
-        "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - AlphabeticallySortable",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SearchType",
-        "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Keyword\n* \u00602\u0060 - Text\n* \u00604\u0060 - IsHidden",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       }
     ],
