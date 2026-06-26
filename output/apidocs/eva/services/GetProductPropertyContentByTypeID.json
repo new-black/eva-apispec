@@ -1,9 +1,9 @@
 {
-  "name": "EditProductPropertyType",
+  "name": "GetProductPropertyContentByTypeID",
   "method": "POST",
-  "path": "/message/EditProductPropertyType",
-  "description": "Update a ProductPropertyType\n\nThe SearchType or Options can be changed\n\nFor the Edits there is a specific set of properties that can be set:\n- display_name\n- name\n- unit_of_measure",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ProductComponents:Edit\u0060",
+  "path": "/message/GetProductPropertyContentByTypeID",
+  "description": "Gets the per-language content (display name and unit of measure) of a product property type. A \u0060null\u0060 LanguageID is the language-agnostic default.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022CopyToParentProductPropertyTypeID\u0022: \u0022string\u0022,\n  \u0022Edits\u0022: [\n    {\n      \u0022Content\u0022: {\n        \u0022key\u0022: \u0022any valid json value\u0022\n      },\n      \u0022LayerID\u0022: 123\n    }\n  ],\n  \u0022ID\u0022: \u0022string\u0022,\n  \u0022Options\u0022: 1,\n  \u0022SearchType\u0022: 4\n}",
+      "sample": "{\n  \u0022ID\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CopyToParentProductPropertyTypeID\u0022: \u0022string\u0022,\n  \u0022Edits\u0022: [\n    {\n      \u0022Content\u0022: {\n        \u0022key\u0022: \u0022any valid json value\u0022\n      },\n      \u0022LayerID\u0022: 123\n    }\n  ],\n  \u0022ID\u0022: \u0022string\u0022,\n  \u0022Options\u0022: 1,\n  \u0022SearchType\u0022: 4\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/EditProductPropertyType",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetProductPropertyContentByTypeID",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022Content\u0022: [\n    {\n      \u0022LanguageID\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022PropertyID\u0022: \u0022string\u0022,\n      \u0022UnitOfMeasure\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -55,49 +55,40 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "D",
+  "response_type_id": "C",
   "types": {
-    "C": [
+    "B": [
       {
-        "name": "Content",
+        "name": "ID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LayerID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060ContentLayer\u0060",
-        "type": "integer",
-        "required": false,
+        "description": "The identifier of the property type whose content should be returned.\n\nThis is the ID of a \u0060ProductPropertyType\u0060",
+        "type": "string",
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "B": [
+    "D": [
       {
-        "name": "CopyToParentProductPropertyTypeID",
+        "name": "LanguageID",
         "deprecation_notice": null,
-        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "description": "This is the ID of a \u0060Language\u0060",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Edits",
-        "deprecation_notice": "\n\n**Deprecated since 838:** Edits is deprecated and will be removed in 2.0.882: Use ImportProductPropertyTypeContent.\n\n**Will be removed in 856**",
-        "description": "**Deprecated since 838:** Edits is deprecated and will be removed in 2.0.882: Use ImportProductPropertyTypeContent.\n\n**Will be removed in 856**",
-        "type": "array[object] | null",
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
         "required": false,
-        "properties_id": "C",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ID",
+        "name": "PropertyID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060ProductPropertyType\u0060",
         "type": "string | null",
@@ -106,19 +97,10 @@
         "one_of": null
       },
       {
-        "name": "Options",
+        "name": "UnitOfMeasure",
         "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - AlphabeticallySortable",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SearchType",
-        "deprecation_notice": null,
-        "description": "Flags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Keyword\n* \u00602\u0060 - Text\n* \u00604\u0060 - IsHidden",
-        "type": "integer | null",
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -200,7 +182,16 @@
         "one_of": null
       }
     ],
-    "D": [
+    "C": [
+      {
+        "name": "Content",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
       {
         "name": "Error",
         "deprecation_notice": null,
