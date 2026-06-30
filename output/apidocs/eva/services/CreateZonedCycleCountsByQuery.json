@@ -49,7 +49,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Created\u0022: [\n    {\n      \u0022NotCreatedReason\u0022: 2,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022ProductBackendID\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022ProductName\u0022: \u0022string\u0022,\n      \u0022TaskID\u0022: 123\n    }\n  ],\n  \u0022Skipped\u0022: [\n    {\n      \u0022NotCreatedReason\u0022: 2,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022ProductBackendID\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022ProductName\u0022: \u0022string\u0022,\n      \u0022TaskID\u0022: 123\n    }\n  ]\n}"
+      "sample": "{\n  \u0022Created\u0022: [\n    {\n      \u0022NotCreatedReason\u0022: 2,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022ProductBackendID\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022ProductIDs\u0022: [\n        123\n      ],\n      \u0022ProductName\u0022: \u0022string\u0022,\n      \u0022TaskID\u0022: 123,\n      \u0022TriggerProductID\u0022: 123\n    }\n  ],\n  \u0022Skipped\u0022: [\n    {\n      \u0022NotCreatedReason\u0022: 2,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022ProductBackendID\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022ProductIDs\u0022: [\n        123\n      ],\n      \u0022ProductName\u0022: \u0022string\u0022,\n      \u0022TaskID\u0022: 123,\n      \u0022TriggerProductID\u0022: 123\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -252,6 +252,15 @@
         "one_of": null
       },
       {
+        "name": "ProductIDs",
+        "deprecation_notice": null,
+        "description": "All products on the created task. For a single-product count this contains the one product; for a count triggered on a configurable product it contains every counted leaf SKU. \u0060ProductID\u0060 holds the primary (first) product.\n\nThis is the ID of a \u0060Product\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "ProductName",
         "deprecation_notice": null,
         "description": "",
@@ -264,6 +273,15 @@
         "name": "TaskID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060UserTask\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TriggerProductID",
+        "deprecation_notice": null,
+        "description": "The product the count was triggered on when it differs from the counted leaves: the configurable whose leaf SKUs were counted. Null for a single-product count. \u0060ProductName\u0060 reflects this product when set.\n\nThis is the ID of a \u0060Product\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
