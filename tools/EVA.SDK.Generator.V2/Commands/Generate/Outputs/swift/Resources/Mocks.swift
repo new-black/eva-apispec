@@ -60,6 +60,10 @@ func decodeLog(_ error: Error) {
     // No-op
 }
 
+func decodeRequiredLog(_ error: Error) {
+    // No-op
+}
+
 extension DecodingError {
     static func verifyAnySchema<T>(_ value: T, key: CodingKey, debugDescription: String) {
         // No-op: This function intentionally does nothing.
