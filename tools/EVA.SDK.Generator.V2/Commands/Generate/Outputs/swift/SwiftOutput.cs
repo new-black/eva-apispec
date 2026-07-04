@@ -220,11 +220,6 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           var prop = list[i];
           var propDefault = GetPropDefault(prop.Value.Type, prop.Value.Skippable || prop.Value.Deprecated != null);
 
-          if (string.IsNullOrEmpty(propDefault))
-          {
-            propDefault = GetScalarFallbackDefault(GetPropTypeName(prop.Value, prop.Key, id, ctx, true));
-          }
-
           output.WriteLine(
             $"{prop.Key}: {GetPropTypeName(prop.Value, prop.Key, id, ctx, false, prop.Value.Deprecated != null)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == list.Count - 1 ? string.Empty : ",")}");
         }
@@ -264,11 +259,6 @@ internal class SwiftOutput : IOutput<SwiftOptions>
               var (propName, prop, typeCtx) = allFlatProps[i];
               var propDefault = GetPropDefault(prop.Type, prop.Skippable || prop.Deprecated != null);
               var typePrefix = GetFlatInitTypePrefix(prop, typeCtx, id, ctx.Input);
-
-              if (string.IsNullOrEmpty(propDefault))
-              {
-                propDefault = GetScalarFallbackDefault(GetPropTypeName(prop, propName, typeCtx, ctx, true, false, typePrefix));
-              }
 
               output.WriteLine(
                 $"{propName}: {GetPropTypeName(prop, propName, typeCtx, ctx, false, prop.Deprecated != null, typePrefix)}{(string.IsNullOrEmpty(propDefault) ? string.Empty : $" = {propDefault}")}{(i == allFlatProps.Count - 1 ? string.Empty : ",")}");
