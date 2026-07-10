@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ProductID\u0022: 123,\n  \u0022ShowWarehousesForOrganizationUnitID\u0022: 123\n}",
+      "sample": "{\n  \u0022OnlyLabelsWithFeatures\u0022: true,\n  \u0022ProductID\u0022: 123,\n  \u0022ShowWarehousesForOrganizationUnitID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ProductID\u0022: 123,\n  \u0022ShowWarehousesForOrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetStockDetailsForProduct",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OnlyLabelsWithFeatures\u0022: true,\n  \u0022ProductID\u0022: 123,\n  \u0022ShowWarehousesForOrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetStockDetailsForProduct",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022PromisedDeliveryDate\u0022: \u00222025-01-01\u0022,\n  \u0022PromisedDeliveryStatus\u0022: 2,\n  \u0022QuantityOnHand\u0022: 123,\n  \u0022SellableQuantityAvailable\u0022: 123,\n  \u0022SellableStockInStoresWithinApplication\u0022: 123,\n  \u0022SellableStockInWarehouses\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022SellableStock\u0022: 123\n    }\n  ],\n  \u0022StockPerLabel\u0022: {\n    \u0022key\u0022: 123\n  }\n}"
+      "sample": "{\n  \u0022AllSellableQuantityAvailable\u0022: 123,\n  \u0022AllSellableQuantityCommitted\u0022: 123,\n  \u0022AllSellableQuantityOnHand\u0022: 123,\n  \u0022PromisedDeliveryDate\u0022: \u00222025-01-01\u0022,\n  \u0022PromisedDeliveryStatus\u0022: 2,\n  \u0022QuantityOnHand\u0022: 123,\n  \u0022SellableQuantityAvailable\u0022: 123,\n  \u0022SellableStockInStoresWithinApplication\u0022: 123,\n  \u0022SellableStockInWarehouses\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022SellableStock\u0022: 123\n    }\n  ],\n  \u0022StockPerLabel\u0022: {\n    \u0022key\u0022: 123\n  }\n}"
     },
     {
       "name": "400",
@@ -72,6 +72,15 @@
   "response_type_id": "C",
   "types": {
     "B": [
+      {
+        "name": "OnlyLabelsWithFeatures",
+        "deprecation_notice": null,
+        "description": "When true, \u0060StockPerLabel\u0060 only contains stock labels that have at least one feature enabled for the current organization unit.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "ProductID",
         "deprecation_notice": null,
@@ -198,6 +207,33 @@
     ],
     "C": [
       {
+        "name": "AllSellableQuantityAvailable",
+        "deprecation_notice": null,
+        "description": "Sum of the quantity available (quantity on hand minus quantity committed to orders) of all stock labels that are configured as sellable for the current organization unit.",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AllSellableQuantityCommitted",
+        "deprecation_notice": null,
+        "description": "Sum of the quantity committed to orders of all stock labels that are configured as sellable for the current organization unit.",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AllSellableQuantityOnHand",
+        "deprecation_notice": null,
+        "description": "Sum of the quantity on hand of all stock labels that are configured as sellable for the current organization unit.",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
@@ -236,7 +272,7 @@
       {
         "name": "QuantityOnHand",
         "deprecation_notice": null,
-        "description": "",
+        "description": "The quantity on hand at the current organization unit, summed across all stock labels.",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -245,7 +281,7 @@
       {
         "name": "SellableQuantityAvailable",
         "deprecation_notice": null,
-        "description": "For configurable products this is the sum of the sellable quantity available of all child products.",
+        "description": "The quantity on hand of the built-in \u0060Sellable\u0060 stock label at the current organization unit. For configurable products this is the sum of the sellable quantity available of all child products. Despite its name, this does not take committed stock into account; use \u0060AllSellableQuantityAvailable\u0060 instead.",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -254,7 +290,7 @@
       {
         "name": "SellableStockInStoresWithinApplication",
         "deprecation_notice": null,
-        "description": "",
+        "description": "The quantity on hand of the built-in \u0060Sellable\u0060 stock label, summed across all stores within the current application.",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -263,7 +299,7 @@
       {
         "name": "SellableStockInWarehouses",
         "deprecation_notice": null,
-        "description": "",
+        "description": "The quantity on hand of the built-in \u0060Sellable\u0060 stock label per warehouse.",
         "type": "array[object] | null",
         "required": false,
         "properties_id": "F",
@@ -272,7 +308,7 @@
       {
         "name": "StockPerLabel",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060StockLabel\u0060",
+        "description": "The quantity on hand per stock label at the current organization unit. Labels without stock are omitted.\n\nThis is the ID of a \u0060StockLabel\u0060",
         "type": "map[integer] | null",
         "required": false,
         "properties_id": null,
