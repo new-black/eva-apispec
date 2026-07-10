@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BaseUrl\u0022: \u0022string\u0022,\n  \u0022ClientID\u0022: \u0022string\u0022,\n  \u0022CountryClaim\u0022: \u0022string\u0022,\n  \u0022CreateUsers\u0022: true,\n  \u0022DisallowOtherMethods\u0022: true,\n  \u0022EmailAddressClaim\u0022: \u0022string\u0022,\n  \u0022Enabled\u0022: true,\n  \u0022FirstNameClaim\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IsTrusted\u0022: true,\n  \u0022LanguageClaim\u0022: \u0022string\u0022,\n  \u0022LastNameClaim\u0022: \u0022string\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022NicknameClaim\u0022: \u0022string\u0022,\n  \u0022UserType\u0022: 4,\n  \u0022UsernameClaim\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BaseUrl\u0022: \u0022string\u0022,\n  \u0022ClientID\u0022: \u0022string\u0022,\n  \u0022CountryClaim\u0022: \u0022string\u0022,\n  \u0022CreateUsers\u0022: true,\n  \u0022DisallowOtherMethods\u0022: true,\n  \u0022EmailAddressClaim\u0022: \u0022string\u0022,\n  \u0022EmailDomains\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Enabled\u0022: true,\n  \u0022FirstNameClaim\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IsTrusted\u0022: true,\n  \u0022LanguageClaim\u0022: \u0022string\u0022,\n  \u0022LastNameClaim\u0022: \u0022string\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022NicknameClaim\u0022: \u0022string\u0022,\n  \u0022UserType\u0022: 4,\n  \u0022UsernameClaim\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BaseUrl\u0022: \u0022string\u0022,\n  \u0022ClientID\u0022: \u0022string\u0022,\n  \u0022CountryClaim\u0022: \u0022string\u0022,\n  \u0022CreateUsers\u0022: true,\n  \u0022DisallowOtherMethods\u0022: true,\n  \u0022EmailAddressClaim\u0022: \u0022string\u0022,\n  \u0022Enabled\u0022: true,\n  \u0022FirstNameClaim\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IsTrusted\u0022: true,\n  \u0022LanguageClaim\u0022: \u0022string\u0022,\n  \u0022LastNameClaim\u0022: \u0022string\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022NicknameClaim\u0022: \u0022string\u0022,\n  \u0022UserType\u0022: 4,\n  \u0022UsernameClaim\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateOpenIDProvider",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BaseUrl\u0022: \u0022string\u0022,\n  \u0022ClientID\u0022: \u0022string\u0022,\n  \u0022CountryClaim\u0022: \u0022string\u0022,\n  \u0022CreateUsers\u0022: true,\n  \u0022DisallowOtherMethods\u0022: true,\n  \u0022EmailAddressClaim\u0022: \u0022string\u0022,\n  \u0022EmailDomains\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Enabled\u0022: true,\n  \u0022FirstNameClaim\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IsTrusted\u0022: true,\n  \u0022LanguageClaim\u0022: \u0022string\u0022,\n  \u0022LastNameClaim\u0022: \u0022string\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022NicknameClaim\u0022: \u0022string\u0022,\n  \u0022UserType\u0022: 4,\n  \u0022UsernameClaim\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateOpenIDProvider",
       "syntax": "bash"
     }
   ],
@@ -122,6 +122,15 @@
         "one_of": null
       },
       {
+        "name": "EmailDomains",
+        "deprecation_notice": null,
+        "description": "The (email) domains this provider is scoped to.\n\nWhen set, the provider may only create/resolve accounts whose email is within these domains, the domains are reserved so no other provider may claim them, and accounts in these\ndomains are forced to be single-sign-on only (no password).\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Enabled",
         "deprecation_notice": null,
         "description": "While this property is not required, if it is sent in the request it must have a valid value.",
@@ -151,7 +160,7 @@
       {
         "name": "IsTrusted",
         "deprecation_notice": null,
-        "description": "When set, this provider vouches for the email addresses it asserts, so a Customer-typed provider may resolve and log in to an existing Customer \u002B Employee account through it. Only enable for providers that genuinely verify email ownership.\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
+        "description": "When set, this provider vouches for the email addresses it asserts, so a Customer-typed provider may resolve and log in to an existing Customer \u002B Employee account through it.\n\nOnly enable for providers that genuinely verify email ownership.\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
         "type": "boolean",
         "required": false,
         "properties_id": null,
