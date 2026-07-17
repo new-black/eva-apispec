@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022AutoRefund\u0022: true,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Force\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLines\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ]\n}",
+      "sample": "{\n  \u0022AutoRefund\u0022: true,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Force\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLines\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022Reason\u0022: \u0022string\u0022\n    }\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AutoRefund\u0022: true,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Force\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLines\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CancelOrder",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AutoRefund\u0022: true,\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022Force\u0022: true,\n  \u0022OrderID\u0022: 123,\n  \u0022OrderLines\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022OrderLineID\u0022: 123,\n      \u0022Quantity\u0022: 123,\n      \u0022Reason\u0022: \u0022string\u0022\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CancelOrder",
       "syntax": "bash"
     }
   ],
@@ -95,6 +95,15 @@
         "deprecation_notice": null,
         "description": "Quantity to be cancelled. If left blank the full order line will be cancelled",
         "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Reason",
+        "deprecation_notice": null,
+        "description": "Reason for cancelling this line, stored on the order line and used as the stock mutation reason. Specific deployments may act on it, for example setting warehouse stock to zero when the item is out of stock.\n\nThis string must be between 0 (incl) and 255 (incl) characters long.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null

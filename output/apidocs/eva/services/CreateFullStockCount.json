@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022AllowStockMutationsDuringCount\u0022: true,\n  \u0022CreateFullStockCountLabelsForShelves\u0022: true,\n  \u0022InitialFullStockCountLabels\u0022: [\n    {\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123\n    }\n  ],\n  \u0022IsExternal\u0022: true,\n  \u0022RecountInterval\u0022: 123,\n  \u0022ReturnCurrentStock\u0022: true\n}",
+      "sample": "{\n  \u0022AllowStockMutationsDuringCount\u0022: true,\n  \u0022CreateFullStockCountLabelsForShelves\u0022: true,\n  \u0022InitialFullStockCountLabels\u0022: [\n    {\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123\n    }\n  ],\n  \u0022IsExternal\u0022: true,\n  \u0022LabelRecountInterval\u0022: 123,\n  \u0022RecountInterval\u0022: 123,\n  \u0022ReturnCurrentStock\u0022: true\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AllowStockMutationsDuringCount\u0022: true,\n  \u0022CreateFullStockCountLabelsForShelves\u0022: true,\n  \u0022InitialFullStockCountLabels\u0022: [\n    {\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123\n    }\n  ],\n  \u0022IsExternal\u0022: true,\n  \u0022RecountInterval\u0022: 123,\n  \u0022ReturnCurrentStock\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateFullStockCount",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AllowStockMutationsDuringCount\u0022: true,\n  \u0022CreateFullStockCountLabelsForShelves\u0022: true,\n  \u0022InitialFullStockCountLabels\u0022: [\n    {\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123\n    }\n  ],\n  \u0022IsExternal\u0022: true,\n  \u0022LabelRecountInterval\u0022: 123,\n  \u0022RecountInterval\u0022: 123,\n  \u0022ReturnCurrentStock\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateFullStockCount",
       "syntax": "bash"
     }
   ],
@@ -117,6 +117,15 @@
         "deprecation_notice": null,
         "description": "Indicates if the full stock count is done by an external party.\nWhen false, the full stock count will be created and all basic store functionalities will be blocked once started.\n\nWhen true, the full stock count will be created with a snapshot from the current stock. To set the result of the external full stock count, the \u0027UploadExternalFullStockCount\u0027 can be called.\nBasic store functionalities will remaining in working order. Deviations will be calculated based on stock mutations.\nThe UserTask will be started automatically.",
         "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LabelRecountInterval",
+        "deprecation_notice": null,
+        "description": "When supplied, each completed label has a 1-in-N chance (N being this value) to require a full recount of that label. The recount replaces the original count and must be performed by another user. When it triggers, it takes precedence over the RecountInterval product recount. Ignored when IsExternal is set to true.",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
