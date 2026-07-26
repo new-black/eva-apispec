@@ -249319,6 +249319,7 @@
       },
       "typeArguments": [],
       "typeDependencies": [
+        "EVA.Core.Orders.OrderExportType",
         "EVA.Core.DataModels.TransputJobStatuses"
       ],
       "properties": {
@@ -249335,8 +249336,9 @@
             "ref": "id",
             "args": []
           },
+          "description": "The transput job that produced this export.",
           "datamodel": {
-            "name": "OrderExport",
+            "name": "TransputJob",
             "isEvaID": true
           },
           "allowedValues": []
@@ -249353,9 +249355,10 @@
         "OrderID": {
           "type": {
             "ref": "id",
-            "args": []
+            "args": [],
+            "nullable": true
           },
-          "description": "The order this export belongs to.",
+          "description": "The order this export belongs to, for order and return order exports.",
           "datamodel": {
             "name": "Order",
             "supportsCustomID": true,
@@ -249387,10 +249390,26 @@
           "description": "The source organization unit name.",
           "allowedValues": []
         },
+        "ShipmentID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The shipment this export belongs to, for shipment exports.",
+          "datamodel": {
+            "name": "Shipment",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "ShipToOrganizationUnitID": {
           "type": {
             "ref": "id",
-            "args": []
+            "args": [],
+            "nullable": true
           },
           "description": "The destination organization unit ID.",
           "datamodel": {
@@ -249417,16 +249436,12 @@
           "description": "The transput job status.",
           "allowedValues": []
         },
-        "TransputJobID": {
+        "Type": {
           "type": {
-            "ref": "id",
+            "ref": "EVA.Core.Orders.OrderExportType",
             "args": []
           },
-          "description": "The associated transput job ID.",
-          "datamodel": {
-            "name": "TransputJob",
-            "isEvaID": true
-          },
+          "description": "The kind of export.",
           "allowedValues": []
         }
       },
@@ -249439,7 +249454,9 @@
         "request": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.Orders.OrderExportType"
+      ],
       "properties": {
         "CreationTimeBefore": {
           "type": {
@@ -249468,16 +249485,46 @@
           "description": "Filter by export name.",
           "allowedValues": []
         },
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Filter by the order the export belongs to.",
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "ShipFromOrganizationUnitID": {
           "type": {
             "ref": "id",
             "args": [],
             "nullable": true
           },
-          "description": "Filter by the source organization unit.",
+          "description": "Filter by the source organization unit. Only applies to order and return order exports; shipment exports have no organization units and are excluded when this filter is set.",
           "datamodel": {
             "name": "OrganizationUnit",
             "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ShipmentID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Filter by the shipment the export belongs to.",
+          "datamodel": {
+            "name": "Shipment",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
             "isEvaID": true
           },
           "allowedValues": []
@@ -249488,7 +249535,7 @@
             "args": [],
             "nullable": true
           },
-          "description": "Filter by the destination organization unit.",
+          "description": "Filter by the destination organization unit. Only applies to order and return order exports; shipment exports have no organization units and are excluded when this filter is set.",
           "datamodel": {
             "name": "OrganizationUnit",
             "supportsCustomID": true,
@@ -249508,6 +249555,20 @@
             "nullable": true
           },
           "description": "Filter by transput job status(es).",
+          "allowedValues": []
+        },
+        "Types": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Orders.OrderExportType",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Filter by export type(s).",
           "allowedValues": []
         }
       },
@@ -252284,6 +252345,32 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.Orders.OrderExportType": {
+      "typename": "OrderExportType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "OrderExport": {
+          "value": 1,
+          "extends": []
+        },
+        "ReturnOrderExport": {
+          "value": 3,
+          "extends": []
+        },
+        "ShipmentExport": {
+          "value": 2,
+          "extends": []
+        }
+      }
     },
     "EVA.Core.Orders.OrderFulfillmentLineOrganizationUnit": {
       "typename": "OrderFulfillmentLineOrganizationUnit",
