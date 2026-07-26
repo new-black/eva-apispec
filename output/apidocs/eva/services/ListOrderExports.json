@@ -32,24 +32,31 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CreationTimeBefore\u0022: \u00222025-01-01\u0022,\n      \u0022CreationTimeOnOrAfter\u0022: \u00222025-01-01\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022ShipFromOrganizationUnitID\u0022: 123,\n      \u0022ShipToOrganizationUnitID\u0022: 123,\n      \u0022Status\u0022: [\n        123\n      ]\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CreationTimeBefore\u0022: \u00222025-01-01\u0022,\n      \u0022CreationTimeOnOrAfter\u0022: \u00222025-01-01\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrderID\u0022: 123,\n      \u0022ShipFromOrganizationUnitID\u0022: 123,\n      \u0022ShipToOrganizationUnitID\u0022: 123,\n      \u0022ShipmentID\u0022: 123,\n      \u0022Status\u0022: [\n        123\n      ],\n      \u0022Types\u0022: [\n        1\n      ]\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CreationTimeBefore\u0022: \u00222025-01-01\u0022,\n      \u0022CreationTimeOnOrAfter\u0022: \u00222025-01-01\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022ShipFromOrganizationUnitID\u0022: 123,\n      \u0022ShipToOrganizationUnitID\u0022: 123,\n      \u0022Status\u0022: [\n        123\n      ]\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListOrderExports",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022CreationTimeBefore\u0022: \u00222025-01-01\u0022,\n      \u0022CreationTimeOnOrAfter\u0022: \u00222025-01-01\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrderID\u0022: 123,\n      \u0022ShipFromOrganizationUnitID\u0022: 123,\n      \u0022ShipToOrganizationUnitID\u0022: 123,\n      \u0022ShipmentID\u0022: 123,\n      \u0022Status\u0022: [\n        123\n      ],\n      \u0022Types\u0022: [\n        1\n      ]\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListOrderExports",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrderID\u0022: 123,\n      \u0022ShipFromOrganizationUnitID\u0022: 123,\n      \u0022ShipFromOrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022ShipToOrganizationUnitID\u0022: 123,\n      \u0022ShipToOrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022Status\u0022: -1,\n      \u0022TransputJobID\u0022: 123\n    }\n  ]\n}"
+      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022OrderID\u0022: 123,\n      \u0022ShipFromOrganizationUnitID\u0022: 123,\n      \u0022ShipFromOrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022ShipToOrganizationUnitID\u0022: 123,\n      \u0022ShipToOrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022ShipmentID\u0022: 123,\n      \u0022Status\u0022: -1,\n      \u0022Type\u0022: 1\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -93,9 +100,18 @@
         "one_of": null
       },
       {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "Filter by the order the export belongs to.\n\nThis is the ID of a \u0060Order\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "ShipFromOrganizationUnitID",
         "deprecation_notice": null,
-        "description": "Filter by the source organization unit.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "description": "Filter by the source organization unit. Only applies to order and return order exports; shipment exports have no organization units and are excluded when this filter is set.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -104,7 +120,16 @@
       {
         "name": "ShipToOrganizationUnitID",
         "deprecation_notice": null,
-        "description": "Filter by the destination organization unit.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "description": "Filter by the destination organization unit. Only applies to order and return order exports; shipment exports have no organization units and are excluded when this filter is set.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentID",
+        "deprecation_notice": null,
+        "description": "Filter by the shipment the export belongs to.\n\nThis is the ID of a \u0060Shipment\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -114,6 +139,15 @@
         "name": "Status",
         "deprecation_notice": null,
         "description": "Filter by transput job status(es).",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Types",
+        "deprecation_notice": null,
+        "description": "Filter by export type(s).\nPossible values:\n\n* \u00601\u0060 - OrderExport\n* \u00602\u0060 - ShipmentExport\n* \u00603\u0060 - ReturnOrderExport",
         "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
@@ -249,7 +283,7 @@
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrderExport\u0060",
+        "description": "The transput job that produced this export.\n\nThis is the ID of a \u0060TransputJob\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -267,8 +301,8 @@
       {
         "name": "OrderID",
         "deprecation_notice": null,
-        "description": "The order this export belongs to.\n\nThis is the ID of a \u0060Order\u0060",
-        "type": "integer",
+        "description": "The order this export belongs to, for order and return order exports.\n\nThis is the ID of a \u0060Order\u0060",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -295,7 +329,7 @@
         "name": "ShipToOrganizationUnitID",
         "deprecation_notice": null,
         "description": "The destination organization unit ID.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
-        "type": "integer",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -310,6 +344,15 @@
         "one_of": null
       },
       {
+        "name": "ShipmentID",
+        "deprecation_notice": null,
+        "description": "The shipment this export belongs to, for shipment exports.\n\nThis is the ID of a \u0060Shipment\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Status",
         "deprecation_notice": null,
         "description": "The transput job status.\nPossible values:\n\n* \u0060-1\u0060 - Failed\n* \u00600\u0060 - New\n* \u00601\u0060 - Running\n* \u00602\u0060 - Finished",
@@ -319,9 +362,9 @@
         "one_of": null
       },
       {
-        "name": "TransputJobID",
+        "name": "Type",
         "deprecation_notice": null,
-        "description": "The associated transput job ID.\n\nThis is the ID of a \u0060TransputJob\u0060",
+        "description": "The kind of export.\nPossible values:\n\n* \u00601\u0060 - OrderExport\n* \u00602\u0060 - ShipmentExport\n* \u00603\u0060 - ReturnOrderExport",
         "type": "integer",
         "required": false,
         "properties_id": null,
