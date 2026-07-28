@@ -70175,6 +70175,24 @@
           },
           "allowedValues": []
         },
+        "RequireBillingAddress": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When true, this payment type can only be used once the order has a customer billing address.",
+          "allowedValues": []
+        },
+        "RequireCustomer": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When true, this payment type can only be used once a customer is attached to the order.",
+          "allowedValues": []
+        },
         "RequiredFunctionality": {
           "type": {
             "ref": "string",
@@ -70221,6 +70239,15 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "RequireShippingAddress": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When true, this payment type can only be used once the order has a customer shipping address.",
           "allowedValues": []
         },
         "RequiresInteractionForRefunds": {
@@ -192267,6 +192294,24 @@
           "skippable": true,
           "allowedValues": []
         },
+        "RequireBillingAddress": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
+          "allowedValues": []
+        },
+        "RequireCustomer": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
+          "allowedValues": []
+        },
         "RequiredFunctionality": {
           "type": {
             "ref": "string",
@@ -192313,6 +192358,15 @@
           "allowedValues": []
         },
         "RequiresConfirmationForRefunds": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
+          "allowedValues": []
+        },
+        "RequireShippingAddress": {
           "type": {
             "ref": "bool",
             "args": [],
@@ -231505,7 +231559,9 @@
         "response": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.Payments.PaymentMethodNotUsableError"
+      ],
       "properties": {
         "CanRefundWithoutOriginalPaymentTransaction": {
           "type": {
@@ -231558,6 +231614,14 @@
           },
           "allowedValues": []
         },
+        "IsUsable": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "False when this payment type cannot be used yet on this order. See NotUsableError for the reason.",
+          "allowedValues": []
+        },
         "MaximumAmount": {
           "type": {
             "ref": "float128",
@@ -231573,6 +231637,15 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "NotUsableError": {
+          "type": {
+            "ref": "EVA.Core.Payments.PaymentMethodNotUsableError",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Populated when IsUsable is false. Type is a stable reason code; Message is human-readable.",
           "allowedValues": []
         },
         "PaymentMethodID": {
@@ -278302,6 +278375,7 @@
       },
       "typeArguments": [],
       "typeDependencies": [
+        "EVA.Core.Payments.PaymentMethodNotUsableError",
         "EVA.Core.Orders.AvailablePaymentMethodType",
         "EVA.Core.Payments.RefundablePaymentTransaction"
       ],
@@ -278330,6 +278404,29 @@
           "requiredAllowEmpty": {
             "current": false
           },
+          "allowedValues": []
+        },
+        "IsUsable": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "False when this refund method exists but cannot be used yet on this order. See NotUsableError for the reason.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "NotUsableError": {
+          "type": {
+            "ref": "EVA.Core.Payments.PaymentMethodNotUsableError",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Populated when IsUsable is false. Type is a stable reason code; Message is human-readable.",
           "allowedValues": []
         },
         "Transactions": {
@@ -442571,6 +442668,24 @@
     {
       "name": "CustomPaymentMethod:ExchangeRateRequired",
       "message": "Exchange rate is required.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "CustomPaymentMethod:RequiresCustomer",
+      "message": "A customer is required for this payment method.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "CustomPaymentMethod:RequiresBillingAddress",
+      "message": "A customer billing address is required for this payment method.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "CustomPaymentMethod:RequiresShippingAddress",
+      "message": "A customer shipping address is required for this payment method.",
       "module": "EVA.Core",
       "arguments": []
     },
