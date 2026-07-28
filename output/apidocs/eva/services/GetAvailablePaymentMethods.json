@@ -56,7 +56,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022PaymentMethods\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Results\u0022: [\n    {\n      \u0022IsCustom\u0022: true,\n      \u0022IsUsable\u0022: true,\n      \u0022LocalizedName\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022NotUsableError\u0022: {\n        \u0022Message\u0022: \u0022string\u0022,\n        \u0022Type\u0022: \u0022string\u0022\n      },\n      \u0022Types\u0022: [\n        {\n          \u0022CanRefundWithoutOriginalPaymentTransaction\u0022: true,\n          \u0022Code\u0022: \u0022string\u0022,\n          \u0022Data\u0022: \u0022any valid json value\u0022,\n          \u0022DisplayPriority\u0022: 123,\n          \u0022ID\u0022: 123,\n          \u0022IsFixedAmount\u0022: true,\n          \u0022MaximumAmount\u0022: 123.456,\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022PaymentMethodID\u0022: 123,\n          \u0022PaymentMethodName\u0022: \u0022string\u0022\n        }\n      ]\n    }\n  ]\n}"
+      "sample": "{\n  \u0022PaymentMethods\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022Results\u0022: [\n    {\n      \u0022IsCustom\u0022: true,\n      \u0022IsUsable\u0022: true,\n      \u0022LocalizedName\u0022: \u0022string\u0022,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022NotUsableError\u0022: {\n        \u0022Message\u0022: \u0022string\u0022,\n        \u0022Type\u0022: \u0022string\u0022\n      },\n      \u0022Types\u0022: [\n        {\n          \u0022CanRefundWithoutOriginalPaymentTransaction\u0022: true,\n          \u0022Code\u0022: \u0022string\u0022,\n          \u0022Data\u0022: \u0022any valid json value\u0022,\n          \u0022DisplayPriority\u0022: 123,\n          \u0022ID\u0022: 123,\n          \u0022IsFixedAmount\u0022: true,\n          \u0022IsUsable\u0022: true,\n          \u0022MaximumAmount\u0022: 123.456,\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022NotUsableError\u0022: {\n            \u0022Message\u0022: \u0022string\u0022,\n            \u0022Type\u0022: \u0022string\u0022\n          },\n          \u0022PaymentMethodID\u0022: 123,\n          \u0022PaymentMethodName\u0022: \u0022string\u0022\n        }\n      ]\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -243,6 +243,15 @@
         "one_of": null
       },
       {
+        "name": "IsUsable",
+        "deprecation_notice": null,
+        "description": "False when this payment type cannot be used yet on this order. See NotUsableError for the reason.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "MaximumAmount",
         "deprecation_notice": null,
         "description": "When this field is set, the amount that can be paid with this method is limited.",
@@ -258,6 +267,15 @@
         "type": "string | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NotUsableError",
+        "deprecation_notice": null,
+        "description": "Populated when IsUsable is false. Type is a stable reason code; Message is human-readable.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
         "one_of": null
       },
       {
