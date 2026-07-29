@@ -11322,6 +11322,21 @@
       }
     },
     {
+      "name": "DownloadFullStockCountLabelResultTemplate",
+      "assembly": "EVA.Core",
+      "path": "/message/DownloadFullStockCountLabelResultTemplate",
+      "method": "POST",
+      "requestType": "EVA.Core.FullStockCountServices.DownloadFullStockCountLabelResultTemplate",
+      "responseType": "EVA.Core.ResourceResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049
+          }
+        ]
+      }
+    },
+    {
       "name": "DownloadFullStockCountLabelUploadTemplate",
       "assembly": "EVA.Core",
       "path": "/message/DownloadFullStockCountLabelUploadTemplate",
@@ -37686,6 +37701,40 @@
             "types": 2049,
             "functionality": "FraudAddresses",
             "scope": 31
+          }
+        ]
+      }
+    },
+    {
+      "name": "UploadFullStockCountLabelResults_Async",
+      "assembly": "EVA.Core",
+      "path": "/async-message/UploadFullStockCountLabelResults",
+      "method": "POST",
+      "requestType": "EVA.Core.FullStockCountServices.UploadFullStockCountLabelResults_Async",
+      "responseType": "EVA.Core.FullStockCountServices.UploadFullStockCountLabelResults_AsyncResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "SetExternalFullStockCountResult",
+            "scope": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "UploadFullStockCountLabelResults_AsyncResult",
+      "assembly": "EVA.Core",
+      "path": "/async-result/UploadFullStockCountLabelResults",
+      "method": "POST",
+      "requestType": "EVA.Core.FullStockCountServices.UploadFullStockCountLabelResults_AsyncResult",
+      "responseType": "EVA.Core.FullStockCountServices.UploadFullStockCountLabelResultsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "SetExternalFullStockCountResult",
+            "scope": 0
           }
         ]
       }
@@ -103999,6 +104048,24 @@
       "properties": {},
       "enumValues": {}
     },
+    "EVA.Core.FullStockCountServices.DownloadFullStockCountLabelResultTemplate": {
+      "typename": "DownloadFullStockCountLabelResultTemplate",
+      "assembly": "EVA.Core",
+      "description": "Download a template for uploading full stock count label results.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithResourceResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithResourceResponse",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
     "EVA.Core.FullStockCountServices.SetExternalFullStockCountResult": {
       "typename": "SetExternalFullStockCountResult",
       "assembly": "EVA.Core",
@@ -104185,6 +104252,133 @@
             "name": "FullStockCount",
             "isEvaID": true
           },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.FullStockCountServices.UploadFullStockCountLabelResults": {
+      "typename": "UploadFullStockCountLabelResults",
+      "assembly": "EVA.Core",
+      "description": "Upload count results from an external source to an internal full stock count.\n\nFor each combination of FullStockCountLabelName and StockLabelName, an FSC-label is created when it does not exist yet.\nLabels created this way are marked as externally created and remain open, so they can be inspected and corrected in the tasks app.\nUploading a count for a product that already has a result on that FSC-label overwrites that result.\n\nRows must either have a ProductID, ProductBackendID or ProductBarcode.\nWhen any row is invalid, no results are processed and the invalid rows are returned in `Errors`.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.FullStockCountServices.UploadFullStockCountLabelResultsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Data": {
+          "type": {
+            "ref": "binary",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "FullStockCountID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "FullStockCount",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.FullStockCountServices.UploadFullStockCountLabelResults_Async": {
+      "typename": "UploadFullStockCountLabelResults_Async",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.FullStockCountServices.UploadFullStockCountLabelResults",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.FullStockCountServices.UploadFullStockCountLabelResults_AsyncResponse": {
+      "typename": "UploadFullStockCountLabelResults_AsyncResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.AsyncRequestHandling.AsyncRequestResponse",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.FullStockCountServices.UploadFullStockCountLabelResults_AsyncResult": {
+      "typename": "UploadFullStockCountLabelResults_AsyncResult",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.AsyncRequestHandling.AsyncRequestResultRequest",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.FullStockCountServices.UploadFullStockCountLabelResultsResponse": {
+      "typename": "UploadFullStockCountLabelResultsResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Errors": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Row-level validation errors. When any are returned, no results were processed.",
           "allowedValues": []
         }
       },
@@ -311355,6 +311549,14 @@
         "EVA.Core.DataModels.FullStockCountLabelState"
       ],
       "properties": {
+        "CreatedExternally": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Indicates the label was created by uploading external count results through `UploadFullStockCountLabelResults`.",
+          "allowedValues": []
+        },
         "FullStockCountID": {
           "type": {
             "ref": "id",
@@ -311911,6 +312113,14 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "CreatedExternally": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Indicates the label was created by uploading external count results through `UploadFullStockCountLabelResults`.",
           "allowedValues": []
         },
         "FullStockLabelID": {
@@ -440551,6 +440761,12 @@
     {
       "name": "FullStockCount:CannotUploadResultToANonExternalFullStockCount",
       "message": "Can only upload results to external full stock counts.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "FullStockCount:CannotUploadLabelResultsToAnExternalFullStockCount",
+      "message": "Cannot upload label results to an external full stock count. Use either the 'SetExternalFullStockCountResult' or 'UploadExternalFullStockCountResult' service to set the results of the external full stock count.",
       "module": "EVA.Core",
       "arguments": []
     },
