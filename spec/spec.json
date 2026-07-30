@@ -361244,13 +361244,29 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessageWithEmptyResponse"
+        "EVA.Core.RequestMessageWithEmptyResponse",
+        "EVA.Core.DataModels.CustomFieldKeyValue"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessageWithEmptyResponse",
         "args": []
       },
       "properties": {
+        "CustomFields": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.DataModels.CustomFieldKeyValue",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Optional custom fields to set on the task shipment",
+          "allowedValues": []
+        },
         "UserTaskID": {
           "type": {
             "ref": "id",
@@ -459723,6 +459739,12 @@
     {
       "name": "ReturnToSupplierTaskErrors:NoLinkidShipmentOnTask",
       "message": "Task no longer has a linked shipment. You can complete this task.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ReturnToSupplierTaskErrors:CustomFieldsNotSupportedOnStockMovementTask",
+      "message": "Custom fields can't be set on a stock movement task.",
       "module": "EVA.Core",
       "arguments": []
     },
