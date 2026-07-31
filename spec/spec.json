@@ -275340,6 +275340,14 @@
           },
           "allowedValues": []
         },
+        "DeprecationMessage": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "Documentation": {
           "type": {
             "ref": "string",
@@ -275376,6 +275384,14 @@
       "typeDependencies": [],
       "properties": {
         "Component": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DeprecationMessage": {
           "type": {
             "ref": "string",
             "args": [],
@@ -301252,7 +301268,8 @@
       "typeDependencies": [
         "EVA.Core.ResponseMessage",
         "EVA.Core.ScriptEditabilityConfiguration",
-        "EVA.Core.ProposedScriptEdit"
+        "EVA.Core.ProposedScriptEdit",
+        "EVA.Core.Scripting.ScriptWarning"
       ],
       "extends": {
         "ref": "EVA.Core.ResponseMessage",
@@ -301336,6 +301353,20 @@
           "type": {
             "ref": "string",
             "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Warnings": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Scripting.ScriptWarning",
+                "args": [],
+                "nullable": true
+              }
+            ],
             "nullable": true
           },
           "allowedValues": []
@@ -356780,6 +356811,14 @@
           },
           "allowedValues": []
         },
+        "DeprecationMessage": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "Description": {
           "type": {
             "ref": "string",
@@ -408946,6 +408985,96 @@
       },
       "enumValues": {}
     },
+    "EVA.Monitor.MonitorHandlers.ScriptDeprecations.ScriptDeprecationsMonitorResultData": {
+      "typename": "ScriptDeprecationsMonitorResultData",
+      "assembly": "EVA.Monitor",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Monitor.MonitorHandlers.ScriptDeprecations.ScriptDeprecationsMonitorResultData+DeprecatedScriptVariableInfo"
+      ],
+      "properties": {
+        "Deprecations": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Monitor.MonitorHandlers.ScriptDeprecations.ScriptDeprecationsMonitorResultData+DeprecatedScriptVariableInfo",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Monitor.MonitorHandlers.ScriptDeprecations.ScriptDeprecationsMonitorResultData+DeprecatedScriptVariableInfo": {
+      "typename": "DeprecatedScriptVariableInfo",
+      "assembly": "EVA.Monitor",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "AffectsExecution": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Member": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ScriptID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Script",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ScriptName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "VersionEffective": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Monitor.MonitorHandlers.ScriptDeprecations.ScriptDeprecationsMonitorResultData"
+    },
     "EVA.Monitor.MonitorHandlers.ScriptedOrders.ScriptedOrdersMonitorResultData": {
       "typename": "ScriptedOrdersMonitorResultData",
       "assembly": "EVA.Monitor",
@@ -410078,6 +410207,7 @@
             "SettingVulnerabilities",
             "SettingDeprecations",
             "ScriptedOrders",
+            "ScriptDeprecations",
             "ProductSearch",
             "OrganizationUnits",
             "ScriptedOrganizationUnits",
@@ -410300,6 +410430,7 @@
             "SettingVulnerabilities",
             "SettingDeprecations",
             "ScriptedOrders",
+            "ScriptDeprecations",
             "ProductSearch",
             "OrganizationUnits",
             "ScriptedOrganizationUnits",
@@ -410885,6 +411016,7 @@
         "EVA.Monitor.MonitorHandlers.SettingVulnerabilities.SettingVulnerabilitiesMonitorResultData",
         "EVA.Monitor.MonitorHandlers.SettingDeprecations.SettingDeprecationsMonitorResultData",
         "EVA.Monitor.MonitorHandlers.ScriptedOrders.ScriptedOrdersMonitorResultData",
+        "EVA.Monitor.MonitorHandlers.ScriptDeprecations.ScriptDeprecationsMonitorResultData",
         "EVA.Monitor.MonitorHandlers.ProductSearches.ProductSearchMonitorResultData",
         "EVA.Monitor.MonitorHandlers.OrganizationUnits.OrganizationUnitsMonitorResultData",
         "EVA.Monitor.MonitorHandlers.Orders.OrdersMonitorResultData",
@@ -411004,6 +411136,11 @@
               },
               {
                 "ref": "EVA.Monitor.MonitorHandlers.ScriptedOrders.ScriptedOrdersMonitorResultData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Monitor.MonitorHandlers.ScriptDeprecations.ScriptDeprecationsMonitorResultData",
                 "args": [],
                 "nullable": true
               },
