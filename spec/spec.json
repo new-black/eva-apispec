@@ -326696,6 +326696,15 @@
           },
           "allowedValues": []
         },
+        "ShipmentDate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The shipment date of the product in the assortment of the pickup organization unit. Only returned for pre-sale lines. The reservation may not be handed to the customer before this date.",
+          "allowedValues": []
+        },
         "StockProducts": {
           "type": {
             "ref": "array",
@@ -356378,7 +356387,7 @@
             ],
             "nullable": true
           },
-          "description": "When ShipFromStore:TrackMissingPrePickItems is enabled, stock is adjusted down by (picked - requested) for these products and the ship-from-store tasks that can no longer be fulfilled are rerouted to another store.",
+          "description": "When ShipFromStore:TrackMissingPrePickItems is enabled, stock is adjusted down by (picked - requested) for these products and the ship-from-store tasks that can no longer be fulfilled are rerouted to another store. Requires the MassStockUpdate functionality.",
           "datamodel": {
             "name": "Product",
             "supportsCustomID": true,
@@ -356533,7 +356542,7 @@
             "ref": "int32",
             "args": []
           },
-          "description": "Total quantity actually picked across the consolidated pick task.",
+          "description": "Quantity actually picked on the zone pick task.",
           "allowedValues": []
         },
         "ProductID": {
@@ -356554,7 +356563,30 @@
             "ref": "int32",
             "args": []
           },
-          "description": "Total quantity requested across the consolidated pick task.",
+          "description": "Quantity requested on the zone pick task.",
+          "allowedValues": []
+        },
+        "ZonePickTaskID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "ConsolidatedZonePickTask",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ZonePickTaskUserTaskID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The user task ID to pass to UpdateConsolidatedZonePickTask when correcting the picked quantity.",
+          "datamodel": {
+            "name": "UserTask",
+            "isEvaID": true
+          },
           "allowedValues": []
         }
       },
