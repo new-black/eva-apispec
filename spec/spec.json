@@ -20352,6 +20352,23 @@
       }
     },
     {
+      "name": "GetSurveyAnalytics",
+      "assembly": "EVA.BI",
+      "path": "/message/GetSurveyAnalytics",
+      "method": "POST",
+      "requestType": "EVA.BI.Analytics.GetSurveyAnalytics",
+      "responseType": "EVA.BI.Analytics.GetSurveyAnalyticsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Surveys",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "GetSurveyByID",
       "assembly": "EVA.Core.Management",
       "path": "/message/GetSurveyByID",
@@ -44432,6 +44449,535 @@
       },
       "enumValues": {},
       "parent": "EVA.AvaTax.Services.AvataxValidateConfigurationResponse"
+    },
+    "EVA.BI.Analytics.GetSurveyAnalytics": {
+      "typename": "GetSurveyAnalytics",
+      "assembly": "EVA.BI",
+      "description": "Retrieve analytics for a survey by forwarding the request to the datalake and returning its response.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.BI.Analytics.GetSurveyAnalyticsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "AiQuery": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Free-text question answered by the datalake over the survey data.",
+          "allowedValues": []
+        },
+        "DateFrom": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DateTo": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "IncludeSurveyData": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether to include aggregated survey metadata and per-question analytics in the response.",
+          "allowedValues": []
+        },
+        "OrganizationUnitIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "SurveyID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "Survey",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.BI.Analytics.GetSurveyAnalyticsResponse": {
+      "typename": "GetSurveyAnalyticsResponse",
+      "assembly": "EVA.BI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.BI.Analytics.GetSurveyAnalyticsResponse+SurveyMeta",
+        "EVA.BI.Analytics.GetSurveyAnalyticsResponse+QuestionAnalytics",
+        "EVA.BI.Analytics.GetSurveyAnalyticsResponse+AiQueryResult"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "AiQuery": {
+          "type": {
+            "ref": "EVA.BI.Analytics.GetSurveyAnalyticsResponse+AiQueryResult",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Result of the AI query. Present only when AiQuery was supplied.",
+          "allowedValues": []
+        },
+        "Questions": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.BI.Analytics.GetSurveyAnalyticsResponse+QuestionAnalytics",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Per-question analytics. Omitted when IncludeSurveyData is false.",
+          "allowedValues": []
+        },
+        "Survey": {
+          "type": {
+            "ref": "EVA.BI.Analytics.GetSurveyAnalyticsResponse+SurveyMeta",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Aggregated survey metadata. Omitted when IncludeSurveyData is false.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.BI.Analytics.GetSurveyAnalyticsResponse+AiQueryResult": {
+      "typename": "AiQueryResult",
+      "assembly": "EVA.BI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Answer": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Model": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Query": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.BI.Analytics.GetSurveyAnalyticsResponse"
+    },
+    "EVA.BI.Analytics.GetSurveyAnalyticsResponse+AnswerOption": {
+      "typename": "AnswerOption",
+      "assembly": "EVA.BI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Count": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Option": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Percentage": {
+          "type": {
+            "ref": "float64",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.BI.Analytics.GetSurveyAnalyticsResponse"
+    },
+    "EVA.BI.Analytics.GetSurveyAnalyticsResponse+DateRange": {
+      "typename": "DateRange",
+      "assembly": "EVA.BI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "From": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "To": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.BI.Analytics.GetSurveyAnalyticsResponse"
+    },
+    "EVA.BI.Analytics.GetSurveyAnalyticsResponse+FreeTextMeta": {
+      "typename": "FreeTextMeta",
+      "assembly": "EVA.BI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Normalized": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "OtherCount": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "SemanticallyGrouped": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "TopN": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.BI.Analytics.GetSurveyAnalyticsResponse"
+    },
+    "EVA.BI.Analytics.GetSurveyAnalyticsResponse+QuestionAnalytics": {
+      "typename": "QuestionAnalytics",
+      "assembly": "EVA.BI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.BI.Analytics.GetSurveyAnalyticsResponse+Visualization",
+        "EVA.BI.Analytics.GetSurveyAnalyticsResponse+AnswerOption",
+        "EVA.BI.Analytics.GetSurveyAnalyticsResponse+FreeTextMeta"
+      ],
+      "properties": {
+        "Data": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.BI.Analytics.GetSurveyAnalyticsResponse+AnswerOption",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DataType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "FreeText": {
+          "type": {
+            "ref": "EVA.BI.Analytics.GetSurveyAnalyticsResponse+FreeTextMeta",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "QuestionID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "QuestionText": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "TotalAnswerCount": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Visualization": {
+          "type": {
+            "ref": "EVA.BI.Analytics.GetSurveyAnalyticsResponse+Visualization",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.BI.Analytics.GetSurveyAnalyticsResponse"
+    },
+    "EVA.BI.Analytics.GetSurveyAnalyticsResponse+SurveyMeta": {
+      "typename": "SurveyMeta",
+      "assembly": "EVA.BI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.BI.Analytics.GetSurveyAnalyticsResponse+DateRange",
+        "EVA.BI.Analytics.GetSurveyAnalyticsResponse+TrendPoint"
+      ],
+      "properties": {
+        "DateRange": {
+          "type": {
+            "ref": "EVA.BI.Analytics.GetSurveyAnalyticsResponse+DateRange",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Granularity": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Bucket size of ResponseTrend, e.g. \"daily\" or \"hourly\".",
+          "allowedValues": []
+        },
+        "OrganizationUnitIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ResponseTrend": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.BI.Analytics.GetSurveyAnalyticsResponse+TrendPoint",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SurveyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SurveyName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "TotalResponseCount": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.BI.Analytics.GetSurveyAnalyticsResponse"
+    },
+    "EVA.BI.Analytics.GetSurveyAnalyticsResponse+TrendPoint": {
+      "typename": "TrendPoint",
+      "assembly": "EVA.BI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Count": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Date": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.BI.Analytics.GetSurveyAnalyticsResponse"
+    },
+    "EVA.BI.Analytics.GetSurveyAnalyticsResponse+Visualization": {
+      "typename": "Visualization",
+      "assembly": "EVA.BI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Default": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Options": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.BI.Analytics.GetSurveyAnalyticsResponse"
     },
     "EVA.BI.Models.ChartElement": {
       "typename": "ChartElement",
@@ -356387,7 +356933,7 @@
             ],
             "nullable": true
           },
-          "description": "When ShipFromStore:TrackMissingPrePickItems is enabled, stock is adjusted down by (picked - requested) for these products and the ship-from-store tasks that can no longer be fulfilled are rerouted to another store.",
+          "description": "When ShipFromStore:TrackMissingPrePickItems is enabled, stock is adjusted down by (picked - requested) for these products and the ship-from-store tasks that can no longer be fulfilled are rerouted to another store. Requires the MassStockUpdate functionality.",
           "datamodel": {
             "name": "Product",
             "supportsCustomID": true,
@@ -356542,7 +357088,7 @@
             "ref": "int32",
             "args": []
           },
-          "description": "Total quantity actually picked across the consolidated pick task.",
+          "description": "Quantity actually picked on the zone pick task.",
           "allowedValues": []
         },
         "ProductID": {
@@ -356563,7 +357109,30 @@
             "ref": "int32",
             "args": []
           },
-          "description": "Total quantity requested across the consolidated pick task.",
+          "description": "Quantity requested on the zone pick task.",
+          "allowedValues": []
+        },
+        "ZonePickTaskID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "ConsolidatedZonePickTask",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ZonePickTaskUserTaskID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The user task ID to pass to UpdateConsolidatedZonePickTask when correcting the picked quantity.",
+          "datamodel": {
+            "name": "UserTask",
+            "isEvaID": true
+          },
           "allowedValues": []
         }
       },
@@ -456304,6 +456873,18 @@
           }
         }
       ]
+    },
+    {
+      "name": "SurveyAnalytics:NotConfigured",
+      "message": "The survey analytics endpoint is not configured.",
+      "module": "EVA.BI",
+      "arguments": []
+    },
+    {
+      "name": "SurveyAnalytics:CallFailed",
+      "message": "The survey analytics request failed.",
+      "module": "EVA.BI",
+      "arguments": []
     },
     {
       "name": "ZipBlobs:DuplicatePaths",
