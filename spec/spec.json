@@ -152703,7 +152703,7 @@
     "EVA.Core.Management.Discounts.PushDiscountCoupons": {
       "typename": "PushDiscountCoupons",
       "assembly": "EVA.Core.Management",
-      "description": "Push a DiscountCoupon",
+      "description": "Push a DiscountCoupon. The discount is identified by either `DiscountEvaID` (EVA ID, honors the EVA-IDs-Mode header) or the deprecated `DiscountID` (BackendID). One of them is required.",
       "usage": {
         "request": true
       },
@@ -152737,11 +152737,30 @@
           },
           "allowedValues": []
         },
+        "DiscountEvaID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The EVA ID of the discount to push coupons for. Honors the EVA-IDs-Mode header, so it accepts a regular EVA ID, a string EVA ID, or a BackendID.",
+          "datamodel": {
+            "name": "Discount",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "DiscountID": {
           "type": {
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "deprecated": {
+            "announced": 856,
+            "active": 882,
+            "comment": "DiscountID is deprecated and is scheduled to be removed in 2.0.900: Use `DiscountEvaID` instead.."
           },
           "datamodel": {
             "name": "Discount",
@@ -152800,15 +152819,50 @@
           },
           "allowedValues": []
         },
+        "OrderEvaID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The EVA ID of the originating order. Honors the EVA-IDs-Mode header.",
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "OrderID": {
           "type": {
             "ref": "string",
             "args": [],
             "nullable": true
           },
+          "deprecated": {
+            "announced": 856,
+            "active": 882,
+            "comment": "OrderID is deprecated and is scheduled to be removed in 2.0.900: Use `OrderEvaID` instead.."
+          },
           "datamodel": {
             "name": "Order",
             "isExternalID": true
+          },
+          "allowedValues": []
+        },
+        "UserEvaID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The EVA ID of the user the coupon is for. Honors the EVA-IDs-Mode header.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         },
@@ -152817,6 +152871,11 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "deprecated": {
+            "announced": 856,
+            "active": 882,
+            "comment": "UserID is deprecated and is scheduled to be removed in 2.0.900: Use `UserEvaID` instead.."
           },
           "datamodel": {
             "name": "User",
@@ -459531,6 +459590,12 @@
     {
       "name": "DiscountCouponServices:UserIDRequired",
       "message": "UserID is required when logged in user is a Employee or API user.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "DiscountCouponServices:DiscountIDRequired",
+      "message": "Either DiscountEvaID or DiscountID is required.",
       "module": "EVA.Core.Management",
       "arguments": []
     },
