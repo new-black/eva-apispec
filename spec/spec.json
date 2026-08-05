@@ -320926,6 +320926,15 @@
           },
           "allowedValues": []
         },
+        "CycleCountZoneFilterAttribute": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The grouping attribute currently configured on the cycle count zone this task belongs to. Null when the zone has no grouping attribute.",
+          "allowedValues": []
+        },
         "Data": {
           "type": {
             "ref": "EVA.Core.Types.ZonedCycleCounts.ZonedCycleCountPreCountUserTaskData",
@@ -330440,6 +330449,18 @@
           },
           "allowedValues": []
         },
+        "FilterAttribute": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "stringLengthConstraint": {
+            "min": 1,
+            "max": 255
+          },
+          "allowedValues": []
+        },
         "Name": {
           "type": {
             "ref": "string",
@@ -330450,6 +330471,19 @@
           },
           "requiredAllowEmpty": {
             "current": false
+          },
+          "allowedValues": []
+        },
+        "ProductSearchTemplateID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "ProductSearchTemplate",
+            "supportsCustomID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         }
@@ -331556,7 +331590,16 @@
           }
         ]
       },
-      "properties": {},
+      "properties": {
+        "FilterAttribute": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
       "enumValues": {}
     },
     "EVA.Core.Services.ZonedCycleCounts.GetCycleCountZonesResponse": {
@@ -335695,6 +335738,19 @@
           },
           "allowedValues": []
         },
+        "FilterAttribute": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
+          "stringLengthConstraint": {
+            "min": 1,
+            "max": 255
+          },
+          "allowedValues": []
+        },
         "ID": {
           "type": {
             "ref": "id",
@@ -335717,6 +335773,20 @@
           },
           "requiredAllowEmpty": {
             "current": false
+          },
+          "allowedValues": []
+        },
+        "ProductSearchTemplateID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
+          "datamodel": {
+            "name": "ProductSearchTemplate",
+            "supportsCustomID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         }
@@ -386588,6 +386658,14 @@
           },
           "allowedValues": []
         },
+        "FilterAttribute": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "ID": {
           "type": {
             "ref": "id",
@@ -386601,6 +386679,27 @@
           "allowedValues": []
         },
         "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ProductSearchTemplateID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "ProductSearchTemplate",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ProductSearchTemplateName": {
           "type": {
             "ref": "string",
             "args": [],
@@ -460841,6 +460940,12 @@
     {
       "name": "CycleCountZone:AttachedToZoneGroup",
       "message": "This zone is still attached to one or more zone groups and cannot be deleted. Please remove it from those zone groups first.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "CycleCountZone:BuiltInZone",
+      "message": "This is a built-in zone and cannot be modified or deleted.",
       "module": "EVA.Core",
       "arguments": []
     },
