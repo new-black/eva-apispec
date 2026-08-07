@@ -39120,6 +39120,23 @@
       }
     },
     {
+      "name": "VerifyReturnToSupplierOrder",
+      "assembly": "EVA.Core",
+      "path": "/message/VerifyReturnToSupplierOrder",
+      "method": "POST",
+      "requestType": "EVA.Core.Orders.VerifyReturnToSupplierOrder",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "VerifyReturnToSupplierOrder",
+            "scope": 0
+          }
+        ]
+      }
+    },
+    {
       "name": "VoidTaxFreeForm",
       "assembly": "EVA.Core",
       "path": "/message/VoidTaxFreeForm",
@@ -270518,7 +270535,39 @@
     "EVA.Core.Orders.VerifyOrder": {
       "typename": "VerifyOrder",
       "assembly": "EVA.Core",
-      "description": "Verify an Order that has been flagged with a CustomOrderStatus `NeedsEmployeeVerification`. Will try to place the order after the verification.",
+      "description": "Verify an Order that has been flagged with a CustomOrderStatus `NeedsEmployeeVerification`. Will try to place the order after the verification. For ReturnToSupplier orders, use `VerifyReturnToSupplierOrder` instead.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Orders.VerifyReturnToSupplierOrder": {
+      "typename": "VerifyReturnToSupplierOrder",
+      "assembly": "EVA.Core",
+      "description": "Verify a ReturnToSupplier Order that has been flagged with a CustomOrderStatus `NeedsEmployeeVerification`. Will try to place the order after the verification.",
       "usage": {
         "request": true
       },
@@ -464229,6 +464278,18 @@
     {
       "name": "VerifyOrder:OrderNotPlaced",
       "message": "Cannot verify order because it has not been placed yet",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "VerifyReturnToSupplierOrder:OrderNotPlaced",
+      "message": "Cannot verify order because it has not been placed yet",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "VerifyReturnToSupplierOrder:NotAReturnToSupplierOrder",
+      "message": "Cannot verify order because it is not a return to supplier order",
       "module": "EVA.Core",
       "arguments": []
     },
