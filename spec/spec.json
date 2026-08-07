@@ -396021,10 +396021,20 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.DataLake.Models.DataLakePaymentType",
+        "EVA.DataLake.Models.DataLakeSimpleUser",
         "EVA.DataLake.Models.DataLakeCashJournalOpeningDetails",
         "EVA.DataLake.Models.DataLakeCashJournalClosingDetails"
       ],
       "properties": {
+        "ClosedByUser": {
+          "type": {
+            "ref": "EVA.DataLake.Models.DataLakeSimpleUser",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The user whose session the journal was closed under; null while it is still open. This is NOT proof that this person counted the device. For a device configured with CashJournalMethod Ignore, EVA closes the journal automatically when the financial period closes and forces the amounts to the expected values, so this reports whoever closed the period and nobody counted anything. Read this together with the cash journal method to tell a counted close from an automatic one.",
+          "allowedValues": []
+        },
         "ClosingAmount": {
           "type": {
             "ref": "float128",
@@ -396103,6 +396113,15 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "OpenedByUser": {
+          "type": {
+            "ref": "EVA.DataLake.Models.DataLakeSimpleUser",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The user whose session the journal was opened under. For a device configured with CashJournalMethod Ignore, EVA opens the journal automatically when the financial period opens, so this reports whoever opened the period rather than someone present at the device.",
           "allowedValues": []
         },
         "OpeningAmount": {
