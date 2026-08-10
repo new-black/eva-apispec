@@ -66129,6 +66129,10 @@
         "OrganizationUnit": {
           "value": 1,
           "extends": []
+        },
+        "Survey": {
+          "value": 3,
+          "extends": []
         }
       }
     },
@@ -99990,6 +99994,19 @@
           },
           "allowedValues": []
         },
+        "SurveyResponseID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The completed survey response that resolved the closing survey impediment, if any (see the `FinancialPeriod:ClosingSurveyID` setting).",
+          "datamodel": {
+            "name": "SurveyResponse",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "TotalAmountOfCorrections": {
           "type": {
             "ref": "float128",
@@ -100125,6 +100142,7 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.Finance.Periods.IFinancialPeriodImpedimentData",
+        "EVA.Core.Finance.Periods.Impediments.SurveyImpedimentData",
         "EVA.Core.Finance.Periods.Impediments.ActiveUserTasksImpedimentProvider+ActiveUserTaskImpedimentData",
         "EVA.Core.Finance.Periods.Impediments.NegativeStockImpedimentProvider+NegativeStockImpedimentData",
         "EVA.Core.Finance.Periods.Impediments.OpenCashJournalImpedimentProvider+OpenCashJournalImpedimentData"
@@ -100141,6 +100159,11 @@
           "type": {
             "ref": "option",
             "args": [
+              {
+                "ref": "EVA.Core.Finance.Periods.Impediments.SurveyImpedimentData",
+                "args": [],
+                "nullable": true
+              },
               {
                 "ref": "EVA.Core.Finance.Periods.Impediments.ActiveUserTasksImpedimentProvider+ActiveUserTaskImpedimentData",
                 "args": [],
@@ -100187,7 +100210,8 @@
             "ACTIVE_USER_TASK",
             "NEGATIVE_STOCK",
             "OPEN_CASH_JOURNAL",
-            "PCI_QUESTION"
+            "PCI_QUESTION",
+            "SURVEY"
           ]
         }
       },
@@ -100468,6 +100492,25 @@
       },
       "enumValues": {},
       "parent": "EVA.Core.Finance.Periods.Impediments.OpenCashJournalImpedimentProvider+OpenCashJournalImpedimentData"
+    },
+    "EVA.Core.Finance.Periods.Impediments.SurveyImpedimentData": {
+      "typename": "SurveyImpedimentData",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "SurveyID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
     },
     "EVA.Core.Finance.Periods.LegacyCashJournalTypes": {
       "typename": "LegacyCashJournalTypes",
@@ -450687,6 +450730,12 @@
     {
       "name": "FinancialPeriodClosingImpediments:PCIQuestionNotAnswered",
       "message": "The PCI question is not yet answered, this is required to close the period.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "FinancialPeriodClosingImpediments:SurveyNotCompleted",
+      "message": "The required closing survey has not yet been completed, this is required to close the period.",
       "module": "EVA.Core",
       "arguments": []
     },
