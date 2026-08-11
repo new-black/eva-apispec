@@ -19227,6 +19227,19 @@
       }
     },
     {
+      "name": "GetProductSubscriptionMigrationOptions",
+      "assembly": "EVA.Core",
+      "path": "/message/GetProductSubscriptionMigrationOptions",
+      "method": "POST",
+      "requestType": "EVA.Core.ProductSubscriptions.GetProductSubscriptionMigrationOptions",
+      "responseType": "EVA.Core.ProductSubscriptions.GetProductSubscriptionMigrationOptionsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {}
+        ]
+      }
+    },
+    {
       "name": "GetProductSubscriptionsForUser",
       "assembly": "EVA.Core",
       "path": "/message/GetProductSubscriptionsForUser",
@@ -71702,6 +71715,29 @@
             "args": [],
             "nullable": true
           },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "RequiredUserType is deprecated and is scheduled to be removed in 2.0.905: Use RequiredUserTypeForPayments and/or RequiredUserTypeForRefunds instead.."
+          },
+          "allowedValues": []
+        },
+        "RequiredUserTypeForPayments": {
+          "type": {
+            "ref": "EVA.Core.UserTypes",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When not set, falls back to RequiredUserType.",
+          "allowedValues": []
+        },
+        "RequiredUserTypeForRefunds": {
+          "type": {
+            "ref": "EVA.Core.UserTypes",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When not set, falls back to RequiredUserType.",
           "allowedValues": []
         },
         "RequiresAmount": {
@@ -194547,6 +194583,29 @@
             "nullable": true
           },
           "skippable": true,
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "RequiredUserType is deprecated and is scheduled to be removed in 2.0.905: Use RequiredUserTypeForPayments and/or RequiredUserTypeForRefunds instead.."
+          },
+          "allowedValues": []
+        },
+        "RequiredUserTypeForPayments": {
+          "type": {
+            "ref": "EVA.Core.UserTypes",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
+          "allowedValues": []
+        },
+        "RequiredUserTypeForRefunds": {
+          "type": {
+            "ref": "EVA.Core.UserTypes",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
           "allowedValues": []
         },
         "RequiresAmount": {
@@ -297917,6 +297976,106 @@
       "enumValues": {},
       "parent": "EVA.Core.ProductSubscriptions.GetPotentialSubscriptionProductsForOrderResponse"
     },
+    "EVA.Core.ProductSubscriptions.GetProductSubscriptionMigrationOptions": {
+      "typename": "GetProductSubscriptionMigrationOptions",
+      "assembly": "EVA.Core",
+      "description": "Gets the product subscriptions eligible to migrate to, either for an existing user product subscription or for a candidate product subscription plan.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.ProductSubscriptions.GetProductSubscriptionMigrationOptionsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "IncludedFields": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "ProductPropertyType",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ProductSubscriptionID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "ProductSubscription",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "UserProductSubscriptionID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "UserProductSubscription",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.ProductSubscriptions.GetProductSubscriptionMigrationOptionsResponse": {
+      "typename": "GetProductSubscriptionMigrationOptionsResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.ProductSubscriptions.ProductSubscriptionMigrationOption"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Options": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.ProductSubscriptions.ProductSubscriptionMigrationOption",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.ProductSubscriptions.GetProductSubscriptionsForUser": {
       "typename": "GetProductSubscriptionsForUser",
       "assembly": "EVA.Core",
@@ -298771,6 +298930,131 @@
           "type": {
             "ref": "float128",
             "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.ProductSubscriptions.ProductSubscriptionMigrationOption": {
+      "typename": "ProductSubscriptionMigrationOption",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ProductSubscriptions.DataModels.ProductSubscriptionInterval",
+        "EVA.Core.ProductSubscriptions.DataModels.ProductSubscriptionActivationMethod",
+        "EVA.Core.ProductSubscriptions.DataModels.ProductSubscriptionShipmentTrigger",
+        "EVA.Core.ProductSubscriptions.ProductSubscriptionProductInfo",
+        "EVA.Core.ProductSubscriptions.SubscriptionProductPriceInfo"
+      ],
+      "properties": {
+        "ActivationMethod": {
+          "type": {
+            "ref": "EVA.Core.ProductSubscriptions.DataModels.ProductSubscriptionActivationMethod",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "BackendID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ContractPeriod": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ContractRepeatsOnRenewal": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "ProductSubscription",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Interval": {
+          "type": {
+            "ref": "EVA.Core.ProductSubscriptions.DataModels.ProductSubscriptionInterval",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "ShipmentTrigger": {
+          "type": {
+            "ref": "EVA.Core.ProductSubscriptions.DataModels.ProductSubscriptionShipmentTrigger",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "ShowModal": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "SubscriptionPricing": {
+          "type": {
+            "ref": "EVA.Core.ProductSubscriptions.SubscriptionProductPriceInfo",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SubscriptionProduct": {
+          "type": {
+            "ref": "EVA.Core.ProductSubscriptions.ProductSubscriptionProductInfo",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "TrialPeriodInDays": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         }
@@ -465513,6 +465797,18 @@
     {
       "name": "SupplierUpdatePurchaseOrder:OrderIdentifierRequired",
       "message": "An OrderID or order's BackendID is required",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "GetProductSubscriptionMigrationOptions:SubscriptionIdentifierRequired",
+      "message": "Specify either ProductSubscriptionID or UserProductSubscriptionID.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "GetProductSubscriptionMigrationOptions:UserProductSubscriptionNotActive",
+      "message": "User product subscription is not active.",
       "module": "EVA.Core",
       "arguments": []
     },
