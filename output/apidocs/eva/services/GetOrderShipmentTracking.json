@@ -1,0 +1,666 @@
+{
+  "name": "GetOrderShipmentTracking",
+  "method": "POST",
+  "path": "/message/GetOrderShipmentTracking",
+  "description": "Returns the shipment tracking state of an order\u0027s parcels (shipments): progress steps\n(previous, current and future), alerts, estimated delivery windows, carrier information,\ntracking links, delivery location and items \u2014 everything needed to render a tracking\ncomponent without further logic.\n\nThe state is fed by carrier tracking webhooks and served as persisted; \u0060LastUpdated\u0060\nindicates the freshness per parcel. When tracking is not configured or no tracking data\nexists for the order, \u0060TrackingAvailable\u0060 is \u0060false\u0060 and \u0060Parcels\u0060 is empty \u2014 this is not\nan error.",
+  "auth_description": "This service does not require authentication.",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "JSON",
+      "sample": "{\n  \u0022Locale\u0022: \u0022string\u0022,\n  \u0022OrderID\u0022: 123,\n  \u0022ShipmentID\u0022: 123\n}",
+      "syntax": "json"
+    },
+    {
+      "name": "CURL",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Locale\u0022: \u0022string\u0022,\n  \u0022OrderID\u0022: 123,\n  \u0022ShipmentID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetOrderShipmentTracking",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{\n  \u0022Parcels\u0022: [\n    {\n      \u0022LastUpdated\u0022: \u00222025-01-01\u0022,\n      \u0022ShipmentID\u0022: 123,\n      \u0022State\u0022: {\n        \u0022Alerts\u0022: [\n          {\n            \u0022Timestamp\u0022: \u00222025-01-01\u0022,\n            \u0022Type\u0022: 2\n          }\n        ],\n        \u0022CarrierDisplayName\u0022: \u0022string\u0022,\n        \u0022CarrierLogoUrl\u0022: \u0022string\u0022,\n        \u0022CarrierTrackingUrl\u0022: \u0022string\u0022,\n        \u0022CurrentStep\u0022: 11,\n        \u0022DeliveryType\u0022: 1,\n        \u0022Direction\u0022: 1,\n        \u0022EstimatedDeliveryWindow\u0022: {\n          \u0022End\u0022: \u00222025-01-01\u0022,\n          \u0022Start\u0022: \u00222025-01-01\u0022\n        },\n        \u0022Items\u0022: [\n          {\n            \u0022Name\u0022: \u0022string\u0022,\n            \u0022Quantity\u0022: 123\n          }\n        ],\n        \u0022Location\u0022: {\n          \u0022AddressLines\u0022: [\n            \u0022string\u0022\n          ],\n          \u0022City\u0022: \u0022string\u0022,\n          \u0022CountryID\u0022: \u0022string\u0022,\n          \u0022Latitude\u0022: 123.456,\n          \u0022LocationType\u0022: \u0022string\u0022,\n          \u0022Longitude\u0022: 123.456,\n          \u0022Name\u0022: \u0022string\u0022,\n          \u0022OperationalHours\u0022: {\n            \u0022FreeText\u0022: [\n              \u0022string\u0022\n            ],\n            \u0022Friday\u0022: \u0022string\u0022,\n            \u0022Monday\u0022: \u0022string\u0022,\n            \u0022Saturday\u0022: \u0022string\u0022,\n            \u0022Sunday\u0022: \u0022string\u0022,\n            \u0022Thursday\u0022: \u0022string\u0022,\n            \u0022Tuesday\u0022: \u0022string\u0022,\n            \u0022Wednesday\u0022: \u0022string\u0022\n          },\n          \u0022PickupInstructions\u0022: \u0022string\u0022,\n          \u0022PostalCode\u0022: \u0022string\u0022\n        },\n        \u0022SiteName\u0022: \u0022string\u0022,\n        \u0022Steps\u0022: [\n          {\n            \u0022DisplayText\u0022: \u0022string\u0022,\n            \u0022EstimatedWindow\u0022: {\n              \u0022End\u0022: \u00222025-01-01\u0022,\n              \u0022Start\u0022: \u00222025-01-01\u0022\n            },\n            \u0022IsCurrent\u0022: true,\n            \u0022IsReached\u0022: true,\n            \u0022RawStep\u0022: \u0022string\u0022,\n            \u0022ReachedTime\u0022: \u00222025-01-01\u0022,\n            \u0022Step\u0022: 11\n          }\n        ],\n        \u0022TrackingNumber\u0022: \u0022string\u0022,\n        \u0022TrackingPortalUrl\u0022: \u0022string\u0022\n      }\n    }\n  ],\n  \u0022TrackingAvailable\u0022: true\n}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "C",
+  "types": {
+    "B": [
+      {
+        "name": "Locale",
+        "deprecation_notice": null,
+        "description": "Locale (for example \u0060nl-NL\u0060) used to localize the tracking portal URL. Defaults to the language and country of the request.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrderID",
+        "deprecation_notice": null,
+        "description": "ID of the order to return shipment tracking information for.\n\nThis is the ID of a \u0060Order\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentID",
+        "deprecation_notice": null,
+        "description": "Narrows the result to a single shipment of the order; the response keeps the parcel list shape.\n\nThis is the ID of a \u0060Shipment\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Code",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "ExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "deprecation_notice": null,
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "Timestamp",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00601\u0060 - SubmissionDelayed\n* \u00602\u0060 - DeliveryDelayed\n* \u00603\u0060 - FailedDeliveryAttempt\n* \u00604\u0060 - OutForDelivery",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "End",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Start",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "Display name of the item.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "Quantity of the item in the parcel.",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "L": [
+      {
+        "name": "FreeText",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Friday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Monday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Saturday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Sunday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Thursday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Tuesday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Wednesday",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "AddressLines",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "City",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CountryID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Latitude",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LocationType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Longitude",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OperationalHours",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "L",
+        "one_of": null
+      },
+      {
+        "name": "PickupInstructions",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PostalCode",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "M": [
+      {
+        "name": "DisplayText",
+        "deprecation_notice": null,
+        "description": "Label to render for this step, so a consumer does not map the step itself. Built from the carrier tracking platform\u0027s own step value when it reported one, falling back to the normalized step otherwise. Not yet translated.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EstimatedWindow",
+        "deprecation_notice": null,
+        "description": "The estimated time window in which this step is expected to be reached, when known.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "IsCurrent",
+        "deprecation_notice": null,
+        "description": "True for the step the parcel is currently at, which is the last one it reached. Exactly one step carries this, unless no step has been reached yet, in which case none do.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsReached",
+        "deprecation_notice": null,
+        "description": "True when the parcel has reached this step; false for a step that is still expected.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RawStep",
+        "deprecation_notice": null,
+        "description": "The raw step value as reported by the carrier tracking platform. Empty for a step the platform reports but EVA\u0027s client does not recognize, which arrives as Unknown.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReachedTime",
+        "deprecation_notice": null,
+        "description": "The moment this step was reached; null for a step that is still expected.",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Step",
+        "deprecation_notice": null,
+        "description": "The normalized step.\nPossible values:\n\n* \u00600\u0060 - Unknown\n* \u00601\u0060 - ConfirmedByMerchant\n* \u00602\u0060 - PreparedByMerchant\n* \u00603\u0060 - SubmittedToCarrier\n* \u00604\u0060 - EnRoute\n* \u00605\u0060 - DeliveredToPickupPoint\n* \u00606\u0060 - Delivered\n* \u00607\u0060 - Terminated\n* \u00608\u0060 - SentBack\n* \u00609\u0060 - ReturnRequested\n* \u006010\u0060 - DeliveredToMerchant\n* \u006011\u0060 - AwaitingSupplier\n* \u006012\u0060 - LinehaulToCarrier\n* \u006013\u0060 - ReturnApproved\n* \u006014\u0060 - ReturnDeclined\n* \u006015\u0060 - ReturnCompleted\n* \u006016\u0060 - ReplacementSent\n* \u006017\u0060 - ReturnCancelled",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "Alerts",
+        "deprecation_notice": null,
+        "description": "The active alerts for the parcel.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "CarrierDisplayName",
+        "deprecation_notice": null,
+        "description": "Display name of the carrier, when known.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CarrierLogoUrl",
+        "deprecation_notice": null,
+        "description": "URL of the carrier\u0027s logo, when known.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CarrierTrackingUrl",
+        "deprecation_notice": null,
+        "description": "URL of the carrier\u0027s own tracking page for this parcel, when available. Not localized to the requested locale: it keeps the locale the tracking state was retrieved with.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CurrentStep",
+        "deprecation_notice": null,
+        "description": "The current (most recently reached) progress step of the parcel.\nPossible values:\n\n* \u00600\u0060 - Unknown\n* \u00601\u0060 - ConfirmedByMerchant\n* \u00602\u0060 - PreparedByMerchant\n* \u00603\u0060 - SubmittedToCarrier\n* \u00604\u0060 - EnRoute\n* \u00605\u0060 - DeliveredToPickupPoint\n* \u00606\u0060 - Delivered\n* \u00607\u0060 - Terminated\n* \u00608\u0060 - SentBack\n* \u00609\u0060 - ReturnRequested\n* \u006010\u0060 - DeliveredToMerchant\n* \u006011\u0060 - AwaitingSupplier\n* \u006012\u0060 - LinehaulToCarrier\n* \u006013\u0060 - ReturnApproved\n* \u006014\u0060 - ReturnDeclined\n* \u006015\u0060 - ReturnCompleted\n* \u006016\u0060 - ReplacementSent\n* \u006017\u0060 - ReturnCancelled",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DeliveryType",
+        "deprecation_notice": null,
+        "description": "The type of delivery the parcel is tracked for.\nPossible values:\n\n* \u00600\u0060 - Unknown\n* \u00601\u0060 - Delivery\n* \u00602\u0060 - Pickup\n* \u00603\u0060 - Mailbox\n* \u00604\u0060 - InStore\n* \u00605\u0060 - InWarehouse",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Direction",
+        "deprecation_notice": null,
+        "description": "The direction of the parcel.\nPossible values:\n\n* \u00600\u0060 - Unspecified\n* \u00601\u0060 - Outbound\n* \u00602\u0060 - Return",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EstimatedDeliveryWindow",
+        "deprecation_notice": null,
+        "description": "The estimated delivery window of the parcel, when known.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "Items",
+        "deprecation_notice": null,
+        "description": "The items contained in the parcel.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "Location",
+        "deprecation_notice": null,
+        "description": "The delivery or pickup location of the parcel, when known.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      },
+      {
+        "name": "SiteName",
+        "deprecation_notice": null,
+        "description": "Name of the merchant/site the parcel is tracked under, when known.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Steps",
+        "deprecation_notice": null,
+        "description": "The progress steps of the parcel in chronological order: both the steps already reached (with their actual timestamp) and the ones still expected (with their estimated time window). Which steps a parcel goes through is decided by the carrier tracking platform, so it varies per parcel.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "M",
+        "one_of": null
+      },
+      {
+        "name": "TrackingNumber",
+        "deprecation_notice": null,
+        "description": "The tracking number of the parcel.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TrackingPortalUrl",
+        "deprecation_notice": null,
+        "description": "URL of the tracking portal page for this parcel, localized to the requested locale, when available.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "LastUpdated",
+        "deprecation_notice": null,
+        "description": "Moment the tracking state of this parcel was last updated from the carrier tracking platform.",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ShipmentID",
+        "deprecation_notice": null,
+        "description": "ID of the shipment this parcel corresponds to.\n\nThis is the ID of a \u0060Shipment\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "State",
+        "deprecation_notice": null,
+        "description": "The shipment tracking state of the parcel.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Parcels",
+        "deprecation_notice": null,
+        "description": "The tracked parcels (shipments) of the order, each with its full shipment tracking state.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "TrackingAvailable",
+        "deprecation_notice": null,
+        "description": "Whether shipment tracking information is available for this order.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ]
+  }
+}
