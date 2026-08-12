@@ -17760,6 +17760,19 @@
       }
     },
     {
+      "name": "GetOrderShipmentTracking",
+      "assembly": "EVA.Core",
+      "path": "/message/GetOrderShipmentTracking",
+      "method": "POST",
+      "requestType": "EVA.Core.Orders.GetOrderShipmentTracking",
+      "responseType": "EVA.Core.Orders.GetOrderShipmentTrackingResponse",
+      "auth": {
+        "requiredPermissions": [
+          {}
+        ]
+      }
+    },
+    {
       "name": "GetOrderSignature",
       "assembly": "EVA.Core",
       "path": "/message/GetOrderSignature",
@@ -251231,6 +251244,426 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Orders.GetOrderShipmentTracking": {
+      "typename": "GetOrderShipmentTracking",
+      "assembly": "EVA.Core",
+      "description": "Returns the shipment tracking state of an order's parcels (shipments): progress steps\n(previous, current and future), alerts, estimated delivery windows, carrier information,\ntracking links, delivery location and items — everything needed to render a tracking\ncomponent without further logic.\n\nThe state is fed by carrier tracking webhooks and served as persisted; `LastUpdated`\nindicates the freshness per parcel. When tracking is not configured or no tracking data\nexists for the order, `TrackingAvailable` is `false` and `Parcels` is empty — this is not\nan error.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Orders.GetOrderShipmentTrackingResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Locale": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Locale (for example `nl-NL`) used to localize the tracking portal URL. Defaults to the language and country of the request.",
+          "allowedValues": []
+        },
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "ID of the order to return shipment tracking information for.",
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ShipmentID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Narrows the result to a single shipment of the order; the response keeps the parcel list shape.",
+          "datamodel": {
+            "name": "Shipment",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Orders.GetOrderShipmentTrackingResponse": {
+      "typename": "GetOrderShipmentTrackingResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Orders.GetOrderShipmentTrackingResponse+TrackedParcel"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Parcels": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Orders.GetOrderShipmentTrackingResponse+TrackedParcel",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The tracked parcels (shipments) of the order, each with its full shipment tracking state.",
+          "allowedValues": []
+        },
+        "TrackingAvailable": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether shipment tracking information is available for this order.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Orders.GetOrderShipmentTrackingResponse+TrackedItem": {
+      "typename": "TrackedItem",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Display name of the item.",
+          "allowedValues": []
+        },
+        "Quantity": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "Quantity of the item in the parcel.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Orders.GetOrderShipmentTrackingResponse"
+    },
+    "EVA.Core.Orders.GetOrderShipmentTrackingResponse+TrackedParcel": {
+      "typename": "TrackedParcel",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Orders.GetOrderShipmentTrackingResponse+TrackedParcelState"
+      ],
+      "properties": {
+        "LastUpdated": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "description": "Moment the tracking state of this parcel was last updated from the carrier tracking platform.",
+          "allowedValues": []
+        },
+        "ShipmentID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "ID of the shipment this parcel corresponds to.",
+          "datamodel": {
+            "name": "Shipment",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "State": {
+          "type": {
+            "ref": "EVA.Core.Orders.GetOrderShipmentTrackingResponse+TrackedParcelState",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The shipment tracking state of the parcel.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Orders.GetOrderShipmentTrackingResponse"
+    },
+    "EVA.Core.Orders.GetOrderShipmentTrackingResponse+TrackedParcelState": {
+      "typename": "TrackedParcelState",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Shipments.Tracking.ShipmentTrackingDeliveryType",
+        "EVA.Core.Shipments.Tracking.ShipmentTrackingDirection",
+        "EVA.Core.Shipments.Tracking.ShipmentTrackingTimeWindow",
+        "EVA.Core.Shipments.Tracking.ShipmentTrackingLocation",
+        "EVA.Core.Orders.GetOrderShipmentTrackingResponse+TrackedItem",
+        "EVA.Core.Orders.GetOrderShipmentTrackingResponse+TrackedStep",
+        "EVA.Core.Shipments.Tracking.ShipmentTrackingAlert",
+        "EVA.Core.Shipments.Tracking.ShipmentTrackingStep"
+      ],
+      "properties": {
+        "Alerts": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Shipments.Tracking.ShipmentTrackingAlert",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The active alerts for the parcel.",
+          "allowedValues": []
+        },
+        "CarrierDisplayName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Display name of the carrier, when known.",
+          "allowedValues": []
+        },
+        "CarrierLogoUrl": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "URL of the carrier's logo, when known.",
+          "allowedValues": []
+        },
+        "CarrierTrackingUrl": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "URL of the carrier's own tracking page for this parcel, when available. Not localized to the requested locale: it keeps the locale the tracking state was retrieved with.",
+          "allowedValues": []
+        },
+        "CurrentStep": {
+          "type": {
+            "ref": "EVA.Core.Shipments.Tracking.ShipmentTrackingStep",
+            "args": []
+          },
+          "description": "The current (most recently reached) progress step of the parcel.",
+          "allowedValues": []
+        },
+        "DeliveryType": {
+          "type": {
+            "ref": "EVA.Core.Shipments.Tracking.ShipmentTrackingDeliveryType",
+            "args": []
+          },
+          "description": "The type of delivery the parcel is tracked for.",
+          "allowedValues": []
+        },
+        "Direction": {
+          "type": {
+            "ref": "EVA.Core.Shipments.Tracking.ShipmentTrackingDirection",
+            "args": []
+          },
+          "description": "The direction of the parcel.",
+          "allowedValues": []
+        },
+        "EstimatedDeliveryWindow": {
+          "type": {
+            "ref": "EVA.Core.Shipments.Tracking.ShipmentTrackingTimeWindow",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The estimated delivery window of the parcel, when known.",
+          "allowedValues": []
+        },
+        "Items": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Orders.GetOrderShipmentTrackingResponse+TrackedItem",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The items contained in the parcel.",
+          "allowedValues": []
+        },
+        "Location": {
+          "type": {
+            "ref": "EVA.Core.Shipments.Tracking.ShipmentTrackingLocation",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The delivery or pickup location of the parcel, when known.",
+          "allowedValues": []
+        },
+        "SiteName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Name of the merchant/site the parcel is tracked under, when known.",
+          "allowedValues": []
+        },
+        "Steps": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Orders.GetOrderShipmentTrackingResponse+TrackedStep",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The progress steps of the parcel in chronological order: both the steps already reached (with their actual timestamp) and the ones still expected (with their estimated time window). Which steps a parcel goes through is decided by the carrier tracking platform, so it varies per parcel.",
+          "allowedValues": []
+        },
+        "TrackingNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The tracking number of the parcel.",
+          "allowedValues": []
+        },
+        "TrackingPortalUrl": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "URL of the tracking portal page for this parcel, localized to the requested locale, when available.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Orders.GetOrderShipmentTrackingResponse"
+    },
+    "EVA.Core.Orders.GetOrderShipmentTrackingResponse+TrackedStep": {
+      "typename": "TrackedStep",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Shipments.Tracking.ShipmentTrackingStep",
+        "EVA.Core.Shipments.Tracking.ShipmentTrackingTimeWindow"
+      ],
+      "properties": {
+        "DisplayText": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Label to render for this step, so a consumer does not map the step itself. Built from the carrier tracking platform's own step value when it reported one, falling back to the normalized step otherwise. Not yet translated.",
+          "allowedValues": []
+        },
+        "EstimatedWindow": {
+          "type": {
+            "ref": "EVA.Core.Shipments.Tracking.ShipmentTrackingTimeWindow",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The estimated time window in which this step is expected to be reached, when known.",
+          "allowedValues": []
+        },
+        "IsCurrent": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "True for the step the parcel is currently at, which is the last one it reached. Exactly one step carries this, unless no step has been reached yet, in which case none do.",
+          "allowedValues": []
+        },
+        "IsReached": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "True when the parcel has reached this step; false for a step that is still expected.",
+          "allowedValues": []
+        },
+        "RawStep": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The raw step value as reported by the carrier tracking platform. Empty for a step the platform reports but EVA's client does not recognize, which arrives as Unknown.",
+          "allowedValues": []
+        },
+        "ReachedTime": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The moment this step was reached; null for a step that is still expected.",
+          "allowedValues": []
+        },
+        "Step": {
+          "type": {
+            "ref": "EVA.Core.Shipments.Tracking.ShipmentTrackingStep",
+            "args": []
+          },
+          "description": "The normalized step.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Orders.GetOrderShipmentTrackingResponse"
+    },
     "EVA.Core.Orders.GetOrderStatistics": {
       "typename": "GetOrderStatistics",
       "assembly": "EVA.Core",
@@ -345600,6 +346033,418 @@
           },
           "stringLengthConstraint": {
             "max": 4000
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Shipments.Tracking.ShipmentTrackingAlert": {
+      "typename": "ShipmentTrackingAlert",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Shipments.Tracking.ShipmentTrackingAlertType"
+      ],
+      "properties": {
+        "Timestamp": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.Shipments.Tracking.ShipmentTrackingAlertType",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Shipments.Tracking.ShipmentTrackingAlertType": {
+      "typename": "ShipmentTrackingAlertType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "DeliveryDelayed": {
+          "value": 2,
+          "extends": []
+        },
+        "FailedDeliveryAttempt": {
+          "value": 3,
+          "extends": []
+        },
+        "OutForDelivery": {
+          "value": 4,
+          "extends": []
+        },
+        "SubmissionDelayed": {
+          "value": 1,
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.Shipments.Tracking.ShipmentTrackingDeliveryType": {
+      "typename": "ShipmentTrackingDeliveryType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Delivery": {
+          "value": 1,
+          "extends": []
+        },
+        "InStore": {
+          "value": 4,
+          "extends": []
+        },
+        "InWarehouse": {
+          "value": 5,
+          "extends": []
+        },
+        "Mailbox": {
+          "value": 3,
+          "extends": []
+        },
+        "Pickup": {
+          "value": 2,
+          "extends": []
+        },
+        "Unknown": {
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.Shipments.Tracking.ShipmentTrackingDirection": {
+      "typename": "ShipmentTrackingDirection",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Outbound": {
+          "value": 1,
+          "extends": []
+        },
+        "Return": {
+          "value": 2,
+          "extends": []
+        },
+        "Unspecified": {
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.Shipments.Tracking.ShipmentTrackingLocation": {
+      "typename": "ShipmentTrackingLocation",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Shipments.Tracking.ShipmentTrackingOperationalHours"
+      ],
+      "properties": {
+        "AddressLines": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "City": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "CountryID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Latitude": {
+          "type": {
+            "ref": "float64",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "LocationType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Longitude": {
+          "type": {
+            "ref": "float64",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OperationalHours": {
+          "type": {
+            "ref": "EVA.Core.Shipments.Tracking.ShipmentTrackingOperationalHours",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "PickupInstructions": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "PostalCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Shipments.Tracking.ShipmentTrackingOperationalHours": {
+      "typename": "ShipmentTrackingOperationalHours",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "FreeText": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Friday": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Monday": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Saturday": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Sunday": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Thursday": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Tuesday": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Wednesday": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Shipments.Tracking.ShipmentTrackingStep": {
+      "typename": "ShipmentTrackingStep",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "AwaitingSupplier": {
+          "value": 11,
+          "extends": []
+        },
+        "ConfirmedByMerchant": {
+          "value": 1,
+          "extends": []
+        },
+        "Delivered": {
+          "value": 6,
+          "extends": []
+        },
+        "DeliveredToMerchant": {
+          "value": 10,
+          "extends": []
+        },
+        "DeliveredToPickupPoint": {
+          "value": 5,
+          "extends": []
+        },
+        "EnRoute": {
+          "value": 4,
+          "extends": []
+        },
+        "LinehaulToCarrier": {
+          "value": 12,
+          "extends": []
+        },
+        "PreparedByMerchant": {
+          "value": 2,
+          "extends": []
+        },
+        "ReplacementSent": {
+          "value": 16,
+          "extends": []
+        },
+        "ReturnApproved": {
+          "value": 13,
+          "extends": []
+        },
+        "ReturnCancelled": {
+          "value": 17,
+          "extends": []
+        },
+        "ReturnCompleted": {
+          "value": 15,
+          "extends": []
+        },
+        "ReturnDeclined": {
+          "value": 14,
+          "extends": []
+        },
+        "ReturnRequested": {
+          "value": 9,
+          "extends": []
+        },
+        "SentBack": {
+          "value": 8,
+          "extends": []
+        },
+        "SubmittedToCarrier": {
+          "value": 3,
+          "extends": []
+        },
+        "Terminated": {
+          "value": 7,
+          "extends": []
+        },
+        "Unknown": {
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.Shipments.Tracking.ShipmentTrackingTimeWindow": {
+      "typename": "ShipmentTrackingTimeWindow",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "End": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Start": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         }
