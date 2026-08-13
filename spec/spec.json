@@ -44161,6 +44161,19 @@
           "description": "To identify the user an EmailAddress or Nickname is required, so at least one of EmailAddressClaim/NicknameClaim/UsernameClaim should be set.",
           "allowedValues": []
         },
+        "ParentID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The parent provider, allowing to match users managed by that provider.\n\nUse this when one and the same actual provider is registered multiple times to support flow-specific variants (login, password reset, sign-up, ...): this provider then resolves and binds its\nusers against the parent provider, so an account that logs in here can log in through the parent (and its other variants) as well.\n\nAccounts that are already bound to this provider keep that binding and are not moved to the parent; they have to be re-pointed to the parent to become part of its pool.\n\nThe parent must be of the same UserType, may not itself have a parent, and - when the parent is scoped to email domains - this provider must be scoped to (a subset of) those domains.",
+          "datamodel": {
+            "name": "Provider",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "UsernameClaim": {
           "type": {
             "ref": "string",
@@ -44533,6 +44546,18 @@
           },
           "allowedValues": []
         },
+        "ParentID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Provider",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "Primary": {
           "type": {
             "ref": "bool",
@@ -44839,6 +44864,18 @@
           "description": "To identify the user an EmailAddress or Nickname is required, so at least one of EmailAddressClaim/NicknameClaim/UsernameClaim should be set.",
           "allowedValues": []
         },
+        "ParentID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Provider",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "Primary": {
           "type": {
             "ref": "bool",
@@ -45123,6 +45160,20 @@
           },
           "description": "To identify the user an EmailAddress or Nickname is required, so at least one of EmailAddressClaim/NicknameClaim/UsernameClaim should be set.",
           "skippable": true,
+          "allowedValues": []
+        },
+        "ParentID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The parent provider, allowing to match users managed by that provider.\n\nUse this when one and the same actual provider is registered multiple times to support flow-specific variants (login, password reset, sign-up, ...): this provider then resolves and binds its\nusers against the parent provider, so an account that logs in here can log in through the parent (and its other variants) as well.\n\nAccounts that are already bound to this provider keep that binding and are not moved to the parent; they have to be re-pointed to the parent to become part of its pool.\n\nThe parent must be of the same UserType, may not itself have a parent, and - when the parent is scoped to email domains - this provider must be scoped to (a subset of) those domains.",
+          "skippable": true,
+          "datamodel": {
+            "name": "Provider",
+            "isEvaID": true
+          },
           "allowedValues": []
         },
         "UsernameClaim": {
