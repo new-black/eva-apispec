@@ -1170,6 +1170,19 @@
       }
     },
     {
+      "name": "AttachBusinessProgramToOrder",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/AttachBusinessProgramToOrder",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Loyalty.AttachBusinessProgramToOrder",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {}
+        ]
+      }
+    },
+    {
       "name": "AttachConsumerCompanyToOrder",
       "assembly": "EVA.Core",
       "path": "/message/AttachConsumerCompanyToOrder",
@@ -1221,6 +1234,11 @@
       "method": "POST",
       "requestType": "EVA.Core.Management.Loyalty.AttachLoyaltyProgramToOrder",
       "responseType": "EVA.Core.EmptyResponseMessage",
+      "deprecated": {
+        "announced": 860,
+        "active": 886,
+        "comment": "Use AttachBusinessProgramToOrder instead."
+      },
       "auth": {
         "requiredPermissions": [
           {}
@@ -11135,6 +11153,21 @@
       }
     },
     {
+      "name": "DetachBusinessProgramFromOrder",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/DetachBusinessProgramFromOrder",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Loyalty.DetachBusinessProgramFromOrder",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
       "name": "DetachCompanyFromUser",
       "assembly": "EVA.Core",
       "path": "/message/DetachCompanyFromUser",
@@ -11218,6 +11251,11 @@
       "method": "POST",
       "requestType": "EVA.Core.Management.Loyalty.DetachLoyaltyProgramFromOrder",
       "responseType": "EVA.Core.EmptyResponseMessage",
+      "deprecated": {
+        "announced": 860,
+        "active": 886,
+        "comment": "Use DetachBusinessProgramFromOrder instead."
+      },
       "auth": {
         "requiredPermissions": [
           {
@@ -166800,6 +166838,73 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Management.Loyalty.AttachBusinessProgramToOrder": {
+      "typename": "AttachBusinessProgramToOrder",
+      "assembly": "EVA.Core.Management",
+      "description": "Attach a business program to an order",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "BusinessProgramID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "LoyaltyProgram",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "UserIdentifier": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When set, the UserID will also become required so we can verify the UserIdentifier.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Management.Loyalty.AttachLoyaltyProgramToOrder": {
       "typename": "AttachLoyaltyProgramToOrder",
       "assembly": "EVA.Core.Management",
@@ -170598,6 +170703,38 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Loyalty.DetachBusinessProgramFromOrder": {
+      "typename": "DetachBusinessProgramFromOrder",
+      "assembly": "EVA.Core.Management",
+      "description": "Detach a business program from an order",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         }
