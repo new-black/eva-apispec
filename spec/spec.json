@@ -1,5 +1,5 @@
 {
-  "apiversion": 844,
+  "apiversion": 845,
   "services": [
     {
       "name": "AbortTransaction",
@@ -142443,6 +142443,26 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Management.Configuration.AppSettingSortProperty": {
+      "typename": "AppSettingSortProperty",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "request": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "LastModificationTime": {
+          "value": 1,
+          "extends": []
+        },
+        "Name": {
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.Management.Configuration.CleanupSettings": {
       "typename": "CleanupSettings",
       "assembly": "EVA.Core.Management",
@@ -142673,6 +142693,7 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
+        "EVA.Core.Management.Configuration.AppSettingSortProperty",
         "EVA.Core.SortDirection"
       ],
       "extends": {
@@ -142716,6 +142737,19 @@
         "SortProperty": {
           "type": {
             "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "SortProperty is deprecated and is scheduled to be removed in 2.0.905: Replace with `TypedSortProperty`."
+          },
+          "allowedValues": []
+        },
+        "TypedSortProperty": {
+          "type": {
+            "ref": "EVA.Core.Management.Configuration.AppSettingSortProperty",
             "args": [],
             "nullable": true
           },
@@ -144212,6 +144246,7 @@
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
         "EVA.Core.Management.Configuration.ListSettingsTypedFilters",
+        "EVA.Core.Management.Configuration.ListSettingsSortProperty",
         "EVA.Core.SortDirection"
       ],
       "extends": {
@@ -144290,11 +144325,24 @@
             "args": [],
             "nullable": true
           },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "SortProperty is deprecated and is scheduled to be removed in 2.0.905: Replace with `TypedSortProperty`."
+          },
           "allowedValues": []
         },
         "TypedFilter": {
           "type": {
             "ref": "EVA.Core.Management.Configuration.ListSettingsTypedFilters",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "TypedSortProperty": {
+          "type": {
+            "ref": "EVA.Core.Management.Configuration.ListSettingsSortProperty",
             "args": [],
             "nullable": true
           },
@@ -144314,6 +144362,7 @@
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
         "EVA.Core.Management.Configuration.ListSettingsTypedFilters",
+        "EVA.Core.Management.Configuration.ListSettingsSortProperty",
         "EVA.Core.SortDirection"
       ],
       "extends": {
@@ -144372,11 +144421,24 @@
             "args": [],
             "nullable": true
           },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "SortProperty is deprecated and is scheduled to be removed in 2.0.905: Replace with `TypedSortProperty`."
+          },
           "allowedValues": []
         },
         "TypedFilter": {
           "type": {
             "ref": "EVA.Core.Management.Configuration.ListSettingsTypedFilters",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "TypedSortProperty": {
+          "type": {
+            "ref": "EVA.Core.Management.Configuration.ListSettingsSortProperty",
             "args": [],
             "nullable": true
           },
@@ -144475,6 +144537,26 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.Management.Configuration.ListSettingsSortProperty": {
+      "typename": "ListSettingsSortProperty",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "request": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Key": {
+          "extends": []
+        },
+        "LastModificationTime": {
+          "value": 1,
+          "extends": []
+        }
+      }
     },
     "EVA.Core.Management.Configuration.ListSettingsTypedFilters": {
       "typename": "ListSettingsTypedFilters",
@@ -455885,6 +455967,20 @@
       "message": "Not allowed to autocomplete orders in an audited country when invoicing is required.",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "General:InvalidSortProperty",
+      "message": "SortProperty {0} is invalid.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
     },
     {
       "name": "Printing:PrinterNotFound",
