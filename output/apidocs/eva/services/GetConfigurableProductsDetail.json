@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ApplySearchFilters\u0022: true,\n  \u0022IncludedFields\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022ProductIDs\u0022: [\n    123\n  ]\n}",
+      "sample": "{\n  \u0022ApplySearchFilters\u0022: true,\n  \u0022IncludeAssortmentRuleSummary\u0022: true,\n  \u0022IncludedFields\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022ProductIDs\u0022: [\n    123\n  ],\n  \u0022StrictIncludedFields\u0022: true\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ApplySearchFilters\u0022: true,\n  \u0022IncludedFields\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022ProductIDs\u0022: [\n    123\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetConfigurableProductsDetail",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ApplySearchFilters\u0022: true,\n  \u0022IncludeAssortmentRuleSummary\u0022: true,\n  \u0022IncludedFields\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022ProductIDs\u0022: [\n    123\n  ],\n  \u0022StrictIncludedFields\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetConfigurableProductsDetail",
       "syntax": "bash"
     }
   ],
@@ -82,6 +82,15 @@
         "one_of": null
       },
       {
+        "name": "IncludeAssortmentRuleSummary",
+        "deprecation_notice": null,
+        "description": "Whether to include AssortmentRuleSummary on every node. Defaults to true when StrictIncludedFields is false, and to false when it is true. Setting this to false also skips the server-side assortment evaluation.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "IncludedFields",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060ProductPropertyType\u0060",
@@ -95,6 +104,15 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060Product\u0060",
         "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StrictIncludedFields",
+        "deprecation_notice": null,
+        "description": "When true, IncludedFields becomes an exact allow-list for the per-node Properties object instead of being added to the server\u0027s internal field set. The tree structure and the top-level scalars (ProductID, Type, Status, LogicalLevel, ConfigurableProperty, Value(s), ...) are always returned. Note that switching this on also defaults IncludeAssortmentRuleSummary to false, so the top-level AssortmentRuleSummary object is dropped unless you set that option explicitly. Defaults to false, which is the historical additive behavior.",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
