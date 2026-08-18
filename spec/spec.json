@@ -51033,16 +51033,177 @@
         ]
       },
       "properties": {
+        "AirlineCompanyCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "required": {
+            "current": false,
+            "new": true,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field AirlineCompanyCode is required and is scheduled to be enforced in 2.0.905."
+          },
+          "requiredAllowEmpty": {
+            "new": false,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field AirlineCompanyCode is required and is scheduled to be enforced in 2.0.905."
+          },
+          "stringLengthConstraint": {
+            "max": 255
+          },
+          "allowedValues": []
+        },
+        "DestinationAirportCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "required": {
+            "current": false,
+            "new": true,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field DestinationAirportCode is required and is scheduled to be enforced in 2.0.905."
+          },
+          "requiredAllowEmpty": {
+            "new": false,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field DestinationAirportCode is required and is scheduled to be enforced in 2.0.905."
+          },
+          "stringLengthConstraint": {
+            "max": 255
+          },
+          "allowedValues": []
+        },
+        "DestinationCode": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "required": {
+            "current": false,
+            "new": true,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field DestinationCode is required and is scheduled to be enforced in 2.0.905."
+          },
+          "requiredAllowEmpty": {
+            "new": false,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field DestinationCode is required and is scheduled to be enforced in 2.0.905."
+          },
+          "allowedValues": []
+        },
         "Flight": {
           "type": {
             "ref": "EVA.Core.Airport.FlightDto",
-            "args": []
+            "args": [],
+            "nullable": true
+          },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "Flight is deprecated and is scheduled to be removed in 2.0.905: Use the flight's properties on the request itself."
+          },
+          "allowedValues": []
+        },
+        "FlightNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
           },
           "required": {
-            "current": true
+            "current": false,
+            "new": true,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field FlightNumber is required and is scheduled to be enforced in 2.0.905."
           },
           "requiredAllowEmpty": {
-            "current": false
+            "new": false,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field FlightNumber is required and is scheduled to be enforced in 2.0.905."
+          },
+          "stringLengthConstraint": {
+            "max": 255
+          },
+          "allowedValues": []
+        },
+        "FromDate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "required": {
+            "current": false,
+            "new": true,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field FromDate is required and is scheduled to be enforced in 2.0.905."
+          },
+          "requiredAllowEmpty": {
+            "new": false,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field FromDate is required and is scheduled to be enforced in 2.0.905."
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "required": {
+            "current": false,
+            "new": true,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field OrganizationUnitID is required and is scheduled to be enforced in 2.0.905."
+          },
+          "requiredAllowEmpty": {
+            "new": false,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field OrganizationUnitID is required and is scheduled to be enforced in 2.0.905."
+          },
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ToDate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "required": {
+            "current": false,
+            "new": true,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field ToDate is required and is scheduled to be enforced in 2.0.905."
+          },
+          "requiredAllowEmpty": {
+            "new": false,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field ToDate is required and is scheduled to be enforced in 2.0.905."
           },
           "allowedValues": []
         }
@@ -51310,6 +51471,19 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "FlightID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The flight this boarding pass was matched to, if any.",
+          "datamodel": {
+            "name": "Flight",
+            "isEvaID": true
           },
           "allowedValues": []
         },
@@ -470193,6 +470367,51 @@
       "message": "This boarding pass is not valid for this airport.",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "CreateFlight:FlightDetailsRequired",
+      "message": "The flight's organization unit, airline company code, flight number, destination airport code and dates are all required.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ImportFlights:InvalidFlightNumber",
+      "message": "The flight number on row {0} must contain at least an airline code and a flight number.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ImportFlights:InvalidDate",
+      "message": "The dates on row {0} could not be read; the expected format is dd/MM/yyyy.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ImportFlights:InvalidRow",
+      "message": "Row {0} could not be read; the expected format is airline code and flight number, destination code, destination airport code, destination city, from date and to date.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          }
+        }
+      ]
     },
     {
       "name": "UserOrigins:AlreadyExists",
