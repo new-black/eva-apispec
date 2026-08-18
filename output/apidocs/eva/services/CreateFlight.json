@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Flight\u0022: {\n    \u0022AirlineCompanyCode\u0022: \u0022string\u0022,\n    \u0022DestinationAirportCode\u0022: \u0022string\u0022,\n    \u0022DestinationCode\u0022: 123,\n    \u0022FlightNumber\u0022: \u0022string\u0022,\n    \u0022FromDate\u0022: \u00222025-01-01\u0022,\n    \u0022ID\u0022: 123,\n    \u0022OrganizationUnitID\u0022: 123,\n    \u0022ToDate\u0022: \u00222025-01-01\u0022\n  }\n}",
+      "sample": "{\n  \u0022AirlineCompanyCode\u0022: \u0022string\u0022,\n  \u0022DestinationAirportCode\u0022: \u0022string\u0022,\n  \u0022DestinationCode\u0022: 123,\n  \u0022Flight\u0022: {\n    \u0022AirlineCompanyCode\u0022: \u0022string\u0022,\n    \u0022DestinationAirportCode\u0022: \u0022string\u0022,\n    \u0022DestinationCode\u0022: 123,\n    \u0022FlightNumber\u0022: \u0022string\u0022,\n    \u0022FromDate\u0022: \u00222025-01-01\u0022,\n    \u0022ID\u0022: 123,\n    \u0022OrganizationUnitID\u0022: 123,\n    \u0022ToDate\u0022: \u00222025-01-01\u0022\n  },\n  \u0022FlightNumber\u0022: \u0022string\u0022,\n  \u0022FromDate\u0022: \u00222025-01-01\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ToDate\u0022: \u00222025-01-01\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Flight\u0022: {\n    \u0022AirlineCompanyCode\u0022: \u0022string\u0022,\n    \u0022DestinationAirportCode\u0022: \u0022string\u0022,\n    \u0022DestinationCode\u0022: 123,\n    \u0022FlightNumber\u0022: \u0022string\u0022,\n    \u0022FromDate\u0022: \u00222025-01-01\u0022,\n    \u0022ID\u0022: 123,\n    \u0022OrganizationUnitID\u0022: 123,\n    \u0022ToDate\u0022: \u00222025-01-01\u0022\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateFlight",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AirlineCompanyCode\u0022: \u0022string\u0022,\n  \u0022DestinationAirportCode\u0022: \u0022string\u0022,\n  \u0022DestinationCode\u0022: 123,\n  \u0022Flight\u0022: {\n    \u0022AirlineCompanyCode\u0022: \u0022string\u0022,\n    \u0022DestinationAirportCode\u0022: \u0022string\u0022,\n    \u0022DestinationCode\u0022: 123,\n    \u0022FlightNumber\u0022: \u0022string\u0022,\n    \u0022FromDate\u0022: \u00222025-01-01\u0022,\n    \u0022ID\u0022: 123,\n    \u0022OrganizationUnitID\u0022: 123,\n    \u0022ToDate\u0022: \u00222025-01-01\u0022\n  },\n  \u0022FlightNumber\u0022: \u0022string\u0022,\n  \u0022FromDate\u0022: \u00222025-01-01\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ToDate\u0022: \u00222025-01-01\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateFlight",
       "syntax": "bash"
     }
   ],
@@ -140,12 +140,75 @@
     ],
     "B": [
       {
-        "name": "Flight",
+        "name": "AirlineCompanyCode",
         "deprecation_notice": null,
-        "description": "",
-        "type": "object",
-        "required": true,
+        "description": "This string must be between 0 (incl) and 255 (incl) characters long.\n\n**Required since 860:** Field AirlineCompanyCode is required and is scheduled to be enforced in 2.0.905.\n\n**Will be enforced in 886**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DestinationAirportCode",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 255 (incl) characters long.\n\n**Required since 860:** Field DestinationAirportCode is required and is scheduled to be enforced in 2.0.905.\n\n**Will be enforced in 886**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DestinationCode",
+        "deprecation_notice": null,
+        "description": "**Required since 860:** Field DestinationCode is required and is scheduled to be enforced in 2.0.905.\n\n**Will be enforced in 886**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Flight",
+        "deprecation_notice": "\n\n**Deprecated since 860:** Flight is deprecated and is scheduled to be removed in 2.0.905: Use the flight\u0027s properties on the request itself.\n\n**Will be removed in 886**",
+        "description": "**Deprecated since 860:** Flight is deprecated and is scheduled to be removed in 2.0.905: Use the flight\u0027s properties on the request itself.\n\n**Will be removed in 886**",
+        "type": "object | null",
+        "required": false,
         "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "FlightNumber",
+        "deprecation_notice": null,
+        "description": "This string must be between 0 (incl) and 255 (incl) characters long.\n\n**Required since 860:** Field FlightNumber is required and is scheduled to be enforced in 2.0.905.\n\n**Will be enforced in 886**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FromDate",
+        "deprecation_notice": null,
+        "description": "**Required since 860:** Field FromDate is required and is scheduled to be enforced in 2.0.905.\n\n**Will be enforced in 886**",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060\n\n**Required since 860:** Field OrganizationUnitID is required and is scheduled to be enforced in 2.0.905.\n\n**Will be enforced in 886**",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ToDate",
+        "deprecation_notice": null,
+        "description": "**Required since 860:** Field ToDate is required and is scheduled to be enforced in 2.0.905.\n\n**Will be enforced in 886**",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       }
     ],
