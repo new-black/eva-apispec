@@ -1,9 +1,9 @@
 {
-  "name": "ListLoyaltyProgramConditions",
+  "name": "PushUserSegments_Async",
   "method": "POST",
-  "path": "/message/ListLoyaltyProgramConditions",
-  "description": "List the LoyaltyProgramCondition",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060LoyaltyPrograms:View\u0060",
+  "path": "/async-message/PushUserSegments",
+  "description": "The PushUserSegments_Async service",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ManageUserSegments:None\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -32,24 +32,31 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022Assignments\u0022: [\n    {\n      \u0022SegmentBackendIDs\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022UserID\u0022: 123\n    }\n  ],\n  \u0022ClearOmitted\u0022: true,\n  \u0022DisableEventExports\u0022: true\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022key\u0022: \u0022string\u0022\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022LoyaltyProgramID\u0022: 123,\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListLoyaltyProgramConditions",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Assignments\u0022: [\n    {\n      \u0022SegmentBackendIDs\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022UserID\u0022: 123\n    }\n  ],\n  \u0022ClearOmitted\u0022: true,\n  \u0022DisableEventExports\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/PushUserSegments_Async",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022LoyaltyProgramID\u0022: 123,\n      \u0022Type\u0022: \u0022V2:CUSTOMER\u0022\n    }\n  ]\n}"
+      "sample": "{\n  \u0022JobID\u0022: \u0022string\u0022\n}"
     },
     {
       "name": "400",
@@ -66,48 +73,48 @@
   "types": {
     "C": [
       {
-        "name": "Filter",
+        "name": "SegmentBackendIDs",
         "deprecation_notice": null,
         "description": "",
-        "type": "map[string] | null",
-        "required": false,
+        "type": "array[string]",
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Limit",
+        "name": "UserID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "integer | null",
-        "required": false,
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer",
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
     ],
     "B": [
       {
-        "name": "InitialPageConfig",
+        "name": "Assignments",
         "deprecation_notice": null,
-        "description": "The initial page configuration. This is only used when requesting the first page of results. Subsequent pages are requested using the \u0060PageToken\u0060 property.",
-        "type": "object | null",
-        "required": false,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
         "properties_id": "C",
         "one_of": null
       },
       {
-        "name": "LoyaltyProgramID",
+        "name": "ClearOmitted",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
-        "type": "integer",
+        "description": "When true, segments currently on a user but not included in that user\u0027s assignment are detached.",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "PageToken",
+        "name": "DisableEventExports",
         "deprecation_notice": null,
-        "description": "The page token from a previous response. This is used to request subsequent pages of results.",
-        "type": "string | null",
+        "description": "Enabling this will try to suppress as many event exports as possible that might result from this call.",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -189,44 +196,6 @@
         "one_of": null
       }
     ],
-    "G": [
-      {
-        "name": "BackendID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgramCondition\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LoyaltyProgramID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060LoyaltyProgram\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u0060V2:CUSTOMER\u0060\n* \u0060V2:ORDERCUSTOMFIELD\u0060\n* \u0060V2:ORDERPROPERTIES\u0060\n* \u0060V2:ORDERTYPE\u0060\n* \u0060V2:SEGMENT\u0060\n* \u0060V2:USERCUSTOMFIELD\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "D": [
       {
         "name": "Error",
@@ -238,39 +207,21 @@
         "one_of": null
       },
       {
+        "name": "JobID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "NextPageToken",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PreviousPageToken",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Results",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "G",
         "one_of": null
       }
     ]
