@@ -90308,6 +90308,48 @@
       "enumValues": {},
       "parent": "EVA.Core.Events.ProductSubscriptionEventExportTarget"
     },
+    "EVA.Core.Events.RecurringTaskEventExportTarget": {
+      "typename": "RecurringTaskEventExportTarget",
+      "assembly": "EVA.Core",
+      "usage": {},
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Events.BaseEventExportTarget"
+      ],
+      "extends": {
+        "ref": "EVA.Core.Events.BaseEventExportTarget",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Events.RecurringTaskEventExportTarget+Data": {
+      "typename": "Data",
+      "assembly": "EVA.Core",
+      "usage": {},
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ScheduledTaskID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ScheduledTaskName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Events.RecurringTaskEventExportTarget"
+    },
     "EVA.Core.Events.RepairEventExportTarget": {
       "typename": "RepairEventExportTarget",
       "assembly": "EVA.Core",
@@ -452344,15 +452386,18 @@
     },
     {
       "target": "RecurringTask",
-      "type": "started"
+      "type": "started",
+      "dataType": "EVA.Core.Events.RecurringTaskEventExportTarget+Data"
     },
     {
       "target": "RecurringTask",
-      "type": "completed"
+      "type": "completed",
+      "dataType": "EVA.Core.Events.RecurringTaskEventExportTarget+Data"
     },
     {
       "target": "RecurringTask",
-      "type": "failed"
+      "type": "failed",
+      "dataType": "EVA.Core.Events.RecurringTaskEventExportTarget+Data"
     },
     {
       "target": "OrderFulfillment",
@@ -474233,6 +474278,12 @@
           }
         }
       ]
+    },
+    {
+      "name": "TaskScheduler:MissingSchedule",
+      "message": "A task requires a Cron expression, DueDate or Delay to be scheduled",
+      "module": "EVA.Core",
+      "arguments": []
     },
     {
       "name": "TempFileStream:MaxFileBufferSizeExceeded",
