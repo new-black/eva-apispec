@@ -1,9 +1,9 @@
 {
-  "name": "TestEventExportConfiguration",
+  "name": "GetConsumerCreditBalance",
   "method": "POST",
-  "path": "/message/TestEventExportConfiguration",
-  "description": "Sends a test event to an \u0060EventExportConfiguration\u0060 to verify the full pipeline including authentication and signing.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060EventExportConfiguration:Edit\u0060",
+  "path": "/message/GetConsumerCreditBalance",
+  "description": "Returns the Consumer Credit balance of the current user, or of the requested user when called by an employee.\nReading another user\u0027s balance requires the ConsumerCredit functionality.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -32,24 +32,31 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022EventTarget\u0022: 31,\n  \u0022EventType\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123\n}",
+      "sample": "{\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022UserID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022EventTarget\u0022: 31,\n  \u0022EventType\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/TestEventExportConfiguration",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetConsumerCreditBalance",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ErrorMessage\u0022: \u0022string\u0022,\n  \u0022ResponseBody\u0022: \u0022string\u0022,\n  \u0022StatusCode\u0022: 123,\n  \u0022Success\u0022: true\n}"
+      "sample": "{\n  \u0022Balance\u0022: 123.456,\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022NativeBalance\u0022: 123.456,\n  \u0022NativeCurrencyID\u0022: \u0022string\u0022\n}"
     },
     {
       "name": "400",
@@ -66,28 +73,19 @@
   "types": {
     "B": [
       {
-        "name": "EventTarget",
+        "name": "CurrencyID",
         "deprecation_notice": null,
-        "description": "The event target for the test event. Defaults to System.\nPossible values:\n\n* \u00601\u0060 - Order\n* \u00602\u0060 - Shipment\n* \u00603\u0060 - PaymentTransaction\n* \u00604\u0060 - Customer\n* \u00605\u0060 - Invoice\n* \u00606\u0060 - StockMutation\n* \u00607\u0060 - OrganizationUnit\n* \u00608\u0060 - FinancialPeriod\n* \u00609\u0060 - FinancialPeriodAudit\n* \u006010\u0060 - OrderFulfillmentLine\n* \u006011\u0060 - System\n* \u006012\u0060 - UserTasks\n* \u006013\u0060 - CashCorrection\n* \u006014\u0060 - CashDeposit\n* \u006015\u0060 - CashExpense\n* \u006016\u0060 - CashMovement\n* \u006017\u0060 - RecurringTask\n* \u006018\u0060 - OrderFulfillment\n* \u006019\u0060 - Coupon\n* \u006020\u0060 - ProductAvailability\n* \u006021\u0060 - Repairs\n* \u006022\u0060 - StockNotification\n* \u006023\u0060 - SerialNumber\n* \u006024\u0060 - LoyaltyProgram\n* \u006025\u0060 - Cases\n* \u006026\u0060 - Wishlist\n* \u006027\u0060 - Assortment\n* \u006028\u0060 - Survey\n* \u006029\u0060 - SurveyResponse\n* \u006030\u0060 - Company\n* \u006031\u0060 - Appointment\n* \u006032\u0060 - OrganizationUnitSupplier\n* \u006033\u0060 - ConsumerCredit",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "EventType",
-        "deprecation_notice": null,
-        "description": "The event type for the test event. Defaults to \u0027test\u0027.",
+        "description": "This is the ID of a \u0060Currency\u0060",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ID",
+        "name": "UserID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060EventExportConfiguration\u0060",
-        "type": "integer",
+        "description": "This is the ID of a \u0060User\u0060",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -171,21 +169,30 @@
     ],
     "C": [
       {
+        "name": "Balance",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CurrencyID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Currency\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
         "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "ErrorMessage",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       },
       {
@@ -198,28 +205,19 @@
         "one_of": null
       },
       {
-        "name": "ResponseBody",
+        "name": "NativeBalance",
         "deprecation_notice": null,
         "description": "",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NativeCurrencyID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Currency\u0060",
         "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "StatusCode",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Success",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
