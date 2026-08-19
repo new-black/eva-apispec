@@ -13409,6 +13409,21 @@
       }
     },
     {
+      "name": "GenerateConsumerCreditSpendQrCode",
+      "assembly": "EVA.Payment.Core",
+      "path": "/message/GenerateConsumerCreditSpendQrCode",
+      "method": "POST",
+      "requestType": "EVA.Payment.Core.ConsumerCredit.GenerateConsumerCreditSpendQrCode",
+      "responseType": "EVA.Payment.Core.ConsumerCredit.GenerateConsumerCreditSpendQrCodeResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
       "name": "GenerateDeviceHubBarcode",
       "assembly": "EVA.Core",
       "path": "/message/GenerateDeviceHubBarcode",
@@ -15313,6 +15328,21 @@
       "method": "POST",
       "requestType": "EVA.Core.Companies.GetConsumerCompany",
       "responseType": "EVA.Core.Companies.GetConsumerCompanyResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
+      "name": "GetConsumerCreditBalance",
+      "assembly": "EVA.Payment.Core",
+      "path": "/message/GetConsumerCreditBalance",
+      "method": "POST",
+      "requestType": "EVA.Payment.Core.ConsumerCredit.GetConsumerCreditBalance",
+      "responseType": "EVA.Payment.Core.ConsumerCredit.GetConsumerCreditBalanceResponse",
       "auth": {
         "requiredPermissions": [
           {
@@ -23643,6 +23673,23 @@
       }
     },
     {
+      "name": "ListConsumerCreditMutations",
+      "assembly": "EVA.Payment.Core",
+      "path": "/message/ListConsumerCreditMutations",
+      "method": "POST",
+      "requestType": "EVA.Payment.Core.ConsumerCredit.ListConsumerCreditMutations",
+      "responseType": "EVA.Payment.Core.ConsumerCredit.ListConsumerCreditMutationsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "ConsumerCredit",
+            "scope": 0
+          }
+        ]
+      }
+    },
+    {
       "name": "ListContentCultureMapping",
       "assembly": "EVA.PIM",
       "path": "/message/ListContentCultureMapping",
@@ -31369,6 +31416,21 @@
             "types": 2049,
             "functionality": "Audits",
             "scope": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "RequestConsumerCreditSpendAuthorization",
+      "assembly": "EVA.Payment.Core",
+      "path": "/message/RequestConsumerCreditSpendAuthorization",
+      "method": "POST",
+      "requestType": "EVA.Payment.Core.ConsumerCredit.RequestConsumerCreditSpendAuthorization",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
           }
         ]
       }
@@ -67541,6 +67603,30 @@
         }
       }
     },
+    "EVA.Core.ConsumerCredit.ConsumerCreditMutationStatuses": {
+      "typename": "ConsumerCreditMutationStatuses",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Cancelled": {
+          "value": 2,
+          "extends": []
+        },
+        "Completed": {
+          "value": 1,
+          "extends": []
+        },
+        "Pending": {
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.Currencies.CurrencyDto": {
       "typename": "CurrencyDto",
       "assembly": "EVA.Core",
@@ -89505,6 +89591,100 @@
       "enumValues": {},
       "parent": "EVA.Core.Events.CompanyEventExportTarget"
     },
+    "EVA.Core.Events.ConsumerCreditEventExportTarget": {
+      "typename": "ConsumerCreditEventExportTarget",
+      "assembly": "EVA.Core",
+      "usage": {},
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Events.BaseEventExportTarget"
+      ],
+      "extends": {
+        "ref": "EVA.Core.Events.BaseEventExportTarget",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Events.ConsumerCreditEventExportTarget+Data": {
+      "typename": "Data",
+      "assembly": "EVA.Core",
+      "usage": {},
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Amount": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Balance": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "MutationID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OriginalOrderID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "PaymentTransactionID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ReturnOrderID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Events.ConsumerCreditEventExportTarget"
+    },
     "EVA.Core.Events.CustomerEventExportTarget": {
       "typename": "CustomerEventExportTarget",
       "assembly": "EVA.Core",
@@ -89661,6 +89841,10 @@
         },
         "Company": {
           "value": 30,
+          "extends": []
+        },
+        "ConsumerCredit": {
+          "value": 33,
           "extends": []
         },
         "Coupon": {
@@ -234038,6 +234222,7 @@
             "APPOINTMENTS",
             "BUSINESSPROGRAM",
             "COMPANY",
+            "CONSUMERCREDIT",
             "COUPONS",
             "CUSTOMFIELD",
             "LOYALTYPROGRAM",
@@ -234476,6 +234661,7 @@
             "APPOINTMENTS",
             "BUSINESSPROGRAM",
             "COMPANY",
+            "CONSUMERCREDIT",
             "COUPONS",
             "CUSTOMFIELD",
             "LOYALTYPROGRAM",
@@ -234570,6 +234756,7 @@
             "APPOINTMENTS",
             "BUSINESSPROGRAM",
             "COMPANY",
+            "CONSUMERCREDIT",
             "COUPONS",
             "CUSTOMFIELD",
             "LOYALTYPROGRAM",
@@ -284752,6 +284939,7 @@
         "EVA.Payment.Core.Loyalty.LoyaltyPaymentMethodRequestProperties",
         "EVA.Payment.Core.GiftCard.API.APIGiftCardPaymentMethodRequestProperties",
         "EVA.Payment.Core.EVAPay.EVAPayPaymentMethodRequestProperties",
+        "EVA.Payment.Core.ConsumerCredit.ConsumerCreditPaymentMethodRequestProperties",
         "EVA.Payment.Core.Cash.CashPaymentMethodRequestProperties",
         "EVA.Payment.LINE.LinePayRequest",
         "EVA.Payment.Mollie.MolliePaymentMethodRequestProperties",
@@ -284924,6 +285112,11 @@
               },
               {
                 "ref": "EVA.Payment.Core.EVAPay.EVAPayPaymentMethodRequestProperties",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Payment.Core.ConsumerCredit.ConsumerCreditPaymentMethodRequestProperties",
                 "args": [],
                 "nullable": true
               },
@@ -286676,6 +286869,7 @@
         "EVA.Payment.Core.Loyalty.LoyaltyPaymentMethodRequestProperties",
         "EVA.Payment.Core.GiftCard.API.APIGiftCardPaymentMethodRequestProperties",
         "EVA.Payment.Core.EVAPay.EVAPayPaymentMethodRequestProperties",
+        "EVA.Payment.Core.ConsumerCredit.ConsumerCreditPaymentMethodRequestProperties",
         "EVA.Payment.Core.Cash.CashPaymentMethodRequestProperties",
         "EVA.Payment.LINE.LinePayRequest",
         "EVA.Payment.Mollie.MolliePaymentMethodRequestProperties",
@@ -286796,6 +286990,11 @@
               },
               {
                 "ref": "EVA.Payment.Core.EVAPay.EVAPayPaymentMethodRequestProperties",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Payment.Core.ConsumerCredit.ConsumerCreditPaymentMethodRequestProperties",
                 "args": [],
                 "nullable": true
               },
@@ -288564,6 +288763,7 @@
         "EVA.Payment.Core.Loyalty.LoyaltyPaymentMethodRequestProperties",
         "EVA.Payment.Core.GiftCard.API.APIGiftCardPaymentMethodRequestProperties",
         "EVA.Payment.Core.EVAPay.EVAPayPaymentMethodRequestProperties",
+        "EVA.Payment.Core.ConsumerCredit.ConsumerCreditPaymentMethodRequestProperties",
         "EVA.Payment.Core.Cash.CashPaymentMethodRequestProperties",
         "EVA.Payment.LINE.LinePayRequest",
         "EVA.Payment.Mollie.MolliePaymentMethodRequestProperties",
@@ -288690,6 +288890,11 @@
               },
               {
                 "ref": "EVA.Payment.Core.EVAPay.EVAPayPaymentMethodRequestProperties",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Payment.Core.ConsumerCredit.ConsumerCreditPaymentMethodRequestProperties",
                 "args": [],
                 "nullable": true
               },
@@ -400568,6 +400773,7 @@
         "EVA.Core.Widgets.Handlers.AppointmentWidgetUserData",
         "EVA.Core.Widgets.Handlers.BusinessProgramsWidgetUserData",
         "EVA.Core.Widgets.Handlers.CompanyWidgetUserData",
+        "EVA.Core.Widgets.Handlers.ConsumerCreditWidgetUserData",
         "EVA.Core.Widgets.Handlers.CouponsWidgetUserData",
         "EVA.Core.Widgets.Handlers.CustomFieldWidgetUserData",
         "EVA.Core.Widgets.Handlers.LoyaltyProgramWidgetUserData",
@@ -400596,6 +400802,11 @@
               },
               {
                 "ref": "EVA.Core.Widgets.Handlers.CompanyWidgetUserData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Widgets.Handlers.ConsumerCreditWidgetUserData",
                 "args": [],
                 "nullable": true
               },
@@ -400670,6 +400881,7 @@
             "APPOINTMENTS",
             "BUSINESSPROGRAM",
             "COMPANY",
+            "CONSUMERCREDIT",
             "COUPONS",
             "CUSTOMFIELD",
             "LOYALTYPROGRAM",
@@ -400947,6 +401159,57 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Widgets.Handlers.ConsumerCreditWidgetUserData": {
+      "typename": "ConsumerCreditWidgetUserData",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Balance": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Currency",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "NativeBalance": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "NativeCurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Currency",
+            "isEvaID": true
           },
           "allowedValues": []
         }
@@ -404070,6 +404333,180 @@
           "type": {
             "ref": "date",
             "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.DataLake.Models.DataLakeConsumerCredit": {
+      "typename": "DataLakeConsumerCredit",
+      "assembly": "EVA.DataLake",
+      "usage": {},
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Balance": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "CreationTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DataLakeType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "GenerationTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.DataLake.Models.DataLakeConsumerCreditMutation": {
+      "typename": "DataLakeConsumerCreditMutation",
+      "assembly": "EVA.DataLake",
+      "usage": {},
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Amount": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "ConsumerCreditID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "CreationTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DataLakeType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "GenerationTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OrderID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OriginalOrderID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "PaymentTransactionID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ReturnOrderID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         }
@@ -427922,6 +428359,412 @@
           },
           "requiredAllowEmpty": {
             "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Payment.Core.ConsumerCredit.ConsumerCreditMutationDto": {
+      "typename": "ConsumerCreditMutationDto",
+      "assembly": "EVA.Payment.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ConsumerCredit.ConsumerCreditMutationStatuses"
+      ],
+      "properties": {
+        "Amount": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "CreationTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "ConsumerCreditMutation",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OriginalOrderID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "PaymentTransactionID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "PaymentTransaction",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ReturnOrderID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "EVA.Core.ConsumerCredit.ConsumerCreditMutationStatuses",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Payment.Core.ConsumerCredit.ConsumerCreditPaymentMethodRequestProperties": {
+      "typename": "ConsumerCreditPaymentMethodRequestProperties",
+      "assembly": "EVA.Payment.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "SpendAuthorizationCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The Consumer Credit spend-authorization proof (L2 email code or L3 QR token). Required when the configured authorization level demands it.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Payment.Core.ConsumerCredit.GenerateConsumerCreditSpendQrCode": {
+      "typename": "GenerateConsumerCreditSpendQrCode",
+      "assembly": "EVA.Payment.Core",
+      "description": "Generates a single-use token authorizing a Consumer Credit spend on the given order, for the logged-in customer to\nrender as a QR code that the point of sale scans (fraud level L3). The token is submitted as a payment property when\npaying. Single-use and short-lived.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Payment.Core.ConsumerCredit.GenerateConsumerCreditSpendQrCodeResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Payment.Core.ConsumerCredit.GenerateConsumerCreditSpendQrCodeResponse": {
+      "typename": "GenerateConsumerCreditSpendQrCodeResponse",
+      "assembly": "EVA.Payment.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Token": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Payment.Core.ConsumerCredit.GetConsumerCreditBalance": {
+      "typename": "GetConsumerCreditBalance",
+      "assembly": "EVA.Payment.Core",
+      "description": "Returns the Consumer Credit balance of the current user, or of the requested user when called by an employee.\nReading another user's balance requires the ConsumerCredit functionality.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Payment.Core.ConsumerCredit.GetConsumerCreditBalanceResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Currency",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Payment.Core.ConsumerCredit.GetConsumerCreditBalanceResponse": {
+      "typename": "GetConsumerCreditBalanceResponse",
+      "assembly": "EVA.Payment.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Balance": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Currency",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "NativeBalance": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "NativeCurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Currency",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Payment.Core.ConsumerCredit.ListConsumerCreditMutations": {
+      "typename": "ListConsumerCreditMutations",
+      "assembly": "EVA.Payment.Core",
+      "description": "Lists the mutations of a user's Consumer Credit account. Each mutation exposes its order, return-order, original-order\nand payment-transaction links for finance traceability.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Payment.Core.ConsumerCredit.ListConsumerCreditMutationsResponse",
+        "EVA.Core.PagedResultRequest`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedResultRequest`1",
+        "args": [
+          {
+            "ref": "EVA.Payment.Core.ConsumerCredit.ListConsumerCreditMutationsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Payment.Core.ConsumerCredit.ListConsumerCreditMutationsResponse": {
+      "typename": "ListConsumerCreditMutationsResponse",
+      "assembly": "EVA.Payment.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Payment.Core.ConsumerCredit.ConsumerCreditMutationDto",
+        "EVA.Core.PagedResultResponse`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedResultResponse`1",
+        "args": [
+          {
+            "ref": "EVA.Payment.Core.ConsumerCredit.ConsumerCreditMutationDto",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Payment.Core.ConsumerCredit.RequestConsumerCreditSpendAuthorization": {
+      "typename": "RequestConsumerCreditSpendAuthorization",
+      "assembly": "EVA.Payment.Core",
+      "description": "Requests a single-use authorization code for spending Consumer Credit on the given order, emailed to the customer.\nRequired when the Consumer Credit spend authorization level is the L2 email code; the code is submitted as a payment\nproperty when paying.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         }
@@ -454324,6 +455167,16 @@
       "target": "OrganizationUnitSupplier",
       "type": "allocation_refilled",
       "dataType": "EVA.Core.Events.OrganizationUnitSupplierEventExportTarget+Data"
+    },
+    {
+      "target": "ConsumerCredit",
+      "type": "deposited",
+      "dataType": "EVA.Core.Events.ConsumerCreditEventExportTarget+Data"
+    },
+    {
+      "target": "ConsumerCredit",
+      "type": "spent",
+      "dataType": "EVA.Core.Events.ConsumerCreditEventExportTarget+Data"
     }
   ],
   "datalake_exports": [
@@ -454346,6 +455199,16 @@
       "Name": "Case",
       "DataType": "EVA.DataLake.Models.DataLakeCase",
       "ExamplePath": "EVA/euw/cases/{year}/{month}/{day}/{id}/{uid}.json"
+    },
+    {
+      "Name": "ConsumerCredit",
+      "DataType": "EVA.DataLake.Models.DataLakeConsumerCredit",
+      "ExamplePath": "EVA/euw/ConsumerCredit/{year}/{month}/{day}/{id}/{uid}.json"
+    },
+    {
+      "Name": "ConsumerCreditMutation",
+      "DataType": "EVA.DataLake.Models.DataLakeConsumerCreditMutation",
+      "ExamplePath": "EVA/euw/ConsumerCreditMutation/{year}/{month}/{day}/{id}/{uid}.json"
     },
     {
       "Name": "Discount",
@@ -467282,6 +468145,30 @@
           "name": "amount"
         }
       ]
+    },
+    {
+      "name": "ConsumerCredit:InsufficientBalance",
+      "message": "Cannot spend more than the current Consumer Credit balance.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ConsumerCredit:AccountNotEligible",
+      "message": "This account is not eligible to use Consumer Credit.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ConsumerCredit:SpendAuthorizationRequired",
+      "message": "A valid authorization code is required to spend Consumer Credit.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ConsumerCredit:MutationCancelled",
+      "message": "This Consumer Credit payment was already cancelled and cannot be completed.",
+      "module": "EVA.Core",
+      "arguments": []
     },
     {
       "name": "Settings:NotFound",
