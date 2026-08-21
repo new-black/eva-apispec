@@ -1,8 +1,8 @@
 {
-  "name": "GetConsumerCreditBalance",
+  "name": "RequestCustomerCreditSpendAuthorization",
   "method": "POST",
-  "path": "/message/GetConsumerCreditBalance",
-  "description": "Returns the Consumer Credit balance of the current user, or of the requested user when called by an employee.\nReading another user\u0027s balance requires the ConsumerCredit functionality.",
+  "path": "/message/RequestCustomerCreditSpendAuthorization",
+  "description": "Requests a single-use authorization code for spending Customer Credit on the given order, emailed to the customer.\nRequired when the Customer Credit spend authorization level is the L2 email code; the code is submitted as a payment\nproperty when paying.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Customer\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022UserID\u0022: 123\n}",
+      "sample": "{\n  \u0022OrderID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetConsumerCreditBalance",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/RequestCustomerCreditSpendAuthorization",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Balance\u0022: 123.456,\n  \u0022CurrencyID\u0022: \u0022string\u0022,\n  \u0022NativeBalance\u0022: 123.456,\n  \u0022NativeCurrencyID\u0022: \u0022string\u0022\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -73,19 +73,10 @@
   "types": {
     "B": [
       {
-        "name": "CurrencyID",
+        "name": "OrderID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Currency\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
-        "type": "integer | null",
+        "description": "This is the ID of a \u0060Order\u0060",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -169,24 +160,6 @@
     ],
     "C": [
       {
-        "name": "Balance",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CurrencyID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Currency\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
@@ -202,24 +175,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "NativeBalance",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "float | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "NativeCurrencyID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Currency\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
         "one_of": null
       }
     ]
