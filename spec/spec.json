@@ -247,7 +247,7 @@
       "path": "/message/AddManualDiscountToOrder",
       "method": "POST",
       "requestType": "EVA.Core.Orders.AddManualDiscountToOrder",
-      "responseType": "EVA.Core.Orders.AddDiscountToOrderResponse",
+      "responseType": "EVA.Core.Orders.AddManualDiscountToOrderResponse",
       "auth": {
         "requiredPermissions": [
           {
@@ -239783,7 +239783,7 @@
         "ref": "EVA.Core.RequestMessage`1",
         "args": [
           {
-            "ref": "EVA.Core.Orders.AddDiscountToOrderResponse",
+            "ref": "EVA.Core.Orders.AddManualDiscountToOrderResponse",
             "args": [],
             "nullable": true
           }
@@ -239810,6 +239810,7 @@
             "args": [],
             "nullable": true
           },
+          "description": "The amount to discount. When omitted the amount configured on the discount action is used.",
           "allowedValues": []
         },
         "DiscountID": {
@@ -239822,6 +239823,15 @@
             "supportsCustomID": true,
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "FinalOrderAmount": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The total the order should add up to after the discount is applied, from which the discount amount is calculated.\n\n- Mutually exclusive with `DiscountAmount`.\n- The full order total, including shipping costs, other costs, gift cards and insurances. Ex tax when the order calculates its amounts based on ex tax, in tax otherwise.\n- The discount is only dispersed over the discountable product lines, so it can never exceed their total. Shipping costs, other costs, gift cards, insurances and returns are never discounted and set the floor the order can reach; a lower total is rejected.\n- Only supported for order level discounts using the amount action, so without `OrderLines`.\n- The effect of other discounts is taken into account; an already applied amount of this discount is not.",
           "allowedValues": []
         },
         "OrderID": {
@@ -239857,6 +239867,32 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Orders.AddManualDiscountToOrderResponse": {
+      "typename": "AddManualDiscountToOrderResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Orders.AddDiscountToOrderResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.Orders.AddDiscountToOrderResponse",
+        "args": []
+      },
+      "properties": {
+        "AppliedDiscountAmount": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "description": "The discount amount that was applied.",
           "allowedValues": []
         }
       },
@@ -461457,6 +461493,36 @@
     {
       "name": "Discounts:ManualDiscountOnReturnOrderRequiresLines",
       "message": "Manual discount on a return order without discountable lines requires explicit return lines to apply to.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:ManualDiscountAmountsAreMutuallyExclusive",
+      "message": "Specify either DiscountAmount or FinalOrderAmount, not both.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:FinalOrderAmountNotSupportedForDiscount",
+      "message": "FinalOrderAmount is only supported for order level amount discounts.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:FinalOrderAmountCannotBeNegative",
+      "message": "FinalOrderAmount cannot be negative.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:FinalOrderAmountExceedsOrderTotal",
+      "message": "FinalOrderAmount cannot be higher than the order total.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:FinalOrderAmountBelowDiscountableFloor",
+      "message": "FinalOrderAmount cannot be lower than the order total minus the discountable amount; only the regular product lines can be discounted.",
       "module": "EVA.Core",
       "arguments": []
     },
