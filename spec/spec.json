@@ -30381,6 +30381,40 @@
       }
     },
     {
+      "name": "PushUserAnalyticsData_Async",
+      "assembly": "EVA.Core",
+      "path": "/async-message/PushUserAnalyticsData",
+      "method": "POST",
+      "requestType": "EVA.Core.Users.PushUserAnalyticsData_Async",
+      "responseType": "EVA.Core.Users.PushUserAnalyticsData_AsyncResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "EditUserAnalyticsData",
+            "scope": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "PushUserAnalyticsData_AsyncResult",
+      "assembly": "EVA.Core",
+      "path": "/async-result/PushUserAnalyticsData",
+      "method": "POST",
+      "requestType": "EVA.Core.Users.PushUserAnalyticsData_AsyncResult",
+      "responseType": "EVA.Core.Users.PushUserAnalyticsDataResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "EditUserAnalyticsData",
+            "scope": 0
+          }
+        ]
+      }
+    },
+    {
       "name": "PushUserBoughtProduct",
       "assembly": "EVA.Core.Management",
       "path": "/message/PushUserBoughtProduct",
@@ -33308,6 +33342,23 @@
           {
             "types": 2048,
             "functionality": "RecordExternalUserActivity",
+            "scope": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "SetUserAnalyticsData",
+      "assembly": "EVA.Core",
+      "path": "/message/SetUserAnalyticsData",
+      "method": "POST",
+      "requestType": "EVA.Core.Users.SetUserAnalyticsData",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "EditUserAnalyticsData",
             "scope": 0
           }
         ]
@@ -388880,6 +388931,234 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Users.PushUserAnalyticsData": {
+      "typename": "PushUserAnalyticsData",
+      "assembly": "EVA.Core",
+      "description": "Stores analytics data for multiple users at once, saving HTTP round trips compared to storing them one by one. Each user is stored independently: failures are reported per user in FailedRecords and do not stop the rest of the batch.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.Users.PushUserAnalyticsData+UserAnalytics"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Users.PushUserAnalyticsDataResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Users": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Users.PushUserAnalyticsData+UserAnalytics",
+                "args": [],
+                "nullable": true
+              }
+            ]
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.PushUserAnalyticsData_Async": {
+      "typename": "PushUserAnalyticsData_Async",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.Users.PushUserAnalyticsData",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Users.PushUserAnalyticsData_AsyncResponse": {
+      "typename": "PushUserAnalyticsData_AsyncResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.AsyncRequestHandling.AsyncRequestResponse",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Users.PushUserAnalyticsData_AsyncResult": {
+      "typename": "PushUserAnalyticsData_AsyncResult",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.AsyncRequestHandling.AsyncRequestResultRequest",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Users.PushUserAnalyticsData+UserAnalytics": {
+      "typename": "UserAnalytics",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "AverageBasketSize": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Average number of items in the user's baskets.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "AverageBasketValue": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Average value of the user's baskets.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Currency of the average basket value (ISO 4217).",
+          "skippable": true,
+          "datamodel": {
+            "name": "Currency",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The user to store analytics data for.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Users.PushUserAnalyticsData"
+    },
+    "EVA.Core.Users.PushUserAnalyticsDataResponse": {
+      "typename": "PushUserAnalyticsDataResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Users.PushUserAnalyticsDataResponse+FailedRecord"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "FailedRecords": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Users.PushUserAnalyticsDataResponse+FailedRecord",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "UsersStored": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "Number of users for which analytics data was successfully stored.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.PushUserAnalyticsDataResponse+FailedRecord": {
+      "typename": "FailedRecord",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ErrorMessage": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Error message describing the failure.",
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The user for which storing analytics data failed.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Users.PushUserAnalyticsDataResponse"
+    },
     "EVA.Core.Users.PushUserResponse": {
       "typename": "PushUserResponse",
       "assembly": "EVA.Core",
@@ -390248,6 +390527,79 @@
           "requiredAllowEmpty": {
             "current": false
           },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.SetUserAnalyticsData": {
+      "typename": "SetUserAnalyticsData",
+      "assembly": "EVA.Core",
+      "description": "Stores analytics data for a single user.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.EmptyResponseMessage",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "AverageBasketSize": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Average number of items in the user's baskets.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "AverageBasketValue": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Average value of the user's baskets.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Currency of the average basket value (ISO 4217).",
+          "skippable": true,
+          "datamodel": {
+            "name": "Currency",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The user to store analytics data for.",
           "datamodel": {
             "name": "User",
             "supportsCustomID": true,
@@ -472205,6 +472557,12 @@
     {
       "name": "PhoneBook:PhoneNumberAlreadyExists",
       "message": "This user already has a phone number with this number and type.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "PushUserAnalyticsData:TooManyUsers",
+      "message": "You can only push 10000 users at once.",
       "module": "EVA.Core",
       "arguments": []
     },
