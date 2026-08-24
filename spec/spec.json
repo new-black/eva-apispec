@@ -20374,8 +20374,8 @@
       "assembly": "EVA.Core",
       "path": "/message/GetSharedWishlist",
       "method": "POST",
-      "requestType": "EVA.Core.Users.Whislists.GetSharedWishlist",
-      "responseType": "EVA.Core.Users.Whislists.GetSharedWishlistResponse",
+      "requestType": "EVA.Core.Users.Wishlists.GetSharedWishlist",
+      "responseType": "EVA.Core.Users.Wishlists.GetSharedWishlistResponse",
       "auth": {
         "requiredPermissions": [
           {}
@@ -22819,7 +22819,7 @@
       "assembly": "EVA.Core",
       "path": "/message/LinkSharedWishlist",
       "method": "POST",
-      "requestType": "EVA.Core.Users.Whislists.LinkSharedWishlist",
+      "requestType": "EVA.Core.Users.Wishlists.LinkSharedWishlist",
       "responseType": "EVA.Core.EmptyResponseMessage",
       "auth": {
         "requiredPermissions": [
@@ -31860,7 +31860,7 @@
       "assembly": "EVA.Core",
       "path": "/message/RevokeWishlistShare",
       "method": "POST",
-      "requestType": "EVA.Core.Users.Whislists.RevokeWishlistShare",
+      "requestType": "EVA.Core.Users.Wishlists.RevokeWishlistShare",
       "responseType": "EVA.Core.EmptyResponseMessage",
       "auth": {
         "requiredPermissions": [
@@ -33403,8 +33403,8 @@
       "assembly": "EVA.Core",
       "path": "/message/ShareWishlist",
       "method": "POST",
-      "requestType": "EVA.Core.Users.Whislists.ShareWishlist",
-      "responseType": "EVA.Core.Users.Whislists.ShareWishlistResponse",
+      "requestType": "EVA.Core.Users.Wishlists.ShareWishlist",
+      "responseType": "EVA.Core.Users.Wishlists.ShareWishlistResponse",
       "auth": {
         "requiredPermissions": [
           {
@@ -34567,7 +34567,7 @@
       "assembly": "EVA.Core",
       "path": "/message/UnlinkSharedWishlist",
       "method": "POST",
-      "requestType": "EVA.Core.Users.Whislists.UnlinkSharedWishlist",
+      "requestType": "EVA.Core.Users.Wishlists.UnlinkSharedWishlist",
       "responseType": "EVA.Core.EmptyResponseMessage",
       "auth": {
         "requiredPermissions": [
@@ -395566,401 +395566,6 @@
       },
       "enumValues": {}
     },
-    "EVA.Core.Users.Whislists.GetSharedWishlist": {
-      "typename": "GetSharedWishlist",
-      "assembly": "EVA.Core",
-      "description": "Get the shared wishlist by token. Requires the share token.",
-      "usage": {
-        "request": true
-      },
-      "typeArguments": [],
-      "typeDependencies": [
-        "EVA.Core.RequestMessage`1"
-      ],
-      "extends": {
-        "ref": "EVA.Core.RequestMessage`1",
-        "args": [
-          {
-            "ref": "EVA.Core.Users.Whislists.GetSharedWishlistResponse",
-            "args": [],
-            "nullable": true
-          }
-        ]
-      },
-      "properties": {
-        "Token": {
-          "type": {
-            "ref": "string",
-            "args": []
-          },
-          "required": {
-            "current": true
-          },
-          "requiredAllowEmpty": {
-            "current": false
-          },
-          "allowedValues": []
-        }
-      },
-      "enumValues": {}
-    },
-    "EVA.Core.Users.Whislists.GetSharedWishlistResponse": {
-      "typename": "GetSharedWishlistResponse",
-      "assembly": "EVA.Core",
-      "usage": {
-        "response": true
-      },
-      "typeArguments": [],
-      "typeDependencies": [
-        "EVA.Core.ResponseMessage",
-        "EVA.Core.DataModels.CustomFieldValueWithOptions",
-        "EVA.Core.Search.IProductSearchItem",
-        "EVA.Core.Users.Whislists.GetSharedWishlistResponse+Product"
-      ],
-      "extends": {
-        "ref": "EVA.Core.ResponseMessage",
-        "args": []
-      },
-      "properties": {
-        "CustomFieldValuesWithOptions": {
-          "type": {
-            "ref": "map",
-            "args": [
-              {
-                "ref": "id",
-                "args": []
-              },
-              {
-                "ref": "EVA.Core.DataModels.CustomFieldValueWithOptions",
-                "args": [],
-                "nullable": true
-              }
-            ],
-            "nullable": true
-          },
-          "datamodel": {
-            "name": "CustomField",
-            "supportsCustomID": true,
-            "isEvaID": true
-          },
-          "allowedValues": []
-        },
-        "Description": {
-          "type": {
-            "ref": "string",
-            "args": [],
-            "nullable": true
-          },
-          "allowedValues": []
-        },
-        "FirstProduct": {
-          "type": {
-            "ref": "EVA.Core.Search.IProductSearchItem",
-            "args": [],
-            "nullable": true
-          },
-          "deprecated": {
-            "announced": 860,
-            "active": 886,
-            "comment": "FirstProduct is deprecated and is scheduled to be removed in 2.0.905: Use FirstWishlistProduct instead.."
-          },
-          "allowedValues": []
-        },
-        "FirstWishlistProduct": {
-          "type": {
-            "ref": "EVA.Core.Users.Whislists.GetSharedWishlistResponse+Product",
-            "args": [],
-            "nullable": true
-          },
-          "allowedValues": []
-        },
-        "Name": {
-          "type": {
-            "ref": "string",
-            "args": [],
-            "nullable": true
-          },
-          "allowedValues": []
-        },
-        "Products": {
-          "type": {
-            "ref": "array",
-            "args": [
-              {
-                "ref": "EVA.Core.Search.IProductSearchItem",
-                "args": [],
-                "nullable": true
-              }
-            ],
-            "nullable": true
-          },
-          "deprecated": {
-            "announced": 860,
-            "active": 886,
-            "comment": "Products is deprecated and is scheduled to be removed in 2.0.905: Use WishlistProducts instead.."
-          },
-          "allowedValues": []
-        },
-        "WishlistProducts": {
-          "type": {
-            "ref": "array",
-            "args": [
-              {
-                "ref": "EVA.Core.Users.Whislists.GetSharedWishlistResponse+Product",
-                "args": [],
-                "nullable": true
-              }
-            ],
-            "nullable": true
-          },
-          "allowedValues": []
-        }
-      },
-      "enumValues": {}
-    },
-    "EVA.Core.Users.Whislists.GetSharedWishlistResponse+Product": {
-      "typename": "Product",
-      "assembly": "EVA.Core",
-      "usage": {
-        "response": true
-      },
-      "typeArguments": [],
-      "typeDependencies": [
-        "EVA.Core.Search.IProductSearchItem"
-      ],
-      "properties": {
-        "ProductDetails": {
-          "type": {
-            "ref": "EVA.Core.Search.IProductSearchItem",
-            "args": [],
-            "nullable": true
-          },
-          "allowedValues": []
-        },
-        "Remark": {
-          "type": {
-            "ref": "string",
-            "args": [],
-            "nullable": true
-          },
-          "description": "Personal remark attached to this product on the wishlist.",
-          "allowedValues": []
-        }
-      },
-      "enumValues": {},
-      "parent": "EVA.Core.Users.Whislists.GetSharedWishlistResponse"
-    },
-    "EVA.Core.Users.Whislists.LinkSharedWishlist": {
-      "typename": "LinkSharedWishlist",
-      "assembly": "EVA.Core",
-      "description": "Links the shared wishlist to the user. Requires the share token. When linked the wishlist is returned in the users overview.",
-      "usage": {
-        "request": true
-      },
-      "typeArguments": [],
-      "typeDependencies": [
-        "EVA.Core.RequestMessage`1"
-      ],
-      "extends": {
-        "ref": "EVA.Core.RequestMessage`1",
-        "args": [
-          {
-            "ref": "EVA.Core.EmptyResponseMessage",
-            "args": [],
-            "nullable": true
-          }
-        ]
-      },
-      "properties": {
-        "Token": {
-          "type": {
-            "ref": "string",
-            "args": []
-          },
-          "required": {
-            "current": true
-          },
-          "requiredAllowEmpty": {
-            "current": false
-          },
-          "allowedValues": []
-        }
-      },
-      "enumValues": {}
-    },
-    "EVA.Core.Users.Whislists.RevokeWishlistShare": {
-      "typename": "RevokeWishlistShare",
-      "assembly": "EVA.Core",
-      "description": "Revoke the wishlist share.",
-      "usage": {
-        "request": true
-      },
-      "typeArguments": [],
-      "typeDependencies": [
-        "EVA.Core.RequestMessage`1"
-      ],
-      "extends": {
-        "ref": "EVA.Core.RequestMessage`1",
-        "args": [
-          {
-            "ref": "EVA.Core.EmptyResponseMessage",
-            "args": [],
-            "nullable": true
-          }
-        ]
-      },
-      "properties": {
-        "WishlistID": {
-          "type": {
-            "ref": "id",
-            "args": []
-          },
-          "datamodel": {
-            "name": "Wishlist",
-            "isEvaID": true
-          },
-          "allowedValues": []
-        }
-      },
-      "enumValues": {}
-    },
-    "EVA.Core.Users.Whislists.ShareWishlist": {
-      "typename": "ShareWishlist",
-      "assembly": "EVA.Core",
-      "description": "Share a wishlist.",
-      "usage": {
-        "request": true
-      },
-      "typeArguments": [],
-      "typeDependencies": [
-        "EVA.Core.RequestMessage`1"
-      ],
-      "extends": {
-        "ref": "EVA.Core.RequestMessage`1",
-        "args": [
-          {
-            "ref": "EVA.Core.Users.Whislists.ShareWishlistResponse",
-            "args": [],
-            "nullable": true
-          }
-        ]
-      },
-      "properties": {
-        "CanEdit": {
-          "type": {
-            "ref": "bool",
-            "args": []
-          },
-          "allowedValues": []
-        },
-        "Description": {
-          "type": {
-            "ref": "string",
-            "args": []
-          },
-          "description": "Description to identify the share with",
-          "required": {
-            "current": true
-          },
-          "requiredAllowEmpty": {
-            "current": false
-          },
-          "stringLengthConstraint": {
-            "max": 200
-          },
-          "allowedValues": []
-        },
-        "EmailAddresses": {
-          "type": {
-            "ref": "array",
-            "args": [
-              {
-                "ref": "string",
-                "args": [],
-                "nullable": true
-              }
-            ],
-            "nullable": true
-          },
-          "description": "Emailadresses to send the share token to. Can provide a maximum of 50 email adresses.",
-          "allowedValues": []
-        },
-        "WishlistID": {
-          "type": {
-            "ref": "id",
-            "args": []
-          },
-          "datamodel": {
-            "name": "Wishlist",
-            "isEvaID": true
-          },
-          "allowedValues": []
-        }
-      },
-      "enumValues": {}
-    },
-    "EVA.Core.Users.Whislists.ShareWishlistResponse": {
-      "typename": "ShareWishlistResponse",
-      "assembly": "EVA.Core",
-      "usage": {
-        "response": true
-      },
-      "typeArguments": [],
-      "typeDependencies": [
-        "EVA.Core.ResponseMessage"
-      ],
-      "extends": {
-        "ref": "EVA.Core.ResponseMessage",
-        "args": []
-      },
-      "properties": {
-        "Token": {
-          "type": {
-            "ref": "string",
-            "args": [],
-            "nullable": true
-          },
-          "allowedValues": []
-        }
-      },
-      "enumValues": {}
-    },
-    "EVA.Core.Users.Whislists.UnlinkSharedWishlist": {
-      "typename": "UnlinkSharedWishlist",
-      "assembly": "EVA.Core",
-      "description": "Unlinks the shared wishlist from the user. Will also remove it from the users overview. Shared wishlist can still be retrieved by the token.",
-      "usage": {
-        "request": true
-      },
-      "typeArguments": [],
-      "typeDependencies": [
-        "EVA.Core.RequestMessage`1"
-      ],
-      "extends": {
-        "ref": "EVA.Core.RequestMessage`1",
-        "args": [
-          {
-            "ref": "EVA.Core.EmptyResponseMessage",
-            "args": [],
-            "nullable": true
-          }
-        ]
-      },
-      "properties": {
-        "WishlistID": {
-          "type": {
-            "ref": "id",
-            "args": []
-          },
-          "datamodel": {
-            "name": "Wishlist",
-            "isEvaID": true
-          },
-          "allowedValues": []
-        }
-      },
-      "enumValues": {}
-    },
     "EVA.Core.Users.WishlistData": {
       "typename": "WishlistData",
       "assembly": "EVA.Core",
@@ -396356,6 +395961,9 @@
             "args": [],
             "nullable": true
           },
+          "stringLengthConstraint": {
+            "max": 1000
+          },
           "allowedValues": []
         },
         "Name": {
@@ -396500,6 +396108,9 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "stringLengthConstraint": {
+            "max": 1000
           },
           "allowedValues": []
         },
@@ -396817,6 +396428,190 @@
       "enumValues": {},
       "parent": "EVA.Core.Users.Wishlists.GetAnonymousWishlistResponse"
     },
+    "EVA.Core.Users.Wishlists.GetSharedWishlist": {
+      "typename": "GetSharedWishlist",
+      "assembly": "EVA.Core",
+      "description": "Get the shared wishlist by token. Requires the share token.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Users.Wishlists.GetSharedWishlistResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Token": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.Wishlists.GetSharedWishlistResponse": {
+      "typename": "GetSharedWishlistResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.DataModels.CustomFieldValueWithOptions",
+        "EVA.Core.Search.IProductSearchItem",
+        "EVA.Core.Users.Wishlists.GetSharedWishlistResponse+Product"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "CustomFieldValuesWithOptions": {
+          "type": {
+            "ref": "map",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              },
+              {
+                "ref": "EVA.Core.DataModels.CustomFieldValueWithOptions",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "CustomField",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "FirstProduct": {
+          "type": {
+            "ref": "EVA.Core.Search.IProductSearchItem",
+            "args": [],
+            "nullable": true
+          },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "FirstProduct is deprecated and is scheduled to be removed in 2.0.905: Use FirstWishlistProduct instead.."
+          },
+          "allowedValues": []
+        },
+        "FirstWishlistProduct": {
+          "type": {
+            "ref": "EVA.Core.Users.Wishlists.GetSharedWishlistResponse+Product",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Products": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Search.IProductSearchItem",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "Products is deprecated and is scheduled to be removed in 2.0.905: Use WishlistProducts instead.."
+          },
+          "allowedValues": []
+        },
+        "WishlistProducts": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Users.Wishlists.GetSharedWishlistResponse+Product",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.Wishlists.GetSharedWishlistResponse+Product": {
+      "typename": "Product",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Search.IProductSearchItem"
+      ],
+      "properties": {
+        "ProductDetails": {
+          "type": {
+            "ref": "EVA.Core.Search.IProductSearchItem",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Remark": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Personal remark attached to this product on the wishlist.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Users.Wishlists.GetSharedWishlistResponse"
+    },
     "EVA.Core.Users.Wishlists.GetUserWishlist": {
       "typename": "GetUserWishlist",
       "assembly": "EVA.Core",
@@ -397053,6 +396848,44 @@
       },
       "enumValues": {},
       "parent": "EVA.Core.Users.Wishlists.GetUserWishlistResponse"
+    },
+    "EVA.Core.Users.Wishlists.LinkSharedWishlist": {
+      "typename": "LinkSharedWishlist",
+      "assembly": "EVA.Core",
+      "description": "Links the shared wishlist to the user. Requires the share token. When linked the wishlist is returned in the users overview.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.EmptyResponseMessage",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Token": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
     },
     "EVA.Core.Users.Wishlists.ListUserWishlists": {
       "typename": "ListUserWishlists",
@@ -397328,6 +397161,179 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Users.Wishlists.RevokeWishlistShare": {
+      "typename": "RevokeWishlistShare",
+      "assembly": "EVA.Core",
+      "description": "Revoke the wishlist share.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.EmptyResponseMessage",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "WishlistID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Wishlist",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.Wishlists.ShareWishlist": {
+      "typename": "ShareWishlist",
+      "assembly": "EVA.Core",
+      "description": "Share a wishlist.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Users.Wishlists.ShareWishlistResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "CanEdit": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "Description to identify the share with",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "stringLengthConstraint": {
+            "max": 200
+          },
+          "allowedValues": []
+        },
+        "EmailAddresses": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Emailadresses to send the share token to. Can provide a maximum of 50 email adresses.",
+          "allowedValues": []
+        },
+        "WishlistID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Wishlist",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.Wishlists.ShareWishlistResponse": {
+      "typename": "ShareWishlistResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Token": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.Wishlists.UnlinkSharedWishlist": {
+      "typename": "UnlinkSharedWishlist",
+      "assembly": "EVA.Core",
+      "description": "Unlinks the shared wishlist from the user. Will also remove it from the users overview. Shared wishlist can still be retrieved by the token.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.EmptyResponseMessage",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "WishlistID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Wishlist",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Users.Wishlists.UpdateAnonymousWishlist": {
       "typename": "UpdateAnonymousWishlist",
       "assembly": "EVA.Core",
@@ -397429,6 +397435,9 @@
             "nullable": true
           },
           "skippable": true,
+          "stringLengthConstraint": {
+            "max": 1000
+          },
           "allowedValues": []
         },
         "HideFromUser": {
