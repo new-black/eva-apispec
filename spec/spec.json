@@ -1,5 +1,5 @@
 {
-  "apiversion": 845,
+  "apiversion": 846,
   "services": [
     {
       "name": "AbortTransaction",
@@ -32132,6 +32132,19 @@
       }
     },
     {
+      "name": "SendLoginCode",
+      "assembly": "EVA.Core",
+      "path": "/message/SendLoginCode",
+      "method": "POST",
+      "requestType": "EVA.Core.Security.LoginCode.SendLoginCode",
+      "responseType": "EVA.Core.Security.LoginCode.SendLoginCodeResponse",
+      "auth": {
+        "requiredPermissions": [
+          {}
+        ]
+      }
+    },
+    {
       "name": "SendMagicLink",
       "assembly": "EVA.Core",
       "path": "/message/SendMagicLink",
@@ -59724,6 +59737,7 @@
         "EVA.Core.RequestMessage`1",
         "EVA.Core.Authenticators.ICustomAuthenticateData",
         "EVA.Core.Security.Passkey.PasskeyAuthenticateMessage",
+        "EVA.Core.Security.LoginCode.LoginCodeAuthenticateMessage",
         "EVA.Authentication.OpenID.OpenIDAuthenticateMessage",
         "EVA.Core.UserTypes"
       ],
@@ -59766,6 +59780,11 @@
                 "nullable": true
               },
               {
+                "ref": "EVA.Core.Security.LoginCode.LoginCodeAuthenticateMessage",
+                "args": [],
+                "nullable": true
+              },
+              {
                 "ref": "EVA.Authentication.OpenID.OpenIDAuthenticateMessage",
                 "args": [],
                 "nullable": true
@@ -59790,6 +59809,7 @@
           "description": "Type of the custom authenticator, if used",
           "allowedValues": [
             "Passkey",
+            "LoginCode",
             "IdentificationCode",
             "LIVEGUARD",
             "OpenID"
@@ -313383,6 +313403,133 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Security.LoginCode.LoginCodeAuthenticateMessage": {
+      "typename": "LoginCodeAuthenticateMessage",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Code": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "required": {
+            "current": false
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "RequestToken": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "required": {
+            "current": false
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Security.LoginCode.SendLoginCode": {
+      "typename": "SendLoginCode",
+      "assembly": "EVA.Core",
+      "description": "Requests a login code, which will send an email containing a six letter code to the user (if found).\n\n- Setting `LoginCode:Enabled` must be enabled explicitly\n\nThis service always succeeds with a `RequestToken`, whether or not the email address belongs to a user - it never exposes if an account exists. Hand that `RequestToken` and the emailed\ncode to the `Login` service, using the `LoginCode` custom authenticator, to complete the login:\n\n```\n{ \"CustomAuthenticatorType\": \"LoginCode\", \"CustomAuthenticateData\": { \"RequestToken\": \"...\", \"Code\": \"KRPMTZ\" } }\n```\n\n- The code is six upper case letters\n- Anything that is not a letter is ignored, and casing does not matter, so `krp-mtz`, `krpmtz` and `KRP MTZ` are the same code - pass it on as typed\n- The code is valid for 10 minutes (or `LoginCode:Lifetime`), can only be used once, and only in combination with the `RequestToken` it was issued for\n- After 3 failed attempts the code is destroyed and a new one has to be requested\n- The `RequestToken` must be kept in the session that requested it; it is the whole reason someone else cannot spend the guesses on a code you are still typing in\n- The resulting session is valid for 1 week (or `SessionDuration:LoginCode`)\n\nUnlike a magic link, this does not walk past two-factor authentication: when `Login` answers `NeedsTwoFactorAuthentication`, continue with the `AuthenticationToken` it returned rather\nthan the code, because the code is deleted after first-time use.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Security.LoginCode.SendLoginCodeResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "EmailAddress": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "stringLengthConstraint": {
+            "max": 100
+          },
+          "allowedValues": []
+        },
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Logs in the customer on this order, instead of the user owning this email address - the two have to match.",
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Security.LoginCode.SendLoginCodeResponse": {
+      "typename": "SendLoginCodeResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "RequestToken": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Security.MagicLink.CheckMagicLink": {
       "typename": "CheckMagicLink",
       "assembly": "EVA.Core",
@@ -456928,6 +457075,18 @@
     {
       "name": "MagicLink:ManualCodeDisabled",
       "message": "Manual codes through magic links are disabled by your administrator.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "LoginCode:Disabled",
+      "message": "Login codes are disabled by your administrator.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "LoginCode:EmailOrderMismatch",
+      "message": "The provided combination of Email Address and OrderID yielded no results.",
       "module": "EVA.Core",
       "arguments": []
     },
