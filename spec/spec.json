@@ -24085,6 +24085,23 @@
       }
     },
     {
+      "name": "ListDiscountSegments",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/ListDiscountSegments",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Segments.ListDiscountSegments",
+      "responseType": "EVA.Core.Management.Segments.ListDiscountSegmentsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Discounts",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "ListDiscountTemplates",
       "assembly": "EVA.Core.Management",
       "path": "/message/ListDiscountTemplates",
@@ -30109,6 +30126,40 @@
       }
     },
     {
+      "name": "PushDiscountSegments_Async",
+      "assembly": "EVA.Core.Management",
+      "path": "/async-message/PushDiscountSegments",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Segments.PushDiscountSegments_Async",
+      "responseType": "EVA.Core.Management.Segments.PushDiscountSegments_AsyncResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "PushDiscountSegments",
+            "scope": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "PushDiscountSegments_AsyncResult",
+      "assembly": "EVA.Core.Management",
+      "path": "/async-result/PushDiscountSegments",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Segments.PushDiscountSegments_AsyncResult",
+      "responseType": "EVA.Core.Management.Segments.PushDiscountSegmentsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "PushDiscountSegments",
+            "scope": 0
+          }
+        ]
+      }
+    },
+    {
       "name": "PushLoyaltyProgram_Async",
       "assembly": "EVA.Core.Management",
       "path": "/async-message/PushLoyaltyProgram",
@@ -30985,6 +31036,23 @@
           {
             "types": 2049,
             "functionality": "Cases",
+            "scope": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "RemoveDiscountSegment",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/RemoveDiscountSegment",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Segments.RemoveDiscountSegment",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Discounts",
             "scope": 2
           }
         ]
@@ -32540,6 +32608,23 @@
       "auth": {
         "requiredPermissions": [
           {}
+        ]
+      }
+    },
+    {
+      "name": "SetDiscountSegment",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/SetDiscountSegment",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Segments.SetDiscountSegment",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Discounts",
+            "scope": 2
+          }
         ]
       }
     },
@@ -211610,6 +211695,119 @@
       "enumValues": {},
       "parent": "EVA.Core.Management.Segments.GetUserSegmentsResponse"
     },
+    "EVA.Core.Management.Segments.ListDiscountSegments": {
+      "typename": "ListDiscountSegments",
+      "assembly": "EVA.Core.Management",
+      "description": "List a paged result set of segments linked to a discount",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Segments.ListDiscountSegmentsFilter",
+        "EVA.Core.Management.Segments.ListDiscountSegmentsResponse",
+        "EVA.Core.PagedRequestMessage`2"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedRequestMessage`2",
+        "args": [
+          {
+            "ref": "EVA.Core.Segments.ListDiscountSegmentsFilter",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.Management.Segments.ListDiscountSegmentsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "DiscountID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "Discount",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Segments.ListDiscountSegmentsResponse": {
+      "typename": "ListDiscountSegmentsResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Management.Segments.ListDiscountSegmentsResponse+DiscountSegmentDto",
+        "EVA.Core.PagedResponseMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedResponseMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.Segments.ListDiscountSegmentsResponse+DiscountSegmentDto",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Segments.ListDiscountSegmentsResponse+DiscountSegmentDto": {
+      "typename": "DiscountSegmentDto",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "BoostScore": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "SegmentID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Segment",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "SegmentName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Segments.ListDiscountSegmentsResponse"
+    },
     "EVA.Core.Management.Segments.ListSegments": {
       "typename": "ListSegments",
       "assembly": "EVA.Core.Management",
@@ -211712,6 +211910,291 @@
       },
       "enumValues": {},
       "parent": "EVA.Core.Management.Segments.ListSegmentsResponse"
+    },
+    "EVA.Core.Management.Segments.PushDiscountSegments": {
+      "typename": "PushDiscountSegments",
+      "assembly": "EVA.Core.Management",
+      "description": "Link segments to discounts in bulk, keyed by discount and segment BackendID.\nA referenced segment BackendID that does not exist is created on the fly (BackendID used as the Name).\nAn existing link's boost score is updated.\nWhen ClearOmitted is enabled, segments currently linked to a discount but not included in that discount's assignment are unlinked.\nThere is a limit (10000) of discount assignments that can be pushed at once.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.Management.Segments.PushDiscountSegments+DiscountSegmentAssignment"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.Segments.PushDiscountSegmentsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Assignments": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.Segments.PushDiscountSegments+DiscountSegmentAssignment",
+                "args": [],
+                "nullable": true
+              }
+            ]
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "ClearOmitted": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When true, segments currently linked to a discount but not included in that discount's assignment are unlinked.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Segments.PushDiscountSegments_Async": {
+      "typename": "PushDiscountSegments_Async",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.Management.Segments.PushDiscountSegments",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Segments.PushDiscountSegments_AsyncResponse": {
+      "typename": "PushDiscountSegments_AsyncResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.AsyncRequestHandling.AsyncRequestResponse",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Segments.PushDiscountSegments_AsyncResult": {
+      "typename": "PushDiscountSegments_AsyncResult",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.AsyncRequestHandling.AsyncRequestResultRequest",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Segments.PushDiscountSegments+DiscountSegmentAssignment": {
+      "typename": "DiscountSegmentAssignment",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Management.Segments.PushDiscountSegments+SegmentBoost"
+      ],
+      "properties": {
+        "DiscountID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "Discount",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Segments": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.Segments.PushDiscountSegments+SegmentBoost",
+                "args": [],
+                "nullable": true
+              }
+            ]
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Segments.PushDiscountSegments"
+    },
+    "EVA.Core.Management.Segments.PushDiscountSegments+SegmentBoost": {
+      "typename": "SegmentBoost",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "BoostScore": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "minValue": {
+            "current": 0
+          },
+          "maxValue": {
+            "current": 1
+          },
+          "allowedValues": []
+        },
+        "SegmentBackendID": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "stringLengthConstraint": {
+            "min": 1,
+            "max": 128
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Segments.PushDiscountSegments"
+    },
+    "EVA.Core.Management.Segments.PushDiscountSegmentsResponse": {
+      "typename": "PushDiscountSegmentsResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Management.Segments.PushDiscountSegmentsResponse+FailedDiscountSegment"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "FailedDiscountSegments": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.Segments.PushDiscountSegmentsResponse+FailedDiscountSegment",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SuccessfullyPushedDiscountIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Discount",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Segments.PushDiscountSegmentsResponse+FailedDiscountSegment": {
+      "typename": "FailedDiscountSegment",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Error"
+      ],
+      "properties": {
+        "DiscountID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Discount",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Error": {
+          "type": {
+            "ref": "EVA.Core.Error",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Segments.PushDiscountSegmentsResponse"
     },
     "EVA.Core.Management.Segments.PushSegments": {
       "typename": "PushSegments",
@@ -212100,6 +212583,10 @@
           "requiredAllowEmpty": {
             "current": false
           },
+          "stringLengthConstraint": {
+            "min": 1,
+            "max": 128
+          },
           "allowedValues": []
         },
         "UserID": {
@@ -212213,6 +212700,60 @@
       "enumValues": {},
       "parent": "EVA.Core.Management.Segments.PushUserSegmentsResponse"
     },
+    "EVA.Core.Management.Segments.RemoveDiscountSegment": {
+      "typename": "RemoveDiscountSegment",
+      "assembly": "EVA.Core.Management",
+      "description": "Remove a segment link from a discount.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "DiscountID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "Discount",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "SegmentID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "Segment",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Management.Segments.RemoveSegmentFromUser": {
       "typename": "RemoveSegmentFromUser",
       "assembly": "EVA.Core.Management",
@@ -212261,6 +212802,79 @@
             "name": "User",
             "supportsCustomID": true,
             "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Segments.SetDiscountSegment": {
+      "typename": "SetDiscountSegment",
+      "assembly": "EVA.Core.Management",
+      "description": "Link a segment to a discount with a boost score. Creates the link, or updates the boost score if it already exists.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "BoostScore": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "minValue": {
+            "current": 0
+          },
+          "maxValue": {
+            "current": 1
+          },
+          "allowedValues": []
+        },
+        "DiscountID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "Discount",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "SegmentID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "Segment",
             "isEvaID": true
           },
           "allowedValues": []
@@ -314708,6 +315322,42 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Segments.ListDiscountSegmentsFilter": {
+      "typename": "ListDiscountSegmentsFilter",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "DiscountSegmentID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "DiscountSegment",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "SegmentID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Segment",
+            "isEvaID": true
           },
           "allowedValues": []
         }
@@ -457689,6 +458339,18 @@
           }
         }
       ]
+    },
+    {
+      "name": "DiscountSegments:PushDiscountSegmentsLimitExceeded",
+      "message": "Too many discount segment assignments were pushed at once",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "DiscountSegments:UnknownErrorPushingDiscountSegments",
+      "message": "An unknown error occurred while pushing discount segments",
+      "module": "EVA.Core",
+      "arguments": []
     },
     {
       "name": "Segments:DuplicateBackendID",
