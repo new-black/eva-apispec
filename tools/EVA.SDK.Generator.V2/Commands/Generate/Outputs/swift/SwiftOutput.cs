@@ -20,6 +20,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     var (input, _, writer, _) = ctx;
 
     // Write all services
+    var functionalities = new HashSet<string>();
     foreach (var service in input.Services)
     {
       // Vars
@@ -33,7 +34,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
 
       if (ctx.Options.ServiceFormat == "struct")
       {
-        WriteService_Struct(output, filename, reqName, resName, assembly, service);
+        WriteService_Struct(output, filename, reqName, resName, assembly, service, functionalities);
       }
       else
       {
@@ -41,6 +42,17 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       }
 
       await writer.WriteFileAsync($"{assembly}/{filename}.swift", output.ToString());
+    }
+
+    // Write the Functionality enum, now that every service's requiredPermissions has been visited.
+    if (functionalities.Count > 0)
+    {
+      var functionalitiesOutput = new IndentedStringBuilder(2);
+      functionalitiesOutput.WriteLine("import Foundation");
+      functionalitiesOutput.WriteLine();
+      WriteFunctionalitiesEnum(functionalities, functionalitiesOutput);
+
+      await writer.WriteFileAsync("ServiceFunctionality.swift", functionalitiesOutput.ToString());
     }
 
     // Write all types
@@ -115,7 +127,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     output.Write(string.Empty);
   }
 
-  private static void WriteService_Struct(IndentedStringBuilder output, string filename, string reqName, string resName, string assembly, ServiceModel service)
+  private static void WriteService_Struct(IndentedStringBuilder output, string filename, string reqName, string resName, string assembly, ServiceModel service, HashSet<string> functionalities)
   {
     output.WriteLine("import Foundation");
     output.WriteLine();
@@ -138,10 +150,14 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           {
             var p = permissions[i];
             var userTypes = (int)p.UserTypes!;
-            var scope = (int?)p.Scope ?? 0;
-            var functionality = p.Functionality != null ? $"\"{p.Functionality}\"" : "nil";
+            if (p.Functionality != null) functionalities.Add(p.Functionality);
+
+            var args = new List<string> { $"userTypes: {userTypes}" };
+            if (p.Functionality != null) args.Add($"functionality: \"{p.Functionality}\"");
+            if (p.Scope != null) args.Add($"scope: {(int)p.Scope}");
+
             var comma = i < permissions.Length - 1 ? "," : string.Empty;
-            output.WriteLine($"EVAPermission(userTypes: {userTypes}, functionality: {functionality}, scope: {scope}){comma}");
+            output.WriteLine($"EVAPermission({string.Join(", ", args)}){comma}");
           }
         }
         output.WriteLine("]");
@@ -780,6 +796,76 @@ internal class SwiftOutput : IOutput<SwiftOptions>
     }
 
     return $"{typeName}({string.Join(", ", args)})";
+  }
+
+  private static string FunctionalityCaseName(string functionality) => functionality.Replace(":", "_");
+
+  /// <summary>Writes the `Functionality` enum, containing a case for every distinct functionality string encountered across all services' requiredPermissions.</summary>
+  private static void WriteFunctionalitiesEnum(HashSet<string> functionalities, IndentedStringBuilder output)
+  {
+    var values = functionalities.OrderBy(v => v, StringComparer.Ordinal).ToList();
+
+    output.WriteLine("public enum ServiceFunctionality: RawRepresentable, Identifiable, Codable, CaseIterable, Equatable, Hashable, Sendable {");
+    using (output.Indentation)
+    {
+      foreach (var value in values)
+      {
+        output.WriteLine($"case {FunctionalityCaseName(value)}");
+      }
+
+      output.WriteLine("case undocumented(String)");
+      output.WriteLine();
+      output.WriteLine("public init?(rawValue: String)");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("switch rawValue");
+        using (output.BracedIndentation)
+        {
+          foreach (var value in values)
+          {
+            output.WriteLine($"case \"{value}\": self = .{FunctionalityCaseName(value)}");
+          }
+
+          output.WriteLine("default: self = .undocumented(rawValue)");
+        }
+      }
+
+      output.WriteLine();
+      output.WriteLine("public var id: Self { self }");
+      output.WriteLine();
+      output.WriteLine("public var rawValue: String");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("switch self");
+        using (output.BracedIndentation)
+        {
+          foreach (var value in values)
+          {
+            output.WriteLine($"case .{FunctionalityCaseName(value)}: return \"{value}\"");
+          }
+
+          output.WriteLine("case let .undocumented(string): return string");
+        }
+      }
+
+      output.WriteLine();
+      output.WriteLine("public static var allCases: [ServiceFunctionality]");
+      using (output.BracedIndentation)
+      {
+        output.WriteLine("[");
+        using (output.Indentation)
+        {
+          foreach (var value in values)
+          {
+            output.WriteLine($".{FunctionalityCaseName(value)},");
+          }
+        }
+
+        output.WriteLine("]");
+      }
+    }
+
+    output.WriteLine("}");
   }
 
   private static void WriteNonFlagsEnum(TypeSpecification type, string typename, IndentedStringBuilder output)
