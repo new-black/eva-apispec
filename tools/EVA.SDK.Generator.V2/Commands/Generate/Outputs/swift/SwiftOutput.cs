@@ -128,8 +128,8 @@ internal class SwiftOutput : IOutput<SwiftOptions>
       output.WriteLine($"public static let path = \"{service.Path}\"");
       output.WriteLine($"public static let httpMethod = \"{service.Method ?? "POST"}\"");
 
-      var permissions = service.AuthInformation?.RequiredPermissions ?? [];
-      if (!permissions.IsEmpty)
+      var permissions = (service.AuthInformation?.RequiredPermissions ?? []).Where(p => p.UserTypes != null).ToArray();
+      if (permissions.Length > 0)
       {
         output.WriteLine("public static let requiredPermissions: [EVAPermission] = [");
         using (output.Indentation)
@@ -137,7 +137,7 @@ internal class SwiftOutput : IOutput<SwiftOptions>
           for (var i = 0; i < permissions.Length; i++)
           {
             var p = permissions[i];
-            var userTypes = (int?)p.UserTypes ?? 0;
+            var userTypes = (int)p.UserTypes!;
             var scope = (int?)p.Scope ?? 0;
             var functionality = p.Functionality != null ? $"\"{p.Functionality}\"" : "nil";
             var comma = i < permissions.Length - 1 ? "," : string.Empty;
