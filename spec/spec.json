@@ -4754,6 +4754,23 @@
       }
     },
     {
+      "name": "CreateOperationalTask",
+      "assembly": "EVA.Core",
+      "path": "/message/CreateOperationalTask",
+      "method": "POST",
+      "requestType": "EVA.Core.Types.Operational.Services.CreateOperationalTask",
+      "responseType": "EVA.Core.Types.Operational.Services.CreateOperationalTaskResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "OperationalTasks",
+            "scope": 1
+          }
+        ]
+      }
+    },
+    {
       "name": "CreateOperationalTaskConfig",
       "assembly": "EVA.Core",
       "path": "/message/CreateOperationalTaskConfig",
@@ -71714,6 +71731,29 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.DataModels.OperationalTaskConfigType": {
+      "typename": "OperationalTaskConfigType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Survey": {
+          "extends": [],
+          "description": "Survey-based operational task. Users complete the task by filling out a survey."
+        },
+        "Text": {
+          "value": 1,
+          "extends": [],
+          "description": "Text-based operational task. Users see a simple text instruction and optionally an image."
+        }
+      }
     },
     "EVA.Core.DataModels.OrderBlobTypes": {
       "typename": "OrderBlobTypes",
@@ -327435,6 +327475,15 @@
       "typeArguments": [],
       "typeDependencies": [],
       "properties": {
+        "Content": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The text content of the task, for text-type operational tasks.",
+          "allowedValues": []
+        },
         "Deadline": {
           "type": {
             "ref": "date",
@@ -327452,6 +327501,15 @@
             "name": "UserTask",
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "ImageUrl": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The URL of the image associated with this task.",
           "allowedValues": []
         },
         "SchedulingConfigDescription": {
@@ -368633,6 +368691,22 @@
       "typeArguments": [],
       "typeDependencies": [],
       "properties": {
+        "Content": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ImageUrl": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "Title": {
           "type": {
             "ref": "string",
@@ -368674,6 +368748,115 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Types.Operational.Services.CreateOperationalTask": {
+      "typename": "CreateOperationalTask",
+      "assembly": "EVA.Core",
+      "description": "Creates a one-time operational task with a simple text instruction and optional image, without requiring a task configuration.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Types.Operational.Services.CreateOperationalTaskResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Content": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The text content to display to the user.",
+          "stringLengthConstraint": {
+            "min": 1,
+            "max": 4000
+          },
+          "allowedValues": []
+        },
+        "DeadlineInMinutes": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Deadline given to the task, in minutes from now.",
+          "minValue": {
+            "current": 0
+          },
+          "allowedValues": []
+        },
+        "ImageBlobID": {
+          "type": {
+            "ref": "guid",
+            "args": [],
+            "nullable": true
+          },
+          "description": "An optional image to display with the task.",
+          "datamodel": {
+            "name": "Blob",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The title of the task.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "stringLengthConstraint": {
+            "min": 1,
+            "max": 255
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The organization unit to create this task for.",
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "If provided, the task is created with this user assigned to it. The user must be an employee. The task remains visible to the whole organization unit and can be taken over by other employees.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Types.Operational.Services.CreateOperationalTaskConfig": {
       "typename": "CreateOperationalTaskConfig",
       "assembly": "EVA.Core",
@@ -368684,6 +368867,7 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
+        "EVA.Core.DataModels.OperationalTaskConfigType",
         "EVA.Core.Scheduling.SchedulingConfig",
         "EVA.Core.DataModels.ExistingTaskBehavior"
       ],
@@ -368698,6 +368882,19 @@
         ]
       },
       "properties": {
+        "Content": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The text content to display to the user. Required for Text type, not allowed for Survey type.",
+          "stringLengthConstraint": {
+            "min": 1,
+            "max": 4000
+          },
+          "allowedValues": []
+        },
         "DeactivateDuplicatePersonalTasks": {
           "type": {
             "ref": "bool",
@@ -368735,6 +368932,19 @@
           "description": "Auto-expiration period in minutes for personal tasks.",
           "minValue": {
             "current": 0
+          },
+          "allowedValues": []
+        },
+        "ImageBlobID": {
+          "type": {
+            "ref": "guid",
+            "args": [],
+            "nullable": true
+          },
+          "description": "An optional image to display with the task. Only allowed for Text type.",
+          "datamodel": {
+            "name": "Blob",
+            "isEvaID": true
           },
           "allowedValues": []
         },
@@ -368818,7 +369028,7 @@
             "args": [],
             "nullable": true
           },
-          "description": "The optional survey linked to this config. If provided, users will be asked to fill out a survey before they can complete the task.",
+          "description": "The optional survey linked to this config. If provided, users will be asked to fill out a survey before they can complete the task. Only allowed for Survey type.",
           "datamodel": {
             "name": "Survey",
             "supportsCustomID": true,
@@ -368851,6 +369061,14 @@
           },
           "description": "Start date for when TriggerOnFinancialPeriodClosed is active. If not provided, triggering is always active.",
           "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.OperationalTaskConfigType",
+            "args": []
+          },
+          "description": "The type of operational task. Survey (default) requires a survey to be filled out. Text shows a simple text instruction.",
+          "allowedValues": []
         }
       },
       "enumValues": {}
@@ -368877,6 +369095,36 @@
           },
           "datamodel": {
             "name": "OperationalTaskConfig",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Types.Operational.Services.CreateOperationalTaskResponse": {
+      "typename": "CreateOperationalTaskResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the created user task.",
+          "datamodel": {
+            "name": "UserTask",
             "isEvaID": true
           },
           "allowedValues": []
@@ -368957,7 +369205,9 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.ResponseMessage",
+        "EVA.Core.DataModels.OperationalTaskConfigType",
         "EVA.Core.Types.Operational.Services.SurveyInfoDto",
+        "EVA.Core.Blobs.BlobDto",
         "EVA.Core.Scheduling.SchedulingConfig",
         "EVA.Core.DataModels.ExistingTaskBehavior",
         "EVA.Core.Types.Operational.Services.GetOperationalTaskConfigResponse+RoleObject"
@@ -368973,6 +369223,15 @@
             "args": []
           },
           "description": "Indicates whether the user can manually trigger the task for all organization units in the set.",
+          "allowedValues": []
+        },
+        "Content": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The text content displayed to the user for Text type tasks.",
           "allowedValues": []
         },
         "DeactivateDuplicatePersonalTasks": {
@@ -368998,6 +369257,15 @@
             "nullable": true
           },
           "description": "Auto-expiration period in minutes for personal tasks.",
+          "allowedValues": []
+        },
+        "Image": {
+          "type": {
+            "ref": "EVA.Core.Blobs.BlobDto",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The image associated with this task configuration.",
           "allowedValues": []
         },
         "IsPersonal": {
@@ -369113,6 +369381,14 @@
           },
           "description": "Start date for when TriggerOnFinancialPeriodClosed is active.",
           "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.OperationalTaskConfigType",
+            "args": []
+          },
+          "description": "The type of operational task configuration.",
+          "allowedValues": []
         }
       },
       "enumValues": {}
@@ -369213,12 +369489,22 @@
       },
       "typeArguments": [],
       "typeDependencies": [
+        "EVA.Core.DataModels.OperationalTaskConfigType",
         "EVA.Core.Types.Operational.Services.OperationalTaskConfigDto+SurveyInfoDto",
         "EVA.Core.Scheduling.SchedulingConfig",
         "EVA.Core.DataModels.ExistingTaskBehavior",
         "EVA.Core.Types.Operational.Services.OperationalTaskConfigDto+RoleInfo"
       ],
       "properties": {
+        "Content": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The text content displayed to the user for Text type tasks.",
+          "allowedValues": []
+        },
         "DeactivateDuplicatePersonalTasks": {
           "type": {
             "ref": "bool",
@@ -369253,6 +369539,15 @@
             "name": "OperationalTaskConfig",
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "ImageUrl": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The URL of the image associated with this task configuration.",
           "allowedValues": []
         },
         "IsPersonal": {
@@ -369368,6 +369663,14 @@
             "args": []
           },
           "description": "Whether this configuration is triggered when a financial period closes.",
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.OperationalTaskConfigType",
+            "args": []
+          },
+          "description": "The type of operational task configuration.",
           "allowedValues": []
         }
       },
@@ -369582,6 +369885,7 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
+        "EVA.Core.DataModels.OperationalTaskConfigType",
         "EVA.Core.Scheduling.SchedulingConfig",
         "EVA.Core.DataModels.ExistingTaskBehavior"
       ],
@@ -369596,6 +369900,20 @@
         ]
       },
       "properties": {
+        "Content": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The text content to display to the user. Required for Text type. Pass null to remove.",
+          "skippable": true,
+          "stringLengthConstraint": {
+            "min": 1,
+            "max": 4000
+          },
+          "allowedValues": []
+        },
         "DeactivateDuplicatePersonalTasks": {
           "type": {
             "ref": "bool",
@@ -369647,6 +369965,20 @@
           },
           "datamodel": {
             "name": "OperationalTaskConfig",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ImageBlobID": {
+          "type": {
+            "ref": "guid",
+            "args": [],
+            "nullable": true
+          },
+          "description": "An optional image to display with the task. Only allowed for Text type. Pass null to remove.",
+          "skippable": true,
+          "datamodel": {
+            "name": "Blob",
             "isEvaID": true
           },
           "allowedValues": []
@@ -369772,6 +370104,15 @@
           },
           "description": "Start date for when TriggerOnFinancialPeriodClosed is active. Pass null to remove the restriction.",
           "skippable": true,
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.OperationalTaskConfigType",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The type of operational task. Survey requires a survey to be filled out. Text shows a simple text instruction.",
           "allowedValues": []
         }
       },
@@ -475931,6 +476272,59 @@
       "message": "Personal tasks require at least one role to be specified",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "OperationalTaskConfig:SurveyNotAllowedForTextTasks",
+      "message": "A survey cannot be set on a Text type operational task configuration",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "OperationalTaskConfig:ContentRequiredForTextTasks",
+      "message": "Content is required for Text type operational task configurations",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "OperationalTaskConfig:ContentOnlyAllowedForTextTasks",
+      "message": "Content and ImageBlobID can only be set on Text type operational task configurations",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "OperationalTaskConfig:InvalidImageMimeType",
+      "message": "MimeType {1} for BlobID {0} is not valid for an image",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "guid",
+            "args": []
+          },
+          "name": "BlobID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "MimeType"
+        }
+      ]
+    },
+    {
+      "name": "OperationalTask:UserMustBeEmployee",
+      "message": "The UserID {0} is not an Employee-type user",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
     },
     {
       "name": "CreateCustomUserTaskType:CustomUserTaskTypeAlreadyExists",
