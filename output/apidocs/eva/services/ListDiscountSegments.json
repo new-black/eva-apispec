@@ -1,9 +1,9 @@
 {
-  "name": "PushUserSegments_Async",
+  "name": "ListDiscountSegments",
   "method": "POST",
-  "path": "/async-message/PushUserSegments",
-  "description": "The PushUserSegments_Async service",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ManageUserSegments:None\u0060",
+  "path": "/message/ListDiscountSegments",
+  "description": "List a paged result set of segments linked to a discount",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Discounts:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -32,31 +32,24 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-BackendSystemID",
-      "type": "string",
-      "description": "The ID of the backend system that is used to resolve the IDs.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Assignments\u0022: [\n    {\n      \u0022SegmentBackendIDs\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022UserID\u0022: 123\n    }\n  ],\n  \u0022ClearOmitted\u0022: true,\n  \u0022DisableEventExports\u0022: true\n}",
+      "sample": "{\n  \u0022DiscountID\u0022: 123,\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022DiscountSegmentID\u0022: 123,\n      \u0022SegmentID\u0022: 123\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Assignments\u0022: [\n    {\n      \u0022SegmentBackendIDs\u0022: [\n        \u0022string\u0022\n      ],\n      \u0022UserID\u0022: 123\n    }\n  ],\n  \u0022ClearOmitted\u0022: true,\n  \u0022DisableEventExports\u0022: true\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/PushUserSegments_Async",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022DiscountID\u0022: 123,\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022DiscountSegmentID\u0022: 123,\n      \u0022SegmentID\u0022: 123\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListDiscountSegments",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022JobID\u0022: \u0022string\u0022\n}"
+      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022BoostScore\u0022: 123.456,\n      \u0022SegmentID\u0022: 123,\n      \u0022SegmentName\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -69,58 +62,78 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "D",
+  "response_type_id": "E",
   "types": {
-    "C": [
+    "D": [
       {
-        "name": "SegmentBackendIDs",
+        "name": "DiscountSegmentID",
         "deprecation_notice": null,
-        "description": "This string must be between 1 (incl) and 128 (incl) characters long.",
-        "type": "array[string]",
-        "required": true,
+        "description": "This is the ID of a \u0060DiscountSegment\u0060",
+        "type": "integer | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "UserID",
+        "name": "SegmentID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
-        "type": "integer",
-        "required": true,
+        "description": "This is the ID of a \u0060Segment\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Filter",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Limit",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
     "B": [
       {
-        "name": "Assignments",
+        "name": "DiscountID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "array[object]",
+        "description": "This is the ID of a \u0060Discount\u0060",
+        "type": "integer",
         "required": true,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "ClearOmitted",
-        "deprecation_notice": null,
-        "description": "When true, segments currently on a user but not included in that user\u0027s assignment are detached.",
-        "type": "boolean",
-        "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "DisableEventExports",
+        "name": "InitialPageConfig",
         "deprecation_notice": null,
-        "description": "Enabling this will try to suppress as many event exports as possible that might result from this call.",
-        "type": "boolean",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
+      {
+        "name": "PageToken",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -167,7 +180,7 @@
         "one_of": null
       }
     ],
-    "F": [
+    "G": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -196,23 +209,43 @@
         "one_of": null
       }
     ],
-    "D": [
+    "H": [
+      {
+        "name": "BoostScore",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SegmentID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Segment\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SegmentName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
-        "one_of": null
-      },
-      {
-        "name": "JobID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "F",
         "one_of": null
       },
       {
@@ -221,7 +254,34 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "NextPageToken",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PreviousPageToken",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Results",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object]",
+        "required": true,
+        "properties_id": "H",
         "one_of": null
       }
     ]
