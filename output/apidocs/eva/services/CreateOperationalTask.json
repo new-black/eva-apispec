@@ -1,9 +1,9 @@
 {
-  "name": "ListOperationalTasks",
+  "name": "CreateOperationalTask",
   "method": "POST",
-  "path": "/message/ListOperationalTasks",
-  "description": "List the available Operational tasks for the current user.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060HandleOperationalTasks:None\u0060",
+  "path": "/message/CreateOperationalTask",
+  "description": "Creates a one-time operational task with a simple text instruction and optional image, without requiring a task configuration.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060OperationalTasks:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -44,19 +44,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022SurveyName\u0022: \u0022string\u0022,\n      \u0022UserID\u0022: 123\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022Content\u0022: \u0022string\u0022,\n  \u0022DeadlineInMinutes\u0022: 123,\n  \u0022ImageBlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022UserID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022SurveyName\u0022: \u0022string\u0022,\n      \u0022UserID\u0022: 123\n    },\n    \u0022Limit\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListOperationalTasks",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Content\u0022: \u0022string\u0022,\n  \u0022DeadlineInMinutes\u0022: 123,\n  \u0022ImageBlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022UserID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateOperationalTask",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022Content\u0022: \u0022string\u0022,\n      \u0022Deadline\u0022: \u00222025-01-01\u0022,\n      \u0022ID\u0022: 123,\n      \u0022ImageUrl\u0022: \u0022string\u0022,\n      \u0022SchedulingConfigDescription\u0022: \u0022string\u0022,\n      \u0022SurveyID\u0022: 123,\n      \u0022Title\u0022: \u0022string\u0022,\n      \u0022UserFullName\u0022: \u0022string\u0022,\n      \u0022UserID\u0022: 123\n    }\n  ]\n}"
+      "sample": "{\n  \u0022ID\u0022: 123\n}"
     },
     {
       "name": "400",
@@ -69,14 +69,50 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "E",
+  "response_type_id": "C",
   "types": {
-    "D": [
+    "B": [
       {
-        "name": "SurveyName",
+        "name": "Content",
         "deprecation_notice": null,
-        "description": "",
+        "description": "The text content to display to the user.\n\nThis string must be between 1 (incl) and 4000 (incl) characters long.",
         "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DeadlineInMinutes",
+        "deprecation_notice": null,
+        "description": "Deadline given to the task, in minutes from now.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ImageBlobID",
+        "deprecation_notice": null,
+        "description": "An optional image to display with the task.\n\nThis is the ID of a \u0060Blob\u0060",
+        "type": "guid | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "The title of the task.\n\nThis string must be between 1 (incl) and 255 (incl) characters long.",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "The organization unit to create this task for.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -84,54 +120,14 @@
       {
         "name": "UserID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
+        "description": "If provided, the task is created with this user assigned to it. The user must be an employee. The task remains visible to the whole organization unit and can be taken over by other employees.\n\nThis is the ID of a \u0060User\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "C": [
-      {
-        "name": "Filter",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Limit",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "B": [
-      {
-        "name": "InitialPageConfig",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "PageToken",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "F": [
+    "D": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -178,7 +174,7 @@
         "one_of": null
       }
     ],
-    "G": [
+    "E": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -207,97 +203,23 @@
         "one_of": null
       }
     ],
-    "H": [
-      {
-        "name": "Content",
-        "deprecation_notice": null,
-        "description": "The text content of the task, for text-type operational tasks.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Deadline",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "datetime | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserTask\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ImageUrl",
-        "deprecation_notice": null,
-        "description": "The URL of the image associated with this task.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SchedulingConfigDescription",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SurveyID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Survey\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Title",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserFullName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [
+    "C": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "The ID of the created user task.\n\nThis is the ID of a \u0060UserTask\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       },
       {
@@ -306,34 +228,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
-        "one_of": null
-      },
-      {
-        "name": "NextPageToken",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "PreviousPageToken",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Results",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object]",
-        "required": true,
-        "properties_id": "H",
+        "properties_id": "E",
         "one_of": null
       }
     ]
