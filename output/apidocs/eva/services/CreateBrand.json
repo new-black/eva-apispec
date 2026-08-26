@@ -2,8 +2,8 @@
   "name": "CreateBrand",
   "method": "POST",
   "path": "/message/CreateBrand",
-  "description": "The CreateBrand service",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
+  "description": "Creates a brand.\n\nFails when a brand with the given \u0060BackendID\u0060 already exists; use \u0060UpdateBrand\u0060 to change an existing brand.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Product:Create\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{}"
+      "sample": "{\n  \u0022ID\u0022: 123\n}"
     },
     {
       "name": "400",
@@ -61,7 +61,7 @@
       {
         "name": "BackendID",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Identifier of the brand in the system it originates from. Product imports match brands on this value.\n\n**Required since 860:** Field BackendID is required and is scheduled to be enforced in 2.0.905.\n\n**Will be enforced in 886**",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -70,7 +70,7 @@
       {
         "name": "Name",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Display name of the brand. Exposed on products as \u0060BrandName\u0060 and used in product search.\n\n**Required since 860:** Field Name is required and is scheduled to be enforced in 2.0.905.\n\n**Will be enforced in 886**",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -161,6 +161,15 @@
         "type": "object | null",
         "required": false,
         "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "ID of the created brand.\n\nThis is the ID of a \u0060Brand\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
         "one_of": null
       },
       {

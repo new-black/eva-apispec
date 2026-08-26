@@ -1,9 +1,9 @@
 {
-  "name": "UpdateBrand",
+  "name": "DeleteBrand",
   "method": "POST",
-  "path": "/message/UpdateBrand",
-  "description": "Updates an existing brand.\n\nOnly the properties that are supplied are changed; leaving \u0060Name\u0060 or \u0060BackendID\u0060 empty keeps the current value. Changing \u0060BackendID\u0060 fails when another brand already uses it.",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Product:Edit\u0060",
+  "path": "/message/DeleteBrand",
+  "description": "Deletes a brand.\n\nFails when any product still references the brand; reassign or clear those products first.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Product:Delete\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ToUpdate\u0022: {\n    \u0022BackendID\u0022: \u0022string\u0022,\n    \u0022ID\u0022: 123,\n    \u0022Name\u0022: \u0022string\u0022\n  }\n}",
+      "sample": "{\n  \u0022ID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ToUpdate\u0022: {\n    \u0022BackendID\u0022: \u0022string\u0022,\n    \u0022ID\u0022: 123,\n    \u0022Name\u0022: \u0022string\u0022\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateBrand",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/DeleteBrand",
       "syntax": "bash"
     }
   ],
@@ -62,49 +62,20 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "D",
+  "response_type_id": "C",
   "types": {
-    "C": [
-      {
-        "name": "BackendID",
-        "deprecation_notice": null,
-        "description": "Identifier of the brand in the system it originates from. Product imports match brands on this value.\n\nThis is the ID of a \u0060Brand\u0060",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
+    "B": [
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "ID of the brand.\n\nThis is the ID of a \u0060Brand\u0060",
+        "description": "ID of the brand to delete.\n\nThis is the ID of a \u0060Brand\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
-      },
-      {
-        "name": "Name",
-        "deprecation_notice": null,
-        "description": "Display name of the brand. Exposed on products as \u0060BrandName\u0060 and used in product search.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
       }
     ],
-    "B": [
-      {
-        "name": "ToUpdate",
-        "deprecation_notice": null,
-        "description": "The brand to update, identified by its \u0060ID\u0060.",
-        "type": "object",
-        "required": true,
-        "properties_id": "C",
-        "one_of": null
-      }
-    ],
-    "E": [
+    "D": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -151,7 +122,7 @@
         "one_of": null
       }
     ],
-    "F": [
+    "E": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -180,14 +151,14 @@
         "one_of": null
       }
     ],
-    "D": [
+    "C": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "D",
         "one_of": null
       },
       {
@@ -196,7 +167,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "E",
         "one_of": null
       }
     ]
