@@ -3028,11 +3028,13 @@
       "path": "/message/CreateBrand",
       "method": "POST",
       "requestType": "EVA.PIM.Services.Brands.CreateBrand",
-      "responseType": "EVA.Core.EmptyResponseMessage",
+      "responseType": "EVA.PIM.Services.Brands.CreateBrandResponse",
       "auth": {
         "requiredPermissions": [
           {
-            "types": 2049
+            "types": 2049,
+            "functionality": "Product",
+            "scope": 1
           }
         ]
       }
@@ -7947,6 +7949,23 @@
         "requiredPermissions": [
           {
             "types": 2049
+          }
+        ]
+      }
+    },
+    {
+      "name": "DeleteBrand",
+      "assembly": "EVA.PIM",
+      "path": "/message/DeleteBrand",
+      "method": "POST",
+      "requestType": "EVA.PIM.Services.Brands.DeleteBrand",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Product",
+            "scope": 4
           }
         ]
       }
@@ -35118,7 +35137,9 @@
       "auth": {
         "requiredPermissions": [
           {
-            "types": 2049
+            "types": 2049,
+            "functionality": "Product",
+            "scope": 2
           }
         ]
       }
@@ -301158,17 +301179,24 @@
     "EVA.Core.Products.ListBrands": {
       "typename": "ListBrands",
       "assembly": "EVA.Core",
+      "description": "Lists brands.\n\n`Name` and `BackendID` can both be filtered on, each applied as a `contains` match.",
       "usage": {
         "request": true
       },
       "typeArguments": [],
       "typeDependencies": [
+        "EVA.Core.Products.ListBrandsFilter",
         "EVA.Core.Products.ListBrandsResponse",
-        "EVA.Core.PagedResultRequest`1"
+        "EVA.Core.FilteredPagedResultRequest`2"
       ],
       "extends": {
-        "ref": "EVA.Core.PagedResultRequest`1",
+        "ref": "EVA.Core.FilteredPagedResultRequest`2",
         "args": [
+          {
+            "ref": "EVA.Core.Products.ListBrandsFilter",
+            "args": [],
+            "nullable": true
+          },
           {
             "ref": "EVA.Core.Products.ListBrandsResponse",
             "args": [],
@@ -301177,6 +301205,36 @@
         ]
       },
       "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Products.ListBrandsFilter": {
+      "typename": "ListBrandsFilter",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "BackendID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Matches brands whose BackendID contains this value.",
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Matches brands whose name contains this value.",
+          "allowedValues": []
+        }
+      },
       "enumValues": {}
     },
     "EVA.Core.Products.ListBrandsResponse": {
@@ -301218,12 +301276,23 @@
             "args": [],
             "nullable": true
           },
+          "description": "Identifier of the brand in the system it originates from. Product imports match brands on this value.",
+          "datamodel": {
+            "name": "Brand",
+            "isExternalID": true
+          },
           "allowedValues": []
         },
         "ID": {
           "type": {
             "ref": "id",
             "args": []
+          },
+          "description": "ID of the brand.",
+          "datamodel": {
+            "name": "Brand",
+            "supportsCustomID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         },
@@ -301233,6 +301302,7 @@
             "args": [],
             "nullable": true
           },
+          "description": "Display name of the brand. Exposed on products as `BrandName` and used in product search.",
           "allowedValues": []
         }
       },
@@ -437653,6 +437723,7 @@
             "args": [],
             "nullable": true
           },
+          "description": "Identifier of the brand in the system it originates from. Product imports match brands on this value.",
           "datamodel": {
             "name": "Brand",
             "isExternalID": true
@@ -437664,6 +437735,7 @@
             "ref": "id",
             "args": []
           },
+          "description": "ID of the brand.",
           "datamodel": {
             "name": "Brand",
             "supportsCustomID": true,
@@ -437677,6 +437749,7 @@
             "args": [],
             "nullable": true
           },
+          "description": "Display name of the brand. Exposed on products as `BrandName` and used in product search.",
           "allowedValues": []
         }
       },
@@ -437685,6 +437758,107 @@
     "EVA.PIM.Services.Brands.CreateBrand": {
       "typename": "CreateBrand",
       "assembly": "EVA.PIM",
+      "description": "Creates a brand.\n\nFails when a brand with the given `BackendID` already exists; use `UpdateBrand` to change an existing brand.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.PIM.Services.Brands.CreateBrandResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "BackendID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Identifier of the brand in the system it originates from. Product imports match brands on this value.",
+          "required": {
+            "current": false,
+            "new": true,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field BackendID is required and is scheduled to be enforced in 2.0.905."
+          },
+          "requiredAllowEmpty": {
+            "new": false,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field BackendID is required and is scheduled to be enforced in 2.0.905."
+          },
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Display name of the brand. Exposed on products as `BrandName` and used in product search.",
+          "required": {
+            "current": false,
+            "new": true,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field Name is required and is scheduled to be enforced in 2.0.905."
+          },
+          "requiredAllowEmpty": {
+            "new": false,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field Name is required and is scheduled to be enforced in 2.0.905."
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.PIM.Services.Brands.CreateBrandResponse": {
+      "typename": "CreateBrandResponse",
+      "assembly": "EVA.PIM",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "ID of the created brand.",
+          "datamodel": {
+            "name": "Brand",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.PIM.Services.Brands.DeleteBrand": {
+      "typename": "DeleteBrand",
+      "assembly": "EVA.PIM",
+      "description": "Deletes a brand.\n\nFails when any product still references the brand; reassign or clear those products first.",
       "usage": {
         "request": true
       },
@@ -437697,19 +437871,16 @@
         "args": []
       },
       "properties": {
-        "BackendID": {
+        "ID": {
           "type": {
-            "ref": "string",
-            "args": [],
-            "nullable": true
+            "ref": "id",
+            "args": []
           },
-          "allowedValues": []
-        },
-        "Name": {
-          "type": {
-            "ref": "string",
-            "args": [],
-            "nullable": true
+          "description": "ID of the brand to delete.",
+          "datamodel": {
+            "name": "Brand",
+            "supportsCustomID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         }
@@ -437719,6 +437890,7 @@
     "EVA.PIM.Services.Brands.GetBrand": {
       "typename": "GetBrand",
       "assembly": "EVA.PIM",
+      "description": "Gets a brand by its ID. Fails when no brand exists with the given ID.",
       "usage": {
         "request": true
       },
@@ -437742,6 +437914,7 @@
             "ref": "id",
             "args": []
           },
+          "description": "ID of the brand to get.",
           "datamodel": {
             "name": "Brand",
             "supportsCustomID": true,
@@ -437782,6 +437955,7 @@
     "EVA.PIM.Services.Brands.UpdateBrand": {
       "typename": "UpdateBrand",
       "assembly": "EVA.PIM",
+      "description": "Updates an existing brand.\n\nOnly the properties that are supplied are changed; leaving `Name` or `BackendID` empty keeps the current value. Changing `BackendID` fails when another brand already uses it.",
       "usage": {
         "request": true
       },
@@ -437800,6 +437974,7 @@
             "ref": "EVA.PIM.Services.Brands.BrandDto",
             "args": []
           },
+          "description": "The brand to update, identified by its `ID`.",
           "required": {
             "current": true
           },
@@ -476486,6 +476661,39 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Brand:BackendIDAndNameAreRequired",
+      "message": "A brand requires both a BackendID and a Name.",
+      "module": "EVA.PIM",
+      "arguments": []
+    },
+    {
+      "name": "Brand:BackendIDAlreadyInUse",
+      "message": "A brand with BackendID '{0}' already exists.",
+      "module": "EVA.PIM",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Brand:BrandIsUsedByProducts",
+      "message": "Brand {0} cannot be deleted because products still reference it.",
+      "module": "EVA.PIM",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
           }
         }
       ]
