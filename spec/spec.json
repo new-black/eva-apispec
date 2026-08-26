@@ -10790,6 +10790,38 @@
       }
     },
     {
+      "name": "DeleteTwoFactorTrustedDevice",
+      "assembly": "EVA.Core",
+      "path": "/message/DeleteTwoFactorTrustedDevice",
+      "method": "POST",
+      "requestType": "EVA.Core.Authentication.DeleteTwoFactorTrustedDevice",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
+      "name": "DeleteTwoFactorTrustedDevicesForUser",
+      "assembly": "EVA.Core",
+      "path": "/message/DeleteTwoFactorTrustedDevicesForUser",
+      "method": "POST",
+      "requestType": "EVA.Core.Authentication.DeleteTwoFactorTrustedDevicesForUser",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Employees",
+            "scope": 31
+          }
+        ]
+      }
+    },
+    {
       "name": "DeleteUnitOfMeasure",
       "assembly": "EVA.Core.Management",
       "path": "/message/DeleteUnitOfMeasure",
@@ -21410,6 +21442,21 @@
       "auth": {
         "requiredPermissions": [
           {}
+        ]
+      }
+    },
+    {
+      "name": "GetTwoFactorTrustedDevices",
+      "assembly": "EVA.Core",
+      "path": "/message/GetTwoFactorTrustedDevices",
+      "method": "POST",
+      "requestType": "EVA.Core.Authentication.GetTwoFactorTrustedDevices",
+      "responseType": "EVA.Core.Authentication.GetTwoFactorTrustedDevicesResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
         ]
       }
     },
@@ -58743,6 +58790,71 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Authentication.DeleteTwoFactorTrustedDevice": {
+      "typename": "DeleteTwoFactorTrustedDevice",
+      "assembly": "EVA.Core",
+      "description": "Revokes a trusted device for the current user, so it has to satisfy two-factor authentication again on the next login.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "required": {
+            "current": false
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Authentication.DeleteTwoFactorTrustedDevicesForUser": {
+      "typename": "DeleteTwoFactorTrustedDevicesForUser",
+      "assembly": "EVA.Core",
+      "description": "Revokes all trusted devices for the given user, as employee management feature.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Authentication.DisableAllTwoFactorAuthentication": {
       "typename": "DisableAllTwoFactorAuthentication",
       "assembly": "EVA.Core",
@@ -59878,6 +59990,119 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Authentication.GetTwoFactorTrustedDevices": {
+      "typename": "GetTwoFactorTrustedDevices",
+      "assembly": "EVA.Core",
+      "description": "Lists the devices that may skip the two-factor step for the current user, as remembered by `Login` with `TwoFactorRememberMe`.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Authentication.GetTwoFactorTrustedDevicesResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Authentication.GetTwoFactorTrustedDevicesResponse": {
+      "typename": "GetTwoFactorTrustedDevicesResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Authentication.GetTwoFactorTrustedDevicesResponse+GetTwoFactorTrustedDevicesItem"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Devices": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Authentication.GetTwoFactorTrustedDevicesResponse+GetTwoFactorTrustedDevicesItem",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "required": {
+            "current": false
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Authentication.GetTwoFactorTrustedDevicesResponse+GetTwoFactorTrustedDevicesItem": {
+      "typename": "GetTwoFactorTrustedDevicesItem",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "CreationTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "ExpirationDate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "required": {
+            "current": false
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Authentication.GetTwoFactorTrustedDevicesResponse"
+    },
     "EVA.Core.Authentication.Login": {
       "typename": "Login",
       "assembly": "EVA.Core",
@@ -60048,7 +60273,25 @@
             "ref": "bool",
             "args": []
           },
-          "description": "If a successful two-factor authentication should be remembered on this IP address",
+          "description": "If a successful two-factor authentication should be remembered on this device. When set, the response contains a\n`TwoFactorTrustedDeviceToken` - store it, and send it along on your next `Login` to skip the two-factor step.",
+          "allowedValues": []
+        },
+        "TwoFactorTrustedDeviceName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "A name for this device, shown to the user when they review their trusted devices - defaults to the `EVA-User-Agent`",
+          "allowedValues": []
+        },
+        "TwoFactorTrustedDeviceToken": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The token from a previous `Login` where `TwoFactorRememberMe` was set, proving this device already satisfied two-factor authentication",
           "allowedValues": []
         },
         "UseJwtTokens": {
@@ -60186,6 +60429,15 @@
             "nullable": true
           },
           "description": "The available two-factor authenticators, returned when the Authentication result is NeedsTwoFactorAuthentication or NeedsTwoFactorSetup",
+          "allowedValues": []
+        },
+        "TwoFactorTrustedDeviceToken": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Returned once when `TwoFactorRememberMe` was set - store it and send it as `TwoFactorTrustedDeviceToken` on the next `Login` to skip the two-factor step",
           "allowedValues": []
         },
         "User": {
@@ -458508,6 +458760,12 @@
     {
       "name": "Url:UrlDoesNotMatch",
       "message": "Url does not match expected format.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "TwoFactorTrustedDevice:UnknownDevice",
+      "message": "Unknown trusted device",
       "module": "EVA.Core",
       "arguments": []
     },
