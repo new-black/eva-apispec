@@ -208,6 +208,23 @@
       }
     },
     {
+      "name": "AddLoyaltyProgramOptInSubscription",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/AddLoyaltyProgramOptInSubscription",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Loyalty.AddLoyaltyProgramOptInSubscription",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "LoyaltyPrograms",
+            "scope": 2
+          }
+        ]
+      }
+    },
+    {
       "name": "AddLoyaltyProgramPriceList",
       "assembly": "EVA.Core.Management",
       "path": "/message/AddLoyaltyProgramPriceList",
@@ -17291,6 +17308,23 @@
       }
     },
     {
+      "name": "GetLoyaltyProgramOptInSubscriptions",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/GetLoyaltyProgramOptInSubscriptions",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Loyalty.GetLoyaltyProgramOptInSubscriptions",
+      "responseType": "EVA.Core.Management.Loyalty.GetLoyaltyProgramOptInSubscriptionsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "LoyaltyPrograms",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "GetLoyaltyProgramPass",
       "assembly": "EVA.Core.Management",
       "path": "/message/GetLoyaltyProgramPass",
@@ -31119,6 +31153,23 @@
           {
             "types": 2049,
             "functionality": "Discounts",
+            "scope": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "RemoveLoyaltyProgramOptInSubscription",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/RemoveLoyaltyProgramOptInSubscription",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Loyalty.RemoveLoyaltyProgramOptInSubscription",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "LoyaltyPrograms",
             "scope": 2
           }
         ]
@@ -167867,6 +167918,49 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Management.Loyalty.AddLoyaltyProgramOptInSubscription": {
+      "typename": "AddLoyaltyProgramOptInSubscription",
+      "assembly": "EVA.Core.Management",
+      "description": "Attaches an opt-in subscription to a loyalty program. Subscribing to the loyalty program then auto-subscribes the user to this opt-in. NOTE THAT an opt-in can only be attached once.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "LoyaltyProgramID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "LoyaltyProgram",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OptInSubscriptionID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Subscription",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Management.Loyalty.AddLoyaltyProgramPriceList": {
       "typename": "AddLoyaltyProgramPriceList",
       "assembly": "EVA.Core.Management",
@@ -173510,6 +173604,117 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.Management.Loyalty.GetLoyaltyProgramOptInSubscriptions": {
+      "typename": "GetLoyaltyProgramOptInSubscriptions",
+      "assembly": "EVA.Core.Management",
+      "description": "Lists the opt-in subscriptions attached to a loyalty program. When a user subscribes to the loyalty program they are automatically subscribed to these opt-ins.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.Loyalty.GetLoyaltyProgramOptInSubscriptionsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "LoyaltyProgramID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "LoyaltyProgram",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Loyalty.GetLoyaltyProgramOptInSubscriptionsResponse": {
+      "typename": "GetLoyaltyProgramOptInSubscriptionsResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Management.Loyalty.GetLoyaltyProgramOptInSubscriptionsResponse+OptInSubscription"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "OptInSubscriptions": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.Loyalty.GetLoyaltyProgramOptInSubscriptionsResponse+OptInSubscription",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Loyalty.GetLoyaltyProgramOptInSubscriptionsResponse+OptInSubscription": {
+      "typename": "OptInSubscription",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "BackendID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Subscription",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Loyalty.GetLoyaltyProgramOptInSubscriptionsResponse"
     },
     "EVA.Core.Management.Loyalty.GetLoyaltyProgramPass": {
       "typename": "GetLoyaltyProgramPass",
@@ -182497,6 +182702,49 @@
           },
           "datamodel": {
             "name": "LoyaltyProgramTier",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Loyalty.RemoveLoyaltyProgramOptInSubscription": {
+      "typename": "RemoveLoyaltyProgramOptInSubscription",
+      "assembly": "EVA.Core.Management",
+      "description": "Detaches an opt-in subscription from a loyalty program. Existing user subscriptions are not affected.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "LoyaltyProgramID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "LoyaltyProgram",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OptInSubscriptionID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Subscription",
             "supportsCustomID": true,
             "isEvaID": true
           },
@@ -389061,7 +389309,8 @@
         "EVA.Core.Users.Loyalty.UserLoyaltyProgramDto+NextLoyaltyProgramTier",
         "EVA.Core.Users.Loyalty.UserLoyaltyProgramDto+LoyaltyProgramTierBase",
         "EVA.Core.DataModels.ResubscribeHandlingType",
-        "EVA.Core.DataModels.AllowUnsubscribeByType"
+        "EVA.Core.DataModels.AllowUnsubscribeByType",
+        "EVA.Core.Users.Loyalty.UserLoyaltyProgramDto+OptInSubscriptionDto"
       ],
       "properties": {
         "AllowDetachBy": {
@@ -389164,6 +389413,21 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "OptInSubscriptions": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Users.Loyalty.UserLoyaltyProgramDto+OptInSubscriptionDto",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The opt-in subscriptions that are attached to this loyalty program and enabled for the current organization unit. Attaching to the program auto-subscribes the user to these, so a frontend can skip presenting them separately.",
           "allowedValues": []
         },
         "OriginatingOrganizationUnitID": {
@@ -389344,6 +389608,47 @@
         "PointThreshold": {
           "type": {
             "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Users.Loyalty.UserLoyaltyProgramDto"
+    },
+    "EVA.Core.Users.Loyalty.UserLoyaltyProgramDto+OptInSubscriptionDto": {
+      "typename": "OptInSubscriptionDto",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "BackendID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Subscription",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
             "args": [],
             "nullable": true
           },
