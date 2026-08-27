@@ -324566,7 +324566,7 @@
     "EVA.Core.Services.FullStockCountServices.PrintFullStockCountLabels": {
       "typename": "PrintFullStockCountLabels",
       "assembly": "EVA.Core",
-      "description": "Prints label(s) for specified Full Stock Count to specified station.",
+      "description": "Prints label(s) for a Full Stock Count to the specified station.\n\nUse `FullStockCountID` to print all labels of the count, optionally excluding specific labels via `ExcludedFullStockCountLabelIDs`.\nUse `FullStockCountLabelIDs` to print specific labels only; an empty list prints nothing.\nSpecifying both `FullStockCountLabelIDs` and `ExcludedFullStockCountLabelIDs` is not allowed.",
       "usage": {
         "request": true
       },
@@ -324579,13 +324579,31 @@
         "args": []
       },
       "properties": {
+        "ExcludedFullStockCountLabelIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Excludes these labels when printing all labels of the count specified by FullStockCountID",
+          "datamodel": {
+            "name": "FullStockCountLabel",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "FullStockCountID": {
           "type": {
             "ref": "id",
             "args": [],
             "nullable": true
           },
-          "description": "Prints all labels for this count - required if FullStockCountLabelID is empty",
+          "description": "Prints all labels for this count - required if FullStockCountLabelIDs is empty",
           "datamodel": {
             "name": "FullStockCount",
             "isEvaID": true
@@ -324599,6 +324617,29 @@
             "nullable": true
           },
           "description": "Prints just this label - required if FullStockCountID is empty",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "FullStockCountLabelID is deprecated and is scheduled to be removed in 2.0.905: Use FullStockCountLabelIDs instead.."
+          },
+          "datamodel": {
+            "name": "FullStockCountLabel",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "FullStockCountLabelIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Prints just these labels - an empty list prints nothing. FullStockCountLabelID, when also specified, is included in this selection",
           "datamodel": {
             "name": "FullStockCountLabel",
             "isEvaID": true
@@ -457734,7 +457775,13 @@
     },
     {
       "name": "FullStockCount:SpecifyCountOrLabel",
-      "message": "Specify a FullStockCountID or FullStockCountLabelID.",
+      "message": "Specify a FullStockCountID, FullStockCountLabelID or FullStockCountLabelIDs.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "FullStockCount:SpecifyIncludedOrExcludedLabels",
+      "message": "Specify either labels to print or labels to exclude, not both.",
       "module": "EVA.Core",
       "arguments": []
     },
