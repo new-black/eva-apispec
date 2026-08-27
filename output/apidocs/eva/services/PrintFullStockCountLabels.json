@@ -2,7 +2,7 @@
   "name": "PrintFullStockCountLabels",
   "method": "POST",
   "path": "/message/PrintFullStockCountLabels",
-  "description": "Prints label(s) for specified Full Stock Count to specified station.",
+  "description": "Prints label(s) for a Full Stock Count to the specified station.\n\nUse \u0060FullStockCountID\u0060 to print all labels of the count, optionally excluding specific labels via \u0060ExcludedFullStockCountLabelIDs\u0060.\nUse \u0060FullStockCountLabelIDs\u0060 to print specific labels only; an empty list prints nothing.\nSpecifying both \u0060FullStockCountLabelIDs\u0060 and \u0060ExcludedFullStockCountLabelIDs\u0060 is not allowed.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060FullStockCountLabel:View\u0060",
   "headers": [
     {
@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022FullStockCountID\u0022: 123,\n  \u0022FullStockCountLabelID\u0022: 123,\n  \u0022StationID\u0022: 123\n}",
+      "sample": "{\n  \u0022ExcludedFullStockCountLabelIDs\u0022: [\n    123\n  ],\n  \u0022FullStockCountID\u0022: 123,\n  \u0022FullStockCountLabelID\u0022: 123,\n  \u0022FullStockCountLabelIDs\u0022: [\n    123\n  ],\n  \u0022StationID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022FullStockCountID\u0022: 123,\n  \u0022FullStockCountLabelID\u0022: 123,\n  \u0022StationID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/PrintFullStockCountLabels",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ExcludedFullStockCountLabelIDs\u0022: [\n    123\n  ],\n  \u0022FullStockCountID\u0022: 123,\n  \u0022FullStockCountLabelID\u0022: 123,\n  \u0022FullStockCountLabelIDs\u0022: [\n    123\n  ],\n  \u0022StationID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/PrintFullStockCountLabels",
       "syntax": "bash"
     }
   ],
@@ -66,9 +66,18 @@
   "types": {
     "B": [
       {
+        "name": "ExcludedFullStockCountLabelIDs",
+        "deprecation_notice": null,
+        "description": "Excludes these labels when printing all labels of the count specified by FullStockCountID\n\nThis is the ID of a \u0060FullStockCountLabel\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "FullStockCountID",
         "deprecation_notice": null,
-        "description": "Prints all labels for this count - required if FullStockCountLabelID is empty\n\nThis is the ID of a \u0060FullStockCount\u0060",
+        "description": "Prints all labels for this count - required if FullStockCountLabelIDs is empty\n\nThis is the ID of a \u0060FullStockCount\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -76,9 +85,18 @@
       },
       {
         "name": "FullStockCountLabelID",
-        "deprecation_notice": null,
-        "description": "Prints just this label - required if FullStockCountID is empty\n\nThis is the ID of a \u0060FullStockCountLabel\u0060",
+        "deprecation_notice": "\n\n**Deprecated since 860:** FullStockCountLabelID is deprecated and is scheduled to be removed in 2.0.905: Use FullStockCountLabelIDs instead..\n\n**Will be removed in 886**",
+        "description": "Prints just this label - required if FullStockCountID is empty\n\nThis is the ID of a \u0060FullStockCountLabel\u0060\n\n**Deprecated since 860:** FullStockCountLabelID is deprecated and is scheduled to be removed in 2.0.905: Use FullStockCountLabelIDs instead..\n\n**Will be removed in 886**",
         "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FullStockCountLabelIDs",
+        "deprecation_notice": null,
+        "description": "Prints just these labels - an empty list prints nothing. FullStockCountLabelID, when also specified, is included in this selection\n\nThis is the ID of a \u0060FullStockCountLabel\u0060",
+        "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
