@@ -1,9 +1,9 @@
 {
-  "name": "AddProductToOrder",
+  "name": "PreviewNotificationTemplate",
   "method": "POST",
-  "path": "/message/AddProductToOrder",
-  "description": "Add a Product to an Order\n\nA product can be defined by \u0060ProductID\u0060, \u0060Barcode\u0060 or \u0060SerialNumber\u0060.\nIf the product is unstackable (e.g. gift cards, same product added with different serial numbers), new orderlines are created.",
-  "auth_description": "This service does not require authentication.",
+  "path": "/message/PreviewNotificationTemplate",
+  "description": "Renders notification template fields against the key\u0027s sample model and returns the result, so a template can be previewed and validated before it is saved.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060NotificationTemplates:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -25,38 +25,24 @@
       "description": "The query that selects the organization unit to run this request in.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-Mode",
-      "type": "string",
-      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
-      "required": false,
-      "default": null
-    },
-    {
-      "name": "EVA-IDs-BackendSystemID",
-      "type": "string",
-      "description": "The ID of the backend system that is used to resolve the IDs.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Barcode\u0022: \u0022string\u0022,\n  \u0022Children\u0022: [\n    {\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityOrdered\u0022: 123,\n      \u0022SerialNumber\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ForceNewLine\u0022: true,\n  \u0022GroupID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n  \u0022LineActionType\u0022: 4,\n  \u0022OrderID\u0022: 123,\n  \u0022ParentID\u0022: 123,\n  \u0022ProductID\u0022: 123,\n  \u0022QuantityOrdered\u0022: 123,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022StockLabelID\u0022: 123,\n  \u0022UnitPriceInTax\u0022: 123.456\n}",
+      "sample": "{\n  \u0022DataPayload\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Model\u0022: {\n    \u0022UserTask\u0022: {\n      \u0022Deadline\u0022: \u00222025-01-01\u0022,\n      \u0022ExpectedCompletionTime\u0022: \u00222025-01-01\u0022,\n      \u0022ExpectedStartTime\u0022: \u00222025-01-01\u0022,\n      \u0022ID\u0022: 123,\n      \u0022SubType\u0022: \u0022string\u0022,\n      \u0022Type\u0022: \u0022string\u0022\n    }\n  },\n  \u0022NotificationType\u0022: 1,\n  \u0022Subtitle\u0022: \u0022string\u0022,\n  \u0022TemplateKey\u0022: \u0022UserTaskUrgent\u0022,\n  \u0022Title\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Barcode\u0022: \u0022string\u0022,\n  \u0022Children\u0022: [\n    {\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityOrdered\u0022: 123,\n      \u0022SerialNumber\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ForceNewLine\u0022: true,\n  \u0022GroupID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n  \u0022LineActionType\u0022: 4,\n  \u0022OrderID\u0022: 123,\n  \u0022ParentID\u0022: 123,\n  \u0022ProductID\u0022: 123,\n  \u0022QuantityOrdered\u0022: 123,\n  \u0022SerialNumber\u0022: \u0022string\u0022,\n  \u0022StockLabelID\u0022: 123,\n  \u0022UnitPriceInTax\u0022: 123.456\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/AddProductToOrder",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022DataPayload\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Model\u0022: {\n    \u0022UserTask\u0022: {\n      \u0022Deadline\u0022: \u00222025-01-01\u0022,\n      \u0022ExpectedCompletionTime\u0022: \u00222025-01-01\u0022,\n      \u0022ExpectedStartTime\u0022: \u00222025-01-01\u0022,\n      \u0022ID\u0022: 123,\n      \u0022SubType\u0022: \u0022string\u0022,\n      \u0022Type\u0022: \u0022string\u0022\n    }\n  },\n  \u0022NotificationType\u0022: 1,\n  \u0022Subtitle\u0022: \u0022string\u0022,\n  \u0022TemplateKey\u0022: \u0022UserTaskUrgent\u0022,\n  \u0022Title\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/PreviewNotificationTemplate",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022OrderID\u0022: 123,\n  \u0022Result\u0022: [\n    {\n      \u0022Children\u0022: [\n        {\n          \u0022OrderLineID\u0022: 123,\n          \u0022ProductID\u0022: 123\n        }\n      ],\n      \u0022OrderLineID\u0022: 123\n    }\n  ]\n}"
+      "sample": "{\n  \u0022DataPayload\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022Subtitle\u0022: \u0022string\u0022,\n  \u0022Title\u0022: \u0022string\u0022\n}"
     },
     {
       "name": "400",
@@ -69,29 +55,155 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "D",
+  "response_type_id": "J",
   "types": {
-    "C": [
+    "C": [],
+    "E": [
       {
-        "name": "Description",
+        "name": "Deadline",
         "deprecation_notice": null,
-        "description": "Optionally override the default description that is generated for the new OrderLine.\n\nThis string must be between 0 (incl) and 255 (incl) characters long.",
-        "type": "string | null",
+        "description": "",
+        "type": "datetime | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ProductID",
+        "name": "ExpectedCompletionTime",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Product\u0060",
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ExpectedStartTime",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
         "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "QuantityOrdered",
+        "name": "SubType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "UserTask",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "FirstName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "FullName",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "User",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "UserTask",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "CustomerID",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Date",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Duration",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "EmployeeID",
         "deprecation_notice": null,
         "description": "",
         "type": "integer | null",
@@ -100,65 +212,9 @@
         "one_of": null
       },
       {
-        "name": "SerialNumber",
-        "deprecation_notice": null,
-        "description": "Serial number of the product. If \u0060StockLabelID\u0060 is not specified, the stock label is inferred from the serial number\u0027s current location, except for Purchase orders and non-customer-sale orders (interbranch, return-to-supplier, replenishment, transfer, returns-transfer, offer, down payment, restitution).",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "B": [
-      {
-        "name": "Barcode",
-        "deprecation_notice": null,
-        "description": "This string must be between 0 (incl) and 50 (incl) characters long.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Children",
+        "name": "ID",
         "deprecation_notice": null,
         "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "Description",
-        "deprecation_notice": null,
-        "description": "Optionally override the default description that is generated for the new OrderLine. If specified, this OrderLine will not be stacked on any existing OrderLines in the Order of the same Product (unless they use the same Description). Instead, a new OrderLine will be created.\n\nThis string must be between 0 (incl) and 255 (incl) characters long.",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ForceNewLine",
-        "deprecation_notice": null,
-        "description": "This will always create a new line, regardless of whether a line with the same product ID was found in the order.",
-        "type": "boolean",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "GroupID",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "guid | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LineActionType",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - ReserveLine\n* \u00602\u0060 - OrderLine\n* \u00603\u0060 - ShipLine\n* \u00604\u0060 - Delivery",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -167,68 +223,103 @@
       {
         "name": "OrderID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Order\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ParentID",
-        "deprecation_notice": null,
-        "description": "Specify this field to add the new line as a child of the specified parent\n\nThis is the ID of a \u0060OrderLine\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "ProductID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Product\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "QuantityOrdered",
-        "deprecation_notice": null,
         "description": "",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
-      },
+      }
+    ],
+    "H": [
       {
-        "name": "SerialNumber",
+        "name": "Appointment",
         "deprecation_notice": null,
-        "description": "Serial number of the product. If \u0060StockLabelID\u0060 is not specified, the stock label is inferred from the serial number\u0027s current location, except for Purchase orders and non-customer-sale orders (interbranch, return-to-supplier, replenishment, transfer, returns-transfer, offer, down payment, restitution).",
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      }
+    ],
+    "B": [
+      {
+        "name": "DataPayload",
+        "deprecation_notice": null,
+        "description": "The data payload template, rendered alongside the notification.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "StockLabelID",
+        "name": "Description",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060StockLabel\u0060",
-        "type": "integer | null",
+        "description": "The description body of the notification.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "UnitPriceInTax",
+        "name": "Model",
         "deprecation_notice": null,
-        "description": "If the product allows its price to be modified, you can specify the desired price using this field.",
-        "type": "float | null",
+        "description": "Optional overrides for the key\u0027s sample model. Each provided token replaces the sample value; omitted tokens keep the sample.",
+        "type": "one-of[object] | null",
         "required": false,
+        "properties_id": "C",
+        "one_of": [
+          {
+            "name": "UserTaskNotificationModel",
+            "properties_id": "D"
+          },
+          {
+            "name": "UserTaskUnassignedNotificationModel",
+            "properties_id": "F"
+          },
+          {
+            "name": "AppointmentNotificationModel",
+            "properties_id": "H"
+          }
+        ]
+      },
+      {
+        "name": "NotificationType",
+        "deprecation_notice": null,
+        "description": "The type of notification this template renders.\nPossible values:\n\n* \u00600\u0060 - Alert\n* \u00601\u0060 - Actionable\n* \u00602\u0060 - Silent\n* \u00603\u0060 - LiveActivity",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Subtitle",
+        "deprecation_notice": null,
+        "description": "The subtitle of the notification.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TemplateKey",
+        "deprecation_notice": null,
+        "description": "The key whose sample model the template fields are rendered against.\n\nPossible values:\n\n* \u0060UserTaskUrgent\u0060\n* \u0060UserTaskCreated\u0060\n* \u0060FullStockCountStarted\u0060\n* \u0060UserTaskUnassigned\u0060\n* \u0060AppointmentReminder\u0060\n* \u0060AppointmentCancelled\u0060",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Title",
+        "deprecation_notice": null,
+        "description": "The title of the notification.",
+        "type": "string",
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "E": [
+    "K": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -275,7 +366,7 @@
         "one_of": null
       }
     ],
-    "F": [
+    "L": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -304,54 +395,32 @@
         "one_of": null
       }
     ],
-    "H": [
+    "J": [
       {
-        "name": "OrderLineID",
+        "name": "DataPayload",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrderLine\u0060",
-        "type": "integer",
+        "description": "The rendered data payload of the notification.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "ProductID",
+        "name": "Description",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Product\u0060",
-        "type": "integer | null",
+        "description": "The rendered description body of the notification.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "G": [
-      {
-        "name": "Children",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "H",
         "one_of": null
       },
-      {
-        "name": "OrderLineID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrderLine\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "D": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "K",
         "one_of": null
       },
       {
@@ -360,25 +429,25 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "L",
         "one_of": null
       },
       {
-        "name": "OrderID",
+        "name": "Subtitle",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Order\u0060",
-        "type": "integer",
+        "description": "The rendered subtitle of the notification.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Result",
+        "name": "Title",
         "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
+        "description": "The rendered title of the notification.",
+        "type": "string | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": null,
         "one_of": null
       }
     ]

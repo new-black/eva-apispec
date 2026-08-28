@@ -1,9 +1,9 @@
 {
-  "name": "ApplyBundleProductSelection",
+  "name": "UpdateNotificationTemplate",
   "method": "POST",
-  "path": "/message/ApplyBundleProductSelection",
-  "description": "This service is used to apply a selection of products to the provided \u0060BundleProductOrderLineID\u0060.\nThe \u0060BundleProductOrderLineID\u0060 field refers to the ID of an \u0060OrderLine\u0060 on the provided \u0060Order\u0060 that has a \u0060BundleProduct\u0060 Product on it.\nThe \u0060LineSelection\u0060 field is a list that couples a \u0060SelectedProductID\u0060 to a \u0060ProductBundleLineID\u0060 and is identical to how it\u0027s used in \u0060AddBundleProductToOrder\u0060.",
-  "auth_description": "This service does not require authentication.",
+  "path": "/message/UpdateNotificationTemplate",
+  "description": "Updates an existing notification template. The tokenized fields are validated before the changes are persisted.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060NotificationTemplates:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -32,31 +32,24 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-BackendSystemID",
-      "type": "string",
-      "description": "The ID of the backend system that is used to resolve the IDs.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BundleProductOrderLineID\u0022: 123,\n  \u0022CancelUnselectedOptionalBundleLines\u0022: true,\n  \u0022LineActionType\u0022: 4,\n  \u0022LineSelection\u0022: [\n    {\n      \u0022LineSelection\u0022: [\n        {\n          \u0022re\u0022: \u0022cursion\u0022\n        }\n      ],\n      \u0022ProductBundleLineID\u0022: 123,\n      \u0022SelectedProductID\u0022: 123,\n      \u0022SerialNumber\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022OrderID\u0022: 123\n}",
+      "sample": "{\n  \u0022DataPayload\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IsDisabled\u0022: true,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022NotificationType\u0022: 1,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ScriptID\u0022: 123,\n  \u0022Subtitle\u0022: \u0022string\u0022,\n  \u0022TemplateKey\u0022: \u0022UserTaskUrgent\u0022,\n  \u0022Title\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BundleProductOrderLineID\u0022: 123,\n  \u0022CancelUnselectedOptionalBundleLines\u0022: true,\n  \u0022LineActionType\u0022: 4,\n  \u0022LineSelection\u0022: [\n    {\n      \u0022LineSelection\u0022: [\n        {\n          \u0022re\u0022: \u0022cursion\u0022\n        }\n      ],\n      \u0022ProductBundleLineID\u0022: 123,\n      \u0022SelectedProductID\u0022: 123,\n      \u0022SerialNumber\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022OrderID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ApplyBundleProductSelection",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022DataPayload\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IsDisabled\u0022: true,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022NotificationType\u0022: 1,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ScriptID\u0022: 123,\n  \u0022Subtitle\u0022: \u0022string\u0022,\n  \u0022TemplateKey\u0022: \u0022UserTaskUrgent\u0022,\n  \u0022Title\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateNotificationTemplate",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022OrderID\u0022: 123\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -69,94 +62,110 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "D",
+  "response_type_id": "C",
   "types": {
-    "C": [
+    "B": [
       {
-        "name": "LineSelection",
+        "name": "DataPayload",
         "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "C",
-        "one_of": null
-      },
-      {
-        "name": "ProductBundleLineID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060ProductBundleLine\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SelectedProductID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Product\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "SerialNumber",
-        "deprecation_notice": null,
-        "description": "Sets a serial number on the new line selection only, silently ignoring failures; preexisting lines are left unaffected. The stock label of the resulting line is inferred from the serial number\u0027s current location, except for Purchase orders and non-customer-sale orders (interbranch, return-to-supplier, replenishment, transfer, returns-transfer, offer, down payment, restitution).",
+        "description": "The data payload template, rendered alongside the notification. It has to render into a JSON object of text values. The values it renders are added to the ones the server always fills in itself (\u0060NotificationKey\u0060, \u0060NotificationID\u0060, \u0060SourceType\u0060, \u0060SourceID\u0060 and the identifiers of what the notification is about) and cannot override them.\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
-      }
-    ],
-    "B": [
+      },
       {
-        "name": "BundleProductOrderLineID",
+        "name": "Description",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060OrderLine\u0060",
+        "description": "The description body of the notification.\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "The ID of the notification template to update.\n\nThis is the ID of a \u0060NotificationTemplate\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "CancelUnselectedOptionalBundleLines",
+        "name": "IsDisabled",
         "deprecation_notice": null,
-        "description": "When true, optional bundle lines that are not included in the current selection are automatically cancelled from the order. When false, existing optional lines are kept.",
+        "description": "Whether this template is disabled and should not be used for rendering.",
         "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "LineActionType",
+        "name": "LanguageID",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - ReserveLine\n* \u00602\u0060 - OrderLine\n* \u00603\u0060 - ShipLine\n* \u00604\u0060 - Delivery",
+        "description": "The language this template is rendered in.\n\nThis is the ID of a \u0060Language\u0060\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
+        "type": "string",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NotificationType",
+        "deprecation_notice": null,
+        "description": "The type of notification this template renders.\nPossible values:\n\n* \u00600\u0060 - Alert\n* \u00601\u0060 - Actionable\n* \u00602\u0060 - Silent\n* \u00603\u0060 - LiveActivity",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "The organization unit this template applies to. Leave empty for a template that applies to every organization unit.\n\nThis is the ID of a \u0060OrganizationUnit\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "LineSelection",
+        "name": "ScriptID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
+        "description": "The script that decides whether this notification is sent, and that may replace its title, subtitle and description. It has to be an active Notification extension point script.\n\nThis is the ID of a \u0060Script\u0060\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "integer | null",
         "required": false,
-        "properties_id": "C",
+        "properties_id": null,
         "one_of": null
       },
       {
-        "name": "OrderID",
+        "name": "Subtitle",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Order\u0060",
-        "type": "integer",
+        "description": "The subtitle of the notification.\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TemplateKey",
+        "deprecation_notice": null,
+        "description": "The key that identifies which notification this template renders.\n\nWhile this property is not required, if it is sent in the request it must have a valid value.\n\nPossible values:\n\n* \u0060UserTaskUrgent\u0060\n* \u0060UserTaskCreated\u0060\n* \u0060FullStockCountStarted\u0060\n* \u0060UserTaskUnassigned\u0060\n* \u0060AppointmentReminder\u0060\n* \u0060AppointmentCancelled\u0060",
+        "type": "string",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Title",
+        "deprecation_notice": null,
+        "description": "The title of the notification.\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
+        "type": "string",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "E": [
+    "D": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -203,7 +212,7 @@
         "one_of": null
       }
     ],
-    "F": [
+    "E": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -232,14 +241,14 @@
         "one_of": null
       }
     ],
-    "D": [
+    "C": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "D",
         "one_of": null
       },
       {
@@ -248,16 +257,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Order\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
+        "properties_id": "E",
         "one_of": null
       }
     ]
