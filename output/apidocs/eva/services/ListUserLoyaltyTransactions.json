@@ -56,7 +56,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n      \u0022ExpireAfter\u0022: \u00222025-01-01\u0022,\n      \u0022IsExpired\u0022: true,\n      \u0022IsPending\u0022: true,\n      \u0022PendingTill\u0022: \u00222025-01-01\u0022,\n      \u0022Points\u0022: 123.456,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022Type\u0022: 4\n    }\n  ]\n}"
+      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n      \u0022ExpireAfter\u0022: \u00222025-01-01\u0022,\n      \u0022IsExpired\u0022: true,\n      \u0022IsPending\u0022: true,\n      \u0022PendingTill\u0022: \u00222025-01-01\u0022,\n      \u0022Points\u0022: 123.456,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022SourceModelID\u0022: 123,\n      \u0022SourceModelType\u0022: 2,\n      \u0022Type\u0022: 4\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -276,6 +276,24 @@
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SourceModelID",
+        "deprecation_notice": null,
+        "description": "ID of the entity named by SourceModelType. Null when SourceModelType is None.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SourceModelType",
+        "deprecation_notice": null,
+        "description": "What produced this transaction. Order points at the order instance (SourceModelID = order ID). Badge and Survey point at the badge/survey definition (SourceModelID = badge/survey ID), not the specific award or response, so they are not unique per transaction. None for manual adjustments and referrals.\nPossible values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Order\n* \u00602\u0060 - Badge\n* \u00603\u0060 - Survey",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
