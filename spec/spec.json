@@ -76285,6 +76285,34 @@
         }
       }
     },
+    "EVA.Core.DataModels.UserLoyaltyMutationSourceModelType": {
+      "typename": "UserLoyaltyMutationSourceModelType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Badge": {
+          "value": 2,
+          "extends": []
+        },
+        "None": {
+          "extends": []
+        },
+        "Order": {
+          "value": 1,
+          "extends": []
+        },
+        "Survey": {
+          "value": 3,
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.DataModels.UserLoyaltyMutationType": {
       "typename": "UserLoyaltyMutationType",
       "assembly": "EVA.Core",
@@ -90842,6 +90870,10 @@
           "value": 11,
           "extends": []
         },
+        "UserBoughtProduct": {
+          "value": 34,
+          "extends": []
+        },
         "UserTasks": {
           "value": 12,
           "extends": []
@@ -92407,6 +92439,54 @@
       },
       "enumValues": {},
       "parent": "EVA.Core.Events.UserAgreementEventExportTarget"
+    },
+    "EVA.Core.Events.UserBoughtProductEventExportTarget": {
+      "typename": "UserBoughtProductEventExportTarget",
+      "assembly": "EVA.Core",
+      "usage": {},
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Events.BaseEventExportTarget"
+      ],
+      "extends": {
+        "ref": "EVA.Core.Events.BaseEventExportTarget",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Events.UserBoughtProductEventExportTarget+Data": {
+      "typename": "Data",
+      "assembly": "EVA.Core",
+      "usage": {},
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ProductID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "SerialNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Events.UserBoughtProductEventExportTarget"
     },
     "EVA.Core.Events.UserTaskEventExportTarget": {
       "typename": "UserTaskEventExportTarget",
@@ -129445,7 +129525,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.DataModels.UserLoyaltyMutationType"
+        "EVA.Core.DataModels.UserLoyaltyMutationType",
+        "EVA.Core.DataModels.UserLoyaltyMutationSourceModelType"
       ],
       "properties": {
         "CreationTime": {
@@ -129497,6 +129578,21 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SourceModelID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SourceModelType": {
+          "type": {
+            "ref": "EVA.Core.DataModels.UserLoyaltyMutationSourceModelType",
+            "args": []
           },
           "allowedValues": []
         },
@@ -390648,7 +390744,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.DataModels.UserLoyaltyMutationType"
+        "EVA.Core.DataModels.UserLoyaltyMutationType",
+        "EVA.Core.DataModels.UserLoyaltyMutationSourceModelType"
       ],
       "properties": {
         "CreationTime": {
@@ -390701,6 +390798,23 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "SourceModelID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "ID of the entity named by SourceModelType. Null when SourceModelType is None.",
+          "allowedValues": []
+        },
+        "SourceModelType": {
+          "type": {
+            "ref": "EVA.Core.DataModels.UserLoyaltyMutationSourceModelType",
+            "args": []
+          },
+          "description": "What produced this transaction. Order points at the order instance (SourceModelID = order ID). Badge and Survey point at the badge/survey definition (SourceModelID = badge/survey ID), not the specific award or response, so they are not unique per transaction. None for manual adjustments and referrals.",
           "allowedValues": []
         },
         "Type": {
@@ -422596,6 +422710,22 @@
           "type": {
             "ref": "float128",
             "args": []
+          },
+          "allowedValues": []
+        },
+        "SourceModelID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SourceModelType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         },
@@ -459608,6 +459738,21 @@
       "target": "CustomerCredit",
       "type": "spent",
       "dataType": "EVA.Core.Events.CustomerCreditEventExportTarget+Data"
+    },
+    {
+      "target": "UserBoughtProduct",
+      "type": "created",
+      "dataType": "EVA.Core.Events.UserBoughtProductEventExportTarget+Data"
+    },
+    {
+      "target": "UserBoughtProduct",
+      "type": "updated",
+      "dataType": "EVA.Core.Events.UserBoughtProductEventExportTarget+Data"
+    },
+    {
+      "target": "UserBoughtProduct",
+      "type": "deleted",
+      "dataType": "EVA.Core.Events.UserBoughtProductEventExportTarget+Data"
     }
   ],
   "datalake_exports": [
