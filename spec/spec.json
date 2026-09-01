@@ -150628,6 +150628,19 @@
           },
           "allowedValues": []
         },
+        "GenericCouponCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The fixed generic coupon code (e.g. \"Winter-2026\"). Required when UseGenericCoupon is set. Updating it deactivates the previous code and registers the new one.",
+          "stringLengthConstraint": {
+            "min": 2,
+            "max": 100
+          },
+          "allowedValues": []
+        },
         "ImageBlobID": {
           "type": {
             "ref": "guid",
@@ -150844,6 +150857,14 @@
             "args": []
           },
           "description": "NOTE THAT trigger cannot be updated after creation.",
+          "allowedValues": []
+        },
+        "UseGenericCoupon": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When set, the discount uses a single fixed generic coupon code returned by GetUserCoupons. Only valid when Trigger is Coupon.",
           "allowedValues": []
         },
         "UserUsageLimit": {
@@ -153808,6 +153829,14 @@
           },
           "allowedValues": []
         },
+        "GenericCouponCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "ID": {
           "type": {
             "ref": "id",
@@ -154119,6 +154148,13 @@
         "UsageCount": {
           "type": {
             "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "UseGenericCoupon": {
+          "type": {
+            "ref": "bool",
             "args": []
           },
           "allowedValues": []
@@ -155982,6 +156018,14 @@
           },
           "allowedValues": []
         },
+        "GenericCouponCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "ID": {
           "type": {
             "ref": "id",
@@ -156163,6 +156207,13 @@
         "UsageCount": {
           "type": {
             "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "UseGenericCoupon": {
+          "type": {
+            "ref": "bool",
             "args": []
           },
           "allowedValues": []
@@ -156437,6 +156488,14 @@
             "name": "DiscountCoupon",
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "IsGeneric": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "True when this entry is a generic coupon (a fixed code shared by all users). For generic entries ID is 0 — there is no per-user coupon.",
           "allowedValues": []
         },
         "IsUsable": {
@@ -158082,6 +158141,14 @@
           },
           "allowedValues": []
         },
+        "GenericCouponCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "ID": {
           "type": {
             "ref": "id",
@@ -158255,6 +158322,13 @@
         "UsageCount": {
           "type": {
             "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "UseGenericCoupon": {
+          "type": {
+            "ref": "bool",
             "args": []
           },
           "allowedValues": []
@@ -158766,6 +158840,19 @@
             "ref": "date",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "GenericCouponCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Updates the generic coupon code (e.g. \"Winter-2026\") on a discount that uses a generic coupon. Whether the discount uses a generic coupon is fixed at creation and cannot be changed here.",
+          "stringLengthConstraint": {
+            "min": 2,
+            "max": 100
           },
           "allowedValues": []
         },
@@ -160826,6 +160913,19 @@
           },
           "allowedValues": []
         },
+        "GenericCouponCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The fixed generic coupon code (e.g. \"Winter-2026\"). Required when UseGenericCoupon is set. Updating it deactivates the previous code and registers the new one.",
+          "stringLengthConstraint": {
+            "min": 2,
+            "max": 100
+          },
+          "allowedValues": []
+        },
         "ID": {
           "type": {
             "ref": "id",
@@ -161010,6 +161110,14 @@
             "ref": "EVA.Core.DataModels.DiscountTriggers",
             "args": []
           },
+          "allowedValues": []
+        },
+        "UseGenericCoupon": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When set, the discount uses a single fixed generic coupon code returned by GetUserCoupons. Only valid when Trigger is Coupon.",
           "allowedValues": []
         },
         "UserUsageLimit": {
@@ -466783,6 +466891,24 @@
     {
       "name": "Discounts:CouponsForThisDiscountAreGeneratedByOtherDiscount",
       "message": "Coupons for this discount are generated by another discount.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:GenericCouponRequiresCouponTrigger",
+      "message": "A generic coupon can only be set on a discount with trigger type 'Coupon'.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:GenericCouponCodeRequired",
+      "message": "A generic coupon code is required when UseGenericCoupon is set.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:CannotAddCouponsToGenericDiscount",
+      "message": "Coupons cannot be added or generated for a discount that uses a generic coupon.",
       "module": "EVA.Core",
       "arguments": []
     },
