@@ -40078,6 +40078,23 @@
       }
     },
     {
+      "name": "ValidateInsuranceConfiguration",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/ValidateInsuranceConfiguration",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Insurance.ValidateInsuranceConfiguration",
+      "responseType": "EVA.Core.Management.Insurance.ValidateInsuranceConfigurationResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Insurances",
+            "scope": 31
+          }
+        ]
+      }
+    },
+    {
       "name": "ValidateInvoiceNumber",
       "assembly": "EVA.Core",
       "path": "/message/ValidateInvoiceNumber",
@@ -168284,6 +168301,108 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.Management.Insurance.ValidateInsuranceConfiguration": {
+      "typename": "ValidateInsuranceConfiguration",
+      "assembly": "EVA.Core.Management",
+      "description": "Validates the insurance provider configuration for the current organization unit: settings, endpoint reachability and credentials. Does not create or change anything.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.Insurance.ValidateInsuranceConfigurationResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Insurance.ValidateInsuranceConfigurationResponse": {
+      "typename": "ValidateInsuranceConfigurationResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Management.Insurance.ValidateInsuranceConfigurationResponse+ValidationMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "IsValid": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Messages": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.Insurance.ValidateInsuranceConfigurationResponse+ValidationMessage",
+                "args": [],
+                "nullable": true
+              }
+            ]
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Insurance.ValidateInsuranceConfigurationResponse+ValidationMessage": {
+      "typename": "ValidationMessage",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Error": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Message": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Insurance.ValidateInsuranceConfigurationResponse"
     },
     "EVA.Core.Management.Ledgers.GetLedgerClasses": {
       "typename": "GetLedgerClasses",
@@ -315849,6 +315968,14 @@
           },
           "allowedValues": []
         },
+        "RequiresTokenizedPayment": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "ShortDescription": {
           "type": {
             "ref": "string",
@@ -415405,6 +415532,14 @@
           },
           "allowedValues": []
         },
+        "ContractNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "CostPriceCurrencyID": {
           "type": {
             "ref": "string",
@@ -415792,6 +415927,13 @@
             "ref": "date",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "RequiresTokenizedPayment": {
+          "type": {
+            "ref": "bool",
+            "args": []
           },
           "allowedValues": []
         },
@@ -463219,6 +463361,19 @@
     {
       "name": "InvoiceExport:InvoiceNotClosed",
       "message": "Invoice {0} must be closed before it can be exported.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Insurance:ContractCreationFailed",
+      "message": "Could not register the insurance contract for order line {0}.",
       "module": "EVA.Core",
       "arguments": [
         {
