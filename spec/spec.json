@@ -28708,6 +28708,23 @@
       }
     },
     {
+      "name": "LiveGuardSyncOrders",
+      "assembly": "EVA.Core.LiveGuard",
+      "path": "/message/LiveGuardSyncOrders",
+      "method": "POST",
+      "requestType": "EVA.Core.LiveGuard.Services.Sync.LiveGuardSyncOrders",
+      "responseType": "EVA.Core.LiveGuard.Services.Sync.LiveGuardSyncOrdersResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2048,
+            "functionality": "LiveGuard",
+            "scope": 0
+          }
+        ]
+      }
+    },
+    {
       "name": "LiveGuardSyncUsersByBlob",
       "assembly": "EVA.Core.LiveGuard",
       "path": "/message/LiveGuardSyncUsersByBlob",
@@ -58272,6 +58289,14 @@
           "allowedValues": []
         },
         "CountrySubdivisionID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "District": {
           "type": {
             "ref": "string",
             "args": [],
@@ -124255,6 +124280,22 @@
           },
           "allowedValues": []
         },
+        "OrderSyncTaskLastRun": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OrderSyncTaskState": {
+          "type": {
+            "ref": "EVA.Core.Scheduling.TaskState",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "OrganizationUnitBackendID": {
           "type": {
             "ref": "string",
@@ -127039,6 +127080,19 @@
           },
           "allowedValues": []
         },
+        "ReturnedOrderLineCloudID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "OrderLine",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "ReturnReason": {
           "type": {
             "ref": "string",
@@ -127439,6 +127493,84 @@
         "args": []
       },
       "properties": {
+        "Url": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.LiveGuard.Services.Sync.LiveGuardSyncOrders": {
+      "typename": "LiveGuardSyncOrders",
+      "assembly": "EVA.Core.LiveGuard",
+      "description": "Retrieves pending orders to sync to Watchtower. Called by WT to pull completed orders for offline returns.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.LiveGuard.Services.Sync.LiveGuardSyncOrdersResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "ProcessedOrderIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Cloud order IDs the Watchtower finished processing in the previous sync; these are removed from the pending queue.",
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.LiveGuard.Services.Sync.LiveGuardSyncOrdersResponse": {
+      "typename": "LiveGuardSyncOrdersResponse",
+      "assembly": "EVA.Core.LiveGuard",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "OrderCount": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
         "Url": {
           "type": {
             "ref": "string",
@@ -475481,6 +475613,84 @@
     {
       "name": "ReprocessFinancialPeriodAuditService:AuditCannotBeReprocessed",
       "message": "The specified audit cannot be reprocessed.",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:OnboardingFailed",
+      "message": "{0}",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:ComplianceCsidFailed",
+      "message": "ZATCA compliance CSID request failed with error(s): {0}.",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:ProductionCsidFailed",
+      "message": "ZATCA production CSID request failed with error(s): {0}.",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:CredentialsAlreadyExist",
+      "message": "Organization unit {0} already has ZATCA credentials. Use Force=true to overwrite.",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:NotSupported",
+      "message": "{0}",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:InvalidSupplierConfiguration",
+      "message": "{0}",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:MissingEstablishmentNumber",
+      "message": "{0}",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:InvalidReferenceInvoice",
+      "message": "{0}",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:ReferenceInvoiceDataNotReady",
+      "message": "{0}",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:CannotResolveCertificate",
+      "message": "{0}",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:InvalidCertificateSigningRequestData",
+      "message": "{0}",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:ComplianceInvoiceRequestFailed",
+      "message": "ZATCA compliance invoice request failed with error(s): {0}.",
+      "module": "EVA.Auditing",
+      "arguments": []
+    },
+    {
+      "name": "SaudiArabiaZatcaErrors:QrCodeEmbeddingFailed",
+      "message": "{0}",
       "module": "EVA.Auditing",
       "arguments": []
     },
