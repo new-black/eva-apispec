@@ -3198,7 +3198,7 @@
       "path": "/message/CreateCashExpense",
       "method": "POST",
       "requestType": "EVA.Core.Finance.CreateCashExpense",
-      "responseType": "EVA.Core.EmptyResponseMessage",
+      "responseType": "EVA.Core.Finance.CreateCashExpenseResponse",
       "auth": {
         "requiredPermissions": [
           {
@@ -29041,7 +29041,7 @@
       "path": "/message/MoveCash",
       "method": "POST",
       "requestType": "EVA.Core.Finance.MoveCash",
-      "responseType": "EVA.Core.EmptyResponseMessage",
+      "responseType": "EVA.Core.Finance.MoveCashResponse",
       "auth": {
         "requiredPermissions": [
           {
@@ -93740,6 +93740,67 @@
       "enumValues": {},
       "parent": "EVA.Core.Finance.Cash.CashJournalDetailsModel"
     },
+    "EVA.Core.Finance.Cash.CashLimitExceededNotification": {
+      "typename": "CashLimitExceededNotification",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Finance.Cash.CashLimitType"
+      ],
+      "properties": {
+        "DeviceID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Device",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "DeviceName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "LimitType": {
+          "type": {
+            "ref": "EVA.Core.Finance.Cash.CashLimitType",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Finance.Cash.CashLimitType": {
+      "typename": "CashLimitType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Register": {
+          "extends": []
+        },
+        "Safe": {
+          "value": 1,
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.Finance.Cash.ListCashCorrectionReasonsFilter": {
       "typename": "ListCashCorrectionReasonsFilter",
       "assembly": "EVA.Core",
@@ -95902,11 +95963,17 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessageWithEmptyResponse"
+        "EVA.Core.RequestMessage`1"
       ],
       "extends": {
-        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
-        "args": []
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Finance.CreateCashExpenseResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
       },
       "properties": {
         "Amount": {
@@ -95988,6 +96055,34 @@
             "supportsCustomID": true,
             "isEvaID": true
           },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Finance.CreateCashExpenseResponse": {
+      "typename": "CreateCashExpenseResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Finance.Cash.CashLimitExceededNotification"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "CashLimitExceeded": {
+          "type": {
+            "ref": "EVA.Core.Finance.Cash.CashLimitExceededNotification",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Set when this expense pushed the device's cash balance past its configured RegisterCashLimit/SafeCashLimit. The expense is still created either way.",
           "allowedValues": []
         }
       },
@@ -101522,11 +101617,17 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessageWithEmptyResponse"
+        "EVA.Core.RequestMessage`1"
       ],
       "extends": {
-        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
-        "args": []
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Finance.MoveCashResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
       },
       "properties": {
         "BankNotes": {
@@ -101633,6 +101734,34 @@
             "nullable": true
           },
           "description": "Instead of supplying Coins or BankNotes, supply directly the total.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Finance.MoveCashResponse": {
+      "typename": "MoveCashResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Finance.Cash.CashLimitExceededNotification"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "CashLimitExceeded": {
+          "type": {
+            "ref": "EVA.Core.Finance.Cash.CashLimitExceededNotification",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Set when this move pushed the destination device's cash balance past its configured RegisterCashLimit/SafeCashLimit. The move still succeeds either way.",
           "allowedValues": []
         }
       },
@@ -192624,10 +192753,32 @@
           },
           "allowedValues": []
         },
+        "RegisterCashLimit": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "minValue": {
+            "current": 0
+          },
+          "allowedValues": []
+        },
         "RoundingFactor": {
           "type": {
             "ref": "float128",
             "args": []
+          },
+          "minValue": {
+            "current": 0
+          },
+          "allowedValues": []
+        },
+        "SafeCashLimit": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
           },
           "minValue": {
             "current": 0
@@ -193121,10 +193272,26 @@
           },
           "allowedValues": []
         },
+        "RegisterCashLimit": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "RoundingFactor": {
           "type": {
             "ref": "float128",
             "args": []
+          },
+          "allowedValues": []
+        },
+        "SafeCashLimit": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         }
@@ -193421,10 +193588,26 @@
           },
           "allowedValues": []
         },
+        "RegisterCashLimit": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "RoundingFactor": {
           "type": {
             "ref": "float128",
             "args": []
+          },
+          "allowedValues": []
+        },
+        "SafeCashLimit": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         }
@@ -193658,6 +193841,22 @@
             "current": false
           },
           "allowedValues": []
+        },
+        "RegisterCashLimit": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SafeCashLimit": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
         }
       },
       "enumValues": {},
@@ -193819,10 +194018,34 @@
           },
           "allowedValues": []
         },
+        "RegisterCashLimit": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
+          "minValue": {
+            "current": 0
+          },
+          "allowedValues": []
+        },
         "RoundingFactor": {
           "type": {
             "ref": "float128",
             "args": []
+          },
+          "skippable": true,
+          "minValue": {
+            "current": 0
+          },
+          "allowedValues": []
+        },
+        "SafeCashLimit": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
           },
           "skippable": true,
           "minValue": {
@@ -282463,6 +282686,22 @@
         "CashHandlerName": {
           "type": {
             "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "CashHandlerRegisterCashLimit": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "CashHandlerSafeCashLimit": {
+          "type": {
+            "ref": "float128",
             "args": [],
             "nullable": true
           },
@@ -433431,8 +433670,19 @@
         "response": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.Finance.Cash.CashLimitExceededNotification"
+      ],
       "properties": {
+        "CashLimitExceeded": {
+          "type": {
+            "ref": "EVA.Core.Finance.Cash.CashLimitExceededNotification",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Set when this payment pushed the drawer's cash balance past its configured RegisterCashLimit/SafeCashLimit. The payment still succeeds either way.",
+          "allowedValues": []
+        },
         "RawReturnAmount": {
           "type": {
             "ref": "float128",
