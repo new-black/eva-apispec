@@ -1,0 +1,305 @@
+{
+  "name": "GetScriptDataStructure",
+  "method": "POST",
+  "path": "/message/GetScriptDataStructure",
+  "description": "Returns every variable available to a script of the given dialect and type, including an example value\nand whether the variable is actually populated for that type.\n\nAuto-completion lists the variables that exist; this lists the ones that will actually hold a value. For the Cookbook\ndialect the type is a financial event type, so use this to learn what a recipe *can* read, and PreviewAccountingRecipe\nto see what a specific event *did* book.\n\nAll values are fabricated: this service reads no customer data.\n\nA list of dialects and their available types can be retrieved by calling GetScriptDialects.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Scripts:View\u0060",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "JSON",
+      "sample": "{\n  \u0022Dialect\u0022: \u0022string\u0022,\n  \u0022SubType\u0022: \u0022string\u0022,\n  \u0022Type\u0022: \u0022string\u0022\n}",
+      "syntax": "json"
+    },
+    {
+      "name": "CURL",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Dialect\u0022: \u0022string\u0022,\n  \u0022SubType\u0022: \u0022string\u0022,\n  \u0022Type\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetScriptDataStructure",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{\n  \u0022Dialect\u0022: \u0022string\u0022,\n  \u0022SubType\u0022: \u0022string\u0022,\n  \u0022Type\u0022: \u0022string\u0022,\n  \u0022Variables\u0022: [\n    {\n      \u0022Children\u0022: [\n        {\n          \u0022re\u0022: \u0022cursion\u0022\n        }\n      ],\n      \u0022DataType\u0022: \u0022string\u0022,\n      \u0022DeprecationMessage\u0022: \u0022string\u0022,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022IsAvailable\u0022: true,\n      \u0022IsDynamic\u0022: true,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022Path\u0022: \u0022string\u0022,\n      \u0022SampleValue\u0022: \u0022string\u0022\n    }\n  ]\n}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "C",
+  "types": {
+    "B": [
+      {
+        "name": "Dialect",
+        "deprecation_notice": null,
+        "description": "The dialect the script is written in, for example \u0060Cookbook\u0060.\n\nThis string must be between 0 (incl) and 100 (incl) characters long.",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SubType",
+        "deprecation_notice": null,
+        "description": "Optional subtype. Some subtypes populate additional variables, such as the Cookbook \u0060CashExpense\u0060 subtype carrying a TaxCode.\n\nThis string must be between 0 (incl) and 100 (incl) characters long.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "The type within the dialect, as returned by GetScriptDialects. For Cookbook this is a financial event type such as \u0060Sales\u0060.\n\nThis string must be between 0 (incl) and 100 (incl) characters long.",
+        "type": "string",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "Code",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "ExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "deprecation_notice": null,
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "Children",
+        "deprecation_notice": null,
+        "description": "The members of an object node. Null both for a leaf and for a node that was not expanded, which happens when the node is never populated or sits at the maximum depth. A node of unknown availability is listed structurally: its children carry no sample values and are themselves unknown.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "DataType",
+        "deprecation_notice": null,
+        "description": "The script type of the variable, for example \u0060string\u0060, \u0060decimal\u0060, \u0060bool\u0060 or an enum name. Null for object nodes.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DeprecationMessage",
+        "deprecation_notice": null,
+        "description": "Set when the variable is deprecated; the message states what to use instead.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Description",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAvailable",
+        "deprecation_notice": null,
+        "description": "False when this variable is never populated for the requested type, even though it does auto-complete. Null when that could not be determined: the variable has to be awaited to read, or it failed to resolve. Treat null as \u0060maybe\u0060, not as \u0060no\u0060.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsDynamic",
+        "deprecation_notice": null,
+        "description": "True for variables addressed by an arbitrary name, such as CustomFields and product Content. Children are only listed where the available names are known.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Name",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Path",
+        "deprecation_notice": null,
+        "description": "Full path as written in a script, for example \u0060Order.Customer.IsDebtor\u0060.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SampleValue",
+        "deprecation_notice": null,
+        "description": "An example of the value this variable would hold. Null when the variable is not available for the requested type, and when its availability is unknown.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Dialect",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "SubType",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Variables",
+        "deprecation_notice": null,
+        "description": "Empty when the dialect provides no sample data for the requested type.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      }
+    ]
+  }
+}
