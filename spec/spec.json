@@ -20359,6 +20359,23 @@
       }
     },
     {
+      "name": "GetScriptDataStructure",
+      "assembly": "EVA.Core",
+      "path": "/message/GetScriptDataStructure",
+      "method": "POST",
+      "requestType": "EVA.Core.Scripting.GetScriptDataStructure",
+      "responseType": "EVA.Core.Scripting.GetScriptDataStructureResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Scripts",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "GetScriptDialects",
       "assembly": "EVA.Core",
       "path": "/message/GetScriptDialects",
@@ -314032,6 +314049,104 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.SampleData.ScriptVariableInfo": {
+      "typename": "ScriptVariableInfo",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.SampleData.ScriptVariableInfo"
+      ],
+      "properties": {
+        "Children": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.SampleData.ScriptVariableInfo",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The members of an object node. Null both for a leaf and for a node that was not expanded, which happens when the node is never populated or sits at the maximum depth. A node of unknown availability is listed structurally: its children carry no sample values and are themselves unknown.",
+          "allowedValues": []
+        },
+        "DataType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The script type of the variable, for example `string`, `decimal`, `bool` or an enum name. Null for object nodes.",
+          "allowedValues": []
+        },
+        "DeprecationMessage": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Set when the variable is deprecated; the message states what to use instead.",
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "IsAvailable": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "False when this variable is never populated for the requested type, even though it does auto-complete. Null when that could not be determined: the variable has to be awaited to read, or it failed to resolve. Treat null as `maybe`, not as `no`.",
+          "allowedValues": []
+        },
+        "IsDynamic": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "True for variables addressed by an arbitrary name, such as CustomFields and product Content. Children are only listed where the available names are known.",
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Path": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Full path as written in a script, for example `Order.Customer.IsDebtor`.",
+          "allowedValues": []
+        },
+        "SampleValue": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "An example of the value this variable would hold. Null when the variable is not available for the requested type, and when its availability is unknown.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Scheduling.SchedulingConfig": {
       "typename": "SchedulingConfig",
       "assembly": "EVA.Core",
@@ -314897,6 +315012,135 @@
             "ref": "bool",
             "args": []
           },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Scripting.GetScriptDataStructure": {
+      "typename": "GetScriptDataStructure",
+      "assembly": "EVA.Core",
+      "description": "Returns every variable available to a script of the given dialect and type, including an example value\nand whether the variable is actually populated for that type.\n\nAuto-completion lists the variables that exist; this lists the ones that will actually hold a value. For the Cookbook\ndialect the type is a financial event type, so use this to learn what a recipe *can* read, and PreviewAccountingRecipe\nto see what a specific event *did* book.\n\nAll values are fabricated: this service reads no customer data.\n\nA list of dialects and their available types can be retrieved by calling GetScriptDialects.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Scripting.GetScriptDataStructureResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Dialect": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The dialect the script is written in, for example `Cookbook`.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "stringLengthConstraint": {
+            "max": 100
+          },
+          "allowedValues": []
+        },
+        "SubType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Optional subtype. Some subtypes populate additional variables, such as the Cookbook `CashExpense` subtype carrying a TaxCode.",
+          "stringLengthConstraint": {
+            "max": 100
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The type within the dialect, as returned by GetScriptDialects. For Cookbook this is a financial event type such as `Sales`.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "stringLengthConstraint": {
+            "max": 100
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Scripting.GetScriptDataStructureResponse": {
+      "typename": "GetScriptDataStructureResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.SampleData.ScriptVariableInfo"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Dialect": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SubType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Variables": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.SampleData.ScriptVariableInfo",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Empty when the dialect provides no sample data for the requested type.",
           "allowedValues": []
         }
       },
