@@ -1,9 +1,9 @@
 {
-  "name": "ExecuteBarcode",
+  "name": "GetInvoiceExportTypes",
   "method": "POST",
-  "path": "/message/ExecuteBarcode",
-  "description": "Executes the given barcode with an available handler that can execute it. To know if a barcode is executable, run ParseBarcode and look for the IsExecutable in the response.",
-  "auth_description": "This service does not require authentication.",
+  "path": "/message/GetInvoiceExportTypes",
+  "description": "Lists the invoice export types available in this environment, with the category each one produces. Intended to populate the \u0060Types\u0060 filter of \u0060ListInvoiceExports2\u0060: pick the types whose \u0060Category\u0060 matches what you want to list.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060InvoiceExports:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -30,19 +30,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Barcode\u0022: \u0022string\u0022,\n  \u0022Data\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Type\u0022: \u0022USERTASK\u0022\n}",
+      "sample": "{}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Barcode\u0022: \u0022string\u0022,\n  \u0022Data\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Type\u0022: \u0022USERTASK\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ExecuteBarcode",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetInvoiceExportTypes",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Actions\u0022: [\n    {\n      \u0022Parameters\u0022: {\n        \u0022key\u0022: \u0022any valid json value\u0022\n      },\n      \u0022Sequence\u0022: 123,\n      \u0022Type\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022Data\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  }\n}"
+      "sample": "{\n  \u0022Types\u0022: [\n    {\n      \u0022Category\u0022: 1,\n      \u0022Type\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -57,65 +57,8 @@
   "request_type_id": "B",
   "response_type_id": "C",
   "types": {
-    "B": [
-      {
-        "name": "Barcode",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Data",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "map[any]",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "deprecation_notice": null,
-        "description": "The handler that parsed the barcode in parsebarcode.\n\nPossible values:\n\n* \u0060USERTASK\u0060\n* \u0060SECONDCHANCEPRODUCTREGISTRATION\u0060\n* \u0060SOCIAL_SECURITY_NUMBER\u0060\n* \u0060SERIALNUMBER\u0060\n* \u0060ElevationBarcode\u0060\n* \u0060GS1_DIGITAL_LINK\u0060\n* \u0060GS1_ELEMENT_STRING\u0060\n* \u0060PRODUCT_BARCODE\u0060\n* \u0060SGTIN_EPC\u0060\n* \u0060REFERRAL\u0060\n* \u0060SHOWMESSAGE\u0060\n* \u0060SCRIPT\u0060\n* \u0060CASE\u0060\n* \u0060REPAIR\u0060\n* \u0060CONFIGURE:CFD:V2\u0060\n* \u0060DeviceHub\u0060\n* \u0060DISCOUNTCOUPON\u0060\n* \u0060ORDER\u0060\n* \u0060SCANMODE\u0060\n* \u0060SESSION\u0060\n* \u0060STATION\u0060\n* \u0060USER_BACKENDID\u0060\n* \u0060USER\u0060\n* \u0060USER_CUSTOMID\u0060\n* \u0060USER:SEARCH\u0060\n* \u0060USER_SUBSCRIPTION_IDENTIFIER\u0060\n* \u0060VERIFYCUSTOMER\u0060\n* \u0060APPOINTMENT\u0060\n* \u0060BOARDINGPASS\u0060\n* \u0060INITCC\u0060\n* \u0060SHIP_FROM_STORE_DELIVERY_CONFIRMATION\u0060\n* \u0060EVAPAY:TOTP\u0060\n* \u0060GLOBALBLUE\u0060",
-        "type": "string",
-        "required": true,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
+    "B": [],
     "D": [
-      {
-        "name": "Parameters",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "map[any] | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Sequence",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Type",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
-    "E": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -162,7 +105,7 @@
         "one_of": null
       }
     ],
-    "F": [
+    "E": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -191,27 +134,38 @@
         "one_of": null
       }
     ],
-    "C": [
+    "F": [
       {
-        "name": "Actions",
+        "name": "Category",
         "deprecation_notice": null,
-        "description": "",
-        "type": "array[object] | null",
-        "required": false,
-        "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "Data",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "map[any] | null",
+        "description": "What kind of document this exporter produces. Null when it has not declared a category, which is the case for test and performance-harness exporters.\nPossible values:\n\n* \u00600\u0060 - Invoice\n* \u00601\u0060 - Report\n* \u00602\u0060 - Stock\n* \u00603\u0060 - TaxCalculation",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "The exporter identifier, as it appears in \u0060ListInvoiceExports2Dto.Type\u0060, for example \u0022KSeF\u0022 or \u0022AVATAX_EXPORT\u0022.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
         "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
@@ -220,10 +174,10 @@
         "one_of": null
       },
       {
-        "name": "Metadata",
+        "name": "Types",
         "deprecation_notice": null,
         "description": "",
-        "type": "object | null",
+        "type": "array[object] | null",
         "required": false,
         "properties_id": "F",
         "one_of": null
