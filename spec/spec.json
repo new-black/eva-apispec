@@ -17088,6 +17088,23 @@
       }
     },
     {
+      "name": "GetInvoiceExportTypes",
+      "assembly": "EVA.Core",
+      "path": "/message/GetInvoiceExportTypes",
+      "method": "POST",
+      "requestType": "EVA.Core.Invoices.GetInvoiceExportTypes",
+      "responseType": "EVA.Core.Invoices.GetInvoiceExportTypesResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "InvoiceExports",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "GetInvoiceOutputTypes",
       "assembly": "EVA.Core",
       "path": "/message/GetInvoiceOutputTypes",
@@ -24945,6 +24962,23 @@
       "method": "POST",
       "requestType": "EVA.Core.Invoices.ListInvoiceExports",
       "responseType": "EVA.Core.Invoices.ListInvoiceExportResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "InvoiceExports",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
+      "name": "ListInvoiceExports2",
+      "assembly": "EVA.Core",
+      "path": "/message/ListInvoiceExports2",
+      "method": "POST",
+      "requestType": "EVA.Core.Invoices.ListInvoiceExports2",
+      "responseType": "EVA.Core.Invoices.ListInvoiceExports2Response",
       "auth": {
         "requiredPermissions": [
           {
@@ -61600,6 +61634,7 @@
             "SOCIAL_SECURITY_NUMBER",
             "SERIALNUMBER",
             "ElevationBarcode",
+            "GS1_DIGITAL_LINK",
             "GS1_ELEMENT_STRING",
             "PRODUCT_BARCODE",
             "SGTIN_EPC",
@@ -62021,6 +62056,7 @@
             "SOCIAL_SECURITY_NUMBER",
             "SERIALNUMBER",
             "ElevationBarcode",
+            "GS1_DIGITAL_LINK",
             "GS1_ELEMENT_STRING",
             "PRODUCT_BARCODE",
             "SGTIN_EPC",
@@ -116330,6 +116366,63 @@
       "enumValues": {},
       "parent": "EVA.Core.Invoices.GetInvoiceExportResponse"
     },
+    "EVA.Core.Invoices.GetInvoiceExportTypes": {
+      "typename": "GetInvoiceExportTypes",
+      "assembly": "EVA.Core",
+      "description": "Lists the invoice export types available in this environment, with the category each one produces. Intended to populate the `Types` filter of `ListInvoiceExports2`: pick the types whose `Category` matches what you want to list.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Invoices.GetInvoiceExportTypesResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Invoices.GetInvoiceExportTypesResponse": {
+      "typename": "GetInvoiceExportTypesResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Invoices.InvoiceExportTypeDto"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Types": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Invoices.InvoiceExportTypeDto",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Invoices.GetInvoiceOutputTypes": {
       "typename": "GetInvoiceOutputTypes",
       "assembly": "EVA.Core",
@@ -116587,6 +116680,38 @@
           "requiredAllowEmpty": {
             "current": false
           },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Invoices.InvoiceExportTypeDto": {
+      "typename": "InvoiceExportTypeDto",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Invoicing.Export.InvoiceExportCategory"
+      ],
+      "properties": {
+        "Category": {
+          "type": {
+            "ref": "EVA.Core.Invoicing.Export.InvoiceExportCategory",
+            "args": [],
+            "nullable": true
+          },
+          "description": "What kind of document this exporter produces. Null when it has not declared a category, which is the case for test and performance-harness exporters.",
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The exporter identifier, as it appears in `ListInvoiceExports2Dto.Type`, for example \"KSeF\" or \"AVATAX_EXPORT\".",
           "allowedValues": []
         }
       },
@@ -116877,6 +117002,61 @@
           },
           {
             "ref": "EVA.Core.Invoices.ListInvoiceExportResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Invoices.ListInvoiceExports2": {
+      "typename": "ListInvoiceExports2",
+      "assembly": "EVA.Core",
+      "description": "Lists invoice exports. Replaces `ListInvoiceExports`: the orders an export relates to are returned as a list rather than as one row per order, so an invoice spanning several orders no longer produces duplicate rows. Use `GetInvoiceExportTypes` to discover the values for the `Types` filter.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Invoicing.ListInvoiceExports2Filter",
+        "EVA.Core.Invoices.ListInvoiceExports2Response",
+        "EVA.Core.PagedRequestMessage`2"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedRequestMessage`2",
+        "args": [
+          {
+            "ref": "EVA.Core.Invoicing.ListInvoiceExports2Filter",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.Invoices.ListInvoiceExports2Response",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Invoices.ListInvoiceExports2Response": {
+      "typename": "ListInvoiceExports2Response",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Invoicing.ListInvoiceExports2Dto",
+        "EVA.Core.PagedResponseMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedResponseMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Invoicing.ListInvoiceExports2Dto",
             "args": [],
             "nullable": true
           }
@@ -119210,6 +119390,39 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.Invoicing.Export.InvoiceExportCategory": {
+      "typename": "InvoiceExportCategory",
+      "assembly": "EVA.Core",
+      "description": "What kind of document an invoice export produces.",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Invoice": {
+          "extends": [],
+          "description": "An electronic invoice submitted to a tax authority or network."
+        },
+        "Report": {
+          "value": 1,
+          "extends": [],
+          "description": "An aggregated periodic report, such as France e-reporting or Singapore IRAS."
+        },
+        "Stock": {
+          "value": 2,
+          "extends": [],
+          "description": "An electronic stock document."
+        },
+        "TaxCalculation": {
+          "value": 3,
+          "extends": [],
+          "description": "An export to a tax calculation provider, such as Avatax or Vertex."
+        }
+      }
     },
     "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus": {
       "typename": "InvoiceExportExternalStatus",
@@ -121552,6 +121765,308 @@
             ],
             "nullable": true
           },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Invoicing.ListInvoiceExports2Dto": {
+      "typename": "ListInvoiceExports2Dto",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Invoicing.Export.InvoiceExportStatus",
+        "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus"
+      ],
+      "properties": {
+        "CreationTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "description": "When the export itself was created.",
+          "allowedValues": []
+        },
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Currency",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ExternalStatus": {
+          "type": {
+            "ref": "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "InvoiceExport",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "InvoiceDate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "InvoiceID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Invoice",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "InvoiceNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OrderIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The orders this export's invoice was billed against. An invoice attaches to orders through its lines, so it can span more than one. Null when there are none - reports are not billed against an order at all.",
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The creditor organization unit of the invoice.",
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SequenceNumber": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "EVA.Core.Invoicing.Export.InvoiceExportStatus",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "TotalAmount": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The exporter that produced this export, for example \"FRANCE\" or \"AVATAX_EXPORT\".",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Invoicing.ListInvoiceExports2Filter": {
+      "typename": "ListInvoiceExports2Filter",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Invoicing.Export.InvoiceExportStatus",
+        "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus"
+      ],
+      "properties": {
+        "EndDate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ExternalStatus": {
+          "type": {
+            "ref": "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "InvoiceExport",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "InvoiceIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The invoice IDs to list the exports for",
+          "datamodel": {
+            "name": "Invoice",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "InvoiceNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Only matches exports whose invoice has a line on this order. Reports have none.",
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The organization units to list the exports for, ignored if `OrganizationUnitSetID` is specified",
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitSetID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "OrganizationUnitSet",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "StartDate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "EVA.Core.Invoicing.Export.InvoiceExportStatus",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Types": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Restrict to specific exporters by identifier, for example \"KSeF\" or \"AVATAX_EXPORT\". Omit to return every export. Use `GetInvoiceExportTypes` to discover the identifiers available in this environment and the category each belongs to; unknown identifiers simply match nothing. Matching ignores casing - each identifier is resolved to the exporter name as registered before the query runs.",
           "allowedValues": []
         }
       },
