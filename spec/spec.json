@@ -129168,6 +129168,44 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Loyalty.DiscountBenefitData": {
+      "typename": "DiscountBenefitData",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ApplyDiscountAutomatically": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "DiscountIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Discount",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Loyalty.DurationType": {
       "typename": "DurationType",
       "assembly": "EVA.Core",
@@ -129673,6 +129711,11 @@
             "ref": "EVA.Core.DataModels.LoyaltyProgramOptions",
             "args": [],
             "nullable": true
+          },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "Options is deprecated and is scheduled to be removed in 2.0.905: Use `Type` instead.."
           },
           "allowedValues": []
         },
@@ -171311,6 +171354,7 @@
         "EVA.Core.RequestMessage`1",
         "EVA.Core.Loyalty.IBenefitData",
         "EVA.Core.Loyalty.EmptyBenefitData",
+        "EVA.Core.Loyalty.DiscountBenefitData",
         "EVA.Core.Loyalty.AppointmentBenefitData",
         "EVA.Core.DataModels.CustomFieldFilter"
       ],
@@ -171329,6 +171373,11 @@
           "type": {
             "ref": "bool",
             "args": []
+          },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "ApplyDiscountAutomatically is deprecated and is scheduled to be removed in 2.0.905: Set ApplyDiscountAutomatically on the discount benefit's Data (DiscountBenefitData) instead."
           },
           "allowedValues": []
         },
@@ -171378,6 +171427,11 @@
                 "nullable": true
               },
               {
+                "ref": "EVA.Core.Loyalty.DiscountBenefitData",
+                "args": [],
+                "nullable": true
+              },
+              {
                 "ref": "EVA.Core.Loyalty.AppointmentBenefitData",
                 "args": [],
                 "nullable": true
@@ -171415,6 +171469,11 @@
               }
             ],
             "nullable": true
+          },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "DiscountIDs is deprecated and is scheduled to be removed in 2.0.905: Set DiscountIDs on the discount benefit's Data (DiscountBenefitData) instead."
           },
           "datamodel": {
             "name": "Discount",
@@ -172618,6 +172677,7 @@
         "EVA.Core.RequestMessage`1",
         "EVA.Core.Loyalty.IBenefitData",
         "EVA.Core.Loyalty.EmptyBenefitData",
+        "EVA.Core.Loyalty.DiscountBenefitData",
         "EVA.Core.Loyalty.AppointmentBenefitData",
         "EVA.Core.DataModels.CustomFieldFilter"
       ],
@@ -172681,6 +172741,11 @@
             "args": [
               {
                 "ref": "EVA.Core.Loyalty.EmptyBenefitData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Loyalty.DiscountBenefitData",
                 "args": [],
                 "nullable": true
               },
@@ -177009,6 +177074,7 @@
       "typeDependencies": [
         "EVA.Core.Loyalty.IBenefitData",
         "EVA.Core.Loyalty.EmptyBenefitData",
+        "EVA.Core.Loyalty.DiscountBenefitData",
         "EVA.Core.Loyalty.AppointmentBenefitData",
         "EVA.Core.Blobs.BlobDto",
         "EVA.Core.Management.Loyalty.GetLoyaltyProgramResponse+LoyaltyProgramBenefitDiscountDto",
@@ -177019,6 +177085,11 @@
           "type": {
             "ref": "bool",
             "args": []
+          },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "ApplyDiscountAutomatically is deprecated and is scheduled to be removed in 2.0.905: Read ApplyDiscountAutomatically from the discount benefit's Data (DiscountBenefitData) instead."
           },
           "allowedValues": []
         },
@@ -177064,6 +177135,11 @@
             "args": [
               {
                 "ref": "EVA.Core.Loyalty.EmptyBenefitData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Loyalty.DiscountBenefitData",
                 "args": [],
                 "nullable": true
               },
@@ -177379,6 +177455,7 @@
       "typeDependencies": [
         "EVA.Core.Loyalty.IBenefitData",
         "EVA.Core.Loyalty.EmptyBenefitData",
+        "EVA.Core.Loyalty.DiscountBenefitData",
         "EVA.Core.Loyalty.AppointmentBenefitData",
         "EVA.Core.Loyalty.IBenefitDisplayData",
         "EVA.Core.Loyalty.AppointmentBenefitDisplayData",
@@ -177429,6 +177506,11 @@
             "args": [
               {
                 "ref": "EVA.Core.Loyalty.EmptyBenefitData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Loyalty.DiscountBenefitData",
                 "args": [],
                 "nullable": true
               },
@@ -177786,6 +177868,7 @@
       "typeDependencies": [
         "EVA.Core.Loyalty.IBenefitData",
         "EVA.Core.Loyalty.EmptyBenefitData",
+        "EVA.Core.Loyalty.DiscountBenefitData",
         "EVA.Core.Loyalty.AppointmentBenefitData"
       ],
       "properties": {
@@ -177795,6 +177878,11 @@
             "args": [
               {
                 "ref": "EVA.Core.Loyalty.EmptyBenefitData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Loyalty.DiscountBenefitData",
                 "args": [],
                 "nullable": true
               },
@@ -179029,6 +179117,7 @@
       "typeDependencies": [
         "EVA.Core.Loyalty.IBenefitData",
         "EVA.Core.Loyalty.EmptyBenefitData",
+        "EVA.Core.Loyalty.DiscountBenefitData",
         "EVA.Core.Loyalty.AppointmentBenefitData",
         "EVA.Core.Blobs.BlobDto",
         "EVA.Core.Management.Loyalty.GetUserBenefitsResponse+LoyaltyProgramTierDto",
@@ -179049,6 +179138,11 @@
             "args": [
               {
                 "ref": "EVA.Core.Loyalty.EmptyBenefitData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Loyalty.DiscountBenefitData",
                 "args": [],
                 "nullable": true
               },
@@ -180110,6 +180204,7 @@
       "typeDependencies": [
         "EVA.Core.Loyalty.IBenefitData",
         "EVA.Core.Loyalty.EmptyBenefitData",
+        "EVA.Core.Loyalty.DiscountBenefitData",
         "EVA.Core.Loyalty.AppointmentBenefitData",
         "EVA.Core.Blobs.BlobDto",
         "EVA.Core.Management.Loyalty.GetUserLoyaltyTierDetailsResponse+DiscountDto",
@@ -180159,6 +180254,11 @@
             "args": [
               {
                 "ref": "EVA.Core.Loyalty.EmptyBenefitData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Loyalty.DiscountBenefitData",
                 "args": [],
                 "nullable": true
               },
@@ -180557,6 +180657,25 @@
           "type": {
             "ref": "EVA.Core.Management.Loyalty.ListBenefitUserUsageHistoryResponse+DiscountDto",
             "args": [],
+            "nullable": true
+          },
+          "deprecated": {
+            "announced": 838,
+            "active": 860,
+            "comment": "Discount is deprecated and is scheduled to be removed in 2.0.886: Use `Discounts` instead.."
+          },
+          "allowedValues": []
+        },
+        "Discounts": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.Loyalty.ListBenefitUserUsageHistoryResponse+DiscountDto",
+                "args": [],
+                "nullable": true
+              }
+            ],
             "nullable": true
           },
           "allowedValues": []
@@ -186030,6 +186149,7 @@
         "EVA.Core.RequestMessageWithEmptyResponse",
         "EVA.Core.Loyalty.IBenefitData",
         "EVA.Core.Loyalty.EmptyBenefitData",
+        "EVA.Core.Loyalty.DiscountBenefitData",
         "EVA.Core.Loyalty.AppointmentBenefitData",
         "EVA.Core.DataModels.CustomFieldFilter"
       ],
@@ -186044,6 +186164,11 @@
             "args": []
           },
           "skippable": true,
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "ApplyDiscountAutomatically is deprecated and is scheduled to be removed in 2.0.905: Set ApplyDiscountAutomatically on the discount benefit's Data (DiscountBenefitData) instead."
+          },
           "allowedValues": []
         },
         "BlobID": {
@@ -186096,6 +186221,11 @@
                 "nullable": true
               },
               {
+                "ref": "EVA.Core.Loyalty.DiscountBenefitData",
+                "args": [],
+                "nullable": true
+              },
+              {
                 "ref": "EVA.Core.Loyalty.AppointmentBenefitData",
                 "args": [],
                 "nullable": true
@@ -186137,6 +186267,11 @@
             "nullable": true
           },
           "skippable": true,
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "DiscountIDs is deprecated and is scheduled to be removed in 2.0.905: Set DiscountIDs on the discount benefit's Data (DiscountBenefitData) instead."
+          },
           "datamodel": {
             "name": "Discount",
             "supportsCustomID": true,
@@ -187121,6 +187256,7 @@
         "EVA.Core.RequestMessageWithEmptyResponse",
         "EVA.Core.Loyalty.IBenefitData",
         "EVA.Core.Loyalty.EmptyBenefitData",
+        "EVA.Core.Loyalty.DiscountBenefitData",
         "EVA.Core.Loyalty.AppointmentBenefitData",
         "EVA.Core.DataModels.CustomFieldFilter"
       ],
@@ -187183,6 +187319,11 @@
             "args": [
               {
                 "ref": "EVA.Core.Loyalty.EmptyBenefitData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Loyalty.DiscountBenefitData",
                 "args": [],
                 "nullable": true
               },
@@ -230319,6 +230460,11 @@
             "ref": "EVA.Core.DataModels.LoyaltyProgramOptions",
             "args": [],
             "nullable": true
+          },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "Options is deprecated and is scheduled to be removed in 2.0.905: Use `Type` instead.."
           },
           "allowedValues": []
         },
@@ -397003,6 +397149,11 @@
             "args": [],
             "nullable": true
           },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "LoyaltyProgramOptions is deprecated and is scheduled to be removed in 2.0.905: Use `LoyaltyProgramType` instead.."
+          },
           "allowedValues": []
         },
         "LoyaltyProgramType": {
@@ -397143,6 +397294,11 @@
             "ref": "EVA.Core.DataModels.LoyaltyProgramOptions",
             "args": [],
             "nullable": true
+          },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "LoyaltyProgramOptions is deprecated and is scheduled to be removed in 2.0.905: Loyalty program options are deprecated in favor of the loyalty program type.."
           },
           "allowedValues": []
         },
@@ -415149,6 +415305,14 @@
       "typeArguments": [],
       "typeDependencies": [],
       "properties": {
+        "Data": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "Description": {
           "type": {
             "ref": "string",
@@ -415182,6 +415346,14 @@
           "allowedValues": []
         },
         "Title": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
           "type": {
             "ref": "string",
             "args": [],
