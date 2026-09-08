@@ -15843,6 +15843,21 @@
       }
     },
     {
+      "name": "GetDashboardComponentData",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/GetDashboardComponentData",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.BIDashboard.GetDashboardComponentData",
+      "responseType": "EVA.Core.Management.BIDashboard.GetDashboardComponentDataResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049
+          }
+        ]
+      }
+    },
+    {
       "name": "GetDataModelForNotificationTemplateHandler",
       "assembly": "EVA.Core",
       "path": "/message/GetDataModelForNotificationTemplateHandler",
@@ -62343,6 +62358,34 @@
         }
       }
     },
+    "EVA.Core.BIDashboard.Models.BIDashboardComponentDataStatus": {
+      "typename": "BIDashboardComponentDataStatus",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Materializing": {
+          "value": 1,
+          "extends": []
+        },
+        "Ok": {
+          "extends": []
+        },
+        "SpecInvalid": {
+          "value": 2,
+          "extends": []
+        },
+        "Unsupported": {
+          "value": 3,
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.BIDashboard.Models.BIDashboardComponentDisplayMethod": {
       "typename": "BIDashboardComponentDisplayMethod",
       "assembly": "EVA.Core",
@@ -62411,6 +62454,31 @@
     },
     "EVA.Core.BIDashboard.Models.BIDashboardComponentTargetPeriod": {
       "typename": "BIDashboardComponentTargetPeriod",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Day": {
+          "extends": []
+        },
+        "Month": {
+          "value": 2,
+          "extends": []
+        },
+        "Week": {
+          "value": 1,
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.BIDashboard.Models.BIDashboardComponentTimeFrame": {
+      "typename": "BIDashboardComponentTimeFrame",
       "assembly": "EVA.Core",
       "usage": {
         "request": true,
@@ -135602,6 +135670,204 @@
             "nullable": true
           },
           "skippable": true,
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.BIDashboard.GetDashboardComponentData": {
+      "typename": "GetDashboardComponentData",
+      "assembly": "EVA.Core.Management",
+      "description": "Reads the live metric value for a single BI dashboard component (tile), merging its EVA-side configuration with a call to the BI API.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentTimeFrame"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.BIDashboard.GetDashboardComponentDataResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "ComponentID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "BIDashboardComponent",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "DivisionPerEmployee": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Request all employees' data instead of only the caller's own. Requires the BIDashboardViewAllEmployeeData functionality. Accepted and permission-checked, but currently has no effect on the BI API call: the BI API's contract has no field for it yet (OPTR-48410 code review finding R2, decision: keep the flag, ship it inert, revisit once the BI API supports it).",
+          "allowedValues": []
+        },
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The organization unit to read BI dashboard data for. Requires the BIDashboardViewData functionality in this organization unit.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "SkipCache": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Bypass the cache for this read. Requires the BIDashboardBypassCache functionality. Accepted and permission-checked, but currently has no effect on the BI API call: the BI API's contract has no field for it yet (OPTR-48410 code review finding R2, decision: keep the flag, ship it inert, revisit once the BI API supports it).",
+          "allowedValues": []
+        },
+        "TimeFrame": {
+          "type": {
+            "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentTimeFrame",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.BIDashboard.GetDashboardComponentDataResponse": {
+      "typename": "GetDashboardComponentDataResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentType",
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentDisplayMethod",
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentTimeFrame",
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentDataStatus"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "CalculationTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "ComponentType": {
+          "type": {
+            "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentType",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "DataProperties": {
+          "type": {
+            "ref": "map",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "any",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "EmployeeDeepDive": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentDataStatus",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "TargetValue": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "TimeFrame": {
+          "type": {
+            "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentTimeFrame",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Value": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "VisualizationType": {
+          "type": {
+            "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentDisplayMethod",
+            "args": []
+          },
           "allowedValues": []
         }
       },
@@ -481225,6 +481491,24 @@
           }
         }
       ]
+    },
+    {
+      "name": "BIDashboard:NotConfigured",
+      "message": "The BI dashboard component-data endpoint is not configured.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "BIDashboard:CallFailed",
+      "message": "The BI dashboard component-data request failed.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "BIDashboard:OrganizationUnitNotConfiguredForBI",
+      "message": "The organization unit is missing a TimeZone or GlobalID, both of which are required to request BI dashboard data.",
+      "module": "EVA.Core.Management",
+      "arguments": []
     },
     {
       "name": "LoyaltyProgram:MissingFieldOnLoyaltyProgramCreation",
