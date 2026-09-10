@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022FullStockCountID\u0022: 123,\n  \u0022Recounts\u0022: [\n    {\n      \u0022ProductID\u0022: 123,\n      \u0022StockLabelID\u0022: 123\n    }\n  ]\n}",
+      "sample": "{\n  \u0022FullStockCountID\u0022: 123,\n  \u0022OnlyRecountCountedLabels\u0022: true,\n  \u0022Recounts\u0022: [\n    {\n      \u0022ProductID\u0022: 123,\n      \u0022StockLabelID\u0022: 123\n    }\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022FullStockCountID\u0022: 123,\n  \u0022Recounts\u0022: [\n    {\n      \u0022ProductID\u0022: 123,\n      \u0022StockLabelID\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/RecountFullStockCountProduct",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022FullStockCountID\u0022: 123,\n  \u0022OnlyRecountCountedLabels\u0022: true,\n  \u0022Recounts\u0022: [\n    {\n      \u0022ProductID\u0022: 123,\n      \u0022StockLabelID\u0022: 123\n    }\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/RecountFullStockCountProduct",
       "syntax": "bash"
     }
   ],
@@ -97,6 +97,15 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060FullStockCount\u0060",
         "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OnlyRecountCountedLabels",
+        "deprecation_notice": null,
+        "description": "When true, a recount is only created in labels where a count of the product has been registered; labels that never saw the product are skipped. When no label holds a registered count for the product, no recount is created.",
+        "type": "boolean",
         "required": false,
         "properties_id": null,
         "one_of": null
