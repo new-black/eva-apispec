@@ -336248,12 +336248,17 @@
       },
       "typeArguments": [],
       "typeDependencies": [
+        "EVA.Core.UserTasks.StockReservationUserTask.ListStockReservationTasksSort",
         "EVA.Core.Services.ListUserTasksServices.ListStockReservationTasksResponse",
-        "EVA.Core.PagedRequestMessage`1"
+        "EVA.Core.SortablePagedRequestMessage`2"
       ],
       "extends": {
-        "ref": "EVA.Core.PagedRequestMessage`1",
+        "ref": "EVA.Core.SortablePagedRequestMessage`2",
         "args": [
+          {
+            "ref": "EVA.Core.UserTasks.StockReservationUserTask.ListStockReservationTasksSort",
+            "args": []
+          },
           {
             "ref": "EVA.Core.Services.ListUserTasksServices.ListStockReservationTasksResponse",
             "args": [],
@@ -336284,6 +336289,21 @@
             "nullable": true
           },
           "description": "Return only Started/Open UserTasks",
+          "allowedValues": []
+        },
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Filter tasks by the order they belong to",
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
           "allowedValues": []
         },
         "ProductIDs": {
@@ -358717,6 +358737,74 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.SortablePagedRequestMessage`2": {
+      "typename": "SortablePagedRequestMessage`2",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [
+        "_TSort",
+        "_TResponse"
+      ],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.SortablePageTokenConfig`2"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "_TResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "InitialPageConfig": {
+          "type": {
+            "ref": "EVA.Core.SortablePageTokenConfig`2",
+            "args": [
+              {
+                "ref": "_TSort",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "map",
+                "args": [
+                  {
+                    "ref": "string",
+                    "args": [],
+                    "nullable": true
+                  },
+                  {
+                    "ref": "string",
+                    "args": [],
+                    "nullable": true
+                  }
+                ],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The initial page configuration including sort options. This is only used when requesting the first page of results. Subsequent pages are requested using the `PageToken` property.",
+          "allowedValues": []
+        },
+        "PageToken": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The page token from a previous response. This is used to request subsequent pages of results.",
           "allowedValues": []
         }
       },
@@ -406375,6 +406463,26 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.UserTasks.StockReservationUserTask.ListStockReservationTasksSort": {
+      "typename": "ListStockReservationTasksSort",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "CreationTime": {
+          "value": 1,
+          "extends": []
+        },
+        "Default": {
+          "extends": []
+        }
+      }
     },
     "EVA.Core.UserTasks.UserNotificationData": {
       "typename": "UserNotificationData",
