@@ -75,7 +75,7 @@
       {
         "name": "Locale",
         "deprecation_notice": null,
-        "description": "Locale (for example \u0060nl-NL\u0060) used to localize the tracking portal URL. Defaults to the language and country of the request.",
+        "description": "Locale (for example \u0060nl-NL\u0060) used to localize the tracking portal URL and the step labels. Defaults to the language and country of the request.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -406,7 +406,7 @@
       {
         "name": "DisplayText",
         "deprecation_notice": null,
-        "description": "Label to render for this step, so a consumer does not map the step itself. Built from the carrier tracking platform\u0027s own step value when it reported one, falling back to the normalized step otherwise. Not yet translated.",
+        "description": "Label to render for this step, so a consumer does not map the step itself. Worded the way the carrier tracking platform words the step, in the requested locale, when EVA has the platform\u0027s translations; otherwise the platform\u0027s raw step value, falling back to the normalized step.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -489,7 +489,7 @@
       {
         "name": "CarrierLogoUrl",
         "deprecation_notice": null,
-        "description": "URL of the carrier\u0027s logo, when known.",
+        "description": "URL of the carrier\u0027s logo, when known. Resolved when the state is read, so it stays current for parcels tracked long ago.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
@@ -588,7 +588,7 @@
       {
         "name": "TrackingPortalUrl",
         "deprecation_notice": null,
-        "description": "URL of the tracking portal page for this parcel, localized to the requested locale, when available.",
+        "description": "URL of the tracking platform\u0027s page for this parcel, localized to the requested locale. Present when the shipment\u0027s tracking link is such a page.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
