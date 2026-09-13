@@ -2,7 +2,7 @@
   "name": "GetZonedCycleCount",
   "method": "POST",
   "path": "/message/GetZonedCycleCount",
-  "description": "Returns a detailed view of a ZonedCycleCount by the ID of its UserTask.\n\nThe response contains:\n\n- Which StockLabels to count (\u0060StockLabelsToCount\u0060)\n- The product that needs to be counted. This product contains all the fields in its \u0060Content\u0060 object that were requested through the \u0060IncludedFields\u0060 property on the request, or a default set of fields if not specified.\n- Which StockMutations have been created since the first pre-count (if any) per StockLabel (\u0060StockMutationsSincePreCount\u0060)\n- A list of all pre-counts, complete with the zone that needs to be counted, the user who did the count (if the count already happened) and a list of count results per StockLabel\n- A list of pre-counted quantityies per StockLabel (\u0060PreCountedQuantities\u0060)\n- A list of the total quantity of stock mutated per StockLabel (a summary of \u0060StockMutationsSincePreCount\u0060).\n- The current stock per StockLabel\n- ExpectedPreCountedQuantity: This is stored on the ZonedCyleCount the moment the last pre-count has been completed, and is a sum of the expected Stock at that moment.\n- PreCountedQuantity: The quantity that was actually counted in all pre-counts over all StockLabels. This is recorded when all pre-counts have been completed.",
+  "description": "Returns a detailed view of a ZonedCycleCount, either by its own \u0060ID\u0060 or by the ID of its UserTask (\u0060UserTaskID\u0060).\n\nThe response contains:\n\n- Which StockLabels to count (\u0060StockLabelsToCount\u0060)\n- The product that needs to be counted. This product contains all the fields in its \u0060Content\u0060 object that were requested through the \u0060IncludedFields\u0060 property on the request, or a default set of fields if not specified.\n- Which StockMutations have been created since the first pre-count (if any) per StockLabel (\u0060StockMutationsSincePreCount\u0060)\n- A list of all pre-counts, complete with the zone that needs to be counted, the user who did the count (if the count already happened) and a list of count results per StockLabel\n- A list of pre-counted quantityies per StockLabel (\u0060PreCountedQuantities\u0060)\n- A list of the total quantity of stock mutated per StockLabel (a summary of \u0060StockMutationsSincePreCount\u0060).\n- The current stock per StockLabel\n- ExpectedPreCountedQuantity: This is stored on the ZonedCyleCount the moment the last pre-count has been completed, and is a sum of the expected Stock at that moment.\n- PreCountedQuantity: The quantity that was actually counted in all pre-counts over all StockLabels. This is recorded when all pre-counts have been completed.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060ZonedCycleCounts:View\u0060",
   "headers": [
     {
@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022IncludedFields\u0022: [\n    \u0022string\u0022\n  ]\n}",
+      "sample": "{\n  \u0022ID\u0022: 123,\n  \u0022IncludedFields\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022UserTaskID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123,\n  \u0022IncludedFields\u0022: [\n    \u0022string\u0022\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetZonedCycleCount",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022ID\u0022: 123,\n  \u0022IncludedFields\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022UserTaskID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetZonedCycleCount",
       "syntax": "bash"
     }
   ],
@@ -61,8 +61,8 @@
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserTask\u0060",
-        "type": "integer",
+        "description": "The ID of the ZonedCycleCount. Either this or \u0060UserTaskID\u0060 is required.\n\nThis is the ID of a \u0060ZonedCycleCount\u0060",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -72,6 +72,15 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060ProductPropertyType\u0060",
         "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserTaskID",
+        "deprecation_notice": null,
+        "description": "The ID of the ZonedCycleCount\u0027s UserTask. Either this or \u0060ID\u0060 is required.\n\nThis is the ID of a \u0060UserTask\u0060",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
