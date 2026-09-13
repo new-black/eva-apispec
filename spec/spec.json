@@ -337561,6 +337561,18 @@
             "nullable": true
           },
           "allowedValues": []
+        },
+        "ZonedCycleCountID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ZonedCycleCount this task belongs to. Use this to open the count via GetZonedCycleCount.",
+          "datamodel": {
+            "name": "ZonedCycleCount",
+            "isEvaID": true
+          },
+          "allowedValues": []
         }
       },
       "enumValues": {},
@@ -348397,7 +348409,7 @@
     "EVA.Core.Services.ZonedCycleCounts.GetZonedCycleCount": {
       "typename": "GetZonedCycleCount",
       "assembly": "EVA.Core",
-      "description": "Returns a detailed view of a ZonedCycleCount by the ID of its UserTask.\n\nThe response contains:\n\n- Which StockLabels to count (`StockLabelsToCount`)\n- The product that needs to be counted. This product contains all the fields in its `Content` object that were requested through the `IncludedFields` property on the request, or a default set of fields if not specified.\n- Which StockMutations have been created since the first pre-count (if any) per StockLabel (`StockMutationsSincePreCount`)\n- A list of all pre-counts, complete with the zone that needs to be counted, the user who did the count (if the count already happened) and a list of count results per StockLabel\n- A list of pre-counted quantityies per StockLabel (`PreCountedQuantities`)\n- A list of the total quantity of stock mutated per StockLabel (a summary of `StockMutationsSincePreCount`).\n- The current stock per StockLabel\n- ExpectedPreCountedQuantity: This is stored on the ZonedCyleCount the moment the last pre-count has been completed, and is a sum of the expected Stock at that moment.\n- PreCountedQuantity: The quantity that was actually counted in all pre-counts over all StockLabels. This is recorded when all pre-counts have been completed.",
+      "description": "Returns a detailed view of a ZonedCycleCount, either by its own `ID` or by the ID of its UserTask (`UserTaskID`).\n\nThe response contains:\n\n- Which StockLabels to count (`StockLabelsToCount`)\n- The product that needs to be counted. This product contains all the fields in its `Content` object that were requested through the `IncludedFields` property on the request, or a default set of fields if not specified.\n- Which StockMutations have been created since the first pre-count (if any) per StockLabel (`StockMutationsSincePreCount`)\n- A list of all pre-counts, complete with the zone that needs to be counted, the user who did the count (if the count already happened) and a list of count results per StockLabel\n- A list of pre-counted quantityies per StockLabel (`PreCountedQuantities`)\n- A list of the total quantity of stock mutated per StockLabel (a summary of `StockMutationsSincePreCount`).\n- The current stock per StockLabel\n- ExpectedPreCountedQuantity: This is stored on the ZonedCyleCount the moment the last pre-count has been completed, and is a sum of the expected Stock at that moment.\n- PreCountedQuantity: The quantity that was actually counted in all pre-counts over all StockLabels. This is recorded when all pre-counts have been completed.",
       "usage": {
         "request": true
       },
@@ -348419,10 +348431,12 @@
         "ID": {
           "type": {
             "ref": "id",
-            "args": []
+            "args": [],
+            "nullable": true
           },
+          "description": "The ID of the ZonedCycleCount. Either this or `UserTaskID` is required.",
           "datamodel": {
-            "name": "UserTask",
+            "name": "ZonedCycleCount",
             "isEvaID": true
           },
           "allowedValues": []
@@ -348441,6 +348455,19 @@
           },
           "datamodel": {
             "name": "ProductPropertyType",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "UserTaskID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The ID of the ZonedCycleCount's UserTask. Either this or `ID` is required.",
+          "datamodel": {
+            "name": "UserTask",
             "isEvaID": true
           },
           "allowedValues": []
