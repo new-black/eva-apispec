@@ -22753,6 +22753,23 @@
       }
     },
     {
+      "name": "GetWatchtowerKPIs",
+      "assembly": "EVA.Core.LiveGuard",
+      "path": "/message/GetWatchtowerKPIs",
+      "method": "POST",
+      "requestType": "EVA.Core.LiveGuard.Services.Management.GetWatchtowerKPIs",
+      "responseType": "EVA.Core.LiveGuard.Services.Management.GetWatchtowerKPIsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Watchtowers",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "GetWebshops",
       "assembly": "EVA.Core",
       "path": "/message/GetWebshops",
@@ -78564,6 +78581,157 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Devices.TheEyeWatchtowerData": {
+      "typename": "TheEyeWatchtowerData",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Devices.WatchtowerHealthStatus"
+      ],
+      "properties": {
+        "ContentCachingEnabled": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DataUsage48HoursInMegabytes": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DeploymentStateComponent": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DeploymentStateDescription": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DeploymentStatePercentage": {
+          "type": {
+            "ref": "float64",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DeploymentStateUpdatedAt": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DownloadSpeedInMbps": {
+          "type": {
+            "ref": "float64",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "EVAVersion": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "InstallerVersion": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "LastSeenTimestamp": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ManagementToolsEnabled": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OSVersion": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SnapshotAt": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "EVA.Core.Devices.WatchtowerHealthStatus",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "UploadSpeedInMbps": {
+          "type": {
+            "ref": "float64",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "WatchtowerIOVersion": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "WatchtowerLiveGuardVersion": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Devices.ThermalPrinterDeviceTypeData": {
       "typename": "ThermalPrinterDeviceTypeData",
       "assembly": "EVA.Core",
@@ -78644,6 +78812,7 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.Devices.StatusData",
+        "EVA.Core.Devices.TheEyeWatchtowerData",
         "EVA.Core.Devices.WatchtowerLifecycleStatus"
       ],
       "properties": {
@@ -78719,6 +78888,14 @@
           },
           "allowedValues": []
         },
+        "TheEyeData": {
+          "type": {
+            "ref": "EVA.Core.Devices.TheEyeWatchtowerData",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "Virtual": {
           "type": {
             "ref": "bool",
@@ -78728,6 +78905,36 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.Devices.WatchtowerHealthStatus": {
+      "typename": "WatchtowerHealthStatus",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Offline": {
+          "value": 2,
+          "extends": []
+        },
+        "Online": {
+          "value": 1,
+          "extends": []
+        },
+        "Unknown": {
+          "value": 4,
+          "extends": []
+        },
+        "WithIssues": {
+          "value": 3,
+          "extends": []
+        }
+      }
     },
     "EVA.Core.Devices.WatchtowerLifecycleStatus": {
       "typename": "WatchtowerLifecycleStatus",
@@ -124112,10 +124319,80 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.LiveGuard.Services.Management.GetWatchtowerKPIs": {
+      "typename": "GetWatchtowerKPIs",
+      "assembly": "EVA.Core.LiveGuard",
+      "description": "Returns KPIs for the Watchtower fleet.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.LiveGuard.Services.Management.GetWatchtowerKPIsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.LiveGuard.Services.Management.GetWatchtowerKPIsResponse": {
+      "typename": "GetWatchtowerKPIsResponse",
+      "assembly": "EVA.Core.LiveGuard",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Offline": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Online": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "TotalDevices": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "WithIssues": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.LiveGuard.Services.Management.ListWatchtowerDevices": {
       "typename": "ListWatchtowerDevices",
       "assembly": "EVA.Core.LiveGuard",
-      "description": "List the configured watchtower devices with their status\n\nSorting is supported on the following properties:\n- ID\n- Name\n- HardwareID\n- OrganizationUnitID\n- OrganizationUnitBackendID\n- OrganizationUnitName\n- OrganizationUnitCountryID\n- OrganizationUnitStatus\n- WatchtowerIOConnected\n- WatchtowerIOLastSeen\n- ForceLocalMode",
+      "description": "List the configured watchtower devices with their status\n\nSorting is supported on the following properties:\n- ID\n- Name\n- HardwareID\n- OrganizationUnitID\n- OrganizationUnitBackendID\n- OrganizationUnitName\n- OrganizationUnitCountryID\n- OrganizationUnitStatus\n- WatchtowerIOConnected\n- WatchtowerIOLastSeen\n- ForceLocalMode\n- CreationTime",
       "usage": {
         "request": true
       },
@@ -124152,6 +124429,7 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.DataModels.OrganizationUnitStatus",
+        "EVA.Core.Devices.WatchtowerHealthStatus",
         "EVA.Core.Devices.WatchtowerLifecycleStatus"
       ],
       "properties": {
@@ -124164,6 +124442,22 @@
           "datamodel": {
             "name": "Country",
             "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "CreationTimeEnd": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "CreationTimeStart": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         },
@@ -124241,6 +124535,11 @@
             "args": [],
             "nullable": true
           },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "IsWatchtowerOnline is deprecated and is scheduled to be removed in 2.0.905: Use Status instead.."
+          },
           "allowedValues": []
         },
         "LifecycleStatus": {
@@ -124267,6 +124566,14 @@
         "OrganizationUnitStatus": {
           "type": {
             "ref": "EVA.Core.DataModels.OrganizationUnitStatus",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "EVA.Core.Devices.WatchtowerHealthStatus",
             "args": [],
             "nullable": true
           },
@@ -124308,9 +124615,17 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.DataModels.OrganizationUnitStatus",
+        "EVA.Core.Devices.WatchtowerHealthStatus",
         "EVA.Core.Devices.WatchtowerLifecycleStatus"
       ],
       "properties": {
+        "CreationTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "allowedValues": []
+        },
         "FleetManager": {
           "type": {
             "ref": "string",
@@ -124432,6 +124747,21 @@
           "type": {
             "ref": "EVA.Core.DataModels.OrganizationUnitStatus",
             "args": []
+          },
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "EVA.Core.Devices.WatchtowerHealthStatus",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "StatusUpdatedAt": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         },
@@ -124915,7 +125245,11 @@
         "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse+NetworkInterface",
         "EVA.Core.LiveGuard.Managers.FleetManagerDeviceStatus",
         "EVA.Core.Devices.WatchtowerLog",
-        "EVA.Core.Devices.WatchtowerLifecycleStatus"
+        "EVA.Core.Devices.WatchtowerLifecycleStatus",
+        "EVA.Core.Devices.WatchtowerHealthStatus",
+        "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse+DeviceVersionInfo",
+        "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse+DeviceNetworkInfo",
+        "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse+DeviceDeploymentInfo"
       ],
       "extends": {
         "ref": "EVA.Core.ResponseMessage",
@@ -124933,6 +125267,22 @@
         "CatalogTaskStateLastRunTime": {
           "type": {
             "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ContentCachingEnabled": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Deployment": {
+          "type": {
+            "ref": "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse+DeviceDeploymentInfo",
             "args": [],
             "nullable": true
           },
@@ -125048,6 +125398,14 @@
           },
           "allowedValues": []
         },
+        "LastSeenTimestamp": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "LifecycleStatus": {
           "type": {
             "ref": "EVA.Core.Devices.WatchtowerLifecycleStatus",
@@ -125081,6 +125439,22 @@
                 "nullable": true
               }
             ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ManagementToolsEnabled": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Network": {
+          "type": {
+            "ref": "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse+DeviceNetworkInfo",
+            "args": [],
             "nullable": true
           },
           "allowedValues": []
@@ -125209,6 +125583,21 @@
           },
           "allowedValues": []
         },
+        "Status": {
+          "type": {
+            "ref": "EVA.Core.Devices.WatchtowerHealthStatus",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "StatusUpdatedAt": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "UsersCount": {
           "type": {
             "ref": "int32",
@@ -125228,6 +125617,14 @@
         "UserTaskStateLastRunTime": {
           "type": {
             "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Versions": {
+          "type": {
+            "ref": "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse+DeviceVersionInfo",
             "args": [],
             "nullable": true
           },
@@ -125272,6 +125669,141 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse+DeviceDeploymentInfo": {
+      "typename": "DeviceDeploymentInfo",
+      "assembly": "EVA.Core.LiveGuard",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Component": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "LastUpdate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Percentage": {
+          "type": {
+            "ref": "float64",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse"
+    },
+    "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse+DeviceNetworkInfo": {
+      "typename": "DeviceNetworkInfo",
+      "assembly": "EVA.Core.LiveGuard",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "DataUsage48HoursInMegabytes": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DownloadSpeedInMbps": {
+          "type": {
+            "ref": "float64",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "UploadSpeedInMbps": {
+          "type": {
+            "ref": "float64",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse"
+    },
+    "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse+DeviceVersionInfo": {
+      "typename": "DeviceVersionInfo",
+      "assembly": "EVA.Core.LiveGuard",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "EVAVersion": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "InstallerVersion": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OSVersion": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "WatchtowerIOVersion": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "WatchtowerLiveGuardVersion": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse"
     },
     "EVA.Core.LiveGuard.Services.Management.WatchtowerGetDeviceDetailsResponse+NetworkInterface": {
       "typename": "NetworkInterface",
@@ -482380,6 +482912,12 @@
     {
       "name": "LiveGuard:UnableToMutateEVAPayStub",
       "message": "This is a stub order for offline evapay payments, no mutations allowed.",
+      "module": "EVA.Core.LiveGuard",
+      "arguments": []
+    },
+    {
+      "name": "LiveGuard:ApiKeyOwnerIsNotAnApiUser",
+      "message": "The user matching this API user's name is not an API user.",
       "module": "EVA.Core.LiveGuard",
       "arguments": []
     },
