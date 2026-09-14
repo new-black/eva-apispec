@@ -108908,8 +108908,15 @@
             "ref": "int32",
             "args": []
           },
+          "description": "The number of units counted for this label/product. Must be supplied and cannot be negative; zero records an explicit zero count.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
           "minValue": {
-            "current": 1
+            "current": 0
           },
           "allowedValues": []
         },
@@ -108964,7 +108971,7 @@
     "EVA.Core.FullStockCountServices.UploadExternalFullStockCountResult": {
       "typename": "UploadExternalFullStockCountResult",
       "assembly": "EVA.Core",
-      "description": "Upload full stock count result. Previous uploads will be overwritten. The service processes the data async.",
+      "description": "Upload full stock count result. Previous uploads will be overwritten. The service processes the data async. QuantityCounted must be an integer of at least zero.",
       "usage": {
         "request": true
       },
@@ -109023,7 +109030,7 @@
     "EVA.Core.FullStockCountServices.UploadFullStockCountLabelResults": {
       "typename": "UploadFullStockCountLabelResults",
       "assembly": "EVA.Core",
-      "description": "Upload count results from an external source to an internal full stock count.\n\nFor each combination of FullStockCountLabelName and StockLabelName, an FSC-label is created when it does not exist yet.\nLabels created this way are marked as externally created and remain open, so they can be inspected and corrected in the tasks app.\nUploading a count for a product that already has a result on that FSC-label overwrites that result.\n\nRows must either have a ProductID, ProductBackendID or ProductBarcode.\nWhen any row is invalid, no results are processed and the invalid rows are returned in `Errors`.",
+      "description": "Upload count results from an external source to an internal full stock count.\n\nFor each combination of FullStockCountLabelName and StockLabelName, an FSC-label is created when it does not exist yet.\nLabels created this way are marked as externally created and remain open, so they can be inspected and corrected in the tasks app.\nUploading a count for a product that already has a result on that FSC-label overwrites that result.\n\nRows must either have a ProductID, ProductBackendID or ProductBarcode.\nQuantityCounted must be an integer of at least zero.\nWhen any row is invalid, no results are processed and the invalid rows are returned in `Errors`.",
       "usage": {
         "request": true
       },
