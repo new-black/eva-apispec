@@ -116931,10 +116931,34 @@
           },
           "allowedValues": []
         },
+        "CoveredPeriodEnd": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "CoveredPeriodStart": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "CreationTime": {
           "type": {
             "ref": "date",
             "args": []
+          },
+          "allowedValues": []
+        },
+        "DocumentNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         },
@@ -122499,6 +122523,24 @@
         "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus"
       ],
       "properties": {
+        "CoveredPeriodEnd": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "End of the activity this export covers. Null under the same conditions as `CoveredPeriodStart`.",
+          "allowedValues": []
+        },
+        "CoveredPeriodStart": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Start of the activity this export covers, which is not when it was produced. Populated by report exports only, and null for a report whose period could not be determined.",
+          "allowedValues": []
+        },
         "CreationTime": {
           "type": {
             "ref": "date",
@@ -122517,6 +122559,15 @@
             "name": "Currency",
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "DocumentNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The number the submitted document carries. Populated by exports that produce a document of their own - reports today - and null for an e-invoice, which carries its number in `InvoiceNumber`.",
           "allowedValues": []
         },
         "ExternalStatus": {
@@ -122653,12 +122704,40 @@
         "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus"
       ],
       "properties": {
+        "CoveredPeriodEnd": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Restrict to exports covering activity on or before this day. Excludes anything without a covered period, on the same terms as `CoveredPeriodStart`.",
+          "allowedValues": []
+        },
+        "CoveredPeriodStart": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Restrict to exports covering activity on or after this day. Only report exports carry a covered period, so anything without one - every e-invoice - is excluded as soon as this is supplied. An export matches when its period overlaps the requested window, so a report spanning a year still matches a single day inside it.",
+          "allowedValues": []
+        },
+        "DocumentNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The number on the submitted document, for exports that produce one of their own. Reports have one; an e-invoice does not, and is matched on `InvoiceNumber` instead.",
+          "allowedValues": []
+        },
         "EndDate": {
           "type": {
             "ref": "date",
             "args": [],
             "nullable": true
           },
+          "description": "Restrict to exports whose invoice is dated on or before this day. This is the invoice date, not the period a report covers - use `CoveredPeriodEnd` for that.",
           "allowedValues": []
         },
         "ExternalStatus": {
@@ -122761,6 +122840,7 @@
             "args": [],
             "nullable": true
           },
+          "description": "Restrict to exports whose invoice is dated on or after this day. This is the invoice date, not the period a report covers - use `CoveredPeriodStart` for that.",
           "allowedValues": []
         },
         "Status": {
