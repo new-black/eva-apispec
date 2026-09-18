@@ -21439,6 +21439,23 @@
       }
     },
     {
+      "name": "GetSurveyAnswerDetails",
+      "assembly": "EVA.BI",
+      "path": "/message/GetSurveyAnswerDetails",
+      "method": "POST",
+      "requestType": "EVA.BI.Analytics.GetSurveyAnswerDetails",
+      "responseType": "EVA.BI.Analytics.GetSurveyAnswerDetailsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "ViewSurveyResponses",
+            "scope": 0
+          }
+        ]
+      }
+    },
+    {
       "name": "GetSurveyByID",
       "assembly": "EVA.Core.Management",
       "path": "/message/GetSurveyByID",
@@ -47219,6 +47236,279 @@
       },
       "enumValues": {},
       "parent": "EVA.BI.Analytics.GetSurveyAnalyticsResponse"
+    },
+    "EVA.BI.Analytics.GetSurveyAnswerDetails": {
+      "typename": "GetSurveyAnswerDetails",
+      "assembly": "EVA.BI",
+      "description": "Retrieve the per-respondent drill-down for a survey question by forwarding the request to the datalake and returning its response.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.BI.Analytics.GetSurveyAnswerDetailsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "DateFrom": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Narrow to responses submitted on or after this date.",
+          "allowedValues": []
+        },
+        "DateTo": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Narrow to responses submitted on or before this date.",
+          "allowedValues": []
+        },
+        "OrganizationUnitIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Narrow to answers given within these organization units. Already resolved + permission-filtered by the caller.",
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Page": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "Page number, 1-based. Omitting QuestionID returns page 1 for every question.",
+          "allowedValues": []
+        },
+        "PageSize": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "Rows per page per question.",
+          "allowedValues": []
+        },
+        "QuestionID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Narrow to a single question. Omitting this returns page 1 for every question in one call.",
+          "datamodel": {
+            "name": "SurveyQuestion",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "SurveyID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The survey to fetch answer details for.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "Survey",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Narrow to answers given by a single respondent.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.BI.Analytics.GetSurveyAnswerDetailsResponse": {
+      "typename": "GetSurveyAnswerDetailsResponse",
+      "assembly": "EVA.BI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.BI.Analytics.GetSurveyAnswerDetailsResponse+QuestionAnswerDetails"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Questions": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.BI.Analytics.GetSurveyAnswerDetailsResponse+QuestionAnswerDetails",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SurveyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.BI.Analytics.GetSurveyAnswerDetailsResponse+PersonAnswer": {
+      "typename": "PersonAnswer",
+      "assembly": "EVA.BI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Answer": {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "description": "A string for most data types. For Blob/Image/Signature questions (see DataType) this is a bool: whether the respondent provided one, never the underlying blob GUID.",
+          "allowedValues": []
+        },
+        "Person": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Null for an anonymous response (no user_id, OU only).",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.BI.Analytics.GetSurveyAnswerDetailsResponse"
+    },
+    "EVA.BI.Analytics.GetSurveyAnswerDetailsResponse+QuestionAnswerDetails": {
+      "typename": "QuestionAnswerDetails",
+      "assembly": "EVA.BI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.BI.Analytics.GetSurveyAnswerDetailsResponse+PersonAnswer"
+      ],
+      "properties": {
+        "DataType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The question's answer data type, e.g. \"Bool\", \"Blob\", \"Image\", \"Signature\".",
+          "allowedValues": []
+        },
+        "Page": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "PageSize": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "QuestionID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "QuestionText": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Rows": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.BI.Analytics.GetSurveyAnswerDetailsResponse+PersonAnswer",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "TotalCount": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "Respondents matching the filters, across all pages.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.BI.Analytics.GetSurveyAnswerDetailsResponse"
     },
     "EVA.BI.Models.ChartElement": {
       "typename": "ChartElement",
@@ -482974,6 +483264,18 @@
     {
       "name": "SurveyAnalytics:CallFailed",
       "message": "The survey analytics request failed.",
+      "module": "EVA.BI",
+      "arguments": []
+    },
+    {
+      "name": "SurveyAnswerDetails:SurveyAnswerDetailsNotConfigured",
+      "message": "The survey answer details endpoint is not configured.",
+      "module": "EVA.BI",
+      "arguments": []
+    },
+    {
+      "name": "SurveyAnswerDetails:SurveyAnswerDetailsCallFailed",
+      "message": "The survey answer details request failed.",
       "module": "EVA.BI",
       "arguments": []
     },
