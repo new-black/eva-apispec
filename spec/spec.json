@@ -28253,6 +28253,23 @@
       }
     },
     {
+      "name": "ListUnusedBundleProducts",
+      "assembly": "EVA.Core",
+      "path": "/message/ListUnusedBundleProducts",
+      "method": "POST",
+      "requestType": "EVA.Core.ProductBundles.ListUnusedBundleProducts",
+      "responseType": "EVA.Core.ProductBundles.ListUnusedBundleProductsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "ProductBundles",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "ListUrgentTasks",
       "assembly": "EVA.Core",
       "path": "/message/ListUrgentTasks",
@@ -302992,6 +303009,81 @@
         }
       }
     },
+    "EVA.Core.ProductBundles.ListUnusedBundleProducts": {
+      "typename": "ListUnusedBundleProducts",
+      "assembly": "EVA.Core",
+      "description": "Returns a paged view of bundle products that are not used in any product bundle.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ProductBundles.ListUnusedBundleProductsFilter",
+        "EVA.Core.ProductBundles.ListUnusedBundleProductsResponse",
+        "EVA.Core.PagedRequestMessage`2"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedRequestMessage`2",
+        "args": [
+          {
+            "ref": "EVA.Core.ProductBundles.ListUnusedBundleProductsFilter",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.ProductBundles.ListUnusedBundleProductsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.ProductBundles.ListUnusedBundleProductsFilter": {
+      "typename": "ListUnusedBundleProductsFilter",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "BackendID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.ProductBundles.ListUnusedBundleProductsResponse": {
+      "typename": "ListUnusedBundleProductsResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ProductBundles.UnusedBundleProductDto",
+        "EVA.Core.PagedResponseMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedResponseMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.ProductBundles.UnusedBundleProductDto",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
     "EVA.Core.ProductBundles.ProductBundlesProductInfo": {
       "typename": "ProductBundlesProductInfo",
       "assembly": "EVA.Core",
@@ -303028,6 +303120,39 @@
           "allowedValues": []
         },
         "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Product",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.ProductBundles.UnusedBundleProductDto": {
+      "typename": "UnusedBundleProductDto",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "DisplayName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ProductID": {
           "type": {
             "ref": "id",
             "args": []
