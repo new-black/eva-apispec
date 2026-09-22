@@ -49,7 +49,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022CalculationTime\u0022: \u00222025-01-01\u0022,\n  \u0022ComponentType\u0022: 3,\n  \u0022DataProperties\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022EmployeeDeepDive\u0022: true,\n  \u0022Meta\u0022: {\n    \u0022AsOf\u0022: \u00222025-01-01\u0022,\n    \u0022Coverage\u0022: {\n      \u0022OrganizationUnitsWithDataCount\u0022: 123,\n      \u0022RequestedOrganizationUnitCount\u0022: 123\n    },\n    \u0022ExpectedReadyAt\u0022: \u00222025-01-01\u0022,\n    \u0022Grain\u0022: 1,\n    \u0022RecommendedRefreshSeconds\u0022: 123,\n    \u0022Semantics\u0022: 1,\n    \u0022Stale\u0022: true\n  },\n  \u0022Series\u0022: [\n    {\n      \u0022Bucket\u0022: \u0022string\u0022,\n      \u0022Value\u0022: 123.456\n    }\n  ],\n  \u0022Status\u0022: 1,\n  \u0022TargetValue\u0022: 123.456,\n  \u0022TimeFrame\u0022: 2,\n  \u0022Unit\u0022: 2,\n  \u0022Value\u0022: 123.456,\n  \u0022VisualizationType\u0022: 1\n}"
+      "sample": "{\n  \u0022Breakdown\u0022: [\n    {\n      \u0022Key\u0022: \u0022string\u0022,\n      \u0022Label\u0022: \u0022string\u0022,\n      \u0022SharePercentage\u0022: 123.456,\n      \u0022Value\u0022: 123.456\n    }\n  ],\n  \u0022CalculationTime\u0022: \u00222025-01-01\u0022,\n  \u0022Comparison\u0022: {\n    \u0022Basis\u0022: 1,\n    \u0022Kind\u0022: 1,\n    \u0022PeriodFrom\u0022: \u0022string\u0022,\n    \u0022PeriodTo\u0022: \u0022string\u0022\n  },\n  \u0022ComponentType\u0022: 3,\n  \u0022DataProperties\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022EmployeeDeepDive\u0022: true,\n  \u0022Meta\u0022: {\n    \u0022AsOf\u0022: \u00222025-01-01\u0022,\n    \u0022Coverage\u0022: {\n      \u0022OrganizationUnitsWithDataCount\u0022: 123,\n      \u0022RequestedOrganizationUnitCount\u0022: 123\n    },\n    \u0022ExpectedReadyAt\u0022: \u00222025-01-01\u0022,\n    \u0022Grain\u0022: 1,\n    \u0022RecommendedRefreshSeconds\u0022: 123,\n    \u0022Semantics\u0022: 1,\n    \u0022Stale\u0022: true\n  },\n  \u0022Series\u0022: [\n    {\n      \u0022Bucket\u0022: \u0022string\u0022,\n      \u0022Value\u0022: 123.456\n    }\n  ],\n  \u0022Status\u0022: 1,\n  \u0022TargetValue\u0022: 123.456,\n  \u0022TimeFrame\u0022: 2,\n  \u0022Unit\u0022: 2,\n  \u0022Value\u0022: 123.456,\n  \u0022VisualizationType\u0022: 1\n}"
     },
     {
       "name": "400",
@@ -113,6 +113,82 @@
     ],
     "D": [
       {
+        "name": "Key",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Label",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SharePercentage",
+        "deprecation_notice": null,
+        "description": "This entry\u0027s share of the sum of all breakdown Values, not of the component\u0027s own top-level Value field -- the two can use a different base. Null when the BI API does not send one.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "Basis",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Unknown\n* \u00601\u0060 - CalendarAligned\n* \u00602\u0060 - IsoWeekAligned",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Kind",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Unknown\n* \u00601\u0060 - LikeForLike",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PeriodFrom",
+        "deprecation_notice": null,
+        "description": "The calendar day this comparison period starts, in the organization unit\u0027s time zone, as an ISO date. Same convention as Series[].Bucket.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "PeriodTo",
+        "deprecation_notice": null,
+        "description": "The calendar day this comparison period ends, in the organization unit\u0027s time zone, as an ISO date.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
         "name": "Code",
         "deprecation_notice": null,
         "description": "A unique ID identifying this error.",
@@ -158,7 +234,7 @@
         "one_of": null
       }
     ],
-    "F": [
+    "H": [
       {
         "name": "OrganizationUnitsWithDataCount",
         "deprecation_notice": null,
@@ -178,7 +254,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "G": [
       {
         "name": "AsOf",
         "deprecation_notice": null,
@@ -194,7 +270,7 @@
         "description": "How many organization units this tile\u0027s data spans, and how many of those actually had data.",
         "type": "object | null",
         "required": false,
-        "properties_id": "F",
+        "properties_id": "H",
         "one_of": null
       },
       {
@@ -243,7 +319,7 @@
         "one_of": null
       }
     ],
-    "G": [
+    "I": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -272,7 +348,7 @@
         "one_of": null
       }
     ],
-    "H": [
+    "J": [
       {
         "name": "Bucket",
         "deprecation_notice": null,
@@ -294,12 +370,30 @@
     ],
     "C": [
       {
+        "name": "Breakdown",
+        "deprecation_notice": null,
+        "description": "Breakdown of Value by segment (e.g. sales channel, order type), from the BI API. Null when Status is not Ok, or when the BI API does not return one for this component type.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
         "name": "CalculationTime",
         "deprecation_notice": null,
         "description": "",
         "type": "datetime",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Comparison",
+        "deprecation_notice": null,
+        "description": "A prior-period reference for like-for-like comparison, from the BI API. Null when Status is not Ok, or when the BI API does not return one for this component type.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
         "one_of": null
       },
       {
@@ -344,7 +438,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "F",
         "one_of": null
       },
       {
@@ -353,7 +447,7 @@
         "description": "Freshness and coverage metadata from the BI API. Returned for every Status, including non-Ok ones -- ExpectedReadyAt is exactly what a materializing tile needs.",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "G",
         "one_of": null
       },
       {
@@ -362,7 +456,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "I",
         "one_of": null
       },
       {
@@ -371,7 +465,7 @@
         "description": "The bucketed data points behind Value, for rendering a line graph. Null when Status is not Ok. Sparse by design: a missing date means no transactions that day, not a data gap.",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "J",
         "one_of": null
       },
       {
