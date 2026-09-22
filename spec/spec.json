@@ -62970,6 +62970,46 @@
         }
       }
     },
+    "EVA.Core.BIDashboard.Models.BIDashboardComponentDataGrain": {
+      "typename": "BIDashboardComponentDataGrain",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Daily": {
+          "value": 1,
+          "extends": []
+        },
+        "Unknown": {
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.BIDashboard.Models.BIDashboardComponentDataSemantics": {
+      "typename": "BIDashboardComponentDataSemantics",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Flow": {
+          "value": 1,
+          "extends": []
+        },
+        "Unknown": {
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.BIDashboard.Models.BIDashboardComponentDataStatus": {
       "typename": "BIDashboardComponentDataStatus",
       "assembly": "EVA.Core",
@@ -63168,6 +63208,42 @@
         },
         "TotalTransactions": {
           "value": 5,
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.BIDashboard.Models.BIDashboardComponentValueUnit": {
+      "typename": "BIDashboardComponentValueUnit",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Count": {
+          "value": 2,
+          "extends": []
+        },
+        "Currency": {
+          "value": 1,
+          "extends": []
+        },
+        "Percentage": {
+          "value": 4,
+          "extends": []
+        },
+        "Ratio": {
+          "value": 3,
+          "extends": []
+        },
+        "Seconds": {
+          "value": 5,
+          "extends": []
+        },
+        "Unknown": {
           "extends": []
         }
       }
@@ -135980,6 +136056,113 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Management.BIDashboard.BIDashboardComponentDataCoverage": {
+      "typename": "BIDashboardComponentDataCoverage",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "OrganizationUnitsWithDataCount": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "How many of the requested organization units actually had data.",
+          "allowedValues": []
+        },
+        "RequestedOrganizationUnitCount": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "How many organization units the BI API was asked for. GetDashboardComponentData always requests exactly one.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.BIDashboard.BIDashboardComponentDataMeta": {
+      "typename": "BIDashboardComponentDataMeta",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentDataGrain",
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentDataSemantics",
+        "EVA.Core.Management.BIDashboard.BIDashboardComponentDataCoverage"
+      ],
+      "properties": {
+        "AsOf": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When the BI API last refreshed the underlying data, in UTC.",
+          "allowedValues": []
+        },
+        "Coverage": {
+          "type": {
+            "ref": "EVA.Core.Management.BIDashboard.BIDashboardComponentDataCoverage",
+            "args": [],
+            "nullable": true
+          },
+          "description": "How many organization units this tile's data spans, and how many of those actually had data.",
+          "allowedValues": []
+        },
+        "ExpectedReadyAt": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When a materializing tile is expected to be ready. Null for any other status.",
+          "allowedValues": []
+        },
+        "Grain": {
+          "type": {
+            "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentDataGrain",
+            "args": []
+          },
+          "description": "The bucket size of Series.",
+          "allowedValues": []
+        },
+        "RecommendedRefreshSeconds": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "How long the caller should wait before asking for this tile again, in seconds.",
+          "allowedValues": []
+        },
+        "Semantics": {
+          "type": {
+            "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentDataSemantics",
+            "args": []
+          },
+          "description": "How the metric behaves over time, for example a flow metric that accumulates over the period.",
+          "allowedValues": []
+        },
+        "Stale": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The BI API reports the data behind this tile as out of date.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Management.BIDashboard.BIDashboardComponentProductTargetDto": {
       "typename": "BIDashboardComponentProductTargetDto",
       "assembly": "EVA.Core.Management",
@@ -136003,6 +136186,34 @@
           "allowedValues": []
         },
         "TargetValue": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.BIDashboard.BIDashboardComponentSeriesEntry": {
+      "typename": "BIDashboardComponentSeriesEntry",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Bucket": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The calendar day this point covers, in the organization unit's time zone, as an ISO date (\"2026-09-01\"). A plain string, not DateTime: EVA's serializers stamp every DateTime as UTC regardless of DateTimeKind, which would shift this onto the wrong day for callers outside UTC.",
+          "allowedValues": []
+        },
+        "Value": {
           "type": {
             "ref": "float128",
             "args": []
@@ -137256,7 +137467,10 @@
         "EVA.Core.BIDashboard.Models.BIDashboardComponentType",
         "EVA.Core.BIDashboard.Models.BIDashboardComponentDisplayMethod",
         "EVA.Core.BIDashboard.Models.BIDashboardComponentTimeFrame",
-        "EVA.Core.BIDashboard.Models.BIDashboardComponentDataStatus"
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentDataStatus",
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentValueUnit",
+        "EVA.Core.Management.BIDashboard.BIDashboardComponentSeriesEntry",
+        "EVA.Core.Management.BIDashboard.BIDashboardComponentDataMeta"
       ],
       "extends": {
         "ref": "EVA.Core.ResponseMessage",
@@ -137311,6 +137525,30 @@
           },
           "allowedValues": []
         },
+        "Meta": {
+          "type": {
+            "ref": "EVA.Core.Management.BIDashboard.BIDashboardComponentDataMeta",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Freshness and coverage metadata from the BI API. Returned for every Status, including non-Ok ones -- ExpectedReadyAt is exactly what a materializing tile needs.",
+          "allowedValues": []
+        },
+        "Series": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.BIDashboard.BIDashboardComponentSeriesEntry",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The bucketed data points behind Value, for rendering a line graph. Null when Status is not Ok. Sparse by design: a missing date means no transactions that day, not a data gap.",
+          "allowedValues": []
+        },
         "Status": {
           "type": {
             "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentDataStatus",
@@ -137331,6 +137569,14 @@
             "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentTimeFrame",
             "args": []
           },
+          "allowedValues": []
+        },
+        "Unit": {
+          "type": {
+            "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentValueUnit",
+            "args": []
+          },
+          "description": "The unit of Value, from the BI API. Unknown when Status is not Ok, or when the BI API reports a unit this EVA version does not know yet.",
           "allowedValues": []
         },
         "Value": {
