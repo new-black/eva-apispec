@@ -49,7 +49,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022CalculationTime\u0022: \u00222025-01-01\u0022,\n  \u0022ComponentType\u0022: 3,\n  \u0022DataProperties\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022EmployeeDeepDive\u0022: true,\n  \u0022Status\u0022: 1,\n  \u0022TargetValue\u0022: 123.456,\n  \u0022TimeFrame\u0022: 2,\n  \u0022Value\u0022: 123.456,\n  \u0022VisualizationType\u0022: 1\n}"
+      "sample": "{\n  \u0022CalculationTime\u0022: \u00222025-01-01\u0022,\n  \u0022ComponentType\u0022: 3,\n  \u0022DataProperties\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022EmployeeDeepDive\u0022: true,\n  \u0022Meta\u0022: {\n    \u0022AsOf\u0022: \u00222025-01-01\u0022,\n    \u0022Coverage\u0022: {\n      \u0022OrganizationUnitsWithDataCount\u0022: 123,\n      \u0022RequestedOrganizationUnitCount\u0022: 123\n    },\n    \u0022ExpectedReadyAt\u0022: \u00222025-01-01\u0022,\n    \u0022Grain\u0022: 1,\n    \u0022RecommendedRefreshSeconds\u0022: 123,\n    \u0022Semantics\u0022: 1,\n    \u0022Stale\u0022: true\n  },\n  \u0022Series\u0022: [\n    {\n      \u0022Bucket\u0022: \u0022string\u0022,\n      \u0022Value\u0022: 123.456\n    }\n  ],\n  \u0022Status\u0022: 1,\n  \u0022TargetValue\u0022: 123.456,\n  \u0022TimeFrame\u0022: 2,\n  \u0022Unit\u0022: 2,\n  \u0022Value\u0022: 123.456,\n  \u0022VisualizationType\u0022: 1\n}"
     },
     {
       "name": "400",
@@ -158,7 +158,92 @@
         "one_of": null
       }
     ],
+    "F": [
+      {
+        "name": "OrganizationUnitsWithDataCount",
+        "deprecation_notice": null,
+        "description": "How many of the requested organization units actually had data.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestedOrganizationUnitCount",
+        "deprecation_notice": null,
+        "description": "How many organization units the BI API was asked for. GetDashboardComponentData always requests exactly one.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "E": [
+      {
+        "name": "AsOf",
+        "deprecation_notice": null,
+        "description": "When the BI API last refreshed the underlying data, in UTC.",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Coverage",
+        "deprecation_notice": null,
+        "description": "How many organization units this tile\u0027s data spans, and how many of those actually had data.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "ExpectedReadyAt",
+        "deprecation_notice": null,
+        "description": "When a materializing tile is expected to be ready. Null for any other status.",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Grain",
+        "deprecation_notice": null,
+        "description": "The bucket size of Series.\nPossible values:\n\n* \u00600\u0060 - Unknown\n* \u00601\u0060 - Daily",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RecommendedRefreshSeconds",
+        "deprecation_notice": null,
+        "description": "How long the caller should wait before asking for this tile again, in seconds.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Semantics",
+        "deprecation_notice": null,
+        "description": "How the metric behaves over time, for example a flow metric that accumulates over the period.\nPossible values:\n\n* \u00600\u0060 - Unknown\n* \u00601\u0060 - Flow",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Stale",
+        "deprecation_notice": null,
+        "description": "The BI API reports the data behind this tile as out of date.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -182,6 +267,26 @@
         "deprecation_notice": null,
         "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
         "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "Bucket",
+        "deprecation_notice": null,
+        "description": "The calendar day this point covers, in the organization unit\u0027s time zone, as an ISO date (\u00222026-09-01\u0022). A plain string, not DateTime: EVA\u0027s serializers stamp every DateTime as UTC regardless of DateTimeKind, which would shift this onto the wrong day for callers outside UTC.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Value",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "float",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -243,12 +348,30 @@
         "one_of": null
       },
       {
+        "name": "Meta",
+        "deprecation_notice": null,
+        "description": "Freshness and coverage metadata from the BI API. Returned for every Status, including non-Ok ones -- ExpectedReadyAt is exactly what a materializing tile needs.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
         "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
+        "name": "Series",
+        "deprecation_notice": null,
+        "description": "The bucketed data points behind Value, for rendering a line graph. Null when Status is not Ok. Sparse by design: a missing date means no transactions that day, not a data gap.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "H",
         "one_of": null
       },
       {
@@ -273,6 +396,15 @@
         "name": "TimeFrame",
         "deprecation_notice": null,
         "description": "Possible values:\n\n* \u00600\u0060 - Day\n* \u00601\u0060 - Week\n* \u00602\u0060 - Month",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Unit",
+        "deprecation_notice": null,
+        "description": "The unit of Value, from the BI API. Unknown when Status is not Ok, or when the BI API reports a unit this EVA version does not know yet.\nPossible values:\n\n* \u00600\u0060 - Unknown\n* \u00601\u0060 - Currency\n* \u00602\u0060 - Count\n* \u00603\u0060 - Ratio\n* \u00604\u0060 - Percentage\n* \u00605\u0060 - Seconds",
         "type": "integer",
         "required": false,
         "properties_id": null,
