@@ -62970,6 +62970,50 @@
         }
       }
     },
+    "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonBasis": {
+      "typename": "BIDashboardComponentComparisonBasis",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "CalendarAligned": {
+          "value": 1,
+          "extends": []
+        },
+        "IsoWeekAligned": {
+          "value": 2,
+          "extends": []
+        },
+        "Unknown": {
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonKind": {
+      "typename": "BIDashboardComponentComparisonKind",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "LikeForLike": {
+          "value": 1,
+          "extends": []
+        },
+        "Unknown": {
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.BIDashboard.Models.BIDashboardComponentDataGrain": {
       "typename": "BIDashboardComponentDataGrain",
       "assembly": "EVA.Core",
@@ -136056,6 +136100,97 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Management.BIDashboard.BIDashboardComponentBreakdownEntry": {
+      "typename": "BIDashboardComponentBreakdownEntry",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Key": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Label": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SharePercentage": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "description": "This entry's share of the sum of all breakdown Values, not of the component's own top-level Value field -- the two can use a different base. Null when the BI API does not send one.",
+          "allowedValues": []
+        },
+        "Value": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.BIDashboard.BIDashboardComponentComparison": {
+      "typename": "BIDashboardComponentComparison",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonKind",
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonBasis"
+      ],
+      "properties": {
+        "Basis": {
+          "type": {
+            "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonBasis",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Kind": {
+          "type": {
+            "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonKind",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "PeriodFrom": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The calendar day this comparison period starts, in the organization unit's time zone, as an ISO date. Same convention as Series[].Bucket.",
+          "allowedValues": []
+        },
+        "PeriodTo": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The calendar day this comparison period ends, in the organization unit's time zone, as an ISO date.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Management.BIDashboard.BIDashboardComponentDataCoverage": {
       "typename": "BIDashboardComponentDataCoverage",
       "assembly": "EVA.Core.Management",
@@ -137470,18 +137605,44 @@
         "EVA.Core.BIDashboard.Models.BIDashboardComponentDataStatus",
         "EVA.Core.BIDashboard.Models.BIDashboardComponentValueUnit",
         "EVA.Core.Management.BIDashboard.BIDashboardComponentSeriesEntry",
-        "EVA.Core.Management.BIDashboard.BIDashboardComponentDataMeta"
+        "EVA.Core.Management.BIDashboard.BIDashboardComponentDataMeta",
+        "EVA.Core.Management.BIDashboard.BIDashboardComponentBreakdownEntry",
+        "EVA.Core.Management.BIDashboard.BIDashboardComponentComparison"
       ],
       "extends": {
         "ref": "EVA.Core.ResponseMessage",
         "args": []
       },
       "properties": {
+        "Breakdown": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.BIDashboard.BIDashboardComponentBreakdownEntry",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Breakdown of Value by segment (e.g. sales channel, order type), from the BI API. Null when Status is not Ok, or when the BI API does not return one for this component type.",
+          "allowedValues": []
+        },
         "CalculationTime": {
           "type": {
             "ref": "date",
             "args": []
           },
+          "allowedValues": []
+        },
+        "Comparison": {
+          "type": {
+            "ref": "EVA.Core.Management.BIDashboard.BIDashboardComponentComparison",
+            "args": [],
+            "nullable": true
+          },
+          "description": "A prior-period reference for like-for-like comparison, from the BI API. Null when Status is not Ok, or when the BI API does not return one for this component type.",
           "allowedValues": []
         },
         "ComponentType": {
