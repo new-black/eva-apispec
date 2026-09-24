@@ -1,9 +1,9 @@
 {
-  "name": "ListUserInteractions",
+  "name": "ListCustomerMessageConfigurations",
   "method": "POST",
-  "path": "/message/ListUserInteractions",
-  "description": "The ListUserInteractions service",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060UserInteractions:View\u0060",
+  "path": "/message/ListCustomerMessageConfigurations",
+  "description": "Paged listing of the customer message configurations.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060CustomerMessages:View\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -32,31 +32,24 @@
       "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
       "required": false,
       "default": null
-    },
-    {
-      "name": "EVA-IDs-BackendSystemID",
-      "type": "string",
-      "description": "The ID of the backend system that is used to resolve the IDs.",
-      "required": false,
-      "default": null
     }
   ],
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022IncludeResends\u0022: true,\n      \u0022InteractionType\u0022: 5,\n      \u0022OrderID\u0022: 123,\n      \u0022Text\u0022: \u0022string\u0022,\n      \u0022UserID\u0022: 123,\n      \u0022UserTaskID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022OrderBy\u0022: [\n      {\n        \u0022Direction\u0022: 1,\n        \u0022Field\u0022: 0\n      }\n    ]\n  },\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022IncludeResends\u0022: true,\n      \u0022InteractionType\u0022: 5,\n      \u0022OrderID\u0022: 123,\n      \u0022Text\u0022: \u0022string\u0022,\n      \u0022UserID\u0022: 123,\n      \u0022UserTaskID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022SubscriptionID\u0022: 123,\n      \u0022TemplateKey\u0022: \u0022ProductRecommendation\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022OrderBy\u0022: [\n      {\n        \u0022Direction\u0022: 1,\n        \u0022Field\u0022: 1\n      }\n    ]\n  },\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022SubscriptionID\u0022: 123,\n      \u0022TemplateKey\u0022: \u0022ProductRecommendation\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022IncludeResends\u0022: true,\n      \u0022InteractionType\u0022: 5,\n      \u0022OrderID\u0022: 123,\n      \u0022Text\u0022: \u0022string\u0022,\n      \u0022UserID\u0022: 123,\n      \u0022UserTaskID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022OrderBy\u0022: [\n      {\n        \u0022Direction\u0022: 1,\n        \u0022Field\u0022: 0\n      }\n    ]\n  },\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022IncludeResends\u0022: true,\n      \u0022InteractionType\u0022: 5,\n      \u0022OrderID\u0022: 123,\n      \u0022Text\u0022: \u0022string\u0022,\n      \u0022UserID\u0022: 123,\n      \u0022UserTaskID\u0022: 123\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListUserInteractions",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022InitialPageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022SubscriptionID\u0022: 123,\n      \u0022TemplateKey\u0022: \u0022ProductRecommendation\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022OrderBy\u0022: [\n      {\n        \u0022Direction\u0022: 1,\n        \u0022Field\u0022: 1\n      }\n    ]\n  },\n  \u0022PageConfig\u0022: {\n    \u0022Filter\u0022: {\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022SubscriptionID\u0022: 123,\n      \u0022TemplateKey\u0022: \u0022ProductRecommendation\u0022\n    },\n    \u0022Limit\u0022: 123,\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Start\u0022: 123\n  },\n  \u0022PageToken\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ListCustomerMessageConfigurations",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Result\u0022: {\n    \u0022CurrentPage\u0022: 123,\n    \u0022Limit\u0022: 123,\n    \u0022NumberOfPages\u0022: 123,\n    \u0022Offset\u0022: 123,\n    \u0022Page\u0022: [\n      {\n        \u0022CreatedBy\u0022: {\n          \u0022EmailAddress\u0022: \u0022string\u0022,\n          \u0022FirstName\u0022: \u0022string\u0022,\n          \u0022FullName\u0022: \u0022string\u0022,\n          \u0022LastName\u0022: \u0022string\u0022\n        },\n        \u0022CreatedByID\u0022: 123,\n        \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n        \u0022ID\u0022: 123,\n        \u0022InteractionType\u0022: 5,\n        \u0022LastModifiedBy\u0022: {\n          \u0022EmailAddress\u0022: \u0022string\u0022,\n          \u0022FirstName\u0022: \u0022string\u0022,\n          \u0022FullName\u0022: \u0022string\u0022,\n          \u0022LastName\u0022: \u0022string\u0022\n        },\n        \u0022LastModifiedByID\u0022: 123,\n        \u0022MessageTemplateID\u0022: 123,\n        \u0022OrderID\u0022: 123,\n        \u0022OriginalUserInteraction\u0022: {\n          \u0022re\u0022: \u0022cursion\u0022\n        },\n        \u0022Text\u0022: \u0022string\u0022,\n        \u0022User\u0022: {\n          \u0022EmailAddress\u0022: \u0022string\u0022,\n          \u0022FirstName\u0022: \u0022string\u0022,\n          \u0022FullName\u0022: \u0022string\u0022,\n          \u0022LastName\u0022: \u0022string\u0022\n        },\n        \u0022UserID\u0022: 123,\n        \u0022UserTaskID\u0022: 123\n      }\n    ],\n    \u0022PageConfig\u0022: {\n      \u0022Filter\u0022: {\n        \u0022key\u0022: \u0022string\u0022\n      },\n      \u0022Limit\u0022: 123,\n      \u0022SortDirection\u0022: 1,\n      \u0022SortProperty\u0022: \u0022string\u0022,\n      \u0022Start\u0022: 123\n    },\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Total\u0022: 123\n  },\n  \u0022Results\u0022: [\n    {\n      \u0022CreatedBy\u0022: {\n        \u0022EmailAddress\u0022: \u0022string\u0022,\n        \u0022FirstName\u0022: \u0022string\u0022,\n        \u0022FullName\u0022: \u0022string\u0022,\n        \u0022LastName\u0022: \u0022string\u0022\n      },\n      \u0022CreatedByID\u0022: 123,\n      \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n      \u0022ID\u0022: 123,\n      \u0022InteractionType\u0022: 5,\n      \u0022LastModifiedBy\u0022: {\n        \u0022EmailAddress\u0022: \u0022string\u0022,\n        \u0022FirstName\u0022: \u0022string\u0022,\n        \u0022FullName\u0022: \u0022string\u0022,\n        \u0022LastName\u0022: \u0022string\u0022\n      },\n      \u0022LastModifiedByID\u0022: 123,\n      \u0022MessageTemplateID\u0022: 123,\n      \u0022OrderID\u0022: 123,\n      \u0022OriginalUserInteraction\u0022: {\n        \u0022re\u0022: \u0022cursion\u0022\n      },\n      \u0022Text\u0022: \u0022string\u0022,\n      \u0022User\u0022: {\n        \u0022EmailAddress\u0022: \u0022string\u0022,\n        \u0022FirstName\u0022: \u0022string\u0022,\n        \u0022FullName\u0022: \u0022string\u0022,\n        \u0022LastName\u0022: \u0022string\u0022\n      },\n      \u0022UserID\u0022: 123,\n      \u0022UserTaskID\u0022: 123\n    }\n  ]\n}"
+      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Result\u0022: {\n    \u0022CurrentPage\u0022: 123,\n    \u0022Limit\u0022: 123,\n    \u0022NumberOfPages\u0022: 123,\n    \u0022Offset\u0022: 123,\n    \u0022Page\u0022: [\n      {\n        \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n        \u0022ID\u0022: 123,\n        \u0022OrganizationUnitSetID\u0022: 123,\n        \u0022OrganizationUnitSetName\u0022: \u0022string\u0022,\n        \u0022SubscriptionID\u0022: 123,\n        \u0022SubscriptionName\u0022: \u0022string\u0022,\n        \u0022TemplateKey\u0022: \u0022string\u0022\n      }\n    ],\n    \u0022PageConfig\u0022: {\n      \u0022Filter\u0022: {\n        \u0022key\u0022: \u0022string\u0022\n      },\n      \u0022Limit\u0022: 123,\n      \u0022SortDirection\u0022: 1,\n      \u0022SortProperty\u0022: \u0022string\u0022,\n      \u0022Start\u0022: 123\n    },\n    \u0022SortDirection\u0022: 1,\n    \u0022SortProperty\u0022: \u0022string\u0022,\n    \u0022Total\u0022: 123\n  },\n  \u0022Results\u0022: [\n    {\n      \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n      \u0022ID\u0022: 123,\n      \u0022OrganizationUnitSetID\u0022: 123,\n      \u0022OrganizationUnitSetName\u0022: \u0022string\u0022,\n      \u0022SubscriptionID\u0022: 123,\n      \u0022SubscriptionName\u0022: \u0022string\u0022,\n      \u0022TemplateKey\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -73,55 +66,28 @@
   "types": {
     "D": [
       {
-        "name": "IncludeResends",
+        "name": "OrganizationUnitSetID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "boolean | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "InteractionType",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Communication\n* \u00600\u0060 - PublicNote\n* \u00601\u0060 - Note\n* \u00601\u0060 - PrivateNote\n* \u00602\u0060 - Ledger\n* \u00603\u0060 - Email\n* \u00604\u0060 - HttpCallback\n* \u00605\u0060 - CustomerMessage",
+        "description": "Only return configurations for this organization unit set.\n\nThis is the ID of a \u0060OrganizationUnitSet\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "OrderID",
+        "name": "SubscriptionID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Order\u0060",
+        "description": "Only return configurations behind this opt-in.\n\nThis is the ID of a \u0060Subscription\u0060",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "Text",
+        "name": "TemplateKey",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Only return configurations for this customer message.\n\nPossible values:\n\n* \u0060ProductRecommendation\u0060",
         "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "UserTaskID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserTask\u0060",
-        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -140,7 +106,7 @@
       {
         "name": "Field",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - CreationTime",
+        "description": "Possible values:\n\n* \u00600\u0060 - CreationTime\n* \u00601\u0060 - TemplateKey",
         "type": "integer | null",
         "required": false,
         "properties_id": null,
@@ -328,63 +294,7 @@
         "one_of": null
       }
     ],
-    "L": [
-      {
-        "name": "EmailAddress",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "FirstName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "FullName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "LastName",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      }
-    ],
     "K": [
-      {
-        "name": "CreatedBy",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      },
-      {
-        "name": "CreatedByID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
       {
         "name": "CreationTime",
         "deprecation_notice": null,
@@ -397,68 +307,23 @@
       {
         "name": "ID",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Interaction\u0060",
+        "description": "This is the ID of a \u0060CustomerMessageOrganizationUnitSet\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "InteractionType",
+        "name": "OrganizationUnitSetID",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Communication\n* \u00600\u0060 - PublicNote\n* \u00601\u0060 - Note\n* \u00601\u0060 - PrivateNote\n* \u00602\u0060 - Ledger\n* \u00603\u0060 - Email\n* \u00604\u0060 - HttpCallback\n* \u00605\u0060 - CustomerMessage",
+        "description": "This is the ID of a \u0060OrganizationUnitSet\u0060",
         "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "LastModifiedBy",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      },
-      {
-        "name": "LastModifiedByID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "MessageTemplateID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060MessageTemplate\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OrderID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Order\u0060",
-        "type": "integer | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "OriginalUserInteraction",
-        "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "K",
-        "one_of": null
-      },
-      {
-        "name": "Text",
+        "name": "OrganizationUnitSetName",
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
@@ -467,34 +332,34 @@
         "one_of": null
       },
       {
-        "name": "User",
+        "name": "SubscriptionID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "object | null",
-        "required": false,
-        "properties_id": "L",
-        "one_of": null
-      },
-      {
-        "name": "UserID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060User\u0060",
-        "type": "integer | null",
+        "description": "This is the ID of a \u0060Subscription\u0060",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
-        "name": "UserTaskID",
+        "name": "SubscriptionName",
         "deprecation_notice": null,
-        "description": "This is the ID of a \u0060UserTask\u0060",
-        "type": "integer | null",
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TemplateKey",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
       }
     ],
-    "M": [
+    "L": [
       {
         "name": "Filter",
         "deprecation_notice": null,
@@ -593,7 +458,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "M",
+        "properties_id": "L",
         "one_of": null
       },
       {

@@ -1,9 +1,9 @@
 {
-  "name": "CreateCaseInteraction",
+  "name": "UpdateCustomerMessageTemplate",
   "method": "POST",
-  "path": "/message/CreateCaseInteraction",
-  "description": "Creates a new case interaction",
-  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Cases:Edit\u0060",
+  "path": "/message/UpdateCustomerMessageTemplate",
+  "description": "Updates an existing customer message template. The body is validated before the changes are persisted.",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060CustomerMessages:Edit\u0060",
   "headers": [
     {
       "name": "EVA-User-Agent",
@@ -37,19 +37,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022CaseID\u0022: 123,\n  \u0022InteractionType\u0022: 5,\n  \u0022Text\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022Body\u0022: \u0022string\u0022,\n  \u0022ChannelID\u0022: 123,\n  \u0022ID\u0022: 123,\n  \u0022IsDisabled\u0022: true,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022TemplateKey\u0022: \u0022ProductRecommendation\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022CaseID\u0022: 123,\n  \u0022InteractionType\u0022: 5,\n  \u0022Text\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateCaseInteraction",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Body\u0022: \u0022string\u0022,\n  \u0022ChannelID\u0022: 123,\n  \u0022ID\u0022: 123,\n  \u0022IsDisabled\u0022: true,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022TemplateKey\u0022: \u0022ProductRecommendation\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateCustomerMessageTemplate",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ID\u0022: 123\n}"
+      "sample": "{}"
     },
     {
       "name": "400",
@@ -66,38 +66,65 @@
   "types": {
     "B": [
       {
-        "name": "BackendID",
+        "name": "Body",
         "deprecation_notice": null,
-        "description": "",
-        "type": "string | null",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "CaseID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Case\u0060",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "InteractionType",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - Communication\n* \u00600\u0060 - PublicNote\n* \u00601\u0060 - Note\n* \u00601\u0060 - PrivateNote\n* \u00602\u0060 - Ledger\n* \u00603\u0060 - Email\n* \u00604\u0060 - HttpCallback\n* \u00605\u0060 - CustomerMessage",
-        "type": "integer",
-        "required": false,
-        "properties_id": null,
-        "one_of": null
-      },
-      {
-        "name": "Text",
-        "deprecation_notice": null,
-        "description": "",
+        "description": "The tokenized message the customer receives.\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
         "type": "string",
-        "required": true,
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ChannelID",
+        "deprecation_notice": null,
+        "description": "The channel this template is rendered for.\n\nThis is the ID of a \u0060MessageChannel\u0060\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "The ID of the customer message template to update.\n\nThis is the ID of a \u0060CustomerMessageTemplate\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsDisabled",
+        "deprecation_notice": null,
+        "description": "Whether this template is disabled and should not be used for rendering.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LanguageID",
+        "deprecation_notice": null,
+        "description": "The language this template is rendered in.\n\nThis is the ID of a \u0060Language\u0060\n\nWhile this property is not required, if it is sent in the request it must have a valid value.",
+        "type": "string",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "The organization unit this template applies to, and every organization unit below it that has no template of its own.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "TemplateKey",
+        "deprecation_notice": null,
+        "description": "The key that identifies which customer message this template renders.\n\nWhile this property is not required, if it is sent in the request it must have a valid value.\n\nPossible values:\n\n* \u0060ProductRecommendation\u0060",
+        "type": "string",
+        "required": false,
         "properties_id": null,
         "one_of": null
       }
@@ -186,15 +213,6 @@
         "type": "object | null",
         "required": false,
         "properties_id": "D",
-        "one_of": null
-      },
-      {
-        "name": "ID",
-        "deprecation_notice": null,
-        "description": "This is the ID of a \u0060Interaction\u0060",
-        "type": "integer",
-        "required": true,
-        "properties_id": null,
         "one_of": null
       },
       {
