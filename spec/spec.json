@@ -15762,6 +15762,11 @@
       "method": "POST",
       "requestType": "EVA.Core.Users.GetCurrentUserIdentificationInfo",
       "responseType": "EVA.Core.Users.GetCurrentUserIdentificationInfoResponse",
+      "deprecated": {
+        "announced": 860,
+        "active": 886,
+        "comment": "Use `GetUserAuthenticationMethods` instead, which reports the PIN alongside the other ways a user can identify themselves."
+      },
       "auth": {
         "requiredPermissions": [
           {
@@ -18788,6 +18793,11 @@
       "method": "POST",
       "requestType": "EVA.Core.Authentication.GetPasskeyInfo",
       "responseType": "EVA.Core.Authentication.GetPasskeyInfoResponse",
+      "deprecated": {
+        "announced": 860,
+        "active": 886,
+        "comment": "Use `GetUserAuthenticationMethods` instead, which reports passkeys alongside the other ways a user can identify themselves."
+      },
       "auth": {
         "requiredPermissions": [
           {
@@ -21888,6 +21898,21 @@
             "types": 2049,
             "functionality": "UserAssociationTypes",
             "scope": 8
+          }
+        ]
+      }
+    },
+    {
+      "name": "GetUserAuthenticationMethods",
+      "assembly": "EVA.Core",
+      "path": "/message/GetUserAuthenticationMethods",
+      "method": "POST",
+      "requestType": "EVA.Core.Authentication.GetUserAuthenticationMethods",
+      "responseType": "EVA.Core.Authentication.GetUserAuthenticationMethodsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
           }
         ]
       }
@@ -61187,6 +61212,192 @@
       },
       "enumValues": {},
       "parent": "EVA.Core.Authentication.GetTwoFactorTrustedDevicesResponse"
+    },
+    "EVA.Core.Authentication.GetUserAuthenticationMethods": {
+      "typename": "GetUserAuthenticationMethods",
+      "assembly": "EVA.Core",
+      "description": "Lists the methods the given user can authenticate.\n\nLeave `UserID` empty to ask about yourself. Asking about anyone else can only be done as employee and requires either the `Customers` or `Employees` functionality, depending on the type\nof user you're asking about, and the user has to be visible to you.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Authentication.GetUserAuthenticationMethodsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The user to describe. Defaults to the current user.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Authentication.GetUserAuthenticationMethodsResponse": {
+      "typename": "GetUserAuthenticationMethodsResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Security.TwoFactor.TwoFactorAuthenticatorData",
+        "EVA.Core.Authentication.GetUserAuthenticationMethodsResponse+GetUserAuthenticationMethodsPasskey"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "AllowPasswordLogin": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether the user may log in with a username and password at all. False for single-sign-on-only and non-standard accounts.",
+          "allowedValues": []
+        },
+        "HasIdentificationPin": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether the user has an identification PIN in the organization unit you are currently in. Employees only; always false for customers.",
+          "allowedValues": []
+        },
+        "IdentificationPinExpirationDate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When the identification PIN has to be renewed, if it expires at all.",
+          "allowedValues": []
+        },
+        "Passkeys": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Authentication.GetUserAuthenticationMethodsResponse+GetUserAuthenticationMethodsPasskey",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The passkeys the user registered. Always empty when passkeys are disabled for this environment.",
+          "required": {
+            "current": false
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "SingleSignOnConfigured": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether the user is bound to a single sign-on provider, which is the preferred way to log in.",
+          "allowedValues": []
+        },
+        "SingleSignOnOnly": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether single sign-on is the *only* way this user can log in.",
+          "allowedValues": []
+        },
+        "TwoFactorAuthenticationEnabled": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether the user has at least one confirmed two-factor authenticator.",
+          "allowedValues": []
+        },
+        "TwoFactorAuthenticators": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Security.TwoFactor.TwoFactorAuthenticatorData",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Every two-factor authenticator available on this environment, and where the user stands with it.",
+          "required": {
+            "current": false
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Authentication.GetUserAuthenticationMethodsResponse+GetUserAuthenticationMethodsPasskey": {
+      "typename": "GetUserAuthenticationMethodsPasskey",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "DisplayName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "required": {
+            "current": false
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Authentication.GetUserAuthenticationMethodsResponse"
     },
     "EVA.Core.Authentication.Login": {
       "typename": "Login",
@@ -392741,6 +392952,11 @@
             "args": []
           },
           "description": "Indicates whether the user has two-factor authentication enabled (at least one confirmed authenticator)",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "TwoFactorAuthenticationEnabled is deprecated and is scheduled to be removed in 2.0.905: Use `GetUserAuthenticationMethods` instead, which only does the work when you actually ask for it.."
+          },
           "allowedValues": []
         },
         "Type": {
@@ -394049,6 +394265,11 @@
             "args": []
           },
           "description": "Indicates whether the user has two-factor authentication enabled (at least one confirmed authenticator)",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "TwoFactorAuthenticationEnabled is deprecated and is scheduled to be removed in 2.0.905: Use `GetUserAuthenticationMethods` instead, which only does the work when you actually ask for it.."
+          },
           "allowedValues": []
         },
         "VisibilityGroupIDs": {
