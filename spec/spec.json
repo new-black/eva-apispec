@@ -29892,6 +29892,23 @@
       }
     },
     {
+      "name": "PrintFullStockCountSummary",
+      "assembly": "EVA.Core",
+      "path": "/message/PrintFullStockCountSummary",
+      "method": "POST",
+      "requestType": "EVA.Core.Services.FullStockCountServices.PrintFullStockCountSummary",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "FullStockCount",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "PrintInterbranchOrderReceipt",
       "assembly": "EVA.Core",
       "path": "/message/PrintInterbranchOrderReceipt",
@@ -331415,6 +331432,76 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Services.FullStockCountServices.PrintFullStockCountSummary": {
+      "typename": "PrintFullStockCountSummary",
+      "assembly": "EVA.Core",
+      "description": "Prints the summary of the specified Full Stock Count on the thermal printer of the specified station, using the `FullStockCountSummary` thermal template. By default only products with a deviation are printed.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "FullStockCount",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "IncludedProperties": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "ProductPropertyType",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OnlyShowDeviations": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Set to false to also print products without a deviation.",
+          "allowedValues": []
+        },
+        "StationID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Defaults to the current station.",
+          "datamodel": {
+            "name": "Station",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Services.FullStockCountServices.RecountFullStockCountLabel": {
       "typename": "RecountFullStockCountLabel",
       "assembly": "EVA.Core",
@@ -382556,7 +382643,7 @@
     "EVA.Core.Types.ShipFromStore.Services.GetShipFromStoreTaskByBarcode": {
       "typename": "GetShipFromStoreTaskByBarcode",
       "assembly": "EVA.Core",
-      "description": "Gets an active ShipFromStore type User Task for your store, that contains a product with specified `Barcode`.\n\nUse the optional `DeterminationType` to indicate if you prefer the `Oldest`, `Smallest` or `Largest` task that contains your product.",
+      "description": "Gets an active, unfinished ShipFromStore task for your store that contains a product with the specified `Barcode`.\nOnly the first unfinished processing task (Pick, Pack or Ship) of each fulfillment is eligible.\n\nUse the optional `DeterminationType` to indicate if you prefer the `Oldest`, `Smallest` or `Largest` task that contains your product.",
       "usage": {
         "request": true
       },
