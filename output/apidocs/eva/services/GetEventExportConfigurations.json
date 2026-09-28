@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Items\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022ConcurrentRequests\u0022: 123,\n      \u0022Config\u0022: {\n        \u0022Authorization\u0022: {\n          \u0022ClientCertificate\u0022: {\n            \u0022Certificate\u0022: \u0022base64 encoded binary data\u0022,\n            \u0022Password\u0022: \u0022string\u0022\n          },\n          \u0022StaticBearerToken\u0022: \u0022string\u0022,\n          \u0022StaticUnschemedToken\u0022: \u0022string\u0022\n        },\n        \u0022ExcludeOrganizationUnitSets\u0022: [\n          123\n        ],\n        \u0022ExcludeOrganizationUnits\u0022: [\n          123\n        ],\n        \u0022ExcludedMessageTypes\u0022: [\n          {\n            \u0022EventType\u0022: \u0022string\u0022,\n            \u0022TargetID\u0022: 31\n          }\n        ],\n        \u0022IncludeOrganizationUnitSets\u0022: [\n          123\n        ],\n        \u0022IncludeOrganizationUnits\u0022: [\n          123\n        ],\n        \u0022MessageTypes\u0022: [\n          {\n            \u0022EventType\u0022: \u0022string\u0022,\n            \u0022TargetID\u0022: 31\n          }\n        ],\n        \u0022Protocol\u0022: 1,\n        \u0022ResponseMode\u0022: 1,\n        \u0022ScriptID\u0022: 123,\n        \u0022ScriptName\u0022: \u0022string\u0022,\n        \u0022TimeoutSeconds\u0022: 123\n      },\n      \u0022EffectiveStatus\u0022: 2,\n      \u0022Endpoint\u0022: \u0022string\u0022,\n      \u0022EndpointConfigurationID\u0022: 123,\n      \u0022EndpointStatus\u0022: 2,\n      \u0022ErrorReason\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsReplay\u0022: true,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022SecretKey1\u0022: \u0022string\u0022,\n      \u0022SecretKey2\u0022: \u0022string\u0022,\n      \u0022Status\u0022: 2\n    }\n  ]\n}"
+      "sample": "{\n  \u0022Items\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022ConcurrentRequests\u0022: 123,\n      \u0022Config\u0022: {\n        \u0022Authorization\u0022: {\n          \u0022ClientCertificate\u0022: {\n            \u0022Certificate\u0022: \u0022base64 encoded binary data\u0022,\n            \u0022Issuer\u0022: \u0022string\u0022,\n            \u0022NotAfter\u0022: \u00222025-01-01\u0022,\n            \u0022NotBefore\u0022: \u00222025-01-01\u0022,\n            \u0022Password\u0022: \u0022string\u0022,\n            \u0022Subject\u0022: \u0022string\u0022,\n            \u0022Thumbprint\u0022: \u0022string\u0022\n          },\n          \u0022StaticBearerToken\u0022: \u0022string\u0022,\n          \u0022StaticUnschemedToken\u0022: \u0022string\u0022\n        },\n        \u0022ExcludeOrganizationUnitSets\u0022: [\n          123\n        ],\n        \u0022ExcludeOrganizationUnits\u0022: [\n          123\n        ],\n        \u0022ExcludedMessageTypes\u0022: [\n          {\n            \u0022EventType\u0022: \u0022string\u0022,\n            \u0022TargetID\u0022: 31\n          }\n        ],\n        \u0022IncludeOrganizationUnitSets\u0022: [\n          123\n        ],\n        \u0022IncludeOrganizationUnits\u0022: [\n          123\n        ],\n        \u0022MessageTypes\u0022: [\n          {\n            \u0022EventType\u0022: \u0022string\u0022,\n            \u0022TargetID\u0022: 31\n          }\n        ],\n        \u0022Protocol\u0022: 1,\n        \u0022ResponseMode\u0022: 1,\n        \u0022ScriptID\u0022: 123,\n        \u0022ScriptName\u0022: \u0022string\u0022,\n        \u0022TimeoutSeconds\u0022: 123\n      },\n      \u0022EffectiveStatus\u0022: 2,\n      \u0022Endpoint\u0022: \u0022string\u0022,\n      \u0022EndpointConfigurationID\u0022: 123,\n      \u0022EndpointStatus\u0022: 2,\n      \u0022ErrorReason\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsReplay\u0022: true,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022SecretKey1\u0022: \u0022string\u0022,\n      \u0022SecretKey2\u0022: \u0022string\u0022,\n      \u0022Status\u0022: 2\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -108,17 +108,62 @@
     "H": [
       {
         "name": "Certificate",
+        "deprecation_notice": "\n\n**Deprecated since 860:** Certificate is deprecated and is scheduled to be removed in 2.0.905: The raw PKCS#12 container (which includes the private key) is no longer returned for security reasons; this field is always null. Use Subject, Issuer, Thumbprint, NotBefore and NotAfter instead..\n\n**Will be removed in 886**",
+        "description": "A client certificate that can be used for mTLS. Must be X509 in PKCS12 format. Also, it must not be expired, have a private key and have clientAuth in it\u0027s extended key usage.\n\n**Deprecated since 860:** Certificate is deprecated and is scheduled to be removed in 2.0.905: The raw PKCS#12 container (which includes the private key) is no longer returned for security reasons; this field is always null. Use Subject, Issuer, Thumbprint, NotBefore and NotAfter instead..\n\n**Will be removed in 886**",
+        "type": "binary | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Issuer",
         "deprecation_notice": null,
-        "description": "A client certificate that can be used for mTLS. Must be X509 in PKCS12 format. Also, it must not be expired, have a private key and have clientAuth in it\u0027s extended key usage.",
-        "type": "binary",
-        "required": true,
+        "description": "Issuer of the stored client certificate.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NotAfter",
+        "deprecation_notice": null,
+        "description": "Not-after validity of the stored client certificate.",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "NotBefore",
+        "deprecation_notice": null,
+        "description": "Not-before validity of the stored client certificate.",
+        "type": "datetime | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
       {
         "name": "Password",
+        "deprecation_notice": "\n\n**Deprecated since 860:** Password is deprecated and is scheduled to be removed in 2.0.905: The certificate password is no longer returned for security reasons; this field is always \u0027****\u0027..\n\n**Will be removed in 886**",
+        "description": "The password that is used to encrypt the certificate.\n\n**Deprecated since 860:** Password is deprecated and is scheduled to be removed in 2.0.905: The certificate password is no longer returned for security reasons; this field is always \u0027****\u0027..\n\n**Will be removed in 886**",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Subject",
         "deprecation_notice": null,
-        "description": "The password that is used to encrypt the certificate.",
+        "description": "Subject of the stored client certificate.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Thumbprint",
+        "deprecation_notice": null,
+        "description": "SHA-1 thumbprint (hex) of the stored client certificate.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
