@@ -87838,7 +87838,7 @@
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
         "EVA.Core.DataModels.EventExportConfigurationStatus",
-        "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigModel"
+        "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigUpdateModel"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessage`1",
@@ -87877,7 +87877,7 @@
         },
         "Config": {
           "type": {
-            "ref": "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigModel",
+            "ref": "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigUpdateModel",
             "args": [],
             "nullable": true
           },
@@ -87996,8 +87996,92 @@
       "typename": "EventExportConfigurationCertificateModel",
       "assembly": "EVA.Core",
       "usage": {
-        "request": true,
         "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Certificate": {
+          "type": {
+            "ref": "binary",
+            "args": [],
+            "nullable": true
+          },
+          "description": "A client certificate that can be used for mTLS. Must be X509 in PKCS12 format. Also, it must not be expired, have a private key and have clientAuth in it's extended key usage.",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "Certificate is deprecated and is scheduled to be removed in 2.0.905: The raw PKCS#12 container (which includes the private key) is no longer returned for security reasons; this field is always null. Use Subject, Issuer, Thumbprint, NotBefore and NotAfter instead.."
+          },
+          "allowedValues": []
+        },
+        "Issuer": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Issuer of the stored client certificate.",
+          "allowedValues": []
+        },
+        "NotAfter": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Not-after validity of the stored client certificate.",
+          "allowedValues": []
+        },
+        "NotBefore": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Not-before validity of the stored client certificate.",
+          "allowedValues": []
+        },
+        "Password": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The password that is used to encrypt the certificate.",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "Password is deprecated and is scheduled to be removed in 2.0.905: The certificate password is no longer returned for security reasons; this field is always '****'.."
+          },
+          "allowedValues": []
+        },
+        "Subject": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Subject of the stored client certificate.",
+          "allowedValues": []
+        },
+        "Thumbprint": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "SHA-1 thumbprint (hex) of the stored client certificate.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EventExportConfigurations.EventExportConfigurationCertificateUpdateModel": {
+      "typename": "EventExportConfigurationCertificateUpdateModel",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
       },
       "typeArguments": [],
       "typeDependencies": [],
@@ -88008,6 +88092,7 @@
             "args": []
           },
           "description": "A client certificate that can be used for mTLS. Must be X509 in PKCS12 format. Also, it must not be expired, have a private key and have clientAuth in it's extended key usage.",
+          "skippable": true,
           "required": {
             "current": true
           },
@@ -88023,6 +88108,7 @@
             "nullable": true
           },
           "description": "The password that is used to encrypt the certificate.",
+          "skippable": true,
           "allowedValues": []
         }
       },
@@ -88032,7 +88118,6 @@
       "typename": "EventExportConfigurationConfigAuthorizationModel",
       "assembly": "EVA.Core",
       "usage": {
-        "request": true,
         "response": true
       },
       "typeArguments": [],
@@ -88070,11 +88155,52 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigAuthorizationUpdateModel": {
+      "typename": "EventExportConfigurationConfigAuthorizationUpdateModel",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.EventExportConfigurations.EventExportConfigurationCertificateUpdateModel"
+      ],
+      "properties": {
+        "ClientCertificate": {
+          "type": {
+            "ref": "EVA.Core.EventExportConfigurations.EventExportConfigurationCertificateUpdateModel",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Configuration for Mutual TLS (mTLS). Omit to keep the stored certificate; set to null to remove it.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "StaticBearerToken": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "This will result in an authorization header that looks like: `Authorization: Bearer TOKEN`",
+          "allowedValues": []
+        },
+        "StaticUnschemedToken": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "This will result in an authorization header that looks like: `Authorization: TOKEN`. Use this only when the other options are not sufficient.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigModel": {
       "typename": "EventExportConfigurationConfigModel",
       "assembly": "EVA.Core",
       "usage": {
-        "request": true,
         "response": true
       },
       "typeArguments": [],
@@ -88088,6 +88214,202 @@
         "Authorization": {
           "type": {
             "ref": "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigAuthorizationModel",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Authorization configuration used when calling this endpoint.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "ExcludedMessageTypes": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.DataModels.EventExportConfigurationTarget",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Exclude certain message types. If not set, no message types will be excluded.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "ExcludeOrganizationUnits": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Exclude certain organization units. If not set, no organization units will be excluded.",
+          "skippable": true,
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ExcludeOrganizationUnitSets": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Exclude certain organization unit sets. If not set, no organization units will be excluded.",
+          "skippable": true,
+          "datamodel": {
+            "name": "OrganizationUnitSet",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "IncludeOrganizationUnits": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Filter for certain organization units. If not set, all organization units will be sent.",
+          "skippable": true,
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "IncludeOrganizationUnitSets": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Filter for certain organization unit sets. If not set, all organization units will be sent.",
+          "skippable": true,
+          "datamodel": {
+            "name": "OrganizationUnitSet",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "MessageTypes": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.DataModels.EventExportConfigurationTarget",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Filter for certain message types. If not set, all message types will be sent.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "Protocol": {
+          "type": {
+            "ref": "EVA.Core.DataModels.ProtocolTypes",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The protocol to use when sending the data. If not set, the best available version of HTTP will be used.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "ResponseMode": {
+          "type": {
+            "ref": "EVA.Core.DataModels.EventExportConfigurationResponseMode",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Defines what kind of response EVA requires from this endpoint.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "ScriptID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Optional script to run before sending the data. This can be used to filter out the event export.",
+          "skippable": true,
+          "datamodel": {
+            "name": "Script",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ScriptName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Name of the script that ScriptID refers to.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "TimeoutSeconds": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Timeout after which event exports are cancelled. Defaults to 5 seconds. Not recommended to change.",
+          "skippable": true,
+          "minValue": {
+            "current": 1
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigUpdateModel": {
+      "typename": "EventExportConfigurationConfigUpdateModel",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigAuthorizationUpdateModel",
+        "EVA.Core.DataModels.EventExportConfigurationResponseMode",
+        "EVA.Core.DataModels.EventExportConfigurationTarget",
+        "EVA.Core.DataModels.ProtocolTypes"
+      ],
+      "properties": {
+        "Authorization": {
+          "type": {
+            "ref": "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigAuthorizationUpdateModel",
             "args": [],
             "nullable": true
           },
@@ -88894,7 +89216,7 @@
       "typeDependencies": [
         "EVA.Core.RequestMessageWithEmptyResponse",
         "EVA.Core.DataModels.EventExportConfigurationStatus",
-        "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigModel"
+        "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigUpdateModel"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessageWithEmptyResponse",
@@ -88928,7 +89250,7 @@
         },
         "Config": {
           "type": {
-            "ref": "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigModel",
+            "ref": "EVA.Core.EventExportConfigurations.EventExportConfigurationConfigUpdateModel",
             "args": [],
             "nullable": true
           },
@@ -167958,7 +168280,7 @@
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
         "EVA.Core.DataModels.EndpointConfigurationStatus",
-        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationAuthorizationModel"
+        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationAuthorizationUpdateModel"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessage`1",
@@ -167973,7 +168295,7 @@
       "properties": {
         "Authorization": {
           "type": {
-            "ref": "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationAuthorizationModel",
+            "ref": "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationAuthorizationUpdateModel",
             "args": [],
             "nullable": true
           },
@@ -168153,7 +168475,6 @@
       "typename": "EndpointConfigurationAuthorizationModel",
       "assembly": "EVA.Core.Management",
       "usage": {
-        "request": true,
         "response": true
       },
       "typeArguments": [],
@@ -168318,7 +168639,6 @@
       "typename": "EndpointConfigurationCertificateModel",
       "assembly": "EVA.Core.Management",
       "usage": {
-        "request": true,
         "response": true
       },
       "typeArguments": [],
@@ -168327,15 +168647,42 @@
         "Certificate": {
           "type": {
             "ref": "binary",
-            "args": []
+            "args": [],
+            "nullable": true
           },
           "description": "A client certificate that can be used for mTLS. Must be X509 in PKCS12 format. Also, it must not be expired, have a private key and have clientAuth in it's extended key usage.",
-          "required": {
-            "current": true
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "Certificate is deprecated and is scheduled to be removed in 2.0.905: The raw PKCS#12 container (which includes the private key) is no longer returned for security reasons; this field is always null. Use Subject, Issuer, Thumbprint, NotBefore and NotAfter instead.."
           },
-          "requiredAllowEmpty": {
-            "current": false
+          "allowedValues": []
+        },
+        "Issuer": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
           },
+          "description": "Issuer of the stored client certificate.",
+          "allowedValues": []
+        },
+        "NotAfter": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Not-after validity of the stored client certificate.",
+          "allowedValues": []
+        },
+        "NotBefore": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Not-before validity of the stored client certificate.",
           "allowedValues": []
         },
         "Password": {
@@ -168345,6 +168692,29 @@
             "nullable": true
           },
           "description": "The password that is used to encrypt the certificate.",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "Password is deprecated and is scheduled to be removed in 2.0.905: The certificate password is no longer returned for security reasons; this field is always '****'.."
+          },
+          "allowedValues": []
+        },
+        "Subject": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Subject of the stored client certificate.",
+          "allowedValues": []
+        },
+        "Thumbprint": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "SHA-1 thumbprint (hex) of the stored client certificate.",
           "allowedValues": []
         }
       },
