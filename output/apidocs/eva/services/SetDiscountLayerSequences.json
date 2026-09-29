@@ -2,7 +2,7 @@
   "name": "SetDiscountLayerSequences",
   "method": "POST",
   "path": "/message/SetDiscountLayerSequences",
-  "description": "Takes in all discount layers and sets their sequences. All layers except the system layer are required.",
+  "description": "Takes in all discount layers of the given type and sets their sequences. All layers of that type except the system layer are required.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060DiscountLayers:Edit\u0060",
   "headers": [
     {
@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Layers\u0022: [\n    123\n  ]\n}",
+      "sample": "{\n  \u0022Layers\u0022: [\n    123\n  ],\n  \u0022Type\u0022: 1\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Layers\u0022: [\n    123\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SetDiscountLayerSequences",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Layers\u0022: [\n    123\n  ],\n  \u0022Type\u0022: 1\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SetDiscountLayerSequences",
       "syntax": "bash"
     }
   ],
@@ -63,6 +63,15 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060DiscountLayer\u0060",
         "type": "array[integer]",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - Regular\n* \u00601\u0060 - Loyalty",
+        "type": "integer",
         "required": true,
         "properties_id": null,
         "one_of": null
