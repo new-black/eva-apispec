@@ -29208,6 +29208,21 @@
       }
     },
     {
+      "name": "LiveGuardGetSwarmID",
+      "assembly": "EVA.Core.LiveGuard",
+      "path": "/message/LiveGuardGetSwarmID",
+      "method": "POST",
+      "requestType": "EVA.Core.LiveGuard.Services.Frontend.LiveGuardGetSwarmID",
+      "responseType": "EVA.Core.LiveGuard.Services.Frontend.LiveGuardGetSwarmIDResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049
+          }
+        ]
+      }
+    },
+    {
       "name": "LiveGuardGetTokenForUser",
       "assembly": "EVA.Core.LiveGuard",
       "path": "/message/LiveGuardGetTokenForUser",
@@ -125644,6 +125659,74 @@
             "nullable": true
           },
           "description": "For each datatype a mapping from CloudID -> LiveGuardID",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.LiveGuard.Services.Frontend.LiveGuardGetSwarmID": {
+      "typename": "LiveGuardGetSwarmID",
+      "assembly": "EVA.Core.LiveGuard",
+      "description": "Returns today's Swarm identifier for the current store. Cloud and Watchtower return the same value.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.LiveGuard.Services.Frontend.LiveGuardGetSwarmIDResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.LiveGuard.Services.Frontend.LiveGuardGetSwarmIDResponse": {
+      "typename": "LiveGuardGetSwarmIDResponse",
+      "assembly": "EVA.Core.LiveGuard",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "ExpiresAt": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
           "allowedValues": []
         }
       },
