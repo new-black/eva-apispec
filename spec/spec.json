@@ -272973,6 +272973,15 @@
       "typeArguments": [],
       "typeDependencies": [],
       "properties": {
+        "CarrierProducts": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Return carrier product identifiers and display names from the matching orders' selections.",
+          "allowedValues": []
+        },
         "ProductVariations": {
           "type": {
             "ref": "bool",
@@ -272987,6 +272996,36 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Orders.OrderSearchCarrierProduct": {
+      "typename": "OrderSearchCarrierProduct",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The selected carrier product identifier, such as budbee-box.",
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The stored display name of the carrier product, or its identifier when no name is available.",
           "allowedValues": []
         }
       },
@@ -273051,6 +273090,28 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.Orders.OrderSearchDeliveryType": {
+      "typename": "OrderSearchDeliveryType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "HomeDelivery": {
+          "extends": [],
+          "description": "Normal or same-day delivery selected by the customer."
+        },
+        "PickUp": {
+          "value": 1,
+          "extends": [],
+          "description": "Delivery to a carrier pickup location selected by the customer."
+        }
+      }
     },
     "EVA.Core.Orders.OrderSearchFulfillmentStatusFilterModel": {
       "typename": "OrderSearchFulfillmentStatusFilterModel",
@@ -280138,6 +280199,7 @@
         "EVA.Core.DataModels.OrderTypes",
         "EVA.Core.DataModels.OrderStatus",
         "EVA.Core.Orders.OrderSearchFulfillmentStatusFilterModel",
+        "EVA.Core.Orders.OrderSearchDeliveryType",
         "EVA.Core.Orders.SearchOrders+AdditionalSearchOrderDataOptions",
         "EVA.Core.Orders.OrderSearchAggregationOptions"
       ],
@@ -280183,6 +280245,21 @@
             "supportsCustomID": true,
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "CarrierProductIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Filter by selected carrier product identifiers. DeliveryType and carrier product filters apply independently to the order.",
           "allowedValues": []
         },
         "CompanyName": {
@@ -280369,6 +280446,15 @@
             ],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "DeliveryType": {
+          "type": {
+            "ref": "EVA.Core.Orders.OrderSearchDeliveryType",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Filter by the customer's selected delivery type. HomeDelivery includes normal and same-day delivery; PickUp means a carrier pickup location.",
           "allowedValues": []
         },
         "DiscountIDs": {
@@ -282077,7 +282163,8 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.Orders.OrderSearchResultItem",
-        "EVA.Core.PagedResultResponse`1"
+        "EVA.Core.PagedResultResponse`1",
+        "EVA.Core.Orders.OrderSearchCarrierProduct"
       ],
       "extends": {
         "ref": "EVA.Core.PagedResultResponse`1",
@@ -282090,6 +282177,21 @@
         ]
       },
       "properties": {
+        "CarrierProducts": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Orders.OrderSearchCarrierProduct",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Carrier products selected on matching orders, limited to 1000 products. Returned when AggregationOptions.CarrierProducts is true.",
+          "allowedValues": []
+        },
         "CustomerOrderStatuses": {
           "type": {
             "ref": "map",
