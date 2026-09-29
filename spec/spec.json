@@ -72445,6 +72445,27 @@
         }
       }
     },
+    "EVA.Core.DataModels.DiscountLayerType": {
+      "typename": "DiscountLayerType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Loyalty": {
+          "value": 1,
+          "extends": []
+        },
+        "Regular": {
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.DataModels.DiscountOrderTypes": {
       "typename": "DiscountOrderTypes",
       "assembly": "EVA.Core",
@@ -157699,7 +157720,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessage`1"
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.DataModels.DiscountLayerType"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessage`1",
@@ -157748,6 +157770,19 @@
           },
           "minValue": {
             "current": 0
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.DiscountLayerType",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
           },
           "allowedValues": []
         }
@@ -160874,7 +160909,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.ResponseMessage"
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.DataModels.DiscountLayerType"
       ],
       "extends": {
         "ref": "EVA.Core.ResponseMessage",
@@ -160924,6 +160960,15 @@
             "ref": "int32",
             "args": []
           },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.DiscountLayerType",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The kind of discounts this layer holds. Null only for the System layer.",
           "allowedValues": []
         }
       },
@@ -162203,6 +162248,7 @@
       },
       "typeArguments": [],
       "typeDependencies": [
+        "EVA.Core.DataModels.DiscountLayerType",
         "EVA.Core.Management.Discounts.GetLayerGroupedDiscountsByQueryResponse+DiscountModel"
       ],
       "properties": {
@@ -162254,6 +162300,15 @@
             "ref": "int32",
             "args": []
           },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.DiscountLayerType",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The kind of discounts this layer holds. Null only for the System layer.",
           "allowedValues": []
         }
       },
@@ -163009,7 +163064,9 @@
         "response": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.DataModels.DiscountLayerType"
+      ],
       "properties": {
         "Description": {
           "type": {
@@ -163058,6 +163115,15 @@
             "ref": "int32",
             "args": []
           },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.DiscountLayerType",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The kind of discounts this layer holds. Null only for the System layer.",
           "allowedValues": []
         }
       },
@@ -164313,13 +164379,14 @@
     "EVA.Core.Management.Discounts.SetDiscountLayerSequences": {
       "typename": "SetDiscountLayerSequences",
       "assembly": "EVA.Core.Management",
-      "description": "Takes in all discount layers and sets their sequences. All layers except the system layer are required.",
+      "description": "Takes in all discount layers of the given type and sets their sequences. All layers of that type except the system layer are required.",
       "usage": {
         "request": true
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessageWithEmptyResponse"
+        "EVA.Core.RequestMessageWithEmptyResponse",
+        "EVA.Core.DataModels.DiscountLayerType"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessageWithEmptyResponse",
@@ -164345,6 +164412,19 @@
           "datamodel": {
             "name": "DiscountLayer",
             "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.DiscountLayerType",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
           },
           "allowedValues": []
         }
@@ -417840,6 +417920,14 @@
             "args": []
           },
           "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
         }
       },
       "enumValues": {}
@@ -477089,6 +477177,24 @@
     {
       "name": "Discounts:LayerHasActiveDiscounts",
       "message": "Layer has active discounts.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:LayerTypeDoesNotMatchTrigger",
+      "message": "The selected discount layer type does not match the discount trigger.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:LayerCanOnlyBeMovedWithinItsType",
+      "message": "A discount layer can only be moved within its own type.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:DiscountLayerSequenceAlreadyExists",
+      "message": "A discount layer with this sequence already exists for this type.",
       "module": "EVA.Core",
       "arguments": []
     },
