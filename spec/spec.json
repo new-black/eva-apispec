@@ -19617,6 +19617,21 @@
       }
     },
     {
+      "name": "GetProductContent",
+      "assembly": "EVA.Core",
+      "path": "/message/GetProductContent",
+      "method": "POST",
+      "requestType": "EVA.Core.Products.GetProductContent",
+      "responseType": "EVA.Core.Products.GetProductContentResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049
+          }
+        ]
+      }
+    },
+    {
       "name": "GetProductDetail",
       "assembly": "EVA.Core",
       "path": "/message/GetProductDetail",
@@ -93180,6 +93195,14 @@
         },
         "ProductAvailability": {
           "value": 20,
+          "extends": []
+        },
+        "ProductContent": {
+          "value": 36,
+          "extends": []
+        },
+        "ProductPrice": {
+          "value": 37,
           "extends": []
         },
         "RecurringTask": {
@@ -307376,6 +307399,29 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.ProductChanges.ProductChangeExportData": {
+      "typename": "ProductChangeExportData",
+      "assembly": "EVA.Core",
+      "usage": {},
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ProductIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.ProductRecommendations.CreateProductRecommendation": {
       "typename": "CreateProductRecommendation",
       "assembly": "EVA.Core",
@@ -308465,6 +308511,44 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Products.Culture": {
+      "typename": "Culture",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "CountryID": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "LanguageID": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Products.DeleteProductStructure": {
       "typename": "DeleteProductStructure",
       "assembly": "EVA.Core",
@@ -309491,6 +309575,147 @@
             "nullable": true
           },
           "description": "Summary of the assortment rule outcomes for this product.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Products.GetProductContent": {
+      "typename": "GetProductContent",
+      "assembly": "EVA.Core",
+      "description": "Returns composed product content together with pricing and availability for a list of products, from the\nperspective of one or more organization units and cultures.\n\nFor every combination of a requested culture and organization unit, a single flat item is returned that\ncontains the product content (resolved for that culture from that organization unit's assortment\nperspective) plus the price and stock availability for that organization unit. This lets an external\nsystem (e.g. an Algolia index) fetch everything it needs to index a product after it changed.\n\nNote: the content is the composed product content as published by the composer (the same data that\nfeeds the product search index); `IncludedFields` acts as an allow-list — when omitted, the full\ncomposed object is returned. Products that are not in the organization unit's assortment return no\ncontent.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.Products.Culture"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Products.GetProductContentResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Cultures": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Products.Culture",
+                "args": [],
+                "nullable": true
+              }
+            ]
+          },
+          "description": "The cultures for which content should be returned.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "IncludedFields": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Limit the fields returned in the content. When omitted or empty, the full content object is returned.",
+          "allowedValues": []
+        },
+        "OrganizationUnitIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ]
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ProductIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ]
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "Product",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Products.GetProductContentResponse": {
+      "typename": "GetProductContentResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Products.ProductContentItem"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Products": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Products.ProductContentItem",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
           "allowedValues": []
         }
       },
@@ -311790,6 +312015,280 @@
             "name": "OrganizationUnit",
             "supportsCustomID": true,
             "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Products.ProductContentAvailability": {
+      "typename": "ProductContentAvailability",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ExpectedAvailabilityDate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ExpectedSupplierAvailabilityDate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "IsAvailableSelf": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether the organization unit itself has stock available (own quantity available > 0).",
+          "allowedValues": []
+        },
+        "IsAvailableSupplier": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether the suppliers of the organization unit have stock available (supplier quantity available > 0).",
+          "allowedValues": []
+        },
+        "QuantityAvailable": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "QuantityCommitted": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "QuantityOnHand": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Only populated when PubliclyExposeStockQuantities is enabled for the organization unit; null otherwise.",
+          "allowedValues": []
+        },
+        "SupplierQuantityAvailable": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SupplierQuantityCommitted": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SupplierQuantityOnHand": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "TotalQuantityAvailable": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Products.ProductContentItem": {
+      "typename": "ProductContentItem",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Search.IProductSearchItem",
+        "EVA.Core.Products.ProductContentPricing",
+        "EVA.Core.Products.ProductContentAvailability"
+      ],
+      "properties": {
+        "Availability": {
+          "type": {
+            "ref": "EVA.Core.Products.ProductContentAvailability",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Content": {
+          "type": {
+            "ref": "EVA.Core.Search.IProductSearchItem",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "CountryID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "LanguageID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Pricing": {
+          "type": {
+            "ref": "EVA.Core.Products.ProductContentPricing",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ProductID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Product",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Products.ProductContentPricing": {
+      "typename": "ProductContentPricing",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "HistoricalPrice": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The best known price for this product over the historical price lists of the organization unit, or null when there is none.",
+          "allowedValues": []
+        },
+        "HistoricalPriceInTax": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OriginalUnitPrice": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OriginalUnitPriceInTax": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "PotentialDiscountedPrice": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "RecommendedRetailPrice": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "TaxRate": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "UnitPrice": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "UnitPriceInTax": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         }
@@ -470775,6 +471274,16 @@
       "target": "WorkedHours",
       "type": "correction_applied",
       "dataType": "EVA.Core.Events.WorkedHoursEventExportTarget+CorrectionAppliedData"
+    },
+    {
+      "target": "ProductContent",
+      "type": "changed",
+      "dataType": "EVA.Core.ProductChanges.ProductChangeExportData"
+    },
+    {
+      "target": "ProductPrice",
+      "type": "changed",
+      "dataType": "EVA.Core.ProductChanges.ProductChangeExportData"
     }
   ],
   "datalake_exports": [
