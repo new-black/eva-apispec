@@ -2502,7 +2502,7 @@
       "path": "/message/CompleteReceiveShipment",
       "method": "POST",
       "requestType": "EVA.Core.Services.ReceiveShipment.CompleteReceiveShipment",
-      "responseType": "EVA.Core.EmptyResponseMessage",
+      "responseType": "EVA.Core.Services.ReceiveShipment.CompleteReceiveShipmentResponse",
       "auth": {
         "requiredPermissions": [
           {
@@ -31757,7 +31757,7 @@
       "path": "/message/ReceiveShipment",
       "method": "POST",
       "requestType": "EVA.Core.PurchaseOrders.ReceiveShipment",
-      "responseType": "EVA.Core.EmptyResponseMessage",
+      "responseType": "EVA.Core.PurchaseOrders.ReceiveShipmentResponse",
       "auth": {
         "requiredPermissions": [
           {
@@ -74372,6 +74372,34 @@
           "value": 1,
           "extends": [],
           "description": "Text-based operational task. Users see a simple text instruction and optionally an image."
+        }
+      }
+    },
+    "EVA.Core.DataModels.OperationalTaskTriggerEvent": {
+      "typename": "OperationalTaskTriggerEvent",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "FinancialPeriodClosed": {
+          "value": 1,
+          "extends": [],
+          "description": "Triggered when a financial period is closed."
+        },
+        "ReceiveGoods": {
+          "value": 2,
+          "extends": [],
+          "description": "Triggered when a Receive Goods task is completed."
+        },
+        "Scheduled": {
+          "extends": [],
+          "description": "The configuration is not triggered by an event; tasks are created by its schedule or by triggering it manually."
         }
       }
     },
@@ -317426,13 +317454,36 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.ResponseMessage"
+        "EVA.Core.ResponseMessage",
+        "EVA.Framework.API.EnumDto"
       ],
       "extends": {
         "ref": "EVA.Core.ResponseMessage",
         "args": []
       },
       "properties": {
+        "OperationalTaskID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The user task that was triggered by receiving this shipment. Only returned when exactly one non-personal Operational Task was created and the current user is allowed to handle it, so the client can navigate the user to it.",
+          "datamodel": {
+            "name": "UserTask",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OperationalTaskType": {
+          "type": {
+            "ref": "EVA.Framework.API.EnumDto",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The type of the triggered user task, so the client does not have to assume it is an Operational Task.",
+          "allowedValues": []
+        },
         "ReservedOrdersCount": {
           "type": {
             "ref": "int32",
@@ -318577,14 +318628,20 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessageWithEmptyResponse",
+        "EVA.Core.RequestMessage`1",
         "EVA.Core.PurchaseOrders.ReceiveShipment+ShipmentReceipt",
         "EVA.Core.PurchaseOrders.ReceiveShipment+ProductReceipt",
         "EVA.Core.PurchaseOrders.ReceiveShipment+Line"
       ],
       "extends": {
-        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
-        "args": []
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.PurchaseOrders.ReceiveShipmentResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
       },
       "properties": {
         "CompleteShipment": {
@@ -318813,6 +318870,47 @@
       },
       "enumValues": {},
       "parent": "EVA.Core.PurchaseOrders.ReceiveShipment"
+    },
+    "EVA.Core.PurchaseOrders.ReceiveShipmentResponse": {
+      "typename": "ReceiveShipmentResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Framework.API.EnumDto"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "OperationalTaskID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The user task that was triggered by this receive completing the shipment. Only returned when exactly one non-personal Operational Task was created and the current user is allowed to handle it, so the client can navigate the user to it.",
+          "datamodel": {
+            "name": "UserTask",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OperationalTaskType": {
+          "type": {
+            "ref": "EVA.Framework.API.EnumDto",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The type of the triggered user task, so the client does not have to assume it is an Operational Task.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
     },
     "EVA.Core.PurchaseOrders.ShipPurchaseOrder": {
       "typename": "ShipPurchaseOrder",
@@ -346180,13 +346278,19 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessageWithEmptyResponse",
+        "EVA.Core.RequestMessage`1",
         "EVA.Core.Services.ReceiveShipment.CompleteReceiveShipment+ShipmentReceipt",
         "EVA.Core.Services.ReceiveShipment.CompleteReceiveShipment+ProductReceipt"
       ],
       "extends": {
-        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
-        "args": []
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Services.ReceiveShipment.CompleteReceiveShipmentResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
       },
       "properties": {
         "PrintReservationReceipt": {
@@ -346369,6 +346473,47 @@
       },
       "enumValues": {},
       "parent": "EVA.Core.Services.ReceiveShipment.CompleteReceiveShipment"
+    },
+    "EVA.Core.Services.ReceiveShipment.CompleteReceiveShipmentResponse": {
+      "typename": "CompleteReceiveShipmentResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Framework.API.EnumDto"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "OperationalTaskID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The user task that was triggered by completing this receive goods task. Only returned when exactly one non-personal Operational Task was created and the current user is allowed to handle it, so the client can navigate the user to it.",
+          "datamodel": {
+            "name": "UserTask",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OperationalTaskType": {
+          "type": {
+            "ref": "EVA.Framework.API.EnumDto",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The type of the triggered user task, so the client does not have to assume it is an Operational Task.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
     },
     "EVA.Core.Services.ReceiveShipment.StartReceiveShipment": {
       "typename": "StartReceiveShipment",
@@ -381053,6 +381198,7 @@
         "EVA.Core.RequestMessage`1",
         "EVA.Core.DataModels.OperationalTaskConfigType",
         "EVA.Core.Scheduling.SchedulingConfig",
+        "EVA.Core.DataModels.OperationalTaskTriggerEvent",
         "EVA.Core.DataModels.ExistingTaskBehavior"
       ],
       "extends": {
@@ -381226,7 +381372,15 @@
             "args": [],
             "nullable": true
           },
-          "description": "End date for when TriggerOnFinancialPeriodClosed is active. If not provided, triggering is always active.",
+          "description": "End date for when the FinancialPeriodClosed trigger is active. If not provided, triggering is always active.",
+          "allowedValues": []
+        },
+        "TriggerEvent": {
+          "type": {
+            "ref": "EVA.Core.DataModels.OperationalTaskTriggerEvent",
+            "args": []
+          },
+          "description": "The event that triggers this configuration. When set, the configuration cannot also have a SchedulingConfig.",
           "allowedValues": []
         },
         "TriggerOnFinancialPeriodClosed": {
@@ -381234,7 +381388,12 @@
             "ref": "bool",
             "args": []
           },
-          "description": "Trigger this configuration when a financial period is closed.",
+          "description": "Trigger this configuration when a financial period is closed. When true and `TriggerEvent` is not set, `TriggerEvent` is set to `FinancialPeriodClosed`.",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "TriggerOnFinancialPeriodClosed is deprecated and is scheduled to be removed in 2.0.905: Use `TriggerEvent`.."
+          },
           "allowedValues": []
         },
         "TriggerStartDate": {
@@ -381243,7 +381402,7 @@
             "args": [],
             "nullable": true
           },
-          "description": "Start date for when TriggerOnFinancialPeriodClosed is active. If not provided, triggering is always active.",
+          "description": "Start date for when the FinancialPeriodClosed trigger is active. If not provided, triggering is always active.",
           "allowedValues": []
         },
         "Type": {
@@ -381393,6 +381552,7 @@
         "EVA.Core.Types.Operational.Services.SurveyInfoDto",
         "EVA.Core.Blobs.BlobDto",
         "EVA.Core.Scheduling.SchedulingConfig",
+        "EVA.Core.DataModels.OperationalTaskTriggerEvent",
         "EVA.Core.DataModels.ExistingTaskBehavior",
         "EVA.Core.Types.Operational.Services.GetOperationalTaskConfigResponse+RoleObject"
       ],
@@ -381546,7 +381706,15 @@
             "args": [],
             "nullable": true
           },
-          "description": "End date for when TriggerOnFinancialPeriodClosed is active.",
+          "description": "End date for when the FinancialPeriodClosed trigger is active.",
+          "allowedValues": []
+        },
+        "TriggerEvent": {
+          "type": {
+            "ref": "EVA.Core.DataModels.OperationalTaskTriggerEvent",
+            "args": []
+          },
+          "description": "The event that triggers this configuration.",
           "allowedValues": []
         },
         "TriggerOnFinancialPeriodClosed": {
@@ -381555,6 +381723,11 @@
             "args": []
           },
           "description": "Whether this configuration is triggered when a financial period closes.",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "TriggerOnFinancialPeriodClosed is deprecated and is scheduled to be removed in 2.0.905: Use `TriggerEvent`.."
+          },
           "allowedValues": []
         },
         "TriggerStartDate": {
@@ -381563,7 +381736,7 @@
             "args": [],
             "nullable": true
           },
-          "description": "Start date for when TriggerOnFinancialPeriodClosed is active.",
+          "description": "Start date for when the FinancialPeriodClosed trigger is active.",
           "allowedValues": []
         },
         "Type": {
@@ -381676,6 +381849,7 @@
         "EVA.Core.DataModels.OperationalTaskConfigType",
         "EVA.Core.Types.Operational.Services.OperationalTaskConfigDto+SurveyInfoDto",
         "EVA.Core.Scheduling.SchedulingConfig",
+        "EVA.Core.DataModels.OperationalTaskTriggerEvent",
         "EVA.Core.DataModels.ExistingTaskBehavior",
         "EVA.Core.Types.Operational.Services.OperationalTaskConfigDto+RoleInfo"
       ],
@@ -381841,12 +382015,25 @@
           "description": "Information about the optional survey linked to this config.",
           "allowedValues": []
         },
+        "TriggerEvent": {
+          "type": {
+            "ref": "EVA.Core.DataModels.OperationalTaskTriggerEvent",
+            "args": []
+          },
+          "description": "The event that triggers this configuration.",
+          "allowedValues": []
+        },
         "TriggerOnFinancialPeriodClosed": {
           "type": {
             "ref": "bool",
             "args": []
           },
           "description": "Whether this configuration is triggered when a financial period closes.",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "TriggerOnFinancialPeriodClosed is deprecated and is scheduled to be removed in 2.0.905: Use `TriggerEvent`.."
+          },
           "allowedValues": []
         },
         "Type": {
@@ -382071,6 +382258,7 @@
         "EVA.Core.RequestMessage`1",
         "EVA.Core.DataModels.OperationalTaskConfigType",
         "EVA.Core.Scheduling.SchedulingConfig",
+        "EVA.Core.DataModels.OperationalTaskTriggerEvent",
         "EVA.Core.DataModels.ExistingTaskBehavior"
       ],
       "extends": {
@@ -382267,8 +382455,17 @@
             "args": [],
             "nullable": true
           },
-          "description": "End date for when TriggerOnFinancialPeriodClosed is active. Pass null to remove the restriction.",
+          "description": "End date for when the FinancialPeriodClosed trigger is active. Pass null to remove the restriction.",
           "skippable": true,
+          "allowedValues": []
+        },
+        "TriggerEvent": {
+          "type": {
+            "ref": "EVA.Core.DataModels.OperationalTaskTriggerEvent",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The event that triggers this configuration. When set, the configuration cannot also have a SchedulingConfig.",
           "allowedValues": []
         },
         "TriggerOnFinancialPeriodClosed": {
@@ -382277,7 +382474,12 @@
             "args": [],
             "nullable": true
           },
-          "description": "Update whether this configuration is triggered when a financial period closes.",
+          "description": "Update whether this configuration is triggered when a financial period closes. When true and `TriggerEvent` is not set, `TriggerEvent` is set to `FinancialPeriodClosed`.",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "TriggerOnFinancialPeriodClosed is deprecated and is scheduled to be removed in 2.0.905: Use `TriggerEvent`.."
+          },
           "allowedValues": []
         },
         "TriggerStartDate": {
@@ -382286,7 +382488,7 @@
             "args": [],
             "nullable": true
           },
-          "description": "Start date for when TriggerOnFinancialPeriodClosed is active. Pass null to remove the restriction.",
+          "description": "Start date for when the FinancialPeriodClosed trigger is active. Pass null to remove the restriction.",
           "skippable": true,
           "allowedValues": []
         },
@@ -492380,7 +492582,7 @@
     },
     {
       "name": "OperationalTaskConfig:CannotCombineTriggerOnFinancialPeriodClosedWithSchedulingConfig",
-      "message": "Cannot combine TriggerOnFinancialPeriodClosed with a SchedulingConfig",
+      "message": "Cannot combine a TriggerEvent with a SchedulingConfig",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -492392,7 +492594,7 @@
     },
     {
       "name": "OperationalTaskConfig:TriggerDatesCanOnlyBeSetWhenTriggerOnFinancialPeriodClosedIsEnabled",
-      "message": "Trigger dates can only be set when TriggerOnFinancialPeriodClosed is enabled",
+      "message": "Trigger dates can only be set when the FinancialPeriodClosed trigger is enabled",
       "module": "EVA.Core",
       "arguments": []
     },
