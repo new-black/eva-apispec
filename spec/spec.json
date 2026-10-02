@@ -489131,6 +489131,186 @@
       "arguments": []
     },
     {
+      "name": "WatchtowerOffboard:ReleaseFailed",
+      "message": "Releasing the watchtower from fleet manager {0} (fleet-manager ID {1}) failed: {2}. The watchtower keeps its boarding records, so re-running will retry it.",
+      "module": "EVA.Core.LiveGuard",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "fleetManager"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "fleetManagerID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "detail"
+        }
+      ]
+    },
+    {
+      "name": "WatchtowerOffboard:RateLimited",
+      "message": "Fleet manager {0} kept rate-limiting the release of fleet-manager device {1} after {2} attempts. The watchtower keeps its boarding records, so re-running will retry it.",
+      "module": "EVA.Core.LiveGuard",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "fleetManager"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "fleetManagerID"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "attempts"
+        }
+      ]
+    },
+    {
+      "name": "WatchtowerOffboard:FleetManagerUnavailable",
+      "message": "Fleet manager {0} is not available, so watchtower {1} cannot be released. The watchtower keeps its boarding records, so re-running will retry it.",
+      "module": "EVA.Core.LiveGuard",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "fleetManager"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "deviceID"
+        }
+      ]
+    },
+    {
+      "name": "WatchtowerOffboard:SerialLookupFailed",
+      "message": "Looking up serial number {1} in fleet manager {0} failed: {2}. The watchtower keeps its boarding records, so re-running will retry it.",
+      "module": "EVA.Core.LiveGuard",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "fleetManager"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "hardwareID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "detail"
+        }
+      ]
+    },
+    {
+      "name": "WatchtowerOffboard:UnknownFleetManager",
+      "message": "Watchtower {1} names fleet manager '{0}', which is not registered in this environment, so it cannot be released. Fix the configuration or release it by hand, then re-run.",
+      "module": "EVA.Core.LiveGuard",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "fleetManager"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "deviceID"
+        }
+      ]
+    },
+    {
+      "name": "WatchtowerOffboard:CredentialRevocationFailed",
+      "message": "Watchtower {0}: the LiveGuard credential could not be revoked ({1}). The watchtower keeps its boarding records, so re-running will retry it.",
+      "module": "EVA.Core.LiveGuard",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "deviceID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "detail"
+        }
+      ]
+    },
+    {
+      "name": "WatchtowerOffboard:WipeFailedAfterRelease",
+      "message": "Watchtower {0} was released in its fleet manager, but its local boarding records could not be wiped ({1}). Re-run the teardown: the release will be treated as already-done and only the wipe is retried.",
+      "module": "EVA.Core.LiveGuard",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "deviceID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "detail"
+        }
+      ]
+    },
+    {
       "name": "CreateApiKey:PersonalApiKeyMustBeForSelf",
       "message": "Personal API keys can only be created for your own user.",
       "module": "EVA.Core",
