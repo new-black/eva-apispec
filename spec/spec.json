@@ -21362,6 +21362,40 @@
       }
     },
     {
+      "name": "GetStockConfidenceExplanation",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/GetStockConfidenceExplanation",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Stock.GetStockConfidenceExplanation",
+      "responseType": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "StockConfidence",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
+      "name": "GetStockConfidenceHistory",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/GetStockConfidenceHistory",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Stock.GetStockConfidenceHistory",
+      "responseType": "EVA.Core.Management.Stock.GetStockConfidenceHistoryResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "StockConfidence",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "GetStockDetailsForProduct",
       "assembly": "EVA.Core",
       "path": "/message/GetStockDetailsForProduct",
@@ -28190,6 +28224,23 @@
       }
     },
     {
+      "name": "ListStockConfidences",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/ListStockConfidences",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Stock.ListStockConfidences",
+      "responseType": "EVA.Core.Management.Stock.ListStockConfidencesResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "StockConfidence",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "ListStockForOrganizationUnits",
       "assembly": "EVA.Core.Management",
       "path": "/message/ListStockForOrganizationUnits",
@@ -29684,6 +29735,23 @@
           {
             "types": 2049,
             "functionality": "Shipments",
+            "scope": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "ModifyStockConfidence",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/ModifyStockConfidence",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Stock.ModifyStockConfidence",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "StockConfidence",
             "scope": 2
           }
         ]
@@ -72430,6 +72498,31 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.DataModels.CycleCountSelectionBucket": {
+      "typename": "CycleCountSelectionBucket",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "FalsePromise": {
+          "value": 1,
+          "extends": []
+        },
+        "MissedSale": {
+          "value": 2,
+          "extends": []
+        },
+        "Staleness": {
+          "value": 3,
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.DataModels.DiscountAppliesTo": {
       "typename": "DiscountAppliesTo",
       "assembly": "EVA.Core",
@@ -77739,6 +77832,23 @@
           "extends": []
         },
         "Priority": {
+          "value": 1,
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.DataModels.StoredStockConfidenceEntryType": {
+      "typename": "StoredStockConfidenceEntryType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Manual": {
           "value": 1,
           "extends": []
         }
@@ -225758,6 +225868,626 @@
       "properties": {},
       "enumValues": {}
     },
+    "EVA.Core.Management.Stock.GetStockConfidenceExplanation": {
+      "typename": "GetStockConfidenceExplanation",
+      "assembly": "EVA.Core.Management",
+      "description": "Explains why a stock confidence has a certain value",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ProductID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Product",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse": {
+      "typename": "GetStockConfidenceExplanationResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+Entry",
+        "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+SimilarProduct",
+        "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+RecentCycleCount"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Confidence": {
+          "type": {
+            "ref": "float32",
+            "args": []
+          },
+          "description": "The current confidence of the stock, including the decay since it was last reset. 0 when the product isn't tracked.",
+          "allowedValues": []
+        },
+        "ConfidenceAtReset": {
+          "type": {
+            "ref": "float32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The confidence the reset left behind: the value every entry below starts replaying from. Null when the product isn't tracked.",
+          "allowedValues": []
+        },
+        "ConfidenceBeforeDecay": {
+          "type": {
+            "ref": "float32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The confidence the entries below add up to, before decay over time is applied. Null when the product isn't tracked.",
+          "allowedValues": []
+        },
+        "DaysOfCover": {
+          "type": {
+            "ref": "float64",
+            "args": [],
+            "nullable": true
+          },
+          "description": "How many days the sellable stock lasts at the pace the product sold over the sales window (`CycleCount:V2:SalesRateWindowDays`). Null when nothing sold in that window, and when the product isn't tracked.",
+          "allowedValues": []
+        },
+        "DaysSinceReset": {
+          "type": {
+            "ref": "float64",
+            "args": [],
+            "nullable": true
+          },
+          "description": "How many days have passed since the last reset. Decay over time is applied over this period, unless the product is a confirmed zero. Null when the product isn't tracked.",
+          "allowedValues": []
+        },
+        "Entries": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+Entry",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Every change since the last reset, oldest first, each with the confidence around it. The last entry ends at the confidence before decay over time is applied.",
+          "allowedValues": []
+        },
+        "HalfLifeDays": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "How many days it takes for decay over time to halve the confidence. Zero or less means the confidence doesn't decay over time. Null when the product isn't tracked.",
+          "allowedValues": []
+        },
+        "IsConfirmedZero": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether the product is a confirmed zero: enough counts in a row verified its empty shelf. A confirmed zero is parked, so no decay over time is applied to it. False when the product isn't tracked.",
+          "allowedValues": []
+        },
+        "LastReset": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When the confidence was last reset. Null when the product isn't tracked.",
+          "allowedValues": []
+        },
+        "RecentCycleCounts": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+RecentCycleCount",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The most recent cycle counts of this product in this organization unit, newest first: the counting tasks that were, or weren't yet, done for it. Empty when the product isn't tracked.",
+          "allowedValues": []
+        },
+        "ResetSource": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "What last reset the confidence, for example `ZCC:1234` for a cycle count, `FSC:321` for a full stock count, `INIT` when tracking started by itself or `MANUAL`. Null when the product isn't tracked.",
+          "allowedValues": []
+        },
+        "SimilarProductsWithDeviations": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+SimilarProduct",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The products sharing this product's parent product whose last count found a deviation, most recently counted first. A deviation next to this product makes its own stock level less believable. Empty when the product has no parent product, and when it isn't tracked.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+Entry": {
+      "typename": "Entry",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+EntryData"
+      ],
+      "properties": {
+        "ConfidenceAfter": {
+          "type": {
+            "ref": "float32",
+            "args": []
+          },
+          "description": "The confidence after the entry",
+          "allowedValues": []
+        },
+        "ConfidenceBefore": {
+          "type": {
+            "ref": "float32",
+            "args": []
+          },
+          "description": "The confidence before the entry",
+          "allowedValues": []
+        },
+        "Data": {
+          "type": {
+            "ref": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+EntryData",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The data of the entry, only one of its properties will ever be set",
+          "allowedValues": []
+        },
+        "Date": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "description": "The date of the entry",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse"
+    },
+    "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+EntryData": {
+      "typename": "EntryData",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+EntryDataStockMutation",
+        "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+EntryDataStoredEntry"
+      ],
+      "properties": {
+        "StockMutation": {
+          "type": {
+            "ref": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+EntryDataStockMutation",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Data for when it is a stockmutation entry",
+          "allowedValues": []
+        },
+        "StoredEntry": {
+          "type": {
+            "ref": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+EntryDataStoredEntry",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Data for when it is a stored entry: a change that couldn't be deduced from other data, so it was stored when it happened",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse"
+    },
+    "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+EntryDataStockMutation": {
+      "typename": "EntryDataStockMutation",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "AutomaticCorrectionQuantity": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "The quantity the system corrected automatically because the stock would have gone negative. When this is set, the confidence dropped to zero regardless of the reason.",
+          "allowedValues": []
+        },
+        "Factor": {
+          "type": {
+            "ref": "float32",
+            "args": []
+          },
+          "description": "The factor the confidence was multiplied with for this mutation",
+          "allowedValues": []
+        },
+        "Quantity": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "The quantity of the stock mutation",
+          "allowedValues": []
+        },
+        "Reason": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The reason for the stock mutation",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse"
+    },
+    "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+EntryDataStoredEntry": {
+      "typename": "EntryDataStoredEntry",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.DataModels.StoredStockConfidenceEntryType"
+      ],
+      "properties": {
+        "CreatedByID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The user that changed the confidence, or null when the system did",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Factor": {
+          "type": {
+            "ref": "float32",
+            "args": []
+          },
+          "description": "The factor the confidence was multiplied with",
+          "allowedValues": []
+        },
+        "Remark": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Why the confidence was changed",
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.StoredStockConfidenceEntryType",
+            "args": []
+          },
+          "description": "What kind of change this was",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse"
+    },
+    "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+RecentCycleCount": {
+      "typename": "RecentCycleCount",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.DataModels.ZonedCycleCountResultStatus",
+        "EVA.Core.DataModels.CycleCountSelectionBucket"
+      ],
+      "properties": {
+        "CompletionTime": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When the cycle count was completed. Null while it isn't.",
+          "allowedValues": []
+        },
+        "CreationTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "description": "When the cycle count was created",
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the cycle count",
+          "datamodel": {
+            "name": "ZonedCycleCount",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "IsCompleted": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether the cycle count is completed",
+          "allowedValues": []
+        },
+        "ResultStatus": {
+          "type": {
+            "ref": "EVA.Core.DataModels.ZonedCycleCountResultStatus",
+            "args": []
+          },
+          "description": "What the count found. `None` until it is completed.",
+          "allowedValues": []
+        },
+        "SelectionBucket": {
+          "type": {
+            "ref": "EVA.Core.DataModels.CycleCountSelectionBucket",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The failure mode the scoring engine created the count to catch. Null for counts the scoring engine didn't create.",
+          "allowedValues": []
+        },
+        "UserTaskID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The user task the cycle count is carried out as",
+          "datamodel": {
+            "name": "UserTask",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse"
+    },
+    "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse+SimilarProduct": {
+      "typename": "SimilarProduct",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ConfidenceAtReset": {
+          "type": {
+            "ref": "float32",
+            "args": []
+          },
+          "description": "The confidence that count left behind. Below 1 because it found a deviation: the bigger the deviation, the lower.",
+          "allowedValues": []
+        },
+        "LastReset": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "description": "When the similar product's last count reset its confidence",
+          "allowedValues": []
+        },
+        "ProductID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The similar product",
+          "datamodel": {
+            "name": "Product",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ResetSource": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The count that found the deviation, for example `ZCC:1234` for a cycle count or `FSC:321` for a full stock count",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Stock.GetStockConfidenceExplanationResponse"
+    },
+    "EVA.Core.Management.Stock.GetStockConfidenceHistory": {
+      "typename": "GetStockConfidenceHistory",
+      "assembly": "EVA.Core.Management",
+      "description": "The stock confidence of an organization unit over time: how much its shelf could be trusted on each of the last 90 days, and how many products that covered",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.Stock.GetStockConfidenceHistoryResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The organization unit to get the history of. A confidence is a store's opinion of its own shelf, so the history is always about one of them.",
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Stock.GetStockConfidenceHistoryItem": {
+      "typename": "GetStockConfidenceHistoryItem",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "AverageConfidence": {
+          "type": {
+            "ref": "float32",
+            "args": []
+          },
+          "description": "The average confidence over the products tracked that day, including the decay since each of them was last counted",
+          "allowedValues": []
+        },
+        "Date": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "description": "The organization unit's own day this entry describes",
+          "allowedValues": []
+        },
+        "TrackedProducts": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "How many products the average covers: the tracked products the organization unit carried that day",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Stock.GetStockConfidenceHistoryResponse": {
+      "typename": "GetStockConfidenceHistoryResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Management.Stock.GetStockConfidenceHistoryItem"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Result": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.Stock.GetStockConfidenceHistoryItem",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "One entry per day, oldest first. Days the organization unit didn't track its stock confidence yet are absent.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Management.Stock.InitialReplenishment": {
       "typename": "InitialReplenishment",
       "assembly": "EVA.Core.Management",
@@ -226028,6 +226758,158 @@
         ]
       },
       "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Stock.ListStockConfidences": {
+      "typename": "ListStockConfidences",
+      "assembly": "EVA.Core.Management",
+      "description": "List the stock confidences of an organization unit, least trusted first unless sorted otherwise",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.StockConfidences.ListStockConfidencesSort",
+        "EVA.Core.StockConfidences.ListStockConfidencesFilter",
+        "EVA.Core.SortablePageTokenConfig`2"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.Stock.ListStockConfidencesResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "InitialPageConfig": {
+          "type": {
+            "ref": "EVA.Core.SortablePageTokenConfig`2",
+            "args": [
+              {
+                "ref": "EVA.Core.StockConfidences.ListStockConfidencesSort",
+                "args": []
+              },
+              {
+                "ref": "EVA.Core.StockConfidences.ListStockConfidencesFilter",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "PageToken": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Stock.ListStockConfidencesResponse": {
+      "typename": "ListStockConfidencesResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.StockConfidences.ListStockConfidencesItem",
+        "EVA.Core.PageTokenResponse`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Result": {
+          "type": {
+            "ref": "EVA.Core.PageTokenResponse`1",
+            "args": [
+              {
+                "ref": "EVA.Core.StockConfidences.ListStockConfidencesItem",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Stock.ModifyStockConfidence": {
+      "typename": "ModifyStockConfidence",
+      "assembly": "EVA.Core.Management",
+      "description": "Multiplies the stock confidence of a product by a factor and records an entry explaining the change. The entry shows up in the confidence explanation until the next count resets the confidence.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "Factor": {
+          "type": {
+            "ref": "float32",
+            "args": []
+          },
+          "description": "The factor to multiply the current confidence with, above 0. A factor below 1 lowers the confidence, a factor above 1 raises it; the result never exceeds full confidence.",
+          "allowedValues": []
+        },
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ProductID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Product",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Remark": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Why the confidence was changed. This is what the explanation will show.",
+          "stringLengthConstraint": {
+            "max": 500
+          },
+          "allowedValues": []
+        }
+      },
       "enumValues": {}
     },
     "EVA.Core.Management.Stock.RefillStockAllocation": {
@@ -356345,6 +357227,7 @@
       "typeDependencies": [
         "EVA.Core.DataModels.ZonedCycleCountResultStatus",
         "EVA.Core.DataModels.ZonedCycleCountStatus",
+        "EVA.Core.DataModels.CycleCountSelectionBucket",
         "EVA.Core.Search.IProductSearchItem"
       ],
       "properties": {
@@ -356575,6 +357458,15 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "SelectionBucket": {
+          "type": {
+            "ref": "EVA.Core.DataModels.CycleCountSelectionBucket",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Which of the scoring engine's buckets paid for this count, or null when the count wasn't created by the scoring engine",
           "allowedValues": []
         },
         "StartTime": {
@@ -372048,6 +372940,225 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.StockConfidences.ListStockConfidencesFilter": {
+      "typename": "ListStockConfidencesFilter",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "MaxConfidence": {
+          "type": {
+            "ref": "float32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Only confidences at or below this value, decay over time included",
+          "minValue": {
+            "current": 0
+          },
+          "maxValue": {
+            "current": 1
+          },
+          "allowedValues": []
+        },
+        "MinConfidence": {
+          "type": {
+            "ref": "float32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Only confidences at or above this value, decay over time included",
+          "minValue": {
+            "current": 0
+          },
+          "maxValue": {
+            "current": 1
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The organization unit to list the confidences of. Required: a confidence is a store's opinion of its own shelf, and its decay over time follows the store's settings",
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ProductID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Limit the results to a single product",
+          "datamodel": {
+            "name": "Product",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ProductIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Limit the results to these products",
+          "datamodel": {
+            "name": "Product",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.StockConfidences.ListStockConfidencesItem": {
+      "typename": "ListStockConfidencesItem",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Confidence": {
+          "type": {
+            "ref": "float32",
+            "args": []
+          },
+          "description": "The current confidence of the stock, including the decay since it was last reset",
+          "allowedValues": []
+        },
+        "FalseZeroCount": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "How often a count found stock where this product was believed to be at zero. Repeat offenders earn extra suspicion whenever they show zero again.",
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the stock confidence",
+          "datamodel": {
+            "name": "StockConfidence",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "IsConfirmedZero": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether the product is a confirmed zero: parked out of every counting bucket with its decay frozen, until a stock mutation wakes it up or the dormancy period sends it back into the staleness sweep",
+          "allowedValues": []
+        },
+        "LastReset": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "description": "When this confidence was last reset by a count",
+          "allowedValues": []
+        },
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The organization unit this confidence refers to",
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ProbabilityOfError": {
+          "type": {
+            "ref": "float32",
+            "args": []
+          },
+          "description": "The chance the stock level of this product is wrong, `1 - Confidence`",
+          "allowedValues": []
+        },
+        "ProductID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The product this confidence refers to",
+          "datamodel": {
+            "name": "Product",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ResetSource": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "What last reset this confidence, for example `ZCC:1234` or `INIT`",
+          "allowedValues": []
+        },
+        "ZeroConfirmations": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "How many counts in a row verified this product's zero: system said empty, the shelf was empty",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.StockConfidences.ListStockConfidencesSort": {
+      "typename": "ListStockConfidencesSort",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Confidence": {
+          "extends": []
+        },
+        "LastReset": {
+          "value": 1,
+          "extends": []
+        }
+      }
     },
     "EVA.Core.StockMovementFollowUp.CompleteStockMovementFollowUp": {
       "typename": "CompleteStockMovementFollowUp",
