@@ -1,0 +1,536 @@
+{
+  "name": "GetStockConfidenceExplanation",
+  "method": "POST",
+  "path": "/message/GetStockConfidenceExplanation",
+  "description": "Explains why a stock confidence has a certain value",
+  "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060StockConfidence:View\u0060",
+  "headers": [
+    {
+      "name": "EVA-User-Agent",
+      "type": "string",
+      "description": "The user agent that is making these calls. Don\u0027t make this specific per device/browser but per application. This should be of the form: \u0060MyFirstUserAgent/1.0.0\u0060",
+      "required": true,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnitID",
+      "type": "integer",
+      "description": "The ID of the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-Requested-OrganizationUnit-Query",
+      "type": "string",
+      "description": "The query that selects the organization unit to run this request in.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-Mode",
+      "type": "string",
+      "description": "The IDs mode to run this request in. Currently only \u0060ExternalIDs\u0060 is supported.",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "EVA-IDs-BackendSystemID",
+      "type": "string",
+      "description": "The ID of the backend system that is used to resolve the IDs.",
+      "required": false,
+      "default": null
+    }
+  ],
+  "request_samples": [
+    {
+      "name": "JSON",
+      "sample": "{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ProductID\u0022: 123\n}",
+      "syntax": "json"
+    },
+    {
+      "name": "CURL",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ProductID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetStockConfidenceExplanation",
+      "syntax": "bash"
+    }
+  ],
+  "response_samples": [
+    {
+      "name": "200",
+      "sample": "{\n  \u0022Confidence\u0022: 123.456,\n  \u0022ConfidenceAtReset\u0022: 123.456,\n  \u0022ConfidenceBeforeDecay\u0022: 123.456,\n  \u0022DaysOfCover\u0022: 123.456,\n  \u0022DaysSinceReset\u0022: 123.456,\n  \u0022Entries\u0022: [\n    {\n      \u0022ConfidenceAfter\u0022: 123.456,\n      \u0022ConfidenceBefore\u0022: 123.456,\n      \u0022Data\u0022: {\n        \u0022StockMutation\u0022: {\n          \u0022AutomaticCorrectionQuantity\u0022: 123,\n          \u0022Factor\u0022: 123.456,\n          \u0022Quantity\u0022: 123,\n          \u0022Reason\u0022: \u0022string\u0022\n        },\n        \u0022StoredEntry\u0022: {\n          \u0022CreatedByID\u0022: 123,\n          \u0022Factor\u0022: 123.456,\n          \u0022Remark\u0022: \u0022string\u0022,\n          \u0022Type\u0022: 1\n        }\n      },\n      \u0022Date\u0022: \u00222025-01-01\u0022\n    }\n  ],\n  \u0022HalfLifeDays\u0022: 123,\n  \u0022IsConfirmedZero\u0022: true,\n  \u0022LastReset\u0022: \u00222025-01-01\u0022,\n  \u0022RecentCycleCounts\u0022: [\n    {\n      \u0022CompletionTime\u0022: \u00222025-01-01\u0022,\n      \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n      \u0022ID\u0022: 123,\n      \u0022IsCompleted\u0022: true,\n      \u0022ResultStatus\u0022: 1,\n      \u0022SelectionBucket\u0022: 1,\n      \u0022UserTaskID\u0022: 123\n    }\n  ],\n  \u0022ResetSource\u0022: \u0022string\u0022,\n  \u0022SimilarProductsWithDeviations\u0022: [\n    {\n      \u0022ConfidenceAtReset\u0022: 123.456,\n      \u0022LastReset\u0022: \u00222025-01-01\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022ResetSource\u0022: \u0022string\u0022\n    }\n  ]\n}"
+    },
+    {
+      "name": "400",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022RequestValidationFailure\u0022,\n    \u0022Message\u0022: \u0022Validation of the request message failed: Field ABC has an invalid value for a Product.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    },
+    {
+      "name": "403",
+      "sample": "{\n  \u0022Error\u0022: {\n    \u0022Code\u0022: \u0022COVFEFE\u0022,\n    \u0022Type\u0022: \u0022Forbidden\u0022,\n    \u0022Message\u0022: \u0022You are not authorized to execute this request.\u0022,\n    \u0022RequestID\u0022: \u0022576b62dd71894e3281a4d84951f44e70\u0022\n  }\n}"
+    }
+  ],
+  "deprecation_notice": null,
+  "request_type_id": "B",
+  "response_type_id": "C",
+  "types": {
+    "B": [
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "This is the ID of a \u0060Product\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "F": [
+      {
+        "name": "AutomaticCorrectionQuantity",
+        "deprecation_notice": null,
+        "description": "The quantity the system corrected automatically because the stock would have gone negative. When this is set, the confidence dropped to zero regardless of the reason.",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Factor",
+        "deprecation_notice": null,
+        "description": "The factor the confidence was multiplied with for this mutation",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Quantity",
+        "deprecation_notice": null,
+        "description": "The quantity of the stock mutation",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Reason",
+        "deprecation_notice": null,
+        "description": "The reason for the stock mutation",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "G": [
+      {
+        "name": "CreatedByID",
+        "deprecation_notice": null,
+        "description": "The user that changed the confidence, or null when the system did\n\nThis is the ID of a \u0060User\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Factor",
+        "deprecation_notice": null,
+        "description": "The factor the confidence was multiplied with",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Remark",
+        "deprecation_notice": null,
+        "description": "Why the confidence was changed",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "What kind of change this was\nPossible values:\n\n* \u00601\u0060 - Manual",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "E": [
+      {
+        "name": "StockMutation",
+        "deprecation_notice": null,
+        "description": "Data for when it is a stockmutation entry",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "F",
+        "one_of": null
+      },
+      {
+        "name": "StoredEntry",
+        "deprecation_notice": null,
+        "description": "Data for when it is a stored entry: a change that couldn\u0027t be deduced from other data, so it was stored when it happened",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "ConfidenceAfter",
+        "deprecation_notice": null,
+        "description": "The confidence after the entry",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ConfidenceBefore",
+        "deprecation_notice": null,
+        "description": "The confidence before the entry",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "The data of the entry, only one of its properties will ever be set",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      },
+      {
+        "name": "Date",
+        "deprecation_notice": null,
+        "description": "The date of the entry",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "Code",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying this error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Data",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "any | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Message",
+        "deprecation_notice": null,
+        "description": "A human-readable message describing the error.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RequestID",
+        "deprecation_notice": null,
+        "description": "A unique ID identifying the request. Please provide this ID when contacting support.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "A short description of the error type.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
+      {
+        "name": "ExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the resolved external IDs.",
+        "type": "map[map[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsAsyncResultAvailable",
+        "deprecation_notice": null,
+        "description": "This is a flag indicating whether the async request is done. If it is \u0060null\u0060, it is not an async service. If it is \u0060false\u0060, the response is not yet available. Do not process the properties in that case. It is is \u0060true\u0060 the properties are filled with the result of the call.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnresolvedExternalIDs",
+        "deprecation_notice": null,
+        "description": "When using the \u0060ExternalIDs\u0060 mode, this will hold the external IDs we couldn\u0027t resolve.",
+        "type": "map[array[string]] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "CompletionTime",
+        "deprecation_notice": null,
+        "description": "When the cycle count was completed. Null while it isn\u0027t.",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CreationTime",
+        "deprecation_notice": null,
+        "description": "When the cycle count was created",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ID",
+        "deprecation_notice": null,
+        "description": "The ID of the cycle count\n\nThis is the ID of a \u0060ZonedCycleCount\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsCompleted",
+        "deprecation_notice": null,
+        "description": "Whether the cycle count is completed",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ResultStatus",
+        "deprecation_notice": null,
+        "description": "What the count found. \u0060None\u0060 until it is completed.\nFlags enum, combine any of the below values:\n\n* \u00600\u0060 - None\n* \u00601\u0060 - Correct\n* \u00602\u0060 - RecountRequested\n* \u00604\u0060 - Modified\n* \u00608\u0060 - Deviated",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SelectionBucket",
+        "deprecation_notice": null,
+        "description": "The failure mode the scoring engine created the count to catch. Null for counts the scoring engine didn\u0027t create.\nPossible values:\n\n* \u00601\u0060 - FalsePromise\n* \u00602\u0060 - MissedSale\n* \u00603\u0060 - Staleness",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserTaskID",
+        "deprecation_notice": null,
+        "description": "The user task the cycle count is carried out as\n\nThis is the ID of a \u0060UserTask\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "K": [
+      {
+        "name": "ConfidenceAtReset",
+        "deprecation_notice": null,
+        "description": "The confidence that count left behind. Below 1 because it found a deviation: the bigger the deviation, the lower.",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastReset",
+        "deprecation_notice": null,
+        "description": "When the similar product\u0027s last count reset its confidence",
+        "type": "datetime",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "The similar product\n\nThis is the ID of a \u0060Product\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ResetSource",
+        "deprecation_notice": null,
+        "description": "The count that found the deviation, for example \u0060ZCC:1234\u0060 for a cycle count or \u0060FSC:321\u0060 for a full stock count",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "C": [
+      {
+        "name": "Confidence",
+        "deprecation_notice": null,
+        "description": "The current confidence of the stock, including the decay since it was last reset. 0 when the product isn\u0027t tracked.",
+        "type": "float",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ConfidenceAtReset",
+        "deprecation_notice": null,
+        "description": "The confidence the reset left behind: the value every entry below starts replaying from. Null when the product isn\u0027t tracked.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ConfidenceBeforeDecay",
+        "deprecation_notice": null,
+        "description": "The confidence the entries below add up to, before decay over time is applied. Null when the product isn\u0027t tracked.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DaysOfCover",
+        "deprecation_notice": null,
+        "description": "How many days the sellable stock lasts at the pace the product sold over the sales window (\u0060CycleCount:V2:SalesRateWindowDays\u0060). Null when nothing sold in that window, and when the product isn\u0027t tracked.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DaysSinceReset",
+        "deprecation_notice": null,
+        "description": "How many days have passed since the last reset. Decay over time is applied over this period, unless the product is a confirmed zero. Null when the product isn\u0027t tracked.",
+        "type": "float | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Entries",
+        "deprecation_notice": null,
+        "description": "Every change since the last reset, oldest first, each with the confidence around it. The last entry ends at the confidence before decay over time is applied.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "D",
+        "one_of": null
+      },
+      {
+        "name": "Error",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "H",
+        "one_of": null
+      },
+      {
+        "name": "HalfLifeDays",
+        "deprecation_notice": null,
+        "description": "How many days it takes for decay over time to halve the confidence. Zero or less means the confidence doesn\u0027t decay over time. Null when the product isn\u0027t tracked.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "IsConfirmedZero",
+        "deprecation_notice": null,
+        "description": "Whether the product is a confirmed zero: enough counts in a row verified its empty shelf. A confirmed zero is parked, so no decay over time is applied to it. False when the product isn\u0027t tracked.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "LastReset",
+        "deprecation_notice": null,
+        "description": "When the confidence was last reset. Null when the product isn\u0027t tracked.",
+        "type": "datetime | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Metadata",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
+        "name": "RecentCycleCounts",
+        "deprecation_notice": null,
+        "description": "The most recent cycle counts of this product in this organization unit, newest first: the counting tasks that were, or weren\u0027t yet, done for it. Empty when the product isn\u0027t tracked.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
+        "one_of": null
+      },
+      {
+        "name": "ResetSource",
+        "deprecation_notice": null,
+        "description": "What last reset the confidence, for example \u0060ZCC:1234\u0060 for a cycle count, \u0060FSC:321\u0060 for a full stock count, \u0060INIT\u0060 when tracking started by itself or \u0060MANUAL\u0060. Null when the product isn\u0027t tracked.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SimilarProductsWithDeviations",
+        "deprecation_notice": null,
+        "description": "The products sharing this product\u0027s parent product whose last count found a deviation, most recently counted first. A deviation next to this product makes its own stock level less believable. Empty when the product has no parent product, and when it isn\u0027t tracked.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "K",
+        "one_of": null
+      }
+    ]
+  }
+}
