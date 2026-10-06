@@ -49,7 +49,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Breakdown\u0022: [\n    {\n      \u0022Key\u0022: \u0022string\u0022,\n      \u0022Label\u0022: \u0022string\u0022,\n      \u0022SharePercentage\u0022: 123.456,\n      \u0022Value\u0022: 123.456\n    }\n  ],\n  \u0022CalculationTime\u0022: \u00222025-01-01\u0022,\n  \u0022Comparison\u0022: {\n    \u0022Basis\u0022: 1,\n    \u0022DeltaPercentage\u0022: 123.456,\n    \u0022Kind\u0022: 1,\n    \u0022PeriodFrom\u0022: \u0022string\u0022,\n    \u0022PeriodTo\u0022: \u0022string\u0022,\n    \u0022Value\u0022: 123.456\n  },\n  \u0022ComponentType\u0022: 3,\n  \u0022DataProperties\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022EmployeeDeepDive\u0022: true,\n  \u0022Meta\u0022: {\n    \u0022AsOf\u0022: \u00222025-01-01\u0022,\n    \u0022Coverage\u0022: {\n      \u0022OrganizationUnitsWithDataCount\u0022: 123,\n      \u0022RequestedOrganizationUnitCount\u0022: 123\n    },\n    \u0022ExpectedReadyAt\u0022: \u00222025-01-01\u0022,\n    \u0022Grain\u0022: 1,\n    \u0022RecommendedRefreshSeconds\u0022: 123,\n    \u0022Semantics\u0022: 1,\n    \u0022Stale\u0022: true\n  },\n  \u0022Series\u0022: [\n    {\n      \u0022Bucket\u0022: \u0022string\u0022,\n      \u0022Value\u0022: 123.456\n    }\n  ],\n  \u0022Status\u0022: 1,\n  \u0022TargetValue\u0022: 123.456,\n  \u0022TimeFrame\u0022: 2,\n  \u0022Unit\u0022: 2,\n  \u0022Value\u0022: 123.456,\n  \u0022VisualizationType\u0022: 1\n}"
+      "sample": "{\n  \u0022Breakdown\u0022: [\n    {\n      \u0022Key\u0022: \u0022string\u0022,\n      \u0022Label\u0022: \u0022string\u0022,\n      \u0022SharePercentage\u0022: 123.456,\n      \u0022Value\u0022: 123.456\n    }\n  ],\n  \u0022CalculationTime\u0022: \u00222025-01-01\u0022,\n  \u0022Comparison\u0022: {\n    \u0022Basis\u0022: 1,\n    \u0022DeltaPercentage\u0022: 123.456,\n    \u0022Kind\u0022: 1,\n    \u0022PeriodFrom\u0022: \u0022string\u0022,\n    \u0022PeriodTo\u0022: \u0022string\u0022,\n    \u0022UnavailableReason\u0022: 1,\n    \u0022Value\u0022: 123.456\n  },\n  \u0022ComponentType\u0022: 3,\n  \u0022DataProperties\u0022: {\n    \u0022key\u0022: \u0022any valid json value\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022EmployeeDeepDive\u0022: true,\n  \u0022Meta\u0022: {\n    \u0022AsOf\u0022: \u00222025-01-01\u0022,\n    \u0022Coverage\u0022: {\n      \u0022OrganizationUnitsWithDataCount\u0022: 123,\n      \u0022RequestedOrganizationUnitCount\u0022: 123\n    },\n    \u0022ExpectedReadyAt\u0022: \u00222025-01-01\u0022,\n    \u0022Grain\u0022: 1,\n    \u0022RecommendedRefreshSeconds\u0022: 123,\n    \u0022Semantics\u0022: 1,\n    \u0022Stale\u0022: true\n  },\n  \u0022Series\u0022: [\n    {\n      \u0022Bucket\u0022: \u0022string\u0022,\n      \u0022Value\u0022: 123.456\n    }\n  ],\n  \u0022Status\u0022: 1,\n  \u0022TargetValue\u0022: 123.456,\n  \u0022TimeFrame\u0022: 2,\n  \u0022Unit\u0022: 2,\n  \u0022Value\u0022: 123.456,\n  \u0022VisualizationType\u0022: 1\n}"
     },
     {
       "name": "400",
@@ -191,6 +191,15 @@
         "deprecation_notice": null,
         "description": "The calendar day this comparison period ends, in the organization unit\u0027s time zone, as an ISO date.",
         "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UnavailableReason",
+        "deprecation_notice": null,
+        "description": "Why Value or DeltaPercentage is null: NoDataForPriorPeriod, PriorPeriodUndefined or PriorPeriodIsZero. Null when the BI API does not send one. This is the case when both are present, and also when the component\u0027s own value has no amount (no data). Check the component\u0027s value first. Unknown when the BI API sends a reason this EVA version does not know yet.\nPossible values:\n\n* \u00600\u0060 - Unknown\n* \u00601\u0060 - NoDataForPriorPeriod\n* \u00602\u0060 - PriorPeriodUndefined\n* \u00603\u0060 - PriorPeriodIsZero",
+        "type": "integer | null",
         "required": false,
         "properties_id": null,
         "one_of": null
