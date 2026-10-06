@@ -66700,6 +66700,26 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Cases.ListCasesSort": {
+      "typename": "ListCasesSort",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "CreationTime": {
+          "value": 1,
+          "extends": []
+        },
+        "ID": {
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.Cases.ListCaseStatusesFilter": {
       "typename": "ListCaseStatusesFilter",
       "assembly": "EVA.Core",
@@ -137649,6 +137669,15 @@
           },
           "allowedValues": []
         },
+        "DeltaPercentage": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "description": "How much the component's top-level Value differs from this comparison's Value, as a percentage (-76.17 means 76.17% lower). Null when the BI API does not send one, for example when the comparison Value is 0.",
+          "allowedValues": []
+        },
         "Kind": {
           "type": {
             "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonKind",
@@ -137672,6 +137701,15 @@
             "nullable": true
           },
           "description": "The calendar day this comparison period ends, in the organization unit's time zone, as an ISO date.",
+          "allowedValues": []
+        },
+        "Value": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The metric's value over this comparison period, in the same unit as the component's top-level Value. Null when the BI API does not send one.",
           "allowedValues": []
         }
       },
@@ -142767,13 +142805,18 @@
       },
       "typeArguments": [],
       "typeDependencies": [
+        "EVA.Core.Cases.ListCasesSort",
         "EVA.Core.Cases.ListCasesFilter",
         "EVA.Core.Management.Cases.ListCasesResponse",
-        "EVA.Core.PagedRequestMessage`2"
+        "EVA.Core.SortablePagedRequestMessage`3"
       ],
       "extends": {
-        "ref": "EVA.Core.PagedRequestMessage`2",
+        "ref": "EVA.Core.SortablePagedRequestMessage`3",
         "args": [
+          {
+            "ref": "EVA.Core.Cases.ListCasesSort",
+            "args": []
+          },
           {
             "ref": "EVA.Core.Cases.ListCasesFilter",
             "args": [],
