@@ -63654,6 +63654,34 @@
         }
       }
     },
+    "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonUnavailableReason": {
+      "typename": "BIDashboardComponentComparisonUnavailableReason",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "NoDataForPriorPeriod": {
+          "value": 1,
+          "extends": []
+        },
+        "PriorPeriodIsZero": {
+          "value": 3,
+          "extends": []
+        },
+        "PriorPeriodUndefined": {
+          "value": 2,
+          "extends": []
+        },
+        "Unknown": {
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.BIDashboard.Models.BIDashboardComponentDataGrain": {
       "typename": "BIDashboardComponentDataGrain",
       "assembly": "EVA.Core",
@@ -137659,7 +137687,8 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonKind",
-        "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonBasis"
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonBasis",
+        "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonUnavailableReason"
       ],
       "properties": {
         "Basis": {
@@ -137701,6 +137730,15 @@
             "nullable": true
           },
           "description": "The calendar day this comparison period ends, in the organization unit's time zone, as an ISO date.",
+          "allowedValues": []
+        },
+        "UnavailableReason": {
+          "type": {
+            "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentComparisonUnavailableReason",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Why Value or DeltaPercentage is null: NoDataForPriorPeriod, PriorPeriodUndefined or PriorPeriodIsZero. Null when the BI API does not send one. This is the case when both are present, and also when the component's own value has no amount (no data). Check the component's value first. Unknown when the BI API sends a reason this EVA version does not know yet.",
           "allowedValues": []
         },
         "Value": {
