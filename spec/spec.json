@@ -27318,6 +27318,23 @@
       }
     },
     {
+      "name": "ListRelatedInvoiceExports",
+      "assembly": "EVA.Core",
+      "path": "/message/ListRelatedInvoiceExports",
+      "method": "POST",
+      "requestType": "EVA.Core.Invoices.ListRelatedInvoiceExports",
+      "responseType": "EVA.Core.Invoices.ListRelatedInvoiceExportsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "InvoiceExports",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "ListRelatedOrderFulfillmentLines",
       "assembly": "EVA.Core",
       "path": "/message/ListRelatedOrderFulfillmentLines",
@@ -120207,6 +120224,69 @@
       "properties": {},
       "enumValues": {}
     },
+    "EVA.Core.Invoices.ListRelatedInvoiceExports": {
+      "typename": "ListRelatedInvoiceExports",
+      "assembly": "EVA.Core",
+      "description": "Lists the invoice exports related to the given invoice. Relations are resolved through the orders the invoice was billed against, including their returns and the orders they return, so corrections, cancellations, replacements and return invoices are all returned. The exports of the given invoice itself are excluded. Rows carry the same fields as `ListInvoiceExports2`, plus a `RelationType`.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Invoices.ListRelatedInvoiceExportsResponse",
+        "EVA.Core.PagedRequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedRequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Invoices.ListRelatedInvoiceExportsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "InvoiceID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The invoice to list related invoice exports for.",
+          "datamodel": {
+            "name": "Invoice",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Invoices.ListRelatedInvoiceExportsResponse": {
+      "typename": "ListRelatedInvoiceExportsResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Invoicing.RelatedInvoiceExportDto",
+        "EVA.Core.PagedResponseMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedResponseMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Invoicing.RelatedInvoiceExportDto",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
     "EVA.Core.Invoices.ListShipmentLinesToInvoice": {
       "typename": "ListShipmentLinesToInvoice",
       "assembly": "EVA.Core",
@@ -123845,6 +123925,34 @@
         }
       }
     },
+    "EVA.Core.Invoicing.InvoiceRelationType": {
+      "typename": "InvoiceRelationType",
+      "assembly": "EVA.Core",
+      "description": "How a related invoice relates to the invoice it was requested for.",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Credit": {
+          "value": 1,
+          "extends": [],
+          "description": "A credit note, either voiding a replaced invoice or invoicing a return."
+        },
+        "Original": {
+          "extends": [],
+          "description": "A regular debit invoice that does not replace another invoice."
+        },
+        "Replacement": {
+          "value": 2,
+          "extends": [],
+          "description": "A debit invoice issued to replace an earlier one."
+        }
+      }
+    },
     "EVA.Core.Invoicing.InvoiceShipment": {
       "typename": "InvoiceShipment",
       "assembly": "EVA.Core",
@@ -125533,6 +125641,33 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Invoicing.RelatedInvoiceExportDto": {
+      "typename": "RelatedInvoiceExportDto",
+      "assembly": "EVA.Core",
+      "description": "An invoice export returned by `ListRelatedInvoiceExports`. Carries the same fields as `ListInvoiceExports2` so the two can be rendered by the same client code, plus how the export's invoice relates to the one that was asked for.",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Invoicing.ListInvoiceExports2Dto",
+        "EVA.Core.Invoicing.InvoiceRelationType"
+      ],
+      "extends": {
+        "ref": "EVA.Core.Invoicing.ListInvoiceExports2Dto",
+        "args": []
+      },
+      "properties": {
+        "RelationType": {
+          "type": {
+            "ref": "EVA.Core.Invoicing.InvoiceRelationType",
+            "args": []
           },
           "allowedValues": []
         }
