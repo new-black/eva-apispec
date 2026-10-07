@@ -78505,6 +78505,35 @@
         }
       }
     },
+    "EVA.Core.DataModels.VatRegime": {
+      "typename": "VatRegime",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "BasicExemption": {
+          "value": 3,
+          "extends": []
+        },
+        "NormalMonthlyActual": {
+          "extends": []
+        },
+        "NormalQuarterlyActual": {
+          "value": 1,
+          "extends": []
+        },
+        "Simplified": {
+          "value": 2,
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.DataModels.VisibilityType": {
       "typename": "VisibilityType",
       "assembly": "EVA.Core",
@@ -145888,6 +145917,7 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
+        "EVA.Core.DataModels.VatRegime",
         "EVA.Core.Addresses.AddressDataDto",
         "EVA.Core.DataModels.CustomFieldKeyValue"
       ],
@@ -146056,6 +146086,14 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "VatRegime": {
+          "type": {
+            "ref": "EVA.Core.DataModels.VatRegime",
+            "args": []
+          },
+          "description": "The VAT regime the company files under. Defaults to Normal Monthly Actual. Required for French companies, which report under the regime that was active when the figures were recorded.",
           "allowedValues": []
         }
       },
@@ -146778,6 +146816,7 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.ResponseMessage",
+        "EVA.Core.DataModels.VatRegime",
         "EVA.Core.Addresses.AddressDto",
         "EVA.Core.DataModels.CustomFieldValueWithOptions"
       ],
@@ -146959,6 +146998,20 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "VatRegime": {
+          "type": {
+            "ref": "EVA.Core.DataModels.VatRegime",
+            "args": []
+          },
+          "description": "The VAT regime the company files under. Every company has one; companies that were never configured read as Normal Monthly Actual.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
           },
           "allowedValues": []
         }
@@ -148344,6 +148397,7 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
+        "EVA.Core.DataModels.VatRegime",
         "EVA.Core.Addresses.AddressDataDto",
         "EVA.Core.DataModels.CustomFieldKeyValue"
       ],
@@ -148540,6 +148594,15 @@
             "args": [],
             "nullable": true
           },
+          "skippable": true,
+          "allowedValues": []
+        },
+        "VatRegime": {
+          "type": {
+            "ref": "EVA.Core.DataModels.VatRegime",
+            "args": []
+          },
+          "description": "The VAT regime the company files under. Required for French companies, which report under the regime that was active when the figures were recorded.",
           "skippable": true,
           "allowedValues": []
         }
