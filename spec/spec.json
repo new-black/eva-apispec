@@ -46109,6 +46109,21 @@
           },
           "allowedValues": []
         },
+        "ScimUserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The API user that manages the accounts of this provider through the /scim endpoint.\n\nWhen set, only this API user may read, (de)activate or delete accounts bound to this provider, and this API user may in turn only manage accounts bound to its own provider(s) or\nto no provider at all. When not set, any API user with the OpenIDProvider functionality may manage the accounts of this provider. Can only be set on a provider without a parent.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "UsernameClaim": {
           "type": {
             "ref": "string",
@@ -46506,6 +46521,20 @@
           },
           "allowedValues": []
         },
+        "ScimUserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "UsernameClaim": {
           "type": {
             "ref": "string",
@@ -46824,6 +46853,20 @@
           },
           "allowedValues": []
         },
+        "ScimUserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "UsernameClaim": {
           "type": {
             "ref": "string",
@@ -47107,6 +47150,22 @@
           "skippable": true,
           "datamodel": {
             "name": "Provider",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ScimUserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The API user that manages the accounts of this provider through the /scim endpoint.\n\nWhen set, only this API user may read, (de)activate or delete accounts bound to this provider, and this API user may in turn only manage accounts bound to its own provider(s) or\nto no provider at all. When not set, any API user with the OpenIDProvider functionality may manage the accounts of this provider. Can only be set on a provider without a parent.",
+          "skippable": true,
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
             "isEvaID": true
           },
           "allowedValues": []
@@ -476680,9 +476739,161 @@
     },
     {
       "name": "FinancialPeriodExport:EndpointNotConfigured",
-      "message": "No endpoint configured for period ledger export.",
+      "message": "No endpoint configured for period ledger export (period {0}).",
       "module": "EVA.Core",
-      "arguments": []
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "FinancialPeriodExport:EndpointDisabled",
+      "message": "Period ledger export for period {0} failed: endpoint configuration {1} ('{2}') is disabled. Re-enable it or point the organization unit to an enabled configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "PeriodID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
+    },
+    {
+      "name": "FinancialPeriodExport:EndpointDeleted",
+      "message": "Period ledger export for period {0} failed: endpoint configuration {1} ('{2}') was deleted. Point the organization unit to an existing, enabled configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "PeriodID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
+    },
+    {
+      "name": "FinancialPeriodExport:EndpointUnknown",
+      "message": "Period ledger export for period {0} failed: endpoint configuration {1} does not exist. Point the organization unit to an existing, enabled configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "PeriodID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        }
+      ]
+    },
+    {
+      "name": "FinancialPeriodExport:EndpointInError",
+      "message": "Period ledger export for period {0} failed: endpoint configuration {1} ('{2}') is in error status. Endpoint reported: '{3}'. Fix the endpoint configuration or point the organization unit to a working configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "PeriodID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ErrorReason"
+        }
+      ]
+    },
+    {
+      "name": "FinancialPeriodExport:EndpointInErrorNoReason",
+      "message": "Period ledger export for period {0} failed: endpoint configuration {1} ('{2}') is in error status (no reason recorded). Fix the endpoint configuration or point the organization unit to a working configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "PeriodID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
     },
     {
       "name": "FinancialPeriodExport:LedgerExportFailed",
@@ -485123,6 +485334,28 @@
       "arguments": []
     },
     {
+      "name": "EndpointConfiguration:ClientUnavailable",
+      "message": "Could not create an HTTP client for endpoint configuration {0} ('{1}'), although the latest configuration is enabled. Retry the job; if the problem persists, inspect the endpoint configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
+    },
+    {
       "name": "ConditionHandler:InvalidCondition",
       "message": "Condition {0} (id {1}) for {2} (id {3}) was malformed or its build-up resulted in an exception.",
       "module": "EVA.Core",
@@ -487445,10 +487678,631 @@
       "arguments": []
     },
     {
+      "name": "rts_order_exporter:endpoint_error",
+      "message": "No return-to-supplier export endpoint is assigned to warehouse '{0}' for order {1}: set ReturnToSupplierOrderExporter:EndpointConfigurationID for this warehouse.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        }
+      ]
+    },
+    {
+      "name": "rts_order_exporter:endpoint_disabled",
+      "message": "Return-to-supplier export for order {1} via warehouse '{0}' failed: endpoint configuration {2} ('{3}') is disabled. Re-enable it or point the warehouse to an enabled configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
+    },
+    {
+      "name": "rts_order_exporter:endpoint_deleted",
+      "message": "Return-to-supplier export for order {1} via warehouse '{0}' failed: endpoint configuration {2} ('{3}') was deleted. Point the warehouse to an existing, enabled configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
+    },
+    {
+      "name": "rts_order_exporter:endpoint_unknown",
+      "message": "Return-to-supplier export for order {1} via warehouse '{0}' failed: endpoint configuration {2} does not exist. Point the warehouse to an existing, enabled configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        }
+      ]
+    },
+    {
+      "name": "rts_order_exporter:endpoint_in_error",
+      "message": "Return-to-supplier export for order {1} via warehouse '{0}' failed: endpoint configuration {2} ('{3}') is in error status. Endpoint reported: '{4}'. Fix the endpoint configuration or point the warehouse to a working configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ErrorReason"
+        }
+      ]
+    },
+    {
+      "name": "rts_order_exporter:endpoint_in_error_no_reason",
+      "message": "Return-to-supplier export for order {1} via warehouse '{0}' failed: endpoint configuration {2} ('{3}') is in error status (no reason recorded). Fix the endpoint configuration or point the warehouse to a working configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
+    },
+    {
       "name": "WarehouseOrderExporter:InvalidResponse",
       "message": "Endpoint did not respond with a 200 OK, body [ACK]",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "warehouse_order_exporter:endpoint_error",
+      "message": "No warehouse export endpoint is assigned to warehouse '{0}' for order {1}: set WarehouseOrderExporter:EndpointConfigurationID for this warehouse.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        }
+      ]
+    },
+    {
+      "name": "warehouse_order_exporter:endpoint_disabled",
+      "message": "Warehouse export for order {1} via warehouse '{0}' failed: endpoint configuration {2} ('{3}') is disabled. Re-enable it or point the warehouse to an enabled configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
+    },
+    {
+      "name": "warehouse_order_exporter:endpoint_deleted",
+      "message": "Warehouse export for order {1} via warehouse '{0}' failed: endpoint configuration {2} ('{3}') was deleted. Point the warehouse to an existing, enabled configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
+    },
+    {
+      "name": "warehouse_order_exporter:endpoint_unknown",
+      "message": "Warehouse export for order {1} via warehouse '{0}' failed: endpoint configuration {2} does not exist. Point the warehouse to an existing, enabled configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        }
+      ]
+    },
+    {
+      "name": "warehouse_order_exporter:endpoint_in_error",
+      "message": "Warehouse export for order {1} via warehouse '{0}' failed: endpoint configuration {2} ('{3}') is in error status. Endpoint reported: '{4}'. Fix the endpoint configuration or point the warehouse to a working configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ErrorReason"
+        }
+      ]
+    },
+    {
+      "name": "warehouse_order_exporter:endpoint_in_error_no_reason",
+      "message": "Warehouse export for order {1} via warehouse '{0}' failed: endpoint configuration {2} ('{3}') is in error status (no reason recorded). Fix the endpoint configuration or point the warehouse to a working configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
+    },
+    {
+      "name": "warehouse_return_order_exporter:endpoint_error",
+      "message": "No warehouse return export endpoint is assigned to warehouse '{0}' for return order {1}: set WarehouseOrderExporter:EndpointConfigurationID for this warehouse.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ReturnOrderID"
+        }
+      ]
+    },
+    {
+      "name": "warehouse_return_order_exporter:endpoint_disabled",
+      "message": "Warehouse return export for return order {1} via warehouse '{0}' failed: endpoint configuration {2} ('{3}') is disabled. Re-enable it or point the warehouse to an enabled configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ReturnOrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
+    },
+    {
+      "name": "warehouse_return_order_exporter:endpoint_deleted",
+      "message": "Warehouse return export for return order {1} via warehouse '{0}' failed: endpoint configuration {2} ('{3}') was deleted. Point the warehouse to an existing, enabled configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ReturnOrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
+    },
+    {
+      "name": "warehouse_return_order_exporter:endpoint_unknown",
+      "message": "Warehouse return export for return order {1} via warehouse '{0}' failed: endpoint configuration {2} does not exist. Point the warehouse to an existing, enabled configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ReturnOrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        }
+      ]
+    },
+    {
+      "name": "warehouse_return_order_exporter:endpoint_in_error",
+      "message": "Warehouse return export for return order {1} via warehouse '{0}' failed: endpoint configuration {2} ('{3}') is in error status. Endpoint reported: '{4}'. Fix the endpoint configuration or point the warehouse to a working configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ReturnOrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ErrorReason"
+        }
+      ]
+    },
+    {
+      "name": "warehouse_return_order_exporter:endpoint_in_error_no_reason",
+      "message": "Warehouse return export for return order {1} via warehouse '{0}' failed: endpoint configuration {2} ('{3}') is in error status (no reason recorded). Fix the endpoint configuration or point the warehouse to a working configuration.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "BackendID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ReturnOrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ConfigID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ConfigName"
+        }
+      ]
     },
     {
       "name": "OrderDocuments:NotAllowed",
@@ -494747,6 +495601,18 @@
     {
       "name": "OpenIDProviderServices:InvalidUserType",
       "message": "An OpenID provider's UserType must be exactly Customer or Employee.",
+      "module": "EVA.Authentication.OpenID",
+      "arguments": []
+    },
+    {
+      "name": "OpenIDProviderServices:ChildScimUserID",
+      "message": "A provider linked to a parent cannot have a SCIM user, set it on the parent provider instead.",
+      "module": "EVA.Authentication.OpenID",
+      "arguments": []
+    },
+    {
+      "name": "OpenIDProviderServices:InvalidScimUserID",
+      "message": "The SCIM user must be an existing API user.",
       "module": "EVA.Authentication.OpenID",
       "arguments": []
     },
