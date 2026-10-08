@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022SourceIdentifier\u0022: \u0022string\u0022,\n  \u0022SubscriptionID\u0022: 123,\n  \u0022UpdateUserIdentifierWhenChanged\u0022: true,\n  \u0022UserID\u0022: 123,\n  \u0022UserIdentifier\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022Channels\u0022: [\n    {\n      \u0022ChannelID\u0022: 123,\n      \u0022Enabled\u0022: true\n    }\n  ],\n  \u0022SourceIdentifier\u0022: \u0022string\u0022,\n  \u0022SubscriptionID\u0022: 123,\n  \u0022UpdateUserIdentifierWhenChanged\u0022: true,\n  \u0022UserID\u0022: 123,\n  \u0022UserIdentifier\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022SourceIdentifier\u0022: \u0022string\u0022,\n  \u0022SubscriptionID\u0022: 123,\n  \u0022UpdateUserIdentifierWhenChanged\u0022: true,\n  \u0022UserID\u0022: 123,\n  \u0022UserIdentifier\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SubscribeUserOptInSubscription",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Channels\u0022: [\n    {\n      \u0022ChannelID\u0022: 123,\n      \u0022Enabled\u0022: true\n    }\n  ],\n  \u0022SourceIdentifier\u0022: \u0022string\u0022,\n  \u0022SubscriptionID\u0022: 123,\n  \u0022UpdateUserIdentifierWhenChanged\u0022: true,\n  \u0022UserID\u0022: 123,\n  \u0022UserIdentifier\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/SubscribeUserOptInSubscription",
       "syntax": "bash"
     }
   ],
@@ -69,9 +69,38 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "D",
   "types": {
+    "C": [
+      {
+        "name": "ChannelID",
+        "deprecation_notice": null,
+        "description": "The channel to enable or disable for this user.\n\nThis is the ID of a \u0060MessageChannel\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Enabled",
+        "deprecation_notice": null,
+        "description": "Whether the user wants to be reached on this channel for this opt-in.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
+      {
+        "name": "Channels",
+        "deprecation_notice": null,
+        "description": "The channels this user wants to be reached on for this opt-in, each with whether it is enabled. Send every channel the opt-in offers.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": null
+      },
       {
         "name": "SourceIdentifier",
         "deprecation_notice": null,
@@ -118,7 +147,7 @@
         "one_of": null
       }
     ],
-    "D": [
+    "E": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -165,7 +194,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -194,14 +223,14 @@
         "one_of": null
       }
     ],
-    "C": [
+    "D": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "E",
         "one_of": null
       },
       {
@@ -219,7 +248,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "F",
         "one_of": null
       },
       {

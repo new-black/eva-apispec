@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022Default\u0022: true,\n  \u0022Enabled\u0022: true,\n  \u0022Hidden\u0022: true,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022Preferred\u0022: true,\n  \u0022Priority\u0022: 123,\n  \u0022SubscriptionConfirmation\u0022: 1,\n  \u0022SubscriptionID\u0022: 123\n}",
+      "sample": "{\n  \u0022Channels\u0022: [\n    123\n  ],\n  \u0022Default\u0022: true,\n  \u0022Enabled\u0022: true,\n  \u0022Hidden\u0022: true,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022Preferred\u0022: true,\n  \u0022Priority\u0022: 123,\n  \u0022SubscriptionConfirmation\u0022: 1,\n  \u0022SubscriptionID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Default\u0022: true,\n  \u0022Enabled\u0022: true,\n  \u0022Hidden\u0022: true,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022Preferred\u0022: true,\n  \u0022Priority\u0022: 123,\n  \u0022SubscriptionConfirmation\u0022: 1,\n  \u0022SubscriptionID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateOptInSubscriptionOrganizationUnitSet",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022Channels\u0022: [\n    123\n  ],\n  \u0022Default\u0022: true,\n  \u0022Enabled\u0022: true,\n  \u0022Hidden\u0022: true,\n  \u0022OrganizationUnitSetID\u0022: 123,\n  \u0022Preferred\u0022: true,\n  \u0022Priority\u0022: 123,\n  \u0022SubscriptionConfirmation\u0022: 1,\n  \u0022SubscriptionID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CreateOptInSubscriptionOrganizationUnitSet",
       "syntax": "bash"
     }
   ],
@@ -65,6 +65,15 @@
   "response_type_id": "C",
   "types": {
     "B": [
+      {
+        "name": "Channels",
+        "deprecation_notice": null,
+        "description": "The channels this opt-in offers on this organization unit set. A customer can enable or disable each of these channels when subscribing. Once an opt-in offers channels, customer messages over a channel are only sent to customers who enabled it, so existing subscribers cannot be messaged until they have made their choice; an opt-in without channels keeps consenting on the subscription alone.\n\nThis is the ID of a \u0060MessageChannel\u0060",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "Default",
         "deprecation_notice": null,
