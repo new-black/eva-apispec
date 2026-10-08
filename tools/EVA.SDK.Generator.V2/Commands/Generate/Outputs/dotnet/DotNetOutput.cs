@@ -101,7 +101,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
 
     if (ctx.Options.AddEvaClient)
     {
-      var content = ManifestResourceHelpers.GetResource("dotnet.Resources.EVAClient.cs")!.Replace("<<API_VERSION>>", ctx.Input.ApiVersion.ToString());
+      var content = EVAClientResource(ctx.Options, ctx.Input.ApiVersion.ToString());
 
       await ctx.Writer.WriteFileAsync("EVAClient.cs", content);
     }
@@ -118,7 +118,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       var sb = new IndentedStringBuilder(2);
 
       sb.WriteLine("#pragma warning disable CS8618");
-      sb.WriteLine("using Newtonsoft.Json.Linq;");
+      sb.WriteLine(JsonTypesUsing(ctx.Options));
       sb.WriteLine();
 
       sb.WriteLine($"namespace {actualNamespace};");
@@ -140,7 +140,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       var sb = new IndentedStringBuilder(2);
 
       sb.WriteLine("#pragma warning disable CS8618");
-      sb.WriteLine("using Newtonsoft.Json.Linq;");
+      sb.WriteLine(JsonTypesUsing(ctx.Options));
       sb.WriteLine();
 
       sb.WriteLine($"namespace {actualNamespace};");
@@ -160,7 +160,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       var sb = new IndentedStringBuilder(2);
 
       sb.WriteLine("#pragma warning disable CS8618");
-      sb.WriteLine("using Newtonsoft.Json.Linq;");
+      sb.WriteLine(JsonTypesUsing(ctx.Options));
 
       sb.WriteLine();
       sb.WriteLine($"namespace {actualNamespace};");
@@ -201,21 +201,40 @@ internal class DotNetOutput : IOutput<DotNetOptions>
 
     if (ctx.Options.GenerateDynamicData)
     {
+      var resource = ctx.Options.UseSystemTextJson
+        ? "dotnet.Resources.EVA.SDK.Core.DynamicData.SystemTextJson.cs"
+        : "dotnet.Resources.EVA.SDK.Core.DynamicData.NewtonsoftJson.cs";
+      var fileName = ctx.Options.UseSystemTextJson
+        ? "EVA.SDK.DynamicData.SystemTextJson.cs"
+        : "EVA.SDK.DynamicData.NewtonsoftJson.cs";
+
       var sb = new IndentedStringBuilder(2);
-      sb.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.DynamicData.NewtonsoftJson.cs");
-      await ctx.Writer.WriteFileAsync("EVA.SDK.DynamicData.NewtonsoftJson.cs", sb.ToString());
+      sb.WriteManifestResourceStream(resource);
+      await ctx.Writer.WriteFileAsync(fileName, sb.ToString());
     }
 
     // Serialization specific data
     {
+      var resource = ctx.Options.UseSystemTextJson
+        ? "dotnet.Resources.EVA.SDK.Core.SystemTextJson.cs"
+        : "dotnet.Resources.EVA.SDK.Core.NewtonsoftJson.cs";
+      var fileName = ctx.Options.UseSystemTextJson
+        ? "EVA.SDK.SystemTextJson.cs"
+        : "EVA.SDK.NewtonsoftJson.cs";
+
       var sb = new IndentedStringBuilder(2);
-      sb.WriteManifestResourceStream("dotnet.Resources.EVA.SDK.Core.NewtonsoftJson.cs");
-      await ctx.Writer.WriteFileAsync("EVA.SDK.NewtonsoftJson.cs", sb.ToString());
+      sb.WriteManifestResourceStream(resource);
+      await ctx.Writer.WriteFileAsync(fileName, sb.ToString());
     }
 
     // Extensions
     {
       var sb = new IndentedStringBuilder(2);
+      if (ctx.Options.UseSystemTextJson)
+      {
+        sb.WriteLine("using System.Text.Json;");
+        sb.WriteLine();
+      }
       sb.WriteLine("namespace EVA.SDK;");
       WriteExtensionMethods(ctx, sb, state);
       await ctx.Writer.WriteFileAsync("EVA.SDK.Extensions.cs", sb.ToString());
@@ -226,10 +245,14 @@ internal class DotNetOutput : IOutput<DotNetOptions>
   {
     if (ctx.Options.GenerateDynamicData)
     {
+      var converterType = ctx.Options.UseSystemTextJson
+        ? "System.Text.Json.Serialization.JsonConverter"
+        : "Newtonsoft.Json.JsonConverter";
+
       o.WriteLine("internal static class DynamicDataConverters");
       using (o.BracedIndentation)
       {
-        o.WriteLine("internal static readonly Newtonsoft.Json.JsonConverter[] Converters = new Newtonsoft.Json.JsonConverter[]");
+        o.WriteLine($"internal static readonly {converterType}[] Converters = new {converterType}[]");
         using (o.BracedIndentation)
         {
           foreach (var typeName in ctx.Input.EnumerateAllTypeReferences()
@@ -258,7 +281,11 @@ internal class DotNetOutput : IOutput<DotNetOptions>
             o.WriteLine($"public static {fullTypeName}? To{ctx.Input.Types[classID].TypeName}(this EVA.SDK.DynamicData<{opt}>? obj)");
             using (o.BracedIndentation)
             {
-              o.WriteLine($"return obj?.Data.ToObject<{fullTypeName}>();");
+              o.WriteLine(
+                ctx.Options.UseSystemTextJson
+                  ? $"return obj?.Data.Deserialize<{fullTypeName}>();"
+                  : $"return obj?.Data.ToObject<{fullTypeName}>();"
+              );
             }
           }
         }
@@ -379,7 +406,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     o.WriteLine($"public partial class {localName} : EVA.SDK.Core.IResponseType<{fullResponseName}>");
     using (o.BracedIndentation)
     {
-      o.WriteLine($"[{DotNetNames.JsonIgnore}]");
+      o.WriteLine($"[{JsonIgnoreAttribute(ctx.Options)}]");
       o.WriteLine($"public string Path => \"{service.Path.TrimStart('/')}\";");
       o.WriteLine();
       WriteTypeBody(service.RequestTypeID, requestType, o, TypeContext.Request, ctx, allResponseTypes, state);
@@ -440,10 +467,19 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       if (prop.Value.Skippable)
       {
         o.WriteLine("[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]");
-        o.WriteLine($"public bool ShouldSerialize{prop.Key}() => {prop.Key}.IsValuePresent;");
+        if (ctx.Options.UseSystemTextJson)
+        {
+          o.WriteLine(
+            "[System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]"
+          );
+        }
+        else
+        {
+          o.WriteLine($"public bool ShouldSerialize{prop.Key}() => {prop.Key}.IsValuePresent;");
+        }
 
         var nameForConverter = GetFullName(prop.Value.Type, context, ctx, state);
-        o.WriteLine($"[Newtonsoft.Json.JsonConverter(typeof(EVA.SDK.MaybeConverter<{nameForConverter}>))]");
+        o.WriteLine($"[{JsonConverterAttribute(ctx.Options)}(typeof(EVA.SDK.MaybeConverter<{nameForConverter}>))]");
       }
 
       var fullPropName = GetFullPropName(context, ctx, prop.Value, state);
@@ -471,6 +507,7 @@ internal class DotNetOutput : IOutput<DotNetOptions>
   private static string GetFullName(TypeReference r, TypeContext context, OutputContext<DotNetOptions> ctx, GenerationState state)
   {
     var n = r.Nullable ? "?" : string.Empty;
+    var stj = ctx.Options.UseSystemTextJson;
 
     if (r.Name == ApiSpecConsts.Guid) return $"System.Guid{n}";
     if (r.Name == ApiSpecConsts.String) return $"string{n}";
@@ -515,12 +552,17 @@ internal class DotNetOutput : IOutput<DotNetOptions>
     // Special case for type IDictionary<string, object?>
     if (r is { Name: ApiSpecConsts.Specials.Map, Arguments: [{ Name: ApiSpecConsts.String }, { Name: ApiSpecConsts.Any }] })
     {
+      if (stj)
+      {
+        return (context & TypeContext.Request) != 0 ? $"IDictionary<string, JsonNode>{n}" : $"JsonObject{n}";
+      }
+
       return (context & TypeContext.Request) != 0 ? $"IDictionary<string, JToken>{n}" : $"JObject{n}";
     }
 
     if (r is { Name: ApiSpecConsts.Specials.Map, Arguments: [{ Name: ApiSpecConsts.Int64 }, { Name: ApiSpecConsts.Any }] })
     {
-      return $"IDictionary<long, JToken>{n}";
+      return stj ? $"IDictionary<long, JsonNode>{n}" : $"IDictionary<long, JToken>{n}";
     }
 
     if (r.Name == ApiSpecConsts.Specials.Map)
@@ -528,9 +570,9 @@ internal class DotNetOutput : IOutput<DotNetOptions>
       return $"IDictionary<{GetFullName(r.Arguments[0].CloneAsNotNull(), context, ctx, state)},{GetFullName(r.Arguments[1], context, ctx, state)}>{n}";
     }
 
-    if (r.Name == ApiSpecConsts.Object) return $"JObject{n}";
-    if (r.Name == ApiSpecConsts.WellKnown.IProductSearchItem) return $"JObject{n}";
-    if (r.Name == ApiSpecConsts.Any) return (context & TypeContext.Request) != 0 ? $"object{n}" : $"JToken{n}";
+    if (r.Name == ApiSpecConsts.Object) return stj ? $"JsonObject{n}" : $"JObject{n}";
+    if (r.Name == ApiSpecConsts.WellKnown.IProductSearchItem) return stj ? $"JsonObject{n}" : $"JObject{n}";
+    if (r.Name == ApiSpecConsts.Any) return (context & TypeContext.Request) != 0 ? $"object{n}" : stj ? $"JsonNode{n}" : $"JToken{n}";
     if (ctx.Options.UseNativeDayOfWeek && r.Name == ApiSpecConsts.WellKnown.DayOfWeek) return $"DayOfWeek{n}";
 
     if (r.Name.StartsWith("EVA."))
@@ -556,5 +598,85 @@ internal class DotNetOutput : IOutput<DotNetOptions>
   private static string FixNamespace(string ns)
   {
     return ns.Replace("EVA.", "EVA.SDK.");
+  }
+
+  private static string JsonTypesUsing(DotNetOptions options) =>
+    options.UseSystemTextJson ? "using System.Text.Json.Nodes;" : "using Newtonsoft.Json.Linq;";
+
+  private static string JsonIgnoreAttribute(DotNetOptions options) =>
+    options.UseSystemTextJson ? "System.Text.Json.Serialization.JsonIgnore" : "Newtonsoft.Json.JsonIgnore";
+
+  private static string JsonConverterAttribute(DotNetOptions options) =>
+    options.UseSystemTextJson
+      ? "System.Text.Json.Serialization.JsonConverter"
+      : "Newtonsoft.Json.JsonConverter";
+
+  /// <summary>
+  /// Materializes the EVAClient resource with the serializer-specific snippets.
+  /// The Newtonsoft snippets are byte-for-byte the previous resource content so
+  /// the default flavor output does not change.
+  /// </summary>
+  private static string EVAClientResource(DotNetOptions options, string apiVersion)
+  {
+    var content = ManifestResourceHelpers.GetResource("dotnet.Resources.EVAClient.cs")!;
+
+    if (options.UseSystemTextJson)
+    {
+      return content
+        .Replace("<<JSON_USING>>", "using System.Text.Json;")
+        .Replace("<<JSON_FIELDS>>", """
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
+    {
+      DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+      PropertyNameCaseInsensitive = true,
+      Converters = { new UtcDateTimeConverter() }
+    };
+""")
+        .Replace("<<JSON_SERIALIZE_REQUEST>>", """
+            var ms = new MemoryStream();
+            await JsonSerializer.SerializeAsync(ms, requestMessage, requestMessage.GetType(), _jsonSerializerOptions);
+
+            ms.Position = 0;
+            using var httpContent = new StreamContent(ms);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json", "utf-8");
+            httpRequest.Content = httpContent;
+""")
+        .Replace("<<JSON_DESERIALIZE_RESPONSE>>", """
+                responseMessage = await JsonSerializer.DeserializeAsync<TResponse>(responseStream, _jsonSerializerOptions);
+""")
+        .Replace("<<API_VERSION>>", apiVersion);
+    }
+
+    return content
+      .Replace("<<JSON_USING>>", "using Newtonsoft.Json;")
+      .Replace("<<JSON_FIELDS>>", """
+    private readonly Encoding _encoding = new UTF8Encoding(false);
+
+    private readonly JsonSerializer _newtonsoftJsonSerializer = new JsonSerializer
+    {
+      DateFormatHandling = DateFormatHandling.IsoDateFormat,
+      DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+      NullValueHandling = NullValueHandling.Ignore
+    };
+""")
+      .Replace("<<JSON_SERIALIZE_REQUEST>>", """
+            var ms = new MemoryStream();
+            await using (var sw = new StreamWriter(ms, _encoding, leaveOpen: true))
+            {
+              _newtonsoftJsonSerializer.Serialize(sw, requestMessage);
+            }
+
+            ms.Position = 0;
+            using var httpContent = new StreamContent(ms);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json", "utf-8");
+            httpRequest.Content = httpContent;
+""")
+      .Replace("<<JSON_DESERIALIZE_RESPONSE>>", """
+                using var sr = new StreamReader(responseStream);
+                using var jsonTextReader = new JsonTextReader(sr);
+
+                responseMessage = _newtonsoftJsonSerializer.Deserialize<TResponse>(jsonTextReader);
+""")
+      .Replace("<<API_VERSION>>", apiVersion);
   }
 }
