@@ -35354,6 +35354,19 @@
       }
     },
     {
+      "name": "SuggestDiscount",
+      "assembly": "EVA.Core",
+      "path": "/message/SuggestDiscount",
+      "method": "POST",
+      "requestType": "EVA.Core.Discounts.SuggestDiscount",
+      "responseType": "EVA.Core.Discounts.SuggestDiscountResponse",
+      "auth": {
+        "requiredPermissions": [
+          {}
+        ]
+      }
+    },
+    {
       "name": "SupplierCreateOrUpdatePurchaseOrder",
       "assembly": "EVA.Core",
       "path": "/message/SupplierCreateOrUpdatePurchaseOrder",
@@ -86975,6 +86988,325 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.Discounts.SuggestDiscount": {
+      "typename": "SuggestDiscount",
+      "assembly": "EVA.Core",
+      "description": "Suggests the discounts that are within reach for the given order, together with the actions needed to unlock them.\n\nUnlike `PrefigureDiscounts`, which lists every potential discount and its raw requirement data, this service returns a ranked, standardized list of suggestions where each suggestion carries the concrete `NextActions` a shopper has to take to activate the discount (add value, add a product or add a coupon).",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Discounts.SuggestDiscountResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "MaxSuggestions": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "Maximum number of suggestions to return. Defaults to 1.",
+          "minValue": {
+            "current": 1
+          },
+          "maxValue": {
+            "current": 10
+          },
+          "allowedValues": []
+        },
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Discounts.SuggestDiscountActionType": {
+      "typename": "SuggestDiscountActionType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "AddCoupon": {
+          "value": 1,
+          "extends": []
+        },
+        "AddProduct": {
+          "extends": []
+        },
+        "AddValue": {
+          "value": 2,
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.Discounts.SuggestDiscountResponse": {
+      "typename": "SuggestDiscountResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Discounts.SuggestDiscountResponse+SuggestedDiscount"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Suggestions": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Discounts.SuggestDiscountResponse+SuggestedDiscount",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Discounts.SuggestDiscountResponse+CouponToApply": {
+      "typename": "CouponToApply",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Code": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "DiscountCoupon",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Discounts.SuggestDiscountResponse"
+    },
+    "EVA.Core.Discounts.SuggestDiscountResponse+NextAction": {
+      "typename": "NextAction",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Discounts.SuggestDiscountActionType",
+        "EVA.Core.Discounts.SuggestDiscountResponse+ProductToAdd",
+        "EVA.Core.Discounts.SuggestDiscountResponse+CouponToApply"
+      ],
+      "properties": {
+        "ActionType": {
+          "type": {
+            "ref": "EVA.Core.Discounts.SuggestDiscountActionType",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Amount": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Amount to add to the order to unlock the discount. Set for `AddValue`.",
+          "allowedValues": []
+        },
+        "Coupons": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Discounts.SuggestDiscountResponse+CouponToApply",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Coupons the customer could apply to unlock the discount. Set for `AddCoupon`.",
+          "allowedValues": []
+        },
+        "Products": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Discounts.SuggestDiscountResponse+ProductToAdd",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Products (and the missing quantity) to add to unlock the discount. Set for `AddProduct`.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Discounts.SuggestDiscountResponse"
+    },
+    "EVA.Core.Discounts.SuggestDiscountResponse+ProductToAdd": {
+      "typename": "ProductToAdd",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ProductID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The cheapest product that closes this gap, so the shopper gets the most reachable way to unlock the discount.",
+          "datamodel": {
+            "name": "Product",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Quantity": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Discounts.SuggestDiscountResponse"
+    },
+    "EVA.Core.Discounts.SuggestDiscountResponse+SuggestedDiscount": {
+      "typename": "SuggestedDiscount",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Discounts.SuggestDiscountResponse+NextAction"
+      ],
+      "properties": {
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "DiscountID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Discount",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ImageBlobID": {
+          "type": {
+            "ref": "guid",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "MarketingDescription": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "NextActions": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Discounts.SuggestDiscountResponse+NextAction",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "PromotionLabel": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Score": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "description": "Ranking score. Higher means the discount is more relevant: the net gain to unlock it (discount value minus what must be added), normalized across the suggestions, plus any segment boost.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Discounts.SuggestDiscountResponse"
     },
     "EVA.Core.EditableElementConfiguration": {
       "typename": "EditableElementConfiguration",
