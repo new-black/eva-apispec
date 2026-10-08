@@ -10,6 +10,11 @@ internal class DotNetOptions : GenerateOptions
   public bool GenerateExtensions { get; set; } = DotNetOptionsBinder.GenerateExtensions.Default;
   public bool GenerateDynamicData { get; set; } = DotNetOptionsBinder.GenerateDynamicData.Default;
   public bool AddEvaClient { get; set; } = DotNetOptionsBinder.AddEvaClient.Default;
+
+  /// <summary>The JSON serializer flavor of the generated SDK: "newtonsoft" or "stj".</summary>
+  public string Json { get; set; } = DotNetOptionsBinder.Json.Default;
+
+  public bool UseSystemTextJson => string.Equals(Json, "stj", StringComparison.OrdinalIgnoreCase);
 }
 
 internal class DotNetOptionsBinder : BaseGenerateOptionsBinder<DotNetOptions>
@@ -34,12 +39,18 @@ internal class DotNetOptionsBinder : BaseGenerateOptionsBinder<DotNetOptions>
     description: "Add EVA client"
   ).WithDefault(false);
 
+  internal static readonly OptionWithDefault<string> Json = new Option<string>(
+    name: "--opt-json",
+    description: "JSON serializer used by the generated SDK: 'newtonsoft' (default) or 'stj' (System.Text.Json)"
+  ).WithDefault("newtonsoft");
+
   protected override IEnumerable<Option> GetOptions()
   {
     yield return UseNativeDayOfWeek.Option;
     yield return GenerateExtensions.Option;
     yield return GenerateDynamicData.Option;
     yield return AddEvaClient.Option;
+    yield return Json.Option;
   }
 
   protected override void BuildOptions(DotNetOptions options, BindingContext ctx)
@@ -48,5 +59,16 @@ internal class DotNetOptionsBinder : BaseGenerateOptionsBinder<DotNetOptions>
     options.GenerateExtensions = GenerateExtensions.Value(ctx);
     options.GenerateDynamicData = GenerateDynamicData.Value(ctx);
     options.AddEvaClient = AddEvaClient.Value(ctx);
+    options.Json = NormalizeJson(Json.Value(ctx));
   }
+
+  private static string NormalizeJson(string? value) =>
+    value?.Trim().ToLowerInvariant() switch
+    {
+      null or "" or "newtonsoft" or "json.net" => "newtonsoft",
+      "stj" or "systemtextjson" or "system-text-json" => "stj",
+      _ => throw new ArgumentException(
+        $"Unknown --opt-json value '{value}'. Use 'newtonsoft' or 'stj'."
+      ),
+    };
 }
