@@ -2,11 +2,9 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using EVA.SDK.Core;
-using Newtonsoft.Json;
 
 namespace EVA.SDK;
 
@@ -42,14 +40,6 @@ public partial class EVAApiClient<TState, TServiceCallOptions> : IEVAApiClient<T
     private readonly string _userAgent;
     private readonly EVAClientConfiguration _configuration;
     private const string _targetedVersion = "<<API_VERSION>>";
-    private readonly Encoding _encoding = new UTF8Encoding(false);
-
-    private readonly JsonSerializer _newtonsoftJsonSerializer = new JsonSerializer
-    {
-      DateFormatHandling = DateFormatHandling.IsoDateFormat,
-      DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-      NullValueHandling = NullValueHandling.Ignore
-    };
 
     /// <summary>
     /// Creates a new EVAClient which allows you to easily call EVA services.
@@ -79,6 +69,12 @@ public partial class EVAApiClient<TState, TServiceCallOptions> : IEVAApiClient<T
     }
 
     partial void Setup();
+
+    /// <summary>Writes the JSON request body to the given stream.</summary>
+    private partial void SerializeRequest(Stream stream, object requestMessage);
+
+    /// <summary>Reads the JSON response body from the given stream.</summary>
+    private partial TResponse DeserializeResponse<TResponse>(Stream stream);
 
     public virtual async Task<TResponse> CallService<TResponse>(IResponseType<TResponse> requestMessage, TServiceCallOptions? options = default)
       where TResponse : class, IResponseMessage
@@ -143,10 +139,7 @@ public partial class EVAApiClient<TState, TServiceCallOptions> : IEVAApiClient<T
 
             // Build the content
             var ms = new MemoryStream();
-            await using (var sw = new StreamWriter(ms, _encoding, leaveOpen: true))
-            {
-              _newtonsoftJsonSerializer.Serialize(sw, requestMessage);
-            }
+            SerializeRequest(ms, requestMessage);
 
             ms.Position = 0;
             using var httpContent = new StreamContent(ms);
@@ -195,10 +188,7 @@ public partial class EVAApiClient<TState, TServiceCallOptions> : IEVAApiClient<T
 
               await using (responseStream)
               {
-                using var sr = new StreamReader(responseStream);
-                using var jsonTextReader = new JsonTextReader(sr);
-
-                responseMessage = _newtonsoftJsonSerializer.Deserialize<TResponse>(jsonTextReader);
+                responseMessage = DeserializeResponse<TResponse>(responseStream);
               }
             }
 
