@@ -242201,6 +242201,25 @@
         ]
       },
       "properties": {
+        "Channels": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The channels this opt-in offers on this organization unit set. A customer can enable or disable each of these channels when subscribing. Once an opt-in offers channels, customer messages over a channel are only sent to customers who enabled it, so existing subscribers cannot be messaged until they have made their choice; an opt-in without channels keeps consenting on the subscription alone.",
+          "datamodel": {
+            "name": "MessageChannel",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "Default": {
           "type": {
             "ref": "bool",
@@ -242805,9 +242824,25 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.DataModels.SubscriptionConfirmation"
+        "EVA.Core.DataModels.SubscriptionConfirmation",
+        "EVA.Framework.API.EnumDto"
       ],
       "properties": {
+        "Channels": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Framework.API.EnumDto",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The channels this opt-in offers on this organization unit set.",
+          "allowedValues": []
+        },
         "Default": {
           "type": {
             "ref": "bool",
@@ -243504,6 +243539,26 @@
         "args": []
       },
       "properties": {
+        "Channels": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "When given, replaces the channels this opt-in offers on this organization unit set with exactly this set. Adding the first channel to a live opt-in means existing subscribers cannot be messaged over it until they have enabled it; removing a channel withdraws every customer's choice for it, so offering it again starts from fresh consent.",
+          "skippable": true,
+          "datamodel": {
+            "name": "MessageChannel",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "Default": {
           "type": {
             "ref": "bool",
@@ -407743,7 +407798,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessage`1"
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.Users.Subscriptions.OptIn.SubscribeUserOptInSubscriptionChannel"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessage`1",
@@ -407756,6 +407812,21 @@
         ]
       },
       "properties": {
+        "Channels": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Users.Subscriptions.OptIn.SubscribeUserOptInSubscriptionChannel",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The channels this user wants to be reached on for this opt-in, each with whether it is enabled. Send every channel the opt-in offers.",
+          "allowedValues": []
+        },
         "SourceIdentifier": {
           "type": {
             "ref": "string",
@@ -407816,6 +407887,39 @@
             "nullable": true
           },
           "description": "Identifier for this user on the opt-in subscription.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.Subscriptions.OptIn.SubscribeUserOptInSubscriptionChannel": {
+      "typename": "SubscribeUserOptInSubscriptionChannel",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ChannelID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The channel to enable or disable for this user.",
+          "datamodel": {
+            "name": "MessageChannel",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Enabled": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether the user wants to be reached on this channel for this opt-in.",
           "allowedValues": []
         }
       },
@@ -407988,6 +408092,35 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Users.Subscriptions.OptIn.UserOptInSubscriptionChannelDto": {
+      "typename": "UserOptInSubscriptionChannelDto",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Framework.API.EnumDto"
+      ],
+      "properties": {
+        "Channel": {
+          "type": {
+            "ref": "EVA.Framework.API.EnumDto",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Enabled": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Users.Subscriptions.OptIn.UserOptInSubscriptionDto": {
       "typename": "UserOptInSubscriptionDto",
       "assembly": "EVA.Core",
@@ -407997,13 +408130,28 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.DataModels.SubscriptionStatus",
-        "EVA.Core.DataModels.ResubscribeHandlingType"
+        "EVA.Core.DataModels.ResubscribeHandlingType",
+        "EVA.Core.Users.Subscriptions.OptIn.UserOptInSubscriptionChannelDto"
       ],
       "properties": {
         "BackendID": {
           "type": {
             "ref": "string",
             "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Channels": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Users.Subscriptions.OptIn.UserOptInSubscriptionChannelDto",
+                "args": [],
+                "nullable": true
+              }
+            ],
             "nullable": true
           },
           "allowedValues": []
@@ -475231,6 +475379,25 @@
       ]
     },
     {
+      "name": "Subscriptions:ChannelNotOfferedBySubscription",
+      "message": "Channel {0} is not offered by subscription {1} for this organization unit",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
       "name": "Subscriptions:CannotDeleteBecauseOfActiveSubscriptions",
       "message": "Cannot delete subscription because there are active subscriptions on it.",
       "module": "EVA.Core",
@@ -488506,6 +488673,20 @@
     {
       "name": "CustomerMessages:CustomerMessageNotOptedIn",
       "message": "This customer has not opted in to receive '{0}' for this organization unit.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "CustomerMessages:CustomerMessageChannelNotOptedIn",
+      "message": "This customer has not enabled the '{0}' channel to receive this message.",
       "module": "EVA.Core",
       "arguments": [
         {
