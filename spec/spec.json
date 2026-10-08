@@ -881,6 +881,23 @@
       }
     },
     {
+      "name": "ApplyEntitySync",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/ApplyEntitySync",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.EntitySync.ApplyEntitySync",
+      "responseType": "EVA.Core.Management.EntitySync.ApplyEntitySyncResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "EntitySync",
+            "scope": 1
+          }
+        ]
+      }
+    },
+    {
       "name": "ApplyRevision",
       "assembly": "EVA.PIM",
       "path": "/message/ApplyRevision",
@@ -923,6 +940,21 @@
             "types": 2049,
             "functionality": "Scripts",
             "scope": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "ApproveAgentCall",
+      "assembly": "EVA.AI",
+      "path": "/message/ApproveAgentCall",
+      "method": "POST",
+      "requestType": "EVA.AI.ApproveAgentCall",
+      "responseType": "EVA.AI.ApproveAgentCallResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049
           }
         ]
       }
@@ -2924,6 +2956,21 @@
         "requiredPermissions": [
           {
             "types": 2051
+          }
+        ]
+      }
+    },
+    {
+      "name": "CreateAgentAuthenticationToken",
+      "assembly": "EVA.AI",
+      "path": "/message/CreateAgentAuthenticationToken",
+      "method": "POST",
+      "requestType": "EVA.AI.CreateAgentAuthenticationToken",
+      "responseType": "EVA.AI.CreateAgentAuthenticationTokenResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049
           }
         ]
       }
@@ -14217,6 +14264,21 @@
       }
     },
     {
+      "name": "GetAgentConfig",
+      "assembly": "EVA.AI",
+      "path": "/message/GetAgentConfig",
+      "method": "POST",
+      "requestType": "EVA.AI.GetAgentConfig",
+      "responseType": "EVA.AI.GetAgentConfigResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049
+          }
+        ]
+      }
+    },
+    {
       "name": "GetAllSubscriptionsByUserID",
       "assembly": "EVA.Core",
       "path": "/message/GetAllSubscriptionsByUserID",
@@ -16585,6 +16647,23 @@
           {
             "types": 2049,
             "functionality": "EntityFieldValidators",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
+      "name": "GetEntitySyncGraph",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/GetEntitySyncGraph",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.EntitySync.GetEntitySyncGraph",
+      "responseType": "EVA.Core.Management.EntitySync.GetEntitySyncGraphResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "EntitySync",
             "scope": 8
           }
         ]
@@ -30124,6 +30203,23 @@
       }
     },
     {
+      "name": "PreviewEntitySync",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/PreviewEntitySync",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.EntitySync.PreviewEntitySync",
+      "responseType": "EVA.Core.Management.EntitySync.PreviewEntitySyncResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "EntitySync",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "PreviewMessageTemplate",
       "assembly": "EVA.Core.Management",
       "path": "/message/PreviewMessageTemplate",
@@ -43572,6 +43668,281 @@
           },
           "requiredAllowEmpty": {
             "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.AI.AgentSoulDocument": {
+      "typename": "AgentSoulDocument",
+      "assembly": "EVA.AI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "BackgroundInformation": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ToneOfVoice": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.AI.ApproveAgentCall": {
+      "typename": "ApproveAgentCall",
+      "assembly": "EVA.AI",
+      "description": "Registers client approval of an agent write and returns a signed approval secret.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.AI.ApproveAgentCallResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "AgentToken": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ExpiryMinutes": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "RequestBody": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Service": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.AI.ApproveAgentCallResponse": {
+      "typename": "ApproveAgentCallResponse",
+      "assembly": "EVA.AI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "ApprovalSecret": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.AI.CreateAgentAuthenticationToken": {
+      "typename": "CreateAgentAuthenticationToken",
+      "assembly": "EVA.AI",
+      "description": "Mints an agent Temporary Access Token for eva-intelligence, authenticated by the caller's session (agent chain lifetime: SessionDuration:Agent, default 7 days, sliding refresh).",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.AI.CreateAgentAuthenticationTokenResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "AllowedServices": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.AI.CreateAgentAuthenticationTokenResponse": {
+      "typename": "CreateAgentAuthenticationTokenResponse",
+      "assembly": "EVA.AI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "AuthenticationToken": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "RefreshToken": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "RefreshTokenExpireDate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.AI.GetAgentConfig": {
+      "typename": "GetAgentConfig",
+      "assembly": "EVA.AI",
+      "description": "Returns agent configuration (including secrets) to eva-intelligence. Requires a signed request authenticated with an agent Temporary Access Token.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.AI.GetAgentConfigResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Signature": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.AI.GetAgentConfigResponse": {
+      "typename": "GetAgentConfigResponse",
+      "assembly": "EVA.AI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.AI.AgentSoulDocument"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "ApiKey": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Language": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Model": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SoulDocument": {
+          "type": {
+            "ref": "EVA.AI.AgentSoulDocument",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         }
@@ -61973,6 +62344,24 @@
         ]
       },
       "properties": {
+        "AgentLogin": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Requests an agent (non-interactive) session.",
+          "allowedValues": []
+        },
+        "AgentSignature": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Credential authorizing an agent (non-interactive) session.",
+          "allowedValues": []
+        },
         "AsEmployee": {
           "type": {
             "ref": "bool",
@@ -88130,6 +88519,770 @@
         "RequiredLength": {
           "type": {
             "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EntitySync.EntitySyncBlocker": {
+      "typename": "EntitySyncBlocker",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Key": {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Reason": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EntitySync.EntitySyncChangedProperty": {
+      "typename": "EntitySyncChangedProperty",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "NewValue": {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OldValue": {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EntitySync.EntitySyncGraphEntity": {
+      "typename": "EntitySyncGraphEntity",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.EntitySync.SyncReviewNote"
+      ],
+      "properties": {
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Key": {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OwnedChildren": {
+          "type": {
+            "ref": "map",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "array",
+                "args": [
+                  {
+                    "ref": "map",
+                    "args": [
+                      {
+                        "ref": "string",
+                        "args": [],
+                        "nullable": true
+                      },
+                      {
+                        "ref": "any",
+                        "args": [],
+                        "nullable": true
+                      }
+                    ],
+                    "nullable": true
+                  }
+                ],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Payload": {
+          "type": {
+            "ref": "map",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "any",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ReviewNotes": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.EntitySync.SyncReviewNote",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EntitySync.EntitySyncGraphPayload": {
+      "typename": "EntitySyncGraphPayload",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.EntitySync.EntitySyncGraphEntity"
+      ],
+      "properties": {
+        "Entities": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.EntitySync.EntitySyncGraphEntity",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "GeneratedAt": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "RootKeys": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "any",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "RootType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SourceEnvironment": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EntitySync.EntitySyncInsertedEntityInfo": {
+      "typename": "EntitySyncInsertedEntityInfo",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Key": {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EntitySync.EntitySyncOwnedCollectionChange": {
+      "typename": "EntitySyncOwnedCollectionChange",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Added": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Collection": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Removed": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Unchanged": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EntitySync.EntitySyncPlan": {
+      "typename": "EntitySyncPlan",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.EntitySync.EntitySyncPlanOperation",
+        "EVA.Core.EntitySync.EntitySyncUnresolvableReference",
+        "EVA.Core.EntitySync.EntitySyncBlocker"
+      ],
+      "properties": {
+        "Appliable": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Blockers": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.EntitySync.EntitySyncBlocker",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "CreatedAt": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Operations": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.EntitySync.EntitySyncPlanOperation",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "RootKeys": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "any",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "RootType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Signature": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "UnresolvableReferences": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.EntitySync.EntitySyncUnresolvableReference",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EntitySync.EntitySyncPlanOperation": {
+      "typename": "EntitySyncPlanOperation",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.EntitySync.EntitySyncPlanOperationKind",
+        "EVA.Core.EntitySync.EntitySyncChangedProperty",
+        "EVA.Core.EntitySync.SyncReviewNote",
+        "EVA.Core.EntitySync.EntitySyncOwnedCollectionChange"
+      ],
+      "properties": {
+        "ChangedOwnedChildren": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.EntitySync.EntitySyncOwnedCollectionChange",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ChangedProperties": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.EntitySync.EntitySyncChangedProperty",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Key": {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Kind": {
+          "type": {
+            "ref": "EVA.Core.EntitySync.EntitySyncPlanOperationKind",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "OwnedChildren": {
+          "type": {
+            "ref": "map",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "array",
+                "args": [
+                  {
+                    "ref": "map",
+                    "args": [
+                      {
+                        "ref": "string",
+                        "args": [],
+                        "nullable": true
+                      },
+                      {
+                        "ref": "any",
+                        "args": [],
+                        "nullable": true
+                      }
+                    ],
+                    "nullable": true
+                  }
+                ],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Payload": {
+          "type": {
+            "ref": "map",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "any",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ReviewNotes": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.EntitySync.SyncReviewNote",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EntitySync.EntitySyncPlanOperationKind": {
+      "typename": "EntitySyncPlanOperationKind",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Exists": {
+          "value": 1,
+          "extends": []
+        },
+        "Modified": {
+          "value": 2,
+          "extends": []
+        },
+        "New": {
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.EntitySync.EntitySyncReferrer": {
+      "typename": "EntitySyncReferrer",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Key": {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Property": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EntitySync.EntitySyncUnresolvableReason": {
+      "typename": "EntitySyncUnresolvableReason",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "LookupOnly": {
+          "extends": []
+        },
+        "ReferenceOnly": {
+          "value": 1,
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.EntitySync.EntitySyncUnresolvableReference": {
+      "typename": "EntitySyncUnresolvableReference",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.EntitySync.EntitySyncUnresolvableReason",
+        "EVA.Core.EntitySync.EntitySyncReferrer"
+      ],
+      "properties": {
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Key": {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Reason": {
+          "type": {
+            "ref": "EVA.Core.EntitySync.EntitySyncUnresolvableReason",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ReferencedBy": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.EntitySync.EntitySyncReferrer",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.EntitySync.SyncReviewNote": {
+      "typename": "SyncReviewNote",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Detail": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Kind": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Message": {
+          "type": {
+            "ref": "string",
             "args": [],
             "nullable": true
           },
@@ -171121,6 +172274,273 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Management.EntitySync.ApplyEntitySync": {
+      "typename": "ApplyEntitySync",
+      "assembly": "EVA.Core.Management",
+      "description": "Applies a previously previewed sync plan against the local environment in a single transaction. Refuses plans with unresolvable references.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.EntitySync.EntitySyncPlan"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.EntitySync.ApplyEntitySyncResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Plan": {
+          "type": {
+            "ref": "EVA.Core.EntitySync.EntitySyncPlan",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.EntitySync.ApplyEntitySyncResponse": {
+      "typename": "ApplyEntitySyncResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.EntitySync.EntitySyncInsertedEntityInfo"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Inserted": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "InsertedEntities": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.EntitySync.EntitySyncInsertedEntityInfo",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OwnedChildrenDeleted": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "OwnedChildrenInserted": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Tracked": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Updated": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.EntitySync.GetEntitySyncGraph": {
+      "typename": "GetEntitySyncGraph",
+      "assembly": "EVA.Core.Management",
+      "description": "Builds a sync graph payload by walking the registered profile graph starting from one or more root entities. Roots must all be of the same type; shared dependencies are emitted exactly once. The payload is serialized JSON the operator can ship to a target environment.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.EntitySync.GetEntitySyncGraphResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "RootIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ]
+          },
+          "description": "Local database IDs of one or more root entities on the source environment. All roots use the same graph walk and are atomically appliable as a single plan.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "RootType": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "Simple type name of the root entity, e.g. \"Discount\".",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "SourceEnvironment": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Free-form label written into the payload to identify the source environment for downstream auditing.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.EntitySync.GetEntitySyncGraphResponse": {
+      "typename": "GetEntitySyncGraphResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.EntitySync.EntitySyncGraphPayload"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Payload": {
+          "type": {
+            "ref": "EVA.Core.EntitySync.EntitySyncGraphPayload",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.EntitySync.PreviewEntitySync": {
+      "typename": "PreviewEntitySync",
+      "assembly": "EVA.Core.Management",
+      "description": "Compares a sync graph payload against the local environment and returns a structured plan describing what would be created if applied.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.EntitySync.EntitySyncGraphPayload"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.EntitySync.PreviewEntitySyncResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Payload": {
+          "type": {
+            "ref": "EVA.Core.EntitySync.EntitySyncGraphPayload",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.EntitySync.PreviewEntitySyncResponse": {
+      "typename": "PreviewEntitySyncResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.EntitySync.EntitySyncPlan"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Plan": {
+          "type": {
+            "ref": "EVA.Core.EntitySync.EntitySyncPlan",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Management.FIFO.CorrectProductCostPriceLedgers": {
       "typename": "CorrectProductCostPriceLedgers",
       "assembly": "EVA.Core.Management",
@@ -247029,6 +248449,11 @@
               }
             ],
             "nullable": true
+          },
+          "datamodel": {
+            "name": "Role",
+            "supportsCustomID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         },
@@ -489319,6 +490744,86 @@
           }
         }
       ]
+    },
+    {
+      "name": "Agent:SignatureRequired",
+      "message": "A signature is required.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "Agent:AgentSessionRequired",
+      "message": "Only eva-intelligence (agent session) may call this service.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "Agent:PublicKeyNotConfigured",
+      "message": "The public key is not configured; cannot verify the request.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "Agent:SignatureVerificationFailed",
+      "message": "Signature verification failed.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "Agent:AgentTokenRequired",
+      "message": "AgentToken, Service, and RequestBody are required.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "Agent:CouldNotCreateAgentToken",
+      "message": "Could not create an agent authentication token.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "Agent:ApprovalKeyNotConfigured",
+      "message": "EVA_INTELLIGENCE_APPROVAL_KEY is not configured; cannot sign an approval.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "Agent:AgentApprovalInvalid",
+      "message": "The approval for this agent call is not valid: {0}",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "Agent:EvaIntelligenceDisabled",
+      "message": "eva-intelligence is disabled for this organization. Enable the EVA:Agent:Enabled setting to use it.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "AI:ProviderNotAvailable",
+      "message": "Provider '{0}' not available.",
+      "module": "EVA.AI",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "OpenAI:InvalidData",
+      "message": "Invalid data.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "OpenRouter:InvalidData",
+      "message": "Invalid data.",
+      "module": "EVA.AI",
+      "arguments": []
     },
     {
       "name": "Protel:OrderCreationFailed",
