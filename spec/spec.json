@@ -74835,6 +74835,10 @@
           "value": 350,
           "extends": []
         },
+        "WaitingForScheduledRelease": {
+          "value": 325,
+          "extends": []
+        },
         "WaitingForStock": {
           "value": 300,
           "extends": []
@@ -263692,6 +263696,10 @@
         },
         "WaitingForPreSaleShipmentDate": {
           "value": 550,
+          "extends": []
+        },
+        "WaitingForScheduledRelease": {
+          "value": 525,
           "extends": []
         },
         "WaitingForStock": {
@@ -472375,6 +472383,11 @@
     },
     {
       "target": "OrderFulfillmentLine",
+      "type": "waiting_for_scheduled_release",
+      "dataType": "EVA.Core.Events.OrderFulfillmentLineEventExportTarget+Data"
+    },
+    {
+      "target": "OrderFulfillmentLine",
       "type": "waiting_for_presale_shipment_date",
       "dataType": "EVA.Core.Events.OrderFulfillmentLineEventExportTarget+Data"
     },
@@ -487108,6 +487121,35 @@
       "message": "Can't add a line with a product whose pre-sale date has not been reached.",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "OrderLineCreator:RequestedDateAfterAssortmentEndDate",
+      "message": "Can't request product {0} for {1:dd-MM-yyyy}: it is only in the assortment until {2:dd-MM-yyyy}.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "productName"
+        },
+        {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "name": "requestedDate"
+        },
+        {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "name": "assortmentEndDate"
+        }
+      ]
     },
     {
       "name": "OrderLineCreator:LineToCloneNotPartOfSourceOrder",
