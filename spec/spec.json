@@ -409820,7 +409820,7 @@
     "EVA.Core.Users.UpdateUserAccountType": {
       "typename": "UpdateUserAccountType",
       "assembly": "EVA.Core",
-      "description": "This service is used to change the AccountType of a Customer.\n\nWhen changing the AccountType from Standard to Incognito or Basic, all credentials and roles are removed.\n\nWhen changing the AccountType from Incognito or Basic to Standard:\n- Uniqueness checks are done for the EmailAddress and Nickname\n- Default customer roles are generated\n\nWhen changing the AccountType from Incognito to Standard or Basic, a `CustomerCreated` event is raised\nand, if configured, the user will receive the appropriate welcome stencil for their new AccountType.",
+      "description": "This service is used to change the AccountType of a Customer.\n\nWhen changing the AccountType from Standard to Incognito or Basic, authentication data and roles other than the default customer role are removed.\n\nChanges to another customer's account require configured user visibility with Edit scope.\nA password can only be supplied by a customer upgrading their own account from Incognito or Basic to Standard.\nFor another customer's account, use the password reset or account recovery flow instead.\n\nWhen changing the AccountType from Incognito or Basic to Standard:\n- Uniqueness checks are done for the EmailAddress and Nickname\n- Default customer roles are generated\n\nWhen changing the AccountType from Incognito to Standard or Basic, a `CustomerCreated` event is raised\nand, if configured, the user will receive the appropriate welcome stencil for their new AccountType.",
       "usage": {
         "request": true
       },
@@ -409853,6 +409853,7 @@
             "args": [],
             "nullable": true
           },
+          "description": "Only accepted when a customer upgrades their own account from Incognito or Basic to Standard.",
           "allowedValues": []
         },
         "UserID": {
