@@ -139545,7 +139545,7 @@
             "args": [],
             "nullable": true
           },
-          "description": "Why Value or DeltaPercentage is null: NoDataForPriorPeriod, PriorPeriodUndefined or PriorPeriodIsZero. Null when the BI API does not send one. This is the case when both are present, and also when the component's own value has no amount (no data). Check the component's value first. Unknown when the BI API sends a reason this EVA version does not know yet.",
+          "description": "Why Value or DeltaPercentage is null: NoDataForPriorPeriod, PriorPeriodUndefined or PriorPeriodIsZero. Null when the BI API does not send one. This is the case when both are present. When the component's own Value is null (no data), DeltaPercentage is null too, and the BI API can send a reason or none: the test service sent NoDataForPriorPeriod for a no-data day. Check the component's Value first. Unknown when the BI API sends a reason this EVA version does not know yet.",
           "allowedValues": []
         },
         "Value": {
@@ -141076,7 +141076,7 @@
             ],
             "nullable": true
           },
-          "description": "The bucketed data points behind Value, for rendering a line graph. Null when Status is not Ok. Sparse by design: a missing date means no transactions that day, not a data gap.",
+          "description": "The bucketed data points behind Value, for rendering a line graph. Null when Status is not Ok. Sparse by design: a missing date means no transactions that day, not a data gap. For SFSExecutionTime, ConsumersOnboarded, OverdueTasks and HeroProducts the BI API never produces a series, so an empty list means \"not produced\": show the main Value only. For the other metrics an empty list can mean no data.",
           "allowedValues": []
         },
         "Status": {
@@ -141115,6 +141115,7 @@
             "args": [],
             "nullable": true
           },
+          "description": "The metric value over the requested time frame. Null means no data: no organization unit has data in the period. Show a dash. 0 means data exists and adds up to 0. Status is Ok in both cases. Also null when Status is not Ok. TargetValue does not depend on this field: a configured target stays visible when Value is null.",
           "allowedValues": []
         },
         "VisualizationType": {
