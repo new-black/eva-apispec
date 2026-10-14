@@ -2109,6 +2109,11 @@
       "method": "POST",
       "requestType": "EVA.Core.Security.MagicLink.CheckMagicLink",
       "responseType": "EVA.Core.Security.MagicLink.CheckMagicLinkResponse",
+      "deprecated": {
+        "announced": 860,
+        "active": 886,
+        "comment": "Use `SendLoginCode` instead, and `Login` with the emailed code."
+      },
       "auth": {
         "requiredPermissions": [
           {}
@@ -2727,6 +2732,11 @@
       "method": "POST",
       "requestType": "EVA.Core.Security.MagicLink.ConfirmMagicLink",
       "responseType": "EVA.Core.Security.MagicLink.ConfirmMagicLinkResponse",
+      "deprecated": {
+        "announced": 860,
+        "active": 886,
+        "comment": "Use `SendLoginCode` instead, and `Login` with the emailed code."
+      },
       "auth": {
         "requiredPermissions": [
           {}
@@ -33478,6 +33488,11 @@
       "method": "POST",
       "requestType": "EVA.Core.Security.MagicLink.SendMagicLink",
       "responseType": "EVA.Core.Security.MagicLink.SendMagicLinkResponse",
+      "deprecated": {
+        "announced": 860,
+        "active": 886,
+        "comment": "Magic links hand the session to whoever holds the `RequestToken`, not to whoever clicked the link. Use `SendLoginCode` instead."
+      },
       "auth": {
         "requiredPermissions": [
           {}
@@ -328282,7 +328297,7 @@
             "args": [],
             "nullable": true
           },
-          "description": "Logs in the customer on this order, instead of the user owning this email address - the two have to match.",
+          "description": "Logs in the customer on this order, instead of the user owning this email address - the two have to match, or no code is sent.",
           "datamodel": {
             "name": "Order",
             "supportsCustomID": true,
@@ -476574,12 +476589,6 @@
       "arguments": []
     },
     {
-      "name": "MagicLink:EmailOrderMismatch",
-      "message": "The provided combination of Email Address and OrderID yielded no results.",
-      "module": "EVA.Core",
-      "arguments": []
-    },
-    {
       "name": "MagicLink:ManualCodeDisabled",
       "message": "Manual codes through magic links are disabled by your administrator.",
       "module": "EVA.Core",
@@ -476588,12 +476597,6 @@
     {
       "name": "LoginCode:Disabled",
       "message": "Login codes are disabled by your administrator.",
-      "module": "EVA.Core",
-      "arguments": []
-    },
-    {
-      "name": "LoginCode:EmailOrderMismatch",
-      "message": "The provided combination of Email Address and OrderID yielded no results.",
       "module": "EVA.Core",
       "arguments": []
     },
