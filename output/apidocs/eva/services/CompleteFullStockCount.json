@@ -44,12 +44,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022DismissDeviationsAsStockMutations\u0022: true,\n  \u0022ProductsToRecount\u0022: [\n    123\n  ],\n  \u0022RecountAllDeviations\u0022: true,\n  \u0022RecountAllProducts\u0022: true,\n  \u0022UserTaskID\u0022: 123\n}",
+      "sample": "{\n  \u0022CreateCycleCountPerConfigurableProduct\u0022: true,\n  \u0022DismissDeviationsAsStockMutations\u0022: true,\n  \u0022ProductsToRecount\u0022: [\n    123\n  ],\n  \u0022RecountAllDeviations\u0022: true,\n  \u0022RecountAllProducts\u0022: true,\n  \u0022UserTaskID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022DismissDeviationsAsStockMutations\u0022: true,\n  \u0022ProductsToRecount\u0022: [\n    123\n  ],\n  \u0022RecountAllDeviations\u0022: true,\n  \u0022RecountAllProducts\u0022: true,\n  \u0022UserTaskID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CompleteFullStockCount",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022CreateCycleCountPerConfigurableProduct\u0022: true,\n  \u0022DismissDeviationsAsStockMutations\u0022: true,\n  \u0022ProductsToRecount\u0022: [\n    123\n  ],\n  \u0022RecountAllDeviations\u0022: true,\n  \u0022RecountAllProducts\u0022: true,\n  \u0022UserTaskID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CompleteFullStockCount",
       "syntax": "bash"
     }
   ],
@@ -72,6 +72,15 @@
   "response_type_id": "C",
   "types": {
     "B": [
+      {
+        "name": "CreateCycleCountPerConfigurableProduct",
+        "deprecation_notice": null,
+        "description": "When true, each product to recount that has a configurable parent on the logical level configured in \u0060FullStockCount:CycleCountConfigurableLogicalLevel\u0060 is counted together with all leaf products of that configurable in a single cycle count. Products without such a parent, or when the setting is not set, get a cycle count of their own.",
+        "type": "boolean | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "DismissDeviationsAsStockMutations",
         "deprecation_notice": null,
