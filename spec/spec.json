@@ -111542,6 +111542,47 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Fulfillment.GetOrderFulfillmentResponse+AdditionalInformationItem": {
+      "typename": "AdditionalInformationItem",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The key of the property as defined by the carrier.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "Value": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The value the customer supplied.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Fulfillment.GetOrderFulfillmentResponse"
+    },
     "EVA.Core.Fulfillment.GetOrderFulfillmentResponse+NormalDeliveryInfo": {
       "typename": "NormalDeliveryInfo",
       "assembly": "EVA.Core",
@@ -111724,6 +111765,26 @@
           },
           "allowedValues": []
         },
+        "Metadata": {
+          "type": {
+            "ref": "map",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Carrier-specific key/value data for the location (e.g. Instabox sort code and availability token).",
+          "allowedValues": []
+        },
         "Name": {
           "type": {
             "ref": "string",
@@ -111781,8 +111842,25 @@
         "response": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.Fulfillment.GetOrderFulfillmentResponse+AdditionalInformationItem"
+      ],
       "properties": {
+        "AdditionalInformation": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Fulfillment.GetOrderFulfillmentResponse+AdditionalInformationItem",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "A carrier-specific property the customer supplied for this option (e.g. DHL customer_number).",
+          "allowedValues": []
+        },
         "CarrierLogoUrl": {
           "type": {
             "ref": "string",
@@ -261810,6 +261888,36 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Orders.Dto.FulfillmentSelection+AdditionalInformationItem": {
+      "typename": "AdditionalInformationItem",
+      "assembly": "EVA.Core",
+      "description": "A carrier-specific property the customer supplied for this option (e.g. DHL customer_number).",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Value": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Orders.Dto.FulfillmentSelection"
+    },
     "EVA.Core.Orders.Dto.FulfillmentSelection+CarrierInfo": {
       "typename": "CarrierInfo",
       "assembly": "EVA.Core",
@@ -261920,9 +262028,24 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.Orders.Dto.FulfillmentSelection+CarrierInfo"
+        "EVA.Core.Orders.Dto.FulfillmentSelection+CarrierInfo",
+        "EVA.Core.Orders.Dto.FulfillmentSelection+AdditionalInformationItem"
       ],
       "properties": {
+        "AdditionalInformation": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Orders.Dto.FulfillmentSelection+AdditionalInformationItem",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "Carrier": {
           "type": {
             "ref": "EVA.Core.Orders.Dto.FulfillmentSelection+CarrierInfo",
@@ -261994,9 +262117,24 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.Orders.Dto.FulfillmentSelection+CarrierInfo",
+        "EVA.Core.Orders.Dto.FulfillmentSelection+AdditionalInformationItem",
         "EVA.Core.Orders.Dto.FulfillmentSelection+LocationInfo"
       ],
       "properties": {
+        "AdditionalInformation": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Orders.Dto.FulfillmentSelection+AdditionalInformationItem",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "Carrier": {
           "type": {
             "ref": "EVA.Core.Orders.Dto.FulfillmentSelection+CarrierInfo",
@@ -262075,9 +262213,24 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.Orders.Dto.FulfillmentSelection+CarrierInfo"
+        "EVA.Core.Orders.Dto.FulfillmentSelection+CarrierInfo",
+        "EVA.Core.Orders.Dto.FulfillmentSelection+AdditionalInformationItem"
       ],
       "properties": {
+        "AdditionalInformation": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Orders.Dto.FulfillmentSelection+AdditionalInformationItem",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "Carrier": {
           "type": {
             "ref": "EVA.Core.Orders.Dto.FulfillmentSelection+CarrierInfo",
