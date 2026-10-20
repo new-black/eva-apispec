@@ -178863,6 +178863,14 @@
           },
           "allowedValues": []
         },
+        "InviteOnly": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When true, new customers must redeem an eligible referral code to join this program. Requires referrals to be enabled and is only available for Loyalty programs. Takes effect when the program is published (immediately for auto-publishing programs) and cannot be turned off once published.",
+          "allowedValues": []
+        },
         "LoyaltyPointUsageOptions": {
           "type": {
             "ref": "EVA.Core.DataModels.LoyaltyPointUsageOptions",
@@ -185296,6 +185304,14 @@
           "description": "Set when the image can be rendered at any size through `/image/{width}/{height}/{ImageGuid}`. Null when it cannot, use the image url as-is in that case.",
           "allowedValues": []
         },
+        "InviteOnly": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When true, new customers must redeem an eligible referral code to join this program. This is the saved value; it takes effect once published.",
+          "allowedValues": []
+        },
         "LoyaltyPointUsageOptions": {
           "type": {
             "ref": "EVA.Core.DataModels.LoyaltyPointUsageOptions",
@@ -191609,6 +191625,15 @@
         ]
       },
       "properties": {
+        "AllowReferrals": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Enables referrals on the loyalty program. Cannot be combined with B2B program type.",
+          "skippable": true,
+          "allowedValues": []
+        },
         "AllowUnsubscribeBy": {
           "type": {
             "ref": "EVA.Core.DataModels.AllowUnsubscribeByType",
@@ -191772,6 +191797,15 @@
             "args": [],
             "nullable": true
           },
+          "skippable": true,
+          "allowedValues": []
+        },
+        "InviteOnly": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When true, new customers must redeem an eligible referral code to join this program. Requires referrals to be enabled and is only available for Loyalty programs. Takes effect when the program is published (immediately for auto-publishing programs) and cannot be turned off once published.",
           "skippable": true,
           "allowedValues": []
         },
@@ -194044,6 +194078,15 @@
             "args": [],
             "nullable": true
           },
+          "skippable": true,
+          "allowedValues": []
+        },
+        "InviteOnly": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When true, new customers must redeem an eligible referral code to join this program. Requires referrals to be enabled and is only available for Loyalty programs. Takes effect when the program is published (immediately for auto-publishing programs) and cannot be turned off once published.",
           "skippable": true,
           "allowedValues": []
         },
@@ -405985,7 +406028,7 @@
             ],
             "nullable": true
           },
-          "description": "NOTE THAT Only subscriptions that allow for local storage can be pushed. Subscriptions fully depending on external services cannot be pushed.\nNOTE THAT Balance can only be provided for loyalty subscriptions that have a EVA loyalty handler.",
+          "description": "NOTE THAT Only subscriptions that allow for local storage can be pushed. Subscriptions fully depending on external services cannot be pushed.\nNOTE THAT Balance can only be provided for loyalty subscriptions that have a EVA loyalty handler.\nLoyalty subscriptions that cannot be assigned (the program is invite-only and no valid referral code was redeemed, or the program is not published or not active) are rejected and reported in the response; other user/profile changes still apply.",
           "allowedValues": []
         },
         "Title": {
@@ -406578,7 +406621,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.ResponseMessage"
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Users.RejectedUserSubscription"
       ],
       "extends": {
         "ref": "EVA.Core.ResponseMessage",
@@ -406597,6 +406641,21 @@
             "isEvaID": true
           },
           "allowedValues": []
+        },
+        "RejectedSubscriptions": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Users.RejectedUserSubscription",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Subscriptions from the request that were not assigned because the loyalty program is invite-only, not published or not active. The user itself is still pushed.",
+          "allowedValues": []
         }
       },
       "enumValues": {}
@@ -406604,7 +406663,7 @@
     "EVA.Core.Users.PushUsers": {
       "typename": "PushUsers",
       "assembly": "EVA.Core",
-      "description": "Use this to push multiple users at once. This is more efficient than pushing them one by one. Please get in touch with your contact at New Black if you plan on pushing a lot of users. This service follows the \"all-or-nothing\" approach, either everything is imported, or nothing is imported. There is a limit (100) on the number of users that can be pushed at once.",
+      "description": "Use this to push multiple users at once. This is more efficient than pushing them one by one. Please get in touch with your contact at New Black if you plan on pushing a lot of users. This service follows the \"all-or-nothing\" approach for user records, either users are imported or not. Loyalty assignments that cannot be made (invite-only, unpublished or inactive programs) are reported separately and do not fail user/profile updates. There is a limit (100) on the number of users that can be pushed at once.",
       "usage": {
         "request": true
       },
@@ -406717,7 +406776,8 @@
       "typeDependencies": [
         "EVA.Core.ResponseMessage",
         "EVA.Core.Users.ValidUser",
-        "EVA.Core.Users.InvalidUser"
+        "EVA.Core.Users.InvalidUser",
+        "EVA.Core.Users.RejectedUserSubscriptionPush"
       ],
       "extends": {
         "ref": "EVA.Core.ResponseMessage",
@@ -406736,6 +406796,21 @@
             ],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "RejectedSubscriptions": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Users.RejectedUserSubscriptionPush",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Subscriptions that were not assigned because the loyalty program is invite-only, not published or not active. Only contains entries for users that were imported.",
           "allowedValues": []
         },
         "Success": {
@@ -406874,6 +406949,87 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.RejectedUserSubscription": {
+      "typename": "RejectedUserSubscription",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Reason": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Why the subscription was not assigned.",
+          "allowedValues": []
+        },
+        "SubscriptionID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The subscription that was not assigned.",
+          "datamodel": {
+            "name": "Subscription",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.RejectedUserSubscriptionPush": {
+      "typename": "RejectedUserSubscriptionPush",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "BackendID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "BackendID of the pushed user.",
+          "datamodel": {
+            "name": "User",
+            "isExternalID": true
+          },
+          "allowedValues": []
+        },
+        "Reason": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Why the subscription was not assigned.",
+          "allowedValues": []
+        },
+        "SubscriptionID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The subscription that was not assigned.",
+          "datamodel": {
+            "name": "Subscription",
+            "supportsCustomID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         }
@@ -486377,6 +486533,36 @@
     {
       "name": "LoyaltyPrograms:ReferralsNotAllowedOnB2B",
       "message": "Referrals cannot be enabled on a B2B loyalty program.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "LoyaltyPrograms:InviteOnlyRequiresReferrals",
+      "message": "Invite-only membership requires referrals to be enabled on the loyalty program.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "LoyaltyPrograms:InviteOnlyNotAllowedOnB2B",
+      "message": "Invite-only membership cannot be enabled on a B2B loyalty program.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "LoyaltyPrograms:LoyaltyProgramNotAvailable",
+      "message": "This loyalty program is not available. It is either not published yet or not active.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "LoyaltyPrograms:InviteOnlyRequiresReferralCode",
+      "message": "A valid referral code is required to join this loyalty program.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "LoyaltyPrograms:InviteOnlyCannotBeDisabledAfterPublish",
+      "message": "Invite-only membership cannot be turned off once it has been published.",
       "module": "EVA.Core",
       "arguments": []
     },
