@@ -453991,6 +453991,62 @@
       },
       "enumValues": {}
     },
+    "EVA.PIM.Repositories.ListLayersFilter": {
+      "typename": "ListLayersFilter",
+      "assembly": "EVA.PIM",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "CountryID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Returns layers with this country ID.",
+          "datamodel": {
+            "name": "Country",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Returns layers whose description contains this value.",
+          "allowedValues": []
+        },
+        "LanguageID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Returns layers with this language ID.",
+          "datamodel": {
+            "name": "Language",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Returns layers whose name contains this value.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.PIM.Repositories.ListProductPropertyTypesFilter": {
       "typename": "ListProductPropertyTypesFilter",
       "assembly": "EVA.PIM",
@@ -455182,12 +455238,18 @@
       },
       "typeArguments": [],
       "typeDependencies": [
+        "EVA.PIM.Repositories.ListLayersFilter",
         "EVA.PIM.Services.ContentLayers.ListLayersResponse",
-        "EVA.Core.PagedResultRequest`1"
+        "EVA.Core.FilteredPagedResultRequest`2"
       ],
       "extends": {
-        "ref": "EVA.Core.PagedResultRequest`1",
+        "ref": "EVA.Core.FilteredPagedResultRequest`2",
         "args": [
+          {
+            "ref": "EVA.PIM.Repositories.ListLayersFilter",
+            "args": [],
+            "nullable": true
+          },
           {
             "ref": "EVA.PIM.Services.ContentLayers.ListLayersResponse",
             "args": [],
