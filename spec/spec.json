@@ -71763,6 +71763,72 @@
       "properties": {},
       "enumValues": {}
     },
+    "EVA.Core.DataModels.Base.FlagsEnumDataModel`1": {
+      "typename": "FlagsEnumDataModel`1",
+      "assembly": "EVA.Core",
+      "usage": {},
+      "typeArguments": [
+        "_TModel"
+      ],
+      "typeDependencies": [
+        "EVA.Core.DataModels.Base.EnumDataModel"
+      ],
+      "extends": {
+        "ref": "EVA.Core.DataModels.Base.EnumDataModel",
+        "args": []
+      },
+      "properties": {
+        "IntValues": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "int32",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Names": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Value": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Values": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "_TModel",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.DataModels.Base.ModifiableDataModel": {
       "typename": "ModifiableDataModel",
       "assembly": "EVA.Core",
@@ -75375,6 +75441,28 @@
           "extends": []
         }
       }
+    },
+    "EVA.Core.DataModels.OrderHoldStatus": {
+      "typename": "OrderHoldStatus",
+      "assembly": "EVA.Core",
+      "usage": {},
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.DataModels.OrderHoldStatus",
+        "EVA.Core.DataModels.Base.FlagsEnumDataModel`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.DataModels.Base.FlagsEnumDataModel`1",
+        "args": [
+          {
+            "ref": "EVA.Core.DataModels.OrderHoldStatus",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
     },
     "EVA.Core.DataModels.OrderLineAvailabilityStatus": {
       "typename": "OrderLineAvailabilityStatus",
@@ -396682,7 +396770,7 @@
     "EVA.Core.Users.ChangeUserPassword": {
       "typename": "ChangeUserPassword",
       "assembly": "EVA.Core",
-      "description": "Change the password of a user.\n\nWhen invalid, the service will return a 400 BAD REQUEST;\n\n- SecurityPolicy:UserOrPasswordInvalid\n- SecurityPolicy:TooShort\n- SecurityPolicy:TooLong\n- SecurityPolicy.NewPasswordIsRequired\n- SecurityPolicy.Pwned\n- General",
+      "description": "Change the password of a user.\n\nWhen invalid, the service will return a 400 BAD REQUEST;\n\n- SecurityPolicy:UserOrPasswordInvalid\n- SecurityPolicy:TooShort\n- SecurityPolicy:TooLong\n- SecurityPolicy.NewPasswordIsRequired\n- SecurityPolicy.Pwned\n- Users:ChangePasswordFailed",
       "usage": {
         "request": true
       },
@@ -477040,6 +477128,12 @@
       "arguments": []
     },
     {
+      "name": "FullStockCount:EitherUserTaskIDOrFullStockCountLabelIDRequired",
+      "message": "Either UserTaskID or FullStockCountLabelID must be specified.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "FullStockCount:CannotProvideMultipleSerialNumberProducts",
       "message": "Cannot provide multiple serial number products in a single AddProductToFullStockCountLabel call.",
       "module": "EVA.Core",
@@ -477560,6 +477654,19 @@
       "message": "Can only borrow actual products.",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "OrderExport:NoLinesToExport",
+      "message": "No lines defined to export for order {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
     },
     {
       "name": "TaxCodeMapping:InvalidMapping",
@@ -480958,6 +481065,12 @@
       ]
     },
     {
+      "name": "Feeds:FileNameContainsSlash",
+      "message": "Filenames should not contain slashes, this breaks in the middleware",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "ExchangeRates:NoExchangeRateAvailable",
       "message": "There is no exchange rate available from {0} to {1}",
       "module": "EVA.Core",
@@ -481070,6 +481183,12 @@
       "arguments": []
     },
     {
+      "name": "MessageTemplates:CannotChangeType",
+      "message": "It's not allowed to change the MessageTemplateType",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "Devices:DeviceNotFound",
       "message": "Unable to find a device.",
       "module": "EVA.Core",
@@ -481102,6 +481221,12 @@
     {
       "name": "Devices:DeviceTypeDoesNotAllowDuplicatesInOrganizationUnit",
       "message": "This device type does not allow duplicates in an OrganizationUnit",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Devices:MultipleTypesNotAllowed",
+      "message": "It is not allowed to use multiple types on one device.",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -481535,6 +481660,12 @@
       "arguments": []
     },
     {
+      "name": "Users:ChangePasswordFailed",
+      "message": "Something went wrong.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "Roles:RoleNotInRoleSet",
       "message": "The Role {0} is not contained in the RoleSet of OrganizationUnit {1}.",
       "module": "EVA.Core",
@@ -481814,6 +481945,186 @@
     {
       "name": "OrderLine:UnitPriceExceedsCurrencyPrecision",
       "message": "Unit price exceeds currency precision.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "OrderLine:AlreadyCompleted",
+      "message": "OrderLine {0} is completed, no modifications allowed to property {1}.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "OrderLine:CannotChangeLineActionType",
+      "message": "OrderLine {0} has already been exported, can't change LineActionType",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "OrderLine:CannotMakeQuantityNegative",
+      "message": "Cannot make quantity negative for line {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "OrderLine:CannotCreateNegativeQuantityLine",
+      "message": "Cannot create a negative quantity line for order {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders:DuplicatePrimaryAddressFields",
+      "message": "Do not supply both primary address fields `Street` and `Address1`, this is not supported!",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Orders:CannotDelete",
+      "message": "Cannot delete an order beyond status 'Cart' (Order {0})",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders:AlreadyCompleted",
+      "message": "Order {0} has already been completed",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders:CustomerCannotBeDetached",
+      "message": "Order {0} has already been invoiced, can no longer remove customer.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders:FlaggedForFraud",
+      "message": "{0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders:ShippingMethodNotAvailable",
+      "message": "Shipping method {0} is not available",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders:PaymentReturnActionBlocked",
+      "message": "This order can't be returned due to a blocked payment.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Orders:CannotAddChildrenToChildLines",
+      "message": "Adding children to child lines is not allowed.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Orders:CannotCopyAddressesWithoutCustomer",
+      "message": "Cannot copy the addresses from the customer if there is no customer attached.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Orders:ExportedLinesPreventAddressChange",
+      "message": "ShippingAddress on this order can't be changed anymore because it has exported lines and the exporters do not allow it.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Orders:InvalidVerificationCodeForOrder",
+      "message": "Verification code is not valid for this order.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Orders:InvalidVerificationCode",
+      "message": "Invalid verification code.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Orders:CannotCancelOrderLine",
+      "message": "",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Orders:CannotCancelOrder",
+      "message": "",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -482537,6 +482848,34 @@
             "args": []
           },
           "name": "Status"
+        }
+      ]
+    },
+    {
+      "name": "Payment:ForeignAmountMissing",
+      "message": "Foreign amount is missing for {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment:PaymentTypeNotDefined",
+      "message": "PaymentType not defined for {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
         }
       ]
     },
@@ -484976,6 +485315,20 @@
       "arguments": []
     },
     {
+      "name": "OrganizationUnit:RecursionDetected",
+      "message": "Recursion on OrganizationUnits {0} detected.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
       "name": "Cultures:CountryAlreadyExists",
       "message": "This country already exists for this OrganizationUnit",
       "module": "EVA.Core",
@@ -485006,6 +485359,26 @@
           }
         }
       ]
+    },
+    {
+      "name": "Stock:InsufficientStockForAdjustment",
+      "message": "Insufficient stock to make adjustment: {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "StockMutation:InvalidStockMutation",
+      "message": "",
+      "module": "EVA.Core",
+      "arguments": []
     },
     {
       "name": "StockMutationReason:DuplicateReason",
@@ -491344,6 +491717,25 @@
       ]
     },
     {
+      "name": "ReturnToSupplierOrder:InvalidOrder",
+      "message": "Order {0} is not a ReturnToSupplier Order",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ReturnToSupplierOrder:MissingShipToOrganizationUnit",
+      "message": "Cannot place return order, because the ShipToOrganizationUnitID is missing.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "Orders:LineModificationNotAllowed",
       "message": "Cannot modify order line {0} because its placement status is {1} while strict placement is enabled.",
       "module": "EVA.Core",
@@ -491398,6 +491790,98 @@
       "message": "Cannot change the shipping address because this order contains placed lines and strict placement is enabled.",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "InStoreOrderShipper:LineActionTypeNotShippable",
+      "message": "OrderLine {0} had lineactiontype {1} and can't be shipped.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "orderLineID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "lineActionType"
+        }
+      ]
+    },
+    {
+      "name": "InStoreOrderShipper:OrderHasHoldStatus",
+      "message": "Order {0} had holdstatus {1} and can't be shipped.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "orderID"
+        },
+        {
+          "type": {
+            "ref": "EVA.Core.DataModels.OrderHoldStatus",
+            "args": [],
+            "nullable": true
+          },
+          "name": "holdStatus"
+        }
+      ]
+    },
+    {
+      "name": "InStoreOrderShipper:FuturePreSaleShipmentDate",
+      "message": "Order {0} has products with a future pre-sale shipment date and can't be shipped.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "InStoreOrderShipper:CannotReturnMoreThanShipped",
+      "message": "Can't return line {0} on line {1}. The QuantityReturned ({2}) is greater than the QuantityShipped ({3})",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "returnLineID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "lineID"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "quantityReturned"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "quantityShipped"
+        }
+      ]
     },
     {
       "name": "DeliverShipments:MustBeSalesOrder",
@@ -494854,6 +495338,12 @@
       "arguments": []
     },
     {
+      "name": "StoreBlob:MimeTypeRequired",
+      "message": "MimeType is required.",
+      "module": "EVA.Blobs",
+      "arguments": []
+    },
+    {
       "name": "ZipBlobs:DuplicatePaths",
       "message": "Duplicate path '{0}' is not allowed",
       "module": "EVA.Blobs",
@@ -495456,6 +495946,19 @@
       "arguments": []
     },
     {
+      "name": "PushUsers:TooManyUsers",
+      "message": "Too many users. You can only push {0} users at once.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
       "name": "SearchUsers:CanOnlySearchHouseNumberWithZipCode",
       "message": "Can only search `HouseNumber` in combination with `ZipCode`",
       "module": "EVA.Core",
@@ -495492,6 +495995,62 @@
       "arguments": []
     },
     {
+      "name": "UserGroup:NameAlreadyExists",
+      "message": "UserGroup with name '{0}' already exists.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "UserGroup:UserAlreadyInGroup",
+      "message": "User {0} already exists in group {1}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "userID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "groupID"
+        }
+      ]
+    },
+    {
+      "name": "UserGroup:UserNotInGroup",
+      "message": "User {0} doesn't exist in group {1}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "userID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "groupID"
+        }
+      ]
+    },
+    {
       "name": "ValidateUserEmailAddress:EmailAddressAlreadyValidated",
       "message": "Email address already validated.",
       "module": "EVA.Core",
@@ -495506,6 +496065,12 @@
     {
       "name": "UserInteractions:UserRequired",
       "message": "A UserInteraction must be attached to a user. Either provide a UserID in the request or an OrderID that has a CustomerID.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Export:ExportNotFailed",
+      "message": "This export is not failed, so it can only be retried with force.",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -495626,6 +496191,20 @@
       "arguments": []
     },
     {
+      "name": "Commitments:CannotMoveCommitment",
+      "message": "{0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
       "name": "CommitOrderLines:CannotChooseCommitmentStatus",
       "message": "It's not possible to choose a commitment status other than ManualCommit or ForcedCommit.",
       "module": "EVA.Core",
@@ -495738,6 +496317,26 @@
     {
       "name": "CreateShipment:NoDuplicateIdentifiersAllowed",
       "message": "Cannot have duplicate identifiers",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ProducePickSlip:NoPickSlipAvailable",
+      "message": "No PickSlip available for order {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "DeleteShipment:ShipmentIdentifierRequired",
+      "message": "Either ShipmentID or BackendID and BackendSystemID must be specified",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -495905,6 +496504,46 @@
       "arguments": []
     },
     {
+      "name": "RecurringTasks:CannotCreateSystemTask",
+      "message": "Cannot create a task that begins with 'system:'",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "RecurringTasks:SystemTaskCannotBeModified",
+      "message": "A recurring task added by the system cannot be modified/deleted",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "RecurringTasks:TaskTypeNotFound",
+      "message": "The task type {0} could not be found.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "RecurringTasks:NotUnique",
+      "message": "The identifier {0} is not unique.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
       "name": "RegisterAppForNotifications:TrainingBundleMismatch",
       "message": "Application identifier {0} does not belong on this environment. A training build registers against a training environment, and every other build registers against the others.",
       "module": "EVA.Core",
@@ -495929,6 +496568,60 @@
       "message": "Inconsistent use of product identifiers.",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "FullyReceiveShipment:ManualReceiveMethodRequired",
+      "message": "This shipment may only be received through the {0} service. This is controlled through the PurchaseOrder:ReceiveMethod setting for OrganizationUnit {1}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "serviceName"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "organizationUnitID"
+        }
+      ]
+    },
+    {
+      "name": "ReceiveShipment:NoPurchaseOrderForSurplusLine",
+      "message": "Was unable to find a suitable purchase order to create the surplus line on",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ReceivePurchaseOrderShipment:QuantityReceivedCannotBeNegative",
+      "message": "QuantityReceived can not be negative.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ConfirmPurchaseOrder:OrderAlreadyConfirmed",
+      "message": "Order was already confirmed.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "SupplierShipPurchaseOrder:ProductNotOnPurchaseOrder",
+      "message": "Did not find a line on the purchase order for product {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
     },
     {
       "name": "ReceiveShipment:CannotReceiveProductWithoutReference",
@@ -495975,6 +496668,19 @@
         {
           "type": {
             "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Print:OrderBlobTypeNotPrintable",
+      "message": "Order blob type {0} may not be (re)printed this way!",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "EVA.Core.DataModels.OrderBlobTypes",
             "args": []
           }
         }
@@ -496094,6 +496800,12 @@
     {
       "name": "PaymentTransactionLedger:IsInternal",
       "message": "This PaymentTransactionLedgerType is internal and can't be used to create ledgers",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "CreateRefund:NothingToRefund",
+      "message": "NothingToRefund",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -496265,6 +496977,12 @@
     {
       "name": "CreatePurchaseOrderLineUnitPriceCorrection:ProductMissingCostPriceList",
       "message": "The product does not have a unit cost price list configured, which is required to calculate the corrected unit cost.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ForcePlaceOrder:PurchaseOrderCannotBeForcePlaced",
+      "message": "Purchase orders cannot be force-placed.",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -496612,6 +497330,52 @@
       "arguments": []
     },
     {
+      "name": "Interbranch:OrderNotInterbranch",
+      "message": "Order has to be converted to an interbranch order first.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Interbranch:InvalidInterbranchOrganizationUnit",
+      "message": "OrganizationUnit {0} is invalid as InterbranchOrganizationUnit for Order {1}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "name": "organizationUnitID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "orderID"
+        }
+      ]
+    },
+    {
+      "name": "Interbranch:NotAllowedFromNonEvaShop",
+      "message": "Interbranch orders are not allowed from a non-EVA shop.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Interbranch:CannotTransformReturnToSupplier",
+      "message": "You cannot transform a ReturnToSupplier into an Interbranch order",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ProducePurchaseOrderDocument:OrderIsNotPurchaseOrder",
+      "message": "Can only produce this document for purchase order, which this order is not.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "RequeueErrorMessage:CannotRetrySuccessfulMessage",
       "message": "Can only requeue a message that is in status New or FailureAfterRetry.",
       "module": "EVA.Core",
@@ -496695,6 +497459,12 @@
     {
       "name": "InvoiceDispute:LedgerClassRequired",
       "message": "InvoiceDisputeReasons with AutoResolve require a LedgerClass",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "InvoiceExport:IdsRequired",
+      "message": "Invoice export ID or IDs are required.",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -496786,6 +497556,12 @@
       "arguments": []
     },
     {
+      "name": "Finance:CannotRepostOpenPeriod",
+      "message": "FinancePeriodUnavailable",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "SetEmployeesForFinancialPeriod:CannotSetPartialCommission",
       "message": "Cannot set commission for some employees and not for others. Either set commission for all employees or none.",
       "module": "EVA.Core",
@@ -496858,8 +497634,20 @@
       "arguments": []
     },
     {
+      "name": "Blobs:InvalidOrderReference",
+      "message": "Either OrderID or OrderLineID needs to be specified, or both.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "ValidateToken:CloudUnavailable",
       "message": "Cloud is currently not available",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "AppRules:InvalidVersion",
+      "message": "One or more versions have an invalid format.",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -496935,6 +497723,285 @@
       ]
     },
     {
+      "name": "UpdateAddress:UserAddressesDisabled",
+      "message": "The usage of addresses on the user object is disabled.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "AddressRequirement:AddressRequirementNotFound",
+      "message": "Address Requirement could not be found with these input parameters.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "PurchaseOrderExcel:InvalidExcelMissingWorksheet",
+      "message": "Invalid Excel: Missing worksheet",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "PurchaseOrderExcel:StoreNotFound",
+      "message": "Store {0} not found (row {1})",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "name": "value"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "row"
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderExcel:ProductNotFound",
+      "message": "Product {0} not found (row {1})",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "name": "value"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "row"
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderExcel:QuantityNotValid",
+      "message": "Quantity {0} not valid (row {1})",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "name": "value"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "row"
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderExcel:PriceNotValid",
+      "message": "Price {0} not valid (row {1})",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "name": "value"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "row"
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderExcel:TooManyColumns",
+      "message": "The workbook contains more columns than expected (row {0}).",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderExcel:CellValueNotValid",
+      "message": "{0} value '{1}' is not valid (row {2}).",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "column"
+        },
+        {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          },
+          "name": "value"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "row"
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderExcel:OrderNotFound",
+      "message": "Order {0} was not found.",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderExcel:OrderNotPurchaseOrder",
+      "message": "Order {0} is not a purchase order.",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderExcel:OrderLineNotOnOrder",
+      "message": "Order line {0} does not belong to order {1}.",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "orderLineID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "orderID"
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderExcel:CancelQuantityExceedsOpen",
+      "message": "Order line {0} on order {1} cannot cancel {2} more because only {3} is still open.",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "orderLineID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "orderID"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "quantityToCancel"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "quantityOpen"
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderExcel:DeliveryDateNotValid",
+      "message": "Delivery date {0} not valid",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "any",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderExcel:StockLabelNotValid",
+      "message": "Stock label {0} not valid",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "SalesOrderExcel:CannotFindHeaderRow",
+      "message": "Cannot find header row!",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "FraudItemExcel:MissingWorksheet",
+      "message": "Invalid Excel: Missing '{0}' worksheet",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
       "name": "UserOrigins:AlreadyExists",
       "message": "This UserOrigin already exists",
       "module": "EVA.Core.Management",
@@ -496977,6 +498044,12 @@
           }
         }
       ]
+    },
+    {
+      "name": "StockAllocationRule:InvalidStockAllocationRule",
+      "message": "StockAllocationRule must be a limitation to refill the allocation.",
+      "module": "EVA.Core.Management",
+      "arguments": []
     },
     {
       "name": "StockAllocations:OrganizationUnitRequired",
@@ -497024,6 +498097,60 @@
       ]
     },
     {
+      "name": "StockConfidence:NotAllowedToView",
+      "message": "You are not allowed to view stock confidence in this organization unit.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "StockConfidence:NotAllowedToViewHistory",
+      "message": "You are not allowed to see the stock confidence of this organization unit.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "StockConfidence:NotAllowedToModify",
+      "message": "You are not allowed to modify stock confidence in this organization unit.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "StockConfidence:NotTrackedNothingToExplain",
+      "message": "This organization unit doesn't track stock confidence, so there is nothing to explain.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "StockConfidence:NotTrackedNothingToList",
+      "message": "This organization unit doesn't track stock confidence, so there is nothing to list.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "StockConfidence:NotTrackedNothingToModify",
+      "message": "This organization unit doesn't track stock confidence, so there is nothing to modify.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "StockConfidence:OrganizationUnitIDRequired",
+      "message": "A stock confidence is a store's opinion of its own shelf, so the list needs an organization unit.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "StockConfidence:InvalidFactor",
+      "message": "The factor must be a number above 0.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "StockConfidence:RemarkRequired",
+      "message": "A modification without a remark can't be explained later.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
       "name": "StockLabels:AlreadyExists",
       "message": "StockLabel with name '{0}' already exists",
       "module": "EVA.Core.Management",
@@ -497042,6 +498169,28 @@
       "message": "OrganizationUnitShippingMethod already exists",
       "module": "EVA.Core.Management",
       "arguments": []
+    },
+    {
+      "name": "ShippingMethod:CodeAlreadyExists",
+      "message": "ShippingMethod with Code '{0}' already exists: {1}",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "code"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "id"
+        }
+      ]
     },
     {
       "name": "ElevationSkipReason:AlreadyExists",
@@ -497240,6 +498389,12 @@
       "arguments": []
     },
     {
+      "name": "SupplierProduct:InvalidOrganizationUnit",
+      "message": "Invalid organization unit.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
       "name": "UnitOfMeasures:AlreadyExists",
       "message": "This UnitOfMeasure already exists",
       "module": "EVA.Core.Management",
@@ -497273,6 +498428,33 @@
           "type": {
             "ref": "id",
             "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "PriceListManualInputAdjustment:NotAManualAdjustment",
+      "message": "Adjustment {0} is not a manual adjustment.",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "PriceListUsageType:NameAlreadyExists",
+      "message": "PriceListUsageType with Name `{0}` already exists",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
           }
         }
       ]
@@ -497324,6 +498506,28 @@
       "message": "A required user type of `None` cannot be satisfied by any caller. Specify a single user type, such as `Employee` or `Api`.",
       "module": "EVA.Core.Management",
       "arguments": []
+    },
+    {
+      "name": "PaymentType:CodeAlreadyExists",
+      "message": "PaymentType with Code '{0}' already exists: {1}",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "code"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "id"
+        }
+      ]
     },
     {
       "name": "UserPaymentTokenServices:UserIDRequired",
@@ -497580,6 +498784,18 @@
       "arguments": []
     },
     {
+      "name": "MessageTemplates:TemplateIsNotAMailTemplate",
+      "message": "Template is not a mail template.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "MessageTemplates:OnlyNormalTemplatesCanBeMailed",
+      "message": "Only normal templates can be mailed.",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
       "name": "LoyaltyProgramBadgeCategory:AlreadyExists",
       "message": "A loyalty program badge category with this name already exists in this loyalty program",
       "module": "EVA.Core.Management",
@@ -497688,6 +498904,47 @@
       "message": "Either DiscountEvaID or DiscountID is required.",
       "module": "EVA.Core.Management",
       "arguments": []
+    },
+    {
+      "name": "DiscountLayer:SystemCannotBeChanged",
+      "message": "The System DiscountLayer cannot be changed",
+      "module": "EVA.Core.Management",
+      "arguments": []
+    },
+    {
+      "name": "DiscountLayer:InvalidSequence",
+      "message": "Invalid sequence '{0}'.",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "DiscountLayer:NameAlreadyExists",
+      "message": "DiscountLayer with Name '{0}' already exists: {1}",
+      "module": "EVA.Core.Management",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "name"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "id"
+        }
+      ]
     },
     {
       "name": "Culture:CultureAlreadyExists",
@@ -498496,6 +499753,32 @@
       ]
     },
     {
+      "name": "ProductPropertyType:DatatypeNotAllowedOnEnum",
+      "message": "The selected datatype is not allowed on an Enum ProductPropertyType",
+      "module": "EVA.PIM",
+      "arguments": []
+    },
+    {
+      "name": "ProductPropertyType:DefinedInCode",
+      "message": "It's not possible to edit a ProductPropertyType that has been defined in code.",
+      "module": "EVA.PIM",
+      "arguments": []
+    },
+    {
+      "name": "ProductPropertyType:AlreadyExists",
+      "message": "ProductPropertyType with ID {0} already exists.",
+      "module": "EVA.PIM",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
       "name": "PrivacyRemovalRequest:AlreadyRequested",
       "message": "Privacy removal already requested.",
       "module": "EVA.Privacy",
@@ -498578,6 +499861,26 @@
       ]
     },
     {
+      "name": "UploadReplenishmentProductsExcel:CouldNotReadExcelFile",
+      "message": "Could not read excel file",
+      "module": "EVA.Replenishment",
+      "arguments": []
+    },
+    {
+      "name": "UploadReplenishmentProductsExcel:MissingColumn",
+      "message": "Missing column {0}",
+      "module": "EVA.Replenishment",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
       "name": "ReplenishmentProducts:DuplicateRecord",
       "message": "There was a duplicate record for OrganizationUnit/Product/StockLabel {0}/{1}/{2} within one time frame.",
       "module": "EVA.Replenishment",
@@ -498620,6 +499923,34 @@
         {
           "type": {
             "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "ReplenishmentPurchaseAutoOrder:ProductNotFound",
+      "message": "Product {0} not found",
+      "module": "EVA.Replenishment",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "ReplenishmentPurchaseAutoOrder:StockLabelNotValid",
+      "message": "Stock label {0} not valid",
+      "module": "EVA.Replenishment",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
             "args": [],
             "nullable": true
           }
@@ -498739,6 +500070,150 @@
       "arguments": []
     },
     {
+      "name": "ZonedCycleCount:StockLabelNotPartOfCycleCount",
+      "message": "StockLabel with ID {0} is not part of the ZonedCycleCount.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ZonedCycleCount:StockProductCannotBeCounted",
+      "message": "{0} cannot be counted for this cycle count.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ZonedCycleCount:PreCountsNotCompleted",
+      "message": "There are still PreCount tasks that aren't yet completed for ZonedCycleCount {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ZonedCycleCount:CorrectionsNotSupportedForSerialNumberProduct",
+      "message": "CountedQuantityCorrections is not supported for serial number product {0} for zoned cycle count {1}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ZonedCycleCount:StockLabelDoesNotNeedCounting",
+      "message": "StockLabel {0} doesn't have to be counted.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ZonedCycleCount:NegativeCountedQuantityForPreCountTask",
+      "message": "A counted quantity for pre-count task {0} cannot be negative.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ZonedCycleCount:NegativeCountedQuantityCorrection",
+      "message": "A counted quantity correction for zoned cycle count {0} cannot be negative.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ZonedCycleCount:NegativePreCountResult",
+      "message": "Zoned cycle count {0} contains a pre-count result with a negative counted quantity and cannot be accepted. Recount the label instead.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ZonedCycleCount:NegativeCountedQuantityForStockLabel",
+      "message": "The counted quantity for stock label {0} on user task {1} cannot be negative.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "stockLabelID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "userTaskID"
+        }
+      ]
+    },
+    {
+      "name": "ZonedCycleCount:CountAlreadyAccepted",
+      "message": "The count for StockLabel {0} has already been accepted.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
       "name": "StockReservation:OrderCompleted",
       "message": "Reservation task cannot be completed because order {0} is already completed.",
       "module": "EVA.Core",
@@ -498750,6 +500225,12 @@
           }
         }
       ]
+    },
+    {
+      "name": "StockMovementFollowUp:UserTaskIDRequired",
+      "message": "UserTaskID is required",
+      "module": "EVA.Core",
+      "arguments": []
     },
     {
       "name": "ShipFromStoreUserTaskComposer:StationRequired",
@@ -498829,6 +500310,12 @@
       "arguments": []
     },
     {
+      "name": "ReturnToSupplier:NoProductOrOrderLineProvided",
+      "message": "No ProductID or OrderLineID provided",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "ReturnToSupplierTaskErrors:UserCanOnlyHaveOneActiveReturnToSupplierTask",
       "message": "You can only have one active return to supplier task.",
       "module": "EVA.Core",
@@ -498891,6 +500378,12 @@
     {
       "name": "Repairs:UserTaskOrRepairIDRequiredWhenPrintingReceipt",
       "message": "UserTaskID or RepairID must be specified when printing repair thermal receipt",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "PrintPriceLabel:EitherUserTaskIDOrProducts",
+      "message": "Either specify UserTaskID or Products",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -498984,6 +500477,100 @@
       ]
     },
     {
+      "name": "InitialCycleCount:InvalidStockLabel",
+      "message": "InvalidStockLabel",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "InitialCycleCount:NoCountedQuantitiesSpecified",
+      "message": "NoCountedQuantitiesSpecified",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "InitialCycleCount:InitialCycleCountAlreadyExists",
+      "message": "InitialCycleCountAlreadyExists",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "InitialCycleCount:CannotPreCountStockLabel",
+      "message": "Cannot pre-count StockLabel {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "InitialCycleCount:CannotCountNonStockProduct",
+      "message": "Product {0} is non-stock",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "InitialCycleCount:CannotCountFinishedCycleCount",
+      "message": "Cannot count a label on a finished InitialCycleCount",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "InitialCycleCount:CannotValidateFinishedCycleCount",
+      "message": "Cannot validate a label on a finished InitialCycleCount",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "InitialCycleCount:CannotCountNegativeQuantity",
+      "message": "Counted quantity cannot be less than zero",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "InitialCycleCount:CannotPreCountAlreadyCountedLabel",
+      "message": "Cannot do a pre-count on a label that has already been counted",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "InitialCycleCount:CannotPreCountNonNewCycleCount",
+      "message": "Cannot do a pre-count on InitialCycleCount {0} because it doesn't have Status New",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "InitialCycleCount:InvalidLabel",
+      "message": "Label {0} is not a valid label",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
       "name": "CreateCustomUserTask:CustomUserTasksNoLongerSupported",
       "message": "Custom usertasks are deprecated and can no longer be created",
       "module": "EVA.Core",
@@ -499042,19 +500629,6 @@
     {
       "name": "CompleteZonedCycleCounts:DeviationReasonRequired",
       "message": "Deviation Reason is required for zoned cycle count {0}",
-      "module": "EVA.Core",
-      "arguments": [
-        {
-          "type": {
-            "ref": "id",
-            "args": []
-          }
-        }
-      ]
-    },
-    {
-      "name": "CompleteZonedCycleCounts:PreCountsNotCompleted",
-      "message": "There are still PreCount tasks that aren't yet completed for ZonedCycleCount {0}",
       "module": "EVA.Core",
       "arguments": [
         {
@@ -499139,6 +500713,37 @@
     {
       "name": "SerialNumbers:SerialNumberDoesNotMatch",
       "message": "The provided Serial Number does not match with the existing one.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ReservationCleanup:MissingWorkSetLine",
+      "message": "Expected a line in the workset for OrderLine {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ReservationCleanup:NoProductsMoved",
+      "message": "Each line should either have some products returned or new pickup date set",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ReservationCleanup:CannotExtendExpirationForCancellations",
+      "message": "Cannot extend the duration of cancelled OrderLine",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ReservationCleanup:CannotExtendExpirationPickupTasksEnabled",
+      "message": "Cannot extend the reservation using this service if pickup tasks are enabled",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -499396,6 +501001,66 @@
       "arguments": []
     },
     {
+      "name": "Adyen:InvalidToken",
+      "message": "Your token is invalid or has expired",
+      "module": "EVA.Payment.Adyen",
+      "arguments": []
+    },
+    {
+      "name": "Adyen:PaymentFailed",
+      "message": "Could not create Adyen Checkout payment: {0}",
+      "module": "EVA.Payment.Adyen",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Adyen:PaymentTypeNotConfigured",
+      "message": "PaymentType {0} is not configured",
+      "module": "EVA.Payment.Adyen",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Adyen:PaymentTypeForGatewayNotConfigured",
+      "message": "PaymentType for gateway {0} is not configured",
+      "module": "EVA.Payment.Adyen",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Adyen:PaymentTypeRequired",
+      "message": "Gateway specific PaymentType is required",
+      "module": "EVA.Payment.Adyen",
+      "arguments": []
+    },
+    {
+      "name": "Adyen:GatewayIDRequired",
+      "message": "GatewayID is required",
+      "module": "EVA.Payment.Adyen",
+      "arguments": []
+    },
+    {
       "name": "Adyen:EnvironmentMismatch",
       "message": "Adyen environment mismatch: {0}",
       "module": "EVA.Payment.Adyen",
@@ -499434,10 +501099,30 @@
       "arguments": []
     },
     {
+      "name": "UserCard:NotValid",
+      "message": "Not valid",
+      "module": "EVA.Payment.Core",
+      "arguments": []
+    },
+    {
       "name": "TapToPay:UniqueKeyMismatch",
       "message": "The provided UniqueKey does not match the generated UniqueKey, please initialize again by calling CreatePayment with a token.",
       "module": "EVA.Payment.Core",
       "arguments": []
+    },
+    {
+      "name": "Rembours:PaymentTypeNotConfigured",
+      "message": "PaymentType {0} is not configured",
+      "module": "EVA.Payment.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
     },
     {
       "name": "SplitPaymentHandler:CannotSetInstallmentCountOnSplitPayment",
@@ -499493,6 +501178,78 @@
       "arguments": []
     },
     {
+      "name": "PrintPinReceipt:InvalidPaymentTransactionReference",
+      "message": "Expected an ID of a payment transaction, but got {0}",
+      "module": "EVA.Payment.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "PrintPinReceipt:InvalidOrderReference",
+      "message": "Expected an ID of an order, but got {0}",
+      "module": "EVA.Payment.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "ManualPayment:CustomerNameMissing",
+      "message": "No customer first- and or lastname supplied to process this payment",
+      "module": "EVA.Payment.Core",
+      "arguments": []
+    },
+    {
+      "name": "ManualPayment:AmountExceedsOpenAmount",
+      "message": "Amount to be paid can't be greater than the amount on the order",
+      "module": "EVA.Payment.Core",
+      "arguments": []
+    },
+    {
+      "name": "ManualPayment:CustomerBankAccountMissing",
+      "message": "No customer bank account to process this payment",
+      "module": "EVA.Payment.Core",
+      "arguments": []
+    },
+    {
+      "name": "ManualPayment:InvalidBankAccount",
+      "message": "{0}",
+      "module": "EVA.Payment.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "ManualPayment:NotAllowed",
+      "message": "You are not allowed to create or confirm a manual payment",
+      "module": "EVA.Payment.Core",
+      "arguments": []
+    },
+    {
+      "name": "ManualPayment:CustomerMissing",
+      "message": "No customer selected",
+      "module": "EVA.Payment.Core",
+      "arguments": []
+    },
+    {
       "name": "LoyaltyPayment:CustomerRequired",
       "message": "A Customer is required to do a Loyalty payment",
       "module": "EVA.Payment.Core",
@@ -499515,6 +501272,46 @@
       "message": "The loyalty handler could not be reached",
       "module": "EVA.Payment.Core",
       "arguments": []
+    },
+    {
+      "name": "Interbranch:InvalidCurrency",
+      "message": "Interbrach payments can only be made in '{0}'",
+      "module": "EVA.Payment.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Interbranch:NonShipLinesNotAllowed",
+      "message": "Cannot create payment for Interbranch Order {0} because it contains non-ship OrderLines",
+      "module": "EVA.Payment.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Interbranch:ReturnLinesNotAllowed",
+      "message": "Cannot create payment for Interbranch Order {0} because it contains return OrderLines",
+      "module": "EVA.Payment.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
     },
     {
       "name": "GiftCardRefundPaymentMethod:EmailRequired",
@@ -499765,6 +501562,94 @@
       "arguments": []
     },
     {
+      "name": "Mollie:ReturnUrlRequired",
+      "message": "ReturnUrl is required",
+      "module": "EVA.Payment.Mollie",
+      "arguments": []
+    },
+    {
+      "name": "Mollie:OnlyEuroSupported",
+      "message": "Only EUR currency is supported",
+      "module": "EVA.Payment.Mollie",
+      "arguments": []
+    },
+    {
+      "name": "Mollie:PaymentTypeNotConfigured",
+      "message": "PaymentType {0} is not configured",
+      "module": "EVA.Payment.Mollie",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mollie:CreateFailed",
+      "message": "Could not create Mollie payment: {0}",
+      "module": "EVA.Payment.Mollie",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mollie:RefundFailed",
+      "message": "Could not refund Mollie payment: {0}",
+      "module": "EVA.Payment.Mollie",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mollie:ApiError",
+      "message": "{0}",
+      "module": "EVA.Payment.Mollie",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "MultiSafepay:CreateFailed",
+      "message": "Could not create MSP payment, received message  {0}",
+      "module": "EVA.Payment.MultiSafepay",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "MultiSafepay:CreateFailedWithoutMessage",
+      "message": "Could not create MultiSafepay payment",
+      "module": "EVA.Payment.MultiSafepay",
+      "arguments": []
+    },
+    {
       "name": "Stripe:PaymentFailed",
       "message": "Failed to make payment: '{0}'",
       "module": "EVA.Payment.Stripe",
@@ -499781,6 +501666,12 @@
     {
       "name": "Stripe:MissingApiKey",
       "message": "ApiKey is not yet configured",
+      "module": "EVA.Payment.Stripe",
+      "arguments": []
+    },
+    {
+      "name": "Stripe:InvalidToken",
+      "message": "Your token is invalid or has expired",
       "module": "EVA.Payment.Stripe",
       "arguments": []
     },
@@ -499852,6 +501743,12 @@
     {
       "name": "DataLakeBackfill:UserBatchesBackfillOnlyAllowsFromTo",
       "message": "UserBatches backfill only allows from/to range.",
+      "module": "EVA.DataLake",
+      "arguments": []
+    },
+    {
+      "name": "DataLakeBackfill:UserBatchesBackfillCannotUseIDs",
+      "message": "Cannot use IDs with UserBatches",
       "module": "EVA.DataLake",
       "arguments": []
     },
@@ -500771,6 +502668,52 @@
       "message": "No bueno.",
       "module": "EVA.Intersolve",
       "arguments": []
+    },
+    {
+      "name": "Intersolve:VoucherActivationFailed",
+      "message": "Failure activating card for line ID {0}: {1}",
+      "module": "EVA.Intersolve",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "Intersolve:NoVoucherProvidersFound",
+      "message": "No voucher providers have been found for application {0}",
+      "module": "EVA.Intersolve",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Intersolve:VoucherNotFound",
+      "message": "Voucher {0} was not found",
+      "module": "EVA.Intersolve",
+      "arguments": [
+        {
+          "type": {
+            "ref": "int64",
+            "args": []
+          }
+        }
+      ]
     },
     {
       "name": "NamedInstanceFactory:HandlerNotFound",
