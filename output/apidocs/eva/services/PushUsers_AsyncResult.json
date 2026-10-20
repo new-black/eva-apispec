@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022InvalidUsers\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022Reason\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022Metadata\u0022: {\n    \u0022IsAsyncResultAvailable\u0022: true\n  },\n  \u0022Success\u0022: true,\n  \u0022ValidUsers\u0022: [\n    {\n      \u0022Addresses\u0022: [\n        {\n          \u0022AddressBookBackendID\u0022: \u0022string\u0022,\n          \u0022AddressBookID\u0022: 123\n        }\n      ],\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123\n    }\n  ]\n}"
+      "sample": "{\n  \u0022InvalidUsers\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022Reason\u0022: \u0022string\u0022\n    }\n  ],\n  \u0022Metadata\u0022: {\n    \u0022IsAsyncResultAvailable\u0022: true\n  },\n  \u0022RejectedSubscriptions\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022Reason\u0022: \u0022string\u0022,\n      \u0022SubscriptionID\u0022: 123\n    }\n  ],\n  \u0022Success\u0022: true,\n  \u0022ValidUsers\u0022: [\n    {\n      \u0022Addresses\u0022: [\n        {\n          \u0022AddressBookBackendID\u0022: \u0022string\u0022,\n          \u0022AddressBookID\u0022: 123\n        }\n      ],\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -164,7 +164,36 @@
         "one_of": null
       }
     ],
-    "H": [
+    "G": [
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "BackendID of the pushed user.\n\nThis is the ID of a \u0060User\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Reason",
+        "deprecation_notice": null,
+        "description": "Why the subscription was not assigned.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SubscriptionID",
+        "deprecation_notice": null,
+        "description": "The subscription that was not assigned.\n\nThis is the ID of a \u0060Subscription\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "I": [
       {
         "name": "AddressBookBackendID",
         "deprecation_notice": null,
@@ -184,14 +213,14 @@
         "one_of": null
       }
     ],
-    "G": [
+    "H": [
       {
         "name": "Addresses",
         "deprecation_notice": null,
         "description": "",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "H",
+        "properties_id": "I",
         "one_of": null
       },
       {
@@ -242,6 +271,15 @@
         "one_of": null
       },
       {
+        "name": "RejectedSubscriptions",
+        "deprecation_notice": null,
+        "description": "Subscriptions that were not assigned because the loyalty program is invite-only, not published or not active. Only contains entries for users that were imported.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": null
+      },
+      {
         "name": "Success",
         "deprecation_notice": null,
         "description": "",
@@ -256,7 +294,7 @@
         "description": "Will be empty if the import was not successful",
         "type": "array[object] | null",
         "required": false,
-        "properties_id": "G",
+        "properties_id": "H",
         "one_of": null
       }
     ]
