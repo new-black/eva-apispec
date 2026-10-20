@@ -73288,6 +73288,30 @@
         }
       }
     },
+    "EVA.Core.DataModels.DiscountCouponValidityStatus": {
+      "typename": "DiscountCouponValidityStatus",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Expired": {
+          "value": 2,
+          "extends": []
+        },
+        "NotYetValid": {
+          "extends": []
+        },
+        "Valid": {
+          "value": 1,
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.DataModels.DiscountDeactivationReasons": {
       "typename": "DiscountDeactivationReasons",
       "assembly": "EVA.Core",
@@ -82646,6 +82670,15 @@
             "supportsSystemID": true,
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "ValidFrom": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The date from which the coupon can be used, in the timezone of the organization unit where it is used. The discount's StartDate remains the outer boundary.",
           "allowedValues": []
         },
         "ValidUntil": {
@@ -160247,6 +160280,24 @@
             "nullable": true
           },
           "allowedValues": []
+        },
+        "ValidFrom": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The date from which the coupon can be used, in the timezone of the organization unit where it is used. The discount's StartDate remains the outer boundary.",
+          "allowedValues": []
+        },
+        "ValidUntil": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The date until which the coupon can be used, in the timezone of the organization unit where it is used. The discount's EndDate remains the outer boundary.",
+          "allowedValues": []
         }
       },
       "enumValues": {}
@@ -163675,7 +163726,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.ResponseMessage"
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.DataModels.DiscountCouponValidityStatus"
       ],
       "extends": {
         "ref": "EVA.Core.ResponseMessage",
@@ -163836,6 +163888,32 @@
             "supportsSystemID": true,
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "ValidFrom": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The date from which the coupon can be used. The discount's StartDate remains the outer boundary.",
+          "allowedValues": []
+        },
+        "ValidityStatus": {
+          "type": {
+            "ref": "EVA.Core.DataModels.DiscountCouponValidityStatus",
+            "args": []
+          },
+          "description": "Validity of the coupon based on its own `ValidFrom` and `ValidUntil`, evaluated in the timezone of the current organization unit.",
+          "allowedValues": []
+        },
+        "ValidUntil": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The date until which the coupon can be used. The discount's EndDate remains the outer boundary.",
           "allowedValues": []
         }
       },
@@ -165716,7 +165794,9 @@
         "response": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.DataModels.DiscountCouponValidityStatus"
+      ],
       "properties": {
         "CouponCode": {
           "type": {
@@ -165807,6 +165887,32 @@
             "ref": "int32",
             "args": []
           },
+          "allowedValues": []
+        },
+        "ValidFrom": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The date from which the coupon can be used. The discount's StartDate remains the outer boundary.",
+          "allowedValues": []
+        },
+        "ValidityStatus": {
+          "type": {
+            "ref": "EVA.Core.DataModels.DiscountCouponValidityStatus",
+            "args": []
+          },
+          "description": "Validity of the coupon based on its own `ValidFrom` and `ValidUntil`, evaluated in the timezone of the current organization unit.",
+          "allowedValues": []
+        },
+        "ValidUntil": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The date until which the coupon can be used. The discount's EndDate remains the outer boundary.",
           "allowedValues": []
         }
       },
@@ -166732,6 +166838,26 @@
             "name": "User",
             "isExternalID": true
           },
+          "allowedValues": []
+        },
+        "ValidFrom": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The date from which the coupon can be used, in the timezone of the organization unit where it is used. The discount's StartDate remains the outer boundary. When omitted for an existing coupon, the current value is kept; send `null` to clear it.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "ValidUntil": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The date until which the coupon can be used, in the timezone of the organization unit where it is used. The discount's EndDate remains the outer boundary. When omitted for an existing coupon, the current value is kept; send `null` to clear it.",
+          "skippable": true,
           "allowedValues": []
         }
       },
@@ -168620,6 +168746,26 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "ValidFrom": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The date from which the coupon can be used, in the timezone of the organization unit where it is used. The discount's StartDate remains the outer boundary. When omitted, the current value is kept; send `null` to clear it.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "ValidUntil": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The date until which the coupon can be used, in the timezone of the organization unit where it is used. The discount's EndDate remains the outer boundary. When omitted, the current value is kept; send `null` to clear it.",
+          "skippable": true,
           "allowedValues": []
         }
       },
@@ -423628,6 +423774,14 @@
           },
           "allowedValues": []
         },
+        "ValidFrom": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "ValidUntil": {
           "type": {
             "ref": "date",
@@ -483292,6 +483446,12 @@
     {
       "name": "Discounts:CouponValidUntilMustBeInTheFuture",
       "message": "ValidUntil must be a future date.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:CouponValidFromMustBeBeforeValidUntil",
+      "message": "ValidFrom must be before ValidUntil.",
       "module": "EVA.Core",
       "arguments": []
     },
