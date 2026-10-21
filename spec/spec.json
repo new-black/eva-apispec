@@ -18409,6 +18409,23 @@
       }
     },
     {
+      "name": "GetOrderAccountSummary",
+      "assembly": "EVA.Core",
+      "path": "/message/GetOrderAccountSummary",
+      "method": "POST",
+      "requestType": "EVA.Core.Finance.GetOrderAccountSummary",
+      "responseType": "EVA.Core.Finance.GetOrderAccountSummaryResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "GeneralLedgers",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "GetOrderCounts",
       "assembly": "EVA.BI",
       "path": "/message/GetOrderCounts",
@@ -104587,6 +104604,206 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.Finance.GetOrderAccountSummary": {
+      "typename": "GetOrderAccountSummary",
+      "assembly": "EVA.Core",
+      "description": "Returns the general ledger bookings of one order, summed per financial period, organization unit, account and currency.\n\nGroups that net to 0 are included. `Totals` holds the sum of all `Accounts` per currency.\n\nAn order without general ledger bookings returns empty lists. Only organization units that the user can see for the `GeneralLedgers` functionality are included.\n\n`Accounts` and `Totals` cover the visible organization units only. An order with bookings in more than one organization unit (for example ship-from-store or interbranch) can show a non-zero total when the user cannot see all of them. The response does not tell the caller that bookings are hidden.\n\nGeneral ledger bookings are subject to data retention (36 months). An older order can have bookings that are partly deleted, so its totals can be non-zero.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Finance.GetOrderAccountSummaryResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Finance.GetOrderAccountSummaryResponse": {
+      "typename": "GetOrderAccountSummaryResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Finance.GetOrderAccountSummaryResponse+AccountSummaryItem",
+        "EVA.Core.Finance.GetOrderAccountSummaryResponse+CurrencyTotal"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Accounts": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Finance.GetOrderAccountSummaryResponse+AccountSummaryItem",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Totals": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Finance.GetOrderAccountSummaryResponse+CurrencyTotal",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Finance.GetOrderAccountSummaryResponse+AccountSummaryItem": {
+      "typename": "AccountSummaryItem",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "AccountID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Account",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "AccountName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Amount": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "FinancialPeriodID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "FinancialPeriod",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ObjectAccount": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Finance.GetOrderAccountSummaryResponse"
+    },
+    "EVA.Core.Finance.GetOrderAccountSummaryResponse+CurrencyTotal": {
+      "typename": "CurrencyTotal",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Amount": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Finance.GetOrderAccountSummaryResponse"
     },
     "EVA.Core.Finance.GetUnprocessedFinancialEventsCount": {
       "typename": "GetUnprocessedFinancialEventsCount",
