@@ -46750,6 +46750,15 @@
           },
           "allowedValues": []
         },
+        "RoleExpirationDays": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The number of days a role granted through this provider stays valid. Every login through this provider extends the role by this many days again, so an\naccount that stops logging in (for example because it was offboarded at the identity provider) loses its roles once this period has passed.\n\nOnly applies to roles granted by an OpenIDRole script. The period is applied to a role at its next login through this provider, so roles that were\ngranted before this was set keep no end date until their account logs in again. Clearing it removes the end date at the next login.\n\nMust be between 1 and 365 days. Can only be set on a provider without a parent, logins through its children follow the parent's period.",
+          "allowedValues": []
+        },
         "ScimUserID": {
           "type": {
             "ref": "id",
@@ -47162,6 +47171,14 @@
           },
           "allowedValues": []
         },
+        "RoleExpirationDays": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "ScimUserID": {
           "type": {
             "ref": "id",
@@ -47494,6 +47511,14 @@
           },
           "allowedValues": []
         },
+        "RoleExpirationDays": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "ScimUserID": {
           "type": {
             "ref": "id",
@@ -47793,6 +47818,16 @@
             "name": "Provider",
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "RoleExpirationDays": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The number of days a role granted through this provider stays valid. Every login through this provider extends the role by this many days again, so an\naccount that stops logging in (for example because it was offboarded at the identity provider) loses its roles once this period has passed.\n\nOnly applies to roles granted by an OpenIDRole script. The period is applied to a role at its next login through this provider, so roles that were\ngranted before this was set keep no end date until their account logs in again. Clearing it removes the end date at the next login.\n\nMust be between 1 and 365 days. Can only be set on a provider without a parent, logins through its children follow the parent's period.",
+          "skippable": true,
           "allowedValues": []
         },
         "ScimUserID": {
@@ -439585,6 +439620,14 @@
             "nullable": true
           },
           "allowedValues": []
+        },
+        "UnitPriceInTax": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
         }
       },
       "enumValues": {}
@@ -502427,6 +502470,18 @@
     {
       "name": "OpenIDProviderServices:InvalidScimUserID",
       "message": "The SCIM user must be an existing API user.",
+      "module": "EVA.Authentication.OpenID",
+      "arguments": []
+    },
+    {
+      "name": "OpenIDProviderServices:ChildRoleExpirationDays",
+      "message": "A provider linked to a parent cannot have a role expiration, set it on the parent provider instead.",
+      "module": "EVA.Authentication.OpenID",
+      "arguments": []
+    },
+    {
+      "name": "OpenIDProviderServices:InvalidRoleExpirationDays",
+      "message": "The role expiration must be between 1 and 365 days.",
       "module": "EVA.Authentication.OpenID",
       "arguments": []
     },
