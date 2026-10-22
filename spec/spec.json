@@ -21392,6 +21392,23 @@
       }
     },
     {
+      "name": "GetSmartSuggestionsCustomersForProduct",
+      "assembly": "EVA.SmartSuggestions",
+      "path": "/message/GetSmartSuggestionsCustomersForProduct",
+      "method": "POST",
+      "requestType": "EVA.SmartSuggestions.Services.GetSmartSuggestionsCustomersForProduct",
+      "responseType": "EVA.SmartSuggestions.Services.GetSmartSuggestionsCustomersForProductResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Customers",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "GetSmartSuggestionsForOrder",
       "assembly": "EVA.SmartSuggestions",
       "path": "/message/GetSmartSuggestionsForOrder",
@@ -469112,6 +469129,135 @@
       },
       "properties": {},
       "enumValues": {}
+    },
+    "EVA.SmartSuggestions.Services.GetSmartSuggestionsCustomersForProduct": {
+      "typename": "GetSmartSuggestionsCustomersForProduct",
+      "assembly": "EVA.SmartSuggestions",
+      "description": "Get smart suggestions of customers to contact about a product.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.SmartSuggestions.Services.GetSmartSuggestionsCustomersForProductResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "ProductID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Product",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.SmartSuggestions.Services.GetSmartSuggestionsCustomersForProductResponse": {
+      "typename": "GetSmartSuggestionsCustomersForProductResponse",
+      "assembly": "EVA.SmartSuggestions",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.SmartSuggestions.Services.GetSmartSuggestionsCustomersForProductResponse+SmartSuggestion"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Suggestions": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.SmartSuggestions.Services.GetSmartSuggestionsCustomersForProductResponse+SmartSuggestion",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.SmartSuggestions.Services.GetSmartSuggestionsCustomersForProductResponse+SmartSuggestion": {
+      "typename": "SmartSuggestion",
+      "assembly": "EVA.SmartSuggestions",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "EmailAddress": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "FirstName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "LastName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "PhoneNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.SmartSuggestions.Services.GetSmartSuggestionsCustomersForProductResponse"
     },
     "EVA.SmartSuggestions.Services.GetSmartSuggestionsForOrder": {
       "typename": "GetSmartSuggestionsForOrder",
