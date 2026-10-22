@@ -283003,6 +283003,25 @@
         "EVA.Core.Orders.ReturnableStatusForOrderLine+NonReturnableStockLabel"
       ],
       "properties": {
+        "EligibleReturnReasonIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "IDs of the ReturnReasons applicable to this OrderLine, as resolved by a configured ReturnReasonEligibility script. Null/empty means no restriction - every configured ReturnReason applies.",
+          "datamodel": {
+            "name": "ReturnReason",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "IsReturnable": {
           "type": {
             "ref": "bool",
@@ -283187,6 +283206,25 @@
         "EVA.Core.Orders.ReturnableStatusForProduct+NonReturnableStockLabel"
       ],
       "properties": {
+        "EligibleReturnReasonIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "IDs of the ReturnReasons applicable to this product, as resolved by a configured ReturnReasonEligibility script. Null/empty means no restriction - every configured ReturnReason applies.",
+          "datamodel": {
+            "name": "ReturnReason",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "IsReturnable": {
           "type": {
             "ref": "bool",
@@ -486266,6 +486304,19 @@
     {
       "name": "ReturnReason:ReasonTypeMismatch",
       "message": "Return reason {0} doesn't exist.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ReturnReason:ReasonSet",
+      "message": "Return reason {0} is not configured for this organization unit/set.",
       "module": "EVA.Core",
       "arguments": [
         {
