@@ -33015,6 +33015,34 @@
       }
     },
     {
+      "name": "ResendDigitalGiftCardMessage",
+      "assembly": "EVA.Core",
+      "path": "/message/ResendDigitalGiftCardMessage",
+      "method": "POST",
+      "requestType": "EVA.Core.GiftCards.ResendDigitalGiftCardMessage",
+      "responseType": "EVA.Core.GiftCards.ResendDigitalGiftCardMessageResponse",
+      "auth": {
+        "requiredPermissions": [
+          {}
+        ]
+      }
+    },
+    {
+      "name": "ResendDigitalGiftCardShippedConfirmation",
+      "assembly": "EVA.Core",
+      "path": "/message/ResendDigitalGiftCardShippedConfirmation",
+      "method": "POST",
+      "requestType": "EVA.Core.GiftCards.ResendDigitalGiftCardShippedConfirmation",
+      "responseType": "EVA.Core.GiftCards.ResendDigitalGiftCardShippedConfirmationResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
       "name": "ResendOrder",
       "assembly": "EVA.Core",
       "path": "/message/ResendOrder",
@@ -114257,10 +114285,31 @@
         }
       }
     },
+    "EVA.Core.GiftCards.DigitalGiftCards.DigitalGiftCardMessageTargets": {
+      "typename": "DigitalGiftCardMessageTargets",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "enumIsFlag": true,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Receiver": {
+          "value": 1,
+          "extends": []
+        },
+        "Sender": {
+          "value": 2,
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.GiftCards.DownloadDigitalGiftCard": {
       "typename": "DownloadDigitalGiftCard",
       "assembly": "EVA.Core",
-      "description": "Download the GiftCard data for a specific order, based on given `OrderID` and `GiftCardID`. This order needs to be visible for the current user. Requires\nthe order to be shipped (automatically when it is fully paid).\n\nAdditionally, this service can be called with an `AccessToken` and `GiftCardID` combination. In this case, no user validation is done - you know both\nkeys to the GiftCard, so you are allowed to get it's information.\n\nIf you want, you can specify a `LanguageID` to use for rendering the report - when omitted, the `LanguageID` of the current user.\n\nSee `GetDigitalGiftCardsForOrder` service for more details.",
+      "description": "Download the GiftCard data for a specific order, based on given `OrderID` and `GiftCardID` or `OrderID` and `OrderLineID`. This order needs to be visible for the current user.\n\nAdditionally, this service can be called with an `AccessToken` and `GiftCardID` combination. In this case, no user validation is done - you know both\nkeys to the GiftCard, so you are allowed to get it's information.\n\nIf you want, you can specify a `LanguageID` to use for rendering the report - when omitted, the `LanguageID` of the current user.\n\nWhen called by an employee, `AccessToken`, `GiftCardID` are always omitted. `GiftCardNumber` is masked and `PIN` is omitted unless the employee holds the\n`ViewGiftCardNumbers` functionality. This does not apply to API/System callers.\n\nSee `GetDigitalGiftCardsForOrder` service for more details.",
       "usage": {
         "request": true
       },
@@ -114315,6 +114364,19 @@
             "name": "Order",
             "supportsCustomID": true,
             "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrderLineID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "OrderLine",
+            "supportsCustomID": true,
             "isEvaID": true
           },
           "allowedValues": []
@@ -114759,7 +114821,7 @@
     "EVA.Core.GiftCards.GetDigitalGiftCardsForOrder": {
       "typename": "GetDigitalGiftCardsForOrder",
       "assembly": "EVA.Core",
-      "description": "Retrieve the GiftCard data for a specific order, based on given `OrderID`. This order needs to be visible for the current user.\n\nWill return a list of `GiftCard` data, for every orderline with a GiftCard. Will return the same data supplied in the `AddGiftCardToOrder`\nservice. When the order was shipped (automatically when it is fully paid), the details `GiftCardNumber` and\n`Pin` are also included. An additional property `IsAvailable` let's you check if it was indeed shipped and paid.\n\nThe `GiftCardID` returned on the GiftCard is it's unique identifier, to be used in conjunction with the `AccessToken` to make it globally\nunique. Using the `AccessToken` and `GiftCardID`, we are pretty sure you are allowed to see the GiftCard data. Use this data to build the link\nto share directly, or use the approperiate services to mail/text/print this.\n\nAdditionally, this service can be called with an `AccessToken` and `GiftCardID` combination, as explained above. In this case, no user validation\nis done - you know both keys to the GiftCard, so you are allowed to get it's information.",
+      "description": "Retrieve the GiftCard data for a specific order, based on given `OrderID`. This order needs to be visible for the current user.\n\nWill return a list of `GiftCard` data, for every orderline with a GiftCard. Will return the same data supplied in the `AddGiftCardToOrder`\nservice. When the order was shipped (automatically when it is fully paid), the details `GiftCardNumber` and\n`Pin` are also included. An additional property `IsAvailable` let's you check if it was indeed shipped and paid.\n\nThe `GiftCardID` returned on the GiftCard is it's unique identifier, to be used in conjunction with the `AccessToken` to make it globally\nunique. Using the `AccessToken` and `GiftCardID`, we are pretty sure you are allowed to see the GiftCard data. Use this data to build the link\nto share directly, or use the approperiate services to mail/text/print this.\n\nAdditionally, this service can be called with an `AccessToken` and `GiftCardID` combination, as explained above. In this case, no user validation\nis done - you know both keys to the GiftCard, so you are allowed to get it's information.\n\nWhen called by an employee, `AccessToken`, `UpdateUrl`, `GiftCardID` are always omitted. `GiftCardNumber` is masked and `PIN` is omitted unless the employee holds the\n`ViewGiftCardNumbers` functionality. This does not apply to API/System callers.",
       "usage": {
         "request": true
       },
@@ -115685,6 +115747,160 @@
       },
       "typeArguments": [],
       "typeDependencies": [],
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.GiftCards.ResendDigitalGiftCardMessage": {
+      "typename": "ResendDigitalGiftCardMessage",
+      "assembly": "EVA.Core",
+      "description": "Resends the digital gift card `DigitalGiftCardMessage` (receiver) and/or `DigitalGiftCardSenderMessage`\n(sender) message(s) for a single, already-shipped digital gift card line, regardless of the delivery mode of the gift card.\n\nThis service can be called with an `AccessToken` and `GiftCardID` combination. In this case, no\nuser validation is done - you know both keys to the GiftCard, so you are allowed to trigger a resend for it.\n\nEmployees and API users need the `ResendDigitalGiftCard` functionality, unless they are the customer of the order.\n\nRequires the gift card line to already be shipped and its `DeliverySchedule` (if any) not to be in the future, as\nthe card has not been sent yet in that case. Fails when the requested target has no destination\nconfigured on the line (no `ToEmailAddress`/`PhoneNumber` for `Receiver`, no `FromEmailAddress` for `Sender`).\n\n\nLimited to 3 calls per card per hour.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.GiftCards.DigitalGiftCards.DigitalGiftCardMessageTargets"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.GiftCards.ResendDigitalGiftCardMessageResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "AccessToken": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "GiftCardID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrderLineID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "OrderLine",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Targets": {
+          "type": {
+            "ref": "EVA.Core.GiftCards.DigitalGiftCards.DigitalGiftCardMessageTargets",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.GiftCards.ResendDigitalGiftCardMessageResponse": {
+      "typename": "ResendDigitalGiftCardMessageResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.GiftCards.ResendDigitalGiftCardShippedConfirmation": {
+      "typename": "ResendDigitalGiftCardShippedConfirmation",
+      "assembly": "EVA.Core",
+      "description": "Resends the `GiftCardOrderShippedConfirmation` mail for the order's shipped digital gift card lines, regardless of the delivery mode of the gift cards.\n\nThe `Authorization` token of the order (used by the `UpdateUrl` portal links) is only refreshed when needed: if it has expired, a new one is generated first, for the whole order at once rather than a single line. A token that is still valid is left as it is.\n\nCustomers can resend this for their own orders. Employees and API users need the `ResendDigitalGiftCard` functionality, unless they are the customer of the order.\n\nLimited to 3 calls per order per hour.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.GiftCards.ResendDigitalGiftCardShippedConfirmationResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "OrderID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.GiftCards.ResendDigitalGiftCardShippedConfirmationResponse": {
+      "typename": "ResendDigitalGiftCardShippedConfirmationResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
       "properties": {},
       "enumValues": {}
     },
@@ -497824,6 +498040,123 @@
       "message": "When creating an invoice it's required to specify CreditorOrganizationUnitID.",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "ResendDigitalGiftCard:GiftCardLineNotYetShipped",
+      "message": "Order {0} line {1} has not been shipped yet.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderLineID"
+        }
+      ]
+    },
+    {
+      "name": "ResendDigitalGiftCard:GiftCardDeliveryScheduledInFuture",
+      "message": "Order {0} line {1} is scheduled for delivery at {2:u} and has not been sent yet.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderLineID"
+        },
+        {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "name": "DeliverySchedule"
+        }
+      ]
+    },
+    {
+      "name": "ResendDigitalGiftCard:NoReceiverDestination",
+      "message": "Order {0} line {1} has no ToEmailAddress or PhoneNumber to resend the receiver message to.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderLineID"
+        }
+      ]
+    },
+    {
+      "name": "ResendDigitalGiftCard:NoSenderDestination",
+      "message": "Order {0} line {1} has no FromEmailAddress to resend the sender message to.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderID"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderLineID"
+        }
+      ]
+    },
+    {
+      "name": "ResendDigitalGiftCard:NoDigitalGiftCardLinesOnOrder",
+      "message": "Order {0} has no digital gift card lines that can be resent.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ResendDigitalGiftCard:NoCustomer",
+      "message": "Order {0} has no customer.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
     },
     {
       "name": "ExternalFullStockCountService:MissingProductIdentifierForLine",
