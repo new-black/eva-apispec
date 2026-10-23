@@ -115702,7 +115702,7 @@
     "EVA.Core.GiftCards.ResendDigitalGiftCardMessage": {
       "typename": "ResendDigitalGiftCardMessage",
       "assembly": "EVA.Core",
-      "description": "Resends the digital gift card `DigitalGiftCardMessage` (receiver) and/or `DigitalGiftCardSenderMessage`\n(sender) message(s) for a single, already-shipped digital gift card line, regardless of the delivery mode of the gift card.\n\nThis service can be called with an `AccessToken` and `GiftCardID` combination. In this case, no\nuser validation is done - you know both keys to the GiftCard, so you are allowed to trigger a resend for it.\n\nEmployees and API users need the `ResendDigitalGiftCard` functionality, unless they are the customer of the order.\n\nRequires the gift card line to already be shipped and its `DeliverySchedule` (if any) not to be in the future, as\nthe card has not been sent yet in that case. Fails when the requested target has no destination\nconfigured on the line (no `ToEmailAddress`/`PhoneNumber` for `Receiver`, no `FromEmailAddress` for `Sender`).\n\n\nLimited to 3 calls per card per hour.",
+      "description": "Resends the digital gift card `DigitalGiftCardMessage` (receiver) and/or `DigitalGiftCardSenderMessage`\n(sender) message(s) for a single, already-shipped digital gift card line, regardless of the delivery mode of the gift card.\n\nThis service can be called with an `AccessToken` and `GiftCardID` combination. In this case, no\nuser validation is done - you know both keys to the GiftCard, so you are allowed to trigger a resend for it.\n\nEmployees and API users need the `ResendDigitalGiftCard` functionality, unless they are the customer of the order.\n\nRequires the gift card line to already be shipped and its `DeliverySchedule` (if any) not to be in the future, as\nthe card has not been sent yet in that case. Fails when the requested target has no destination\nconfigured on the line (no `ToEmailAddress`/`PhoneNumber` for `Receiver`, no `FromEmailAddress` for `Sender`).\n\n\nLimited to 3 calls per card per hour, and to 5 sends per recipient address or phone number per day (shared with `UpdateDigitalGiftCardOptions`).",
       "usage": {
         "request": true
       },
@@ -115856,7 +115856,7 @@
     "EVA.Core.GiftCards.UpdateDigitalGiftCardOptions": {
       "typename": "UpdateDigitalGiftCardOptions",
       "assembly": "EVA.Core",
-      "description": "Sets the new mail values for the GiftCard identified by the `OrderID` and `GiftCardID`.\n\nOmitting the `FromEmailAddress` parameter will default to the email address of the customer attached to the order.",
+      "description": "Sets the new mail values for the GiftCard identified by the `OrderID` and `GiftCardID`.\n\nOmitting the `FromEmailAddress` parameter will default to the email address of the customer attached to the order.\n\nBefore the gift card is issued (on payment) this only stores the options. Once issued, each call sends the card. A card is sent\ntwice at most, counting the ship-time send of `Instant` cards, unless the caller has the `ResendDigitalGiftCard` functionality.",
       "usage": {
         "request": true
       },
@@ -115968,7 +115968,7 @@
     "EVA.Core.GiftCards.UpdateDigitalGiftCardOrderLine": {
       "typename": "UpdateDigitalGiftCardOrderLine",
       "assembly": "EVA.Core",
-      "description": "This service allows updating giftcard lines created with the `AddGiftCardToOrder` service.\n * `Data` will overwrite all the gift card data.\n * `ImageWidth` and `ImageHeight` describe the image used",
+      "description": "This service allows updating giftcard lines created with the `AddGiftCardToOrder` service.\n * `Data` will overwrite all the gift card data. Omit it to only update the `Amount`.\n * `ImageWidth` and `ImageHeight` describe the image used",
       "usage": {
         "request": true
       },
@@ -480724,6 +480724,34 @@
       "message": "The delivery of this giftcard is scheduled within an hour, updates are not allowed.",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "GiftCards:SendLimitReached",
+      "message": "This giftcard can no longer be sent again, please contact customer service.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "GiftCards:FieldTooLong",
+      "message": "{0} cannot be longer than {1} characters.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "field"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "maxLength"
+        }
+      ]
     },
     {
       "name": "GiftCards:RedemptionFailed",
