@@ -122745,7 +122745,7 @@
     "EVA.Core.Invoices.ListRelatedInvoiceExports": {
       "typename": "ListRelatedInvoiceExports",
       "assembly": "EVA.Core",
-      "description": "Lists the invoice exports related to the given invoice. Relations are resolved through the orders the invoice was billed against, including their returns and the orders they return, so corrections, cancellations, replacements and return invoices are all returned. The exports of the given invoice itself are excluded. Rows carry the same fields as `ListInvoiceExports2`, plus a `RelationType`.",
+      "description": "Lists the invoice exports related to the given invoice. Relations are resolved through the orders the invoice was billed against, including their returns and the orders they return, so corrections, cancellations, replacements and return invoices are all returned. The exports of the given invoice itself are excluded. Rows carry the same fields as `ListInvoiceExports2`, except the document type, plus a `RelationType`.",
       "usage": {
         "request": true
       },
@@ -126335,6 +126335,187 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Invoicing.InvoiceExportRowDto": {
+      "typename": "InvoiceExportRowDto",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Invoicing.Export.InvoiceExportStatus",
+        "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus"
+      ],
+      "properties": {
+        "CoveredPeriodEnd": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "End of the activity this export covers. Null under the same conditions as `CoveredPeriodStart`.",
+          "allowedValues": []
+        },
+        "CoveredPeriodStart": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Start of the activity this export covers, which is not when it was produced. Populated by report exports only, and null for a report whose period could not be determined.",
+          "allowedValues": []
+        },
+        "CreationTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "description": "When the export itself was created.",
+          "allowedValues": []
+        },
+        "CurrencyID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "Currency",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "DocumentNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The number the submitted document carries. Populated by exports that produce a document of their own - reports today - and null for an e-invoice, which carries its number in `InvoiceNumber`.",
+          "allowedValues": []
+        },
+        "ExternalStatus": {
+          "type": {
+            "ref": "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "InvoiceExport",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "InvoiceDate": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "InvoiceID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Invoice",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "InvoiceNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OrderIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The orders this export's invoice was billed against. An invoice attaches to orders through its lines, so it can span more than one. Null when there are none - reports are not billed against an order at all.",
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The creditor organization unit of the invoice.",
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SequenceNumber": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "EVA.Core.Invoicing.Export.InvoiceExportStatus",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "TotalAmount": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The exporter that produced this export, for example \"FRANCE\" or \"AVATAX_EXPORT\".",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Invoicing.InvoiceFiscalData": {
       "typename": "InvoiceFiscalData",
       "assembly": "EVA.Core",
@@ -127137,174 +127318,38 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.Invoicing.Export.InvoiceExportStatus",
-        "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus"
+        "EVA.Core.Invoicing.InvoiceExportRowDto"
       ],
+      "extends": {
+        "ref": "EVA.Core.Invoicing.InvoiceExportRowDto",
+        "args": []
+      },
       "properties": {
-        "CoveredPeriodEnd": {
-          "type": {
-            "ref": "date",
-            "args": [],
-            "nullable": true
-          },
-          "description": "End of the activity this export covers. Null under the same conditions as `CoveredPeriodStart`.",
-          "allowedValues": []
-        },
-        "CoveredPeriodStart": {
-          "type": {
-            "ref": "date",
-            "args": [],
-            "nullable": true
-          },
-          "description": "Start of the activity this export covers, which is not when it was produced. Populated by report exports only, and null for a report whose period could not be determined.",
-          "allowedValues": []
-        },
-        "CreationTime": {
-          "type": {
-            "ref": "date",
-            "args": []
-          },
-          "description": "When the export itself was created.",
-          "allowedValues": []
-        },
-        "CurrencyID": {
+        "AuditingProvider": {
           "type": {
             "ref": "string",
             "args": [],
             "nullable": true
           },
-          "datamodel": {
-            "name": "Currency",
-            "isEvaID": true
-          },
+          "description": "The auditing provider that stamped `BackendTypeID`.",
           "allowedValues": []
         },
-        "DocumentNumber": {
+        "BackendTypeID": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The document type code the auditing provider stamped on the invoice. Its meaning depends on `AuditingProvider`, use `DocumentType` for the name. Null when no auditing provider determined one.",
+          "allowedValues": []
+        },
+        "DocumentType": {
           "type": {
             "ref": "string",
             "args": [],
             "nullable": true
           },
-          "description": "The number the submitted document carries. Populated by exports that produce a document of their own - reports today - and null for an e-invoice, which carries its number in `InvoiceNumber`.",
-          "allowedValues": []
-        },
-        "ExternalStatus": {
-          "type": {
-            "ref": "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
-            "args": []
-          },
-          "allowedValues": []
-        },
-        "ID": {
-          "type": {
-            "ref": "id",
-            "args": []
-          },
-          "datamodel": {
-            "name": "InvoiceExport",
-            "isEvaID": true
-          },
-          "allowedValues": []
-        },
-        "InvoiceDate": {
-          "type": {
-            "ref": "date",
-            "args": [],
-            "nullable": true
-          },
-          "allowedValues": []
-        },
-        "InvoiceID": {
-          "type": {
-            "ref": "id",
-            "args": []
-          },
-          "datamodel": {
-            "name": "Invoice",
-            "supportsCustomID": true,
-            "isEvaID": true
-          },
-          "allowedValues": []
-        },
-        "InvoiceNumber": {
-          "type": {
-            "ref": "string",
-            "args": [],
-            "nullable": true
-          },
-          "allowedValues": []
-        },
-        "OrderIDs": {
-          "type": {
-            "ref": "array",
-            "args": [
-              {
-                "ref": "id",
-                "args": []
-              }
-            ],
-            "nullable": true
-          },
-          "description": "The orders this export's invoice was billed against. An invoice attaches to orders through its lines, so it can span more than one. Null when there are none - reports are not billed against an order at all.",
-          "datamodel": {
-            "name": "Order",
-            "supportsCustomID": true,
-            "supportsSystemID": true,
-            "isEvaID": true
-          },
-          "allowedValues": []
-        },
-        "OrganizationUnitID": {
-          "type": {
-            "ref": "id",
-            "args": []
-          },
-          "description": "The creditor organization unit of the invoice.",
-          "datamodel": {
-            "name": "OrganizationUnit",
-            "supportsCustomID": true,
-            "isEvaID": true
-          },
-          "allowedValues": []
-        },
-        "OrganizationUnitName": {
-          "type": {
-            "ref": "string",
-            "args": [],
-            "nullable": true
-          },
-          "allowedValues": []
-        },
-        "SequenceNumber": {
-          "type": {
-            "ref": "id",
-            "args": [],
-            "nullable": true
-          },
-          "allowedValues": []
-        },
-        "Status": {
-          "type": {
-            "ref": "EVA.Core.Invoicing.Export.InvoiceExportStatus",
-            "args": []
-          },
-          "allowedValues": []
-        },
-        "TotalAmount": {
-          "type": {
-            "ref": "float128",
-            "args": [],
-            "nullable": true
-          },
-          "allowedValues": []
-        },
-        "Type": {
-          "type": {
-            "ref": "string",
-            "args": [],
-            "nullable": true
-          },
-          "description": "The exporter that produced this export, for example \"FRANCE\" or \"AVATAX_EXPORT\".",
+          "description": "The name of the invoice's document type, for example \"Invoice\" or \"CreditReceipt\". \"Unknown\" when the auditing provider did not determine one.",
           "allowedValues": []
         }
       },
@@ -128168,17 +128213,17 @@
     "EVA.Core.Invoicing.RelatedInvoiceExportDto": {
       "typename": "RelatedInvoiceExportDto",
       "assembly": "EVA.Core",
-      "description": "An invoice export returned by `ListRelatedInvoiceExports`. Carries the same fields as `ListInvoiceExports2` so the two can be rendered by the same client code, plus how the export's invoice relates to the one that was asked for.",
+      "description": "An invoice export returned by `ListRelatedInvoiceExports`. Carries the same fields as `ListInvoiceExports2`, except the document type, so the two can be rendered by the same client code, plus how the export's invoice relates to the one that was asked for.",
       "usage": {
         "response": true
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.Invoicing.ListInvoiceExports2Dto",
+        "EVA.Core.Invoicing.InvoiceExportRowDto",
         "EVA.Core.Invoicing.InvoiceRelationType"
       ],
       "extends": {
-        "ref": "EVA.Core.Invoicing.ListInvoiceExports2Dto",
+        "ref": "EVA.Core.Invoicing.InvoiceExportRowDto",
         "args": []
       },
       "properties": {
@@ -201694,6 +201739,19 @@
           "description": "Optional for backwards compatibility and defaults to `Hidden`, but should be entered. Will be required in the future.",
           "allowedValues": []
         },
+        "StockLabelID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "StockLabel",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "Type": {
           "type": {
             "ref": "EVA.Core.DataModels.ReturnReasonType",
@@ -201879,6 +201937,27 @@
           "type": {
             "ref": "EVA.Core.DataModels.ReturnReasonRemarkType",
             "args": []
+          },
+          "allowedValues": []
+        },
+        "StockLabelID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "StockLabel",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "StockLabelName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         }
@@ -202107,6 +202186,27 @@
           },
           "allowedValues": []
         },
+        "StockLabelID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "StockLabel",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "StockLabelName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "Type": {
           "type": {
             "ref": "EVA.Core.DataModels.ReturnReasonType",
@@ -202219,6 +202319,20 @@
             "args": []
           },
           "skippable": true,
+          "allowedValues": []
+        },
+        "StockLabelID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
+          "datamodel": {
+            "name": "StockLabel",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
           "allowedValues": []
         },
         "Type": {
@@ -486185,6 +486299,19 @@
       ]
     },
     {
+      "name": "ReturnReason:StockLabelMismatch",
+      "message": "The stock label does not match the one required by return reason {0}.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
       "name": "Countries:InvalidSubdivision",
       "message": "Subdivision doesn't match the selected country.",
       "module": "EVA.Core",
@@ -495827,6 +495954,12 @@
       "arguments": []
     },
     {
+      "name": "LiveGuard:CannotIssueCloudToken",
+      "message": "Cannot issue a cloud token for a user that did not authenticate successfully.",
+      "module": "EVA.Core.LiveGuard",
+      "arguments": []
+    },
+    {
       "name": "LiveGuard:UnableToMutateEVAPayStub",
       "message": "This is a stub order for offline evapay payments, no mutations allowed.",
       "module": "EVA.Core.LiveGuard",
@@ -499356,6 +499489,12 @@
           }
         }
       ]
+    },
+    {
+      "name": "ReturnReasons:StockLabelOnlyForCustomerReasons",
+      "message": "A stock label can only be configured for customer return reasons.",
+      "module": "EVA.Core.Management",
+      "arguments": []
     },
     {
       "name": "MessageTemplates:SampleDataMustBeJsonObject",
