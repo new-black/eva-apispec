@@ -56,7 +56,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022CoveredPeriodEnd\u0022: \u00222025-01-01\u0022,\n      \u0022CoveredPeriodStart\u0022: \u00222025-01-01\u0022,\n      \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022DocumentNumber\u0022: \u0022string\u0022,\n      \u0022ExternalStatus\u0022: 2,\n      \u0022ID\u0022: 123,\n      \u0022InvoiceDate\u0022: \u00222025-01-01\u0022,\n      \u0022InvoiceID\u0022: 123,\n      \u0022InvoiceNumber\u0022: \u0022string\u0022,\n      \u0022OrderIDs\u0022: [\n        123\n      ],\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022SequenceNumber\u0022: 123,\n      \u0022Status\u0022: 10,\n      \u0022TotalAmount\u0022: 123.456,\n      \u0022Type\u0022: \u0022string\u0022\n    }\n  ]\n}"
+      "sample": "{\n  \u0022NextPageToken\u0022: \u0022string\u0022,\n  \u0022PreviousPageToken\u0022: \u0022string\u0022,\n  \u0022Results\u0022: [\n    {\n      \u0022AuditingProvider\u0022: \u0022string\u0022,\n      \u0022BackendTypeID\u0022: 123,\n      \u0022CoveredPeriodEnd\u0022: \u00222025-01-01\u0022,\n      \u0022CoveredPeriodStart\u0022: \u00222025-01-01\u0022,\n      \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n      \u0022CurrencyID\u0022: \u0022string\u0022,\n      \u0022DocumentNumber\u0022: \u0022string\u0022,\n      \u0022DocumentType\u0022: \u0022string\u0022,\n      \u0022ExternalStatus\u0022: 2,\n      \u0022ID\u0022: 123,\n      \u0022InvoiceDate\u0022: \u00222025-01-01\u0022,\n      \u0022InvoiceID\u0022: 123,\n      \u0022InvoiceNumber\u0022: \u0022string\u0022,\n      \u0022OrderIDs\u0022: [\n        123\n      ],\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022OrganizationUnitName\u0022: \u0022string\u0022,\n      \u0022SequenceNumber\u0022: 123,\n      \u0022Status\u0022: 10,\n      \u0022TotalAmount\u0022: 123.456,\n      \u0022Type\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -317,6 +317,24 @@
     ],
     "H": [
       {
+        "name": "AuditingProvider",
+        "deprecation_notice": null,
+        "description": "The auditing provider that stamped \u0060BackendTypeID\u0060.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "BackendTypeID",
+        "deprecation_notice": null,
+        "description": "The document type code the auditing provider stamped on the invoice. Its meaning depends on \u0060AuditingProvider\u0060, use \u0060DocumentType\u0060 for the name. Null when no auditing provider determined one.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "CoveredPeriodEnd",
         "deprecation_notice": null,
         "description": "End of the activity this export covers. Null under the same conditions as \u0060CoveredPeriodStart\u0060.",
@@ -356,6 +374,15 @@
         "name": "DocumentNumber",
         "deprecation_notice": null,
         "description": "The number the submitted document carries. Populated by exports that produce a document of their own - reports today - and null for an e-invoice, which carries its number in \u0060InvoiceNumber\u0060.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "DocumentType",
+        "deprecation_notice": null,
+        "description": "The name of the invoice\u0027s document type, for example \u0022Invoice\u0022 or \u0022CreditReceipt\u0022. \u0022Unknown\u0022 when the auditing provider did not determine one.",
         "type": "string | null",
         "required": false,
         "properties_id": null,
