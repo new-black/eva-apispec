@@ -1685,6 +1685,40 @@
       }
     },
     {
+      "name": "CalculateLoyaltyForUsers_Async",
+      "assembly": "EVA.Core.Management",
+      "path": "/async-message/CalculateLoyaltyForUsers",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsers_Async",
+      "responseType": "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsers_AsyncResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "ForceUserTierCalculation",
+            "scope": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "CalculateLoyaltyForUsers_AsyncResult",
+      "assembly": "EVA.Core.Management",
+      "path": "/async-result/CalculateLoyaltyForUsers",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsers_AsyncResult",
+      "responseType": "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsersResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "ForceUserTierCalculation",
+            "scope": 0
+          }
+        ]
+      }
+    },
+    {
       "name": "CalculateUserTier",
       "assembly": "EVA.Core.Management",
       "path": "/message/CalculateUserTier",
@@ -179168,6 +179202,247 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsers": {
+      "typename": "CalculateLoyaltyForUsers",
+      "assembly": "EVA.Core.Management",
+      "description": "Recalculates the loyalty subscription (point balance, tier, badges and benefits) for a bounded set of users\nin a loyalty program, asynchronously. Users that are not due are skipped, unless ForceRecalculation is set to recalculate\nevery listed user as if its scheduled date arrived now.\nThere is a limit of 1000 users per request; split larger sets into multiple calls.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsersResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "ForceRecalculation": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When set, every listed user is recalculated as if its scheduled review date arrived now, even when not due;\nthe point balance, tier and benefits will be recomputed and reloaded, re-sending assignment mail and regenerating coupons.\nDue dates are not advanced unless the user is genuinely due. When not set, users that are not due are skipped and\nreported as succeeded. Defaults to false.",
+          "allowedValues": []
+        },
+        "LoyaltyProgramID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "LoyaltyProgram",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "UserIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ]
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsers_Async": {
+      "typename": "CalculateLoyaltyForUsers_Async",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsers",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsers_AsyncResponse": {
+      "typename": "CalculateLoyaltyForUsers_AsyncResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.AsyncRequestHandling.AsyncRequestResponse",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsers_AsyncResult": {
+      "typename": "CalculateLoyaltyForUsers_AsyncResult",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.AsyncRequestHandling.AsyncRequestResultRequest",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsersResponse": {
+      "typename": "CalculateLoyaltyForUsersResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsersResponse+FailedUser"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "FailedUsers": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsersResponse+FailedUser",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The users that could not be recalculated, with the reason per user.",
+          "allowedValues": []
+        },
+        "SucceededUserIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The users whose loyalty subscription was recalculated.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsersResponse+FailedUser": {
+      "typename": "FailedUser",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsersResponse+FailedUser+FailureError"
+      ],
+      "properties": {
+        "Error": {
+          "type": {
+            "ref": "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsersResponse+FailedUser+FailureError",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsersResponse"
+    },
+    "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsersResponse+FailedUser+FailureError": {
+      "typename": "FailureError",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Message": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Message describing why the user could not be recalculated.",
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The error type, e.g. `EVALoyalty:UserIsNotOrNoLongerSubscribed` or `EntityNotFound`.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Loyalty.CalculateLoyaltyForUsersResponse+FailedUser"
     },
     "EVA.Core.Management.Loyalty.CalculateUserTier": {
       "typename": "CalculateUserTier",
@@ -480751,6 +481026,25 @@
     {
       "name": "EVALoyalty:UnsupportedHandlerForService",
       "message": "Only the EVALOYALTY can be used for this service.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EVALoyalty:CalculateLoyaltyForUsersTooManyUsers",
+      "message": "Too many users. You can only recalculate up to {0} users at once.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "EVALoyalty:UserLoyaltyRecalculationFailed",
+      "message": "Failed to recalculate the user's loyalty subscription.",
       "module": "EVA.Core",
       "arguments": []
     },
