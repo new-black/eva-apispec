@@ -102517,7 +102517,7 @@
     "EVA.Core.Finance.GetAvailableCashAmountForDevice": {
       "typename": "GetAvailableCashAmountForDevice",
       "assembly": "EVA.Core",
-      "description": "Retrieves the current available cash amount of given device, to be able to e.g. validate user given amounts in `CreateCashDeposit` or `CreateCashExpense` services.\n\nSupply a `CurrencyID` and `PaymentTypeID` to indicate the Cash Journal to be used.",
+      "description": "Retrieves the current available cash amount of given device, to be able to e.g. validate user given amounts in `CreateCashDeposit` or `CreateCashExpense` services.\n\nSupply a `CurrencyID` and `PaymentTypeID` to indicate the Cash Journal to be used.\n\nPending cash deposits (`DelayDropOff`) are already subtracted from the returned `Amount`.",
       "usage": {
         "request": true
       },
@@ -331808,10 +331808,30 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Security.LoginCode.LoginCodeType": {
+      "typename": "LoginCodeType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Alphabetic": {
+          "extends": []
+        },
+        "Numeric": {
+          "value": 1,
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.Security.LoginCode.SendLoginCode": {
       "typename": "SendLoginCode",
       "assembly": "EVA.Core",
-      "description": "Requests a login code, which will send an email containing a six letter code to the user (if found).\n\n- Setting `LoginCode:Enabled` must be enabled explicitly\n- Standard, basic and incognito accounts are all eligible; when several share the email address, a standard account wins over a basic one, which wins over an incognito one,\n  and within each the account with the most orders, then the most recently active, is picked\n\nThis service always succeeds with a `RequestToken`, whether or not the email address belongs to a user - it never exposes if an account exists. Hand that `RequestToken` and the emailed\ncode to the `Login` service, using the `LoginCode` custom authenticator, to complete the login:\n\n```\n{ \"CustomAuthenticatorType\": \"LoginCode\", \"CustomAuthenticateData\": { \"RequestToken\": \"...\", \"Code\": \"KRPMTZ\" } }\n```\n\n- The code is six upper case letters\n- Anything that is not a letter is ignored, and casing does not matter, so `krp-mtz`, `krpmtz` and `KRP MTZ` are the same code - pass it on as typed\n- The code is valid for 10 minutes (or `LoginCode:Lifetime`), can only be used once, and only in combination with the `RequestToken` it was issued for\n- After 3 failed attempts the code is destroyed and a new one has to be requested\n- The `RequestToken` must be kept in the session that requested it; it is the whole reason someone else cannot spend the guesses on a code you are still typing in\n- The resulting session is valid for 1 week (or `SessionDuration:LoginCode`)\n\nUnlike a magic link, this does not walk past two-factor authentication: when `Login` answers `NeedsTwoFactorAuthentication`, continue with the `AuthenticationToken` it returned rather\nthan the code, because the code is deleted after first-time use.",
+      "description": "Requests a login code, which will send an email containing a six character code to the user (if found).\n\n- Setting `LoginCode:Enabled` must be enabled explicitly\n- Standard, basic and incognito accounts are all eligible; when several share the email address, a standard account wins over a basic one, which wins over an incognito one,\n  and within each the account with the most orders, then the most recently active, is picked\n\nThis service always succeeds with a `RequestToken`, whether or not the email address belongs to a user - it never exposes if an account exists. Hand that `RequestToken` and the emailed\ncode to the `Login` service, using the `LoginCode` custom authenticator, to complete the login:\n\n```\n{ \"CustomAuthenticatorType\": \"LoginCode\", \"CustomAuthenticateData\": { \"RequestToken\": \"...\", \"Code\": \"KRPMTZ\" } }\n```\n\n- The code is six upper case letters, or six digits when requested from within the subnet of the organization unit that is logged in to (like a self checkout in a shop)\n- The response tells which of the two was sent in `Type`, so the right keyboard can be shown\n- Anything that is not a letter (or a digit, for a numeric code) is ignored, and casing does not matter, so `krp-mtz`, `krpmtz` and `KRP MTZ` are the same code - pass it on as typed\n- The code is valid for 10 minutes (or `LoginCode:Lifetime`), can only be used once, and only in combination with the `RequestToken` it was issued for\n- After 3 failed attempts the code is destroyed and a new one has to be requested\n- The `RequestToken` must be kept in the session that requested it; it is the whole reason someone else cannot spend the guesses on a code you are still typing in\n- The resulting session is valid for 1 week (or `SessionDuration:LoginCode`)\n\nUnlike a magic link, this does not walk past two-factor authentication: when `Login` answers `NeedsTwoFactorAuthentication`, continue with the `AuthenticationToken` it returned rather\nthan the code, because the code is deleted after first-time use.",
       "usage": {
         "request": true
       },
@@ -331872,7 +331892,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.ResponseMessage"
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Security.LoginCode.LoginCodeType"
       ],
       "extends": {
         "ref": "EVA.Core.ResponseMessage",
@@ -331884,6 +331905,20 @@
             "ref": "string",
             "args": []
           },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.Security.LoginCode.LoginCodeType",
+            "args": []
+          },
+          "description": "The type of code that was sent, so the matching keyboard can be shown.",
           "required": {
             "current": true
           },
