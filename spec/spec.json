@@ -159998,6 +159998,25 @@
           },
           "allowedValues": []
         },
+        "ExcludedProductSearchTemplateIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Products in these (cached or static) product search templates are excluded from the discount entirely: they are not considered by its conditions and the discount is not applied to them.",
+          "datamodel": {
+            "name": "ProductSearchTemplate",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
         "GenericCouponCode": {
           "type": {
             "ref": "string",
@@ -160912,6 +160931,25 @@
             "ref": "date",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ExcludedProductSearchTemplateIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Products in these (cached or static) product search templates are excluded from the discount entirely: they are not considered by its conditions and the discount is not applied to them.",
+          "datamodel": {
+            "name": "ProductSearchTemplate",
+            "supportsCustomID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         },
@@ -163247,6 +163285,25 @@
             "ref": "date",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ExcludedProductSearchTemplateIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Products in these product search templates are excluded from the discount entirely: they are not considered by its conditions and the discount is not applied to them.",
+          "datamodel": {
+            "name": "ProductSearchTemplate",
+            "supportsCustomID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         },
@@ -168478,6 +168535,26 @@
             "ref": "date",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ExcludedProductSearchTemplateIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Products in these (cached or static) product search templates are excluded from the discount entirely: they are not considered by its conditions and the discount is not applied to them. When omitted, the current exclusions are kept.",
+          "skippable": true,
+          "datamodel": {
+            "name": "ProductSearchTemplate",
+            "supportsCustomID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         },
@@ -486053,6 +486130,76 @@
             "ref": "EVA.Core.DataModels.DiscountTriggers",
             "args": []
           }
+        }
+      ]
+    },
+    {
+      "name": "DiscountsV2:UnknownExcludedProductSearchTemplate",
+      "message": "Excluded product search template {0} does not exist.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "DiscountsV2:ExcludedProductSearchTemplateMustBeCached",
+      "message": "Excluded product search template {0} must be a cached product search template (static or periodically refreshed).",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "DiscountsV2:ProductSearchTemplateIsExcludedByDiscounts",
+      "message": "Product search template {0} cannot be deleted because it is excluded by discounts {1}.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ProductSearchTemplateID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "DiscountIDs"
+        }
+      ]
+    },
+    {
+      "name": "DiscountsV2:ProductSearchTemplateExcludedByDiscountsMustBeCached",
+      "message": "Product search template {0} must stay a cached product search template (static or periodically refreshed) because it is excluded by discounts {1}.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "ProductSearchTemplateID"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "DiscountIDs"
         }
       ]
     },
