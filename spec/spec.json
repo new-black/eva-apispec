@@ -13902,7 +13902,9 @@
       "auth": {
         "requiredPermissions": [
           {
-            "types": 2049
+            "types": 2049,
+            "functionality": "ReceiveShipments",
+            "scope": 0
           }
         ]
       }
@@ -20441,7 +20443,9 @@
       "auth": {
         "requiredPermissions": [
           {
-            "types": 2049
+            "types": 2049,
+            "functionality": "Shipments",
+            "scope": 8
           }
         ]
       }
@@ -27598,7 +27602,9 @@
       "auth": {
         "requiredPermissions": [
           {
-            "types": 2049
+            "types": 2049,
+            "functionality": "Shipments",
+            "scope": 8
           }
         ]
       }
@@ -79363,6 +79369,35 @@
         }
       }
     },
+    "EVA.Core.DataModels.StationType": {
+      "typename": "StationType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "BackOfHouse": {
+          "value": 2,
+          "extends": []
+        },
+        "Other": {
+          "value": 999,
+          "extends": []
+        },
+        "PointOfSale": {
+          "extends": []
+        },
+        "SelfCheckout": {
+          "value": 1,
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.DataModels.StockAllocationRuleTypes": {
       "typename": "StockAllocationRuleTypes",
       "assembly": "EVA.Core",
@@ -80534,6 +80569,7 @@
       },
       "typeArguments": [],
       "typeDependencies": [
+        "EVA.Core.DataModels.StationType",
         "EVA.Core.DataModels.CustomFieldResponse"
       ],
       "properties": {
@@ -80677,6 +80713,11 @@
             "ref": "bool",
             "args": []
           },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "IsPointOfSale is deprecated and is scheduled to be removed in 2.0.905: Use StationType instead. True for PointOfSale and SelfCheckout.."
+          },
           "allowedValues": []
         },
         "Name": {
@@ -80701,6 +80742,13 @@
             "name": "OrganizationUnit",
             "supportsCustomID": true,
             "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "StationType": {
+          "type": {
+            "ref": "EVA.Core.DataModels.StationType",
+            "args": []
           },
           "allowedValues": []
         }
@@ -81522,7 +81570,9 @@
         "request": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.DataModels.StationType"
+      ],
       "properties": {
         "BackendID": {
           "type": {
@@ -81595,6 +81645,19 @@
             "name": "OrganizationUnit",
             "supportsCustomID": true,
             "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "StationTypes": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.DataModels.StationType",
+                "args": []
+              }
+            ],
+            "nullable": true
           },
           "allowedValues": []
         }
@@ -117772,6 +117835,7 @@
       "typeDependencies": [
         "EVA.Core.ResponseMessage",
         "EVA.Core.Devices.Dto.StationDto",
+        "EVA.Core.DataModels.StationType",
         "EVA.Core.DataModels.CustomFieldResponse",
         "EVA.Core.DataModels.CustomFieldValueWithOptions"
       ],
@@ -117927,6 +117991,11 @@
             "ref": "bool",
             "args": []
           },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "IsPointOfSale is deprecated and is scheduled to be removed in 2.0.905: Use StationType instead. True for PointOfSale and SelfCheckout.."
+          },
           "allowedValues": []
         },
         "Name": {
@@ -117974,6 +118043,13 @@
             "current": false
           },
           "allowedValues": []
+        },
+        "StationType": {
+          "type": {
+            "ref": "EVA.Core.DataModels.StationType",
+            "args": []
+          },
+          "allowedValues": []
         }
       },
       "enumValues": {}
@@ -117987,7 +118063,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessage`1"
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.DataModels.StationType"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessage`1",
@@ -118129,6 +118206,19 @@
             "name": "OrganizationUnit",
             "supportsCustomID": true,
             "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "StationTypes": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.DataModels.StationType",
+                "args": []
+              }
+            ],
+            "nullable": true
           },
           "allowedValues": []
         }
@@ -118370,7 +118460,9 @@
         "response": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.DataModels.StationType"
+      ],
       "properties": {
         "BackendID": {
           "type": {
@@ -118404,6 +118496,11 @@
           "type": {
             "ref": "bool",
             "args": []
+          },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "IsPointOfSale is deprecated and is scheduled to be removed in 2.0.905: Use StationType instead. True for PointOfSale and SelfCheckout.."
           },
           "allowedValues": []
         },
@@ -118442,6 +118539,13 @@
           },
           "requiredAllowEmpty": {
             "current": false
+          },
+          "allowedValues": []
+        },
+        "StationType": {
+          "type": {
+            "ref": "EVA.Core.DataModels.StationType",
+            "args": []
           },
           "allowedValues": []
         }
@@ -177938,6 +178042,7 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
+        "EVA.Core.DataModels.StationType",
         "EVA.Core.DataModels.CustomFieldKeyValue",
         "EVA.Core.Management.Infrastructure.CreateStation+StationToCreate"
       ],
@@ -177987,9 +178092,15 @@
         "IsPointOfSale": {
           "type": {
             "ref": "bool",
-            "args": []
+            "args": [],
+            "nullable": true
           },
           "description": "Used to differentiate between fiscalized stations and other (e.g. safes) devices",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "IsPointOfSale is deprecated and is scheduled to be removed in 2.0.905: Use StationType instead."
+          },
           "allowedValues": []
         },
         "Name": {
@@ -178021,6 +178132,15 @@
             "supportsCustomID": true,
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "StationType": {
+          "type": {
+            "ref": "EVA.Core.DataModels.StationType",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Station classification. Replaces IsPointOfSale.",
           "allowedValues": []
         }
       },
@@ -178846,7 +178966,8 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.RequestMessageWithEmptyResponse",
-        "EVA.Core.DataModels.CustomFieldKeyValue"
+        "EVA.Core.DataModels.CustomFieldKeyValue",
+        "EVA.Core.DataModels.StationType"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessageWithEmptyResponse",
@@ -178890,11 +179011,45 @@
           },
           "allowedValues": []
         },
+        "IsPointOfSale": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "skippable": true,
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "IsPointOfSale is deprecated and is scheduled to be removed in 2.0.905: Use StationType instead."
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
         "Name": {
           "type": {
             "ref": "string",
             "args": []
           },
+          "skippable": true,
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "StationType": {
+          "type": {
+            "ref": "EVA.Core.DataModels.StationType",
+            "args": []
+          },
+          "description": "Station classification",
           "skippable": true,
           "required": {
             "current": true
@@ -483579,6 +483734,12 @@
     {
       "name": "Stations:OrganizationUnitNotAvailable",
       "message": "The selected organization unit is not available.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Stations:CannotChangeBetweenPointOfSaleAndOtherTypes",
+      "message": "A station cannot be changed between a point of sale type (PointOfSale, SelfCheckout) and another type while an auditing provider is active.",
       "module": "EVA.Core",
       "arguments": []
     },
