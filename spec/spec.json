@@ -981,6 +981,36 @@
       }
     },
     {
+      "name": "ApproveConsumerCompanyUser",
+      "assembly": "EVA.Core",
+      "path": "/message/ApproveConsumerCompanyUser",
+      "method": "POST",
+      "requestType": "EVA.Core.Companies.ApproveConsumerCompanyUser",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
+      "name": "ApproveConsumerCompanyUserBusinessProgram",
+      "assembly": "EVA.Core",
+      "path": "/message/ApproveConsumerCompanyUserBusinessProgram",
+      "method": "POST",
+      "requestType": "EVA.Core.Companies.ApproveConsumerCompanyUserBusinessProgram",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
       "name": "ApprovePayment",
       "assembly": "EVA.Core",
       "path": "/message/ApprovePayment",
@@ -1272,6 +1302,23 @@
         "requiredPermissions": [
           {
             "types": 2051
+          }
+        ]
+      }
+    },
+    {
+      "name": "AttachBusinessProgramToConsumerCompany",
+      "assembly": "EVA.Core",
+      "path": "/message/AttachBusinessProgramToConsumerCompany",
+      "method": "POST",
+      "requestType": "EVA.Core.Companies.AttachBusinessProgramToConsumerCompany",
+      "responseType": "EVA.Core.Companies.AttachBusinessProgramToConsumerCompanyResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "BusinessPrograms",
+            "scope": 2
           }
         ]
       }
@@ -11682,6 +11729,23 @@
             "types": 2049,
             "functionality": "DepositLoyaltyPoints",
             "scope": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "DetachBusinessProgramFromConsumerCompany",
+      "assembly": "EVA.Core",
+      "path": "/message/DetachBusinessProgramFromConsumerCompany",
+      "method": "POST",
+      "requestType": "EVA.Core.Companies.DetachBusinessProgramFromConsumerCompany",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "BusinessPrograms",
+            "scope": 2
           }
         ]
       }
@@ -24590,6 +24654,36 @@
       }
     },
     {
+      "name": "ListConsumerCompanyBusinessPrograms",
+      "assembly": "EVA.Core",
+      "path": "/message/ListConsumerCompanyBusinessPrograms",
+      "method": "POST",
+      "requestType": "EVA.Core.Companies.ListConsumerCompanyBusinessPrograms",
+      "responseType": "EVA.Core.Companies.ListConsumerCompanyBusinessProgramsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
+      "name": "ListConsumerCompanyUsers",
+      "assembly": "EVA.Core",
+      "path": "/message/ListConsumerCompanyUsers",
+      "method": "POST",
+      "requestType": "EVA.Core.Companies.ListConsumerCompanyUsers",
+      "responseType": "EVA.Core.Companies.ListConsumerCompanyUsersResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
       "name": "ListContentCultureMapping",
       "assembly": "EVA.PIM",
       "path": "/message/ListContentCultureMapping",
@@ -32386,6 +32480,21 @@
       }
     },
     {
+      "name": "RemoveConsumerCompanyUser",
+      "assembly": "EVA.Core",
+      "path": "/message/RemoveConsumerCompanyUser",
+      "method": "POST",
+      "requestType": "EVA.Core.Companies.RemoveConsumerCompanyUser",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
       "name": "RemoveDiscountSegment",
       "assembly": "EVA.Core.Management",
       "path": "/message/RemoveDiscountSegment",
@@ -33785,6 +33894,21 @@
             "types": 2049,
             "functionality": "Cases",
             "scope": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "SetConsumerCompanyUserRole",
+      "assembly": "EVA.Core",
+      "path": "/message/SetConsumerCompanyUserRole",
+      "method": "POST",
+      "requestType": "EVA.Core.Companies.SetConsumerCompanyUserRole",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
           }
         ]
       }
@@ -36819,6 +36943,23 @@
         "requiredPermissions": [
           {
             "types": 2051
+          }
+        ]
+      }
+    },
+    {
+      "name": "UpdateConsumerCompanyBusinessProgram",
+      "assembly": "EVA.Core",
+      "path": "/message/UpdateConsumerCompanyBusinessProgram",
+      "method": "POST",
+      "requestType": "EVA.Core.Companies.UpdateConsumerCompanyBusinessProgram",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "BusinessPrograms",
+            "scope": 2
           }
         ]
       }
@@ -67768,6 +67909,180 @@
       "properties": {},
       "enumValues": {}
     },
+    "EVA.Core.Companies.ApproveConsumerCompanyUser": {
+      "typename": "ApproveConsumerCompanyUser",
+      "assembly": "EVA.Core",
+      "description": "Approves a pending link between a user and a consumer company. Customers need to be an approved admin of the company.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.EmptyResponseMessage",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the link between the user and the company.",
+          "datamodel": {
+            "name": "CompanyUser",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.ApproveConsumerCompanyUserBusinessProgram": {
+      "typename": "ApproveConsumerCompanyUserBusinessProgram",
+      "assembly": "EVA.Core",
+      "description": "Grants a business program that requires approval to an approved user of the company. Customers need to be an approved admin of the company.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.EmptyResponseMessage",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "BusinessProgramID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The business program to grant. It needs to be linked to the company of the user.",
+          "datamodel": {
+            "name": "LoyaltyProgram",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the link between the user and the company.",
+          "datamodel": {
+            "name": "CompanyUser",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.AttachBusinessProgramToConsumerCompany": {
+      "typename": "AttachBusinessProgramToConsumerCompany",
+      "assembly": "EVA.Core",
+      "description": "Links a business program to a consumer company. Approved users of the company get the program automatically, or after a company admin approved it for them when `RequiresApproval` is set. The program needs `RestrictToCompanyRelation` enabled.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Companies.AttachBusinessProgramToConsumerCompanyResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "BusinessProgramID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "LoyaltyProgram",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "CompanyID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Company",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "RequiresApproval": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When true, a company admin or employee needs to approve the program per user with `ApproveConsumerCompanyUserBusinessProgram`.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.AttachBusinessProgramToConsumerCompanyResponse": {
+      "typename": "AttachBusinessProgramToConsumerCompanyResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the link between the company and the business program.",
+          "datamodel": {
+            "name": "CompanyBusinessProgram",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Companies.CompanyDto": {
       "typename": "CompanyDto",
       "assembly": "EVA.Core",
@@ -67927,6 +68242,176 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.ConsumerCompanyBusinessProgramDto": {
+      "typename": "ConsumerCompanyBusinessProgramDto",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "BusinessProgramID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The business program linked to the company.",
+          "datamodel": {
+            "name": "LoyaltyProgram",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "BusinessProgramName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Name of the business program.",
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the link between the company and the business program.",
+          "datamodel": {
+            "name": "CompanyBusinessProgram",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "RequiresApproval": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When true, a company admin or employee needs to approve the program per user, otherwise every approved user of the company gets it.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.ConsumerCompanyUserDto": {
+      "typename": "ConsumerCompanyUserDto",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.DataModels.CompanyUserStatus",
+        "EVA.Core.DataModels.CompanyUserRole"
+      ],
+      "properties": {
+        "ApprovedByID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The employee or company admin that approved the link. Empty for links that were approved automatically because the company does not require verification.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ApprovedOn": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When the link was approved. Empty for links that were approved automatically.",
+          "allowedValues": []
+        },
+        "CreationTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "description": "When the user was linked to the company.",
+          "allowedValues": []
+        },
+        "EmailAddress": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Email address of the linked user. Empty when the employee is not allowed to see the user.",
+          "allowedValues": []
+        },
+        "FirstName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "First name of the linked user. Empty when the employee is not allowed to see the user.",
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the link between the user and the company.",
+          "datamodel": {
+            "name": "CompanyUser",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "LastName": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Last name of the linked user. Empty when the employee is not allowed to see the user.",
+          "allowedValues": []
+        },
+        "Role": {
+          "type": {
+            "ref": "EVA.Core.DataModels.CompanyUserRole",
+            "args": []
+          },
+          "description": "The role of the user within the company. Not related to EVA roles.",
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "EVA.Core.DataModels.CompanyUserStatus",
+            "args": []
+          },
+          "description": "Pending links need to be approved before the user can act on behalf of the company. Only relevant when the company requires verification.",
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The user linked to the company.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
           },
           "allowedValues": []
         }
@@ -68132,6 +68617,14 @@
           },
           "allowedValues": []
         },
+        "RequiresVerification": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When true, users attached to this company start as pending and need to be approved by an employee or a company admin. Cannot be turned off afterwards. Only employees can set it.",
+          "allowedValues": []
+        },
         "ShippingAddress": {
           "type": {
             "ref": "EVA.Core.Addresses.AddressDataDto",
@@ -68262,6 +68755,42 @@
           "datamodel": {
             "name": "Company",
             "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.DetachBusinessProgramFromConsumerCompany": {
+      "typename": "DetachBusinessProgramFromConsumerCompany",
+      "assembly": "EVA.Core",
+      "description": "Removes the link between a consumer company and a business program. Users that got the program through this company only are unsubscribed in the background.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.EmptyResponseMessage",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "CompanyBusinessProgram",
             "isEvaID": true
           },
           "allowedValues": []
@@ -68484,6 +69013,20 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "RequiresVerification": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When true, users attached to this company start as pending and need to be approved by an employee or a company admin.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
           },
           "allowedValues": []
         },
@@ -69134,6 +69677,175 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Companies.ListConsumerCompanyBusinessPrograms": {
+      "typename": "ListConsumerCompanyBusinessPrograms",
+      "assembly": "EVA.Core",
+      "description": "Lists the business programs linked to a consumer company. Employees need the BusinessPrograms functionality, customers need to be an approved admin of the company.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Companies.ListConsumerCompanyBusinessProgramsFilter",
+        "EVA.Core.Companies.ListConsumerCompanyBusinessProgramsResponse",
+        "EVA.Core.PagedRequestMessage`2"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedRequestMessage`2",
+        "args": [
+          {
+            "ref": "EVA.Core.Companies.ListConsumerCompanyBusinessProgramsFilter",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.Companies.ListConsumerCompanyBusinessProgramsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.ListConsumerCompanyBusinessProgramsFilter": {
+      "typename": "ListConsumerCompanyBusinessProgramsFilter",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "CompanyID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Company",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.ListConsumerCompanyBusinessProgramsResponse": {
+      "typename": "ListConsumerCompanyBusinessProgramsResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Companies.ConsumerCompanyBusinessProgramDto",
+        "EVA.Core.PagedResponseMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedResponseMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Companies.ConsumerCompanyBusinessProgramDto",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.ListConsumerCompanyUsers": {
+      "typename": "ListConsumerCompanyUsers",
+      "assembly": "EVA.Core",
+      "description": "Lists the users linked to a consumer company, with the status of their link and their role within the company. Customers need to be an approved admin of the company.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Companies.ListConsumerCompanyUsersFilter",
+        "EVA.Core.Companies.ListConsumerCompanyUsersResponse",
+        "EVA.Core.PagedRequestMessage`2"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedRequestMessage`2",
+        "args": [
+          {
+            "ref": "EVA.Core.Companies.ListConsumerCompanyUsersFilter",
+            "args": [],
+            "nullable": true
+          },
+          {
+            "ref": "EVA.Core.Companies.ListConsumerCompanyUsersResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.ListConsumerCompanyUsersFilter": {
+      "typename": "ListConsumerCompanyUsersFilter",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.DataModels.CompanyUserStatus"
+      ],
+      "properties": {
+        "CompanyID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Company",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "EVA.Core.DataModels.CompanyUserStatus",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Only return links with this status, e.g. `Pending` to get the users waiting for approval.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.ListConsumerCompanyUsersResponse": {
+      "typename": "ListConsumerCompanyUsersResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Companies.ConsumerCompanyUserDto",
+        "EVA.Core.PagedResponseMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.PagedResponseMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Companies.ConsumerCompanyUserDto",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {},
+      "enumValues": {}
+    },
     "EVA.Core.Companies.ListOrganizationUnitCompaniesFilter": {
       "typename": "ListOrganizationUnitCompaniesFilter",
       "assembly": "EVA.Core",
@@ -69377,6 +70089,43 @@
           "type": {
             "ref": "EVA.Core.Auditing.Components.AuditingVatNumberValidationResult",
             "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.RemoveConsumerCompanyUser": {
+      "typename": "RemoveConsumerCompanyUser",
+      "assembly": "EVA.Core",
+      "description": "Removes the link between a user and a consumer company. Use this to reject a pending link as well. Customers need to be an approved admin of the company.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.EmptyResponseMessage",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the link between the user and the company.",
+          "datamodel": {
+            "name": "CompanyUser",
+            "isEvaID": true
           },
           "allowedValues": []
         }
@@ -69784,10 +70533,55 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Companies.SetConsumerCompanyUserRole": {
+      "typename": "SetConsumerCompanyUserRole",
+      "assembly": "EVA.Core",
+      "description": "Sets the role of a user within a consumer company. Company roles are not related to EVA roles. Employees need the EditCompanyUserRole functionality, customers need to be an approved admin of the company.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.DataModels.CompanyUserRole"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.EmptyResponseMessage",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the link between the user and the company.",
+          "datamodel": {
+            "name": "CompanyUser",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "Role": {
+          "type": {
+            "ref": "EVA.Core.DataModels.CompanyUserRole",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Companies.UpdateConsumerCompany": {
       "typename": "UpdateConsumerCompany",
       "assembly": "EVA.Core",
-      "description": "Updates the details of companies associated with the consumer type.",
+      "description": "Updates the details of companies associated with the consumer type. Customers need to be an approved member of the company, and an admin when the company requires verification.",
       "usage": {
         "request": true
       },
@@ -70012,6 +70806,15 @@
           },
           "allowedValues": []
         },
+        "RequiresVerification": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When true, users attached to this company start as pending and need to be approved by an employee or a company admin. Can only be turned on, and only by employees.",
+          "skippable": true,
+          "allowedValues": []
+        },
         "ShippingAddress": {
           "type": {
             "ref": "EVA.Core.Addresses.AddressDataDto",
@@ -70061,6 +70864,51 @@
           "stringLengthConstraint": {
             "max": 128
           },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Companies.UpdateConsumerCompanyBusinessProgram": {
+      "typename": "UpdateConsumerCompanyBusinessProgram",
+      "assembly": "EVA.Core",
+      "description": "Updates the link between a consumer company and a business program.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.EmptyResponseMessage",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "CompanyBusinessProgram",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "RequiresApproval": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When true, a company admin or employee needs to approve the program per user. Users that already got the program keep it.",
+          "skippable": true,
           "allowedValues": []
         }
       },
@@ -72295,6 +73143,48 @@
           "extends": []
         },
         "Unknown": {
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.DataModels.CompanyUserRole": {
+      "typename": "CompanyUserRole",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Admin": {
+          "value": 1,
+          "extends": []
+        },
+        "None": {
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.DataModels.CompanyUserStatus": {
+      "typename": "CompanyUserStatus",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Approved": {
+          "value": 1,
+          "extends": []
+        },
+        "Pending": {
           "extends": []
         }
       }
@@ -95145,6 +96035,22 @@
       "typeArguments": [],
       "typeDependencies": [],
       "properties": {
+        "Role": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "UserID": {
           "type": {
             "ref": "id",
@@ -150598,6 +151504,15 @@
           "skippable": true,
           "allowedValues": []
         },
+        "RequiresVerification": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When true, users attached to this company start as pending and need to be approved by an employee or a company admin. Can only be turned on.",
+          "skippable": true,
+          "allowedValues": []
+        },
         "SocialCapital": {
           "type": {
             "ref": "float128",
@@ -179669,7 +180584,12 @@
             "args": [],
             "nullable": true
           },
-          "description": "Attaches the loyalty program to a consumer company.",
+          "description": "Attaches the loyalty program to a consumer company. Only used for display.",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "CompanyID is deprecated and is scheduled to be removed in 2.0.905: Use `AttachBusinessProgramToConsumerCompany` to link business programs to consumer companies.."
+          },
           "datamodel": {
             "name": "Company",
             "supportsCustomID": true,
@@ -179960,6 +180880,14 @@
             "args": []
           },
           "description": "When true, the order will require that the attached customer on the order will be validated by providing the UserIdentifier in the `AttachBenefitProgramToOrder` service.\nAlso, this will make the `RequireCustomer` and `RequiresSubscribedCustomer` automatically true and `AutoSubscribeCustomer` false.\n\nWhen false, this validation isn't required.",
+          "allowedValues": []
+        },
+        "RestrictToCompanyRelation": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Business programs only. When true, users can only get the program through a consumer company the program is linked to (see `AttachBusinessProgramToConsumerCompany`).\nThe program is never offered as available, customers cannot attach themselves to it, and it can only be attached to an order of a subscribed customer, regardless of `RequireCustomer` and `RequiresSubscribedCustomer`.\nCannot be turned off while the program is linked to companies.",
           "allowedValues": []
         },
         "ResubscribeHandling": {
@@ -186109,6 +187037,11 @@
             "args": [],
             "nullable": true
           },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "Company is deprecated and is scheduled to be removed in 2.0.905: Use `ListConsumerCompanyBusinessPrograms` to get the consumer companies a business program is linked to.."
+          },
           "allowedValues": []
         },
         "CustomFields": {
@@ -186434,6 +187367,20 @@
             "args": []
           },
           "description": "When true, the order will require that the attached customer on the order will be validated by providing the UserIdentifier in the `AttachBenefitProgramToOrder` service.\nAlso, this will make the `RequireCustomer` and `RequiresSubscribedCustomer` automatically true and `AutoSubscribeCustomer` false.\n\nWhen false, this validation isn't required.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "RestrictToCompanyRelation": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Business programs only. When true, users can only get the program through a consumer company the program is linked to (see `AttachBusinessProgramToConsumerCompany`).\nThe program is never offered as available, customers cannot attach themselves to it, and it can only be attached to an order of a subscribed customer, regardless of `RequireCustomer` and `RequiresSubscribedCustomer`.\nCannot be turned off while the program is linked to companies.",
           "required": {
             "current": true
           },
@@ -192638,8 +193585,13 @@
             "args": [],
             "nullable": true
           },
-          "description": "Attaches the loyalty program to a consumer company.",
+          "description": "Attaches the loyalty program to a consumer company. Only used for display.",
           "skippable": true,
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "CompanyID is deprecated and is scheduled to be removed in 2.0.905: Use `AttachBusinessProgramToConsumerCompany` to link business programs to consumer companies.."
+          },
           "datamodel": {
             "name": "Company",
             "isExternalID": true
@@ -192966,6 +193918,15 @@
           "requiredAllowEmpty": {
             "current": false
           },
+          "allowedValues": []
+        },
+        "RestrictToCompanyRelation": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Business programs only. When true, users can only get the program through a consumer company the program is linked to (see `AttachBusinessProgramToConsumerCompany`).\nThe program is never offered as available, customers cannot attach themselves to it, and it can only be attached to an order of a subscribed customer, regardless of `RequireCustomer` and `RequiresSubscribedCustomer`.\nCannot be turned off while the program is linked to companies.",
+          "skippable": true,
           "allowedValues": []
         },
         "ResubscribeHandling": {
@@ -194979,8 +195940,13 @@
             "args": [],
             "nullable": true
           },
-          "description": "Attaches the loyalty program to a consumer company.",
+          "description": "Attaches the loyalty program to a consumer company. Only used for display.",
           "skippable": true,
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "CompanyID is deprecated and is scheduled to be removed in 2.0.905: Use `AttachBusinessProgramToConsumerCompany` to link business programs to consumer companies.."
+          },
           "datamodel": {
             "name": "Company",
             "supportsCustomID": true,
@@ -195314,6 +196280,15 @@
           "requiredAllowEmpty": {
             "current": false
           },
+          "allowedValues": []
+        },
+        "RestrictToCompanyRelation": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Business programs only. When true, users can only get the program through a consumer company the program is linked to (see `AttachBusinessProgramToConsumerCompany`).\nThe program is never offered as available, customers cannot attach themselves to it, and it can only be attached to an order of a subscribed customer, regardless of `RequireCustomer` and `RequiresSubscribedCustomer`.\nCannot be turned off while the program is linked to companies.",
+          "skippable": true,
           "allowedValues": []
         },
         "ResubscribeHandling": {
@@ -477665,6 +478640,16 @@
       "dataType": "EVA.Core.Events.CompanyEventExportTarget+Data"
     },
     {
+      "target": "Company",
+      "type": "company_user_updated",
+      "dataType": "EVA.Core.Events.CompanyEventExportTarget+Data"
+    },
+    {
+      "target": "Company",
+      "type": "pending_company_connection_created",
+      "dataType": "EVA.Core.Events.CompanyEventExportTarget+Data"
+    },
+    {
       "target": "Appointment",
       "type": "confirmed",
       "dataType": "EVA.Core.Events.AppointmentEventExportTarget+Data"
@@ -487233,6 +488218,18 @@
       "arguments": []
     },
     {
+      "name": "Company:RequiresVerificationCannotBeTurnedOff",
+      "message": "RequiresVerification cannot be turned off once it is enabled.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "CompanyErrors:CompanyUserNotApproved",
+      "message": "The link between the specified user and this company has not been approved yet.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "Company:CannotChangeCompanyType",
       "message": "The CompanyType of an existing company cannot be changed once set.",
       "module": "EVA.Core",
@@ -488317,6 +489314,18 @@
       "arguments": []
     },
     {
+      "name": "LoyaltyPrograms:RestrictToCompanyRelationOnlyOnB2B",
+      "message": "RestrictToCompanyRelation can only be enabled on a business program.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "LoyaltyPrograms:RestrictToCompanyRelationInUse",
+      "message": "RestrictToCompanyRelation cannot be turned off while the business program is linked to companies.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "LoyaltyPrograms:InviteOnlyRequiresReferrals",
       "message": "Invite-only membership requires referrals to be enabled on the loyalty program.",
       "module": "EVA.Core",
@@ -488891,6 +489900,30 @@
     {
       "name": "BusinessPrograms:ProgramTypeIsNotB2B",
       "message": "Program type is not B2B.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "BusinessPrograms:RestrictedToCompanyRelation",
+      "message": "This business program can only be obtained through a company it is linked to.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "BusinessPrograms:NotRestrictedToCompanyRelation",
+      "message": "Only business programs with RestrictToCompanyRelation enabled can be linked to a company.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "BusinessPrograms:AlreadyLinkedToCompany",
+      "message": "The business program is already linked to this company.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "BusinessPrograms:NotLinkedToCompany",
+      "message": "The business program is not linked to the company of this user.",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -492781,6 +493814,12 @@
     {
       "name": "OrderCompanyManager:CompanyUserNotExists",
       "message": "The specified user does not belong to this company.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "OrderCompanyManager:CompanyUserNotApproved",
+      "message": "The link between the specified user and this company has not been approved yet.",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -499110,6 +500149,18 @@
     {
       "name": "ReplayEvents:StartDateAfterEndDate",
       "message": "The start date cannot be after the end date",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "RemoveConsumerCompanyUser:CompanyIsExternal",
+      "message": "Cannot remove a user from a company that is managed externally.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "SetConsumerCompanyUserRole:CompanyUserNotApproved",
+      "message": "A role can only be set on an approved link between a user and a company.",
       "module": "EVA.Core",
       "arguments": []
     },
