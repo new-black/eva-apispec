@@ -1,29 +1,28 @@
 ﻿using System.CommandLine;
-using System.CommandLine.Binding;
 
 namespace EVA.SDK.Generator.V2.Helpers;
 
 internal static class OptionExtensions
 {
-  internal static T? Value<T>(this Option<T> option, BindingContext ctx)
+  internal static T? Value<T>(this Option<T> option, ParseResult ctx)
   {
-    return ctx.ParseResult.GetValueForOption(option);
+    return ctx.GetValue(option);
   }
 
-  internal static T Value<T>(this OptionWithDefault<T> o, BindingContext ctx)
+  internal static T Value<T>(this OptionWithDefault<T> o, ParseResult ctx)
   {
-    return ctx.ParseResult.GetValueForOption(o.Option)!;
+    return ctx.GetValue(o.Option)!;
   }
 
   internal static OptionWithDefault<T> WithDefault<T>(this Option<T> option, T defaultValue)
   {
-    option.SetDefaultValue(defaultValue);
+    option.DefaultValueFactory = _ => defaultValue;
     return new OptionWithDefault<T>(option, defaultValue);
   }
 
   internal static Option<T> WithAlias<T>(this Option<T> option, string alias)
   {
-    option.AddAlias(alias);
+    option.Aliases.Add(alias);
     return option;
   }
 }

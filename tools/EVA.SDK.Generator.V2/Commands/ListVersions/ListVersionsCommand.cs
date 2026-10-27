@@ -9,16 +9,17 @@ internal static class ListVersionsCommand
   internal static void Register(Command command)
   {
     var listVersionsCommand = new Command("list-versions");
-    command.AddCommand(listVersionsCommand);
+    command.Add(listVersionsCommand);
 
-    listVersionsCommand.SetHandler(async logger =>
+    listVersionsCommand.SetAction(async (parseResult, _) =>
     {
+      var logger = LogBinder.Create(parseResult);
       var result = await HttpHelpers.GetJson(HttpConstants.RefsUrl, JsonContext.Default.RefsOutputArray, logger);
       foreach (var reference in result.Select(x => x.Ref).FilterNotNull().Where(x => x.StartsWith("refs/tags/spec/")))
       {
         Console.WriteLine($"- {reference[15..]}");
       }
-    }, LogBinder.Instance);
+    });
   }
 }
 

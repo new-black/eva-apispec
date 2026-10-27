@@ -1,16 +1,14 @@
-﻿using System.CommandLine.Binding;
+﻿using System.CommandLine;
 using EVA.SDK.Generator.V2.Helpers;
 using Microsoft.Extensions.Logging;
 
 namespace EVA.SDK.Generator.V2;
 
-public class LogBinder : BinderBase<ILogger>
+public static class LogBinder
 {
-  internal static readonly LogBinder Instance = new();
-
-  protected override ILogger GetBoundValue(BindingContext bindingContext)
+  internal static ILogger Create(ParseResult parseResult)
   {
-    var loglevel = SharedOptions.LogLevel.Value(bindingContext);
+    var loglevel = SharedOptions.LogLevel.Value(parseResult);
 
     var logger = LoggerFactory.Create(builder =>
     {
@@ -32,7 +30,7 @@ public class LogBinder : BinderBase<ILogger>
       });
     });
 
-    var name = bindingContext.ParseResult.CommandResult.Command.Name;
+    var name = parseResult.CommandResult.Command.Name;
     return logger.CreateLogger(name);
   }
 }

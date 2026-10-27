@@ -1,5 +1,4 @@
 ﻿using System.CommandLine;
-using System.CommandLine.Binding;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.zod;
 
@@ -15,7 +14,7 @@ internal class ZodOptionsBinder : BaseGenerateOptionsBinder<ZodOptions>
     yield break;
   }
 
-  protected override void BuildOptions(ZodOptions options, BindingContext ctx)
+  protected override void BuildOptions(ZodOptions options, ParseResult ctx)
   {
   }
 }

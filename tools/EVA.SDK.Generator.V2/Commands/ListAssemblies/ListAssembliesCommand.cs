@@ -11,14 +11,16 @@ internal static class ListAssembliesCommand
     var listAssembliesCommand = new Command("list-assemblies");
     command.Add(listAssembliesCommand);
 
-    listAssembliesCommand.AddOption(SharedOptions.Input);
-    listAssembliesCommand.SetHandler(async (src, logger) =>
+    listAssembliesCommand.Add(SharedOptions.Input);
+    listAssembliesCommand.SetAction(async (parseResult, _) =>
     {
+      var logger = LogBinder.Create(parseResult);
+      var src = SharedOptions.Input.Value(parseResult);
       var model = await InputFactory.GetInputFromString(src).Read(logger);
       foreach (var assembly in model.EnumerateAllAssemblies())
       {
         Console.WriteLine($"- {assembly}");
       }
-    }, SharedOptions.Input, LogBinder.Instance);
+    });
   }
 }

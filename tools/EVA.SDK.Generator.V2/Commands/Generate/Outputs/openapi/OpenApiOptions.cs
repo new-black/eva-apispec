@@ -1,5 +1,4 @@
 ﻿using System.CommandLine;
-using System.CommandLine.Binding;
 using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.openapi;
@@ -16,29 +15,39 @@ internal class OpenApiOptions : GenerateOptions
 internal class OpenApiOptionsBinder : BaseGenerateOptionsBinder<OpenApiOptions>
 {
   internal static readonly OptionWithDefault<string> Version = new Option<string>(
-    name: "--opt-version",
-    description: "The OpenAPI version to output"
-  ).FromAmong("v2", "v3").WithDefault("v3");
+    name: "--opt-version"
+  )
+  {
+    Description = "The OpenAPI version to output"
+  }.AcceptOnlyFromAmong("v2", "v3").WithDefault("v3");
 
   internal static readonly OptionWithDefault<bool> Terse = new Option<bool>(
-    name: "--opt-terse",
-    description: "Remove as much whitespace from the output as possible. Ignore when format:yaml"
-  ).WithDefault(false);
+    name: "--opt-terse"
+  )
+  {
+    Description = "Remove as much whitespace from the output as possible. Ignore when format:yaml"
+  }.WithDefault(false);
 
   internal static readonly OptionWithDefault<string> Format = new Option<string>(
-    name: "--opt-format",
-    description: "The format to output"
-  ).FromAmong("json", "yaml").WithDefault("json");
+    name: "--opt-format"
+  )
+  {
+    Description = "The format to output"
+  }.AcceptOnlyFromAmong("json", "yaml").WithDefault("json");
 
   internal static readonly OptionWithDefault<string> Host = new Option<string>(
-    name: "--opt-host",
-    description: "The host to use"
-  ).WithDefault("");
+    name: "--opt-host"
+  )
+  {
+    Description = "The host to use"
+  }.WithDefault("");
 
   internal static readonly OptionWithDefault<string?> ExamplesFolder = new Option<string?>(
-    name: "--opt-examples-folder",
-    description: "The folder to use for examples"
-  ).WithDefault(null);
+    name: "--opt-examples-folder"
+  )
+  {
+    Description = "The folder to use for examples"
+  }.WithDefault(null);
 
   protected override IEnumerable<Option> GetOptions()
   {
@@ -49,7 +58,7 @@ internal class OpenApiOptionsBinder : BaseGenerateOptionsBinder<OpenApiOptions>
     yield return ExamplesFolder.Option;
   }
 
-  protected override void BuildOptions(OpenApiOptions options, BindingContext ctx)
+  protected override void BuildOptions(OpenApiOptions options, ParseResult ctx)
   {
     options.Version = Version.Value(ctx);
     options.Terse = Terse.Value(ctx);

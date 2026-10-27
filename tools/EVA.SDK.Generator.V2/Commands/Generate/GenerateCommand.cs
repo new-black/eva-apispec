@@ -45,11 +45,16 @@ internal static class GenerateCommand
       description += $" Applies the following transformations by default: {string.Join(", ", forcedTransformations.Select(x => x.ID))}";
     }
 
-    var command = new Command(name) { Description = description, IsHidden = hidden };
+    var command = new Command(name) { Description = description, Hidden = hidden };
     command.AddOptions(binder.GetAllOptions(CheckTransform));
 
-    generateCommand.AddCommand(command);
+    generateCommand.Add(command);
 
-    command.SetHandler(async (outputOptions, logger) => { await GenerationPipeline.Run(outputOptions, output, logger); }, binder, LogBinder.Instance);
+    command.SetAction(async (parseResult, _) =>
+    {
+      var outputOptions = binder.Bind(parseResult);
+      var logger = LogBinder.Create(parseResult);
+      await GenerationPipeline.Run(outputOptions, output, logger);
+    });
   }
 }
