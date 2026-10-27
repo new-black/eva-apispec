@@ -1,5 +1,4 @@
 ﻿using System.CommandLine;
-using System.CommandLine.Binding;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.apidocs;
 
@@ -14,7 +13,7 @@ internal class ApiDocsOptionsBinder : BaseGenerateOptionsBinder<ApiDocsOptions>
     yield break;
   }
 
-  protected override void BuildOptions(ApiDocsOptions options, BindingContext ctx)
+  protected override void BuildOptions(ApiDocsOptions options, ParseResult ctx)
   {
   }
 }

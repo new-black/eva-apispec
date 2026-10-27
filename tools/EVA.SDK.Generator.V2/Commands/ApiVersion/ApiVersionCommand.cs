@@ -1,4 +1,5 @@
 ﻿using System.CommandLine;
+using EVA.SDK.Generator.V2.Helpers;
 using EVA.SDK.Generator.V2.Inputs;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -11,11 +12,12 @@ internal static class ApiVersionCommand
     var listAssembliesCommand = new Command("api-version");
     command.Add(listAssembliesCommand);
 
-    listAssembliesCommand.AddOption(SharedOptions.Input);
-    listAssembliesCommand.SetHandler(async src =>
+    listAssembliesCommand.Add(SharedOptions.Input);
+    listAssembliesCommand.SetAction(async (parseResult, _) =>
     {
+      var src = SharedOptions.Input.Value(parseResult);
       var model = await InputFactory.GetInputFromString(src).Read(NullLogger.Instance);
       Console.WriteLine(model.ApiVersion);
-    }, SharedOptions.Input);
+    });
   }
 }

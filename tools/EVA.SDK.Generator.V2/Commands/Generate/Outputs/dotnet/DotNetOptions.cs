@@ -1,5 +1,4 @@
 ﻿using System.CommandLine;
-using System.CommandLine.Binding;
 using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.dotnet;
@@ -20,29 +19,39 @@ internal class DotNetOptions : GenerateOptions
 internal class DotNetOptionsBinder : BaseGenerateOptionsBinder<DotNetOptions>
 {
   internal static readonly OptionWithDefault<bool> UseNativeDayOfWeek = new Option<bool>(
-    name: "--opt-native-dow",
-    description: "Use the native DayOfWeek enum instead of the custom one"
-  ).WithDefault(false);
+    name: "--opt-native-dow"
+  )
+  {
+    Description = "Use the native DayOfWeek enum instead of the custom one"
+  }.WithDefault(false);
 
   internal static readonly OptionWithDefault<bool> GenerateExtensions = new Option<bool>(
-    name: "--opt-extensions",
-    description: "Generate extension methods"
-  ).WithDefault(false);
+    name: "--opt-extensions"
+  )
+  {
+    Description = "Generate extension methods"
+  }.WithDefault(false);
 
   internal static readonly OptionWithDefault<bool> GenerateDynamicData = new Option<bool>(
-    name: "--opt-dynamic-data",
-    description: "Generate dynamic data support"
-  ).WithDefault(true);
+    name: "--opt-dynamic-data"
+  )
+  {
+    Description = "Generate dynamic data support"
+  }.WithDefault(true);
 
   internal static readonly OptionWithDefault<bool> AddEvaClient = new Option<bool>(
-    name: "--opt-eva-client",
-    description: "Add EVA client"
-  ).WithDefault(false);
+    name: "--opt-eva-client"
+  )
+  {
+    Description = "Add EVA client"
+  }.WithDefault(false);
 
   internal static readonly OptionWithDefault<string> Json = new Option<string>(
-    name: "--opt-json",
-    description: "JSON serializer used by the generated SDK: 'newtonsoft' (default) or 'stj' (System.Text.Json)"
-  ).WithDefault("newtonsoft");
+    name: "--opt-json"
+  )
+  {
+    Description = "JSON serializer used by the generated SDK: 'newtonsoft' (default) or 'stj' (System.Text.Json)"
+  }.WithDefault("newtonsoft");
 
   protected override IEnumerable<Option> GetOptions()
   {
@@ -53,7 +62,7 @@ internal class DotNetOptionsBinder : BaseGenerateOptionsBinder<DotNetOptions>
     yield return Json.Option;
   }
 
-  protected override void BuildOptions(DotNetOptions options, BindingContext ctx)
+  protected override void BuildOptions(DotNetOptions options, ParseResult ctx)
   {
     options.UseNativeDayOfWeek = UseNativeDayOfWeek.Value(ctx);
     options.GenerateExtensions = GenerateExtensions.Value(ctx);

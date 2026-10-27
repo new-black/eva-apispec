@@ -8,7 +8,7 @@ internal static class CommandExtensions
   {
     foreach (var opt in options)
     {
-      command.AddOption(opt);
+      command.Add(opt);
     }
   }
 }

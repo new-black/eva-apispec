@@ -11,16 +11,19 @@ namespace EVA.SDK.Generator.V2.Commands.Update;
 
 internal static class UpdateCommand
 {
-  private static readonly Option<bool> WaitOption = new(name: "--wait") { IsHidden = true };
+  private static readonly Option<bool> WaitOption = new(name: "--wait") { Hidden = true };
 
   internal static void Register(Command command)
   {
     var updateCommand = new Command("update");
-    updateCommand.AddOption(WaitOption);
+    updateCommand.Add(WaitOption);
     command.Add(updateCommand);
 
-    updateCommand.SetHandler(async (wait, logger) =>
+    updateCommand.SetAction(async (parseResult, _) =>
     {
+      var wait = WaitOption.Value(parseResult);
+      var logger = LogBinder.Create(parseResult);
+
       // Locations
       var currentExeLocation = Environment.ProcessPath;
       if (currentExeLocation == null) throw new SdkException("Could not determine current executable location");
@@ -33,7 +36,7 @@ internal static class UpdateCommand
       {
         await DownloadNewExecutable(currentExeLocation, logger);
       }
-    }, WaitOption, LogBinder.Instance);
+    });
   }
 
   private static async Task DownloadNewExecutable(string currentExeLocation, ILogger logger)

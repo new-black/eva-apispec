@@ -1,5 +1,4 @@
 ﻿using System.CommandLine;
-using System.CommandLine.Binding;
 using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate.Outputs.typescript;
@@ -15,24 +14,32 @@ internal class TypescriptOptions : GenerateOptions
 internal class TypescriptOptionsBinder : BaseGenerateOptionsBinder<TypescriptOptions>
 {
   internal static readonly OptionWithDefault<string?> PackagePrefix = new Option<string?>(
-    name: "--opt-package-prefix",
-    description: "The prefix to use for packages. If the prefix is `company/`, package `EVA.Core.Management` will be exported as `company/eva-services-core-management. If you want this to start with a `@`, use '\\\\', eg: '\\\\company/'."
-  ).WithDefault(null);
+    name: "--opt-package-prefix"
+  )
+  {
+    Description = "The prefix to use for packages. If the prefix is `company/`, package `EVA.Core.Management` will be exported as `company/eva-services-core-management. If you want this to start with a `@`, use '\\\\', eg: '\\\\company/'."
+  }.WithDefault(null);
 
   internal static readonly OptionWithDefault<bool> Extenders = new Option<bool>(
-    name: "--opt-extenders",
-    description: "Add extenders"
-  ).WithDefault(false);
+    name: "--opt-extenders"
+  )
+  {
+    Description = "Add extenders"
+  }.WithDefault(false);
 
   internal static readonly OptionWithDefault<bool> FlexibleIDs = new Option<bool>(
-    name: "--opt-flexible-ids",
-    description: "Add flexible types"
-  ).WithDefault(false);
+    name: "--opt-flexible-ids"
+  )
+  {
+    Description = "Add flexible types"
+  }.WithDefault(false);
 
   internal static readonly OptionWithDefault<bool> ConstEnums = new Option<bool>(
-    name: "--opt-const-enums",
-    description: "Export const enums"
-  ).WithDefault(true);
+    name: "--opt-const-enums"
+  )
+  {
+    Description = "Export const enums"
+  }.WithDefault(true);
 
   protected override IEnumerable<Option> GetOptions()
   {
@@ -42,7 +49,7 @@ internal class TypescriptOptionsBinder : BaseGenerateOptionsBinder<TypescriptOpt
     yield return ConstEnums.Option;
   }
 
-  protected override void BuildOptions(TypescriptOptions options, BindingContext ctx)
+  protected override void BuildOptions(TypescriptOptions options, ParseResult ctx)
   {
     var prefix = PackagePrefix.Value(ctx);
     if (prefix != null && prefix.StartsWith(@"\\")) prefix = $"@{prefix[2..]}";

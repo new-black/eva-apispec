@@ -1,7 +1,5 @@
 ﻿using System.CommandLine;
-using System.CommandLine.Binding;
-using System.CommandLine.Builder;
-using System.CommandLine.Parsing;
+using System.CommandLine.Invocation;
 using EVA.SDK.Generator.V2.Commands.ApiVersion;
 using EVA.SDK.Generator.V2.Commands.Generate;
 using EVA.SDK.Generator.V2.Commands.ListAssemblies;
@@ -14,11 +12,11 @@ namespace EVA.SDK.Generator.V2;
 
 public static class Program
 {
-  public static async Task Main(string[] args)
+  public static async Task<int> Main(string[] args)
   {
     // Build the command
     var command = new RootCommand("The EVA SDK Suite");
-    command.AddGlobalOption(SharedOptions.LogLevel.Option);
+    command.Add(SharedOptions.LogLevel.Option);
 
     GenerateCommand.Register(command);
     ListAssembliesCommand.Register(command);
@@ -26,28 +24,30 @@ public static class Program
     ApiVersionCommand.Register(command);
     UpdateCommand.Register(command);
 
-    // Add exception handler
-    var builder = new CommandLineBuilder(command);
-    builder.AddMiddleware(async (ctx, next) =>
+    var parseResult = command.Parse(args);
+
+    // Let the parser report invalid command lines before we read any option values.
+    if (parseResult.Errors.Count > 0)
     {
-      ((IValueSource)LogBinder.Instance).TryGetValue(LogBinder.Instance, ctx.BindingContext, out var loggerObj);
-      var logger = loggerObj as ILogger ?? throw new InvalidOperationException("Could not create a logger");
-      try
-      {
-        await next(ctx);
-      }
-      catch (SdkException ex)
-      {
-        logger.LogError("An error occurred: {Message}", ex.Message);
-        ctx.ExitCode = 1;
-      }
-      catch (Exception ex)
-      {
-        logger.LogError(ex, "An unexpected error occurred");
-        ctx.ExitCode = 1;
-      }
-    });
-    builder.UseDefaults();
-    await builder.Build().InvokeAsync(args);
+      return await parseResult.InvokeAsync(new InvocationConfiguration { EnableDefaultExceptionHandler = false });
+    }
+
+    var logger = LogBinder.Create(parseResult);
+
+    // Add exception handler
+    try
+    {
+      return await parseResult.InvokeAsync(new InvocationConfiguration { EnableDefaultExceptionHandler = false });
+    }
+    catch (SdkException ex)
+    {
+      logger.LogError("An error occurred: {Message}", ex.Message);
+      return 1;
+    }
+    catch (Exception ex)
+    {
+      logger.LogError(ex, "An unexpected error occurred");
+      return 1;
+    }
   }
 }
