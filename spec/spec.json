@@ -450673,6 +450673,15 @@
           },
           "allowedValues": []
         },
+        "DeviceCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "8 digit confirmation code for payments that were initiated from a device without connectivity. Only set once the payment is confirmed. It is also included in `TotpData` (as `DeviceCode`, together with `ClientOrderID` and `Amount`), which is what clients should show/scan. See LiveGuardEVAPayDeviceCode for the algorithm.",
+          "allowedValues": []
+        },
         "IsPaid": {
           "type": {
             "ref": "bool",
@@ -450913,6 +450922,24 @@
           },
           "allowedValues": []
         },
+        "ClientOrderID": {
+          "type": {
+            "ref": "guid",
+            "args": [],
+            "nullable": true
+          },
+          "description": "For payments that were initiated from a device without connectivity: the order's `ClientOrderID`. Used together with `DeviceCode` and `Amount` instead of `Token`.",
+          "allowedValues": []
+        },
+        "DeviceCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "For payments that were initiated from a device without connectivity: the 8 digit code that proves the amount was paid. Requires `ClientOrderID` and `Amount`.",
+          "allowedValues": []
+        },
         "OrderID": {
           "type": {
             "ref": "string",
@@ -450924,14 +450951,10 @@
         "Token": {
           "type": {
             "ref": "string",
-            "args": []
+            "args": [],
+            "nullable": true
           },
-          "required": {
-            "current": true
-          },
-          "requiredAllowEmpty": {
-            "current": false
-          },
+          "description": "The Watchtower TOTP token. Required unless `DeviceCode` is given.",
           "allowedValues": []
         }
       },
@@ -504218,6 +504241,24 @@
     {
       "name": "EVAPay:InvalidToken",
       "message": "The given token is not valid.",
+      "module": "EVA.Payment.Core",
+      "arguments": []
+    },
+    {
+      "name": "EVAPay:InvalidDeviceCode",
+      "message": "The given device code is not valid for this order and amount.",
+      "module": "EVA.Payment.Core",
+      "arguments": []
+    },
+    {
+      "name": "EVAPay:DeviceModeDisabled",
+      "message": "Device mode is not enabled for this organization unit (Security:DeviceMode:Enabled).",
+      "module": "EVA.Payment.Core",
+      "arguments": []
+    },
+    {
+      "name": "EVAPay:TokenOrDeviceCodeRequired",
+      "message": "Either Token or DeviceCode (with ClientOrderID and Amount) is required.",
       "module": "EVA.Payment.Core",
       "arguments": []
     },
