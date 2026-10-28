@@ -76540,6 +76540,11 @@
           "value": 2,
           "extends": []
         },
+        "CreatedBySelfCheckout": {
+          "value": 33554432,
+          "extends": [],
+          "description": "Indicates that the order was created on a Self Checkout station."
+        },
         "CustomTaxesApplied": {
           "value": 256,
           "extends": [],
@@ -77196,6 +77201,10 @@
         },
         "ReserveOrders": {
           "value": 1,
+          "extends": []
+        },
+        "SelfCheckout": {
+          "value": 32,
           "extends": []
         }
       }
@@ -78387,6 +78396,28 @@
           "extends": []
         },
         "Unknown": {
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.DataModels.ProductRecommendationOrderType": {
+      "typename": "ProductRecommendationOrderType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": true,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Sales": {
+          "value": 1,
+          "extends": []
+        },
+        "SelfCheckout": {
+          "value": 2,
           "extends": []
         }
       }
@@ -258869,6 +258900,10 @@
           "value": 1,
           "extends": []
         },
+        "SelfCheckout": {
+          "value": 64,
+          "extends": []
+        },
         "TransferOrder": {
           "value": 8,
           "extends": []
@@ -313949,7 +313984,8 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
-        "EVA.Core.DataModels.ProductRecommendationType"
+        "EVA.Core.DataModels.ProductRecommendationType",
+        "EVA.Core.DataModels.ProductRecommendationOrderType"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessage`1",
@@ -313984,6 +314020,15 @@
           "stringLengthConstraint": {
             "max": 255
           },
+          "allowedValues": []
+        },
+        "OrderType": {
+          "type": {
+            "ref": "EVA.Core.DataModels.ProductRecommendationOrderType",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Where the recommendation is shown. Empty means everywhere. `SelfCheckout` replaces `Sales` when a non-employee checks out on a Self Checkout station, so use `Sales | SelfCheckout` for both.",
           "allowedValues": []
         },
         "OrganizationUnitSetID": {
@@ -314393,7 +314438,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.DataModels.ProductRecommendationType"
+        "EVA.Core.DataModels.ProductRecommendationType",
+        "EVA.Core.DataModels.ProductRecommendationOrderType"
       ],
       "properties": {
         "EndDate": {
@@ -314428,6 +314474,14 @@
           },
           "stringLengthConstraint": {
             "max": 255
+          },
+          "allowedValues": []
+        },
+        "OrderType": {
+          "type": {
+            "ref": "EVA.Core.DataModels.ProductRecommendationOrderType",
+            "args": [],
+            "nullable": true
           },
           "allowedValues": []
         },
@@ -314499,7 +314553,8 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.RequestMessageWithEmptyResponse",
-        "EVA.Core.DataModels.ProductRecommendationType"
+        "EVA.Core.DataModels.ProductRecommendationType",
+        "EVA.Core.DataModels.ProductRecommendationOrderType"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessageWithEmptyResponse",
@@ -314541,6 +314596,15 @@
           "stringLengthConstraint": {
             "max": 255
           },
+          "allowedValues": []
+        },
+        "OrderType": {
+          "type": {
+            "ref": "EVA.Core.DataModels.ProductRecommendationOrderType",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
           "allowedValues": []
         },
         "OrganizationUnitSetID": {
@@ -433348,6 +433412,14 @@
             "nullable": true
           },
           "allowedValues": []
+        },
+        "StationType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
         }
       },
       "enumValues": {},
@@ -435093,6 +435165,20 @@
           "type": {
             "ref": "string",
             "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "OrderTypes": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
             "nullable": true
           },
           "allowedValues": []
