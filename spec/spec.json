@@ -114896,7 +114896,7 @@
     "EVA.Core.GiftCards.AddDigitalGiftCardToOrder": {
       "typename": "AddDigitalGiftCardToOrder",
       "assembly": "EVA.Core",
-      "description": "A specific implementation for `AddProductToOrder` for GiftCards. Adds a new order line for a digital GiftCard to specified order, where\n`OrderID` identifies the order for the customer and `Amount` is the desired amount to create a GiftCard for.\n\nOptionally supply a `DetailsUrl` pointing to the website you want the buyer of the GiftCard to land to see/manage the order.\n\nAdditionally, the `DisplayOptions` property need to be supplied, this contains a bunch of default options to personalize the giftcard.\nIt is also possible to provide some Metadata. We won't do any processing on DisplayOptions.\n\nExcept: DetailsUrl will be changed to include the `OrderID` in the URL as well as a `token` that can be used to access a few services.",
+      "description": "A specific implementation for `AddProductToOrder` for GiftCards. Adds a new order line for a digital GiftCard to specified order, where\n`OrderID` identifies the order for the customer and `Amount` is the desired amount to create a GiftCard for.\n\nOptionally supply a `Data.UpdateUrl` pointing to the website you want the buyer of the GiftCard to land to see/manage the order.\n\nAdditionally, the `Data` property need to be supplied, this contains a bunch of default options to personalize the giftcard.\n\nOnce the order is paid, the `UpdateUrl` returned for the gift card will include the `OrderID` as well as an `Authorization` token that can be used to access a few services.\nAn `Authorization` already present in the supplied url is never used for access, and is replaced once that token is added.",
       "usage": {
         "request": true
       },
@@ -114979,6 +114979,11 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "UpdateUrl is deprecated and is scheduled to be removed in 2.0.905: Use `Data.UpdateUrl`."
           },
           "allowedValues": []
         }
@@ -116922,7 +116927,7 @@
     "EVA.Core.GiftCards.ResendDigitalGiftCardShippedConfirmation": {
       "typename": "ResendDigitalGiftCardShippedConfirmation",
       "assembly": "EVA.Core",
-      "description": "Resends the `GiftCardOrderShippedConfirmation` mail for the order's shipped digital gift card lines, regardless of the delivery mode of the gift cards.\n\nThe `Authorization` token of the order (used by the `UpdateUrl` portal links) is only refreshed when needed: if it has expired, a new one is generated first, for the whole order at once rather than a single line. A token that is still valid is left as it is.\n\nCustomers can resend this for their own orders. Employees and API users need the `ResendDigitalGiftCard` functionality, unless they are the customer of the order.\n\nLimited to 3 calls per order per hour.",
+      "description": "Resends the `GiftCardOrderShippedConfirmation` mail for the order's shipped digital gift card lines, regardless of the delivery mode of the gift cards.\n\nThe `Authorization` token in the `UpdateUrl` portal links is only renewed when one of the order's tokens has expired or is no longer valid. A renewal applies to all gift cards on the order, and previously sent links stop working.\n\nCustomers can resend this for their own orders. Employees and API users need the `ResendDigitalGiftCard` functionality, unless they are the customer of the order.\n\nLimited to 3 calls per order per hour.",
       "usage": {
         "request": true
       },
