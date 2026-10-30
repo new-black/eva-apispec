@@ -2,7 +2,7 @@
   "name": "AddDigitalGiftCardToOrder",
   "method": "POST",
   "path": "/message/AddDigitalGiftCardToOrder",
-  "description": "A specific implementation for \u0060AddProductToOrder\u0060 for GiftCards. Adds a new order line for a digital GiftCard to specified order, where\n\u0060OrderID\u0060 identifies the order for the customer and \u0060Amount\u0060 is the desired amount to create a GiftCard for.\n\nOptionally supply a \u0060DetailsUrl\u0060 pointing to the website you want the buyer of the GiftCard to land to see/manage the order.\n\nAdditionally, the \u0060DisplayOptions\u0060 property need to be supplied, this contains a bunch of default options to personalize the giftcard.\nIt is also possible to provide some Metadata. We won\u0027t do any processing on DisplayOptions.\n\nExcept: DetailsUrl will be changed to include the \u0060OrderID\u0060 in the URL as well as a \u0060token\u0060 that can be used to access a few services.",
+  "description": "A specific implementation for \u0060AddProductToOrder\u0060 for GiftCards. Adds a new order line for a digital GiftCard to specified order, where\n\u0060OrderID\u0060 identifies the order for the customer and \u0060Amount\u0060 is the desired amount to create a GiftCard for.\n\nOptionally supply a \u0060Data.UpdateUrl\u0060 pointing to the website you want the buyer of the GiftCard to land to see/manage the order.\n\nAdditionally, the \u0060Data\u0060 property need to be supplied, this contains a bunch of default options to personalize the giftcard.\n\nOnce the order is paid, the \u0060UpdateUrl\u0060 returned for the gift card will include the \u0060OrderID\u0060 as well as an \u0060Authorization\u0060 token that can be used to access a few services.\nAn \u0060Authorization\u0060 already present in the supplied url is never used for access, and is replaced once that token is added.",
   "auth_description": "This service does not require authentication.",
   "headers": [
     {
@@ -377,8 +377,8 @@
       },
       {
         "name": "UpdateUrl",
-        "deprecation_notice": null,
-        "description": "",
+        "deprecation_notice": "\n\n**Deprecated since 860:** UpdateUrl is deprecated and is scheduled to be removed in 2.0.905: Use \u0060Data.UpdateUrl\u0060.\n\n**Will be removed in 886**",
+        "description": "**Deprecated since 860:** UpdateUrl is deprecated and is scheduled to be removed in 2.0.905: Use \u0060Data.UpdateUrl\u0060.\n\n**Will be removed in 886**",
         "type": "string | null",
         "required": false,
         "properties_id": null,
