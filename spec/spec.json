@@ -462265,7 +462265,7 @@
             "ref": "EVA.Core.DataModels.ProductRelationDirection",
             "args": []
           },
-          "description": "The direction of the relation. This can either be;\nUnidirectional; one-way relation. For example 'parent-child' or 'replaced by'\nBidirectional; two-way relation. For example 'maybe your also intrested in' or 'others also bought'\nGroup; collective relation which allows for many products as part of a group. For example 'all products that are blue' or 'all products from summer-2022'. This type does not accept a StockRelationType. A dynamic group can contain at most 50 products.",
+          "description": "The direction of the relation. This can either be;\nUnidirectional; one-way relation. For example 'parent-child' or 'replaced by'\nBidirectional; two-way relation. For example 'maybe your also intrested in' or 'others also bought'\nGroup; collective relation which allows for many products as part of a group. For example 'all products that are blue' or 'all products from summer-2022'. This type does not accept a StockRelationType.",
           "allowedValues": []
         },
         "DynamicRelationProductID": {
@@ -462274,7 +462274,7 @@
             "args": [],
             "nullable": true
           },
-          "description": "You can create dynamic bi- or uni directional relations by defining a `DynamicRelationProductID` in combination with a `ProductSearchTemplateID` or `ProductSearchFilters`.\nBy setting the `UseDynamicRelationProductAsRelatedProduct` to false (default), the `DynamicRelationProductID` will be considered as the primary product and the result from the `ProductSearchTemplateID` or `ProductSearchFilters` will be considered as related products\nBy setting the `UseDynamicRelationProductAsRelatedProduct` to true , the result from the `ProductSearchTemplateID` or `ProductSearchFilters` will be considered as primary products and the `DynamicRelationProductID` will be considered as the related product\nThe result from the `ProductSearchTemplateID` or `ProductSearchFilters` can contain at most 50 products.",
+          "description": "You can create dynamic bi- or uni directional relations by defining a `DynamicRelationProductID` in combination with a `ProductSearchTemplateID` or `ProductSearchFilters`.\nBy setting the `UseDynamicRelationProductAsRelatedProduct` to false (default), the `DynamicRelationProductID` will be considered as the primary product and the result from the `ProductSearchTemplateID` or `ProductSearchFilters` will be considered as related products\nBy setting the `UseDynamicRelationProductAsRelatedProduct` to true , the result from the `ProductSearchTemplateID` or `ProductSearchFilters` will be considered as primary products and the `DynamicRelationProductID` will be considered as the related product",
           "datamodel": {
             "name": "Product",
             "supportsCustomID": true,
@@ -462314,7 +462314,7 @@
             ],
             "nullable": true
           },
-          "description": "Only available when Direction is set to `Group`. The filters can match at most 50 products.",
+          "description": "Only available when Direction is set to `Group`.",
           "allowedValues": []
         },
         "ProductSearchTemplateID": {
@@ -462323,7 +462323,7 @@
             "args": [],
             "nullable": true
           },
-          "description": "Only available when Direction is set to `Group`. The template can match at most 50 products.",
+          "description": "Only available when Direction is set to `Group`.",
           "datamodel": {
             "name": "ProductSearchTemplate",
             "supportsCustomID": true,
@@ -466948,7 +466948,6 @@
             "args": [],
             "nullable": true
           },
-          "skippable": true,
           "datamodel": {
             "name": "ProductRelationType",
             "isExternalID": true
@@ -466961,7 +466960,6 @@
             "args": [],
             "nullable": true
           },
-          "skippable": true,
           "datamodel": {
             "name": "Product",
             "supportsCustomID": true,
@@ -466988,7 +466986,6 @@
             "args": []
           },
           "description": "This is the primary name the relation. For example; if primary name is 'Blocks', the secondary name could be something in the lines of 'Blocked by'.",
-          "skippable": true,
           "required": {
             "current": true
           },
@@ -467014,8 +467011,6 @@
             ],
             "nullable": true
           },
-          "description": "The filters can match at most 50 products. Only validated when sent, so existing relation types over the limit can still be edited without them.",
-          "skippable": true,
           "allowedValues": []
         },
         "ProductSearchTemplateID": {
@@ -467024,8 +467019,6 @@
             "args": [],
             "nullable": true
           },
-          "description": "The template can match at most 50 products. Only validated when sent, so existing relation types over the limit can still be edited without it.",
-          "skippable": true,
           "datamodel": {
             "name": "ProductSearchTemplate",
             "supportsCustomID": true,
@@ -467040,7 +467033,6 @@
             "nullable": true
           },
           "description": "This is the secondary name the relation. For example; if primary name is 'Blocks', the secondary name could be something in the lines of 'Blocked by'.",
-          "skippable": true,
           "allowedValues": []
         },
         "UseDynamicRelationProductAsRelatedProduct": {
@@ -467048,7 +467040,6 @@
             "ref": "bool",
             "args": []
           },
-          "skippable": true,
           "allowedValues": []
         }
       },
@@ -489926,19 +489917,6 @@
       "message": "Cannot change second chance relation type.",
       "module": "EVA.Core",
       "arguments": []
-    },
-    {
-      "name": "ProductRelation:TooManyRelatedProducts",
-      "message": "A dynamic product relation can resolve to at most {0} products. Narrow down the product filters or the product search template.",
-      "module": "EVA.Core",
-      "arguments": [
-        {
-          "type": {
-            "ref": "int32",
-            "args": []
-          }
-        }
-      ]
     },
     {
       "name": "Inquiries:InvalidType",
