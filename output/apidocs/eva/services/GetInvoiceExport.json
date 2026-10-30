@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022ActionType\u0022: \u0022string\u0022,\n  \u0022CanBeAdjusted\u0022: true,\n  \u0022CoveredPeriodEnd\u0022: \u00222025-01-01\u0022,\n  \u0022CoveredPeriodStart\u0022: \u00222025-01-01\u0022,\n  \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n  \u0022DocumentNumber\u0022: \u0022string\u0022,\n  \u0022Errors\u0022: [\n    {\n      \u0022Code\u0022: \u0022string\u0022,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Suggestion\u0022: \u0022string\u0022,\n      \u0022Timestamp\u0022: \u00222025-01-01\u0022\n    }\n  ],\n  \u0022ExternalStatus\u0022: 2,\n  \u0022ExternalStatusTime\u0022: \u00222025-01-01\u0022,\n  \u0022ID\u0022: 123,\n  \u0022InvoiceExportStatus\u0022: 10,\n  \u0022InvoiceID\u0022: 123,\n  \u0022LastModificationTime\u0022: \u00222025-01-01\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022RetryCount\u0022: 123,\n  \u0022SequenceNumber\u0022: 123,\n  \u0022Status\u0022: -1\n}"
+      "sample": "{\n  \u0022ActionType\u0022: \u0022string\u0022,\n  \u0022CanBeAdjusted\u0022: true,\n  \u0022CoveredPeriodEnd\u0022: \u00222025-01-01\u0022,\n  \u0022CoveredPeriodStart\u0022: \u00222025-01-01\u0022,\n  \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n  \u0022DocumentNumber\u0022: \u0022string\u0022,\n  \u0022Errors\u0022: [\n    {\n      \u0022Code\u0022: \u0022string\u0022,\n      \u0022Description\u0022: \u0022string\u0022,\n      \u0022Suggestion\u0022: \u0022string\u0022,\n      \u0022Timestamp\u0022: \u00222025-01-01\u0022\n    }\n  ],\n  \u0022ExternalStatus\u0022: 2,\n  \u0022ExternalStatusTime\u0022: \u00222025-01-01\u0022,\n  \u0022ID\u0022: 123,\n  \u0022InvoiceExportStatus\u0022: 10,\n  \u0022InvoiceID\u0022: 123,\n  \u0022JobStatus\u0022: -1,\n  \u0022LastModificationTime\u0022: \u00222025-01-01\u0022,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022RetryCount\u0022: 123,\n  \u0022SequenceNumber\u0022: 123,\n  \u0022Status\u0022: 10\n}"
     },
     {
       "name": "400",
@@ -258,7 +258,7 @@
       {
         "name": "ExternalStatus",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u0060-1\u0060 - Failed\n* \u00600\u0060 - None\n* \u00601\u0060 - Pending\n* \u00602\u0060 - Completed",
+        "description": "The status of the submission to the external party (Failed, None, Pending, Completed).\nPossible values:\n\n* \u0060-1\u0060 - Failed\n* \u00600\u0060 - None\n* \u00601\u0060 - Pending\n* \u00602\u0060 - Completed",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -267,7 +267,7 @@
       {
         "name": "ExternalStatusTime",
         "deprecation_notice": null,
-        "description": "",
+        "description": "The time at which \u0060ExternalStatus\u0060 was last set, by the exporter or by a confirmation from the external party. Null when it was never set.",
         "type": "datetime | null",
         "required": false,
         "properties_id": null,
@@ -284,8 +284,8 @@
       },
       {
         "name": "InvoiceExportStatus",
-        "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00600\u0060 - NotExported\n* \u006010\u0060 - Exported\n* \u006020\u0060 - NothingToExport",
+        "deprecation_notice": "\n\n**Deprecated since 860:** InvoiceExportStatus is deprecated and is scheduled to be removed in 2.0.905: Use \u0060Status\u0060 instead.\n\n**Will be removed in 886**",
+        "description": "Possible values:\n\n* \u00600\u0060 - NotExported\n* \u006010\u0060 - Exported\n* \u006020\u0060 - NothingToExport\n\n**Deprecated since 860:** InvoiceExportStatus is deprecated and is scheduled to be removed in 2.0.905: Use \u0060Status\u0060 instead.\n\n**Will be removed in 886**",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -295,6 +295,15 @@
         "name": "InvoiceID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060Invoice\u0060",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "JobStatus",
+        "deprecation_notice": null,
+        "description": "The status of the EVA background job that runs the export (New, Running, Finished, Failed). A job can be Failed while ExternalStatus is still None, for example when the exporter throws before it contacts the external party.\nPossible values:\n\n* \u0060-1\u0060 - Failed\n* \u00600\u0060 - New\n* \u00601\u0060 - Running\n* \u00602\u0060 - Finished",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -348,7 +357,7 @@
       {
         "name": "Status",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u0060-1\u0060 - Failed\n* \u00600\u0060 - New\n* \u00601\u0060 - Running\n* \u00602\u0060 - Finished",
+        "description": "The export status: whether the exporter has produced its output (NotExported, Exported, NothingToExport). Use \u0060JobStatus\u0060 for the state of the background job.\nPossible values:\n\n* \u00600\u0060 - NotExported\n* \u006010\u0060 - Exported\n* \u006020\u0060 - NothingToExport",
         "type": "integer",
         "required": false,
         "properties_id": null,
