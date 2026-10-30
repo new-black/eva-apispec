@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022RootIDs\u0022: [\n    123\n  ],\n  \u0022RootType\u0022: \u0022string\u0022,\n  \u0022SourceEnvironment\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022RootIDs\u0022: [\n    123\n  ],\n  \u0022RootKeys\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022RootType\u0022: \u0022string\u0022,\n  \u0022SourceEnvironment\u0022: \u0022string\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022RootIDs\u0022: [\n    123\n  ],\n  \u0022RootType\u0022: \u0022string\u0022,\n  \u0022SourceEnvironment\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetEntitySyncGraph",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022RootIDs\u0022: [\n    123\n  ],\n  \u0022RootKeys\u0022: [\n    \u0022string\u0022\n  ],\n  \u0022RootType\u0022: \u0022string\u0022,\n  \u0022SourceEnvironment\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetEntitySyncGraph",
       "syntax": "bash"
     }
   ],
@@ -61,9 +61,18 @@
       {
         "name": "RootIDs",
         "deprecation_notice": null,
-        "description": "Local database IDs of one or more root entities on the source environment. All roots use the same graph walk and are atomically appliable as a single plan.",
-        "type": "array[integer]",
-        "required": true,
+        "description": "Local database IDs of one or more root entities on the source environment. All roots use the same graph walk and are atomically appliable as a single plan. Provide either RootIDs or RootKeys.",
+        "type": "array[integer] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "RootKeys",
+        "deprecation_notice": null,
+        "description": "Natural keys of one or more root entities instead of their local IDs, for a single-part-key type the caller does not know the local ID of. This is how a reference-only dependency is synced on its own first: a plan cannot create it, because its target ID does not exist before the referring apply commits. Provide either RootIDs or RootKeys.",
+        "type": "array[string] | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       },
