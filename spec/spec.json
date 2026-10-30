@@ -594,6 +594,21 @@
       }
     },
     {
+      "name": "AddUserEmailAddress",
+      "assembly": "EVA.Core",
+      "path": "/message/AddUserEmailAddress",
+      "method": "POST",
+      "requestType": "EVA.Core.Users.AddUserEmailAddress",
+      "responseType": "EVA.Core.Users.AddUserEmailAddressResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
       "name": "AddVoucherToShoppingCart",
       "assembly": "EVA.Intersolve",
       "path": "/message/AddVoucherToShoppingCart",
@@ -29116,6 +29131,21 @@
       }
     },
     {
+      "name": "ListUserEmailAddresses",
+      "assembly": "EVA.Core",
+      "path": "/message/ListUserEmailAddresses",
+      "method": "POST",
+      "requestType": "EVA.Core.Users.ListUserEmailAddresses",
+      "responseType": "EVA.Core.Users.ListUserEmailAddressesResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
       "name": "ListUserInteractions",
       "assembly": "EVA.Core",
       "path": "/message/ListUserInteractions",
@@ -32815,6 +32845,21 @@
       }
     },
     {
+      "name": "RemoveUserEmailAddress",
+      "assembly": "EVA.Core",
+      "path": "/message/RemoveUserEmailAddress",
+      "method": "POST",
+      "requestType": "EVA.Core.Users.RemoveUserEmailAddress",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
+          }
+        ]
+      }
+    },
+    {
       "name": "RenderThermalPrintResult",
       "assembly": "EVA.Core",
       "path": "/message/RenderThermalPrintResult",
@@ -34567,6 +34612,21 @@
             "types": 2049,
             "functionality": "OpenIDProviders",
             "scope": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "SetPrimaryUserEmailAddress",
+      "assembly": "EVA.Core",
+      "path": "/message/SetPrimaryUserEmailAddress",
+      "method": "POST",
+      "requestType": "EVA.Core.Users.SetPrimaryUserEmailAddress",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2051
           }
         ]
       }
@@ -397714,6 +397774,93 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Users.AddUserEmailAddress": {
+      "typename": "AddUserEmailAddress",
+      "assembly": "EVA.Core",
+      "description": "Adds an additional email address to the current user, or the UserID specified if you're allowed to do so.\nThe address is never made the primary email address; use `SetPrimaryUserEmailAddress` for that.\nAdditional email addresses can be used to find the user, but not to log in.\n\nThis service only allows the user itself or an employee to add an email address.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Users.AddUserEmailAddressResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "EmailAddress": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The email address to add. Must be a valid email address that the user doesn't have yet.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "stringLengthConstraint": {
+            "max": 100
+          },
+          "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The user to add the email address to. Leave empty for the current user.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.AddUserEmailAddressResponse": {
+      "typename": "AddUserEmailAddressResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the added email address.",
+          "datamodel": {
+            "name": "UserEmailAddress",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Users.AssignedToUser": {
       "typename": "AssignedToUser",
       "assembly": "EVA.Core",
@@ -405418,6 +405565,80 @@
       "properties": {},
       "enumValues": {}
     },
+    "EVA.Core.Users.ListUserEmailAddresses": {
+      "typename": "ListUserEmailAddresses",
+      "assembly": "EVA.Core",
+      "description": "Lists the email addresses of the requested user, primary first. If UserID is left null, this service will return the email addresses of your current user.\nOnly employee users are allowed to access the email addresses of other users.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Users.ListUserEmailAddressesResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The user to list the email addresses of. Leave empty for the current user.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.ListUserEmailAddressesResponse": {
+      "typename": "ListUserEmailAddressesResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Users.UserEmailAddressModel"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Result": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Users.UserEmailAddressModel",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The email addresses of the user, primary first.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Users.LoggedInUserDto": {
       "typename": "LoggedInUserDto",
       "assembly": "EVA.Core",
@@ -409735,6 +409956,37 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Users.RemoveUserEmailAddress": {
+      "typename": "RemoveUserEmailAddress",
+      "assembly": "EVA.Core",
+      "description": "Removes an additional email address of a user. The primary email address cannot be removed; change the user's EmailAddress instead.\n\nThis service only allows the user itself or an employee to remove an email address.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the email address to remove.",
+          "datamodel": {
+            "name": "UserEmailAddress",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Users.RequestPasswordResetToken": {
       "typename": "RequestPasswordResetToken",
       "assembly": "EVA.Core",
@@ -410063,6 +410315,7 @@
             "args": [],
             "nullable": true
           },
+          "description": "Matches the user's email address and their additional email addresses (see `ListUserEmailAddresses`).",
           "stringLengthConstraint": {
             "max": 100
           },
@@ -410759,6 +411012,37 @@
             "name": "User",
             "supportsCustomID": true,
             "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.SetPrimaryUserEmailAddress": {
+      "typename": "SetPrimaryUserEmailAddress",
+      "assembly": "EVA.Core",
+      "description": "Makes the provided email address the user's primary email address, which also changes the user's EmailAddress.\nThe same rules apply as when changing the user's EmailAddress, including the uniqueness check and the Customer:BlockChangeEmailAddress setting.\nThe previous primary email address remains as an additional email address.\n\nThis service only allows the user itself or an employee to change the primary email address.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the email address to make primary.",
+          "datamodel": {
+            "name": "UserEmailAddress",
             "isEvaID": true
           },
           "allowedValues": []
@@ -415506,6 +415790,47 @@
             "name": "VisibilityGroup",
             "isEvaID": true
           },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.UserEmailAddressModel": {
+      "typename": "UserEmailAddressModel",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "EmailAddress": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The email address.",
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The ID of the email address, used by `RemoveUserEmailAddress` and `SetPrimaryUserEmailAddress`.",
+          "datamodel": {
+            "name": "UserEmailAddress",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "IsPrimary": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "The primary email address is the user's EmailAddress, used for logging in and communication.",
           "allowedValues": []
         }
       },
@@ -498968,6 +499293,18 @@
     {
       "name": "DetachUserFromConsumerCompany:CompanyIsExternal",
       "message": "Cannot detach a user from a company that is managed externally.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EmailAddressBook:EmailAddressAlreadyExists",
+      "message": "This user already has this email address.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EmailAddressBook:CannotRemovePrimaryEmailAddress",
+      "message": "The primary email address cannot be removed.",
       "module": "EVA.Core",
       "arguments": []
     },
