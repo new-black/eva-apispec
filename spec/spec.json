@@ -122583,8 +122583,8 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.ResponseMessage",
-        "EVA.Core.DataModels.TransputJobStatuses",
         "EVA.Core.Invoicing.Export.InvoiceExportStatus",
+        "EVA.Core.DataModels.TransputJobStatuses",
         "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
         "EVA.Core.Invoices.GetInvoiceExportResponse+GetInvoiceExportError"
       ],
@@ -122658,6 +122658,7 @@
             "ref": "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
             "args": []
           },
+          "description": "The status of the submission to the external party (Failed, None, Pending, Completed).",
           "allowedValues": []
         },
         "ExternalStatusTime": {
@@ -122666,6 +122667,7 @@
             "args": [],
             "nullable": true
           },
+          "description": "The time at which `ExternalStatus` was last set, by the exporter or by a confirmation from the external party. Null when it was never set.",
           "allowedValues": []
         },
         "ID": {
@@ -122684,6 +122686,11 @@
             "ref": "EVA.Core.Invoicing.Export.InvoiceExportStatus",
             "args": []
           },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "InvoiceExportStatus is deprecated and is scheduled to be removed in 2.0.905: Use `Status` instead."
+          },
           "allowedValues": []
         },
         "InvoiceID": {
@@ -122696,6 +122703,14 @@
             "supportsCustomID": true,
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "JobStatus": {
+          "type": {
+            "ref": "EVA.Core.DataModels.TransputJobStatuses",
+            "args": []
+          },
+          "description": "The status of the EVA background job that runs the export (New, Running, Finished, Failed). A job can be Failed while ExternalStatus is still None, for example when the exporter throws before it contacts the external party.",
           "allowedValues": []
         },
         "LastModificationTime": {
@@ -122731,9 +122746,10 @@
         },
         "Status": {
           "type": {
-            "ref": "EVA.Core.DataModels.TransputJobStatuses",
+            "ref": "EVA.Core.Invoicing.Export.InvoiceExportStatus",
             "args": []
           },
+          "description": "The export status: whether the exporter has produced its output (NotExported, Exported, NothingToExport). Use `JobStatus` for the state of the background job.",
           "allowedValues": []
         }
       },
@@ -123486,7 +123502,7 @@
     "EVA.Core.Invoices.ListInvoiceExportsForInvoice": {
       "typename": "ListInvoiceExportsForInvoice",
       "assembly": "EVA.Core",
-      "description": "List the exports for the given Invoice",
+      "description": "List the exports for the given Invoice. The `Filter` of the `PageConfig` accepts the keys `Status`, `ExternalStatus` and `JobStatus`, with the number or the name of the status.",
       "usage": {
         "request": true
       },
@@ -123553,9 +123569,9 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.DataModels.TransputJobStatuses",
         "EVA.Core.Invoicing.Export.InvoiceExportStatus",
-        "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus"
+        "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
+        "EVA.Core.DataModels.TransputJobStatuses"
       ],
       "properties": {
         "ActionType": {
@@ -123571,6 +123587,23 @@
             "ref": "date",
             "args": []
           },
+          "allowedValues": []
+        },
+        "ExternalStatus": {
+          "type": {
+            "ref": "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
+            "args": []
+          },
+          "description": "The status of the submission to the external party (Failed, None, Pending, Completed).",
+          "allowedValues": []
+        },
+        "ExternalStatusTime": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The time at which `ExternalStatus` was last set, by the exporter or by a confirmation from the external party. Null when it was never set.",
           "allowedValues": []
         },
         "ID": {
@@ -123589,6 +123622,11 @@
             "ref": "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
             "args": []
           },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "InvoiceExportExternalStatus is deprecated and is scheduled to be removed in 2.0.905: Use `ExternalStatus` instead."
+          },
           "allowedValues": []
         },
         "InvoiceExportExternalStatusTime": {
@@ -123597,6 +123635,12 @@
             "args": [],
             "nullable": true
           },
+          "description": "The time at which `ExternalStatus` was last set, by the exporter or by a confirmation from the external party. Null when it was never set.",
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "InvoiceExportExternalStatusTime is deprecated and is scheduled to be removed in 2.0.905: Use `ExternalStatusTime` instead."
+          },
           "allowedValues": []
         },
         "InvoiceExportStatus": {
@@ -123604,6 +123648,19 @@
             "ref": "EVA.Core.Invoicing.Export.InvoiceExportStatus",
             "args": []
           },
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "InvoiceExportStatus is deprecated and is scheduled to be removed in 2.0.905: Use `Status` instead."
+          },
+          "allowedValues": []
+        },
+        "JobStatus": {
+          "type": {
+            "ref": "EVA.Core.DataModels.TransputJobStatuses",
+            "args": []
+          },
+          "description": "The status of the EVA background job that runs the export (New, Running, Finished, Failed). A job can be Failed while ExternalStatus is still None, for example when the exporter throws before it contacts the external party.",
           "allowedValues": []
         },
         "LastModificationTime": {
@@ -123632,9 +123689,10 @@
         },
         "Status": {
           "type": {
-            "ref": "EVA.Core.DataModels.TransputJobStatuses",
+            "ref": "EVA.Core.Invoicing.Export.InvoiceExportStatus",
             "args": []
           },
+          "description": "The export status: whether the exporter has produced its output (NotExported, Exported, NothingToExport). Use `JobStatus` for the state of the background job.",
           "allowedValues": []
         }
       },
@@ -123907,18 +123965,24 @@
     "EVA.Core.Invoices.ListRelatedInvoiceExports": {
       "typename": "ListRelatedInvoiceExports",
       "assembly": "EVA.Core",
-      "description": "Lists the invoice exports related to the given invoice. Relations are resolved through the orders the invoice was billed against, including their returns and the orders they return, so corrections, cancellations, replacements and return invoices are all returned. The exports of the given invoice itself are excluded. Rows carry the same fields as `ListInvoiceExports2`, except the document type, plus a `RelationType`.",
+      "description": "Lists the invoice exports related to the given invoice. Relations are resolved through the orders the invoice was billed against, including their returns and the orders they return, so corrections, cancellations, replacements and return invoices are all returned. The exports of the given invoice itself are excluded. Rows carry the same fields as `ListInvoiceExports2`, except the document type, plus a `RelationType`. The result can be filtered on `Status`, `ExternalStatus` and `JobStatus`.",
       "usage": {
         "request": true
       },
       "typeArguments": [],
       "typeDependencies": [
+        "EVA.Core.Invoicing.ListRelatedInvoiceExportsFilter",
         "EVA.Core.Invoices.ListRelatedInvoiceExportsResponse",
-        "EVA.Core.PagedRequestMessage`1"
+        "EVA.Core.PagedRequestMessage`2"
       ],
       "extends": {
-        "ref": "EVA.Core.PagedRequestMessage`1",
+        "ref": "EVA.Core.PagedRequestMessage`2",
         "args": [
+          {
+            "ref": "EVA.Core.Invoicing.ListRelatedInvoiceExportsFilter",
+            "args": [],
+            "nullable": true
+          },
           {
             "ref": "EVA.Core.Invoices.ListRelatedInvoiceExportsResponse",
             "args": [],
@@ -127506,7 +127570,8 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.Invoicing.Export.InvoiceExportStatus",
-        "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus"
+        "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
+        "EVA.Core.DataModels.TransputJobStatuses"
       ],
       "properties": {
         "CoveredPeriodEnd": {
@@ -127561,6 +127626,7 @@
             "ref": "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
             "args": []
           },
+          "description": "The status of the submission to the external party (Failed, None, Pending, Completed).",
           "allowedValues": []
         },
         "ID": {
@@ -127600,6 +127666,14 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "JobStatus": {
+          "type": {
+            "ref": "EVA.Core.DataModels.TransputJobStatuses",
+            "args": []
+          },
+          "description": "The status of the EVA background job that runs the export (New, Running, Finished, Failed). A job can be Failed while ExternalStatus is still None, for example when the exporter throws before it contacts the external party.",
           "allowedValues": []
         },
         "OrderIDs": {
@@ -127656,6 +127730,7 @@
             "ref": "EVA.Core.Invoicing.Export.InvoiceExportStatus",
             "args": []
           },
+          "description": "The export status: whether the exporter has produced its output (NotExported, Exported, NothingToExport). Use `JobStatus` for the state of the background job.",
           "allowedValues": []
         },
         "TotalAmount": {
@@ -128335,7 +128410,8 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
-        "EVA.Core.Invoicing.Export.InvoiceExportStatus"
+        "EVA.Core.Invoicing.Export.InvoiceExportStatus",
+        "EVA.Core.DataModels.TransputJobStatuses"
       ],
       "properties": {
         "EndDate": {
@@ -128391,6 +128467,15 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "JobStatus": {
+          "type": {
+            "ref": "EVA.Core.DataModels.TransputJobStatuses",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The status of the EVA background job that runs the export (New, Running, Finished, Failed). A job can be Failed while ExternalStatus is still None, for example when the exporter throws before it contacts the external party.",
           "allowedValues": []
         },
         "OrderID": {
@@ -128526,7 +128611,8 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.Invoicing.Export.InvoiceExportStatus",
-        "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus"
+        "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
+        "EVA.Core.DataModels.TransputJobStatuses"
       ],
       "properties": {
         "CoveredPeriodEnd": {
@@ -128610,6 +128696,15 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "JobStatus": {
+          "type": {
+            "ref": "EVA.Core.DataModels.TransputJobStatuses",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The status of the EVA background job that runs the export (New, Running, Finished, Failed). A job can be Failed while ExternalStatus is still None, for example when the exporter throws before it contacts the external party.",
           "allowedValues": []
         },
         "OrderID": {
@@ -128703,7 +128798,8 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
-        "EVA.Core.Invoicing.Export.InvoiceExportStatus"
+        "EVA.Core.Invoicing.Export.InvoiceExportStatus",
+        "EVA.Core.DataModels.TransputJobStatuses"
       ],
       "properties": {
         "CurrencyID": {
@@ -128723,6 +128819,7 @@
             "ref": "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
             "args": []
           },
+          "description": "The status of the submission to the external party (Failed, None, Pending, Completed).",
           "allowedValues": []
         },
         "ID": {
@@ -128762,6 +128859,14 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "JobStatus": {
+          "type": {
+            "ref": "EVA.Core.DataModels.TransputJobStatuses",
+            "args": []
+          },
+          "description": "The status of the EVA background job that runs the export (New, Running, Finished, Failed). A job can be Failed while ExternalStatus is still None, for example when the exporter throws before it contacts the external party.",
           "allowedValues": []
         },
         "OrderDisplayID": {
@@ -128818,6 +128923,7 @@
             "ref": "EVA.Core.Invoicing.Export.InvoiceExportStatus",
             "args": []
           },
+          "description": "The export status: whether the exporter has produced its output (NotExported, Exported, NothingToExport). Use `JobStatus` for the state of the background job.",
           "allowedValues": []
         },
         "TotalAmount": {
@@ -129283,6 +129389,49 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Invoicing.ListRelatedInvoiceExportsFilter": {
+      "typename": "ListRelatedInvoiceExportsFilter",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Invoicing.Export.InvoiceExportStatus",
+        "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
+        "EVA.Core.DataModels.TransputJobStatuses"
+      ],
+      "properties": {
+        "ExternalStatus": {
+          "type": {
+            "ref": "EVA.Core.Invoicing.Export.InvoiceExportExternalStatus",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The status of the submission to the external party (Failed, None, Pending, Completed).",
+          "allowedValues": []
+        },
+        "JobStatus": {
+          "type": {
+            "ref": "EVA.Core.DataModels.TransputJobStatuses",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The status of the EVA background job that runs the export (New, Running, Finished, Failed). A job can be Failed while ExternalStatus is still None, for example when the exporter throws before it contacts the external party.",
+          "allowedValues": []
+        },
+        "Status": {
+          "type": {
+            "ref": "EVA.Core.Invoicing.Export.InvoiceExportStatus",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The export status: whether the exporter has produced its output (NotExported, Exported, NothingToExport). Use `JobStatus` for the state of the background job.",
           "allowedValues": []
         }
       },
