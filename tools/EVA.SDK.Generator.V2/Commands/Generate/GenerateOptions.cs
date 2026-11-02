@@ -33,6 +33,16 @@ public class GenerateOptions
   /// When set, the input is the URL of an EVA environment and the output is generated from its OpenAPI document.
   /// </summary>
   internal string? Token { get; init; }
+
+  /// <summary>
+  /// When set, the input is an OpenAPI document file of EVA and the output is generated from it.
+  /// </summary>
+  internal bool OpenApi { get; init; }
+
+  /// <summary>
+  /// Whether the output is generated from an OpenAPI document, of an EVA environment (<see cref="Token"/>) or a file (<see cref="OpenApi"/>).
+  /// </summary>
+  internal bool FromOpenApi => Token != null || OpenApi;
 }
 
 internal static class BaseGenerateOptionsBinderOptions
@@ -117,6 +127,15 @@ internal static class BaseGenerateOptionsBinderOptions
     Description = "A token of a user with the ViewApiSpecification functionality. Generates from the OpenAPI document of the EVA environment given as input (--in)."
   };
 
+  internal static readonly Option<bool> OpenApi = new(
+    name: "--openapi"
+  )
+  {
+    Description = "Generates from the OpenAPI document file given as input (--in), eg the openapi.json EVA.OpenAPI.Generator writes.",
+    // For generating from a local EVA build (eg the test suite); everyone else generates from an EVA environment with --token
+    Hidden = true
+  };
+
   internal static readonly OptionWithDefault<string> Api = new Option<string>(
     name: "--api"
   )
@@ -148,7 +167,8 @@ internal abstract class BaseGenerateOptionsBinder<T> where T : GenerateOptions, 
       MergeSmallAssembliesFilter = BaseGenerateOptionsBinderOptions.MergeSmallAssembliesFilter.Value(parseResult),
       UseStringIDs = BaseGenerateOptionsBinderOptions.UseStringIDs.Value(parseResult),
       Api = BaseGenerateOptionsBinderOptions.Api.Value(parseResult),
-      Token = BaseGenerateOptionsBinderOptions.Token.Value(parseResult)
+      Token = BaseGenerateOptionsBinderOptions.Token.Value(parseResult),
+      OpenApi = BaseGenerateOptionsBinderOptions.OpenApi.Value(parseResult)
     };
 
     BuildOptions(result, parseResult);
@@ -169,6 +189,7 @@ internal abstract class BaseGenerateOptionsBinder<T> where T : GenerateOptions, 
     yield return BaseGenerateOptionsBinderOptions.UseStringIDs.Option;
     yield return BaseGenerateOptionsBinderOptions.Api.Option;
     yield return BaseGenerateOptionsBinderOptions.Token;
+    yield return BaseGenerateOptionsBinderOptions.OpenApi;
 
     foreach (var opt in GetOptions()) yield return opt;
 

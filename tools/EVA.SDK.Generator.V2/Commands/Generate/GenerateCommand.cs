@@ -32,7 +32,7 @@ internal static class GenerateCommand
 
   /// <param name="generateCommand">The command to add the output to.</param>
   /// <param name="name">The name of the output.</param>
-  /// <param name="apiOutput">The output generated from the OpenAPI document of an EVA environment (with --token), if it supports that.</param>
+  /// <param name="apiOutput">The output generated from an OpenAPI document of EVA (with --token or --openapi), if it supports that.</param>
   /// <param name="hidden">Whether the output is left out of the help.</param>
   private static void AddOutput<T, TBinder, TOutput>(Command generateCommand, string name, IApiOutput<T>? apiOutput, bool hidden = false)
     where TBinder : BaseGenerateOptionsBinder<T>, new() where T : GenerateOptions, new() where TOutput : IOutput<T>, new()
@@ -61,13 +61,13 @@ internal static class GenerateCommand
       var outputOptions = binder.Bind(parseResult);
       var logger = LogBinder.Create(parseResult);
 
-      if (outputOptions.Token == null)
+      if (!outputOptions.FromOpenApi)
       {
         await GenerationPipeline.Run(outputOptions, output, logger);
       }
       else
       {
-        if (apiOutput == null) throw new SdkException($"The {name} output cannot be generated from an EVA environment");
+        if (apiOutput == null) throw new SdkException($"The {name} output cannot be generated from an OpenAPI document");
         await ApiGenerationPipeline.Run(outputOptions, apiOutput, logger);
       }
     });

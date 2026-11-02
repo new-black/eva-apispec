@@ -40,12 +40,12 @@ internal static class ApiGenerationPipeline
 
   internal static async Task Run<T>(T opt, IApiOutput<T> output, ILogger logger) where T : GenerateOptions
   {
-    if (opt.Api != "eva") throw new SdkException("Only the eva API can be generated from an EVA environment");
+    if (opt.Api != "eva") throw new SdkException("Only the eva API can be generated from an OpenAPI document");
 
     var requested = opt.Transforms.ToHashSet();
     var transforms = AllTransforms.Where(t => requested.Contains(t.ID) || output.GetForcedTransformations(opt, t)).ToList();
 
-    var api = await ApiInput.Read(opt.Input, opt.Token!, logger);
+    var api = await ApiInput.Read(opt, logger);
 
     // Filters run once
     var filters = new List<IApiTransform>();

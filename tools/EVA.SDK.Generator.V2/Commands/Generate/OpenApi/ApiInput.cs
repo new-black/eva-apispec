@@ -8,16 +8,47 @@ using Microsoft.OpenApi;
 namespace EVA.SDK.Generator.V2.Commands.Generate.OpenApi;
 
 /// <summary>
-/// Downloads the OpenAPI document of an EVA environment.
+/// Reads the OpenAPI document of EVA, from an EVA environment or a file.
 /// </summary>
 internal static class ApiInput
 {
   private const string DocumentPath = "/openapi.json";
 
+  internal static async Task<EvaApi> Read(GenerateOptions opt, ILogger logger)
+  {
+    if (opt is { Token: not null, OpenApi: true })
+    {
+      throw new SdkException("Use either --token to download the OpenAPI document of an EVA environment, or --openapi to read it from a file");
+    }
+
+    using var content = opt.OpenApi ? ReadFile(opt.Input, logger) : await Download(opt.Input, opt.Token!, logger);
+
+    var result = await OpenApiDocument.LoadAsync(content, OpenApiConstants.Json);
+    if (result.Diagnostic?.Errors is { Count: > 0 } errors)
+    {
+      throw new SdkException($"The OpenAPI document is invalid: {string.Join(", ", errors.Select(e => e.Message))}");
+    }
+
+    return EvaApi.From(result.Document ?? throw new SdkException($"Could not read the OpenAPI document from {opt.Input}"));
+  }
+
+  /// <param name="path">The path of the document, eg ./openapi/openapi.json.</param>
+  /// <param name="logger">The logger.</param>
+  private static Stream ReadFile(string? path, ILogger logger)
+  {
+    if (path == null || !File.Exists(path))
+    {
+      throw new SdkException("--openapi requires the path of an OpenAPI document as input (--in)");
+    }
+
+    logger.LogInformation("Reading OpenAPI document from: {Path}", path);
+    return File.OpenRead(path);
+  }
+
   /// <param name="url">The URL of the environment, eg https://api.euw.acme.test.eva-online.cloud.</param>
   /// <param name="token">A token of a user with the ViewApiSpecification functionality.</param>
   /// <param name="logger">The logger.</param>
-  internal static async Task<EvaApi> Read(string? url, string token, ILogger logger)
+  private static async Task<Stream> Download(string? url, string token, ILogger logger)
   {
     if (url == null || !(url.StartsWith("https://") || url.StartsWith("http://")))
     {
@@ -37,17 +68,10 @@ internal static class ApiInput
     using var response = await http.SendAsync(request);
     if (!response.IsSuccessStatusCode) throw new NonSuccessStatusCodeException(response);
 
-    using var content = new MemoryStream();
+    var content = new MemoryStream();
     await response.Content.CopyToAsync(content);
     logger.LogDebug("Downloaded {Size}", StringHelpers.FormatSize(content.Length));
     content.Position = 0;
-
-    var result = OpenApiDocument.Load(content, OpenApiConstants.Json);
-    if (result.Diagnostic?.Errors is { Count: > 0 } errors)
-    {
-      throw new SdkException($"The OpenAPI document is invalid: {string.Join(", ", errors.Select(e => e.Message))}");
-    }
-
-    return EvaApi.From(result.Document ?? throw new ResponseParsingFailedException(documentUrl.ToString()));
+    return content;
   }
 }

@@ -14,7 +14,8 @@ available: the document itself is the specification.
 
 ## Structure
 
-- `ApiInput` downloads and loads the document with Microsoft.OpenApi.
+- `ApiInput` downloads and loads the document with Microsoft.OpenApi. The hidden `--openapi` flag reads the document from the file given
+  as `--in` instead, for local EVA builds such as the EVA test suite. SDKs are generated from an EVA environment with `--token`.
 - `Model/` holds `EvaApi`, the API described by the document. Its services, types, properties and errors are views on the OpenAPI objects:
   they are computed from the document when read, and transforms change the document itself and call `EvaApi.Invalidate()`.
   - `EvaApi.Types` are the types outputs generate. Constructed generic types are left out while they refer to their generic type (`x-eva-template`),
