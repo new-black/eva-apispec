@@ -122,7 +122,8 @@ internal sealed class EvaApi
     if (s.Extension(ExtensionNames.Option) is OptionExtension option)
     {
       return new OptionRef(
-        s.AnyOf!.Where(o => !IsNull(o)).Select(o => (NamedRef)ToTypeRef(o).WithNullable(true)).ToImmutableArray(),
+        // An option that is not a type (eg an object after remove-empty-types) is no option
+        s.AnyOf!.Where(o => !IsNull(o)).Select(o => ToTypeRef(o).WithNullable(true)).OfType<NamedRef>().ToImmutableArray(),
         ToTypeRef(option.Shared),
         s.AnyOf!.Any(IsNull));
     }
