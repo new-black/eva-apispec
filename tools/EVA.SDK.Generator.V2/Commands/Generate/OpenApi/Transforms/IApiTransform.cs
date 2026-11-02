@@ -20,27 +20,16 @@ internal interface IApiTransform
 internal static class ApiTransformHelpers
 {
   /// <summary>
-  /// All schemas of the document that can contain references: the component schemas and the error arguments.
+  /// The schemas of all types, the schemas that can refer to types. Error arguments only keep the name of their type.
   /// </summary>
-  internal static IEnumerable<IOpenApiSchema> RootSchemas(this EvaApi api)
-  {
-    return api.AllTypes.Select(t => (IOpenApiSchema)t.Schema).Concat(api.Errors.SelectMany(e => e.Arguments).Select(a => a.Schema));
-  }
+  internal static IEnumerable<IOpenApiSchema> RootSchemas(this EvaApi api) => api.AllTypes.Select(t => (IOpenApiSchema)t.Schema);
 
   /// <summary>
-  /// Replaces schemas in all component schemas and error arguments, see <see cref="Schemas.Replace"/>.
+  /// Replaces schemas in all component schemas, see <see cref="Schemas.Replace"/>.
   /// </summary>
   internal static void ReplaceEverywhere(this EvaApi api, Func<IOpenApiSchema, IOpenApiSchema?> replace)
   {
     foreach (var type in api.AllTypes) Schemas.Replace(type.Schema, replace);
-
-    foreach (var error in api.Errors)
-    {
-      for (var i = 0; i < error.Arguments.Count; i++)
-      {
-        error.Arguments[i] = error.Arguments[i] with { Schema = Schemas.Replace(error.Arguments[i].Schema, replace) };
-      }
-    }
   }
 
   /// <summary>
@@ -62,13 +51,12 @@ internal static class ApiTransformHelpers
   }
 
   /// <summary>
-  /// Removes the types that no service or error uses, directly or through other types.
+  /// Removes the types that no service uses, directly or through other types.
   /// </summary>
   internal static bool RemoveUnusedTypes(this EvaApi api)
   {
     var used = new HashSet<string>();
-    var toVisit = new Stack<string>(api.Services.SelectMany(s => new[] { s.RequestType.ComponentName, s.ResponseType.ComponentName })
-      .Concat(api.Errors.SelectMany(e => e.Arguments).SelectMany(a => Schemas.References(a.Schema)).Select(r => r.ComponentName())));
+    var toVisit = new Stack<string>(api.Services.SelectMany(s => new[] { s.RequestType.ComponentName, s.ResponseType.ComponentName }));
 
     while (toVisit.TryPop(out var componentName))
     {

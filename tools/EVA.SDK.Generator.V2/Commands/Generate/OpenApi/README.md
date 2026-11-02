@@ -33,7 +33,10 @@ available: the document itself is the specification.
 The outputs are generated the same way. On the same EVA build, the remaining differences are:
 
 - Event exports and data lake models are not part of the document, nor are the types only they use.
-- The document has the errors of every assembly it exposes types of, a superset. The types of error arguments are kept.
+- The document has the errors of every assembly it exposes types of, a superset. As before, errors don't keep the types of their arguments
+  in the output, only their names in the comments.
+- Constructed generic types are expanded from the actual types, so a type parameter filled in with a value type (eg an enum or `bool`)
+  is not nullable, and the names of flattened types say so (`NotNull...`). IDs in generic arguments of base types are strings as well.
 - Errors are listed by name, services by ordinal name.
 - Whether a type is used in requests and/or responses is determined from the document after the transforms and filters, not before them.
 - `remove-generics` turns a generic type whose arguments don't matter (eg `RequestMessage<TResponse>`) into one type, instead of a copy per

@@ -202,7 +202,7 @@ internal partial class TypescriptOutput : IApiOutput<TypescriptOptions>
     {
       foreach (var error in errors.Errors)
       {
-        WriteComment(o, error.Error.MessageWithEnhancedArguments(state.Api));
+        WriteComment(o, error.Error.MessageWithEnhancedArguments());
         o.WriteLine($"{prefix}{error.Name} = '{error.Error.Name}',");
       }
 

@@ -34,11 +34,12 @@ internal sealed class EvaApi
   {
     foreach (var schema in document.Components?.Schemas?.Values ?? []) schema.ReadExtensionSchemas(document);
 
+    var api = new EvaApi(document);
     var extensions = document.Extensions ??= new Dictionary<string, IOpenApiExtension>();
-    var errors = (extensions.Find(ExtensionNames.Errors) as JsonNodeExtension)?.Node.AsArray().Select(e => EvaError.Read(e!, document)).ToList() ?? [];
+    var errors = (extensions.Find(ExtensionNames.Errors) as JsonNodeExtension)?.Node.AsArray().Select(e => EvaError.Read(e!, api)).ToList() ?? [];
     extensions[ExtensionNames.Errors] = new ErrorsExtension(errors);
 
-    return new EvaApi(document);
+    return api;
   }
 
   internal int ApiVersion => (Document.Extensions![ExtensionNames.ApiVersion] as JsonNodeExtension)!.Node.GetValue<int>();

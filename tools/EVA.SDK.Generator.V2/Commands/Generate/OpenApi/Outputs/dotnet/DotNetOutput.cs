@@ -75,7 +75,7 @@ internal class DotNetOutput : IApiOutput<DotNetOptions>
     {
       foreach (var e in errors.Errors)
       {
-        o.WriteLines(e.Error.MessageWithEnhancedArguments(api), "/// ");
+        o.WriteLines(e.Error.MessageWithEnhancedArguments(), "/// ");
         o.WriteLine($"public const string {e.Name} = \"{e.Error.Name}\";");
       }
 

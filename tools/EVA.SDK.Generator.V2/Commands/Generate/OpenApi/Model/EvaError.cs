@@ -7,7 +7,11 @@ namespace EVA.SDK.Generator.V2.Commands.Generate.OpenApi.Model;
 /// <summary>
 /// A value in the message of an error.
 /// </summary>
-internal sealed record EvaErrorArgument(string? Name, IOpenApiSchema Schema);
+/// <param name="Name">The name of the value, if it has one.</param>
+/// <param name="Schema">The schema of the value.</param>
+/// <param name="TypeName">The name of the type of the value, see <see cref="TypeRefExtensions.SpecName"/>. Errors don't keep the types of
+/// their values in the API, so a schema may refer to a type that is no longer there.</param>
+internal sealed record EvaErrorArgument(string? Name, IOpenApiSchema Schema, string TypeName);
 
 /// <summary>
 /// An error services can return.
@@ -23,11 +27,15 @@ internal sealed class EvaError(string name, string message, string assembly, Lis
   /// </summary>
   internal List<EvaErrorArgument> Arguments { get; } = arguments;
 
-  internal static EvaError Read(JsonNode json, OpenApiDocument document) => new(
+  internal static EvaError Read(JsonNode json, EvaApi api) => new(
     json["name"]!.GetValue<string>(),
     json["message"]!.GetValue<string>(),
     json["assembly"]!.GetValue<string>(),
-    json["arguments"]!.AsArray().Select(a => new EvaErrorArgument(a!["name"]?.GetValue<string>(), Schemas.Read(a["schema"]!, document))).ToList());
+    json["arguments"]!.AsArray().Select(a =>
+    {
+      var schema = Schemas.Read(a!["schema"]!, api.Document);
+      return new EvaErrorArgument(a["name"]?.GetValue<string>(), schema, api.ToTypeRef(schema).SpecName());
+    }).ToList());
 
   public override string ToString() => Name;
 }
@@ -39,12 +47,12 @@ internal static class EvaErrorExtensions
   /// <summary>
   /// The message with each placeholder replaced by the name (or position) and type of its argument.
   /// </summary>
-  internal static string MessageWithEnhancedArguments(this EvaError error, EvaApi api)
+  internal static string MessageWithEnhancedArguments(this EvaError error)
   {
     if (!error.Arguments.Any()) return error.Message;
 
     var i = 0;
-    return string.Format(error.Message, error.Arguments.Select(object (a) => $"{{{a.Name ?? i++.ToString()}:{api.ToTypeRef(a.Schema).SpecName()}}}").ToArray());
+    return string.Format(error.Message, error.Arguments.Select(object (a) => $"{{{a.Name ?? i++.ToString()}:{a.TypeName}}}").ToArray());
   }
 
   /// <summary>
