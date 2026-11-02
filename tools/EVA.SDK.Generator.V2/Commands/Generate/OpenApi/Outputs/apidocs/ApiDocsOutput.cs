@@ -89,7 +89,7 @@ internal class ApiDocsOutput : IApiOutput<ApiDocsOptions>
 
         result.Headers = GetHeaders(supportsExternalID);
 
-        result.RequestSamples = GetRequestSamples(ctx, service.RequestTypeID, service.Name);
+        result.RequestSamples = GetRequestSamples(ctx, service.RequestTypeID, service.Path);
 
         result.ResponseSamples = GetResponseSamples(ctx, service.ResponseTypeID, service.IsAsyncResult);
 
@@ -182,7 +182,7 @@ internal class ApiDocsOutput : IApiOutput<ApiDocsOptions>
         return headers;
     }
 
-    private static List<RequestSample> GetRequestSamples(ApiOutputContext<ApiDocsOptions> ctx, string serviceRequestType, string serviceName)
+    private static List<RequestSample> GetRequestSamples(ApiOutputContext<ApiDocsOptions> ctx, string serviceRequestType, string servicePath)
     {
       var sample = BuildMinimalSample(ctx, serviceRequestType, new Stack<string>());
       var sampleStr = sample.ToJsonString(_jsonSerializerOptions);
@@ -203,7 +203,7 @@ internal class ApiDocsOutput : IApiOutput<ApiDocsOptions>
                      -H "EVA-User-Agent: MyFirstUserAgent/1.0.0" \
                      -H "Authorization: Bearer <token>" \
                      --data '{sampleStr}' \
-                     https://euw.acme.test.eva-online.cloud/message/{serviceName}
+                     https://euw.acme.test.eva-online.cloud{servicePath}
                    """,
           Syntax = "bash"
         }
