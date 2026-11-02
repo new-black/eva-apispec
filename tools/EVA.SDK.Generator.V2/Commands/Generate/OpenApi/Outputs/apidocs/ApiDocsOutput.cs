@@ -91,7 +91,7 @@ internal class ApiDocsOutput : IApiOutput<ApiDocsOptions>
 
         result.RequestSamples = GetRequestSamples(ctx, service.RequestTypeID, service.Name);
 
-        result.ResponseSamples = GetResponseSamples(ctx, service.ResponseTypeID, service.Name);
+        result.ResponseSamples = GetResponseSamples(ctx, service.ResponseTypeID, service.IsAsyncResult);
 
         await ctx.Writer.WriteFileAsync($"eva/services/{service.Name}.json", JsonSerializer.Serialize(result, JsonContext.Indented.SingleService));
     }
@@ -210,7 +210,7 @@ internal class ApiDocsOutput : IApiOutput<ApiDocsOptions>
       };
     }
 
-    private static List<ResponseSample> GetResponseSamples(ApiOutputContext<ApiDocsOptions> ctx, string serviceRequestType, string serviceName)
+    private static List<ResponseSample> GetResponseSamples(ApiOutputContext<ApiDocsOptions> ctx, string serviceRequestType, bool isAsyncResult)
     {
         var sample = BuildMinimalSample(ctx, serviceRequestType, new Stack<string>());
 
@@ -218,7 +218,7 @@ internal class ApiDocsOutput : IApiOutput<ApiDocsOptions>
         if (sample is JsonObject jo)
         {
           jo.Remove("Error");
-          if (serviceName.EndsWith("_AsyncResult"))
+          if (isAsyncResult)
           {
             var metadata = jo["Metadata"] as JsonObject;
             var propsToRemove = metadata!.Select(m => m.Key).Where(k => k != "IsAsyncResultAvailable").ToList();

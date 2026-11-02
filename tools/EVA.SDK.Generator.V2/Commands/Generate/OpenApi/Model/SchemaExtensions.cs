@@ -33,7 +33,6 @@ internal static class ExtensionNames
   internal const string Entity = "x-eva-entity";
 
   internal const string Auth = "x-eva-auth";
-  internal const string Async = "x-eva-async";
 }
 
 /// <summary>

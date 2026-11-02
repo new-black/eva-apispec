@@ -78,9 +78,9 @@ internal sealed class EvaService
   internal EvaTiming? Deprecated => EvaTiming.From(Extension(ExtensionNames.Deprecated));
 
   /// <summary>
-  /// start for the operation that starts an asynchronous call, result for the one that returns its result.
+  /// Whether this is the operation that returns the result of an asynchronous call.
   /// </summary>
-  internal string? Async => Extension(ExtensionNames.Async)?.GetValue<string>();
+  internal bool IsAsyncResult => Path.StartsWith("/async-result/", StringComparison.Ordinal);
 
   internal EvaAuth Auth
   {
