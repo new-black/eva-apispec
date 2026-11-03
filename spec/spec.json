@@ -31484,7 +31484,7 @@
       "auth": {
         "requiredPermissions": [
           {
-            "types": 2049,
+            "types": 2048,
             "functionality": "PushUserBoughtProducts",
             "scope": 0
           }
@@ -31501,7 +31501,7 @@
       "auth": {
         "requiredPermissions": [
           {
-            "types": 2049,
+            "types": 2048,
             "functionality": "PushUserBoughtProducts",
             "scope": 0
           }
@@ -31977,7 +31977,7 @@
       "auth": {
         "requiredPermissions": [
           {
-            "types": 2049,
+            "types": 2048,
             "functionality": "PushUserBoughtProducts",
             "scope": 0
           }
@@ -85818,7 +85818,7 @@
     "EVA.Core.Discounts.ListManualDiscounts": {
       "typename": "ListManualDiscounts",
       "assembly": "EVA.Core",
-      "description": "List the available manual discounts. Optionally, the OrderType or DiscountAppliesTo filter can be given.",
+      "description": "List the available manual discounts. Optionally, the OrderType or DiscountAppliesTo filter can be given. Once the given order is committed (exported, invoiced or frozen after placing), only order level manual discounts are returned.",
       "usage": {
         "request": true
       },
@@ -397518,6 +397518,15 @@
           },
           "allowedValues": []
         },
+        "OriginalToAddress": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Set when this mail is a resend to a different address than the mail it resends; contains the address that mail was sent to.",
+          "allowedValues": []
+        },
         "ToAddress": {
           "type": {
             "ref": "string",
@@ -397673,7 +397682,7 @@
     "EVA.Core.UserInteractions.ResendUserInteractionCommunication": {
       "typename": "ResendUserInteractionCommunication",
       "assembly": "EVA.Core",
-      "description": "Resend a UserInteraction of Type Communication\n\nWhen no EmailAddress is supplied, the original recipient will be used.",
+      "description": "Resend a UserInteraction of Type Communication\n\nWhen no EmailAddress is supplied, the original recipient will be used.\nA supplied EmailAddress must be the original recipient or the current email address of the user the interaction belongs to.",
       "usage": {
         "request": true
       },
@@ -480904,6 +480913,12 @@
       "arguments": []
     },
     {
+      "name": "UserBoughtProduct:OrderBelongsToOtherCustomer",
+      "message": "The given OrderID/OrderLineID belongs to another customer.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "UserBoughtProduct:PushBoughtProductForUsersLimitExceeded",
       "message": "User limit of {0} exceeded.",
       "module": "EVA.Core",
@@ -486901,6 +486916,18 @@
     {
       "name": "Discounts:ManualDiscountOnReturnOrderRequiresLines",
       "message": "Manual discount on a return order without discountable lines requires explicit return lines to apply to.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:ManualDiscountSplitQuantityExceedsMaximum",
+      "message": "A manual discount can be applied to at most 1000 items of an order line at once; apply it to the whole line instead.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:ManualLineDiscountNotAllowedOnCommittedOrder",
+      "message": "A manual discount can no longer be applied to specific order lines once the order is committed; apply it at order level instead.",
       "module": "EVA.Core",
       "arguments": []
     },
@@ -499673,6 +499700,12 @@
     {
       "name": "ValidateUserEmailAddress:InvalidValidationCode",
       "message": "Validation code incorrect.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "UserInteractions:EmailAddressNotAllowed",
+      "message": "The EmailAddress must be the original recipient or the email address of the user the interaction belongs to.",
       "module": "EVA.Core",
       "arguments": []
     },
