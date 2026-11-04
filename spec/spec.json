@@ -23737,7 +23737,9 @@
       "responseType": "EVA.Core.Users.UserDataLookup.GetUserInfoResponse",
       "auth": {
         "requiredPermissions": [
-          {}
+          {
+            "types": 2049
+          }
         ],
         "agentApprovalRequired": true
       }
@@ -70475,6 +70477,7 @@
             "args": [],
             "nullable": true
           },
+          "description": "Only employees and API users may set this.",
           "stringLengthConstraint": {
             "max": 255
           },
@@ -72635,6 +72638,7 @@
             "args": [],
             "nullable": true
           },
+          "description": "Only employees and API users may change this.",
           "skippable": true,
           "stringLengthConstraint": {
             "max": 255
@@ -417158,7 +417162,7 @@
     "EVA.Core.Users.UserDataLookup.GetUserInfoByPhoneNumber": {
       "typename": "GetUserInfoByPhoneNumber",
       "assembly": "EVA.Core",
-      "description": "Fetch user information from an external API based on the phone number. This can be used to enrich the user in the frontend.\nDepending on the phone number provider, this may require Customer or Employee rights.",
+      "description": "Fetch user information from an external API based on the phone number. This can be used to enrich the user in the frontend.",
       "usage": {
         "request": true
       },
@@ -417180,13 +417184,13 @@
         "CountryID": {
           "type": {
             "ref": "string",
-            "args": []
+            "args": [],
+            "nullable": true
           },
-          "required": {
-            "current": true
-          },
-          "requiredAllowEmpty": {
-            "current": false
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "CountryID is deprecated and is scheduled to be removed in 2.0.905: Ignored, the country of the current organization unit is used instead.."
           },
           "stringLengthConstraint": {
             "min": 2,
@@ -417220,7 +417224,7 @@
     "EVA.Core.Users.UserDataLookup.GetUserInfoBySocialSecurityNumber": {
       "typename": "GetUserInfoBySocialSecurityNumber",
       "assembly": "EVA.Core",
-      "description": "Fetch user information from an external API based on the social security number. This can be used to enrich the user in the frontend.\nDepending on the SSN provider, this may require Customer or Employee rights.",
+      "description": "Fetch user information from an external API based on the social security number. This can be used to enrich the user in the frontend.\nDepending on the SSN provider, this may be available to customers and anonymous users. They only get the name and address, and their lookups are throttled.",
       "usage": {
         "request": true
       },
@@ -417242,13 +417246,13 @@
         "CountryID": {
           "type": {
             "ref": "string",
-            "args": []
+            "args": [],
+            "nullable": true
           },
-          "required": {
-            "current": true
-          },
-          "requiredAllowEmpty": {
-            "current": false
+          "deprecated": {
+            "announced": 860,
+            "active": 886,
+            "comment": "CountryID is deprecated and is scheduled to be removed in 2.0.905: Ignored, the country of the current organization unit is used instead.."
           },
           "stringLengthConstraint": {
             "min": 2,
