@@ -8,6 +8,8 @@ using EVA.SDK.Generator.V2.Commands.Generate.Outputs.swift;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.typescript;
 using EVA.SDK.Generator.V2.Commands.Generate.Outputs.zod;
 using EVA.SDK.Generator.V2.Commands.Generate.Transforms;
+using EVA.SDK.Generator.V2.Commands.Generate.OpenApi;
+using EVA.SDK.Generator.V2.Exceptions;
 using EVA.SDK.Generator.V2.Helpers;
 
 namespace EVA.SDK.Generator.V2.Commands.Generate;
@@ -19,16 +21,20 @@ internal static class GenerateCommand
     var generateCommand = new Command("generate");
     command.Add(generateCommand);
 
-    AddOutput<EvaSpecOptions, EvaSpecOptionsBinder, EvaSpecOutput>(generateCommand, "evaspec");
-    AddOutput<OpenApiOptions, OpenApiOptionsBinder, OpenApiOutput>(generateCommand, "openapi");
-    AddOutput<ApiDocsOptions, ApiDocsOptionsBinder, ApiDocsOutput>(generateCommand, "apidocs", hidden: true);
-    AddOutput<SwiftOptions, SwiftOptionsBinder, SwiftOutput>(generateCommand, "swift");
-    AddOutput<DotNetOptions, DotNetOptionsBinder, DotNetOutput>(generateCommand, "dotnet");
-    AddOutput<TypescriptOptions, TypescriptOptionsBinder, TypescriptOutput>(generateCommand, "typescript");
-    AddOutput<ZodOptions, ZodOptionsBinder, ZodOutput>(generateCommand, "zod");
+    AddOutput<EvaSpecOptions, EvaSpecOptionsBinder, EvaSpecOutput>(generateCommand, "evaspec", null);
+    AddOutput<OpenApiOptions, OpenApiOptionsBinder, OpenApiOutput>(generateCommand, "openapi", null);
+    AddOutput<ApiDocsOptions, ApiDocsOptionsBinder, ApiDocsOutput>(generateCommand, "apidocs", new OpenApi.Outputs.apidocs.ApiDocsOutput(), hidden: true);
+    AddOutput<SwiftOptions, SwiftOptionsBinder, SwiftOutput>(generateCommand, "swift", new OpenApi.Outputs.swift.SwiftOutput());
+    AddOutput<DotNetOptions, DotNetOptionsBinder, DotNetOutput>(generateCommand, "dotnet", new OpenApi.Outputs.dotnet.DotNetOutput());
+    AddOutput<TypescriptOptions, TypescriptOptionsBinder, TypescriptOutput>(generateCommand, "typescript", new OpenApi.Outputs.typescript.TypescriptOutput());
+    AddOutput<ZodOptions, ZodOptionsBinder, ZodOutput>(generateCommand, "zod", new OpenApi.Outputs.zod.ZodOutput());
   }
 
-  private static void AddOutput<T, TBinder, TOutput>(Command generateCommand, string name, bool hidden = false)
+  /// <param name="generateCommand">The command to add the output to.</param>
+  /// <param name="name">The name of the output.</param>
+  /// <param name="apiOutput">The output generated from an OpenAPI document of EVA (with --token or --openapi), if it supports that.</param>
+  /// <param name="hidden">Whether the output is left out of the help.</param>
+  private static void AddOutput<T, TBinder, TOutput>(Command generateCommand, string name, IApiOutput<T>? apiOutput, bool hidden = false)
     where TBinder : BaseGenerateOptionsBinder<T>, new() where T : GenerateOptions, new() where TOutput : IOutput<T>, new()
   {
     var binder = new TBinder();
@@ -54,7 +60,16 @@ internal static class GenerateCommand
     {
       var outputOptions = binder.Bind(parseResult);
       var logger = LogBinder.Create(parseResult);
-      await GenerationPipeline.Run(outputOptions, output, logger);
+
+      if (!outputOptions.FromOpenApi)
+      {
+        await GenerationPipeline.Run(outputOptions, output, logger);
+      }
+      else
+      {
+        if (apiOutput == null) throw new SdkException($"The {name} output cannot be generated from an OpenAPI document");
+        await ApiGenerationPipeline.Run(outputOptions, apiOutput, logger);
+      }
     });
   }
 }

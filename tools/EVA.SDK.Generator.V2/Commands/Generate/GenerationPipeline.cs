@@ -121,7 +121,7 @@ internal static class GenerationPipeline
   /// This method will ensure the output path exists and is an empty directory.
   /// </summary>
   /// <exception cref="Exception"></exception>
-  private static void EnsureEmptyOutputFolderExists(GenerateOptions opt, string? outputPattern, ILogger logger)
+  internal static void EnsureEmptyOutputFolderExists(GenerateOptions opt, string? outputPattern, ILogger logger)
   {
     var fullOutputPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), opt.OutputDirectory));
     opt.OutputDirectory = fullOutputPath;
