@@ -1,0 +1,48 @@
+name: Notify eva-app-suite
+
+# Tells new-black/eva-app-suite that the spec changed, so its
+# `generate-types.yml` workflow regenerates the Swift types and opens a PR.
+# The payload carries the commit SHA, which is linked from the PR description.
+#
+# Requirements:
+# - Repository variable `TYPES_BOT_APP_ID` and secret `TYPES_BOT_PRIVATE_KEY`
+#   of the GitHub App installed on new-black/eva-app-suite (Contents: read &
+#   write, which the dispatches endpoint requires). The default GITHUB_TOKEN
+#   only has access to this repository.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'spec/spec.json'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+      with:
+        egress-policy: audit
+
+    - name: Create GitHub App token
+      id: app-token
+      uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+      with:
+        app-id: ${{ vars.TYPES_BOT_APP_ID }}
+        private-key: ${{ secrets.TYPES_BOT_PRIVATE_KEY }}
+        owner: new-black
+        repositories: eva-app-suite
+
+    - name: Send repository_dispatch
+      env:
+        GH_TOKEN: ${{ steps.app-token.outputs.token }}
+      run: |
+        gh api repos/new-black/eva-app-suite/dispatches \
+          -f event_type=apispec-updated \
+          -f "client_payload[sha]=$GITHUB_SHA"
