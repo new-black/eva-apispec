@@ -37,19 +37,19 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022OrganizationUnitID\u0022: 123\n}",
+      "sample": "{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022Targets\u0022: [\n    3\n  ]\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrganizationUnitID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetSuppliersForOrganizationUnit",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022Targets\u0022: [\n    3\n  ]\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/GetSuppliersForOrganizationUnit",
       "syntax": "bash"
     }
   ],
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Result\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022\n    }\n  ]\n}"
+      "sample": "{\n  \u0022Result\u0022: [\n    {\n      \u0022BackendID\u0022: \u0022string\u0022,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022\n    }\n  ]\n}"
     },
     {
       "name": "400",
@@ -70,6 +70,15 @@
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrganizationUnit\u0060",
         "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Targets",
+        "deprecation_notice": null,
+        "description": "The \u0060OrganizationUnitSupplier\u0060 targets to return suppliers for. Every target is followed transitively, so suppliers of suppliers are included too.\n\nWhen omitted or empty, the targets configured for this \u0060OrganizationUnit\u0060 are used. A value passed here always wins over that configuration.\nPossible values:\n\n* \u00600\u0060 - Default\n* \u00601\u0060 - Replenishment\n* \u00602\u0060 - SupplierReturns\n* \u00603\u0060 - Pickup",
+        "type": "array[integer] | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -152,6 +161,15 @@
       }
     ],
     "F": [
+      {
+        "name": "BackendID",
+        "deprecation_notice": null,
+        "description": "The \u0060BackendID\u0060 of the \u0060OrganizationUnit\u0060 as it is stored, empty when the organization unit has none.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
       {
         "name": "ID",
         "deprecation_notice": null,
