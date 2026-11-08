@@ -14130,7 +14130,9 @@
       "auth": {
         "requiredPermissions": [
           {
-            "types": 2049
+            "types": 2049,
+            "functionality": "AccessPrivacyRemovalRequests",
+            "scope": 0
           }
         ],
         "agentApprovalRequired": true
@@ -14146,7 +14148,9 @@
       "auth": {
         "requiredPermissions": [
           {
-            "types": 2049
+            "types": 2049,
+            "functionality": "AccessPrivacyRemovalRequests",
+            "scope": 0
           }
         ],
         "agentApprovalRequired": true
@@ -34972,7 +34976,9 @@
       "auth": {
         "requiredPermissions": [
           {
-            "types": 2049
+            "types": 2049,
+            "functionality": "AccessPrivacyRemovalRequests",
+            "scope": 0
           }
         ],
         "agentApprovalRequired": true
@@ -132535,7 +132541,7 @@
     "EVA.Core.LiveGuard.Services.Management.ListWatchtowerDevices": {
       "typename": "ListWatchtowerDevices",
       "assembly": "EVA.Core.LiveGuard",
-      "description": "List the configured watchtower devices with their status\n\nSorting is supported on the following properties:\n- ID\n- Name\n- HardwareID\n- OrganizationUnitID\n- OrganizationUnitBackendID\n- OrganizationUnitName\n- OrganizationUnitCountryID\n- OrganizationUnitStatus\n- WatchtowerIOConnected\n- WatchtowerIOLastSeen\n- ForceLocalMode\n- CreationTime",
+      "description": "List the configured watchtower devices with their status\n\nSorting is supported on the following properties:\n- ID\n- Name\n- HardwareID\n- OrganizationUnitID\n- OrganizationUnitBackendID\n- OrganizationUnitName\n- OrganizationUnitCountryID\n- OrganizationUnitStatus\n- WatchtowerIOConnected\n- WatchtowerIOLastSeen\n- ForceLocalMode\n- SwarmEnabled\n- CreationTime",
       "usage": {
         "request": true
       },
@@ -132717,6 +132723,14 @@
         "Status": {
           "type": {
             "ref": "EVA.Core.Devices.WatchtowerHealthStatus",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SwarmEnabled": {
+          "type": {
+            "ref": "bool",
             "args": [],
             "nullable": true
           },
@@ -132905,6 +132919,13 @@
             "ref": "date",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SwarmEnabled": {
+          "type": {
+            "ref": "bool",
+            "args": []
           },
           "allowedValues": []
         },
@@ -133738,6 +133759,13 @@
             "ref": "date",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SwarmEnabled": {
+          "type": {
+            "ref": "bool",
+            "args": []
           },
           "allowedValues": []
         },
@@ -296332,6 +296360,14 @@
           "skippable": true,
           "allowedValues": []
         },
+        "SwarmEnabled": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "skippable": true,
+          "allowedValues": []
+        },
         "TaxProviderID": {
           "type": {
             "ref": "id",
@@ -298738,6 +298774,13 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SwarmEnabled": {
+          "type": {
+            "ref": "bool",
+            "args": []
           },
           "allowedValues": []
         },
@@ -303198,6 +303241,14 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "skippable": true,
+          "allowedValues": []
+        },
+        "SwarmEnabled": {
+          "type": {
+            "ref": "bool",
+            "args": []
           },
           "skippable": true,
           "allowedValues": []
@@ -384022,7 +384073,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessage`1"
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.DataModels.OrganizationUnitSupplierTargets"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessage`1",
@@ -384045,6 +384097,20 @@
             "supportsCustomID": true,
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "Targets": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.DataModels.OrganizationUnitSupplierTargets",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The `OrganizationUnitSupplier` targets to return suppliers for. Every target is followed transitively, so suppliers of suppliers are included too.\n\nWhen omitted or empty, the targets configured for this `OrganizationUnit` are used. A value passed here always wins over that configuration.",
           "allowedValues": []
         }
       },
@@ -384092,6 +384158,19 @@
       "typeArguments": [],
       "typeDependencies": [],
       "properties": {
+        "BackendID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The `BackendID` of the `OrganizationUnit` as it is stored, empty when the organization unit has none.",
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "isExternalID": true
+          },
+          "allowedValues": []
+        },
         "ID": {
           "type": {
             "ref": "id",
@@ -471627,7 +471706,7 @@
     "EVA.Privacy.Services.ScheduleRemovalRequests": {
       "typename": "ScheduleRemovalRequests",
       "assembly": "EVA.Privacy",
-      "description": "Service where failed privacy removal requests can be reschuled for processing.",
+      "description": "Service where failed privacy removal requests can be rescheduled for processing.",
       "usage": {
         "request": true
       },
@@ -505629,6 +505708,32 @@
       "message": "The maximum time the processing of a privacy removal request can be delayed is 24 hours.",
       "module": "EVA.Privacy",
       "arguments": []
+    },
+    {
+      "name": "PrivacyRemovalRequest:NotFailed",
+      "message": "Only failed privacy removal requests can be rescheduled, but request {0} is not failed.",
+      "module": "EVA.Privacy",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "PrivacyRemovalRequest:NotDue",
+      "message": "Privacy removal request {0} is still inside its cancellation window and cannot be executed yet.",
+      "module": "EVA.Privacy",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
     },
     {
       "name": "RemovalRequestProcessor:InvoicesMissingForRemovalRequest",
