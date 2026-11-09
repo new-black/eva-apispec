@@ -15250,6 +15250,21 @@
       }
     },
     {
+      "name": "GetAgentIdentity",
+      "assembly": "EVA.AI",
+      "path": "/message/GetAgentIdentity",
+      "method": "POST",
+      "requestType": "EVA.AI.GetAgentIdentity",
+      "responseType": "EVA.AI.GetAgentIdentityResponse",
+      "auth": {
+        "allowPublic": true,
+        "requiredPermissions": [
+          {}
+        ],
+        "agentApprovalRequired": true
+      }
+    },
+    {
       "name": "GetAllSubscriptionsByUserID",
       "assembly": "EVA.Core",
       "path": "/message/GetAllSubscriptionsByUserID",
@@ -46343,6 +46358,82 @@
         "SoulDocument": {
           "type": {
             "ref": "EVA.AI.AgentSoulDocument",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.AI.GetAgentIdentity": {
+      "typename": "GetAgentIdentity",
+      "assembly": "EVA.AI",
+      "description": "Proves this EVA deployment holds the pinned agent signing key by signing the caller's nonce.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.AI.GetAgentIdentityResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "Nonce": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "stringLengthConstraint": {
+            "min": 16,
+            "max": 128
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.AI.GetAgentIdentityResponse": {
+      "typename": "GetAgentIdentityResponse",
+      "assembly": "EVA.AI",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Nonce": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Signature": {
+          "type": {
+            "ref": "string",
             "args": [],
             "nullable": true
           },
@@ -499049,6 +499140,30 @@
     {
       "name": "Agent:EvaIntelligenceDisabled",
       "message": "eva-intelligence is disabled for this organization. Enable the EVA:Agent:Enabled setting to use it.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "Agent:AgentIdentityNonceRequired",
+      "message": "Nonce is required to prove this deployment's agent identity.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "Agent:AgentIdentityNonceInvalid",
+      "message": "Nonce must be 16 to 128 characters of unpadded base64url.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "Agent:AgentSigningKeyNotConfigured",
+      "message": "EVA_AGENT_SIGNING_KEY is not configured; cannot sign the agent identity challenge.",
+      "module": "EVA.AI",
+      "arguments": []
+    },
+    {
+      "name": "Agent:AgentSigningKeyInvalid",
+      "message": "EVA_AGENT_SIGNING_KEY is not a valid unencrypted RSA private key; cannot sign the agent identity challenge.",
       "module": "EVA.AI",
       "arguments": []
     },
