@@ -137923,7 +137923,7 @@
     "EVA.Core.LiveGuard.Services.Sync.LiveGuardTriggerSync": {
       "typename": "LiveGuardTriggerSync",
       "assembly": "EVA.Core.LiveGuard",
-      "description": "Trigger a full sync on a liveguard instance, this has major performance impact for a while",
+      "description": "Trigger a full sync on a liveguard instance, this has major performance impact for a while. Not available in production, use `LiveGuardExecuteTask` instead.",
       "usage": {
         "request": true
       },
@@ -357202,7 +357202,7 @@
     "EVA.Core.Services.Stock.ListStockForOrganizationUnits": {
       "typename": "ListStockForOrganizationUnits",
       "assembly": "EVA.Core.Management",
-      "description": "List the Stock per product/stocklabel for a subset of OrganizationUnits.\n\nThe page size `Limit` has a maximum value of `1.024` for this service (unless `DownloadOverview` is `true`).\n\nIf neither `OrganizationUnitIDs` nor `OrganizationUnitSetID` are specified, the service will return an empty result.",
+      "description": "List the Stock per product/stocklabel for a subset of OrganizationUnits.\n\nThe page size `Limit` has a maximum value of `1.024` for this service (unless `DownloadOverview` is `true`).\n\nIf neither `OrganizationUnitIDs` nor `OrganizationUnitSetID` are specified, the service will return an empty result.\n\n`Query` is resolved through the product search, which takes at most `10.000` matching products into account. When `Query` matches that many products or more, `QueryProductLimitReached` is `true` and the result only covers those products; refine `Query` to get a complete result.",
       "usage": {
         "request": true
       },
@@ -357389,6 +357389,14 @@
             "supportsSystemID": true,
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "QueryProductLimitReached": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "`true` when `Query` matches at least the maximum number of products this service takes into account (`10.000`). The result then only covers those products; refine `Query` to get a complete result.",
           "allowedValues": []
         },
         "Url": {
