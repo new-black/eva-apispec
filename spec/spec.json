@@ -192207,6 +192207,33 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Management.Loyalty.GetUserBenefitsResponse+AssortmentRuleDetailsDto": {
+      "typename": "AssortmentRuleDetailsDto",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ProductSearchTemplateID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The product search template that selects the products the assortment rule applies to.",
+          "datamodel": {
+            "name": "ProductSearchTemplate",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Loyalty.GetUserBenefitsResponse"
+    },
     "EVA.Core.Management.Loyalty.GetUserBenefitsResponse+DiscountDto": {
       "typename": "DiscountDto",
       "assembly": "EVA.Core.Management",
@@ -192374,6 +192401,30 @@
       "enumValues": {},
       "parent": "EVA.Core.Management.Loyalty.GetUserBenefitsResponse"
     },
+    "EVA.Core.Management.Loyalty.GetUserBenefitsResponse+UserBenefitDetailsDto": {
+      "typename": "UserBenefitDetailsDto",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Management.Loyalty.GetUserBenefitsResponse+AssortmentRuleDetailsDto"
+      ],
+      "properties": {
+        "AssortmentRule": {
+          "type": {
+            "ref": "EVA.Core.Management.Loyalty.GetUserBenefitsResponse+AssortmentRuleDetailsDto",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Information about the assortment rule, only present if the benefit is an AssortmentRule benefit",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Loyalty.GetUserBenefitsResponse"
+    },
     "EVA.Core.Management.Loyalty.GetUserBenefitsResponse+UserBenefitDto": {
       "typename": "UserBenefitDto",
       "assembly": "EVA.Core.Management",
@@ -192388,7 +192439,8 @@
         "EVA.Core.Loyalty.AppointmentBenefitData",
         "EVA.Core.Blobs.BlobDto",
         "EVA.Core.Management.Loyalty.GetUserBenefitsResponse+LoyaltyProgramTierDto",
-        "EVA.Core.Management.Loyalty.GetUserBenefitsResponse+DiscountDto"
+        "EVA.Core.Management.Loyalty.GetUserBenefitsResponse+DiscountDto",
+        "EVA.Core.Management.Loyalty.GetUserBenefitsResponse+UserBenefitDetailsDto"
       ],
       "properties": {
         "Blob": {
@@ -192434,6 +192486,15 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "Details": {
+          "type": {
+            "ref": "EVA.Core.Management.Loyalty.GetUserBenefitsResponse+UserBenefitDetailsDto",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Additional details for specific benefit types, null for benefits without such details.",
           "allowedValues": []
         },
         "Discounts": {
@@ -389937,7 +389998,7 @@
             ],
             "nullable": true
           },
-          "description": "When ShipFromStore:TrackMissingPrePickItems is enabled, stock is adjusted down by (picked - requested) for these products and the ship-from-store tasks that can no longer be fulfilled are rerouted to another store. Requires the MassStockUpdate functionality.",
+          "description": "When ShipFromStore:TrackMissingPrePickItems is enabled, stock is adjusted down by (picked - requested) for these products and the ship-from-store tasks that can no longer be fulfilled are rerouted to another store.",
           "datamodel": {
             "name": "Product",
             "supportsCustomID": true,
@@ -390037,6 +390098,7 @@
             "ref": "int32",
             "args": []
           },
+          "description": "The quantity that was picked. Picking is a physical action, so this cannot be negative for a product of this zone task. Lines for other products are ignored.",
           "allowedValues": []
         }
       },
@@ -483002,6 +483064,19 @@
     {
       "name": "ConsolidatedPickTask:QuantityCannotBeNegative",
       "message": "Picked quantity cannot be negative for product {0}.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ConsolidatedPickTask:PickedQuantityExceedsMaximum",
+      "message": "Picked quantity for product {0} would exceed the maximum allowed quantity.",
       "module": "EVA.Core",
       "arguments": [
         {
