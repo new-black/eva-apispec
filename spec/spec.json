@@ -1695,10 +1695,11 @@
       "auth": {
         "requiredPermissions": [
           {
-            "types": 2049
+            "types": 2049,
+            "functionality": "TaxProviders",
+            "scope": 8
           }
-        ],
-        "agentApprovalRequired": true
+        ]
       }
     },
     {
@@ -166342,6 +166343,7 @@
       "typeDependencies": [
         "EVA.Core.ResponseMessage",
         "EVA.Core.DataModels.DiscountDeactivationReasons",
+        "EVA.Core.Management.Discounts.GetDiscountByIDResponse+ExcludedProductSearchTemplate",
         "EVA.Core.DataModels.DiscountOrderTypes",
         "EVA.Core.DaysOfWeek",
         "EVA.Core.Discounts.IDiscountActionData",
@@ -166785,23 +166787,19 @@
           },
           "allowedValues": []
         },
-        "ExcludedProductSearchTemplateIDs": {
+        "ExcludedProductSearchTemplates": {
           "type": {
             "ref": "array",
             "args": [
               {
-                "ref": "id",
-                "args": []
+                "ref": "EVA.Core.Management.Discounts.GetDiscountByIDResponse+ExcludedProductSearchTemplate",
+                "args": [],
+                "nullable": true
               }
             ],
             "nullable": true
           },
-          "description": "Products in these product search templates are excluded from the discount entirely: they are not considered by its conditions and the discount is not applied to them.",
-          "datamodel": {
-            "name": "ProductSearchTemplate",
-            "supportsCustomID": true,
-            "isEvaID": true
-          },
+          "description": "Products in these product search templates are excluded from the discount entirely: they are not considered by its conditions and the discount is not applied to them. Only returned to employees.",
           "allowedValues": []
         },
         "GeneratedFromTemplate": {
@@ -167460,6 +167458,48 @@
             "ref": "bool",
             "args": []
           },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.Discounts.GetDiscountByIDResponse"
+    },
+    "EVA.Core.Management.Discounts.GetDiscountByIDResponse+ExcludedProductSearchTemplate": {
+      "typename": "ExcludedProductSearchTemplate",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "ProductSearchTemplate",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "IsDeleted": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "True when the product search template has been deleted. The link remains and has to be removed from the discount.",
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Null when the product search template no longer exists.",
           "allowedValues": []
         }
       },
@@ -294211,7 +294251,7 @@
     "EVA.Core.Orders.TransferOrderToOrganizationUnit": {
       "typename": "TransferOrderToOrganizationUnit",
       "assembly": "EVA.Core",
-      "description": "Transfers the provided Order to the OrganizationUnit of the currently logged in user, updating both the SoldFromOrganizationUnit and PickupOrganizationUnit.\n\nIf this is already the case, calling this service has no effect. In case the order cannot be transferred, this service will return an error.",
+      "description": "Transfers the provided Order to the OrganizationUnit of the currently logged in user, updating both the SoldFromOrganizationUnit and PickupOrganizationUnit.\n\nWhen the SoldFromOrganizationUnit changes on an order that is placed but not yet paid, the taxes are recalculated for the new SoldFromOrganizationUnit.\n\nIf this is already the case, calling this service has no effect. In case the order cannot be transferred, this service will return an error.",
       "usage": {
         "request": true
       },
@@ -334148,7 +334188,9 @@
         "request": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.DataModels.ProductSearchTemplateTypes"
+      ],
       "properties": {
         "CountryID": {
           "type": {
@@ -334181,6 +334223,14 @@
         "Name": {
           "type": {
             "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.ProductSearchTemplateTypes",
             "args": [],
             "nullable": true
           },
@@ -386675,6 +386725,46 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.TaxProviders.AvataxCommitTaxMethod": {
+      "typename": "AvataxCommitTaxMethod",
+      "assembly": "EVA.AvaTax",
+      "usage": {
+        "request": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "ChargedTax": {
+          "extends": []
+        },
+        "Recalculate": {
+          "value": 1,
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.TaxProviders.AvataxReturnTaxMethod": {
+      "typename": "AvataxReturnTaxMethod",
+      "assembly": "EVA.AvaTax",
+      "usage": {
+        "request": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "TaxAmount": {
+          "value": 1,
+          "extends": []
+        },
+        "TaxDate": {
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.TaxProviders.AvataxTaxProviderConfiguration": {
       "typename": "AvataxTaxProviderConfiguration",
       "assembly": "EVA.AvaTax",
@@ -386683,9 +386773,34 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.TaxProviders.InvoiceActionAvatax"
+        "EVA.Core.TaxProviders.InvoiceActionAvatax",
+        "EVA.Core.TaxProviders.AvataxReturnTaxMethod",
+        "EVA.Core.TaxProviders.AvataxCommitTaxMethod"
       ],
       "properties": {
+        "AccountID": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "CalculationTimeoutSeconds": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "CommitTaxMethod": {
+          "type": {
+            "ref": "EVA.Core.TaxProviders.AvataxCommitTaxMethod",
+            "args": []
+          },
+          "allowedValues": []
+        },
         "CompanyCode": {
           "type": {
             "ref": "string",
@@ -386701,6 +386816,14 @@
           },
           "allowedValues": []
         },
+        "LicenseKey": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "Password": {
           "type": {
             "ref": "string",
@@ -386712,6 +386835,13 @@
         "Production": {
           "type": {
             "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "ReturnTaxMethod": {
+          "type": {
+            "ref": "EVA.Core.TaxProviders.AvataxReturnTaxMethod",
             "args": []
           },
           "allowedValues": []
@@ -386743,9 +386873,37 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.TaxProviders.InvoiceActionAvatax"
+        "EVA.Core.TaxProviders.InvoiceActionAvatax",
+        "EVA.Core.TaxProviders.AvataxReturnTaxMethod",
+        "EVA.Core.TaxProviders.AvataxCommitTaxMethod"
       ],
       "properties": {
+        "AccountID": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
+          "allowedValues": []
+        },
+        "CalculationTimeoutSeconds": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
+          "allowedValues": []
+        },
+        "CommitTaxMethod": {
+          "type": {
+            "ref": "EVA.Core.TaxProviders.AvataxCommitTaxMethod",
+            "args": []
+          },
+          "skippable": true,
+          "allowedValues": []
+        },
         "CompanyCode": {
           "type": {
             "ref": "string",
@@ -386769,18 +386927,22 @@
           },
           "allowedValues": []
         },
+        "LicenseKey": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "skippable": true,
+          "allowedValues": []
+        },
         "Password": {
           "type": {
             "ref": "string",
-            "args": []
+            "args": [],
+            "nullable": true
           },
           "skippable": true,
-          "required": {
-            "current": true
-          },
-          "requiredAllowEmpty": {
-            "current": false
-          },
           "allowedValues": []
         },
         "Production": {
@@ -386795,6 +386957,14 @@
           "requiredAllowEmpty": {
             "current": false
           },
+          "allowedValues": []
+        },
+        "ReturnTaxMethod": {
+          "type": {
+            "ref": "EVA.Core.TaxProviders.AvataxReturnTaxMethod",
+            "args": []
+          },
+          "skippable": true,
           "allowedValues": []
         },
         "ShippingCostsTaxCode": {
@@ -386814,15 +386984,10 @@
         "Username": {
           "type": {
             "ref": "string",
-            "args": []
+            "args": [],
+            "nullable": true
           },
           "skippable": true,
-          "required": {
-            "current": true
-          },
-          "requiredAllowEmpty": {
-            "current": false
-          },
           "allowedValues": []
         }
       },
