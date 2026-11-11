@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022ConfigurationData\u0022: {\n    \u0022CompanyCode\u0022: \u0022string\u0022,\n    \u0022InvoiceAction\u0022: 1,\n    \u0022Password\u0022: \u0022string\u0022,\n    \u0022Production\u0022: true,\n    \u0022ShippingCostsTaxCode\u0022: \u0022string\u0022,\n    \u0022Username\u0022: \u0022string\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022Type\u0022: \u0022DEFAULT\u0022\n}",
+      "sample": "{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022ConfigurationData\u0022: {\n    \u0022AccountID\u0022: 123,\n    \u0022CalculationTimeoutSeconds\u0022: 123,\n    \u0022CommitTaxMethod\u0022: 1,\n    \u0022CompanyCode\u0022: \u0022string\u0022,\n    \u0022InvoiceAction\u0022: 1,\n    \u0022LicenseKey\u0022: \u0022string\u0022,\n    \u0022Password\u0022: \u0022string\u0022,\n    \u0022Production\u0022: true,\n    \u0022ReturnTaxMethod\u0022: 1,\n    \u0022ShippingCostsTaxCode\u0022: \u0022string\u0022,\n    \u0022Username\u0022: \u0022string\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022Type\u0022: \u0022DEFAULT\u0022\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022ConfigurationData\u0022: {\n    \u0022CompanyCode\u0022: \u0022string\u0022,\n    \u0022InvoiceAction\u0022: 1,\n    \u0022Password\u0022: \u0022string\u0022,\n    \u0022Production\u0022: true,\n    \u0022ShippingCostsTaxCode\u0022: \u0022string\u0022,\n    \u0022Username\u0022: \u0022string\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022Type\u0022: \u0022DEFAULT\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateTaxProvider",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendID\u0022: \u0022string\u0022,\n  \u0022ConfigurationData\u0022: {\n    \u0022AccountID\u0022: 123,\n    \u0022CalculationTimeoutSeconds\u0022: 123,\n    \u0022CommitTaxMethod\u0022: 1,\n    \u0022CompanyCode\u0022: \u0022string\u0022,\n    \u0022InvoiceAction\u0022: 1,\n    \u0022LicenseKey\u0022: \u0022string\u0022,\n    \u0022Password\u0022: \u0022string\u0022,\n    \u0022Production\u0022: true,\n    \u0022ReturnTaxMethod\u0022: 1,\n    \u0022ShippingCostsTaxCode\u0022: \u0022string\u0022,\n    \u0022Username\u0022: \u0022string\u0022\n  },\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022Name\u0022: \u0022string\u0022,\n  \u0022Type\u0022: \u0022DEFAULT\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateTaxProvider",
       "syntax": "bash"
     }
   ],
@@ -67,6 +67,33 @@
     "C": [],
     "D": [
       {
+        "name": "AccountID",
+        "deprecation_notice": null,
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CalculationTimeoutSeconds",
+        "deprecation_notice": null,
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "CommitTaxMethod",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - ChargedTax\n* \u00601\u0060 - Recalculate",
+        "type": "integer",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "CompanyCode",
         "deprecation_notice": null,
         "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
@@ -85,10 +112,19 @@
         "one_of": null
       },
       {
+        "name": "LicenseKey",
+        "deprecation_notice": null,
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Password",
         "deprecation_notice": null,
-        "description": "While this property is not required, if it is sent in the request it must have a valid value.",
-        "type": "string",
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -98,6 +134,15 @@
         "deprecation_notice": null,
         "description": "While this property is not required, if it is sent in the request it must have a valid value.",
         "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ReturnTaxMethod",
+        "deprecation_notice": null,
+        "description": "Possible values:\n\n* \u00600\u0060 - TaxDate\n* \u00601\u0060 - TaxAmount",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -114,8 +159,8 @@
       {
         "name": "Username",
         "deprecation_notice": null,
-        "description": "While this property is not required, if it is sent in the request it must have a valid value.",
-        "type": "string",
+        "description": "Providing a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "string | null",
         "required": false,
         "properties_id": null,
         "one_of": null
