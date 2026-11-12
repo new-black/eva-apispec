@@ -2,7 +2,7 @@
   "name": "AutocompleteOrder",
   "method": "POST",
   "path": "/message/AutocompleteOrder",
-  "description": "Attempts to autocomplete the order by:\n\n- Cancelling the lines that can still be cancelled\n- Invoicing the lines that\u0027ve been (partially) shipped\n- Optionally creating a payment to bring the open amount to 0\n\n:bikini: __The actions this service performs are irreverisble__\n\n*With great power comes great responsibility*\n-Uncle Ben",
+  "description": "Force-completes an order and its lines. This is a destructive, irreversible administrative action by design:\nit overrides the normal payment, capture, invoicing and shipment requirements for completion.\n\nBefore force-completing, it:\n\n- Cancels the lines that can still be cancelled\n- Invoices shipped lines without financial effects\n- Optionally creates a local balancing payment to bring the open amount to 0\n\nIt does not initiate a payment capture, refund or authorization reversal at the PSP. Payment counters and\nstatuses, captures and authorization adjustments are left untouched, including operations already in flight.\nAutomatic capture and authorization-expiration dates are cleared locally so EVA\u0027s background tasks cannot\ncreate later financial effects. Force completion does not mean that uncaptured money was collected; an\nuncaptured authorization can remain live at the PSP until it expires or is handled outside autocomplete.\n\n:bikini: __The actions this service performs are irreversible__\n\n*With great power comes great responsibility*\n-Uncle Ben",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060AutocompleteOrder:None\u0060",
   "headers": [
     {
