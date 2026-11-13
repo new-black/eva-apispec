@@ -2,7 +2,7 @@
   "name": "CheckEmailAddressAvailability",
   "method": "POST",
   "path": "/message/CheckEmailAddressAvailability",
-  "description": "Checks if the given EmailAddress is available to create an account for.\n\nWhen creating Employee accounts, the \u0060AsEmployee\u0060 property should be set to true.",
+  "description": "Checks if the given EmailAddress is available to create an account for.\n\nWhen creating Employee accounts, the \u0060AsEmployee\u0060 property should be set to true.\n\nThe check is done within a single VisibilityGroup: the given \u0060VisibilityGroupID\u0060, or the current VisibilityGroup when not specified.",
   "auth_description": "This service does not require authentication.",
   "headers": [
     {
@@ -30,12 +30,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022AsEmployee\u0022: true,\n  \u0022EmailAddress\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022AsEmployee\u0022: true,\n  \u0022EmailAddress\u0022: \u0022string\u0022,\n  \u0022VisibilityGroupID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AsEmployee\u0022: true,\n  \u0022EmailAddress\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CheckEmailAddressAvailability",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022AsEmployee\u0022: true,\n  \u0022EmailAddress\u0022: \u0022string\u0022,\n  \u0022VisibilityGroupID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/CheckEmailAddressAvailability",
       "syntax": "bash"
     }
   ],
@@ -73,6 +73,15 @@
         "description": "",
         "type": "string",
         "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "VisibilityGroupID",
+        "deprecation_notice": null,
+        "description": "The VisibilityGroup to check in. Defaults to the current VisibilityGroup. Must be a VisibilityGroup in which the current user can see users.\n\nThis is the ID of a \u0060VisibilityGroup\u0060",
+        "type": "integer | null",
+        "required": false,
         "properties_id": null,
         "one_of": null
       }
