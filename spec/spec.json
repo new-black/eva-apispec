@@ -30901,6 +30901,24 @@
       }
     },
     {
+      "name": "LiveGuardGetEncryptedSettings",
+      "assembly": "EVA.Core.LiveGuard",
+      "path": "/message/LiveGuardGetEncryptedSettings",
+      "method": "POST",
+      "requestType": "EVA.Core.LiveGuard.Services.Sync.LiveGuardGetEncryptedSettings",
+      "responseType": "EVA.Core.LiveGuard.Services.Sync.LiveGuardGetEncryptedSettingsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2048,
+            "functionality": "LiveGuard",
+            "scope": 0
+          }
+        ],
+        "agentApprovalRequired": true
+      }
+    },
+    {
       "name": "LiveGuardGetInformation",
       "assembly": "EVA.Core.LiveGuard",
       "path": "/message/LiveGuardGetInformation",
@@ -135427,6 +135445,149 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.LiveGuard.Services.Sync.LiveGuardGetEncryptedSettings": {
+      "typename": "LiveGuardGetEncryptedSettings",
+      "assembly": "EVA.Core.LiveGuard",
+      "description": "Returns the requested encrypted settings of the calling Watchtower's organization unit, encrypted for this\nrequest only with a single-use key agreed from `EphemeralPublicKey`. Cloud only. See OPTR-51387.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.LiveGuard.Services.Sync.LiveGuardGetEncryptedSettingsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "EphemeralPublicKey": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "Base64 SubjectPublicKeyInfo of a single-use P-256 key.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "Keys": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ]
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "RequestNonce": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "Base64, 16 random bytes.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.LiveGuard.Services.Sync.LiveGuardGetEncryptedSettingsResponse": {
+      "typename": "LiveGuardGetEncryptedSettingsResponse",
+      "assembly": "EVA.Core.LiveGuard",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.LiveGuard.Services.Sync.LiveGuardTransportSetting"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "EphemeralPublicKey": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "Settings": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.LiveGuard.Services.Sync.LiveGuardTransportSetting",
+                "args": [],
+                "nullable": true
+              }
+            ]
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "Unavailable": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ]
+          },
+          "description": "Keys the cloud has a value for but could not decrypt; the Watchtower keeps its current value.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.LiveGuard.Services.Sync.LiveGuardGetTokenForUser": {
       "typename": "LiveGuardGetTokenForUser",
       "assembly": "EVA.Core.LiveGuard",
@@ -137946,6 +138107,57 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.LiveGuard.Services.Sync.LiveGuardTransportSetting": {
+      "typename": "LiveGuardTransportSetting",
+      "assembly": "EVA.Core.LiveGuard",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "CipherText": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "Key": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "Nonce": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
           },
           "allowedValues": []
         }
@@ -402329,7 +402541,7 @@
     "EVA.Core.Users.CheckEmailAddressAvailability": {
       "typename": "CheckEmailAddressAvailability",
       "assembly": "EVA.Core",
-      "description": "Checks if the given EmailAddress is available to create an account for.\n\nWhen creating Employee accounts, the `AsEmployee` property should be set to true.",
+      "description": "Checks if the given EmailAddress is available to create an account for.\n\nWhen creating Employee accounts, the `AsEmployee` property should be set to true.\n\nThe check is done within a single VisibilityGroup: the given `VisibilityGroupID`, or the current VisibilityGroup when not specified.",
       "usage": {
         "request": true
       },
@@ -402368,6 +402580,19 @@
             "current": false
           },
           "allowedValues": []
+        },
+        "VisibilityGroupID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The VisibilityGroup to check in. Defaults to the current VisibilityGroup. Must be a VisibilityGroup in which the current user can see users.",
+          "datamodel": {
+            "name": "VisibilityGroup",
+            "isEvaID": true
+          },
+          "allowedValues": []
         }
       },
       "enumValues": {}
@@ -402375,7 +402600,7 @@
     "EVA.Core.Users.CheckNicknameAvailability": {
       "typename": "CheckNicknameAvailability",
       "assembly": "EVA.Core",
-      "description": "Checks if the given Nickname is available to create an account for.\n\nWhen creating Employee accounts, the `AsEmployee` property should be set to true.",
+      "description": "Checks if the given Nickname is available to create an account for.\n\nWhen creating Employee accounts, the `AsEmployee` property should be set to true.\n\nThe check is done within a single VisibilityGroup: the given `VisibilityGroupID`, or the current VisibilityGroup when not specified.",
       "usage": {
         "request": true
       },
@@ -402415,6 +402640,19 @@
           },
           "stringLengthConstraint": {
             "max": 50
+          },
+          "allowedValues": []
+        },
+        "VisibilityGroupID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The VisibilityGroup to check in. Defaults to the current VisibilityGroup. Must be a VisibilityGroup in which the current user can see users.",
+          "datamodel": {
+            "name": "VisibilityGroup",
+            "isEvaID": true
           },
           "allowedValues": []
         }
@@ -486136,6 +486374,12 @@
       "arguments": []
     },
     {
+      "name": "LiveGuard:TOTPSecretUnreadable",
+      "message": "The stored TOTP secret for this store could not be decrypted.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "Invoices:MissingBillingDetailsForInvoice",
       "message": "Missing billing details for invoice {0}",
       "module": "EVA.Core",
@@ -501799,6 +502043,26 @@
     {
       "name": "LiveGuard:NotAllowed",
       "message": "Only a caller holding the LiveGuard role is allowed to perform this operation.",
+      "module": "EVA.Core.LiveGuard",
+      "arguments": []
+    },
+    {
+      "name": "LiveGuard:EncryptedSettingNotAllowed",
+      "message": "Setting '{0}' can't be requested as an encrypted setting.",
+      "module": "EVA.Core.LiveGuard",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "LiveGuard:InvalidTransportKey",
+      "message": "The ephemeral public key or request nonce is invalid.",
       "module": "EVA.Core.LiveGuard",
       "arguments": []
     },
