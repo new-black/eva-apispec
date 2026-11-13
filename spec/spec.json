@@ -42621,6 +42621,11 @@
       "method": "POST",
       "requestType": "EVA.Core.Stock.UploadAndProcessStockJSONFile",
       "responseType": "EVA.Core.EmptyResponseMessage",
+      "deprecated": {
+        "announced": 860,
+        "active": 886,
+        "comment": "Use `ProcessStockMutationFile` instead. It accepts the same rows inline through `Mutations` or as a stored blob through `FileBlobID`."
+      },
       "auth": {
         "requiredPermissions": [
           {
@@ -253577,6 +253582,122 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Messages.Mutation": {
+      "typename": "Mutation",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Barcode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "A barcode of the product. Used when neither `ProductID` nor `ProductBackendID` is set.",
+          "allowedValues": []
+        },
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The organization unit to update the stock of. Falls back to the `OrganizationUnitID` of the request.",
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ProductBackendID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The backend ID of the product, matched within the `BackendSystemID` of the request. Used when `ProductID` is not set, takes precedence over `Barcode`.",
+          "allowedValues": []
+        },
+        "ProductID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The ID of the product. Takes precedence over `ProductBackendID` and `Barcode`.",
+          "allowedValues": []
+        },
+        "QuantityOnHand": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "The absolute quantity on hand the product should have after processing, not a delta. Must be 0 or higher.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "minValue": {
+            "current": 0
+          },
+          "allowedValues": []
+        },
+        "Remark": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "A remark stored on the stock mutation.",
+          "allowedValues": []
+        },
+        "SerialNumber": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The serial number to assign to the stock mutation.",
+          "allowedValues": []
+        },
+        "StockLabelID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The stock label to update the stock of. Falls back to the `StockLabelID` of the request, which defaults to Sellable.",
+          "datamodel": {
+            "name": "StockLabel",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "StockMutationReasonID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The reason for the stock mutation. Falls back to the `StockMutationReasonID` of the request, which defaults to ExternalModification.",
+          "datamodel": {
+            "name": "StockMutationReasons",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.MessageTemplates.MessageTargetContentTypes": {
       "typename": "MessageTargetContentTypes",
       "assembly": "EVA.Core",
@@ -380026,13 +380147,14 @@
     "EVA.Core.Stock.ProcessStockMutationFile": {
       "typename": "ProcessStockMutationFile",
       "assembly": "EVA.Core",
-      "description": "Processes a (delta)stock mutation file.\n\nExpected format of the file is JSON with the following markup:\n\n```\n[\n  {\n    \"ProductID\": [Optional, int],\n    \"ProductBackendID\": [Optional, string],\n    \"Barcode\": [Optional, string],\n    \"QuantityOnHand\": [Required, int, value >= 0],\n    \"StockMutationReasonID\": [Optional, int],\n    \"Remark\": [Optional, string]\n  },\n  ...\n]\n```\n\nProducts are identified using one of three fields with the following precedence: ProductID > ProductBackendID > Barcode.\nMutation will only be processed for products that can be resolved through one of these identifiers.",
+      "description": "Processes a (delta)stock mutation file.\n\nThe rows are passed inline through `Mutations`, or as a stored JSON file through `FileBlobID`. The expected format of the file is JSON with the following markup:\n\n```\n[\n  {\n    \"ProductID\": [Optional, int],\n    \"ProductBackendID\": [Optional, string],\n    \"Barcode\": [Optional, string],\n    \"QuantityOnHand\": [Required, int, value >= 0],\n    \"StockMutationReasonID\": [Optional, int],\n    \"Remark\": [Optional, string],\n    \"OrganizationUnitID\": [Optional, int],\n    \"StockLabelID\": [Optional, int]\n  },\n  ...\n]\n```\n\nProducts are identified using one of three fields with the following precedence: ProductID > ProductBackendID > Barcode.\nMutation will only be processed for products that can be resolved through one of these identifiers.\n\n`OrganizationUnitID` and `StockLabelID` fall back to the `OrganizationUnitID` and `StockLabelID` of the request, so a single file can update the stock of multiple organization units and stock labels.\n\nA call is limited to the number of rows in the `Stock:Upload:MaxRows` setting (100,000 by default), inline or in the file, and a `FileBlobID` file to the size in bytes in the `Stock:Upload:MaxFileSize` setting (30 MB by default). Larger syncs must be split into several calls.",
       "usage": {
         "request": true
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessageWithEmptyResponse"
+        "EVA.Core.RequestMessageWithEmptyResponse",
+        "EVA.Core.Messages.Mutation"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessageWithEmptyResponse",
@@ -380060,8 +380182,10 @@
         "FileBlobID": {
           "type": {
             "ref": "guid",
-            "args": []
+            "args": [],
+            "nullable": true
           },
+          "description": "The ID of a stored blob holding a JSON file in the format described above. Either `FileBlobID` or `Mutations` must be given.",
           "allowedValues": []
         },
         "IsFullStockMutationFile": {
@@ -380069,7 +380193,22 @@
             "ref": "bool",
             "args": []
           },
-          "description": "If set to false (default), only the stock for the products that are present in the file will be updated (delta).\n\nIf set to true, all the products will be updated - products not present in the file will be updated to quantity 0.",
+          "description": "If set to false (default), only the stock for the products that are present in the file will be updated (delta).\n\nIf set to true, for every organization unit and stock label combination that occurs in the file (rows without them use the values of the request), the stock of the products that are not present in the file for that combination is set to 0, and the serial numbers of those organization units that are not present in the file are detached.",
+          "allowedValues": []
+        },
+        "Mutations": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Messages.Mutation",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The rows to process, passed inline as an alternative to `FileBlobID`. Intended for smaller sets of rows, use `FileBlobID` for large files. Limited to the number of rows in the `Stock:Upload:MaxRows` setting (100,000 by default). Either `FileBlobID` or `Mutations` must be given.",
           "allowedValues": []
         },
         "OrganizationUnitID": {
@@ -381585,7 +381724,7 @@
     "EVA.Core.Stock.UploadAndProcessStockExcelFile": {
       "typename": "UploadAndProcessStockExcelFile",
       "assembly": "EVA.Core",
-      "description": "Upload stock Excel (delta)file. The service processes the data async. This service is intended for small files (up to 5MB). Please view the documentation for processing larger files.",
+      "description": "Upload stock Excel (delta)file. The service processes the data async. This service is intended for small files (up to 5MB). Please view the documentation for processing larger files.\n\nThe optional `OrganizationUnitID` and `StockLabelID` columns, placed after the `Barcode` column, update the stock of other organization units and stock labels than the ones of the request. Empty cells fall back to the `OrganizationUnitID` and `StockLabelID` of the request.\n\nA call is limited to the number of rows in the `Stock:Upload:MaxRows` setting (100,000 by default) and to the file size in bytes in the `Stock:Upload:MaxFileSize` setting (30 MB by default). Larger files must be split into several calls.",
       "usage": {
         "request": true
       },
@@ -381634,7 +381773,7 @@
             "ref": "bool",
             "args": []
           },
-          "description": "If set to false (default), only the stock for the products that are present in the file will be updated (delta).\n\nIf set to true, all the products will be updated - products not present in the file will be updated to quantity 0.",
+          "description": "If set to false (default), only the stock for the products that are present in the file will be updated (delta).\n\nIf set to true, for every organization unit and stock label combination that occurs in the file (rows without them use the values of the request), the stock of the products that are not present in the file for that combination is set to 0, and the serial numbers of those organization units that are not present in the file are detached.",
           "allowedValues": []
         },
         "OrganizationUnitID": {
@@ -381727,7 +381866,7 @@
             "ref": "bool",
             "args": []
           },
-          "description": "If set to false (default), only the stock for the products that are present in the file will be updated (delta).\n\nIf set to true, all the products will be updated - products not present in the file will be updated to quantity 0.",
+          "description": "If set to false (default), only the stock for the products that are present in the file will be updated (delta).\n\nIf set to true, for every organization unit and stock label combination that occurs in the file (rows without them use the values of the request), the stock of the products that are not present in the file for that combination is set to 0, and the serial numbers of those organization units that are not present in the file are detached.",
           "allowedValues": []
         },
         "OrganizationUnitID": {
@@ -502581,6 +502720,50 @@
     {
       "name": "ProcessStockMutationFile:StockmutationReasonFSCCanOnlyBeUsedByFSCProcress",
       "message": "StockmutationReason 'FullStockCount' can only be used by the FullStockCount process.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ProcessStockMutationFile:FileBlobIDOrMutationsRequired",
+      "message": "Either FileBlobID or Mutations must be given.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ProcessStockMutationFile:FileBlobIDAndMutationsBothGiven",
+      "message": "FileBlobID and Mutations cannot both be given, use one of them.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "ProcessStockMutationFile:TooManyRows",
+      "message": "The upload contains more than {0} rows, split it into several calls.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ProcessStockMutationFile:FileTooLarge",
+      "message": "The upload is larger than {0} bytes, split it into several calls.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ProcessStockMutationFile:MutationsContainEmptyRow",
+      "message": "Mutations contains an empty row.",
       "module": "EVA.Core",
       "arguments": []
     },
