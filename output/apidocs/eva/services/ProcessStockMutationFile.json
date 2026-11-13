@@ -2,7 +2,7 @@
   "name": "ProcessStockMutationFile",
   "method": "POST",
   "path": "/message/ProcessStockMutationFile",
-  "description": "Processes a (delta)stock mutation file.\n\nExpected format of the file is JSON with the following markup:\n\n\u0060\u0060\u0060\n[\n  {\n    \u0022ProductID\u0022: [Optional, int],\n    \u0022ProductBackendID\u0022: [Optional, string],\n    \u0022Barcode\u0022: [Optional, string],\n    \u0022QuantityOnHand\u0022: [Required, int, value \u003E= 0],\n    \u0022StockMutationReasonID\u0022: [Optional, int],\n    \u0022Remark\u0022: [Optional, string]\n  },\n  ...\n]\n\u0060\u0060\u0060\n\nProducts are identified using one of three fields with the following precedence: ProductID \u003E ProductBackendID \u003E Barcode.\nMutation will only be processed for products that can be resolved through one of these identifiers.",
+  "description": "Processes a (delta)stock mutation file.\n\nThe rows are passed inline through \u0060Mutations\u0060, or as a stored JSON file through \u0060FileBlobID\u0060. The expected format of the file is JSON with the following markup:\n\n\u0060\u0060\u0060\n[\n  {\n    \u0022ProductID\u0022: [Optional, int],\n    \u0022ProductBackendID\u0022: [Optional, string],\n    \u0022Barcode\u0022: [Optional, string],\n    \u0022QuantityOnHand\u0022: [Required, int, value \u003E= 0],\n    \u0022StockMutationReasonID\u0022: [Optional, int],\n    \u0022Remark\u0022: [Optional, string],\n    \u0022OrganizationUnitID\u0022: [Optional, int],\n    \u0022StockLabelID\u0022: [Optional, int]\n  },\n  ...\n]\n\u0060\u0060\u0060\n\nProducts are identified using one of three fields with the following precedence: ProductID \u003E ProductBackendID \u003E Barcode.\nMutation will only be processed for products that can be resolved through one of these identifiers.\n\n\u0060OrganizationUnitID\u0060 and \u0060StockLabelID\u0060 fall back to the \u0060OrganizationUnitID\u0060 and \u0060StockLabelID\u0060 of the request, so a single file can update the stock of multiple organization units and stock labels.\n\nA call is limited to the number of rows in the \u0060Stock:Upload:MaxRows\u0060 setting (100,000 by default), inline or in the file, and a \u0060FileBlobID\u0060 file to the size in bytes in the \u0060Stock:Upload:MaxFileSize\u0060 setting (30 MB by default). Larger syncs must be split into several calls.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060MassStockUpdate:None\u0060",
   "headers": [
     {
@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022EmailAddress\u0022: \u0022string\u0022,\n  \u0022FileBlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n  \u0022IsFullStockMutationFile\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022StockLabelID\u0022: 123,\n  \u0022StockMutationReasonID\u0022: 123\n}",
+      "sample": "{\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022EmailAddress\u0022: \u0022string\u0022,\n  \u0022FileBlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n  \u0022IsFullStockMutationFile\u0022: true,\n  \u0022Mutations\u0022: [\n    {\n      \u0022Barcode\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductBackendID\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityOnHand\u0022: 123,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123,\n      \u0022StockMutationReasonID\u0022: 123\n    }\n  ],\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022StockLabelID\u0022: 123,\n  \u0022StockMutationReasonID\u0022: 123\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022EmailAddress\u0022: \u0022string\u0022,\n  \u0022FileBlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n  \u0022IsFullStockMutationFile\u0022: true,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022StockLabelID\u0022: 123,\n  \u0022StockMutationReasonID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ProcessStockMutationFile",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022BackendSystemID\u0022: \u0022string\u0022,\n  \u0022EmailAddress\u0022: \u0022string\u0022,\n  \u0022FileBlobID\u0022: \u0022DB422695-4164-4046-8E63-83CDAE00D364\u0022,\n  \u0022IsFullStockMutationFile\u0022: true,\n  \u0022Mutations\u0022: [\n    {\n      \u0022Barcode\u0022: \u0022string\u0022,\n      \u0022OrganizationUnitID\u0022: 123,\n      \u0022ProductBackendID\u0022: \u0022string\u0022,\n      \u0022ProductID\u0022: 123,\n      \u0022QuantityOnHand\u0022: 123,\n      \u0022Remark\u0022: \u0022string\u0022,\n      \u0022SerialNumber\u0022: \u0022string\u0022,\n      \u0022StockLabelID\u0022: 123,\n      \u0022StockMutationReasonID\u0022: 123\n    }\n  ],\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022StockLabelID\u0022: 123,\n  \u0022StockMutationReasonID\u0022: 123\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/ProcessStockMutationFile",
       "syntax": "bash"
     }
   ],
@@ -62,8 +62,91 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "D",
   "types": {
+    "C": [
+      {
+        "name": "Barcode",
+        "deprecation_notice": null,
+        "description": "A barcode of the product. Used when neither \u0060ProductID\u0060 nor \u0060ProductBackendID\u0060 is set.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "OrganizationUnitID",
+        "deprecation_notice": null,
+        "description": "The organization unit to update the stock of. Falls back to the \u0060OrganizationUnitID\u0060 of the request.\n\nThis is the ID of a \u0060OrganizationUnit\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductBackendID",
+        "deprecation_notice": null,
+        "description": "The backend ID of the product, matched within the \u0060BackendSystemID\u0060 of the request. Used when \u0060ProductID\u0060 is not set, takes precedence over \u0060Barcode\u0060.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "ProductID",
+        "deprecation_notice": null,
+        "description": "The ID of the product. Takes precedence over \u0060ProductBackendID\u0060 and \u0060Barcode\u0060.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "QuantityOnHand",
+        "deprecation_notice": null,
+        "description": "The absolute quantity on hand the product should have after processing, not a delta. Must be 0 or higher.",
+        "type": "integer",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Remark",
+        "deprecation_notice": null,
+        "description": "A remark stored on the stock mutation.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "SerialNumber",
+        "deprecation_notice": null,
+        "description": "The serial number to assign to the stock mutation.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StockLabelID",
+        "deprecation_notice": null,
+        "description": "The stock label to update the stock of. Falls back to the \u0060StockLabelID\u0060 of the request, which defaults to Sellable.\n\nThis is the ID of a \u0060StockLabel\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "StockMutationReasonID",
+        "deprecation_notice": null,
+        "description": "The reason for the stock mutation. Falls back to the \u0060StockMutationReasonID\u0060 of the request, which defaults to ExternalModification.\n\nThis is the ID of a \u0060StockMutationReasons\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "B": [
       {
         "name": "BackendSystemID",
@@ -86,8 +169,8 @@
       {
         "name": "FileBlobID",
         "deprecation_notice": null,
-        "description": "",
-        "type": "guid",
+        "description": "The ID of a stored blob holding a JSON file in the format described above. Either \u0060FileBlobID\u0060 or \u0060Mutations\u0060 must be given.",
+        "type": "guid | null",
         "required": false,
         "properties_id": null,
         "one_of": null
@@ -95,10 +178,19 @@
       {
         "name": "IsFullStockMutationFile",
         "deprecation_notice": null,
-        "description": "If set to false (default), only the stock for the products that are present in the file will be updated (delta).\n\nIf set to true, all the products will be updated - products not present in the file will be updated to quantity 0.",
+        "description": "If set to false (default), only the stock for the products that are present in the file will be updated (delta).\n\nIf set to true, for every organization unit and stock label combination that occurs in the file (rows without them use the values of the request), the stock of the products that are not present in the file for that combination is set to 0, and the serial numbers of those organization units that are not present in the file are detached.",
         "type": "boolean",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Mutations",
+        "deprecation_notice": null,
+        "description": "The rows to process, passed inline as an alternative to \u0060FileBlobID\u0060. Intended for smaller sets of rows, use \u0060FileBlobID\u0060 for large files. Limited to the number of rows in the \u0060Stock:Upload:MaxRows\u0060 setting (100,000 by default). Either \u0060FileBlobID\u0060 or \u0060Mutations\u0060 must be given.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "C",
         "one_of": null
       },
       {
@@ -129,7 +221,7 @@
         "one_of": null
       }
     ],
-    "D": [
+    "E": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -176,7 +268,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "F": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -205,14 +297,14 @@
         "one_of": null
       }
     ],
-    "C": [
+    "D": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "E",
         "one_of": null
       },
       {
@@ -221,7 +313,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "F",
         "one_of": null
       }
     ]
