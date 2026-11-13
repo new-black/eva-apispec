@@ -356655,6 +356655,10 @@
             "ref": "int32",
             "args": []
           },
+          "description": "The quantity of the line that was physically returned to the shelf. Cannot exceed the quantity reserved on the line of the cleanup task.",
+          "minValue": {
+            "current": 0
+          },
           "allowedValues": []
         },
         "QuantityToReturn": {
@@ -426675,7 +426679,7 @@
     "EVA.DataLake.Backfill.DataLakeBackfill": {
       "typename": "DataLakeBackfill",
       "assembly": "EVA.DataLake",
-      "description": "Manually re-export specific DataLake documents.\n\nThese types are currently supported;\n\n* `FinancialPeriods` = 1\n* `Orders` = 2\n* `Invoices` = 3\n* `Users` = 4\n* `Discounts` = 5\n* `UserBatches` = 6 (can only be used with `From` and `To`)\n* `Cases` = 7\n* `Shipments` = 8\n* `ZonedCycleCounts` = 9\n* `UserTasks` = 10\n* `StockMutations` = 11\n* `UserLoyaltyPointMutations` = 12 (can only be used with the `ID` or `IDs`. These need to be the user ID's of which the loyalty point mutation will be exported.)\n* `LoyaltyProgramGroups` = 13 (can only be used with the `ID` or `IDs`.)\n* `LoyaltyPrograms` = 14 (can only be used with the `ID` or `IDs`.)\n* `FullStockCounts` = 15 (can only be used with the `ID` or `IDs`.)\n* `StockNotifications` = 16 (can only be used with the `ID` or `IDs`.)\n* `ProductSubscriptions` = 17 (can only be used with `From` and `To`)\n* `TransputJobs` = 18\n* `DiscountCoupons` = 19 (can only be used with a single `ID`. This needs to be the discount ID whose coupons will be exported.)\n\nSpecify either a single `ID`, a list of `IDs`, or a datetime range `From` and `To` (inclusive).\n\nFor the following types, you can optionally specify an `OrganizationUnitID` to filter results within a datetime range:\n`FinancialPeriods`, `Orders`, `Invoices`, `Discounts`, `Cases`, `Shipments`, `ZonedCycleCounts`, `UserTasks`, `StockMutations`, `StockNotifications`.\n\nFor the following types: `Discounts`, the `OrganizationUnitID` must be a setID\n\nAs mandatory safety feature, specify the `MaxNumberOfDocuments` you'd like to run this for. When the amount of documents through above\nselection exceeds this number, this service will export NOTHING and return to you an error with the amount of documents it prevented you\nfrom exporting, so you can adjust your selection or expand your max.\n\n:warning: Triggering large amounts of data may impact system performance!\n\n:point_right: The `ID` you are returned can be used in subsequent services `DataLakeBackfillStatus` and `DataLakeBackfillCancel`.",
+      "description": "Manually re-export specific DataLake documents to the retailer's own (customer) data lake.\n\nThis service is Customer-only at the EVA routing layer: it selects only the Customer destination and never\ntargets the New Black internal customer/BI or Insights routes. Customer and New Black BI Kafka sinks still\nconsume the same topics, so end-to-end Kafka isolation additionally requires the external sink header filters;\nsee the Kafka connector README. Use the New Black-only `NewBlackDataLakeBackfill` service when an internal\ndestination is needed.\n\nThese types are currently supported;\n\n* `FinancialPeriods` = 1\n* `Orders` = 2\n* `Invoices` = 3\n* `Users` = 4\n* `Discounts` = 5\n* `UserBatches` = 6 (can only be used with `From` and `To`)\n* `Cases` = 7\n* `Shipments` = 8\n* `ZonedCycleCounts` = 9\n* `UserTasks` = 10\n* `StockMutations` = 11\n* `UserLoyaltyPointMutations` = 12 (can only be used with the `ID` or `IDs`. These need to be the user ID's of which the loyalty point mutation will be exported.)\n* `LoyaltyProgramGroups` = 13 (can only be used with the `ID` or `IDs`.)\n* `LoyaltyPrograms` = 14 (can only be used with the `ID` or `IDs`.)\n* `FullStockCounts` = 15 (can only be used with the `ID` or `IDs`.)\n* `StockNotifications` = 16 (can only be used with the `ID` or `IDs`.)\n* `ProductSubscriptions` = 17 (can only be used with `From` and `To`)\n* `TransputJobs` = 18\n* `DiscountCoupons` = 19 (can only be used with a single `ID`. This needs to be the discount ID whose coupons will be exported.)\n\nSpecify either a single `ID`, a list of `IDs`, or a datetime range `From` and `To` (inclusive).\n\nFor the following types, you can optionally specify an `OrganizationUnitID` to filter results within a datetime range:\n`FinancialPeriods`, `Orders`, `Invoices`, `Discounts`, `Cases`, `Shipments`, `ZonedCycleCounts`, `UserTasks`, `StockMutations`, `StockNotifications`.\n\nFor the following types: `Discounts`, the `OrganizationUnitID` must be a setID\n\nAs mandatory safety feature, specify the `MaxNumberOfDocuments` you'd like to run this for. When the amount of documents through above\nselection exceeds this number, this service will export NOTHING and return to you an error with the amount of documents it prevented you\nfrom exporting, so you can adjust your selection or expand your max.\n\n:warning: Triggering large amounts of data may impact system performance!\n\n:point_right: The `ID` you are returned can be used in subsequent services `DataLakeBackfillStatus` and `DataLakeBackfillCancel`.\n\nThis service is Customer-only at the EVA routing layer. Customer and New Black BI Kafka sinks consume the same\ntopics, so end-to-end Kafka isolation additionally requires the external sink header filters described in the\nKafka connector README; until those are deployed, a Customer-only run can still reach the BI sink.",
       "usage": {
         "request": true
       },
@@ -427143,6 +427147,39 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.DataLake.DataLakeDestination": {
+      "typename": "DataLakeDestination",
+      "assembly": "EVA.DataLake",
+      "usage": {},
+      "enumIsFlag": true,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "All": {
+          "extends": [
+            "Insights",
+            "InternalCustomer",
+            "Customer"
+          ]
+        },
+        "Customer": {
+          "value": 1,
+          "extends": []
+        },
+        "Insights": {
+          "value": 4,
+          "extends": []
+        },
+        "InternalCustomer": {
+          "value": 2,
+          "extends": []
+        },
+        "None": {
+          "extends": []
+        }
+      }
     },
     "EVA.DataLake.Models.DataLakeAccount": {
       "typename": "DataLakeAccount",
@@ -507752,6 +507789,34 @@
       "arguments": []
     },
     {
+      "name": "ReservationCleanup:QuantityReturnedOutOfRange",
+      "message": "QuantityReturned {1} for OrderLine {0} must be between 0 and the reserved quantity {2}.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "OrderLineID"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "QuantityReturned"
+        },
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "name": "QuantityReserved"
+        }
+      ]
+    },
+    {
       "name": "SecondChangeProductRegistration:ProductMismatch",
       "message": "Product does not match expected product for the given usertask.",
       "module": "EVA.Core",
@@ -508837,6 +508902,51 @@
     {
       "name": "DataLakeBackfill:BackfillTypeOnlyAcceptsIDs",
       "message": "Backfill of type '{0}' only accepts IDs.",
+      "module": "EVA.DataLake",
+      "arguments": [
+        {
+          "type": {
+            "ref": "EVA.DataLake.Backfill.DataLakeBackfillType",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "DataLakeBackfill:NoDestinationsSelected",
+      "message": "Select at least one DataLake destination.",
+      "module": "EVA.DataLake",
+      "arguments": []
+    },
+    {
+      "name": "DataLakeBackfill:UnknownDestination",
+      "message": "The selected DataLake destination '{0}' is not a known destination.",
+      "module": "EVA.DataLake",
+      "arguments": [
+        {
+          "type": {
+            "ref": "EVA.DataLake.DataLakeDestination",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "DataLakeBackfill:DestinationNotEnabled",
+      "message": "The selected DataLake destination '{0}' is not enabled or configured.",
+      "module": "EVA.DataLake",
+      "arguments": [
+        {
+          "type": {
+            "ref": "EVA.DataLake.DataLakeDestination",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "DataLakeBackfill:InsightsNotSupportedForBackfillType",
+      "message": "Insights backfill is not supported for type '{0}'. Only Orders supports Insights.",
       "module": "EVA.DataLake",
       "arguments": [
         {
