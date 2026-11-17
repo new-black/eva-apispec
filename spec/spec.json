@@ -7929,24 +7929,6 @@
       }
     },
     {
-      "name": "CreateWatchtowerCertificate",
-      "assembly": "EVA.Core.LiveGuard",
-      "path": "/message/CreateWatchtowerCertificate",
-      "method": "POST",
-      "requestType": "EVA.Core.LiveGuard.Services.Management.CreateWatchtowerCertificate",
-      "responseType": "EVA.Core.LiveGuard.Services.Management.CreateWatchtowerCertificateResponse",
-      "auth": {
-        "requiredPermissions": [
-          {
-            "types": 2048,
-            "functionality": "LiveGuard",
-            "scope": 0
-          }
-        ],
-        "agentApprovalRequired": true
-      }
-    },
-    {
       "name": "CreateWatchtowerDevice",
       "assembly": "EVA.Core.LiveGuard",
       "path": "/message/CreateWatchtowerDevice",
@@ -7959,24 +7941,6 @@
             "types": 2049,
             "functionality": "Watchtowers",
             "scope": 1
-          }
-        ],
-        "agentApprovalRequired": true
-      }
-    },
-    {
-      "name": "CreateWatchtowerVPNConfiguration",
-      "assembly": "EVA.Core.LiveGuard",
-      "path": "/message/CreateWatchtowerVPNConfiguration",
-      "method": "POST",
-      "requestType": "EVA.Core.LiveGuard.Services.Management.CreateWatchtowerVPNConfiguration",
-      "responseType": "EVA.Core.LiveGuard.Services.Management.CreateWatchtowerVPNConfigurationResponse",
-      "auth": {
-        "requiredPermissions": [
-          {
-            "types": 2048,
-            "functionality": "LiveGuard",
-            "scope": 0
           }
         ],
         "agentApprovalRequired": true
@@ -84545,6 +84509,10 @@
           "value": 5,
           "extends": []
         },
+        "Provisioned": {
+          "value": 7,
+          "extends": []
+        },
         "ReplacementRequired": {
           "value": 2,
           "extends": []
@@ -132203,75 +132171,6 @@
         }
       }
     },
-    "EVA.Core.LiveGuard.Services.Management.CreateWatchtowerCertificate": {
-      "typename": "CreateWatchtowerCertificate",
-      "assembly": "EVA.Core.LiveGuard",
-      "description": "Create a new SSL certificate for a Watchtower device.",
-      "usage": {
-        "request": true
-      },
-      "typeArguments": [],
-      "typeDependencies": [
-        "EVA.Core.RequestMessage`1"
-      ],
-      "extends": {
-        "ref": "EVA.Core.RequestMessage`1",
-        "args": [
-          {
-            "ref": "EVA.Core.LiveGuard.Services.Management.CreateWatchtowerCertificateResponse",
-            "args": [],
-            "nullable": true
-          }
-        ]
-      },
-      "properties": {
-        "CertificateSigningRequest": {
-          "type": {
-            "ref": "string",
-            "args": []
-          },
-          "required": {
-            "current": true
-          },
-          "requiredAllowEmpty": {
-            "current": false
-          },
-          "allowedValues": []
-        }
-      },
-      "enumValues": {}
-    },
-    "EVA.Core.LiveGuard.Services.Management.CreateWatchtowerCertificateResponse": {
-      "typename": "CreateWatchtowerCertificateResponse",
-      "assembly": "EVA.Core.LiveGuard",
-      "usage": {
-        "response": true
-      },
-      "typeArguments": [],
-      "typeDependencies": [
-        "EVA.Core.ResponseMessage"
-      ],
-      "extends": {
-        "ref": "EVA.Core.ResponseMessage",
-        "args": []
-      },
-      "properties": {
-        "Certificate": {
-          "type": {
-            "ref": "string",
-            "args": []
-          },
-          "required": {
-            "current": true
-          },
-          "requiredAllowEmpty": {
-            "current": false
-          },
-          "allowedValues": []
-        }
-      },
-      "enumValues": {}
-    },
     "EVA.Core.LiveGuard.Services.Management.CreateWatchtowerDevice": {
       "typename": "CreateWatchtowerDevice",
       "assembly": "EVA.Core.LiveGuard",
@@ -132326,6 +132225,14 @@
             "isEvaID": true
           },
           "allowedValues": []
+        },
+        "ProvisionOnly": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Pre-board the device: it is attached to the OrganizationUnit but stays inactive, so EVA keeps using the currently onboarded watchtower for IO and CFD activity. Activate it later through SetWatchtowerLifecycleStatus.",
+          "allowedValues": []
         }
       },
       "enumValues": {}
@@ -132362,62 +132269,6 @@
             "name": "Device",
             "supportsCustomID": true,
             "isEvaID": true
-          },
-          "allowedValues": []
-        }
-      },
-      "enumValues": {}
-    },
-    "EVA.Core.LiveGuard.Services.Management.CreateWatchtowerVPNConfiguration": {
-      "typename": "CreateWatchtowerVPNConfiguration",
-      "assembly": "EVA.Core.LiveGuard",
-      "description": "Create a new VPN Configuration for a Watchtower device.",
-      "usage": {
-        "request": true
-      },
-      "typeArguments": [],
-      "typeDependencies": [
-        "EVA.Core.RequestMessage`1"
-      ],
-      "extends": {
-        "ref": "EVA.Core.RequestMessage`1",
-        "args": [
-          {
-            "ref": "EVA.Core.LiveGuard.Services.Management.CreateWatchtowerVPNConfigurationResponse",
-            "args": [],
-            "nullable": true
-          }
-        ]
-      },
-      "properties": {},
-      "enumValues": {}
-    },
-    "EVA.Core.LiveGuard.Services.Management.CreateWatchtowerVPNConfigurationResponse": {
-      "typename": "CreateWatchtowerVPNConfigurationResponse",
-      "assembly": "EVA.Core.LiveGuard",
-      "usage": {
-        "response": true
-      },
-      "typeArguments": [],
-      "typeDependencies": [
-        "EVA.Core.ResponseMessage"
-      ],
-      "extends": {
-        "ref": "EVA.Core.ResponseMessage",
-        "args": []
-      },
-      "properties": {
-        "Config": {
-          "type": {
-            "ref": "string",
-            "args": [],
-            "nullable": true
-          },
-          "required": {
-            "current": false
-          },
-          "requiredAllowEmpty": {
-            "current": false
           },
           "allowedValues": []
         }
@@ -133218,7 +133069,7 @@
     "EVA.Core.LiveGuard.Services.Management.SetWatchtowerLifecycleStatus": {
       "typename": "SetWatchtowerLifecycleStatus",
       "assembly": "EVA.Core.LiveGuard",
-      "description": "Set the lifecycle status of a watchtower device.\n\nCustomers can set: InTransit, ReplacementRequired, Storage, Onboarded.\nOnboarded is also set automatically when a watchtower first comes online, but it can be set manually as well.\nCompromised is terminal - a device in that state cannot be transitioned to another status. It is determined at request time from the JAMF Compromised Epoch attribute (it is not stored on the device).",
+      "description": "Set the lifecycle status of a watchtower device.\n\nCustomers can set: InTransit, ReplacementRequired, Storage, Onboarded.\nOnboarded is also set automatically when a watchtower first comes online, but it can be set manually as well.\nCompromised is terminal - a device in that state cannot be transitioned to another status. It is determined at request time from the JAMF Compromised Epoch attribute (it is not stored on the device).\n\nOnly one onboarded watchtower is allowed per OrganizationUnit. Onboarding a device while another one is already onboarded fails; the currently onboarded device is not deactivated automatically. To swap watchtowers, first move the onboarded device to another status (for example Storage or ReplacementRequired), then onboard the replacement.",
       "usage": {
         "request": true
       },
@@ -502291,60 +502142,6 @@
       ]
     },
     {
-      "name": "LiveGuardCertificate:InvalidConfiguration",
-      "message": "The configuration is invalid.",
-      "module": "EVA.Core.LiveGuard",
-      "arguments": []
-    },
-    {
-      "name": "LiveGuardCertificate:NoValidWatchtower",
-      "message": "No valid Watchtower for this request.",
-      "module": "EVA.Core.LiveGuard",
-      "arguments": []
-    },
-    {
-      "name": "LiveGuardCertificate:CsrInvalid",
-      "message": "CSR could not be parsed.",
-      "module": "EVA.Core.LiveGuard",
-      "arguments": []
-    },
-    {
-      "name": "LiveGuardCertificate:CertificateGenerationFailed",
-      "message": "Failed to generate the certificate.",
-      "module": "EVA.Core.LiveGuard",
-      "arguments": []
-    },
-    {
-      "name": "LiveGuardCertificate:HostnameMismatch",
-      "message": "Hostname for this Watchtower does not match the hostname in the CSR.",
-      "module": "EVA.Core.LiveGuard",
-      "arguments": []
-    },
-    {
-      "name": "LiveGuardVPN:InvalidConfiguration",
-      "message": "The configuration is invalid.",
-      "module": "EVA.Core.LiveGuard",
-      "arguments": []
-    },
-    {
-      "name": "LiveGuardVPN:NoValidWatchtower",
-      "message": "No valid Watchtower for this request.",
-      "module": "EVA.Core.LiveGuard",
-      "arguments": []
-    },
-    {
-      "name": "LiveGuardVPN:ExistsCheckFailed",
-      "message": "Failed to check for existing config.",
-      "module": "EVA.Core.LiveGuard",
-      "arguments": []
-    },
-    {
-      "name": "LiveGuardVPN:CreateFailed",
-      "message": "Failed to create new config.",
-      "module": "EVA.Core.LiveGuard",
-      "arguments": []
-    },
-    {
       "name": "LiveGuardExecuteTask:NoConnection",
       "message": "There is no current connection to the selected device.",
       "module": "EVA.Core.LiveGuard",
@@ -502383,6 +502180,12 @@
     {
       "name": "WatchtowerLifecycle:CompromisedNotFilterable",
       "message": "Compromised is a read-only projection from JAMF and is never stored on the device, so it cannot be used as a list filter. Inspect the device-details endpoint to see whether a watchtower is currently compromised.",
+      "module": "EVA.Core.LiveGuard",
+      "arguments": []
+    },
+    {
+      "name": "WatchtowerLifecycle:OnlyOneOnboardedDeviceAllowed",
+      "message": "Only one onboarded device per OrganizationUnit is allowed.",
       "module": "EVA.Core.LiveGuard",
       "arguments": []
     },
