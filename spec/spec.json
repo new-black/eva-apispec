@@ -144715,6 +144715,86 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Management.BIDashboard.BIDashboardTargetExceptionDto": {
+      "typename": "BIDashboardTargetExceptionDto",
+      "assembly": "EVA.Core.Management",
+      "description": "A target exception: an own target, own special target days and own product targets for one organization unit, or for one organization unit set inside the set of the component. Set exactly one of OrganizationUnitID and OrganizationUnitSetID.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Management.BIDashboard.BIDashboardSpecialTargetDayDto",
+        "EVA.Core.Management.BIDashboard.BIDashboardComponentProductTargetDto"
+      ],
+      "properties": {
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitSetID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "OrganizationUnitSet",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ProductTargets": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.BIDashboard.BIDashboardComponentProductTargetDto",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SpecialTargetDays": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.BIDashboard.BIDashboardSpecialTargetDayDto",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Special target days of the exception. A day replaces the special day of the component on the same date; the special days of the component apply on every other date.",
+          "allowedValues": []
+        },
+        "TargetValue": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The monthly target of the exception. Empty means that the organization unit (or set) has no target.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Management.BIDashboard.FinanceBICreateDashboardComponent": {
       "typename": "FinanceBICreateDashboardComponent",
       "assembly": "EVA.Core.Management",
@@ -144731,7 +144811,8 @@
         "EVA.Core.BIDashboard.Models.BIDashboardComponentOperation",
         "EVA.Core.BIDashboard.BIDashboardConditionGroup",
         "EVA.Core.Management.BIDashboard.BIDashboardComponentProductTargetDto",
-        "EVA.Core.Management.BIDashboard.BIDashboardSpecialTargetDayDto"
+        "EVA.Core.Management.BIDashboard.BIDashboardSpecialTargetDayDto",
+        "EVA.Core.Management.BIDashboard.BIDashboardTargetExceptionDto"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessage`1",
@@ -144882,6 +144963,21 @@
           },
           "allowedValues": []
         },
+        "TargetExceptions": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.BIDashboard.BIDashboardTargetExceptionDto",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "Target exceptions per organization unit or organization unit set. The component must have an organization unit set. At most 1000.",
+          "allowedValues": []
+        },
         "TargetPeriod": {
           "type": {
             "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentTargetPeriod",
@@ -145012,7 +145108,8 @@
         "EVA.Core.BIDashboard.Models.BIDashboardComponentOperation",
         "EVA.Core.BIDashboard.BIDashboardConditionGroup",
         "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse+ProductTargetDto",
-        "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse+SpecialTargetDayDto"
+        "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse+SpecialTargetDayDto",
+        "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse+TargetExceptionDto"
       ],
       "extends": {
         "ref": "EVA.Core.ResponseMessage",
@@ -145166,6 +145263,20 @@
           },
           "allowedValues": []
         },
+        "TargetExceptions": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse+TargetExceptionDto",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
         "TargetPeriod": {
           "type": {
             "ref": "EVA.Core.BIDashboard.Models.BIDashboardComponentTargetPeriod",
@@ -145259,6 +145370,185 @@
           },
           "datamodel": {
             "name": "BIDashboardSpecialTargetDay",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "TargetValue": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse"
+    },
+    "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse+TargetExceptionDto": {
+      "typename": "TargetExceptionDto",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse+TargetExceptionSpecialTargetDayDto",
+        "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse+TargetExceptionProductTargetDto"
+      ],
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "BIDashboardComponentTargetException",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "OrganizationUnit",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "OrganizationUnitSetID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "OrganizationUnitSet",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ProductTargets": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse+TargetExceptionProductTargetDto",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SpecialTargetDays": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse+TargetExceptionSpecialTargetDayDto",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "TargetValue": {
+          "type": {
+            "ref": "float128",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse"
+    },
+    "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse+TargetExceptionProductTargetDto": {
+      "typename": "TargetExceptionProductTargetDto",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "BIDashboardTargetExceptionProductTarget",
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "ProductID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "Product",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "TargetValue": {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse"
+    },
+    "EVA.Core.Management.BIDashboard.FinanceBIGetDashboardComponentByIDResponse+TargetExceptionSpecialTargetDayDto": {
+      "typename": "TargetExceptionSpecialTargetDayDto",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Date": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Description": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "datamodel": {
+            "name": "BIDashboardTargetExceptionSpecialDay",
             "isEvaID": true
           },
           "allowedValues": []
@@ -145653,7 +145943,8 @@
         "EVA.Core.BIDashboard.Models.BIDashboardComponentOperation",
         "EVA.Core.BIDashboard.BIDashboardConditionGroup",
         "EVA.Core.Management.BIDashboard.BIDashboardComponentProductTargetDto",
-        "EVA.Core.Management.BIDashboard.BIDashboardSpecialTargetDayDto"
+        "EVA.Core.Management.BIDashboard.BIDashboardSpecialTargetDayDto",
+        "EVA.Core.Management.BIDashboard.BIDashboardTargetExceptionDto"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessageWithEmptyResponse",
@@ -145800,6 +146091,22 @@
             "supportsCustomID": true,
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "TargetExceptions": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.BIDashboard.BIDashboardTargetExceptionDto",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "When provided, replaces the full set of target exceptions (an empty list removes them all). The component must have an organization unit set. At most 1000.",
+          "skippable": true,
           "allowedValues": []
         },
         "TargetPeriod": {
@@ -496501,6 +496808,54 @@
     {
       "name": "BIDashboard:SubscriptionIDNotAllowedForComponentType",
       "message": "A subscription can only be set on the ConsumersOnboarded component type.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "BIDashboard:TargetExceptionsRequireOrganizationUnitSet",
+      "message": "Target exceptions can only be configured on a component that is scoped to an organization unit set.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "BIDashboard:TooManyTargetExceptions",
+      "message": "A component can have at most 1000 target exceptions per request.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "BIDashboard:TargetExceptionNeedsOneOrganizationUnitOrSet",
+      "message": "A target exception must have either an organization unit or an organization unit set, not both and not neither.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "BIDashboard:TargetExceptionOrganizationUnitNotFound",
+      "message": "The organization unit of a target exception does not exist.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "BIDashboard:TargetExceptionOrganizationUnitNotInComponentSet",
+      "message": "The organization unit of a target exception is not part of the organization unit set of the component.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "BIDashboard:TargetExceptionOrganizationUnitSetNotFound",
+      "message": "The organization unit set of a target exception does not exist or has no organization units.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "BIDashboard:TargetExceptionOrganizationUnitSetNotInComponentSet",
+      "message": "The organization unit set of a target exception contains organization units that are not part of the organization unit set of the component.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "BIDashboard:DuplicateTargetException",
+      "message": "The same organization unit or organization unit set may not have more than one target exception.",
       "module": "EVA.Core",
       "arguments": []
     },
