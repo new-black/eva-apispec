@@ -8495,6 +8495,60 @@
       }
     },
     {
+      "name": "DeactivateUsers",
+      "assembly": "EVA.Core",
+      "path": "/message/DeactivateUsers",
+      "method": "POST",
+      "requestType": "EVA.Core.Users.DeactivateUsers",
+      "responseType": "EVA.Core.Users.DeactivateUsersResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Employees",
+            "scope": 31
+          }
+        ],
+        "agentApprovalRequired": true
+      }
+    },
+    {
+      "name": "DeactivateUsers_Async",
+      "assembly": "EVA.Core",
+      "path": "/async-message/DeactivateUsers",
+      "method": "POST",
+      "requestType": "EVA.Core.Users.DeactivateUsers_Async",
+      "responseType": "EVA.Core.Users.DeactivateUsers_AsyncResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Employees",
+            "scope": 31
+          }
+        ],
+        "agentApprovalRequired": true
+      }
+    },
+    {
+      "name": "DeactivateUsers_AsyncResult",
+      "assembly": "EVA.Core",
+      "path": "/async-result/DeactivateUsers",
+      "method": "POST",
+      "requestType": "EVA.Core.Users.DeactivateUsers_AsyncResult",
+      "responseType": "EVA.Core.Users.DeactivateUsersResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Employees",
+            "scope": 31
+          }
+        ],
+        "agentApprovalRequired": true
+      }
+    },
+    {
       "name": "DeactivateUserTask",
       "assembly": "EVA.Core",
       "path": "/message/DeactivateUserTask",
@@ -33528,7 +33582,43 @@
       "path": "/message/ReactivateUser",
       "method": "POST",
       "requestType": "EVA.Core.Users.ReactivateUser",
-      "responseType": "EVA.Core.EmptyResponseMessage",
+      "responseType": "EVA.Core.Users.ReactivateUserResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Employees",
+            "scope": 31
+          }
+        ],
+        "agentApprovalRequired": true
+      }
+    },
+    {
+      "name": "ReactivateUser_Async",
+      "assembly": "EVA.Core",
+      "path": "/async-message/ReactivateUser",
+      "method": "POST",
+      "requestType": "EVA.Core.Users.ReactivateUser_Async",
+      "responseType": "EVA.Core.Users.ReactivateUser_AsyncResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "Employees",
+            "scope": 31
+          }
+        ],
+        "agentApprovalRequired": true
+      }
+    },
+    {
+      "name": "ReactivateUser_AsyncResult",
+      "assembly": "EVA.Core",
+      "path": "/async-result/ReactivateUser",
+      "method": "POST",
+      "requestType": "EVA.Core.Users.ReactivateUser_AsyncResult",
+      "responseType": "EVA.Core.Users.ReactivateUserResponse",
       "auth": {
         "requiredPermissions": [
           {
@@ -404363,6 +404453,137 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Users.DeactivateUsers": {
+      "typename": "DeactivateUsers",
+      "assembly": "EVA.Core",
+      "description": "Deactivates multiple employees by ID. A deactivated employee cannot log in and all sessions of the employee end.\nThe system records one Event Ledger entry for each deactivated employee.\nThis service accepts 1000 ID's per request. Use the async variant for large lists.\nThe response contains the ID's in FailedUserIDs of the users that were not deactivated:\nthe account of the caller, users that are not visible to the caller, API users, users with a New Black or LiveGuard role and non-standard accounts.\nAn employee that is already deactivated is not changed.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Users.DeactivateUsersResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "IDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ]
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.DeactivateUsers_Async": {
+      "typename": "DeactivateUsers_Async",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.Users.DeactivateUsers",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Users.DeactivateUsers_AsyncResponse": {
+      "typename": "DeactivateUsers_AsyncResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.AsyncRequestHandling.AsyncRequestResponse",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Users.DeactivateUsers_AsyncResult": {
+      "typename": "DeactivateUsers_AsyncResult",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.AsyncRequestHandling.AsyncRequestResultRequest",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Users.DeactivateUsersResponse": {
+      "typename": "DeactivateUsersResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "FailedUserIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Users.DeleteApiKey": {
       "typename": "DeleteApiKey",
       "assembly": "EVA.Core",
@@ -412719,23 +412940,131 @@
     "EVA.Core.Users.ReactivateUser": {
       "typename": "ReactivateUser",
       "assembly": "EVA.Core",
-      "description": "Reactivates an User that was deactivated due to no login",
+      "description": "Reactivates deactivated users, for example users that were deactivated manually or due to no login.\nUse ID for one user. An error is returned when that user cannot be reactivated.\nUse IDs for multiple users. This accepts 1000 ID's per request. Use the async variant for large lists.\nThe response contains the ID's in FailedUserIDs of the users that could not be reactivated, for example because they are not visible to the caller.\nA user that is not deactivated is not changed.",
       "usage": {
         "request": true
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessageWithEmptyResponse"
+        "EVA.Core.RequestMessage`1"
       ],
       "extends": {
-        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
-        "args": []
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Users.ReactivateUserResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
       },
       "properties": {
         "ID": {
           "type": {
             "ref": "id",
-            "args": []
+            "args": [],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "IDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
+          },
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Users.ReactivateUser_Async": {
+      "typename": "ReactivateUser_Async",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.Users.ReactivateUser",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Users.ReactivateUser_AsyncResponse": {
+      "typename": "ReactivateUser_AsyncResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.AsyncRequestHandling.AsyncRequestResponse",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Users.ReactivateUser_AsyncResult": {
+      "typename": "ReactivateUser_AsyncResult",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "extends": {
+        "ref": "EVA.Core.AsyncRequestHandling.AsyncRequestResultRequest",
+        "args": []
+      },
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Users.ReactivateUserResponse": {
+      "typename": "ReactivateUserResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "FailedUserIDs": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "id",
+                "args": []
+              }
+            ],
+            "nullable": true
           },
           "datamodel": {
             "name": "User",
@@ -413349,6 +413678,24 @@
             "ref": "bool",
             "args": []
           },
+          "allowedValues": []
+        },
+        "IsDeactivated": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "`true` returns only deactivated users, `false` returns only users that are not deactivated. Deactivation applies to employees.",
+          "allowedValues": []
+        },
+        "LastLoginBefore": {
+          "type": {
+            "ref": "date",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Only return employees whose last successful login is before this date. An employee that never logged in counts with the creation time. Set `IncludeEmployees` to `true`. API users, incognito users and non-standard accounts are not returned. This filter reads the database. The service returns an error when more than 10000 employees match. This filter needs the `Employees` functionality with the `Manage` scope.",
           "allowedValues": []
         },
         "LoyaltyProgramID": {
@@ -487937,6 +488284,32 @@
       ]
     },
     {
+      "name": "Users:DeactivateUsersLimitExceeded",
+      "message": "Deactivate users limit of {0} exceeded.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users:ReactivateUsersLimitExceeded",
+      "message": "Reactivate users limit of {0} exceeded.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
       "name": "Users:DuplicateCustomFields",
       "message": "Duplicate custom fields are invalid.",
       "module": "EVA.Core",
@@ -502649,6 +503022,19 @@
       "message": "One or more field names in `IncludedFields` are not valid. Use `GetSearchUserFields` to get the list of available fields.",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "SearchUsers:TooManyEmployeesForLastLoginBefore",
+      "message": "More than {0} employees match `LastLoginBefore`. Use a date that is further in the past or add more filters.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "int32",
+            "args": []
+          }
+        }
+      ]
     },
     {
       "name": "VisibilityGroups:EmailAddressAlreadyInUse",
