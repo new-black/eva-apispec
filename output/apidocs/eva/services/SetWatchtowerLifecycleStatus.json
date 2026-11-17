@@ -2,7 +2,7 @@
   "name": "SetWatchtowerLifecycleStatus",
   "method": "POST",
   "path": "/message/SetWatchtowerLifecycleStatus",
-  "description": "Set the lifecycle status of a watchtower device.\n\nCustomers can set: InTransit, ReplacementRequired, Storage, Onboarded.\nOnboarded is also set automatically when a watchtower first comes online, but it can be set manually as well.\nCompromised is terminal - a device in that state cannot be transitioned to another status. It is determined at request time from the JAMF Compromised Epoch attribute (it is not stored on the device).",
+  "description": "Set the lifecycle status of a watchtower device.\n\nCustomers can set: InTransit, ReplacementRequired, Storage, Onboarded.\nOnboarded is also set automatically when a watchtower first comes online, but it can be set manually as well.\nCompromised is terminal - a device in that state cannot be transitioned to another status. It is determined at request time from the JAMF Compromised Epoch attribute (it is not stored on the device).\n\nOnly one onboarded watchtower is allowed per OrganizationUnit. Onboarding a device while another one is already onboarded fails; the currently onboarded device is not deactivated automatically. To swap watchtowers, first move the onboarded device to another status (for example Storage or ReplacementRequired), then onboard the replacement.",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060 with functionality \u0060Watchtowers:Edit\u0060",
   "headers": [
     {
@@ -77,7 +77,7 @@
       {
         "name": "Status",
         "deprecation_notice": null,
-        "description": "Possible values:\n\n* \u00601\u0060 - InTransit\n* \u00602\u0060 - ReplacementRequired\n* \u00603\u0060 - Retired\n* \u00604\u0060 - Storage\n* \u00605\u0060 - Onboarded\n* \u00606\u0060 - Compromised",
+        "description": "Possible values:\n\n* \u00601\u0060 - InTransit\n* \u00602\u0060 - ReplacementRequired\n* \u00603\u0060 - Retired\n* \u00604\u0060 - Storage\n* \u00605\u0060 - Onboarded\n* \u00606\u0060 - Compromised\n* \u00607\u0060 - Provisioned",
         "type": "integer",
         "required": false,
         "properties_id": null,
