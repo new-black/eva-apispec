@@ -184133,7 +184133,7 @@
             "ref": "bool",
             "args": []
           },
-          "description": "When set, every listed user is recalculated as if its scheduled review date arrived now, even when not due;\nthe point balance, tier and benefits will be recomputed and reloaded, re-sending assignment mail and regenerating coupons.\nDue dates are not advanced unless the user is genuinely due. When not set, users that are not due are skipped and\nreported as succeeded. Defaults to false.",
+          "description": "When set, every listed user is recalculated as if its scheduled review date arrived now, even when not due;\nthe point balance, tier and benefits will be recomputed and reloaded, re-sending assignment mail and regenerating coupons.\nDue dates are not advanced unless the user is genuinely due. When not set, users that are not due are skipped and\nreported as succeeded. Defaults to false.\nWhen the tier policy resets points on recalculation (ResetPointsOnRecalculation), a forced run also resets the point\nbalance, so it is not idempotent: a second forced run elects the tier on the reset balance. When resubmitting a batch,\nonly include the users that failed.",
           "allowedValues": []
         },
         "LoyaltyProgramID": {
@@ -184268,7 +184268,7 @@
             ],
             "nullable": true
           },
-          "description": "The users whose loyalty subscription was recalculated.",
+          "description": "The users that were processed without error, including users skipped because they are not due.",
           "datamodel": {
             "name": "User",
             "supportsCustomID": true,
