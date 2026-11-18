@@ -49,7 +49,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Result\u0022: {\n    \u0022Authorization\u0022: {\n      \u0022BasicPassword\u0022: \u0022string\u0022,\n      \u0022BasicUsername\u0022: \u0022string\u0022,\n      \u0022ClientCertificate\u0022: {\n        \u0022Certificate\u0022: \u0022base64 encoded binary data\u0022,\n        \u0022Issuer\u0022: \u0022string\u0022,\n        \u0022NotAfter\u0022: \u00222025-01-01\u0022,\n        \u0022NotBefore\u0022: \u00222025-01-01\u0022,\n        \u0022Password\u0022: \u0022string\u0022,\n        \u0022Subject\u0022: \u0022string\u0022,\n        \u0022Thumbprint\u0022: \u0022string\u0022\n      },\n      \u0022Headers\u0022: {\n        \u0022key\u0022: \u0022string\u0022\n      },\n      \u0022StaticBearerToken\u0022: \u0022string\u0022,\n      \u0022StaticUnschemedToken\u0022: \u0022string\u0022\n    },\n    \u0022BackendID\u0022: \u0022string\u0022,\n    \u0022Endpoint\u0022: \u0022string\u0022,\n    \u0022ErrorReason\u0022: \u0022string\u0022,\n    \u0022ID\u0022: 123,\n    \u0022IgnoreNullValues\u0022: true,\n    \u0022LastAccessTime\u0022: \u00222025-01-01\u0022,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022SecretKey1\u0022: \u0022string\u0022,\n    \u0022SecretKey2\u0022: \u0022string\u0022,\n    \u0022Status\u0022: 2,\n    \u0022TimeoutInSeconds\u0022: 123,\n    \u0022UseStringIDs\u0022: true\n  }\n}"
+      "sample": "{\n  \u0022Result\u0022: {\n    \u0022Authorization\u0022: {\n      \u0022BasicPassword\u0022: \u0022string\u0022,\n      \u0022BasicUsername\u0022: \u0022string\u0022,\n      \u0022ClientCertificate\u0022: {\n        \u0022Certificate\u0022: \u0022base64 encoded binary data\u0022,\n        \u0022Issuer\u0022: \u0022string\u0022,\n        \u0022NotAfter\u0022: \u00222025-01-01\u0022,\n        \u0022NotBefore\u0022: \u00222025-01-01\u0022,\n        \u0022Password\u0022: \u0022string\u0022,\n        \u0022Subject\u0022: \u0022string\u0022,\n        \u0022Thumbprint\u0022: \u0022string\u0022\n      },\n      \u0022Headers\u0022: {\n        \u0022key\u0022: \u0022string\u0022\n      },\n      \u0022SshKey\u0022: {\n        \u0022Bits\u0022: 123,\n        \u0022Fingerprint\u0022: \u0022string\u0022,\n        \u0022KeyType\u0022: \u0022string\u0022\n      },\n      \u0022StaticBearerToken\u0022: \u0022string\u0022,\n      \u0022StaticUnschemedToken\u0022: \u0022string\u0022\n    },\n    \u0022BackendID\u0022: \u0022string\u0022,\n    \u0022Endpoint\u0022: \u0022string\u0022,\n    \u0022ErrorReason\u0022: \u0022string\u0022,\n    \u0022HostKeys\u0022: [\n      {\n        \u0022AddedByID\u0022: 123,\n        \u0022AddedTime\u0022: \u00222025-01-01\u0022,\n        \u0022Comment\u0022: \u0022string\u0022,\n        \u0022Fingerprint\u0022: \u0022string\u0022\n      }\n    ],\n    \u0022ID\u0022: 123,\n    \u0022IgnoreNullValues\u0022: true,\n    \u0022LastAccessTime\u0022: \u00222025-01-01\u0022,\n    \u0022Name\u0022: \u0022string\u0022,\n    \u0022SecretKey1\u0022: \u0022string\u0022,\n    \u0022SecretKey2\u0022: \u0022string\u0022,\n    \u0022Status\u0022: 2,\n    \u0022TimeoutInSeconds\u0022: 123,\n    \u0022Type\u0022: 1,\n    \u0022UseStringIDs\u0022: true\n  }\n}"
     },
     {
       "name": "400",
@@ -216,6 +216,35 @@
         "one_of": null
       }
     ],
+    "I": [
+      {
+        "name": "Bits",
+        "deprecation_notice": null,
+        "description": "The size in bits of the stored SSH key, when the key type has one.",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Fingerprint",
+        "deprecation_notice": null,
+        "description": "SHA256 fingerprint of the public key that belongs to the stored SSH key, in the form \u0060SHA256:\u003Cbase64\u003E\u0060.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "KeyType",
+        "deprecation_notice": null,
+        "description": "The type of the stored SSH key, for example \u0060ssh-ed25519\u0060 or \u0060ssh-rsa\u0060.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
     "G": [
       {
         "name": "BasicPassword",
@@ -254,6 +283,15 @@
         "one_of": null
       },
       {
+        "name": "SshKey",
+        "deprecation_notice": null,
+        "description": "The SSH key of an \u0060Sftp\u0060 endpoint. Only metadata about the key is returned, never the key or its passphrase.",
+        "type": "object | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      },
+      {
         "name": "StaticBearerToken",
         "deprecation_notice": null,
         "description": "This will result in an authorization header that looks like: \u0060Authorization: Bearer TOKEN\u0060",
@@ -268,6 +306,44 @@
         "description": "This will result in an authorization header that looks like: \u0060Authorization: TOKEN\u0060. Use this only when the other options are not sufficient.",
         "type": "string | null",
         "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "J": [
+      {
+        "name": "AddedByID",
+        "deprecation_notice": null,
+        "description": "The user that pinned this host key.\n\nThis is the ID of a \u0060User\u0060",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "AddedTime",
+        "deprecation_notice": null,
+        "description": "The time this host key was pinned.",
+        "type": "datetime",
+        "required": true,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Comment",
+        "deprecation_notice": null,
+        "description": "A free-text comment, for example how the fingerprint was verified.",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Fingerprint",
+        "deprecation_notice": null,
+        "description": "The SHA256 fingerprint of the host key, in the form \u0060SHA256:\u003Cbase64\u003E\u0060.",
+        "type": "string",
+        "required": true,
         "properties_id": null,
         "one_of": null
       }
@@ -294,7 +370,7 @@
       {
         "name": "Endpoint",
         "deprecation_notice": null,
-        "description": "",
+        "description": "A valid HTTPS endpoint for \u0060Http\u0060, or \u0060sftp://host[:port]\u0060 for \u0060Sftp\u0060.",
         "type": "string",
         "required": true,
         "properties_id": null,
@@ -307,6 +383,15 @@
         "type": "string | null",
         "required": false,
         "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "HostKeys",
+        "deprecation_notice": null,
+        "description": "The pinned SSH host keys of an \u0060Sftp\u0060 endpoint. A connection is only made when the host presents one of these keys.",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "J",
         "one_of": null
       },
       {
@@ -375,9 +460,18 @@
       {
         "name": "TimeoutInSeconds",
         "deprecation_notice": null,
-        "description": "",
+        "description": "Timeout after which requests are cancelled. Defaults to 5 seconds for an \u0060Http\u0060 endpoint. For an \u0060Sftp\u0060 endpoint it is not set by default and the timeout of the integration that uses the endpoint applies; a value above 0 replaces that timeout for every operation (for example the 15 minutes that the StepXml integration allows for reading and writing), up to a maximum of 3600 seconds. Not recommended to change.",
         "type": "integer | null",
         "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "The type of the endpoint configuration. It cannot be changed after creation.\nPossible values:\n\n* \u00601\u0060 - Http\n* \u00602\u0060 - Sftp",
+        "type": "integer",
+        "required": true,
         "properties_id": null,
         "one_of": null
       },
