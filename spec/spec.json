@@ -79704,6 +79704,42 @@
         "EVA.Core.DataModels.InstallmentData"
       ],
       "properties": {
+        "AllowAnonymousForPayments": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Allows anonymous users to pay with this custom payment type. When not set, they can't.",
+          "allowedValues": []
+        },
+        "AllowAnonymousForRefunds": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Allows anonymous users to refund to this custom payment type. When not set, they can.",
+          "allowedValues": []
+        },
+        "AllowCustomersForPayments": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Allows customers to pay with this custom payment type. When not set, they can't.",
+          "allowedValues": []
+        },
+        "AllowCustomersForRefunds": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Allows customers to refund to this custom payment type. When not set, they can.",
+          "allowedValues": []
+        },
         "BlockOverPayments": {
           "type": {
             "ref": "bool",
@@ -214767,6 +214803,46 @@
         "EVA.Core.Management.PaymentMethods.UpdatePaymentType+InstallmentDataMaybe"
       ],
       "properties": {
+        "AllowAnonymousForPayments": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Allows anonymous users to pay with this custom payment type. When not set, they can't.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "AllowAnonymousForRefunds": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Allows anonymous users to refund to this custom payment type. When not set, they can.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "AllowCustomersForPayments": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Allows customers to pay with this custom payment type. When not set, they can't.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "AllowCustomersForRefunds": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Allows customers to refund to this custom payment type. When not set, they can.",
+          "skippable": true,
+          "allowedValues": []
+        },
         "BlockOverPayments": {
           "type": {
             "ref": "bool",
@@ -336091,6 +336167,7 @@
         "EVA.Core.Security.Recommendations.Sources.ClientVersionSecurityRecommendationSource+ClientVersionSecurityRecommendationData",
         "EVA.Core.Security.Recommendations.Sources.EntityViewTrackerBypassSecurityRecommendationSource+EntityViewTrackerBypassSecurityRecommendationData",
         "EVA.Core.Security.Recommendations.Sources.LoginSecurityRecommendationSource+LoginSecurityRecommendationData",
+        "EVA.Core.Security.Recommendations.Sources.PaymentTypeSecurityRecommendationSource+PaymentTypeSecurityRecommendationData",
         "EVA.Core.Security.Recommendations.Sources.RoleSecurityRecommendationSource+RolesSecurityRecommendationData",
         "EVA.Core.Security.Recommendations.Sources.SettingSecurityRecommendationSource+SettingSecurityRecommendationData",
         "EVA.Core.Security.Recommendations.Sources.UserSecurityRecommendationSource+UserSecurityRecommendationData"
@@ -336130,6 +336207,11 @@
               },
               {
                 "ref": "EVA.Core.Security.Recommendations.Sources.LoginSecurityRecommendationSource+LoginSecurityRecommendationData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Security.Recommendations.Sources.PaymentTypeSecurityRecommendationSource+PaymentTypeSecurityRecommendationData",
                 "args": [],
                 "nullable": true
               },
@@ -336509,6 +336591,85 @@
       },
       "enumValues": {},
       "parent": "EVA.Core.Security.Recommendations.Sources.LoginSecurityRecommendationSource"
+    },
+    "EVA.Core.Security.Recommendations.Sources.PaymentTypeSecurityRecommendationSource": {
+      "typename": "PaymentTypeSecurityRecommendationSource",
+      "assembly": "EVA.Core",
+      "usage": {},
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.NameValue"
+      ],
+      "properties": {
+        "Name": {
+          "type": {
+            "ref": "EVA.Core.NameValue",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Security.Recommendations.Sources.PaymentTypeSecurityRecommendationSource+PaymentTypeSecurityRecommendationData": {
+      "typename": "PaymentTypeSecurityRecommendationData",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "AllowAnonymousForPayments": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "AllowCustomersForPayments": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "Code": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ID": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "PaymentMethodCode": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {},
+      "parent": "EVA.Core.Security.Recommendations.Sources.PaymentTypeSecurityRecommendationSource"
     },
     "EVA.Core.Security.Recommendations.Sources.RoleSecurityRecommendationSource": {
       "typename": "RoleSecurityRecommendationSource",
