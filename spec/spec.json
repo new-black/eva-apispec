@@ -12792,6 +12792,24 @@
       }
     },
     {
+      "name": "DiscoverSftpHostKeys",
+      "assembly": "EVA.Core.Management",
+      "path": "/message/DiscoverSftpHostKeys",
+      "method": "POST",
+      "requestType": "EVA.Core.Management.EndpointConfigurations.DiscoverSftpHostKeys",
+      "responseType": "EVA.Core.Management.EndpointConfigurations.DiscoverSftpHostKeysResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "EndpointConfigurations",
+            "scope": 2
+          }
+        ],
+        "agentApprovalRequired": true
+      }
+    },
+    {
       "name": "DismissOrder",
       "assembly": "EVA.Core",
       "path": "/message/DismissOrder",
@@ -73797,6 +73815,10 @@
           "value": 13,
           "extends": []
         },
+        "SftpEndpointConfiguration": {
+          "value": 17,
+          "extends": []
+        },
         "StockLabel": {
           "value": 9,
           "extends": []
@@ -76679,6 +76701,28 @@
         },
         "Error": {
           "value": 3,
+          "extends": []
+        }
+      }
+    },
+    "EVA.Core.DataModels.EndpointConfigurationType": {
+      "typename": "EndpointConfigurationType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Http": {
+          "value": 1,
+          "extends": []
+        },
+        "Sftp": {
+          "value": 2,
           "extends": []
         }
       }
@@ -176467,7 +176511,9 @@
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
         "EVA.Core.DataModels.EndpointConfigurationStatus",
-        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationAuthorizationUpdateModel"
+        "EVA.Core.DataModels.EndpointConfigurationType",
+        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationAuthorizationUpdateModel",
+        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationHostKeyInput"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessage`1",
@@ -176486,7 +176532,7 @@
             "args": [],
             "nullable": true
           },
-          "description": "Authorization configuration used when calling this endpoint.",
+          "description": "Authorization configuration used when calling this endpoint. An `Sftp` endpoint requires `BasicUsername` and a `BasicPassword` and/or an `SshKey`.",
           "allowedValues": []
         },
         "BackendID": {
@@ -176503,13 +176549,28 @@
             "ref": "string",
             "args": []
           },
-          "description": "The endpoint to send the events to. This must be a valid HTTPS endpoint.",
+          "description": "The endpoint to send the events to. A valid HTTPS endpoint for `Http`, or `sftp://host[:port]` for `Sftp`.",
           "required": {
             "current": true
           },
           "requiredAllowEmpty": {
             "current": false
           },
+          "allowedValues": []
+        },
+        "HostKeys": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationHostKeyInput",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The SSH host keys to pin on an `Sftp` endpoint. An `Sftp` endpoint can only be enabled when it has at least one. At most 20.",
           "allowedValues": []
         },
         "IgnoreNullValues": {
@@ -176549,7 +176610,16 @@
             "args": [],
             "nullable": true
           },
-          "description": "Timeout after which requests are cancelled. Defaults to 5 seconds. Not recommended to change.",
+          "description": "Timeout after which requests are cancelled. Defaults to 5 seconds for an `Http` endpoint. For an `Sftp` endpoint it is not set by default and the timeout of the integration that uses the endpoint applies; a value above 0 replaces that timeout for every operation (for example the 15 minutes that the StepXml integration allows for reading and writing), up to a maximum of 3600 seconds. Not recommended to change.",
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.EndpointConfigurationType",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The type of the endpoint configuration. Defaults to `Http`. It cannot be changed after creation.",
           "allowedValues": []
         },
         "UseStringIDs": {
@@ -176658,6 +176728,179 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Management.EndpointConfigurations.DiscoveredSftpHostKey": {
+      "typename": "DiscoveredSftpHostKey",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Algorithm": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The host key algorithm, for example `ssh-ed25519`. The RSA algorithms present the same key: it is listed once, under the strongest name.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "Fingerprint": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The SHA256 fingerprint of the host key, as `SHA256:...`. This is the value to pin.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "IsPinned": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Whether this host key is already pinned on the endpoint configuration.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.EndpointConfigurations.DiscoverSftpHostKeys": {
+      "typename": "DiscoverSftpHostKeys",
+      "assembly": "EVA.Core.Management",
+      "description": "Connects to an `Sftp` `EndpointConfiguration` and returns the host keys the server presents, without sending any credentials.\nThe endpoint configuration can have any status, and does not need pinned host keys.\n\n- Verify the fingerprints with the partner out of band, then pin them with `UpdateEndpointConfiguration`.\n- This service does not change anything: it never pins a key.\n- `Keys` is empty, with an `ErrorMessage`, when no host key could be retrieved.\n- One call opens several connections to the server (usually 5, at most 7), each closed before authentication, and can take up to 30 seconds. Do not call it in a loop.\n- Only the keys presented on these connections are listed. A load-balanced pool can present different keys per node, so pin the key of every node.\n- A server that only offers algorithms this service cannot negotiate, for example `ssh-dss` or certificate-only host keys, cannot be discovered. Pin the fingerprint the partner gives you instead (`ssh-keygen -lf <public key file> -E sha256`): the connection check accepts it as long as the key the server presents matches.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Management.EndpointConfigurations.DiscoverSftpHostKeysResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "ID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "datamodel": {
+            "name": "EndpointConfiguration",
+            "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.EndpointConfigurations.DiscoverSftpHostKeysResponse": {
+      "typename": "DiscoverSftpHostKeysResponse",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Management.EndpointConfigurations.DiscoveredSftpHostKey"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "ErrorMessage": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Set when no host key could be retrieved. It deliberately does not say why: the server may be unreachable, or may only offer host key algorithms that cannot be discovered. Pin the fingerprint from the partner instead.",
+          "allowedValues": []
+        },
+        "Host": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The host of the endpoint configuration.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "Keys": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.EndpointConfigurations.DiscoveredSftpHostKey",
+                "args": [],
+                "nullable": true
+              }
+            ]
+          },
+          "description": "The distinct host keys the server presents.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "Port": {
+          "type": {
+            "ref": "int32",
+            "args": []
+          },
+          "description": "The port of the endpoint configuration.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationAuthorizationModel": {
       "typename": "EndpointConfigurationAuthorizationModel",
       "assembly": "EVA.Core.Management",
@@ -176666,7 +176909,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationCertificateModel"
+        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationCertificateModel",
+        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationSshKeyModel"
       ],
       "properties": {
         "BasicPassword": {
@@ -176716,6 +176960,15 @@
           "description": "Additional headers sent with every request to this endpoint. Header names starting with `X-EVA-`, `Content-*` headers, and `Authorization` (when another authorization scheme is configured) are reserved and will be rejected.",
           "allowedValues": []
         },
+        "SshKey": {
+          "type": {
+            "ref": "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationSshKeyModel",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The SSH key of an `Sftp` endpoint. Only metadata about the key is returned, never the key or its passphrase.",
+          "allowedValues": []
+        },
         "StaticBearerToken": {
           "type": {
             "ref": "string",
@@ -176745,7 +176998,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationCertificateUpdateModel"
+        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationCertificateUpdateModel",
+        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationSshKeyUpdateModel"
       ],
       "properties": {
         "BasicPassword": {
@@ -176796,6 +177050,16 @@
             "nullable": true
           },
           "description": "Additional headers sent with every request to this endpoint. Header names starting with `X-EVA-`, `Content-*` headers, and `Authorization` (when another authorization scheme is configured) are reserved and will be rejected.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "SshKey": {
+          "type": {
+            "ref": "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationSshKeyUpdateModel",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The SSH private key for an `Sftp` endpoint, as an alternative or addition to `BasicPassword`. Only supported on `Sftp` endpoints.",
           "skippable": true,
           "allowedValues": []
         },
@@ -176944,6 +177208,108 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationHostKeyInput": {
+      "typename": "EndpointConfigurationHostKeyInput",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Comment": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "A free-text comment, for example how the fingerprint was verified. When an already pinned host key is supplied again without a comment, its comment is kept.",
+          "stringLengthConstraint": {
+            "max": 500
+          },
+          "allowedValues": []
+        },
+        "Fingerprint": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The SHA256 fingerprint of the host key, as shown by `ssh-keygen -lf`: `SHA256:<base64>`. The `SHA256:` prefix is optional.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationHostKeyModel": {
+      "typename": "EndpointConfigurationHostKeyModel",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "AddedByID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The user that pinned this host key.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "AddedTime": {
+          "type": {
+            "ref": "date",
+            "args": []
+          },
+          "description": "The time this host key was pinned.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        },
+        "Comment": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "A free-text comment, for example how the fingerprint was verified.",
+          "allowedValues": []
+        },
+        "Fingerprint": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The SHA256 fingerprint of the host key, in the form `SHA256:<base64>`.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationModel": {
       "typename": "EndpointConfigurationModel",
       "assembly": "EVA.Core.Management",
@@ -176953,6 +177319,8 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.DataModels.EndpointConfigurationStatus",
+        "EVA.Core.DataModels.EndpointConfigurationType",
+        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationHostKeyModel",
         "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationAuthorizationModel"
       ],
       "properties": {
@@ -176977,6 +177345,7 @@
             "ref": "string",
             "args": []
           },
+          "description": "A valid HTTPS endpoint for `Http`, or `sftp://host[:port]` for `Sftp`.",
           "required": {
             "current": true
           },
@@ -176991,6 +177360,21 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "HostKeys": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationHostKeyModel",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The pinned SSH host keys of an `Sftp` endpoint. A connection is only made when the host presents one of these keys.",
           "allowedValues": []
         },
         "ID": {
@@ -177084,12 +177468,103 @@
             "args": [],
             "nullable": true
           },
+          "description": "Timeout after which requests are cancelled. Defaults to 5 seconds for an `Http` endpoint. For an `Sftp` endpoint it is not set by default and the timeout of the integration that uses the endpoint applies; a value above 0 replaces that timeout for every operation (for example the 15 minutes that the StepXml integration allows for reading and writing), up to a maximum of 3600 seconds. Not recommended to change.",
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.DataModels.EndpointConfigurationType",
+            "args": []
+          },
+          "description": "The type of the endpoint configuration. It cannot be changed after creation.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
           "allowedValues": []
         },
         "UseStringIDs": {
           "type": {
             "ref": "bool",
             "args": []
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationSshKeyModel": {
+      "typename": "EndpointConfigurationSshKeyModel",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Bits": {
+          "type": {
+            "ref": "int32",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The size in bits of the stored SSH key, when the key type has one.",
+          "allowedValues": []
+        },
+        "Fingerprint": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "SHA256 fingerprint of the public key that belongs to the stored SSH key, in the form `SHA256:<base64>`.",
+          "allowedValues": []
+        },
+        "KeyType": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The type of the stored SSH key, for example `ssh-ed25519` or `ssh-rsa`.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationSshKeyUpdateModel": {
+      "typename": "EndpointConfigurationSshKeyUpdateModel",
+      "assembly": "EVA.Core.Management",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Passphrase": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The passphrase that is used to encrypt the private key.",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "PrivateKey": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The SSH private key, as PEM or OpenSSH text. It must be readable with the given `Passphrase`.",
+          "skippable": true,
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
           },
           "allowedValues": []
         }
@@ -177308,7 +177783,7 @@
     "EVA.Core.Management.EndpointConfigurations.TestEndpointConfiguration": {
       "typename": "TestEndpointConfiguration",
       "assembly": "EVA.Core.Management",
-      "description": "Sends a test request to an `EndpointConfiguration` to verify connectivity, authentication, and signing.",
+      "description": "Tests an `EndpointConfiguration`. The endpoint configuration must be enabled.\n\n- `Http`: sends a test request to verify connectivity, authentication, and signing.\n- `Sftp`: connects, verifies the pinned host key, authenticates and opens an SFTP session. It does not check read or write permissions on any directory. `StatusCode` is 0, and `ResponseBody` is a short text on success. A failure is returned with `Success` set to false and an `ErrorMessage` that is either fixed text or, when the server presents a host key that is not pinned, a message with the endpoint name, ID and the presented fingerprint to verify and pin. Details of other failures are in the EVA log. The test is limited to 30 seconds.\n- Every `Sftp` test makes one real login attempt: repeated failing calls can lock the account on the partner side.",
       "usage": {
         "request": true
       },
@@ -177401,7 +177876,8 @@
       "typeDependencies": [
         "EVA.Core.RequestMessageWithEmptyResponse",
         "EVA.Core.DataModels.EndpointConfigurationStatus",
-        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationAuthorizationUpdateModel"
+        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationAuthorizationUpdateModel",
+        "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationHostKeyInput"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessageWithEmptyResponse",
@@ -177414,7 +177890,7 @@
             "args": [],
             "nullable": true
           },
-          "description": "Authorization configuration used when calling this endpoint.",
+          "description": "Authorization configuration used when calling this endpoint. An `Sftp` endpoint requires `BasicUsername` and a `BasicPassword` and/or an `SshKey`.",
           "skippable": true,
           "allowedValues": []
         },
@@ -177432,6 +177908,7 @@
             "ref": "string",
             "args": []
           },
+          "description": "A valid HTTPS endpoint for `Http`, or `sftp://host[:port]` for `Sftp`. Changing the host or port of an `Sftp` endpoint clears its pinned host keys, unless `HostKeys` is supplied in the same call.",
           "skippable": true,
           "required": {
             "current": true
@@ -177439,6 +177916,22 @@
           "requiredAllowEmpty": {
             "current": false
           },
+          "allowedValues": []
+        },
+        "HostKeys": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.Management.EndpointConfigurations.EndpointConfigurationHostKeyInput",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "description": "The SSH host keys pinned on an `Sftp` endpoint. This replaces the existing host keys; a host key that is already pinned keeps who added it and when. An enabled `Sftp` endpoint needs at least one. At most 20.",
+          "skippable": true,
           "allowedValues": []
         },
         "ID": {
@@ -177496,7 +177989,7 @@
             "args": [],
             "nullable": true
           },
-          "description": "Timeout after which requests are cancelled. Defaults to 5 seconds. Not recommended to change.",
+          "description": "Timeout after which requests are cancelled. Defaults to 5 seconds for an `Http` endpoint. For an `Sftp` endpoint it is not set by default and the timeout of the integration that uses the endpoint applies; a value above 0 replaces that timeout for every operation (for example the 15 minutes that the StepXml integration allows for reading and writing), up to a maximum of 3600 seconds. Not recommended to change.",
           "skippable": true,
           "allowedValues": []
         },
@@ -497392,6 +497885,150 @@
       "message": "The endpoint configuration is not enabled",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "EndpointConfiguration:WrongEndpointType",
+      "message": "This operation is not supported for the type of this endpoint configuration.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EndpointConfiguration:InvalidSftpAuthorization",
+      "message": "An SFTP endpoint requires a username and a password or an SSH key, and does not support tokens, custom headers or a client certificate.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EndpointConfiguration:InvalidSshKey",
+      "message": "The SSH private key could not be read, or the passphrase is wrong.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EndpointConfiguration:InvalidHostKeyFingerprint",
+      "message": "A host key must be a SHA256 fingerprint, for example 'SHA256:...'.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EndpointConfiguration:HostKeyRequired",
+      "message": "An SFTP endpoint needs at least one pinned host key before it can be enabled.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EndpointConfiguration:SftpEndpointRequiresSftpType",
+      "message": "SSH keys and host keys are only supported on SFTP endpoints.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EndpointConfiguration:HostKeysMustBeAList",
+      "message": "HostKeys must be a list. To remove all host keys, supply an empty list.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EndpointConfiguration:TooManyHostKeys",
+      "message": "An SFTP endpoint can have at most 20 pinned host keys.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EndpointConfiguration:SftpHostKeyDiscoveryUnavailable",
+      "message": "SFTP host key discovery is not available on this EVA instance.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EndpointConfiguration:SftpEndpointTestUnavailable",
+      "message": "Testing SFTP endpoint configurations is not available on this EVA instance.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EndpointConfiguration:UnknownSftpIntegration",
+      "message": "There is no SFTP integration named '{0}'. Valid integrations: {1}.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "Integration"
+        },
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "ValidIntegrations"
+        }
+      ]
+    },
+    {
+      "name": "EndpointConfiguration:SftpLegacySettingsIncomplete",
+      "message": "The legacy SFTP settings of this integration are incomplete at this organization unit: a host, a username and a password or SSH key are required.",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "EndpointConfiguration:SftpLegacyHostInvalid",
+      "message": "The legacy host setting of the {0} integration is not a valid SFTP host. Use a host name or IP address, optionally followed by :port, without a scheme, user or path.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "EndpointConfiguration:SftpIntegrationAlreadyMigrated",
+      "message": "This integration already uses SFTP endpoint configuration {0} at this organization unit, set there or inherited from a parent. Unset that setting first if it should be replaced.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "EndpointConfiguration:SftpIntegrationDescendantsOverride",
+      "message": "Organization units below this one have legacy connection settings of their own for this integration and would switch to the new endpoint configuration and its credentials: {0}. Migrate those first, or set IncludeDescendantOverrides to move them along.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "EndpointConfiguration:SftpIntegrationVerificationFailed",
+      "message": "The SFTP connection could not be verified, so the integration was not moved and no endpoint configuration was kept. {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
     },
     {
       "name": "EndpointConfiguration:ClientUnavailable",
