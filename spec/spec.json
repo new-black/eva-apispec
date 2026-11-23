@@ -66002,6 +66002,39 @@
         }
       }
     },
+    "EVA.Core.Availability.StockSourceTypes": {
+      "typename": "StockSourceTypes",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "enumIsFlag": true,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "External": {
+          "value": 2,
+          "extends": [],
+          "description": "The stock was read from an external system of record."
+        },
+        "Internal": {
+          "value": 1,
+          "extends": [],
+          "description": "The stock was read from EVA's own stock tables."
+        },
+        "None": {
+          "extends": []
+        },
+        "PartiallyExternal": {
+          "extends": [
+            "External",
+            "Internal"
+          ],
+          "description": "The availability combines stock from EVA's own stock tables and an external system of record."
+        }
+      }
+    },
     "EVA.Core.Barcodes.ExecuteBarcode": {
       "typename": "ExecuteBarcode",
       "assembly": "EVA.Core",
@@ -382138,7 +382171,9 @@
         "response": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.Availability.StockSourceTypes"
+      ],
       "properties": {
         "HasHiddenQuantities": {
           "type": {
@@ -382170,6 +382205,15 @@
             "nullable": true
           },
           "allowedValues": []
+        },
+        "StockSource": {
+          "type": {
+            "ref": "EVA.Core.Availability.StockSourceTypes",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Describes whether the availability was calculated from EVA stock, external stock, or a combination of both.",
+          "allowedValues": []
         }
       },
       "enumValues": {},
@@ -382182,7 +382226,9 @@
         "response": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.Availability.StockSourceTypes"
+      ],
       "properties": {
         "AvailabilityDate": {
           "type": {
@@ -382223,6 +382269,15 @@
           },
           "description": "When the product can ship. Present for pre-sale products where ShipmentDate is in the future.",
           "allowedValues": []
+        },
+        "StockSource": {
+          "type": {
+            "ref": "EVA.Core.Availability.StockSourceTypes",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Describes whether the availability was calculated from EVA stock, external stock, or a combination of both.",
+          "allowedValues": []
         }
       },
       "enumValues": {},
@@ -382235,7 +382290,9 @@
         "response": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.Availability.StockSourceTypes"
+      ],
       "properties": {
         "AvailabilityDate": {
           "type": {
@@ -382292,6 +382349,15 @@
           },
           "description": "When the product can ship. Present for pre-sale products where ShipmentDate is in the future.",
           "allowedValues": []
+        },
+        "StockSource": {
+          "type": {
+            "ref": "EVA.Core.Availability.StockSourceTypes",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Describes whether the availability was calculated from EVA stock, external stock, or a combination of both.",
+          "allowedValues": []
         }
       },
       "enumValues": {},
@@ -382306,6 +382372,7 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.Stock.ProductAvailabilityResult+ProductAvailabilityDetails+OrganizationUnitModel",
+        "EVA.Core.Availability.StockSourceTypes",
         "EVA.Core.Stock.ProductAvailabilityResult+ProductAvailabilityDetails",
         "EVA.Core.Stock.ProductAvailabilityResult+ProductAvailabilityDetails+StockReservation",
         "EVA.Core.Stock.ProductAvailabilityResult+ProductAvailabilityDetails+ExpectedStockItem",
@@ -382447,6 +382514,15 @@
             "nullable": true
           },
           "description": "The stock that is reserved for other organizations that is not available to this organization.",
+          "allowedValues": []
+        },
+        "StockSource": {
+          "type": {
+            "ref": "EVA.Core.Availability.StockSourceTypes",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Describes whether these quantities came from EVA's own stock tables or from an external system of record. PartiallyExternal means the result combines both.",
           "allowedValues": []
         },
         "SupplierQuantityAvailable": {
