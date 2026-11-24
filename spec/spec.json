@@ -216198,7 +216198,7 @@
     "EVA.Core.Management.PaymentSettlements.UploadPaymentSettlementFile": {
       "typename": "UploadPaymentSettlementFile",
       "assembly": "EVA.Core.Management",
-      "description": "Upload a new settlement file.\n\n- The settlements in the file will be imported and booked into financial events to allow processing in cookbook\n- It is required to supply the `Handler` to use (available handlers can be fetched with the `GetAvailablePaymentSettlementFileHandlers` service)\n- For settlement records that don't have a matching `PaymentTransaction` in EVA there will be financial events generated (which will happen for supplied `OrganizationUnitID`)",
+      "description": "Upload a new settlement file.\n\n- The settlements in the file will be imported and booked into financial events to allow processing in cookbook\n- It is required to supply the `Handler` to use (available handlers can be fetched with the `GetAvailablePaymentSettlementFileHandlers` service)\n- For settlement records that don't have a matching `PaymentTransaction` in EVA there will be financial events generated (which will happen for supplied `OrganizationUnitID`)\n- The `PaymentSettlements` functionality is required in the supplied `OrganizationUnitID`. A file that contains a payment of an organization unit outside it (and its children) fails as a whole, and a payment can not be settled for more than its paid amount.",
       "usage": {
         "request": true
       },
@@ -487876,6 +487876,57 @@
             "args": []
           },
           "name": "summedAmount"
+        }
+      ]
+    },
+    {
+      "name": "Settlements:OutsideFileOrganizationUnit",
+      "message": "The payment with reference {0} does not belong to organization unit {1} of the settlement file or one of its children.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "paymentReference"
+        },
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "name": "fileOrganizationUnitID"
+        }
+      ]
+    },
+    {
+      "name": "Settlements:ExceedsPaidAmount",
+      "message": "Settling the payment with reference {0} would bring its settled amount to {1}, which is outside the range between 0 and the paid amount {2}.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "name": "paymentReference"
+        },
+        {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "name": "settledAmount"
+        },
+        {
+          "type": {
+            "ref": "float128",
+            "args": []
+          },
+          "name": "paidAmount"
         }
       ]
     },
