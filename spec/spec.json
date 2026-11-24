@@ -297220,7 +297220,7 @@
     "EVA.Core.Orders.UpdateOrderShippingStatus": {
       "typename": "UpdateOrderShippingStatus",
       "assembly": "EVA.Core",
-      "description": "Updates the order shipping status, creating ledger entries on order level.\n\nWill be processed as a whole; a single failing line in `Lines` will prevent all other updates in a single call from persisting.",
+      "description": "Updates the order shipping status, creating ledger entries on order level.\n\nWill be processed as a whole; a single failing line in `Lines` will prevent all other updates in a single call from persisting.\n\nThe order is resolved first and the user must be allowed to edit it, which is also the case when it is identified by `BackendOrderID`. A `Date` more than 5 minutes in the future, or before the creation of the order, is rejected.",
       "usage": {
         "request": true
       },
@@ -307023,7 +307023,7 @@
     "EVA.Core.Payments.CreateRefund": {
       "typename": "CreateRefund",
       "assembly": "EVA.Core",
-      "description": "Create a refund\n\nWith this service a refund can be done based on an existing PaymentTransaction, or without it for an Order.\n\nIt is required to specify a transaction or to specify the PaymentType to use.\n\nWhen no Amount is specified the open amount of the order will be used.",
+      "description": "Create a refund\n\nWith this service a refund can be done based on an existing PaymentTransaction, or without it for an Order.\n\nIt is required to specify a transaction or to specify the PaymentType to use.\n\nWhen no Amount is specified the open amount of the order will be used.\n\nWhen a PaymentTransactionID is specified, the refund is always done on the payment type of that transaction, also when that type is not available in the current organization unit.",
       "usage": {
         "request": true
       },
@@ -308031,7 +308031,7 @@
     "EVA.Core.Payments.GetAvailableRefundPaymentMethodsForOrder": {
       "typename": "GetAvailableRefundPaymentMethodsForOrder",
       "assembly": "EVA.Core",
-      "description": "Get all available options for refunds on the given order\n\nRefunds can be executed with the CreateRefund service",
+      "description": "Get all available options for refunds on the given order\n\nRefunds can be executed with the CreateRefund service\n\nTransactions of the original order can always be refunded on their own payment type, also when that type is not available in the current organization unit.",
       "usage": {
         "request": true
       },
@@ -506724,6 +506724,18 @@
     {
       "name": "UpdateOrderShippingStatus:OrderIdentifierRequired",
       "message": "An OrderID or order's BackendOrderID is required",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "UpdateOrderShippingStatus:DateInFuture",
+      "message": "The Date of an order shipping status update cannot be in the future",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "UpdateOrderShippingStatus:DateBeforeOrderCreation",
+      "message": "The Date of an order shipping status update cannot be before the creation of the order",
       "module": "EVA.Core",
       "arguments": []
     },
