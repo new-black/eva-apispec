@@ -164230,6 +164230,14 @@
           "description": "Marks this discount as eligible to run in local mode (offline / Watchtower). Only allowed when the chosen action handler is watchtower-capable. Conditions that are not watchtower-capable are excluded from gating at runtime.",
           "allowedValues": []
         },
+        "AvailableInSelfCheckout": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Discounts only apply on Self Checkout stations when this is true. Defaults to false.",
+          "allowedValues": []
+        },
         "BackendID": {
           "type": {
             "ref": "string",
@@ -167489,6 +167497,13 @@
           "allowedValues": []
         },
         "AvailableInLocalMode": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "allowedValues": []
+        },
+        "AvailableInSelfCheckout": {
           "type": {
             "ref": "bool",
             "args": []
@@ -172805,6 +172820,15 @@
             "args": []
           },
           "description": "Marks this discount as eligible to run in local mode (offline / Watchtower). Only allowed when the chosen action handler is watchtower-capable. Conditions that are not watchtower-capable are excluded from gating at runtime.",
+          "allowedValues": []
+        },
+        "AvailableInSelfCheckout": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "Discounts only apply on Self Checkout stations when this is true. When omitted, the current value is kept.",
+          "skippable": true,
           "allowedValues": []
         },
         "BackendID": {
@@ -184601,6 +184625,15 @@
           },
           "allowedValues": []
         },
+        "ClearUserIdentifierOnUnsubscribe": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When set to true, the UserIdentifier is removed from the user subscription on unsubscribe so it can be reused. Requires `ResubscribeHandling` to be `UpdateUserIdentifier` or `AcceptAll`; it is turned off when `ResubscribeHandling` changes to another value.",
+          "allowedValues": []
+        },
         "CompanyID": {
           "type": {
             "ref": "id",
@@ -191052,6 +191085,14 @@
             "args": []
           },
           "description": "Whether the live configuration has unpublished changes or a publish is in progress.",
+          "allowedValues": []
+        },
+        "ClearUserIdentifierOnUnsubscribe": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
           "allowedValues": []
         },
         "Company": {
@@ -197663,6 +197704,16 @@
           },
           "allowedValues": []
         },
+        "ClearUserIdentifierOnUnsubscribe": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When set to true, the UserIdentifier is removed from the user subscription on unsubscribe so it can be reused. Requires `ResubscribeHandling` to be `UpdateUserIdentifier` or `AcceptAll`; it is turned off when `ResubscribeHandling` changes to another value.",
+          "skippable": true,
+          "allowedValues": []
+        },
         "CompanyID": {
           "type": {
             "ref": "string",
@@ -200016,6 +200067,16 @@
             "name": "Currency",
             "isEvaID": true
           },
+          "allowedValues": []
+        },
+        "ClearUserIdentifierOnUnsubscribe": {
+          "type": {
+            "ref": "bool",
+            "args": [],
+            "nullable": true
+          },
+          "description": "When set to true, the UserIdentifier is removed from the user subscription on unsubscribe so it can be reused. Requires `ResubscribeHandling` to be `UpdateUserIdentifier` or `AcceptAll`; it is turned off when `ResubscribeHandling` changes to another value.",
+          "skippable": true,
           "allowedValues": []
         },
         "CompanyID": {
@@ -249686,6 +249747,14 @@
           "description": "The BackendID of the opt-in subscription",
           "allowedValues": []
         },
+        "ClearUserIdentifierOnUnsubscribe": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When set to true, the UserIdentifier is removed from the user subscription on unsubscribe so it can be reused. Requires `ResubscribeHandling` to be `UpdateUserIdentifier` or `AcceptAll`; it is turned off when `ResubscribeHandling` changes to another value.",
+          "allowedValues": []
+        },
         "Description": {
           "type": {
             "ref": "string",
@@ -250108,6 +250177,13 @@
             "ref": "string",
             "args": [],
             "nullable": true
+          },
+          "allowedValues": []
+        },
+        "ClearUserIdentifierOnUnsubscribe": {
+          "type": {
+            "ref": "bool",
+            "args": []
           },
           "allowedValues": []
         },
@@ -251086,6 +251162,15 @@
             "nullable": true
           },
           "description": "The BackendID of the opt-in subscription",
+          "skippable": true,
+          "allowedValues": []
+        },
+        "ClearUserIdentifierOnUnsubscribe": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "When set to true, the UserIdentifier is removed from the user subscription on unsubscribe so it can be reused. Requires `ResubscribeHandling` to be `UpdateUserIdentifier` or `AcceptAll`; it is turned off when `ResubscribeHandling` changes to another value.",
           "skippable": true,
           "allowedValues": []
         },
@@ -485955,6 +486040,12 @@
       "arguments": []
     },
     {
+      "name": "Subscriptions:ClearUserIdentifierOnUnsubscribeRequiresCompatibleResubscribeHandling",
+      "message": "ClearUserIdentifierOnUnsubscribe can only be enabled when ResubscribeHandling is UpdateUserIdentifier or AcceptAll",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
       "name": "LoyaltyPrograms:UnknownSubscriptionHandler",
       "message": "Handler for subscription {0} is unknown.",
       "module": "EVA.Core",
@@ -492539,6 +492630,12 @@
     {
       "name": "Discounts:DiscountIsDisabledOnOrder",
       "message": "Discount is disabled on order",
+      "module": "EVA.Core",
+      "arguments": []
+    },
+    {
+      "name": "Discounts:DiscountIsNotAvailableInSelfCheckout",
+      "message": "Discount is not available in Self Checkout",
       "module": "EVA.Core",
       "arguments": []
     },
