@@ -133349,7 +133349,7 @@
     "EVA.Core.LiveGuard.Services.Management.SetWatchtowerLifecycleStatus": {
       "typename": "SetWatchtowerLifecycleStatus",
       "assembly": "EVA.Core.LiveGuard",
-      "description": "Set the lifecycle status of a watchtower device.\n\nCustomers can set: InTransit, ReplacementRequired, Storage, Onboarded.\nOnboarded is also set automatically when a watchtower first comes online, but it can be set manually as well.\nCompromised is terminal - a device in that state cannot be transitioned to another status. It is determined at request time from the JAMF Compromised Epoch attribute (it is not stored on the device).\n\nOnly one onboarded watchtower is allowed per OrganizationUnit. Onboarding a device while another one is already onboarded fails; the currently onboarded device is not deactivated automatically. To swap watchtowers, first move the onboarded device to another status (for example Storage or ReplacementRequired), then onboard the replacement.",
+      "description": "Set the lifecycle status of a watchtower device.\n\nCustomers can set: InTransit, ReplacementRequired, Storage, Onboarded, Retired.\nOnboarded is also set automatically when a watchtower first comes online, but it can be set manually as well.\nRetired is terminal: it soft-deletes the device and clears its boarding data, but keeps the JAMF Device Status attribute set to Retired.\nCompromised is terminal - a device in that state cannot be transitioned to another status. It is determined at request time from the JAMF Compromised Epoch attribute (it is not stored on the device).\n\nOnly one onboarded watchtower is allowed per OrganizationUnit. Onboarding a device while another one is already onboarded fails; the currently onboarded device is not deactivated automatically. To swap watchtowers, first move the onboarded device to another status (for example Storage or ReplacementRequired), then onboard the replacement.",
       "usage": {
         "request": true
       },
@@ -505013,12 +505013,6 @@
     {
       "name": "WatchtowerLifecycle:RetiredIsTerminal",
       "message": "A retired watchtower cannot transition to another lifecycle status.",
-      "module": "EVA.Core.LiveGuard",
-      "arguments": []
-    },
-    {
-      "name": "WatchtowerLifecycle:RetiredNotYetSupported",
-      "message": "Setting a watchtower to Retired is not yet supported.",
       "module": "EVA.Core.LiveGuard",
       "arguments": []
     },
