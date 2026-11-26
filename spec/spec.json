@@ -413584,10 +413584,32 @@
             "args": [],
             "nullable": true
           },
-          "description": "Identity of the user at their single sign-on provider. Setting or changing this requires the `OpenIDProvider` or `OpenIDProviders` functionality, and it can never be changed once the account is bound to a provider by an actual single sign-on login.",
+          "description": "Identity of the user at their single sign-on provider. Setting or changing this requires the `OpenIDProvider` or `OpenIDProviders` functionality, and once the account is bound to a provider (by a single sign-on login, or by a push with `SingleSignOnProviderID`) both are kept and a differing push is ignored.",
           "skippable": true,
           "stringLengthConstraint": {
             "max": 255
+          },
+          "allowedValues": []
+        },
+        "SingleSignOnProviderID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "ID of the OpenID provider the SingleSignOnID belongs to; only that provider can log in with it. Required whenever SingleSignOnID is set. Same functionality requirements as SingleSignOnID.",
+          "required": {
+            "current": false,
+            "new": true,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field SingleSignOnProviderID is required and is scheduled to be enforced in 2.0.905."
+          },
+          "requiredAllowEmpty": {
+            "new": false,
+            "announced": 860,
+            "active": 886,
+            "comment": "Field SingleSignOnProviderID is required and is scheduled to be enforced in 2.0.905."
           },
           "allowedValues": []
         },
@@ -490393,9 +490415,22 @@
     },
     {
       "name": "Users:CantChangeSingleSignOnID",
-      "message": "Setting a SingleSignOnID requires the OpenIDProvider or OpenIDProviders functionality.",
+      "message": "Setting a SingleSignOnID or SingleSignOnProviderID requires the OpenIDProvider or OpenIDProviders functionality.",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "Users:UnknownSingleSignOnProvider",
+      "message": "SingleSignOnProviderID {0} is not an enabled OpenID provider.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "id",
+            "args": []
+          }
+        }
+      ]
     },
     {
       "name": "Users:NicknameInUse",
