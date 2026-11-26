@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Template\u0022: {\n    \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n    \u0022DataPayload\u0022: \u0022string\u0022,\n    \u0022Description\u0022: \u0022string\u0022,\n    \u0022ID\u0022: 123,\n    \u0022IsDisabled\u0022: true,\n    \u0022LanguageID\u0022: \u0022string\u0022,\n    \u0022NotificationType\u0022: 1,\n    \u0022OrganizationUnitID\u0022: 123,\n    \u0022OrganizationUnitName\u0022: \u0022string\u0022,\n    \u0022ScriptID\u0022: 123,\n    \u0022ScriptName\u0022: \u0022string\u0022,\n    \u0022Subtitle\u0022: \u0022string\u0022,\n    \u0022TemplateKey\u0022: \u0022string\u0022,\n    \u0022Title\u0022: \u0022string\u0022\n  }\n}"
+      "sample": "{\n  \u0022Template\u0022: {\n    \u0022CreationTime\u0022: \u00222025-01-01\u0022,\n    \u0022DataPayload\u0022: \u0022string\u0022,\n    \u0022Description\u0022: \u0022string\u0022,\n    \u0022ID\u0022: 123,\n    \u0022IsDisabled\u0022: true,\n    \u0022LanguageID\u0022: \u0022string\u0022,\n    \u0022NotificationType\u0022: 1,\n    \u0022OrganizationUnitID\u0022: 123,\n    \u0022OrganizationUnitName\u0022: \u0022string\u0022,\n    \u0022ScriptID\u0022: 123,\n    \u0022ScriptName\u0022: \u0022string\u0022,\n    \u0022Subtitle\u0022: \u0022string\u0022,\n    \u0022TemplateKey\u0022: \u0022string\u0022,\n    \u0022TemplateType\u0022: 1,\n    \u0022Title\u0022: \u0022string\u0022,\n    \u0022TypeData\u0022: {\n      \u0022TaskTypes\u0022: [\n        {\n          \u0022SubTypes\u0022: [\n            \u0022string\u0022\n          ],\n          \u0022Type\u0022: \u0022string\u0022\n        }\n      ]\n    }\n  }\n}"
     },
     {
       "name": "400",
@@ -144,6 +144,40 @@
         "one_of": null
       }
     ],
+    "G": [],
+    "I": [
+      {
+        "name": "SubTypes",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "H": [
+      {
+        "name": "TaskTypes",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "I",
+        "one_of": null
+      }
+    ],
+    "J": [],
+    "K": [],
     "F": [
       {
         "name": "CreationTime",
@@ -263,6 +297,15 @@
         "one_of": null
       },
       {
+        "name": "TemplateType",
+        "deprecation_notice": null,
+        "description": "The kind of event the key of this template belongs to. Empty when the key no longer has a definition.\nPossible values:\n\n* \u00600\u0060 - UserTask\n* \u00601\u0060 - Appointment\n* \u00602\u0060 - Manual",
+        "type": "integer | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Title",
         "deprecation_notice": null,
         "description": "",
@@ -270,6 +313,28 @@
         "required": false,
         "properties_id": null,
         "one_of": null
+      },
+      {
+        "name": "TypeData",
+        "deprecation_notice": null,
+        "description": "Type-specific data of this template. Null means the template applies to everything of its type. Stored data that cannot be read is returned as null too, but such a template is not used.",
+        "type": "one-of[object] | null",
+        "required": false,
+        "properties_id": "G",
+        "one_of": [
+          {
+            "name": "UserTaskTemplateTypeData",
+            "properties_id": "H"
+          },
+          {
+            "name": "AppointmentTemplateTypeData",
+            "properties_id": "J"
+          },
+          {
+            "name": "ManualTemplateTypeData",
+            "properties_id": "K"
+          }
+        ]
       }
     ],
     "C": [
