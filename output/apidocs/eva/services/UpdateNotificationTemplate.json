@@ -37,12 +37,12 @@
   "request_samples": [
     {
       "name": "JSON",
-      "sample": "{\n  \u0022DataPayload\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IsDisabled\u0022: true,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022NotificationType\u0022: 1,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ScriptID\u0022: 123,\n  \u0022Subtitle\u0022: \u0022string\u0022,\n  \u0022TemplateKey\u0022: \u0022UserTaskUrgent\u0022,\n  \u0022Title\u0022: \u0022string\u0022\n}",
+      "sample": "{\n  \u0022DataPayload\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IsDisabled\u0022: true,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022NotificationType\u0022: 1,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ScriptID\u0022: 123,\n  \u0022Subtitle\u0022: \u0022string\u0022,\n  \u0022TemplateKey\u0022: \u0022UserTaskUrgent\u0022,\n  \u0022Title\u0022: \u0022string\u0022,\n  \u0022TypeData\u0022: {\n    \u0022TaskTypes\u0022: [\n      {\n        \u0022SubTypes\u0022: [\n          \u0022string\u0022\n        ],\n        \u0022Type\u0022: \u0022string\u0022\n      }\n    ]\n  }\n}",
       "syntax": "json"
     },
     {
       "name": "CURL",
-      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022DataPayload\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IsDisabled\u0022: true,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022NotificationType\u0022: 1,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ScriptID\u0022: 123,\n  \u0022Subtitle\u0022: \u0022string\u0022,\n  \u0022TemplateKey\u0022: \u0022UserTaskUrgent\u0022,\n  \u0022Title\u0022: \u0022string\u0022\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateNotificationTemplate",
+      "sample": "curl -H \u0022Content-Type: application/json\u0022 \\\n  -H \u0022EVA-User-Agent: MyFirstUserAgent/1.0.0\u0022 \\\n  -H \u0022Authorization: Bearer \u003Ctoken\u003E\u0022 \\\n  --data \u0027{\n  \u0022DataPayload\u0022: \u0022string\u0022,\n  \u0022Description\u0022: \u0022string\u0022,\n  \u0022ID\u0022: 123,\n  \u0022IsDisabled\u0022: true,\n  \u0022LanguageID\u0022: \u0022string\u0022,\n  \u0022NotificationType\u0022: 1,\n  \u0022OrganizationUnitID\u0022: 123,\n  \u0022ScriptID\u0022: 123,\n  \u0022Subtitle\u0022: \u0022string\u0022,\n  \u0022TemplateKey\u0022: \u0022UserTaskUrgent\u0022,\n  \u0022Title\u0022: \u0022string\u0022,\n  \u0022TypeData\u0022: {\n    \u0022TaskTypes\u0022: [\n      {\n        \u0022SubTypes\u0022: [\n          \u0022string\u0022\n        ],\n        \u0022Type\u0022: \u0022string\u0022\n      }\n    ]\n  }\n}\u0027 \\\n  https://euw.acme.test.eva-online.cloud/message/UpdateNotificationTemplate",
       "syntax": "bash"
     }
   ],
@@ -62,8 +62,42 @@
   ],
   "deprecation_notice": null,
   "request_type_id": "B",
-  "response_type_id": "C",
+  "response_type_id": "H",
   "types": {
+    "C": [],
+    "E": [
+      {
+        "name": "SubTypes",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[string] | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "Type",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      }
+    ],
+    "D": [
+      {
+        "name": "TaskTypes",
+        "deprecation_notice": null,
+        "description": "",
+        "type": "array[object] | null",
+        "required": false,
+        "properties_id": "E",
+        "one_of": null
+      }
+    ],
+    "F": [],
+    "G": [],
     "B": [
       {
         "name": "DataPayload",
@@ -163,9 +197,31 @@
         "required": false,
         "properties_id": null,
         "one_of": null
+      },
+      {
+        "name": "TypeData",
+        "deprecation_notice": null,
+        "description": "Type-specific data, depending on the template type of the key. For user task keys: the task types (and sub-types) this template applies to. Omit it or send null for a template that applies to every task type. Use GetNotificationTemplateTypeOptions to see what can be chosen. Omit to leave it unchanged, send null to clear it.\n\nProviding a \u0060null\u0060 value and not providing the property at all has different meanings.",
+        "type": "one-of[object] | null",
+        "required": false,
+        "properties_id": "C",
+        "one_of": [
+          {
+            "name": "UserTaskTemplateTypeData",
+            "properties_id": "D"
+          },
+          {
+            "name": "AppointmentTemplateTypeData",
+            "properties_id": "F"
+          },
+          {
+            "name": "ManualTemplateTypeData",
+            "properties_id": "G"
+          }
+        ]
       }
     ],
-    "D": [
+    "I": [
       {
         "name": "Code",
         "deprecation_notice": null,
@@ -212,7 +268,7 @@
         "one_of": null
       }
     ],
-    "E": [
+    "J": [
       {
         "name": "ExternalIDs",
         "deprecation_notice": null,
@@ -241,14 +297,14 @@
         "one_of": null
       }
     ],
-    "C": [
+    "H": [
       {
         "name": "Error",
         "deprecation_notice": null,
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "D",
+        "properties_id": "I",
         "one_of": null
       },
       {
@@ -257,7 +313,7 @@
         "description": "",
         "type": "object | null",
         "required": false,
-        "properties_id": "E",
+        "properties_id": "J",
         "one_of": null
       }
     ]
