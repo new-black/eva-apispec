@@ -380717,6 +380717,14 @@
           "description": "Sum of the quantity on hand of all stock labels that are configured as sellable for the current organization unit.",
           "allowedValues": []
         },
+        "HasHiddenSellableStockInStores": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "True when `SellableStockInStoresWithinApplication` was set to 0 because the user does not have the Stock functionality (View) in at least one of the stores holding sellable stock.",
+          "allowedValues": []
+        },
         "PromisedDeliveryDate": {
           "type": {
             "ref": "date",
@@ -380753,7 +380761,7 @@
             "ref": "int32",
             "args": []
           },
-          "description": "The quantity on hand of the built-in `Sellable` stock label, summed across all stores within the current application.",
+          "description": "The quantity on hand of the built-in `Sellable` stock label, summed across all stores within the current application. Set to 0 when `HasHiddenSellableStockInStores` is true.",
           "allowedValues": []
         },
         "SellableStockInWarehouses": {
@@ -380768,7 +380776,7 @@
             ],
             "nullable": true
           },
-          "description": "The quantity on hand of the built-in `Sellable` stock label per warehouse.",
+          "description": "The quantity on hand of the built-in `Sellable` stock label per warehouse. Set to 0 for warehouses with `HasHiddenQuantities` set to true.",
           "allowedValues": []
         },
         "StockPerLabel": {
@@ -385416,6 +385424,14 @@
       "typeArguments": [],
       "typeDependencies": [],
       "properties": {
+        "HasHiddenQuantities": {
+          "type": {
+            "ref": "bool",
+            "args": []
+          },
+          "description": "True when the quantities were set to 0 because the user does not have the Stock functionality (View) in this organization unit.",
+          "allowedValues": []
+        },
         "ID": {
           "type": {
             "ref": "id",
