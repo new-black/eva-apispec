@@ -66182,7 +66182,6 @@
             "current": false
           },
           "allowedValues": [
-            "USERTASK",
             "SECONDCHANCEPRODUCTREGISTRATION",
             "SOCIAL_SECURITY_NUMBER",
             "SERIALNUMBER",
@@ -66212,6 +66211,7 @@
             "APPOINTMENT",
             "BOARDINGPASS",
             "INITCC",
+            "USERTASK",
             "SHIP_FROM_STORE_DELIVERY_CONFIRMATION",
             "EVAPAY:TOTP",
             "GLOBALBLUE"
@@ -66604,7 +66604,6 @@
             "nullable": true
           },
           "allowedValues": [
-            "USERTASK",
             "SECONDCHANCEPRODUCTREGISTRATION",
             "SOCIAL_SECURITY_NUMBER",
             "SERIALNUMBER",
@@ -66634,6 +66633,7 @@
             "APPOINTMENT",
             "BOARDINGPASS",
             "INITCC",
+            "USERTASK",
             "SHIP_FROM_STORE_DELIVERY_CONFIRMATION",
             "EVAPAY:TOTP",
             "GLOBALBLUE"
@@ -269901,7 +269901,9 @@
         "response": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.Shipping.PickupLocationType"
+      ],
       "properties": {
         "AddressLines": {
           "type": {
@@ -269953,6 +269955,14 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "EVA.Core.Shipping.PickupLocationType",
+            "args": []
+          },
+          "description": "The type of the selected pickup location, Unknown when the carrier did not share one.",
           "allowedValues": []
         },
         "ZipCode": {
@@ -291835,6 +291845,7 @@
         "EVA.Core.DataModels.OrderStatus",
         "EVA.Core.Orders.OrderSearchFulfillmentStatusFilterModel",
         "EVA.Core.Orders.OrderSearchDeliveryType",
+        "EVA.Core.Shipping.PickupLocationType",
         "EVA.Core.Orders.SearchOrders+AdditionalSearchOrderDataOptions",
         "EVA.Core.Orders.OrderSearchAggregationOptions"
       ],
@@ -292760,6 +292771,15 @@
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "PickupLocationType": {
+          "type": {
+            "ref": "EVA.Core.Shipping.PickupLocationType",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Filter by the type of the customer's selected pickup location. Only orders with a pickup selection have one; Unknown matches pickup selections whose carrier did not share a type.",
           "allowedValues": []
         },
         "PickupOrganizationUnitID": {
@@ -359608,7 +359628,7 @@
     "EVA.Core.Services.Stock.ListStockForOrganizationUnits": {
       "typename": "ListStockForOrganizationUnits",
       "assembly": "EVA.Core.Management",
-      "description": "List the Stock per product/stocklabel for a subset of OrganizationUnits.\n\nThe page size `Limit` has a maximum value of `1.024` for this service (unless `DownloadOverview` is `true`).\n\nIf neither `OrganizationUnitIDs` nor `OrganizationUnitSetID` are specified, the service will return an empty result.\n\n`Query` is resolved through the product search, which takes at most `10.000` matching products into account. When `Query` matches that many products or more, `QueryProductLimitReached` is `true` and the result only covers those products; refine `Query` to get a complete result.",
+      "description": "List the Stock per product/stocklabel for a subset of OrganizationUnits.\n\nThe page size `Limit` has a maximum value of `1.024` for this service (unless `DownloadOverview` is `true`).\n\nIf neither `OrganizationUnitIDs` nor `OrganizationUnitSetID` are specified, the service will return an empty result.\n\n`Query` is resolved through the product search, which takes at most `10.000` matching products into account. When `Query` matches that many products or more, `QueryProductLimitReached` is `true` and the result only covers those products; refine `Query` to get a complete result.\n\n`Query` is resolved across all assortments, so stock is also found for products that are not in the assortment of the requested organization units. A product counts towards the `10.000` limit once for every assortment and content culture it is in.",
       "usage": {
         "request": true
       },
@@ -376417,6 +376437,39 @@
         }
       },
       "enumValues": {}
+    },
+    "EVA.Core.Shipping.PickupLocationType": {
+      "typename": "PickupLocationType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Locker": {
+          "value": 1,
+          "extends": [],
+          "description": "A parcel locker."
+        },
+        "PostOffice": {
+          "value": 3,
+          "extends": [],
+          "description": "A post office."
+        },
+        "Store": {
+          "value": 2,
+          "extends": [],
+          "description": "A store acting as a pickup point."
+        },
+        "Unknown": {
+          "extends": [],
+          "description": "The carrier did not share a location type, or shared one EVA does not distinguish (such as manned desks or age-verification points)."
+        }
+      }
     },
     "EVA.Core.Shipping.RequestedDateByOrderLineID": {
       "typename": "RequestedDateByOrderLineID",
