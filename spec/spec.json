@@ -61395,6 +61395,20 @@
             "nullable": true
           },
           "allowedValues": []
+        },
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The user that made the request.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
         }
       },
       "enumValues": {}
@@ -61402,7 +61416,7 @@
     "EVA.Core.AsyncRequests.GetAsyncRequestForUser": {
       "typename": "GetAsyncRequestForUser",
       "assembly": "EVA.Core",
-      "description": "Returns a specific async request for your current user",
+      "description": "Returns a specific async request for your current user, or a stock upload async request of an API user when you have the `ViewApiUserStockUploads` functionality",
       "usage": {
         "request": true
       },
@@ -61468,7 +61482,7 @@
     "EVA.Core.AsyncRequests.GetAsyncRequestsForUser": {
       "typename": "GetAsyncRequestsForUser",
       "assembly": "EVA.Core",
-      "description": "Returns all async requests for your current user",
+      "description": "Returns all async requests for your current user, or with `UserID` the stock upload async requests of an API user when you have the `ViewApiUserStockUploads` functionality",
       "usage": {
         "request": true
       },
@@ -61486,7 +61500,23 @@
           }
         ]
       },
-      "properties": {},
+      "properties": {
+        "UserID": {
+          "type": {
+            "ref": "id",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The API user to return the stock upload async requests (`ProcessStockMutationFile`, `UploadAndProcessStockExcelFile`, `UploadAndProcessStockJSONFile`) of. Requires the `ViewApiUserStockUploads` functionality. Defaults to your current user.",
+          "datamodel": {
+            "name": "User",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
       "enumValues": {}
     },
     "EVA.Core.AsyncRequests.GetAsyncRequestsForUserResponse": {
@@ -382109,7 +382139,7 @@
     "EVA.Core.Stock.ProcessStockMutationFile": {
       "typename": "ProcessStockMutationFile",
       "assembly": "EVA.Core",
-      "description": "Processes a (delta)stock mutation file.\n\nThe rows are passed inline through `Mutations`, or as a stored JSON file through `FileBlobID`. The expected format of the file is JSON with the following markup:\n\n```\n[\n  {\n    \"ProductID\": [Optional, int],\n    \"ProductBackendID\": [Optional, string],\n    \"Barcode\": [Optional, string],\n    \"QuantityOnHand\": [Required, int, value >= 0],\n    \"StockMutationReasonID\": [Optional, int],\n    \"Remark\": [Optional, string],\n    \"OrganizationUnitID\": [Optional, int],\n    \"StockLabelID\": [Optional, int]\n  },\n  ...\n]\n```\n\nProducts are identified using one of three fields with the following precedence: ProductID > ProductBackendID > Barcode.\nMutation will only be processed for products that can be resolved through one of these identifiers.\n\n`OrganizationUnitID` and `StockLabelID` fall back to the `OrganizationUnitID` and `StockLabelID` of the request, so a single file can update the stock of multiple organization units and stock labels.\n\nA call is limited to the number of rows in the `Stock:Upload:MaxRows` setting (100,000 by default), inline or in the file, and a `FileBlobID` file to the size in bytes in the `Stock:Upload:MaxFileSize` setting (30 MB by default). Larger syncs must be split into several calls.",
+      "description": "Processes a (delta)stock mutation file.\n\nThe rows are passed inline through `Mutations`, or as a stored JSON file through `FileBlobID`. The expected format of the file is JSON with the following markup:\n\n```\n[\n  {\n    \"ProductID\": [Optional, int],\n    \"ProductBackendID\": [Optional, string],\n    \"Barcode\": [Optional, string],\n    \"QuantityOnHand\": [Required, int, value >= 0],\n    \"StockMutationReasonID\": [Optional, int],\n    \"Remark\": [Optional, string],\n    \"OrganizationUnitID\": [Optional, int],\n    \"StockLabelID\": [Optional, int]\n  },\n  ...\n]\n```\n\nProducts are identified using one of three fields with the following precedence: ProductID > ProductBackendID > Barcode.\nMutation will only be processed for products that can be resolved through one of these identifiers.\n\n`OrganizationUnitID` and `StockLabelID` fall back to the `OrganizationUnitID` and `StockLabelID` of the request, so a single file can update the stock of multiple organization units and stock labels.\n\nA call is limited to the number of rows in the `Stock:Upload:MaxRows` setting (100,000 by default), inline or in the file, and a `FileBlobID` file to the size in bytes in the `Stock:Upload:MaxFileSize` setting (30 MB by default). Larger syncs must be split into several calls.\n\nThe rows are processed async. A summary of the result is mailed and logged as an async request of the caller, see `GetAsyncRequestsForUser`.",
       "usage": {
         "request": true
       },
@@ -383729,7 +383759,7 @@
     "EVA.Core.Stock.UploadAndProcessStockExcelFile": {
       "typename": "UploadAndProcessStockExcelFile",
       "assembly": "EVA.Core",
-      "description": "Upload stock Excel (delta)file. The service processes the data async. This service is intended for small files (up to 5MB). Please view the documentation for processing larger files.\n\nThe optional `OrganizationUnitID` and `StockLabelID` columns, placed after the `Barcode` column, update the stock of other organization units and stock labels than the ones of the request. Empty cells fall back to the `OrganizationUnitID` and `StockLabelID` of the request.\n\nA call is limited to the number of rows in the `Stock:Upload:MaxRows` setting (100,000 by default) and to the file size in bytes in the `Stock:Upload:MaxFileSize` setting (30 MB by default). Larger files must be split into several calls.",
+      "description": "Upload stock Excel (delta)file. The service processes the data async. This service is intended for small files (up to 5MB). Please view the documentation for processing larger files.\n\nThe optional `OrganizationUnitID` and `StockLabelID` columns, placed after the `Barcode` column, update the stock of other organization units and stock labels than the ones of the request. Empty cells fall back to the `OrganizationUnitID` and `StockLabelID` of the request.\n\nA call is limited to the number of rows in the `Stock:Upload:MaxRows` setting (100,000 by default) and to the file size in bytes in the `Stock:Upload:MaxFileSize` setting (30 MB by default). Larger files must be split into several calls.\n\nA summary of the result is mailed and logged as an async request of the caller, see `GetAsyncRequestsForUser`.",
       "usage": {
         "request": true
       },
