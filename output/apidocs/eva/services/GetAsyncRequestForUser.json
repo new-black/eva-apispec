@@ -2,7 +2,7 @@
   "name": "GetAsyncRequestForUser",
   "method": "POST",
   "path": "/message/GetAsyncRequestForUser",
-  "description": "Returns a specific async request for your current user",
+  "description": "Returns a specific async request for your current user, or a stock upload async request of an API user when you have the \u0060ViewApiUserStockUploads\u0060 functionality",
   "auth_description": "Requires a user of type \u0060Employee\u0060 or \u0060Api\u0060",
   "headers": [
     {
@@ -42,7 +42,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022Request\u0022: {\n    \u0022ID\u0022: \u0022string\u0022,\n    \u0022ResponseBlobUrl\u0022: \u0022string\u0022,\n    \u0022ResponseType\u0022: \u0022string\u0022,\n    \u0022Status\u0022: 1,\n    \u0022Timestamp\u0022: \u00222025-01-01\u0022,\n    \u0022Type\u0022: \u0022string\u0022\n  }\n}"
+      "sample": "{\n  \u0022Request\u0022: {\n    \u0022ID\u0022: \u0022string\u0022,\n    \u0022ResponseBlobUrl\u0022: \u0022string\u0022,\n    \u0022ResponseType\u0022: \u0022string\u0022,\n    \u0022Status\u0022: 1,\n    \u0022Timestamp\u0022: \u00222025-01-01\u0022,\n    \u0022Type\u0022: \u0022string\u0022,\n    \u0022UserID\u0022: 123\n  }\n}"
     },
     {
       "name": "400",
@@ -195,6 +195,15 @@
         "deprecation_notice": null,
         "description": "",
         "type": "string | null",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
+        "name": "UserID",
+        "deprecation_notice": null,
+        "description": "The user that made the request.\n\nThis is the ID of a \u0060User\u0060",
+        "type": "integer",
         "required": false,
         "properties_id": null,
         "one_of": null
