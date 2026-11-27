@@ -56,7 +56,7 @@
   "response_samples": [
     {
       "name": "200",
-      "sample": "{\n  \u0022AllSellableQuantityAvailable\u0022: 123,\n  \u0022AllSellableQuantityCommitted\u0022: 123,\n  \u0022AllSellableQuantityOnHand\u0022: 123,\n  \u0022PromisedDeliveryDate\u0022: \u00222025-01-01\u0022,\n  \u0022PromisedDeliveryStatus\u0022: 2,\n  \u0022QuantityOnHand\u0022: 123,\n  \u0022SellableQuantityAvailable\u0022: 123,\n  \u0022SellableStockInStoresWithinApplication\u0022: 123,\n  \u0022SellableStockInWarehouses\u0022: [\n    {\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022SellableStock\u0022: 123\n    }\n  ],\n  \u0022StockPerLabel\u0022: {\n    \u0022key\u0022: 123\n  }\n}"
+      "sample": "{\n  \u0022AllSellableQuantityAvailable\u0022: 123,\n  \u0022AllSellableQuantityCommitted\u0022: 123,\n  \u0022AllSellableQuantityOnHand\u0022: 123,\n  \u0022HasHiddenSellableStockInStores\u0022: true,\n  \u0022PromisedDeliveryDate\u0022: \u00222025-01-01\u0022,\n  \u0022PromisedDeliveryStatus\u0022: 2,\n  \u0022QuantityOnHand\u0022: 123,\n  \u0022SellableQuantityAvailable\u0022: 123,\n  \u0022SellableStockInStoresWithinApplication\u0022: 123,\n  \u0022SellableStockInWarehouses\u0022: [\n    {\n      \u0022HasHiddenQuantities\u0022: true,\n      \u0022ID\u0022: 123,\n      \u0022Name\u0022: \u0022string\u0022,\n      \u0022SellableStock\u0022: 123\n    }\n  ],\n  \u0022StockPerLabel\u0022: {\n    \u0022key\u0022: 123\n  }\n}"
     },
     {
       "name": "400",
@@ -178,6 +178,15 @@
     ],
     "F": [
       {
+        "name": "HasHiddenQuantities",
+        "deprecation_notice": null,
+        "description": "True when the quantities were set to 0 because the user does not have the Stock functionality (View) in this organization unit.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "ID",
         "deprecation_notice": null,
         "description": "This is the ID of a \u0060OrganizationUnit\u0060",
@@ -243,6 +252,15 @@
         "one_of": null
       },
       {
+        "name": "HasHiddenSellableStockInStores",
+        "deprecation_notice": null,
+        "description": "True when \u0060SellableStockInStoresWithinApplication\u0060 was set to 0 because the user does not have the Stock functionality (View) in at least one of the stores holding sellable stock.",
+        "type": "boolean",
+        "required": false,
+        "properties_id": null,
+        "one_of": null
+      },
+      {
         "name": "Metadata",
         "deprecation_notice": null,
         "description": "",
@@ -290,7 +308,7 @@
       {
         "name": "SellableStockInStoresWithinApplication",
         "deprecation_notice": null,
-        "description": "The quantity on hand of the built-in \u0060Sellable\u0060 stock label, summed across all stores within the current application.",
+        "description": "The quantity on hand of the built-in \u0060Sellable\u0060 stock label, summed across all stores within the current application. Set to 0 when \u0060HasHiddenSellableStockInStores\u0060 is true.",
         "type": "integer",
         "required": false,
         "properties_id": null,
@@ -299,7 +317,7 @@
       {
         "name": "SellableStockInWarehouses",
         "deprecation_notice": null,
-        "description": "The quantity on hand of the built-in \u0060Sellable\u0060 stock label per warehouse.",
+        "description": "The quantity on hand of the built-in \u0060Sellable\u0060 stock label per warehouse. Set to 0 for warehouses with \u0060HasHiddenQuantities\u0060 set to true.",
         "type": "array[object] | null",
         "required": false,
         "properties_id": "F",
