@@ -25009,6 +25009,24 @@
       }
     },
     {
+      "name": "LinkPurchaseOrderToSalesOrder",
+      "assembly": "EVA.Core",
+      "path": "/message/LinkPurchaseOrderToSalesOrder",
+      "method": "POST",
+      "requestType": "EVA.Core.Orders.LinkPurchaseOrderToSalesOrder",
+      "responseType": "EVA.Core.EmptyResponseMessage",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "PurchaseOrders",
+            "scope": 31
+          }
+        ],
+        "agentApprovalRequired": true
+      }
+    },
+    {
       "name": "LinkSharedWishlist",
       "assembly": "EVA.Core",
       "path": "/message/LinkSharedWishlist",
@@ -280295,6 +280313,53 @@
           "datamodel": {
             "name": "OrderLine",
             "supportsCustomID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Orders.LinkPurchaseOrderToSalesOrder": {
+      "typename": "LinkPurchaseOrderToSalesOrder",
+      "assembly": "EVA.Core",
+      "description": "Link a purchase order to the sales order it fulfils by placing both orders in the same order group.\n\nBecause `ListRelatedOrders` returns every order in the group, each order then appears in the other's related orders. The purchase order moves into the sales order's group; the sales order keeps its group and its other members. Linking a purchase order that is already linked to this sales order changes nothing; linking it to another sales order moves it there. Only the order group changes: fulfilment status, order lines, amounts and stock are untouched.\n\nOnly manually created purchase orders can be linked. A purchase order whose lines link to a sales order line through `RelatedOrderLineID` was created by order orchestration and already belongs to that sales order; moving it would make the order group disagree with its lines, so it is rejected.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessageWithEmptyResponse"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessageWithEmptyResponse",
+        "args": []
+      },
+      "properties": {
+        "PurchaseOrderID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The manually created purchase order that joins the sales order's group. When it is already linked to another sales order, it moves out of that group. A purchase order whose lines link to a sales order line is created by order orchestration and is rejected.",
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
+            "isEvaID": true
+          },
+          "allowedValues": []
+        },
+        "SalesOrderID": {
+          "type": {
+            "ref": "id",
+            "args": []
+          },
+          "description": "The sales order whose group the purchase order joins; the sales order keeps its group and its other related orders.",
+          "datamodel": {
+            "name": "Order",
+            "supportsCustomID": true,
+            "supportsSystemID": true,
             "isEvaID": true
           },
           "allowedValues": []
