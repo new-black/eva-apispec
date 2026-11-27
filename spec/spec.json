@@ -19340,6 +19340,23 @@
       }
     },
     {
+      "name": "GetNotificationTemplateTypeOptions",
+      "assembly": "EVA.Core",
+      "path": "/message/GetNotificationTemplateTypeOptions",
+      "method": "POST",
+      "requestType": "EVA.Core.Notifications.GetNotificationTemplateTypeOptions",
+      "responseType": "EVA.Core.Notifications.GetNotificationTemplateTypeOptionsResponse",
+      "auth": {
+        "requiredPermissions": [
+          {
+            "types": 2049,
+            "functionality": "NotificationTemplates",
+            "scope": 8
+          }
+        ]
+      }
+    },
+    {
       "name": "GetOpenCashDrawerReasons",
       "assembly": "EVA.Core",
       "path": "/message/GetOpenCashDrawerReasons",
@@ -256726,6 +256743,29 @@
         }
       }
     },
+    "EVA.Core.Notifications.AppointmentTemplateTypeData": {
+      "typename": "AppointmentTemplateTypeData",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Notifications.AppointmentTemplateTypeOptions": {
+      "typename": "AppointmentTemplateTypeOptions",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {}
+    },
     "EVA.Core.Notifications.CreateNotificationTemplate": {
       "typename": "CreateNotificationTemplate",
       "assembly": "EVA.Core",
@@ -256736,7 +256776,11 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.RequestMessage`1",
-        "EVA.Core.DataModels.NotificationType"
+        "EVA.Core.DataModels.NotificationType",
+        "EVA.Core.Notifications.INotificationTemplateTypeData",
+        "EVA.Core.UserTasks.UserTaskTemplateTypeData",
+        "EVA.Core.Notifications.AppointmentTemplateTypeData",
+        "EVA.Core.Notifications.ManualTemplateTypeData"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessage`1",
@@ -256870,6 +256914,36 @@
           "requiredAllowEmpty": {
             "current": false
           },
+          "allowedValues": []
+        },
+        "TypeData": {
+          "type": {
+            "ref": "option",
+            "args": [
+              {
+                "ref": "EVA.Core.UserTasks.UserTaskTemplateTypeData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Notifications.AppointmentTemplateTypeData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Notifications.ManualTemplateTypeData",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "shared": {
+              "ref": "EVA.Core.Notifications.INotificationTemplateTypeData",
+              "args": [],
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "description": "Type-specific data, depending on the template type of the key. For user task keys: the task types (and sub-types) this template applies to. Omit it or send null for a template that applies to every task type. Use GetNotificationTemplateTypeOptions to see what can be chosen.",
           "allowedValues": []
         }
       },
@@ -257081,11 +257155,141 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Notifications.GetNotificationTemplateTypeOptions": {
+      "typename": "GetNotificationTemplateTypeOptions",
+      "assembly": "EVA.Core",
+      "description": "Returns what a template for the key can be scoped to. For user task keys this is the task types, with their sub-types, that the notification applies to.",
+      "usage": {
+        "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.RequestMessage`1"
+      ],
+      "extends": {
+        "ref": "EVA.Core.RequestMessage`1",
+        "args": [
+          {
+            "ref": "EVA.Core.Notifications.GetNotificationTemplateTypeOptionsResponse",
+            "args": [],
+            "nullable": true
+          }
+        ]
+      },
+      "properties": {
+        "TemplateKey": {
+          "type": {
+            "ref": "string",
+            "args": []
+          },
+          "description": "The notification template key to describe.",
+          "required": {
+            "current": true
+          },
+          "requiredAllowEmpty": {
+            "current": false
+          },
+          "allowedValues": [
+            "UserTaskUrgent",
+            "UserTaskCreated",
+            "FullStockCountStarted",
+            "UserTaskUnassigned",
+            "AppointmentReminder",
+            "AppointmentCancelled"
+          ]
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.Notifications.GetNotificationTemplateTypeOptionsResponse": {
+      "typename": "GetNotificationTemplateTypeOptionsResponse",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.ResponseMessage",
+        "EVA.Core.Notifications.TemplateType",
+        "EVA.Core.Notifications.INotificationTemplateTypeOptions",
+        "EVA.Core.UserTasks.UserTaskTemplateTypeOptions",
+        "EVA.Core.Notifications.AppointmentTemplateTypeOptions",
+        "EVA.Core.Notifications.ManualTemplateTypeOptions"
+      ],
+      "extends": {
+        "ref": "EVA.Core.ResponseMessage",
+        "args": []
+      },
+      "properties": {
+        "Options": {
+          "type": {
+            "ref": "option",
+            "args": [
+              {
+                "ref": "EVA.Core.UserTasks.UserTaskTemplateTypeOptions",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Notifications.AppointmentTemplateTypeOptions",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Notifications.ManualTemplateTypeOptions",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "shared": {
+              "ref": "EVA.Core.Notifications.INotificationTemplateTypeOptions",
+              "args": [],
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "description": "What the type data of a template for this key can contain. The shape depends on the template type.",
+          "allowedValues": []
+        },
+        "TemplateType": {
+          "type": {
+            "ref": "EVA.Core.Notifications.TemplateType",
+            "args": []
+          },
+          "description": "The kind of event the key belongs to.",
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.Notifications.INotificationTemplateModel": {
       "typename": "INotificationTemplateModel",
       "assembly": "EVA.Core",
       "usage": {
         "request": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Notifications.INotificationTemplateTypeData": {
+      "typename": "INotificationTemplateTypeData",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Notifications.INotificationTemplateTypeOptions": {
+      "typename": "INotificationTemplateTypeOptions",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
       },
       "typeArguments": [],
       "typeDependencies": [],
@@ -257101,7 +257305,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.RequestMessage`1"
+        "EVA.Core.RequestMessage`1",
+        "EVA.Core.Notifications.TemplateType"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessage`1",
@@ -257113,7 +257318,17 @@
           }
         ]
       },
-      "properties": {},
+      "properties": {
+        "TemplateType": {
+          "type": {
+            "ref": "EVA.Core.Notifications.TemplateType",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Only list the keys of this template type.",
+          "allowedValues": []
+        }
+      },
       "enumValues": {}
     },
     "EVA.Core.Notifications.ListNotificationTemplateHandlersResponse": {
@@ -257192,7 +257407,9 @@
         "request": true
       },
       "typeArguments": [],
-      "typeDependencies": [],
+      "typeDependencies": [
+        "EVA.Core.Notifications.TemplateType"
+      ],
       "properties": {
         "LanguageID": {
           "type": {
@@ -257224,6 +257441,15 @@
             "AppointmentReminder",
             "AppointmentCancelled"
           ]
+        },
+        "TemplateType": {
+          "type": {
+            "ref": "EVA.Core.Notifications.TemplateType",
+            "args": [],
+            "nullable": true
+          },
+          "description": "Only list templates for keys of this template type.",
+          "allowedValues": []
         }
       },
       "enumValues": {}
@@ -257372,6 +257598,29 @@
         }
       }
     },
+    "EVA.Core.Notifications.ManualTemplateTypeData": {
+      "typename": "ManualTemplateTypeData",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {}
+    },
+    "EVA.Core.Notifications.ManualTemplateTypeOptions": {
+      "typename": "ManualTemplateTypeOptions",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {}
+    },
     "EVA.Core.Notifications.MarkAllNotificationsRead": {
       "typename": "MarkAllNotificationsRead",
       "assembly": "EVA.Core",
@@ -257482,7 +257731,12 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.DataModels.NotificationType"
+        "EVA.Core.DataModels.NotificationType",
+        "EVA.Core.Notifications.TemplateType",
+        "EVA.Core.Notifications.INotificationTemplateTypeData",
+        "EVA.Core.UserTasks.UserTaskTemplateTypeData",
+        "EVA.Core.Notifications.AppointmentTemplateTypeData",
+        "EVA.Core.Notifications.ManualTemplateTypeData"
       ],
       "properties": {
         "CreationTime": {
@@ -257603,12 +257857,51 @@
           },
           "allowedValues": []
         },
+        "TemplateType": {
+          "type": {
+            "ref": "EVA.Core.Notifications.TemplateType",
+            "args": [],
+            "nullable": true
+          },
+          "description": "The kind of event the key of this template belongs to. Empty when the key no longer has a definition.",
+          "allowedValues": []
+        },
         "Title": {
           "type": {
             "ref": "string",
             "args": [],
             "nullable": true
           },
+          "allowedValues": []
+        },
+        "TypeData": {
+          "type": {
+            "ref": "option",
+            "args": [
+              {
+                "ref": "EVA.Core.UserTasks.UserTaskTemplateTypeData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Notifications.AppointmentTemplateTypeData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Notifications.ManualTemplateTypeData",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "shared": {
+              "ref": "EVA.Core.Notifications.INotificationTemplateTypeData",
+              "args": [],
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "description": "Type-specific data of this template. Null means the template applies to everything of its type. Stored data that cannot be read is returned as null too, but such a template is not used.",
           "allowedValues": []
         }
       },
@@ -257622,7 +257915,8 @@
       },
       "typeArguments": [],
       "typeDependencies": [
-        "EVA.Core.DataModels.NotificationType"
+        "EVA.Core.DataModels.NotificationType",
+        "EVA.Core.Notifications.TemplateType"
       ],
       "properties": {
         "DefaultNotificationType": {
@@ -257649,6 +257943,14 @@
             "nullable": true
           },
           "description": "The key that identifies which notification a template renders.",
+          "allowedValues": []
+        },
+        "TemplateType": {
+          "type": {
+            "ref": "EVA.Core.Notifications.TemplateType",
+            "args": []
+          },
+          "description": "The kind of event this key belongs to.",
           "allowedValues": []
         }
       },
@@ -257838,6 +258140,31 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.Notifications.TemplateType": {
+      "typename": "TemplateType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "enumIsFlag": false,
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {},
+      "enumValues": {
+        "Appointment": {
+          "value": 1,
+          "extends": []
+        },
+        "Manual": {
+          "value": 2,
+          "extends": []
+        },
+        "UserTask": {
+          "extends": []
+        }
+      }
+    },
     "EVA.Core.Notifications.UpdateNotificationTemplate": {
       "typename": "UpdateNotificationTemplate",
       "assembly": "EVA.Core",
@@ -257848,7 +258175,11 @@
       "typeArguments": [],
       "typeDependencies": [
         "EVA.Core.RequestMessageWithEmptyResponse",
-        "EVA.Core.DataModels.NotificationType"
+        "EVA.Core.DataModels.NotificationType",
+        "EVA.Core.Notifications.INotificationTemplateTypeData",
+        "EVA.Core.UserTasks.UserTaskTemplateTypeData",
+        "EVA.Core.Notifications.AppointmentTemplateTypeData",
+        "EVA.Core.Notifications.ManualTemplateTypeData"
       ],
       "extends": {
         "ref": "EVA.Core.RequestMessageWithEmptyResponse",
@@ -257998,6 +258329,37 @@
           "requiredAllowEmpty": {
             "current": false
           },
+          "allowedValues": []
+        },
+        "TypeData": {
+          "type": {
+            "ref": "option",
+            "args": [
+              {
+                "ref": "EVA.Core.UserTasks.UserTaskTemplateTypeData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Notifications.AppointmentTemplateTypeData",
+                "args": [],
+                "nullable": true
+              },
+              {
+                "ref": "EVA.Core.Notifications.ManualTemplateTypeData",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "shared": {
+              "ref": "EVA.Core.Notifications.INotificationTemplateTypeData",
+              "args": [],
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "description": "Type-specific data, depending on the template type of the key. For user task keys: the task types (and sub-types) this template applies to. Omit it or send null for a template that applies to every task type. Use GetNotificationTemplateTypeOptions to see what can be chosen. Omit to leave it unchanged, send null to clear it.",
+          "skippable": true,
           "allowedValues": []
         }
       },
@@ -425687,6 +426049,132 @@
       },
       "enumValues": {}
     },
+    "EVA.Core.UserTasks.UserTaskTemplateTaskType": {
+      "typename": "UserTaskTemplateTaskType",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "SubTypes": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "Type": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.UserTasks.UserTaskTemplateTypeData": {
+      "typename": "UserTaskTemplateTypeData",
+      "assembly": "EVA.Core",
+      "usage": {
+        "request": true,
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.UserTasks.UserTaskTemplateTaskType"
+      ],
+      "properties": {
+        "TaskTypes": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.UserTasks.UserTaskTemplateTaskType",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.UserTasks.UserTaskTemplateTypeOption": {
+      "typename": "UserTaskTemplateTypeOption",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [],
+      "properties": {
+        "Name": {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          },
+          "allowedValues": []
+        },
+        "SubTypes": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "string",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
+    "EVA.Core.UserTasks.UserTaskTemplateTypeOptions": {
+      "typename": "UserTaskTemplateTypeOptions",
+      "assembly": "EVA.Core",
+      "usage": {
+        "response": true
+      },
+      "typeArguments": [],
+      "typeDependencies": [
+        "EVA.Core.UserTasks.UserTaskTemplateTypeOption"
+      ],
+      "properties": {
+        "TaskTypes": {
+          "type": {
+            "ref": "array",
+            "args": [
+              {
+                "ref": "EVA.Core.UserTasks.UserTaskTemplateTypeOption",
+                "args": [],
+                "nullable": true
+              }
+            ],
+            "nullable": true
+          },
+          "allowedValues": []
+        }
+      },
+      "enumValues": {}
+    },
     "EVA.Core.UserTasks.UserTaskUnassignedNotificationModel": {
       "typename": "UserTaskUnassignedNotificationModel",
       "assembly": "EVA.Core",
@@ -488386,6 +488874,34 @@
       "message": "Another notification template with the same key, language and organization unit already exists.",
       "module": "EVA.Core",
       "arguments": []
+    },
+    {
+      "name": "NotificationTemplates:InvalidNotificationTemplateTypeData",
+      "message": "The notification template type data is not valid: {0}",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "NotificationTemplates:ConflictingNotificationTemplateScope",
+      "message": "Another notification template with the same key, language and organization unit already applies to {0}.",
+      "module": "EVA.Core",
+      "arguments": [
+        {
+          "type": {
+            "ref": "string",
+            "args": [],
+            "nullable": true
+          }
+        }
+      ]
     },
     {
       "name": "MessageTemplates:NoHandlerDefined",
